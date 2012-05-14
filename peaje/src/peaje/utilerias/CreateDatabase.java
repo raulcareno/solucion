@@ -14,9 +14,9 @@ public class CreateDatabase {
             try {
                 Statement st = con.createStatement();
                 
-                st.executeUpdate("CREATE DATABASE turnos");
+                st.executeUpdate("CREATE DATABASE peaje");
                 
-                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/turnos", "root", "jcinform@2020");
+                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/peaje", "root", "jcinform@2020");
                  st = con.createStatement();
 //                File f = new File("F://PROYECTOS//peaje//da//datos.sql");
 //                String aExe = obtenContenido(f);
