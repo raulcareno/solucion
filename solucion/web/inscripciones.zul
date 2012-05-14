@@ -364,10 +364,10 @@ String cpa = cpa.getValue();
         estudent.setInstanterior(institucion.value);
         estudent.setAprovechamiento((aprovechamiento.value).doubleValue());
         //estudent.setAprovechamiento5((aprovechamiento5.value).doubleValue());
-        //estudent.setAprovechamiento6((aprovechamiento6.value).doubleValue());
+        estudent.setAprovechamiento6((aprovechamiento6.value).doubleValue());
         estudent.setDiscplina((disciplina.value).doubleValue());
         //estudent.setDisciplina5((disciplina5.value).doubleValue());
-        //estudent.setDisciplina6((disciplina6.value).doubleValue());
+        estudent.setDisciplina6((disciplina6.value).doubleValue());
         estudent.setFechamatricula(new Date());
         estudent.setHermano(hermano.checked);
         estudent.setAbanderado(abanderado.checked);
@@ -1059,6 +1059,18 @@ void validar(Textbox texto){
                                     <label  style="font-size:11px" value="(Deje en cero si es de prebasica)"/>
                                 </span>
                             </row>
+                              <row align="left"   style="background:#E4EDF6;border:0px" >
+
+                                <span style="float:right;font-size:11px">
+                                    <label  style="font-size:11px" value="Promedios de 6to. Básica:" id="tA016"/>
+                                </span>
+                                <span>
+                                    <div style="color:blue">
+                                        <decimalbox cols="5" id="aprovechamiento6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
+                                    </div>
+                                </span>
+                            </row>
                             <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
@@ -1141,19 +1153,8 @@ void validar(Textbox texto){
                                         
                                 </span>
                             </row>
+                          
                             <!--row align="left"   style="background:#E4EDF6;border:0px" >
-
-                                <span style="float:right;font-size:11px">
-                                    <label  style="font-size:11px" value="Sexto:" id="tA016"/>
-                                </span>
-                                <span>
-                                    <div style="color:blue">
-                                        <decimalbox cols="5" id="aprovechamiento6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
-                                        <decimalbox cols="5" id="disciplina6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
-                                    </div>
-                                </span>
-                            </row>
-                            <row align="left"   style="background:#E4EDF6;border:0px" >
 
                                 <span style="float:right;font-size:11px">
                                     <label style="font-size:11px"  value="Quinto" id="tA015"/>
@@ -1544,6 +1545,17 @@ void validar(Textbox texto){
                                 </span>
                             
                             </row>
+                            <row> <separator/></row>
+                              <row  style="background:white;border:0px" align="center" spans="2">
+                        <span>
+                            <label id="derechos" style="font-size:10px"  />
+                            <html> Desarrollado por: 
+                                &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+                            </html>
+                            <label style="font-size:10px;color:blue" value ="."/>
+                             
+                        </span>
+                    </row>
 
 
                         </rows>
