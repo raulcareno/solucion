@@ -29,7 +29,7 @@ ses.setAttribute("periodo",mat.getCurso().getPeriodo());
 System.out.println("MATRICULA:  "+mat);
 
 List sistemas = adm.query("Select o from Sistemacalificacion as o "+ 
-" where o.periodo.codigoper = '"+mat.curso.getPeriodo().getCodigoper()+"' order by o.orden ");
+" where o.periodo.codigoper = '"+mat.curso.getPeriodo().getCodigoper()+"'  and o.seimprime = true   order by o.orden ");
 String[][] values = new String[sistemas.size()][2];
 
 List trimestres = adm.query("Select o from Trimestres as o "+
@@ -39,7 +39,7 @@ int k=0;
  for (Iterator it = trimestres.iterator(); it.hasNext();) {
               Trimestres trime = (Trimestres) it.next();
               List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
-              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+mat.curso.getPeriodo().getCodigoper()+"' order by o.orden");
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"'   and o.seimprime = true  and  o.periodo.codigoper = '"+mat.curso.getPeriodo().getCodigoper()+"' order by o.orden");
               if(sistemas0.size() >0 ){
                   cabes[k][0]= trime.getDescripcion();
                    cabes[k][1]= sistemas0.size()+"";
