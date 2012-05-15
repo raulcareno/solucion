@@ -20,7 +20,7 @@
         .MyGridRowHeight td.z-row-inner
         {
         padding: 0px;
-        //overflow: hidden;
+            //overflow: hidden;
         }
     </style>
     <zscript>
@@ -201,6 +201,7 @@ void llenar(Estudiantes estudent){
     mail.value = estudent.getMail();
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
+    aseguradora.value = estudent.getAseguradora();
             provincia.value = estudent.getProvincia();
             canton.value = estudent.getCanton();
             lugarnacimiento.value = estudent.getLugarnacimiento();
@@ -251,6 +252,9 @@ void llenar(Estudiantes estudent){
             }
             if(estudent.getTransporte()!=null){
                 transporte.checked = estudent.getTransporte();
+            }
+            if(estudent.getAsegurado()!=null){
+                asegurado.checked = estudent.getAsegurado();
             }
               if(estudent.getPendientes()!=null){
                 pendientes.checked = estudent.getPendientes();
@@ -518,6 +522,8 @@ void estado(Boolean estado,Boolean modificar){
     adventista.disabled= estado;
     nuevo.disabled = estado;
     transporte.disabled = estado;
+    asegurado.disabled = estado;
+    aseguradora.disabled = estado;
     //repite.disabled = estado;
     nobus.readonly = estado;
     cedulare.readonly = estado;
@@ -638,6 +644,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setAdventista(adventista.checked);
         estudent.setTransporte(transporte.checked);
         estudent.setNobus(nobus.value);
+        estudent.setAseguradora(aseguradora.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
@@ -688,7 +695,48 @@ void estado(Boolean estado,Boolean modificar){
             adm.guardar(estudent);
             estuNuevo = true;
          }
-         if(!(cod11.value).equals(0)){
+         
+         
+ //GUARDO HERMANOS
+ //BORRAR LOS HERMANOS Y CARGAR NUEVAMENTE
+     String sqls = "Delete from Hermanos "+ 
+                " where estudiante.codigoest = '"+ estudent.getCodigoest() +"'  ";
+                System.out.println(sqls);
+                    adm.ejecutaSql(sqls);
+        if(!(codh1.value).equals(0)){
+                Hermanos her = new Hermanos(adm.getNuevaClave("Hermanos","codigo"));
+                her.setHermanos(new Estudiantes(codh1.value));
+                her.setCurso(anioh1.value);
+                her.setEstudiante(estudent);
+                if(nomh1.value!="" && nomh1.value != null){
+                    if(nomh1.value.length()>5)
+                        adm.guardar(her);
+                }
+         }
+         if(!(codh2.value).equals(0)){
+                Hermanos her = new Hermanos(adm.getNuevaClave("Hermanos","codigo"));
+                her.setHermanos(new Estudiantes(codh2.value));
+                her.setCurso(anioh2.value);
+                her.setEstudiante(estudent);
+                if(nomh2.value!="" && nomh2.value != null){
+                    if(nomh2.value.length()>5)
+                        adm.guardar(her);
+                }
+         }
+         if(!(codh3.value).equals(0)){
+                Hermanos her = new Hermanos(adm.getNuevaClave("Hermanos","codigo"));
+                her.setHermanos(new Estudiantes(codh3.value));
+                her.setCurso(anioh3.value);
+                her.setEstudiante(estudent);
+                if(nomh3.value!="" && nomh3.value != null){
+                    if(nomh3.value.length()>5)
+                        adm.guardar(her);
+                }
+         }
+                                                     
+ 
+ //GUARDO RETIRAN O EMERGENCIAS
+ if(!(cod11.value).equals(0)){
                 Retiran ret = new Retiran(cod11.value);
                 ret.setApellidos(nom11.value);
                 ret.setParentesco(par11.value);
@@ -941,6 +989,17 @@ ParametrosGlobales para = new ParametrosGlobales();
  void nuevo(){
     if(verificar("Agregar")){
        try{
+        cod1.value = 0; nom1.value =""; par1.value = ""; cel1.value = ""; con1.value="";
+        cod2.value = 0;nom2.value =""; par2.value = ""; cel2.value = ""; con2.value="";
+        cod3.value = 0;nom3.value =""; par3.value = ""; cel3.value = ""; con3.value="";
+
+        cod11.value = 0; nom11.value =""; par11.value = ""; ci11.value="";
+        cod22.value = 0; nom22.value =""; par22.value = ""; ci22.value="";
+        cod33.value = 0; nom33.value =""; par33.value = ""; ci33.value="";
+
+        codh1.value = 0; codh2.value = 0; codh3.value = 0; 
+        nomh1.value ="";nomh2.value ="";nomh3.value ="";
+        anioh1.value ="";  anioh2.value =""; anioh3.value =""; 
         guardar.disabled=false;
         guardar3.disabled=false;
         llenar(new Estudiantes(0));
@@ -1011,8 +1070,12 @@ valor = valor.substring(ini+1, fin);
                       estudent = object;
                  }
             llenar(estudent);
+                           
             
             List retiranList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'R' order by o.codigo ");
+            cod11.value = 0; nom11.value =""; par11.value = ""; ci11.value="";
+               cod22.value = 0; nom22.value =""; par22.value = ""; ci22.value="";
+               cod33.value = 0; nom33.value =""; par33.value = ""; ci33.value="";
             if(retiranList.size()>0){
                 int i=0;
                 for(Iterator it = retiranList.iterator(); it.hasNext();) {
@@ -1042,6 +1105,9 @@ valor = valor.substring(ini+1, fin);
              }
              
              List emergenciaList = adm.query("Select o from Retiran as o where o.estudiante.codigoest = '"+valor+"'  and o.tipo = 'E' order by o.codigo ");
+             cod1.value = 0; nom1.value =""; par1.value = ""; cel1.value = ""; con1.value="";
+                cod2.value = 0;nom2.value =""; par2.value = ""; cel2.value = ""; con2.value="";
+                cod3.value = 0;nom3.value =""; par3.value = ""; cel3.value = ""; con3.value="";
             if(emergenciaList.size()>0){
                 int i=0;
                 for(Iterator it = emergenciaList.iterator(); it.hasNext();) {
@@ -1071,6 +1137,37 @@ valor = valor.substring(ini+1, fin);
                  cod1.value = 0; nom1.value =""; par1.value = ""; cel1.value = ""; con1.value="";
                 cod2.value = 0;nom2.value =""; par2.value = ""; cel2.value = ""; con2.value="";
                 cod3.value = 0;nom3.value =""; par3.value = ""; cel3.value = ""; con3.value="";
+             }
+             
+       List hermanosList = adm.query("Select o from Hermanos as o " + 
+       " where o.estudiante.codigoest = '"+valor+"' ");
+                            codh1.value = 0; codh2.value = 0; codh3.value = 0; 
+                            nomh1.value ="";nomh2.value ="";nomh3.value ="";
+                            anioh1.value ="";  anioh2.value =""; anioh3.value =""; 
+            if(hermanosList.size()>0){
+                int i=0;
+                for(Iterator it = hermanosList.iterator(); it.hasNext();) {
+                      Hermanos es = (Hermanos)it.next();
+                      if(i==0){
+                            codh1.value =es.getHermanos().getCodigoest(); 
+                            nomh1.value =es.getHermanos().getApellido() +" "+es.getHermanos().getNombre();
+                            anioh1.value =es.getCurso(); 
+                      }else if(i==1){
+                            codh2.value =es.getHermanos().getCodigoest(); 
+                            nomh2.value =es.getHermanos().getApellido() +" "+es.getHermanos().getNombre();
+                            anioh2.value =es.getCurso(); 
+                      }else if(i==2){
+                            codh3.value =es.getHermanos().getCodigoest(); 
+                            nomh3.value =es.getHermanos().getApellido() +" "+es.getHermanos().getNombre();
+                            anioh3.value =es.getCurso(); 
+                      }
+                      i++;
+                 }
+            }else{
+                            codh1.value = 0; codh2.value = 0; codh3.value = 0; 
+                            nomh1.value ="";nomh2.value ="";nomh3.value ="";
+                            anioh1.value ="";  anioh2.value =""; anioh3.value =""; 
+                             
              }
             modificar.disabled=false;
             acta.disabled = false;
@@ -1605,6 +1702,15 @@ public void quitarFila(String codigoBuscar){
                                             </span>
                                         </row>
                                         <row>
+                                            <span style="float:right"> ¿Asegurado?:</span>
+                                            <span>
+                                                  <checkbox id="asegurado"  disabled="true"/>
+
+                                                Nombre Aseguradora:
+                                                <decimalbox id="aseguradora"  maxlength="50" cols="20" readonly="true"  /> 
+                                            </span>
+                                        </row>
+                                        <row>
                                             <span style="float:right"> Observación:</span>
                                             <textbox rows="2" id="observacion" cols="65"  readonly="true"  />
                                         </row>
@@ -1929,6 +2035,21 @@ public void quitarFila(String codigoBuscar){
                                                         </combobox>
                                                     </span>
                                                 </row>
+                                                <row style="background-color:#E2ECFE">
+                                                    <span style="float:right">Estado Civil Padres
+                                                        <span style="color:blue"> (*)</span>:
+                                                    </span>
+                                                    <span>
+                                                        <radiogroup Id="estadocivil" >
+                                                            <radio selected="true" label="Casados"/>
+                                                            <radio label="Divorciados"/>
+                                                            <radio label="Madre Soltera"/>
+                                                            <radio label="Viudo(a)"/>
+                                                            <radio label="Separados"/>
+                                                            <radio label="U.Libre"/>                                                            
+                                                        </radiogroup>
+                                                    </span>
+                                                </row>
                                                 <row>
  
                                                     <span style="float:right">Ingresos:</span>
@@ -2002,28 +2123,27 @@ public void quitarFila(String codigoBuscar){
                                           
                                             <grid  width="100%" id="hermanos2">
                                                 <columns sizable="true">
-                                                    <column visible="true" label="codigo" />
+                                                    <column visible="false" label="codigo" />
                                                     <column style="font-weight:bold" label="APELLIDOS Y NOMBRES" width="120px" />
                                                     <column label="AÑO DE BÁSICA" width="50px"  />
                                                 </columns>
                                                 <rows>
-                                                    
                                                     <row>
                                                         <intbox id="codh1" value="0"/>
-                                                        <combobox  cols="40" id="nomh1"  onChanging='try{ if(event.value=="" || event.value == null){codh1.value = 0;}  }catch(Exception e){ System.out.println("...."); }'   
+                                                        <combobox  cols="40" id="nomh1"   
                                                         onSelect='try{ codh1.value = (self.selectedItem.value).getCodigoest(); }catch(Exception e){ codh1.value=0; nomh1.value = "";}'  
                                                             autodrop="true" buttonVisible="false"  use="bean.AutoCompleteEstudiante"/>
                                                         <textbox id="anioh1" value=""/>
                                                     </row>
                                                     <row>
                                                         <intbox id="codh2" value="0"/>
-                                                        <combobox  cols="40" id="nomh2" onSelect="codh1.value = (self.selectedItem.value).getCodigoest()"   
+                                                        <combobox  cols="40" id="nomh2" onSelect="codh2.value = (self.selectedItem.value).getCodigoest()"   
                                                             autodrop="true" buttonVisible="false"  use="bean.AutoCompleteEstudiante"/>
                                                         <textbox id="anioh2" value=""/>
                                                     </row>
                                                     <row>
                                                         <intbox id="codh3" value="0"/>
-                                                        <combobox  cols="40" id="nomh3"  onSelect="codh1.value = (self.selectedItem.value).getCodigoest()"  
+                                                        <combobox  cols="40" id="nomh3"  onSelect="codh3.value = (self.selectedItem.value).getCodigoest()"  
                                                           autodrop="true" buttonVisible="false"  use="bean.AutoCompleteEstudiante"/>
                                                         <textbox id="anioh3" value=""/>
                                                     </row>
