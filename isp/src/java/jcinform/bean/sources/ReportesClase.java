@@ -312,6 +312,81 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
+    
+    public JRDataSource facturasPendientesestven(Sector sec, Canton canton, String estado, Empleados emp) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+        String estadoComp = " and o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp ="";
+        }
+        
+        String compleEmpleado = "  and o.empleados2.codigo = '"+emp.getCodigo()+"'  ";
+        if(emp.getCodigo().equals(-1)){
+            compleEmpleado ="";
+        }
+        if (sec.getCodigo().equals(-1)) {
+            if (canton.getCodigo().equals(-1)) {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+" " +compleEmpleado+"  order by o.clientes.apellidos");
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.canton.codigo = '" + canton.getCodigo() + "'  "
+                        + "and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+" " +compleEmpleado+"     order by o.clientes.apellidos");
+
+            }
+        } else if (canton.getCodigo().equals(-1)) {
+
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "' " +compleEmpleado+"    order by o.clientes.apellidos");
+
+
+        } else {
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "' " +compleEmpleado+"    order by o.clientes.apellidos");
+
+        }
+
+        ArrayList detalles = new ArrayList();
+        String quer = "";
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                    + "FROM cxcobrar cx, factura  fa "
+                    + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
+                    + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
+                    + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+
+            List facEncontradas = adm.queryNativo(quer);
+
+            if (facEncontradas.size() > 0) {
+                Pendientes pendi = null;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    pendi = new Pendientes();
+                    pendi.setCliente(clientes1);
+                    pendi.setFactura("" + vec.get(0));
+                    Date d = (Date) vec.get(1);
+                    pendi.setFecha(d);
+                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    pendi.setPlan(c.getPlan() + "");
+                    pendi.setContrato(c.getContrato()+"");
+                    pendi.setTelefono(c.getTelefono()+" "+c.getTelefonof());
+                    pendi.setDireccion(c.getDireccion());
+                    pendi.setTotal((BigDecimal) vec.get(2));
+                    pendi.setSaldo((BigDecimal) vec.get(3));
+                    detalles.add(pendi);
+                }
+
+            }
+
+        }
+        System.out.println("" + quer);
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+
     public JRDataSource facturasPendientes(Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();

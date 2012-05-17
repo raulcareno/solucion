@@ -131,6 +131,9 @@ cantones.add(0,cantonTodos);
             }else if(tipo.equals("CXCLIEST")){
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
+            }else if(tipo.equals("CXCLIESTVEN")){
+                datasource = reportes.facturasPendientesestven(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value,empleadosList.selectedItem.value);
+                report.setSrc(directorioReportes+"cxcclientesestven.jasper");
             }else if(tipo.equals("PORSECTOR")){
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
@@ -349,6 +352,13 @@ void campos(String valor){
             filasector.visible=true;      
             filaestado.visible = true;
             desde.value = fec; 
+        }else if(valor.equals("CXCLIESTVEN")){
+            titulo.value= "Cuentas por Pagar";
+            filacanton.visible=true;
+            filasector.visible=true;      
+            filaestado.visible = true;
+            filaempleados.visible = true;
+            desde.value = fec; 
         }else if(valor.equals("COBROS")){
             titulo.value= "Cobros Realizados";
             filaclientes.visible=true;
@@ -511,6 +521,7 @@ void campos(String valor){
                                     <listitem  disabled="true" id="linea0" label="========CLIENTES==============" value="linea" />
                                     <listitem id="CXCLI" label="Cuentas x Cobrar x Clientes" value="CXCLI" />
                                     <listitem id="CXCLIEST" label="Cuentas x Cobrar x Clientes y Estado" value="CXCLIEST" />
+                                    <listitem id="CXCLIESTVEN" label="Cuentas x Cobrar x Clientes x Estado y Vendedor" value="CXCLIESTVEN" />
                                     <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
                                     <listitem id="ARQUEO" label="Reporte Diario de Caja X Fechas" value="ARQUEO" />
                                     <listitem id="ARQUEO2" label="Reporte Diario de Caja X Fechas (Plan,Equi,Serv)" value="ARQUEO2" />
