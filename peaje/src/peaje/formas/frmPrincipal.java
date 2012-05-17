@@ -3181,7 +3181,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             } else {
                                 valor = "" + dispo;
                             }
-                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
+                            LeerTarjeta ta = buscarPuerto("led");
                             ta.outputSream.write((("XYinforma" + valor).getBytes()));
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                             //barrera1.setEnabled(true);
@@ -4071,7 +4071,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             if (puerta == null) {
                 puerta = "1";
             }
-            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+             LeerTarjeta ta = buscarPuerto("principal");
             ta.outputSream.write(puerta.getBytes());
             //TEMPORAL
             Thread.sleep(20);
@@ -4549,7 +4549,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
 
         try {
-            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+             LeerTarjeta ta = buscarPuerto("principal");
             ta.outputSream.write(lapuertaaAbrir.getBytes());
             //TEMPORAL
             Thread.sleep(20);
@@ -5467,7 +5467,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public void run() {
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("7".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera2.setEnabled(true);
@@ -5489,7 +5489,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public void run() {
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("6".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera6.setEnabled(true);
@@ -5511,7 +5511,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public void run() {
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("5".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera5.setEnabled(true);
@@ -5534,7 +5534,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             public void run() {
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("4".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera4.setEnabled(true);
@@ -5555,7 +5555,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public void run() {
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("3".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
@@ -5595,7 +5595,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public void run() {
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
@@ -5628,7 +5628,24 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         };
         cargar.start();
 }//GEN-LAST:event_barrera2ActionPerformed
-
+public LeerTarjeta buscarPuerto(String tipo){
+//puertoListo;
+    
+    for (Iterator it = puertoListo.iterator(); it.hasNext();) {
+         LeerTarjeta ta = (LeerTarjeta) it.next();
+         if (ta.serialPort.getName().equals(empresaObj.getBarras()) && tipo==("barras")){
+                return ta;
+         }else if (ta.serialPort.getName().equals(empresaObj.getPuerto()) && tipo==("principal")){
+                return ta;
+         }else if (ta.serialPort.getName().equals(empresaObj.getBarras2()) && tipo==("barras2")){
+                return ta;
+         }else if (ta.serialPort.getName().equals(empresaObj.getLed()) && tipo==("led")){
+                return ta;
+         }
+    }
+    return null;
+    
+}
     private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
         // TODO add your handling code here:
         barrera1.setEnabled(false);
@@ -5636,7 +5653,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             public void run() {
                 try {
-                    LeerTarjeta ta = (LeerTarjeta) puertoListo.get(0);
+                     LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);

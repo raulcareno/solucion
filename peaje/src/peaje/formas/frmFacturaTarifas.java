@@ -724,7 +724,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
                                 }
                             }
 
-                            LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                           LeerTarjeta ta = principal.buscarPuerto("principal");
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
                             Thread.sleep(20);

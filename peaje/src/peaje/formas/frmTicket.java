@@ -380,7 +380,7 @@ if(empresaObj.getSeabretic()){
                                 }
                         }
                     try {
-                        LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                        LeerTarjeta ta = principal.buscarPuerto("principal");
                         ta.outputSream.write(empresaObj.getPuertatic().getBytes());
                         //TEMPORAL
                         Thread.sleep(20);                            

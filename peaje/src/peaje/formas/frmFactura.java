@@ -1230,7 +1230,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         }
 
                         try {
-                            LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                            LeerTarjeta ta = principal.buscarPuerto("principal");
+                            
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
                             Thread.sleep(20);
@@ -2444,7 +2445,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             }
 
                             try {
-                                LeerTarjeta ta = (LeerTarjeta) principal.puertoListo.get(0);
+                                LeerTarjeta ta = principal.buscarPuerto("principal");
                                 ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                                 //TEMPORAL
                                 Thread.sleep(20);

@@ -383,7 +383,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             if (puerta == null) {
                 puerta = "1";
             }
-            LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(0);
+            LeerTarjeta ta = princip.buscarPuerto("principal");
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
             Thread.sleep(20);
@@ -426,10 +426,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             } else {
                 valor = "" + regresa;
             }
-//                            LeerTarjeta ta = (LeerTarjeta) puertoListo.get(1);
-//                            ta.outputSream.write((("XYinforma" + valor).getBytes()));
+ 
             try {
-                LeerTarjeta ta = (LeerTarjeta) princip.puertoListo.get(1);
+                LeerTarjeta ta = princip.buscarPuerto("led");
                 ta.outputSream.write((("XYinforma" + valor).getBytes()));
             } catch (Exception e) {
                 System.out.println("NO HAY PANTALLA DE LEDS: " + e);
