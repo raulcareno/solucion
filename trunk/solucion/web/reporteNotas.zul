@@ -913,21 +913,21 @@ void campos(String valor){
                                         <rows>
                                     <row>
                                        <doublebox id="r1" cols="4"  value="0" /> 
-                                       <doublebox id="r2" cols="4"  value="10"   /> 
+                                       <doublebox id="r2" cols="4"  value="10.5"   /> 
                                        <textbox value="0-10" />
                                     </row>
                                     <row>
-                                       <doublebox id="r3" cols="4"  value="11"  /> 
+                                       <doublebox id="r3" cols="4"  value="10.5"  /> 
                                        <doublebox id="r4" cols="4"  value="15"   /> 
                                        <textbox value="11-15" />
                                     </row>
                                     <row>
-                                       <doublebox id="r5" cols="4"  value="16"  /> 
+                                       <doublebox id="r5" cols="4"  value="15.5"  /> 
                                        <doublebox id="r6" cols="4"  value="18"   /> 
                                        <textbox value="16-18" />
                                     </row>
                                     <row>
-                                       <doublebox id="r7" cols="4"  value="19"  /> 
+                                       <doublebox id="r7" cols="4"  value="18.5"  /> 
                                        <doublebox id="r8" cols="4" value="20"   /> 
                                        <textbox value="19-20" />
                                     </row>
