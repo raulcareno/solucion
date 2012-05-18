@@ -5,7 +5,6 @@
 package bean;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ import jcinform.procesos.Administrador;
 import net.sf.jasperreports.engine.JRDataSource;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.*;
 import sources.*;
 
 /**
@@ -4056,24 +4055,22 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadrocalificacionesestadisticodistributivo(Sistemacalificacion sistema, List cursos) {
+    public JRDataSource cuadrocalificacionesestadisticodistributivo(Sistemacalificacion sistema, List cursos, List rangos) {
 //     int tamanio=0;
+        
+           
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
-        ArrayList equiva = new ArrayList();
-        Equivalencias eq = new Equivalencias();
-        eq.setValorminimo(0.0);
-        eq.setValormaximo(11.0);
-        equiva.add(eq);
-        eq.setValorminimo(11.0);
-        eq.setValormaximo(16.0);
-        equiva.add(eq);
-        eq.setValorminimo(16.0);
-        eq.setValormaximo(19.0);
-        equiva.add(eq);
-        eq.setValorminimo(19.0);
-        eq.setValormaximo(20.0);
-        equiva.add(eq);
+        ArrayList equiva = new ArrayList<Equivalencias>();
+        for (int i = 0; i < rangos.size(); i++) {
+                Row object = (Row) rangos.get(i);
+                List labels = object.getChildren();
+                 Equivalencias eq = new Equivalencias();
+                eq.setValorminimo((((Doublebox) labels.get(0)).getValue()));
+                eq.setValormaximo((((Doublebox) labels.get(1)).getValue()));
+                eq.setNombre((((Textbox) labels.get(2)).getValue()));
+                equiva.add(eq);
+          }
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
     
  
@@ -4128,13 +4125,13 @@ public class reportesClase {
                             }
                             
                             
-                            if(valorActual>=0.0 && valorActual<11.0){
+                            if(valorActual>=((Equivalencias)equiva.get(0)).getValorminimo() && valorActual<((Equivalencias)equiva.get(0)).getValormaximo()){
                                 rango0a10+=1;
-                            }else if(valorActual>=11.0 && valorActual<16){
+                            }else if(valorActual>=((Equivalencias)equiva.get(1)).getValorminimo() && valorActual< ((Equivalencias)equiva.get(1)).getValormaximo()){
                                 rango11a15+=1;
-                            }else if(valorActual>=16.0 && valorActual<19){
+                            }else if(valorActual>=((Equivalencias)equiva.get(2)).getValorminimo() && valorActual <((Equivalencias)equiva.get(2)).getValormaximo()){
                                 rango16a18+=1;
-                            }else if(valorActual>=19.0 && valorActual<=20){
+                            }else if(valorActual>=((Equivalencias)equiva.get(3)).getValorminimo() && valorActual <=((Equivalencias)equiva.get(3)).getValormaximo()){
                                 rango19a20+=1;
                             }
                         }
@@ -4160,6 +4157,7 @@ public class reportesClase {
                                     notaP.setSubtitulo("Estudiantes en el rango");
                                     notaP.setCantidad(rango0a10+""); 
                                     notaP.setRango("0 - 10");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(0)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     
                                     notaP = new NotasPromedios();
@@ -4170,6 +4168,7 @@ public class reportesClase {
                                     Double perc = (rango0a10*100)/new Double(totalMatriculados);
                                     notaP.setCantidad(decimalFormat.format(redondear(perc,2)) +""); 
                                     notaP.setRango("0 - 10");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(0)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     //11 A 15 
                                      notaP = new NotasPromedios();
@@ -4179,6 +4178,7 @@ public class reportesClase {
                                     notaP.setSubtitulo("Estudiantes en el rango");
                                     notaP.setCantidad(rango11a15+""); 
                                     notaP.setRango("11 - 15");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(1)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     
                                     notaP = new NotasPromedios();
@@ -4189,6 +4189,7 @@ public class reportesClase {
                                     perc = (rango11a15*100)/new Double(totalMatriculados);
                                     notaP.setCantidad(decimalFormat.format(redondear(perc,2)) +""); 
                                     notaP.setRango("11 - 15");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(1)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     
                                     //16 - 18 
@@ -4199,6 +4200,7 @@ public class reportesClase {
                                     notaP.setSubtitulo("Estudiantes en el rango");
                                     notaP.setCantidad(rango16a18+""); 
                                     notaP.setRango("16 - 18");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(2)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     
                                     notaP = new NotasPromedios();
@@ -4209,6 +4211,7 @@ public class reportesClase {
                                     perc = (rango16a18*100)/new Double(totalMatriculados);
                                     notaP.setCantidad(decimalFormat.format(redondear(perc,2)) +""); 
                                     notaP.setRango("16 - 18");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(2)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     
                                     //19 - 20 
@@ -4219,6 +4222,7 @@ public class reportesClase {
                                     notaP.setSubtitulo("Estudiantes en el rango");
                                     notaP.setCantidad(rango19a20+""); 
                                     notaP.setRango("19 - 20");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(3)).getNombre());
                                     arregloPromedios.add(notaP); 
                                     
                                     notaP = new NotasPromedios();
@@ -4229,6 +4233,7 @@ public class reportesClase {
                                     perc = (rango19a20*100)/new Double(totalMatriculados);
                                     notaP.setCantidad(decimalFormat.format(redondear(perc,2)) +""); 
                                     notaP.setRango("19 - 20");
+                                    notaP.setRango(""+((Equivalencias)equiva.get(3)).getNombre());
                                     arregloPromedios.add(notaP); 
                          
                         }
