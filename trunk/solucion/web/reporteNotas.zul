@@ -391,8 +391,11 @@ void recalcular(){
                 }
                      
  String directorioReportes = insts.getReportes();
+                try{
             if(sistemasCombo.disabled == false)
                 parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                }catch(Exception exs){
+                }
             if(filamodalidad.visible == true)
             parametros.put("modalidad",modalidad.value);
             
@@ -515,8 +518,10 @@ void recalcular(){
                     report.setSrc(directorioReportes+"estadisticoxdistributivo.jasper");
 
             }else if(tipo.equals("RESUL")){
+
                     datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),new ArrayList(),rangos.getRows().getChildren());
                     report.setSrc(directorioReportes+"resultados.jasper");
+                    
 
             }else if(tipo.equals("CSUP")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
@@ -617,6 +622,7 @@ void campos(String valor){
         sistemasCombo.disabled = true;
 
       fila.visible = false;
+      filarangos.visible = false;
       filamodalidad.visible = false;
       sistemasCombo.setSelectedIndex(0);
       curs.setSelectedIndex(0);
@@ -737,6 +743,12 @@ void campos(String valor){
              titulo.value= "CUADRO ESTADISTICO DE RENDIMIENTO";
              filacursos.visible = true;
             filaaportes.visible = true;
+         
+        }else if(valor.equals("RESUL")){
+             curs.disabled = false;
+             sistemasCombo.disabled = false;
+             titulo.value= "CUADRO ESTADISTICO DE RENDIMIENTO ANUAL";
+                filarangos.visible =true;
             
         }else if(valor.equals("ESTAD")){
              curs.disabled = false;
@@ -831,10 +843,10 @@ void campos(String valor){
                                     <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
+                                    <listitem  id="linea0281222" label="============ ESTADISTICOS =============" value="linea2801222" />
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="PROC" label="Promedios x Materias y Curso " value="PROC" />
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
-                                    
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
                                     <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
@@ -856,21 +868,19 @@ void campos(String valor){
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
                                     <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
                                     <listitem  id="RECC1" label="Record Académico por Cursos" value="RECC1"/>
-                                    <listitem  id="linea002" label="=========================" value="linea" />
-                                    
                                     <listitem  id="linea" label="========= ENCUESTAS ================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="ENC3" label="Resumen y Resultados de Encuesta" value="ENC3"/>
                                     <listitem  id="ENC4" label="Resumen y Resultados de Encuesta(GRAFICAS)" value="ENC4"/>
                                     <listitem  id="ENC5" label="Resumen y Resultados de Encuesta por Sección" value="ENC5"/>
                                     <listitem  id="ENC6" label="Resumen y Resultados de Encuesta por Sección(GRAFICAS)" value="ENC6"/>
-                                    <listitem  id="linea2" label="=========================" value="linea2" />
          <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Supletorios(*)" value="CDIS"/>
         <listitem label="Cuadro de Mejores Estudiantes por curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Promedios Finales(*)" value="CDIS"/>
         <listitem label="Promedios Generales de 1ro a 5to (*)" value="CDIS"/-->
+                                    <listitem  id="lineaABC" label="========= DISTRIBUTIVOS ================" value="lineaABC" />
                                     <listitem  id="DIS" label="Distributivo" value="DIS" />
                                     <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
                                     <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
@@ -898,7 +908,7 @@ void campos(String valor){
                                 <checkbox visible="false" id="incluirfaltas" label=" FALTAS" style="color:blue" />
                             </span>
                         </row>
-                        <row spans="2">
+                        <row id="filarangos" visible="false" spans="2">
                             
                             <grid width="75%"  id="rangos">
                             
@@ -955,7 +965,7 @@ void campos(String valor){
                                 </listbox>
                             </span>
                         </row>
-                        <row  id="filasecuencia"  style="background:transparent;border:0px">
+                        <row  id="filasecuencia" visible="false"  style="background:transparent;border:0px">
                             <span style="float:right"> Cursos:</span>
                             <span>
                                 <listbox id="secuencia" width="450px"  mold="select" >
