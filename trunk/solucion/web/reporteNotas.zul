@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <window   onCreate="cargando();"   height="100%" 
-  border="normal"
-   >
+          border="normal"
+>
     <zk xmlns="http://www.zkoss.org/2005/zul">
 
         <zscript>
@@ -515,8 +515,7 @@ void recalcular(){
                     report.setSrc(directorioReportes+"estadisticoxdistributivo.jasper");
 
             }else if(tipo.equals("RESUL")){
-  
-                    datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),new ArrayList());
+                    datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),new ArrayList(),rangos.getRows().getChildren());
                     report.setSrc(directorioReportes+"resultados.jasper");
 
             }else if(tipo.equals("CSUP")){
@@ -888,47 +887,87 @@ void campos(String valor){
                             <span style="color:blue"> Desde:
                                 <decimalbox id="desde" value="0" cols="5" /> 
                                 <separator bar="true" orient="vertical" />
-                                Hasta:<decimalbox id="hasta" value="20" cols="5"/>
+                                Hasta:
+                                <decimalbox id="hasta" value="20" cols="5"/>
                                 <separator bar="true" orient="vertical" />
-                                Nota de Peligro:<decimalbox id="peligro" value="13.33" cols="5"/>
+                                Nota de Peligro:
+                                <decimalbox id="peligro" value="13.33" cols="5"/>
                                 <separator bar="true" orient="vertical" />
                                 INCLUIR: 
                                 <checkbox visible="false" checked="true" id="incluirpromedio" label="PROMEDIO" style="color:blue" />
-                                  <checkbox visible="false" id="incluirfaltas" label=" FALTAS" style="color:blue" />
+                                <checkbox visible="false" id="incluirfaltas" label=" FALTAS" style="color:blue" />
                             </span>
+                        </row>
+                        <row spans="2">
+                            
+                            <grid width="75%"  id="rangos">
+                            
+                                    <auxhead>
+                                        <auxheader label="INGRESE LOS RANGOS PARA REPORTE" colspan="3"/>
+                                    </auxhead>
+                                      <columns>
+                                        <column width="120px" label ="Desde(mayor.e.igual)"/>
+                                        <column width="120px"    label ="Hasta(menor)"/>
+                                        <column   label ="Título"/>
+                                    </columns>
+                                        <rows>
+                                    <row>
+                                       <doublebox id="r1" cols="4"  value="0" /> 
+                                       <doublebox id="r2" cols="4"  value="10"   /> 
+                                       <textbox value="0-10" />
+                                    </row>
+                                    <row>
+                                       <doublebox id="r3" cols="4"  value="11"  /> 
+                                       <doublebox id="r4" cols="4"  value="15"   /> 
+                                       <textbox value="11-15" />
+                                    </row>
+                                    <row>
+                                       <doublebox id="r5" cols="4"  value="16"  /> 
+                                       <doublebox id="r6" cols="4"  value="18"   /> 
+                                       <textbox value="16-18" />
+                                    </row>
+                                    <row>
+                                       <doublebox id="r7" cols="4"  value="19"  /> 
+                                       <doublebox id="r8" cols="4" value="20"   /> 
+                                       <textbox value="19-20" />
+                                    </row>
+                                    
+
+                                </rows>
+                            </grid>
                         </row>
 
 
                         <row id="filacursos" style="background:transparent;border:0px">
                             <span style="float:right"> Curso:</span>
                             <span>
-                            <listbox id="curs" width="450px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
-                                <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
-                            </listbox>
+                                <listbox id="curs" width="450px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
+                                    <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                                </listbox>
                                 <button label="RECALCULAR(30s.)"  onClick="recalcular()"/>
                             </span>
                         </row>
-                       <row  id="filaespecialidad"  style="background:transparent;border:0px">
+                        <row  id="filaespecialidad"  style="background:transparent;border:0px">
                             <span style="float:right"> Especialidad:</span>
                             <span>
-                            <listbox id="especialidad" width="450px"  mold="select" onSelect="buscar22(((Global)self.selectedItem.value)); estudiantesCombo.disabled = false; ">
-                                <listitem   forEach="${especialidades}" value="${each}" label="${each.descripcion}"/>
-                            </listbox>
-                           </span>
+                                <listbox id="especialidad" width="450px"  mold="select" onSelect="buscar22(((Global)self.selectedItem.value)); estudiantesCombo.disabled = false; ">
+                                    <listitem   forEach="${especialidades}" value="${each}" label="${each.descripcion}"/>
+                                </listbox>
+                            </span>
                         </row>
-                          <row  id="filasecuencia"  style="background:transparent;border:0px">
+                        <row  id="filasecuencia"  style="background:transparent;border:0px">
                             <span style="float:right"> Cursos:</span>
                             <span>
-                            <listbox id="secuencia" width="450px"  mold="select" >
-                                <listitem selected="true"  value="1" label="Octavo"/>
-                                <listitem   value="2" label="Noveno"/>
-                                <listitem   value="3" label="Décimo"/>
-                                <listitem   value="4" label="Primero Bachillerato"/>
-                                <listitem   value="5" label="Segundo Bachillerato"/>
-                                <listitem   value="6" label="Tercero Bachillerato"/>
+                                <listbox id="secuencia" width="450px"  mold="select" >
+                                    <listitem selected="true"  value="1" label="Octavo"/>
+                                    <listitem   value="2" label="Noveno"/>
+                                    <listitem   value="3" label="Décimo"/>
+                                    <listitem   value="4" label="Primero Bachillerato"/>
+                                    <listitem   value="5" label="Segundo Bachillerato"/>
+                                    <listitem   value="6" label="Tercero Bachillerato"/>
 
-                            </listbox>
-                           </span>
+                                </listbox>
+                            </span>
                         </row>
                         <row   id="filaestudiantes"   style="background:transparent;border:0px">
                             <span style="float:right"> Estudiantes: </span>
@@ -977,7 +1016,7 @@ void campos(String valor){
                                                     <listitem value="rtf">
                                                         <listcell  image="/images/word.gif" label="Word" />
                                                     </listitem>
-                                                       <listitem value="xls">
+                                                    <listitem value="xls">
                                                         <listcell  image="/images/excel.gif"  label="Excel(Múlt.Hoja)" />
                                                     </listitem>
                                                     <listitem value="xlsm">
@@ -1015,13 +1054,13 @@ void campos(String valor){
                 <zscript>
                     public void aumentar(){
                     String tamanio = report.height.replace("px","").replace("%","");
-                       Integer t = new Integer(tamanio);
-                       report.height = (t+100)+"px";
+                    Integer t = new Integer(tamanio);
+                    report.height = (t+100)+"px";
                     }
                     public void reducir(){
                     String tamanio = report.height.replace("px","").replace("%","");
-                       Integer t = new Integer(tamanio);
-                       report.height = (t-100)+"px";
+                    Integer t = new Integer(tamanio);
+                    report.height = (t-100)+"px";
                     }
 
                 </zscript>
@@ -1048,68 +1087,68 @@ void campos(String valor){
 
 
         <zscript>
-import bean.Permisos;
-Permisos per = new Permisos();
-void cargando(){
-    filacursos.visible = false;
-    filaespecialidad.visible = false;
-    filaestudiantes.visible = false;
-    filamodalidad.visible = false;
-    filamaterias.visible = false;
-    filaaportes.visible = false;
+            import bean.Permisos;
+            Permisos per = new Permisos();
+            void cargando(){
+            filacursos.visible = false;
+            filaespecialidad.visible = false;
+            filaestudiantes.visible = false;
+            filamodalidad.visible = false;
+            filamaterias.visible = false;
+            filaaportes.visible = false;
     
-              for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
-                 Listitem object = (Listitem)it.next();
-                 String valor = object.getValue();
-                 String labe = object.getLabel();
-                    object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
-                }
+            for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+            Listitem object = (Listitem)it.next();
+            String valor = object.getValue();
+            String labe = object.getLabel();
+            object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
+            }
      
-     /*
-     NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
-        NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
-        LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-        LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-        LIB3.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-        LIBF.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-		CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
-        CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
-        CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
-		CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-        CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-        CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-        CSUP.visible = per.verificarPermisoReporte("CSUP", "Ingresar");
-		CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
-        APRO.visible = per.verificarPermisoReporte("APRO", "Ingresar");
-        EST.visible = per.verificarPermisoReporte("EST", "Ingresar");
-        AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
-        CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
-        AG2.visible = per.verificarPermisoReporte("AG", "Ingresar");
-        CAG2.visible = per.verificarPermisoReporte("CAG", "Ingresar");
-        LAG.visible = per.verificarPermisoReporte("AG", "Ingresar");
-        CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
-        CERT2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
-        CERD.visible = per.verificarPermisoReporte("CERD", "Ingresar");
-        EXAM.visible = per.verificarPermisoReporte("EXAM", "Ingresar");
-        MEJE.visible = per.verificarPermisoReporte("MEJE", "Ingresar");
-        DIS.visible = per.verificarPermisoReporte("DIS", "Ingresar");
-        DIS2.visible = per.verificarPermisoReporte("DIS2", "Ingresar");
-        PROF.visible = per.verificarPermisoReporte("PROF", "Ingresar");
-        PROFC.visible = per.verificarPermisoReporte("PROFC", "Ingresar");
+            /*
+            NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
+            NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
+            LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+            LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+            LIB3.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+            LIBF.visible = per.verificarPermisoReporte("LIB", "Ingresar");
+            CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
+            CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
+            CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
+            CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+            CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+            CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
+            CSUP.visible = per.verificarPermisoReporte("CSUP", "Ingresar");
+            CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
+            APRO.visible = per.verificarPermisoReporte("APRO", "Ingresar");
+            EST.visible = per.verificarPermisoReporte("EST", "Ingresar");
+            AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
+            CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
+            AG2.visible = per.verificarPermisoReporte("AG", "Ingresar");
+            CAG2.visible = per.verificarPermisoReporte("CAG", "Ingresar");
+            LAG.visible = per.verificarPermisoReporte("AG", "Ingresar");
+            CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
+            CERT2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
+            CERD.visible = per.verificarPermisoReporte("CERD", "Ingresar");
+            EXAM.visible = per.verificarPermisoReporte("EXAM", "Ingresar");
+            MEJE.visible = per.verificarPermisoReporte("MEJE", "Ingresar");
+            DIS.visible = per.verificarPermisoReporte("DIS", "Ingresar");
+            DIS2.visible = per.verificarPermisoReporte("DIS2", "Ingresar");
+            PROF.visible = per.verificarPermisoReporte("PROF", "Ingresar");
+            PROFC.visible = per.verificarPermisoReporte("PROFC", "Ingresar");
 
-        PCUR.visible = per.verificarPermisoReporte("PCUR", "Ingresar");
-        MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
-        ENC2.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-        ENC3.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-        ENC4.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-        ENC5.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-        ENC6.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-        RECC.visible = per.verificarPermisoReporte("RECC", "Ingresar");
-        RECE.visible = per.verificarPermisoReporte("RECE", "Ingresar");
-        RECC1.visible = per.verificarPermisoReporte("RECC1", "Ingresar");
-        */
+            PCUR.visible = per.verificarPermisoReporte("PCUR", "Ingresar");
+            MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
+            ENC2.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+            ENC3.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+            ENC4.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+            ENC5.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+            ENC6.visible = per.verificarPermisoReporte("ETD", "Ingresar");
+            RECC.visible = per.verificarPermisoReporte("RECC", "Ingresar");
+            RECE.visible = per.verificarPermisoReporte("RECE", "Ingresar");
+            RECC1.visible = per.verificarPermisoReporte("RECC1", "Ingresar");
+            */
 
-}
+            }
         </zscript>
 
 
