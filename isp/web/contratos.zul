@@ -2578,7 +2578,7 @@ void llamar(){
                                             </span>
                                                                 
                                             <radiogroup id="estadoContrato" >
-                                                <radio disabled="true" id="eactivo" selected="true" value="Act." label="Activo" style="font-weight:bold2" />
+                                                <radio disabled="true" id="eactivo" selected="true" value="Activo" label="Act." style="font-weight:bold2" />
                                                 <radio disabled="true"  id="ecortado"  onCheck="genFactura.disabled = false; seriebuscar.disabled = false;" value="Cortado"  label="Cort." style="font-weight:bold2" />
                                                 <radio disabled="true"  id="esuspendido" onCheck="genFactura.disabled = false; seriebuscar.disabled = false;"   value="Suspendido"  label="Susp." style="font-weight:bold2" />
                                                 <radio  disabled="true"  id="eterminado"  onCheck="genFactura.disabled = false; seriebuscar.disabled = false;" value="Terminado"  label="Term." style="font-weight:bold2" />

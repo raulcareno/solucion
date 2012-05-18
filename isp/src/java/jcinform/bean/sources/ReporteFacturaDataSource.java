@@ -59,7 +59,7 @@ public class ReporteFacturaDataSource implements JRDataSource {
                 }
                 
             } else if ("direccion".equals(fieldName)) {
-                valor = nodo.getFactura().getClientes().getDireccion();
+                valor = nodo.getFactura().getContratos().getDireccionf();
             } else if ("numero".equals(fieldName)) {
                 valor = nodo.getFactura().getNumero();
             } else if ("fecha".equals(fieldName)) {
@@ -67,7 +67,7 @@ public class ReporteFacturaDataSource implements JRDataSource {
             }else if ("emision".equals(fieldName)) {
                 valor = nodo.getFactura().getEmision();
             } else if ("telefono".equals(fieldName)) {
-                valor = nodo.getFactura().getClientes().getTelefono();
+                valor = nodo.getFactura().getContratos().getTelefonof();
             } else if ("rubro".equals(fieldName)) {
 
                 if (nodo.getEquipos() != null) {
