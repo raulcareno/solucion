@@ -2005,29 +2005,26 @@ public class reportesClase {
                 }
                  
                 //IMPRIMO LAS FALTAS
-                q = "Select o from Resultadoperfil where  "
-                        + "where o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
-                        + "and sis.orden <= '" + sistema.getOrden() + "'   AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
-                        + "  group by tri.codigotrim  order by  tri.codigotrim, sis.orden "
+                q = "Select o from Resultadoperfil as o where  "
+                        + "  o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' "
+                        + "and o.periodo.codigosis <= '" + sistema.getOrden() + "'   "
+                        + " order by o.codigo "
                         + " ";
 //                System.out.println(""+q);
-                nativo = adm.queryNativo(q);
-                for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    int ksis = 0;
-                    for (int j = 0; j < vec.size() - 1; j++) {
-                        Object dos = vec.get(j);
-                        NotaCollection coll = new NotaCollection();
-                        coll.setNota(dos);
-                        coll.setMateria(equivalenciasFaltas.get(ksis).getNombre());
+                List qNormal = adm.query(q);
+                for (Iterator it = qNormal.iterator(); it.hasNext();) {
+                    Resultadoperfil object = (Resultadoperfil)it.next();
+                    NotaCollection coll = new NotaCollection();
+                        coll.setNota(object.getValor());
+                        coll.setMateria(object.getPerfil().getNombre());
                         coll.setMatricula("" + matriculas1.getCodigomat());
                         coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
-                        coll.setSistema("" + vec.get(vec.size() - 1));
+                        coll.setSistema(""+ object.getPeriodo().getAbreviatura());
+                        coll.setTipo(""+ object.getPeriodo().getTrimestre().getDescripcion());
                         lisAutoevaluacion.add(coll);
-                        ksis++;
-                    }
-                    //row.setParent(this);
-                }
+             
+               }
+                
             nota.setFirma1(firma1);
             nota.setFirma2(firma2);
             nota.setFirma3(firma3);
