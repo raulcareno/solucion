@@ -117,6 +117,16 @@ private BigDecimal disciplina2;
     public void setFaltas(ArrayList<NotaCollection> faltas) {
         this.faltas = faltas;
     }
+    public ArrayList<NotaCollection> autoevaluacion;
+
+    public ArrayList<NotaCollection> getAutoevaluacion() {
+        return autoevaluacion;
+    }
+
+    public void setAutoevaluacion(ArrayList<NotaCollection> autoevaluacion) {
+        this.autoevaluacion = autoevaluacion;
+    }
+    
 
     public String getCargo1() {
         return cargo1;

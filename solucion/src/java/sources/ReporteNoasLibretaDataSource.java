@@ -75,6 +75,11 @@ public class ReporteNoasLibretaDataSource implements JRDataSource{
             valor = new JRBeanCollectionDataSource(nodo.getNotas());
         }else if ("listaFaltas".equals(fieldName)){
             valor = new JRBeanCollectionDataSource(nodo.getFaltas());
+        }else if ("listaAutoevaluacion".equals(fieldName)){
+            try {
+                valor = new JRBeanCollectionDataSource(nodo.getAutoevaluacion());    
+            } catch (Exception e) {
+            }
         }else    if ("promedioFinal".equals(fieldName)) {
            valor = nodo.getPromedioFinal();
         }else    if ("disciplinaFinal".equals(fieldName)) {
