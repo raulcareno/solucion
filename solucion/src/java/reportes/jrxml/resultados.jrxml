@@ -154,7 +154,7 @@
 						<cellContents/>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="aniobasica" height="30" headerPosition="Stretch">
+				<columnGroup name="aniobasica" height="53" headerPosition="Stretch">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{aniobasica}]]></bucketExpression>
 					</bucket>
@@ -164,11 +164,11 @@
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isStretchWithOverflow="true">
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="26" height="30"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="26" height="53" isPrintWhenDetailOverflows="true"/>
 								<textElement>
 									<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$V{aniobasica}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{aniobasica}.replace("1.-","").replace("2.-","").replace("3.-","").replace("4.-","").replace("5.-","").replace("6.-","").replace("7.-","").replace("8.-","").replace("9.-","").replace("10.-","")]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabColumnHeader>

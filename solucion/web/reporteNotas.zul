@@ -850,7 +850,7 @@ void campos(String valor){
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
                                     <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
-                                    <listitem  id="RESUL" label="Resultados de Aprendizajes" value="RESUL" />
+                                    <listitem  id="RESUL" label="Resultados de Aprendizajes(Desde 2010)" value="RESUL" />
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
@@ -928,12 +928,12 @@ void campos(String valor){
                                     </row>
                                     <row>
                                        <doublebox id="r3" cols="4"  value="10.5"  /> 
-                                       <doublebox id="r4" cols="4"  value="15"   /> 
+                                       <doublebox id="r4" cols="4"  value="15.5"   /> 
                                        <textbox value="11-15" />
                                     </row>
                                     <row>
                                        <doublebox id="r5" cols="4"  value="15.5"  /> 
-                                       <doublebox id="r6" cols="4"  value="18"   /> 
+                                       <doublebox id="r6" cols="4"  value="18.5"   /> 
                                        <textbox value="16-18" />
                                     </row>
                                     <row>

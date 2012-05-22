@@ -4056,7 +4056,7 @@ public class reportesClase {
     }
 
     public JRDataSource cuadrocalificacionesestadisticodistributivo(Sistemacalificacion sistema, List cursos, List rangos) {
-//     int tamanio=0;
+//  RANGOS
         
            
         Administrador adm = new Administrador();
@@ -4075,7 +4075,9 @@ public class reportesClase {
     
  
         List<Periodo> periodos = adm.query("Select o from Periodo as o "
-                + " where o.institucion.codigoinst = '" + periodo.getInstitucion().getCodigoinst() + "' and o.codigoper = 4 order by o.codigoper ");
+                + " where o.institucion.codigoinst = '" + periodo.getInstitucion().getCodigoinst() + "' "
+                + "and o.cerrado = true "
+                + "order by o.codigoper ");
         List<NotasPromedios> arregloPromedios = new ArrayList<NotasPromedios>();
         String s = "###0.00##";
         DecimalFormat decimalFormat = new DecimalFormat(s);
@@ -4135,20 +4137,20 @@ public class reportesClase {
                                 rango19a20+=1;
                             }
                         }
-                        String nombreCurso = "";
-                        if(i==1){
-                            nombreCurso = "8vo.Año Básico\n Estudiantes en el rango";
-                        }else if(i==2){
-                            nombreCurso = "9no.Año Básico\n Estudiantes en el rango";
-                        }else if(i==3){
-                            nombreCurso = "10mo.Año Básico\n Estudiantes en el rango";
-                        }else if(i==4){
-                            nombreCurso = "Primero\n Estudiantes en el rango";
-                        }else if(i==5){
-                            nombreCurso = "Segundo\n Estudiantes en el rango";
-                        }else if(i==6){
-                            nombreCurso = "Tercero\n Estudiantes en el rango";
-                        }
+                        String nombreCurso = i+".-"+curso.getDescripcion()+"\n Estudiantes en el rango";
+//                        if(i==1){
+//                            nombreCurso = "8vo.Año Básico\n Estudiantes en el rango";
+//                        }else if(i==2){
+//                            nombreCurso = "9no.Año Básico\n Estudiantes en el rango";
+//                        }else if(i==3){
+//                            nombreCurso = "10mo.Año Básico\n Estudiantes en el rango";
+//                        }else if(i==4){
+//                            nombreCurso = "Primero\n Estudiantes en el rango";
+//                        }else if(i==5){
+//                            nombreCurso = "Segundo\n Estudiantes en el rango";
+//                        }else if(i==6){
+//                            nombreCurso = "Tercero\n Estudiantes en el rango";
+//                        }
                         //0 A 10 
                                     NotasPromedios notaP = new NotasPromedios();
                                     notaP.setAnioLectivo(periodoIt.getDescripcion().substring(0,4) +"\nValores Absolutos"); 
