@@ -148,6 +148,10 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                 guardar2.disabled=true;
             }
                 filas.addRow(curso,materia);
+                 if(periodo.getCerrado()){
+                        guardar1.disabled = true;
+                        guardar2.disabled = true;
+                    }
       
 }
 

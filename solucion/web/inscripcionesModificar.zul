@@ -243,6 +243,8 @@ try{
             sociales2t.value = new BigDecimal(estudent.getSociales2t());
             matematicas2t.value = new BigDecimal(estudent.getMatematicas2t());
             naturales2t.value = new BigDecimal(estudent.getNaturales2t());
+            aprovechamiento6.value = new BigDecimal(estudent.getAprovechamiento6());
+            disciplina6.value = new BigDecimal(estudent.getDisciplina6());
           
             
     }else{
@@ -263,7 +265,8 @@ try{
                 hermano.checked = false;
           
                 abanderado.checked = false;
-            
+            aprovechamiento6.value = new BigDecimal(0);
+            disciplina6.value = new BigDecimal(0);
     
     }
    
@@ -409,7 +412,7 @@ cedular.readonly= estado;
         estudent.setAprovechamiento6((aprovechamiento6.value).doubleValue());
         estudent.setDiscplina((disciplina.value).doubleValue());
         //estudent.setDisciplina5((disciplina5.value).doubleValue());
-        //estudent.setDisciplina6((disciplina6.value).doubleValue());
+        estudent.setDisciplina6((disciplina6.value).doubleValue());
         estudent.setFechamatricula(new Date());
         estudent.setHermano(hermano.checked);
         estudent.setAbanderado(abanderado.checked);
@@ -1060,6 +1063,7 @@ void buscarEstudiante(String valor){
                                 <span>
                                     <div style="color:blue">
                                         <decimalbox cols="5" id="aprovechamiento6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
+                                        <decimalbox cols="5" id="disciplina6" readonly="true" value="0"   onBlur="changeStyle(tA016) " onFocus="changeStyle(tA016)"  constraint="no negative" />
                                     </div>
                                 </span>
                             </row>
