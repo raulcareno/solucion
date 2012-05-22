@@ -96,6 +96,10 @@
                                 <span style="float:right"> (X)Deshabilitado para Consultar Notas:</span>
                                 <checkbox id="vernotas" checked="@{inobjeto.vernotas}" onCheck="update();" disabled="true"  />
                             </row>
+                             <row>
+                                <span style="float:right"> CERRADO(FINALIZADO):</span>
+                                <checkbox id="cerrado" checked="@{inobjeto.cerrado}" onCheck="update();" disabled="true"  />
+                            </row>
  
                         </rows>
                     </grid>
@@ -223,6 +227,7 @@ void estado(Boolean estado,Boolean modificar){
     regimen.disabled=estado;
     descripcion.readonly = 
     vernotas.disabled=estado;
+    cerrado.disabled=estado;
 }
 
 

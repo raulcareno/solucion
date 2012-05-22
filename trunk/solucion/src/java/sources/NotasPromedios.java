@@ -18,6 +18,7 @@ public class NotasPromedios {
     String subtitulo;
     Object cantidad;
     String rango;
+    Integer orden;
     public String getAnioBasica() {
         return anioBasica;
     }

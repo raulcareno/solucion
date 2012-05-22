@@ -117,13 +117,13 @@
             }
             }
 
-            void cambio(){
+  void cambio(){
             Permisos permisos = new Permisos();
             Periodo perio = (Periodo)periodo.selectedItem.value;
             a.removeAttribute("periodo");
             a.setAttribute("periodo",perio);
             Executions.sendRedirect("index.zul");
-            }
+  }
             void verificar(){
             Empleados user = a.getAttribute("user");
             if(user != null){
