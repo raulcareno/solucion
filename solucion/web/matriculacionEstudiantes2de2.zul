@@ -12,7 +12,7 @@
     </style>
 
     <div  class="estil" >
-        <window  position="center"  width="700px" mode="overlapped" id="principales" >
+        <window  position="center"  width="80%" mode="overlapped" id="principales" >
             <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;
@@ -376,11 +376,12 @@ void estado(Boolean estado,Boolean modificar){
         if(modificar){
             estudent = (Estudiantes)datos.selectedItem.value;
         }
-   padrec.disabled = estado;
+          padrec.disabled = estado;
    madrec.disabled = estado;
    padrecr.disabled = estado;
    madrecr.disabled = estado;
    subirb.disabled = estado;
+   nuevoE.disabled = estado;
    limpiar.disabled = estado;
    representantec.disabled = estado;
    codigo.readonly = estado;
@@ -388,8 +389,10 @@ void estado(Boolean estado,Boolean modificar){
     nombres.readonly = estado;
     apellidos.readonly = estado;
     direccion.readonly = estado;
+    barrio.readonly = estado;
     telefono.readonly = estado;
     genero.readonly = estado;
+    religion.readonly = estado;
     mail.readonly = estado;
     nacido.readonly = estado;
     tratamiento.readonly = estado;
@@ -408,13 +411,16 @@ void estado(Boolean estado,Boolean modificar){
     //numero.readonly = estado;
     folio.readonly = estado;
     curso.disabled = estado;
-    accion.readonly = estado;
+    //accion.readonly = estado;
     fechamatricula.readonly = estado;
+    fecharetiro.readonly = estado;
     observacion.readonly= estado;
     adventista.disabled= estado;
     nuevo.disabled = estado;
     transporte.disabled = estado;
-    repite.disabled = estado;
+    asegurado.disabled = estado;
+    aseguradora.readonly = estado;
+    //repite.disabled = estado;
     nobus.readonly = estado;
     cedulare.readonly = estado;
     nombresre.readonly = estado;
@@ -450,8 +456,19 @@ void estado(Boolean estado,Boolean modificar){
     emailma.readonly = estado;
     ocupacionma.readonly = estado;
     profesionma.readonly = estado;
+    
+    
+    cod1.readonly = estado; nom1.readonly = estado; par1.readonly = estado; cel1.readonly = estado; con1.value="";
+        cod2.readonly = estado;nom2.readonly = estado; par2.readonly = estado; cel2.readonly = estado; con2.readonly = estado;
+        cod3.readonly = estado;nom3.readonly = estado; par3.readonly = estado; cel3.readonly = estado; con3.readonly = estado;
 
+        cod11.readonly = estado; nom11.readonly = estado; par11.readonly = estado; ci11.readonly = estado;
+        cod22.readonly = estado; nom22.readonly = estado; par22.readonly = estado; ci22.readonly = estado;
+        cod33.readonly = estado; nom33.readonly = estado; par33.readonly = estado; ci33.readonly = estado ;
 
+        codh1.readonly = estado; codh2.readonly = estado; codh3.readonly = estado; 
+        nomh1.readonly = estado;nomh2.readonly = estado;nomh3.readonly = estado;
+        anioh1.readonly = estado;  anioh2.readonly = estado; anioh3.readonly = estado; 
 }
  
 
@@ -846,204 +863,14 @@ boolean validarRepresentante(){
   ]]>
             </zscript>
       
-            <groupbox id="gb" mold="3d" >
-                <div visible="false">
+            <groupbox  style="background-color:yellow" id="gb" mold="3d" >
+                <vbox> 
+                <div visible="true">
                     EL CURSO ACTUAL ES: 
                     <textbox value=""/>
-                </div>
-	    		 
-            </groupbox>
-            <panel title="DATOS DEL ESTUDIANTE (Paso 1 de 5)" id="destudiante"   style="margin-bottom:10px" framable="true" >
-                <panelchildren>
-                    <div id="viewer" style="overflow:auto;">
-                        <grid width="99%">
-                            <rows>
-
-                                <row spans="2">
-                                    <span style="color:red">
-                                        Todos los campos con
-                                        <span style="color:blue"> asterisco (*)</span> son obligatorios
-                                    </span>
-
-                                </row>
-                                <row spans="2">
-                                   
-                                      
-                                                                                
-                                </row>
-                                <row>
-                                    <span style="float:right"> Identificación:</span>
-                                    <span>
-                                        <intbox   cols="5"  visible="false"    id="codigo"  />
-                                        <textbox visible="false"    id="codigoclave"  />
-                                                                         
-                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
-                                        (no obligatorio)
-                                    </span>
-                                </row>
-                                <row>
-                                </row>
-                                <row>
-                                    <span style="float:right"> Nombres
-                                        <span style="color:blue;weight:bold"> (*)</span>:
-                                    </span>
-                                    <textbox id="nombres" readonly="true" maxlength="60" cols="40"    />
-                                </row>
-
-                                <row>
-
-                                    <span style="float:right"> Apellidos
-                                        <span style="color:blue"> (*)</span>:
-                                    </span>
-                                    <textbox id="apellidos" readonly="true" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
-                                </row>
-                                <row>
-
-                                    <span style="float:right"> Dirección
-                                        <span style="color:blue"> (*)</span>:
-                                    </span>
-                                    <textbox id="direccion" maxlength="100" cols="40"      />
-                                </row>
-
-                                <row>
-                                    <span style="float:right"> Email:</span>
-                                    <span>
-                                        <textbox id="mail" maxlength="100" cols="30"      />
-                                        Teléfono:
-                                        <textbox id="telefono" maxlength="50" cols="13"    />
-                                    </span>
-                                </row>
-
-                                <row>
-
-
-
-
-                                </row>
-                                <row>
-                                    <span>Lugar de Nacimiento
-                                        <span style="color:blue;weight:bold"> (*)</span>:
-                                    </span>
-                                    <span>
-                                        <textbox id="lugarnacimiento"  />
-                                        Nacionalidad
-                                        <span style="color:blue;weight:bold"> (*)</span>:
-                                        <textbox id="nacionalidad"  />
-                                    </span>
-                                </row>
-                                <row>
-
-                                    <span style="float:right;font-size:11px">
-                                        <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
-                                    </span>
-                                    <span>
-
-                                        <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
-                                        <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
-                                        <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
-
-                                    </span>
-                                </row>
-                                <row>
-                                    <span style="float:right"> Género
-                                        <span style="color:blue"> (*)</span>:
-                                    </span>
-                                    <span>
-                                        <radiogroup Id="genero" >
-                                            <radio id="masculino"  label="Masculino"/>
-                                            <radio id = "femenino"  selected="true" label="Femenino"/>
-                                        </radiogroup>
-                                        <span> Fecha Nacimiento
-                                            <span style="color:blue"> (*)</span>:
-                                        </span>
-                                        <datebox id="nacido"    />
-                                    </span>
-                                <!--combobox id="genero" >
-                                    <comboitem value="Masculino" label="Masculino"/>
-                                    <comboitem value="Femenino" label="Femenino"/>
-                                </combobox-->
-                                </row>
-                                <row>
-                                
-                                </row>
-                                <row>
-                                    <span style="float:right"> Usuario
-                                        <span style="color:blue"> (*)</span>:
-                                    </span>
-                                    <span>
-                                        <textbox id="usuario" maxlength="30" cols="12"   />
-                                        <span> Clave
-                                            <span style="color:blue"> (*)</span>:
-                                        </span>
-                                        <textbox id="clave"   maxlength="30" cols="15"   />
-                                        <button label="Generar" onClick="generarClave(true);"/>
-                                    
-                                    </span>
-                                </row>
-                                <row spans="2">
-                                    <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
-                                </row>
-
-                            </rows>
-                        </grid>
                     </div>
-
-
-                </panelchildren>
-                <toolbar  sclass="vista" align="end">
-                     <span  style="border:1px">
-                                        <button id="subirb" disabled="false" image="/images/subir.png" label="Subir Imagen">
-                                            <attribute name="onClick">{
-                                                Object media = Fileupload.get();
-
-                                                if (media instanceof org.zkoss.image.Image) {
-                                                        foto0.setContent(media);
-                                                        foto0.visible = true;    
-                                                        self.visible = false;
-                                                } else if (media != null)
-                                                Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                                media = null;
-                                                }
-                                            </attribute>
-                                        </button>
-                                        <!--button label="Tomar Foto" disabled="false" id="nuevoE" image="/images/subir.png" >
-                                            <attribute name="onClick">{
-                                                final Window win = (Window) Executions.createComponents("tomarFoto.zul", null, null);
-                                                win.setMaximizable(true);
-                                                win.setClosable(true);
-                                                win.setAttribute("nuevo", true);
-                                                win.setTitle("Tomar Fotografía");
-                                                win.doModal();
-                                                }                            
-                                            </attribute>
-                                        </button--> 
-                                        <image border="1" height="150px" id="foto0"/>
-                                    </span>
-                    <toolbarbutton image="/images/sig.png" onClick='destudiante.visible = false; dmatricula.visible= true;validarEstudiante();' />
-                </toolbar>
-            </panel>
- 
-        
-            <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="400px"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
-                <panelchildren>
-
-   
-                    <grid width="100%" height="220">
-                        <rows>
-                            <row visible="false">
-                                <span style="float:right"> Codigo:</span>
-                                <span>
-                                    <intbox maxlength="14" cols="5"         id="codigomat"  />
-                                    No.Mat.(*):
-                                    <intbox maxlength="10"   cols="5"  id="numero"  />
-                                    No.Folio (*):
-                                    <intbox maxlength="10"  cols="5"  id="folio"  />
-                                </span>
-
-                                
-                            </row>
-                            <row style="background-color:yellow">
-                                <span style="float:right"> 
+                    <div>
+                    <span> 
                                     <label value="PASA A:" style="font-weight:bold;color:blue;font-size:14px"/>
                                     <span style="color:blue"> (*)</span>:
                                 </span>
@@ -1058,400 +885,767 @@ boolean validarRepresentante(){
  
 
                                 </span>
-                            </row>
-<!--
-    accion.value =""Matriculado
-    fechamatricula.value = new Date();
-    estadoe.value =  true;
-    beca.value = bigdecimal (0)
-    otros = 0
-    adventista = false;
-    observacion.vlaue = new Date() + internet
--->
-                            <row>
-                                <span style="float:right"> Instituto Ant.:</span>
-                                <span>
-
-                                    <textbox id="institucion"   maxlength="30" cols="20"/>
-                                </span>
-                            </row>
-                         
-                            <row>
-                                <span style="float:right"> Toma Transporte:</span>
-                                <span>
-                                    <checkbox id="transporte" />
-                                    <checkbox visible="false" id="aplico" />
-                                    <textbox id="nobus" maxlength="100" cols="40"   />
-                                </span>
-                            </row>
-                            <row>
-                                     
-                                <span style="float:right"> Nuevo Est.</span>
-                                <span>
-                                    <checkbox id="nuevo"  />
-                                    No. de Hermanos
-                                    <span style="color:blue;weight:bold"> (*)</span>:
-                                    <intbox id="hermanos"  />
-                                    Repite el Año:
-                                    <radiogroup Id="repite" >
-                                        <radio selected="true"  value="0" label="1ra."/>
-                                        <radio value="1"  label="2da."/>
-                                        <radio value="2"  label="3ra."/>
-                                        <radio value="3"  label="4ta."/>
-                                    </radiogroup>
-                                </span>
-                            </row>
-
-                            <row>
-
-                                <span style="float:right">Lugar Ocupa
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <span>
-                                    <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
-                                    Con quién vive
-                                    <span style="color:blue"> (*)</span>:
-                                    <textbox id="vivecon"  />
-                                </span>
-                            </row>
-                            <row>
-
-                                <span style="float:right">Ingresos:</span>
-                                <span>
-                                    Padre:
-                                    <intbox id="ingpadre" value="0" cols="10"  />
-                                    Madre:
-                                    <intbox id="ingmadre" cols="10"  value="0" />
-                                    Otros:
-                                    <intbox id="ingotros" cols="10" value="0"  />
-                                </span>
-                            </row>
-                            <row>
-                                <span style="float:right">Tipo Vivienda
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <span>
-                                    <radiogroup Id="casa" >
-                                        <radio selected="true" label="Propia"/>
-                                        <radio label="Arrendada"/>
-                                        <radio label="Prestada"/>
-                                        <radio label="Anticresis"/>
-                                        <radio label="Prestamo"/>
-                                        <radio label="Departamento"/>
-                                        <radio label="Otros"/>
-                                    </radiogroup>
-                                </span>
-                            </row>
-                            <row>
-                                <span style="float:right">Servicios
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <span>
-                              
-                                    <checkbox id="luz" label="Luz Electrica"/>
-                                    <checkbox id="agua"  label="Agua"/>
-                                    <checkbox id="sshh"  label="SS.HH."/>
-                                    <checkbox id="pozo"  label="Pozo Séptico"/>
-                                    <checkbox id="telefonob"  label="Teléfono"/>
-                                    <checkbox id="internet"  label="Internet"/>
-                                </span>
-                            </row>
-                        </rows>
-                    </grid>
-                </panelchildren>
-                <toolbar  sclass="vista" align="end">
-                    
-                    <toolbarbutton image="/images/ant.png" onClick='destudiante.visible = true; dmatricula.visible = false' />
-                    <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true; validarMatricula()' />
-                </toolbar>
-            </panel>
-            <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"    height="400px"  style="margin-bottom:10px" framable="true" >
-                <panelchildren>
-
-
-                    <grid>
-                        <rows>
-
-                            <row>
-                                <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="10" cols="13"   id="cedulapa"  />
-                            </row>
-                            <row>
-                                <span style="float:right"> Nombres:</span>
-                                <span>
-                                    <textbox id="nombrespa"  maxlength="60" cols="40"    />
-                                    <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
-                                </span>
-                            </row>
-                            <row>
-                                <span style="float:right"> Apellidos:</span>
-                                <textbox id="apellidospa"  maxlength="60" cols="40"   />
-                            </row>
-                            <row>
-                                <span style="float:right"> Ocupación:</span>
-                                <textbox id="ocupacionpa" maxlength="100" cols="40"      />
-                            </row>
-                            <row>
-                                <span style="float:right"> Profesión:</span>
-                                <textbox id="profesionpa" maxlength="100" cols="40"      />
-                            </row>
-                            <row>
-                                <span style="float:right"> Dirección:</span>
-                                <span>
-                                    <textbox id="direccionpa" maxlength="100" cols="40"      />
-                                    <button  image="/images/anadir2.png"  label="Traer de Estudiante" onClick="direccionpa.value = direccion.value" />
-                                </span>
-                            </row>
-                            <row>
-                                <span style="float:right"> Teléfono:</span>
-                                <span>
-                                    <textbox id="telefonopa" maxlength="100" cols="13"    />
-                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonopa.value = telefono.value" />
-                                </span>
-                            </row>
-                            <row>
-                                <span style="float:right"> Email:</span>
-                                <textbox id="emailpa" maxlength="100" cols="40"      />
-                            </row>
-                        </rows>
-                    </grid>
-
-
-                </panelchildren>
-                <toolbar  sclass="vista" align="end">
-                    
-                    <toolbarbutton image="/images/ant.png" onClick='dmatricula.visible = true; dpadre.visible = false' />
-                    <toolbarbutton image="/images/sig.png" onClick='dpadre.visible = false;dmadre.visible = true' />
-                </toolbar>
-            </panel>
-
-            <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"  height="400px"    style="margin-bottom:10px" framable="true" >
-                <panelchildren>
-
-
-                    <grid>
-                        <rows>
-
-                            <row>
-
-                                <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="10" cols="13"   id="cedulama"  />
-                            </row>
-
-                            <row>
-
-
-
-                                <span style="float:right"> Nombres:</span>
-                                <textbox id="nombresma"  maxlength="60" cols="40"    />
-                            </row>
-
-                            <row>
-
-
-
-                                <span style="float:right"> Apellidos:</span>
-                                <textbox id="apellidosma"  maxlength="60" cols="40"   />
-                            </row>
-
-                            <row>
-
-
-
-                                <span style="float:right"> Ocupación:</span>
-                                <textbox id="ocupacionma" maxlength="100" cols="40"      />
-                            </row>
-                            <row>
-
-
-                                <span style="float:right"> Profesión:</span>
-                                <textbox id="profesionma" maxlength="100" cols="40"      />
-
-                            </row>
-                            <row>
-
-                                <span style="float:right"> Dirección:</span>
-                                <span>
-                                    <textbox id="direccionma" maxlength="100" cols="40"      />
-                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="direccionma.value = direccion.value" />
-                                </span>
-                            </row>
-                            <row>
-
-                                <span style="float:right"> Teléfono:</span>
-                                <span>
-                                    <textbox id="telefonoma" maxlength="50" cols="13"    />
-                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonoma.value = telefono.value" />
-                                </span>
-                            </row>
-                            <row>
-
-                                <span style="float:right"> Email:</span>
-                                <textbox id="emailma" maxlength="100" cols="40"      />
-                            </row>
-
-                        </rows>
-                    </grid>
-                </panelchildren>
-                <toolbar  sclass="vista" align="end">
-                    
-                    <toolbarbutton image="/images/ant.png" onClick='dpadre.visible = true; dmadre.visible = false' />
-                    <toolbarbutton image="/images/sig.png" onClick='dmadre.visible = false; drepresentante.visible = true' />
-                </toolbar>
-            </panel>
-            <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"    height="400px"  visible="false"   style="margin-bottom:10px" framable="true" >
-                <panelchildren>
-                    <grid>
-                        <rows>
-                            <row>
-                                <span style="float:right;color:blue" >Copiar del </span>
-                                <span>
-                                    <button id="padrecr" image="/images/padre.png" label="Padre"  onClick="copiarpr();"/>
-                                    <button id="madrecr" image="/images/madre.png" label="Madre"   onClick="copiarmr();"/>
+                    </div>
+                </vbox>
+                
+	    		  
+                                
                    
-                                </span>
-                            </row>
-                               
-                            <row>
-                                <span style="float:right"> Identif.:</span>
-                                <textbox maxlength="13" cols="10"    id="cedulare"  />
-                            </row>
-                            <row>
-                                <span style="float:right"> Nombres
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <textbox id="nombresre"  maxlength="60" cols="40"    />
-                            </row>
-                            <row>
-                                <span style="float:right"> Apellidos
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <textbox id="apellidosre"  maxlength="60" cols="40"   />
-                            </row>
+            </groupbox>
+              <portallayout>
+                         <portalchildren style="padding: 5px" width="50%">
+                  
+                        <panel   title="DATOS DEL ESTUDIANTE"  framable="true"   border="normal" collapsible="true" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight" width="600px"   height="100%">
+                                    <rows>
+                                        <row>
 
-                            <row>
-                                <span style="float:right"> Dirección
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <textbox id="direccionre" maxlength="100" cols="40"      />
+                                            <span style="float:right"> Codigo :</span>
+                                            <span>
+                                                <intbox  maxlength="14" cols="5"  disabled="true"  readonly="false" id="codigo"  />
+                                                Identificación:
+                                                <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="false" id="cedula"  />
+                                                                        
+                                            </span>
+                                        </row>
+                                        <row>
 
-                            </row>
+                                            <span style="float:right;">
+                                                <label value="Nombres(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                                        </row>
 
-                            <row>
-                                <span style="float:right"> Teléfono
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <textbox id="telefonore" maxlength="100" cols="13"    />
-                            </row>
+                                        <row>
 
-                            <row>
-                                <span style="float:right"> Email
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <textbox id="emailre" maxlength="100" cols="40"      />
-                            </row>
+                                            <span style="float:right;">
+                                                <label value="Apellidos(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40" readonly="true"  />
+                                        </row>
+                                        <row>
 
-                            <row>
-                                <span  style="float:right">Parentesco
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <span>
-                                    <textbox id="parentesco" maxlength="100" cols="40"      />
-                                </span>
-                            </row>
-                            <row>
+                                            <span style="float:right;">
+                                                <label value="Dirección(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <span>
+                                                <textbox id="direccion" maxlength="100" cols="40"  readonly="false"    />
+    
+                                            </span>
+                                        </row>                                        <row>
+  
+                                            <span style="float:right"> Barrio:</span>
+                                                <textbox id="barrio" maxlength="100" cols="15"  readonly="false"    />
+   
+                                        </row>
+                                        
 
-                                <span style="float:right"> Usuario
-                                    <span style="color:blue"> (*)</span>:
-                                </span>
-                                <span >
-                                    <textbox id="usuarior"   maxlength="30" cols="15"   />
-                                    Clave
-                                    <span style="color:blue"> (*)</span>:
-                                    <textbox id="claver"   maxlength="30" cols="15"   />
-                                    <button label="Generar" onClick="generarClaveRep(true);"/>
-                       
-                                </span>
+                                        <row>
+                                            <span style="float:right"> Email:</span>
+                                            <span>
+                                                <textbox id="mail" maxlength="100" cols="40"  readonly="false"    />
+                                                Teléfono:
+                                                <textbox id="telefono" maxlength="50" cols="15"  readonly="false"  />
+                                            </span>
+                                        </row>
 
-                            </row>
-                            <row spans="2">
-                                <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
-                            </row>
-                        </rows>
-                    </grid>
-                </panelchildren>
-                <toolbar   sclass="vista" align="end">
-                    
-                    <toolbarbutton image="/images/ant.png" onClick='dmadre.visible = true; drepresentante.visible = false' />
-                    <toolbarbutton id="btnguardar" image="/images/guardarimprimir.png" onClick='guardar();' />
-                </toolbar>
-            </panel>
+                                    </rows>
+                                </grid>
 
-               
-            <panel title="DATOS DE FACTURA" id="dfactura"  visible="false"   style="margin-bottom:10px" framable="true" >
-                <panelchildren>
+                                <grid>
+                                    <rows>
+                                        <row>
+                                            <span>
+                                                <grid width="200px" height="100%" sclass="MyGridRowHeight" >
+                                                    <rows>
+                                                        <row>
+                                                            <span  style="border:1px">
+                                                                <button id="subirb"   image="/images/subir.png" label="Subir Fotografía">
+                                                                    <attribute name="onClick">{
+                                                                        Object media = Fileupload.get();
 
-                    <grid>
-                        <rows>
-                            <row>
-                                <span style="color:blue" >Facturar a </span>
-                                <span>
-                                    <button id="padrec" label="Padre"   onClick="copiarp();"/>
-                                    <button id="madrec" label="Madre"    onClick="copiarm();"/>
-                                    <button id="representantec" label="Representante"   onClick="copiarr();"/>
-                                </span>
+                                                                        if (media instanceof org.zkoss.image.Image) {
+                                                                        foto0.setContent(media);
+                                                                        foto0.visible = true;    
+
+                                                                        } else if (media != null)
+                                                                        Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                                        media = null;
+                                                                        }
+                                                                    </attribute>
+                                                                </button>
+
+                                                            </span>
+                                                        </row>
+                                                        <row>
+                                                            <span style="border:1px">
+                                                                <image border="1" height="117px"  id="foto0"/>
+                                                                    <!--vbox width="50px" height="125px" style="border:1px" id="miimagen"/-->
+                                                            </span>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </span>
+                                            <span>
+                                                <grid  sclass="MyGridRowHeight" width="100%" height="100%">
+                                                    <rows>
+                                                        <row>
+                                                            <span style="float:right;">
+                                                                <label value="Género(*)" style="font-weight: bold;"/>
+                                                            </span>
+                                                         <radiogroup Id="genero" >
+                                                                <radio id="masculino"  label="Masculino"/>
+                                                                <radio id = "femenino"  selected="true" label="Femenino"/>
+                                                            </radiogroup>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Fecha Nacimiento:</span>
+                                                            <datebox id="nacido"  readonly="false"  />
+
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Usuario:</span>
+  
+                                                                <textbox id="usuario" maxlength="30" cols="12" readonly="false"  />
  
-                            </row>
-                            <row>
-                                <span style="float:right"> Tipo:</span>
-                                <listbox mold="select" onSelect="llenarConsumidor();"  id="tipofac" width="150px">
-                                    <listitem label="CEDULA" value="C">
-                                    </listitem>
-                                    <listitem label="RUC" value="R">
-                                    </listitem>
-                                    <listitem label="PASAPORTE" value="P">
-                                    </listitem>
-                                </listbox>
 
 
-                            </row>
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Clave:</span>
+                                                            <span>
+                                                                <textbox id="clave"   maxlength="30" cols="15" readonly="false"  />
+                                                                <checkbox visible="false" id="estadoe"   />
+                                                            </span>
+                                                        </row>
+                                                        <row>
 
-                            <row>
-                                <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="13" cols="13"   id="cedulafac"  />
+                                                            <span style="float:right"> Es Interno?:</span>
+                                                            <span>
+                                                                <checkbox id="adventista"  /> Es Nuevo?:
+                                                                <checkbox id="nuevo" />
+                                                            </span>
+
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Religión:</span>
+                                                            <combobox id="religion" readonly="false">
+                                                                <comboitem  value="Ninguno" label="Ninguno"/>
+                                                                <comboitem value="Adventista" label="Adventista"/>
+                                                                <comboitem value="Cristiano" label="Cristiano"/>
+                                                                <comboitem value="Evangélico" label="Evangélico"/>
+                                                                <comboitem value="Católico" label="Catolico"/>
+                                                                <comboitem value="Otra" label="Otra"/>
 
 
-                            </row>
+                                                            </combobox>
+                                                        </row>
+                                                    </rows>
+                                                </grid>
+                                            </span>
+                                        </row>
+                                    </rows>
+                                </grid>
+                                    
+                            </panelchildren>
+                        </panel>
+            <panel collapsible="true"   
+                               framable="true"  title="DATOS DEL PADRE"
+                               border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+                                        
+                                        <row>
+                                            <span style="float:right"> Identificación:</span>
+                                            <textbox maxlength="10" cols="13"  readonly="false" id="cedulapa"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Nombres:</span>
+                                            <span>
+                                                <textbox id="nombrespa"  maxlength="60" cols="20" readonly="false"   />
+                                                <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
+                                        
+                                                <span > Apellidos:</span>
+                                                <textbox id="apellidospa"  maxlength="60" cols="20" readonly="false"  />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Ocupación:</span>
+                                            <span>
+                                                <textbox id="ocupacionpa" maxlength="100" cols="20"  readonly="false"    />
+                                      
+                                                <span > Profesión:</span>
+                                                <textbox id="profesionpa" maxlength="100" cols="20"  readonly="false"    />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Dirección:</span>
+                                            <span>
+                                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="false"    />
+                                                <button label="..." onClick="direccionpa.value = direccion.value" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Teléfono:</span>
+                                            <span>
+                                                <textbox id="telefonopa" maxlength="100" cols="13"  readonly="false"  />
+                                                <button label="..." onClick="telefonopa.value = telefono.value" />
+                                                <span > Email:</span>
+                                                <textbox id="emailpa" maxlength="100" cols="35"  readonly="false"    />
+                                            </span>
+                                        </row>
+                                       
+                                    </rows>
+                                </grid>
+                                    
+                            </panelchildren>
+                        </panel>
+                      
+                        <panel collapsible="true"   framable="true"  title="DATOS DE LA MADRE" border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+ 
+                                        <row>
+                                            <span style="float:right"> Identificación:</span>
+                                            <textbox maxlength="10" cols="13"  readonly="false" id="cedulama"  />
+                                        </row>
 
-                            <row>
-                                <span style="float:right"> Nombre Factura:</span>
-                                <textbox id="nombresfac"  maxlength="100" cols="40"    />
+                                        <row>
+                           
+                                            <span style="float:right"> Nombres:</span>
+                                            <span>
+                                            
+                                                <textbox id="nombresma"  maxlength="60" cols="20" readonly="false"   />
+                                                <span> Apellidos:</span>
+                                                <textbox id="apellidosma"  maxlength="60" cols="20" readonly="false"  />
+                                                
+                                            </span>
+                                        </row>
 
+                                        <row>
+                         
+                                            <span style="float:right"> Ocupación:</span>
+                                            <span>
+                                                <textbox id="ocupacionma" maxlength="100" cols="20"  readonly="false"    />
+                                            
+                                                <span> Profesión:</span>
+                                                <textbox id="profesionma" maxlength="100" cols="20"  readonly="false"    />
+                                            </span>
+                                        </row>
+                                        <row>
+                              
+                                            <span style="float:right"> Dirección:</span>
+                                            <span>
+                                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="false"    />
+                                                <button label="..." onClick="direccionma.value = direccion.value" />
+                                            </span>
+                                        </row>
+                                        <row>
+                                
+                                            <span style="float:right"> Teléfono:</span>
+                                            <span>
+                                                <textbox id="telefonoma" maxlength="50" cols="13"  readonly="false"  />
+                                                <button label="..."  onClick="telefonoma.value = telefono.value" />
+                                                <span > Email:</span>
+                                                <textbox id="emailma" maxlength="100" cols="35"  readonly="false"    />
+                                            </span>
+                                        </row>
+                                     
 
+                                    </rows>
+                                </grid>
 
-                            </row>
+                            </panelchildren>
+                        </panel>
+                        
+                        <panel style="margin-bottom:10px" title="DATOS VARIOS" border="normal">
+                                    <panelchildren>          
+                                        <grid sclass="MyGridRowHeight">
+                                            <rows>
+                                                <row visible="false">
+                                                    <span  style="float:right">
+                                                        YA SE MATRICULÓ:
+                                                    </span>
+                                                    <span>
+                                                        <checkbox id="matriculado"/>
+                                                        CODIGO DE MATRICULACIÓN:
+                                                        <textbox id="codigoclave"  />
+                                                        BLOQUEADO
+                                                        <checkbox id="pendientes"/>
+                                                        <checkbox visible = "false"  id="aplico"/>
+                                                        <checkbox visible = "false"  id="perdio"/>
+                                                        <checkbox visible = "false"  id="suspenso"/>
+                                                    </span>
+                                                </row>
+                                                <row >
+                                                    <span style="float:right">Lugar Ocupa  (*) :
+                                                    </span>
+                                                    <span>
+                                                        <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                                                        Con quién vive (*):
+                                        
+                                                        <combobox value="Padres"  id="vivecon" >
+                                                            <comboitem label="Padres"/>
+                                                            <comboitem label="Solo Madre"/>
+                                                            <comboitem label="Solo Padre"/>
+                                                            <comboitem label="Abuelos"/>
+                                                            <comboitem label="Tíos"/>
+                                                            <comboitem label="Encargado a Otros"/>
+                                                        </combobox>
+                                                    </span>
+                                                </row>
+                                                <row >
+                                                    <span style="float:right">Est.Civil Padres:
+                                                    </span>
+                                                    <span>
+                                                        <radiogroup Id="estadocivil" >
+                                                            <radio selected="true" label="Casados"/>
+                                                            <radio label="Divorciados"/>
+                                                            <radio label="Madre Soltera"/>
+                                                            <radio label="Viudo(a)"/>
+                                                            <radio label="Separados"/>
+                                                            <radio label="U.Libre"/>                                                            
+                                                        </radiogroup>
+                                                    </span>
+                                                </row>
+                                                <row>
+ 
+                                                    <span style="float:right">Ingresos:</span>
+                                                    <span>
+                                                        Padre:
+                                                        <intbox id="ingpadre" cols="10"  />
+                                                        Madre:
+                                                        <intbox id="ingmadre" cols="10"   />
+                                                        Otros:
+                                                        <intbox id="ingotros" cols="10"   />
+                                                    </span>
+                                                </row>
+                                                <row>
+                                                    <span style="float:right">Tipo Vivienda
+                                                        <span style="color:blue"> (*)</span>:
+                                                    </span>
+                                                    <span>
+                                                        <radiogroup Id="casa" >
+                                                            <radio selected="true" label="Propia"/>
+                                                            <radio label="Arrend."/>
+                                                            <radio label="Prestada"/>
+                                                            <radio label="Anticresis"/>
+                                                            <radio label="Prestamo"/>
+                                                            <radio label="Depto."/>
+                                                            <radio label="Otros"/>
+                                                        </radiogroup>
+                                                    </span>
+                                                </row>
+                                                <row>
+                                                    <span style="float:right">Servicios
+                                                        <span style="color:blue"> (*)</span>:
+                                                    </span>
+                                                    <span>
 
-                            <row>
-                                <span style="float:right"> Dirección:</span>
-                                <textbox id="direccionfac" maxlength="100" cols="40"      />
+                                                        <checkbox id="luz" label="Luz Electrica"/>
+                                                        <checkbox id="agua"  label="Agua"/>
+                                                        <checkbox id="sshh"  label="SS.HH."/>
+                                                        <checkbox id="pozo"  label="Pozo Séptico"/>
+                                                        <checkbox id="telefonob"  label="Teléfono"/>
+                                                        <checkbox id="internet"  label="Internet"/>
+                                                    </span>
 
+                                                </row>
+                              
+                                                <row>
 
-                            </row>
-                            <row>
-                                <span style="float:right"> Teléfono:</span>
-                                <textbox id="telefonofac" maxlength="30" cols="13"    />
-                            </row>
+                                                    <span style="float:right;font-size:11px">
+                                                        <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                                    </span>
+                                                    <span>
+
+                                                        <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
+                                                        <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                                        <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="false"  />
+
+                                                    </span>
+                                                </row>
+                                            </rows>
+                                        </grid>
+                                    </panelchildren>
+                                        
+                                </panel>
+                                   
+                                        <panel style="margin-bottom:10px" title="EN CASO DE EMERGENCIA LLAMAR A: " border="normal">
+                                            <panelchildren>            
+                                                <grid   sclass="MyGridRowHeight" width="100%" id="opciones">
+                                                    <columns sizable="true">
+                                                        <column visible="false" label="codigo" />
+                                                        <column style="font-weight:bold" label="NOMBRES" width="120px" />
+                                                        <column label="PARENTESCO" width="50px"  />
+                                                        <column label="CELULAR"  width="30px" />
+                                                        <column label="CONVENCIONAL" width="30px"  />
+                                                    </columns>
+                                                    <rows>
+                                                        <row>
+                                                            <intbox id="cod1" value="0"/>
+                                                            <textbox readonly="false"  id="nom1" cols="30" value=""/>
+                                                            <textbox readonly="false"  id="par1" value=""/>
+                                                            <textbox readonly="false"  id="cel1" cols="10"  value=""/>
+                                                            <textbox readonly="false"  id="con1" cols="10"  value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <intbox id="cod2" value="0"/>
+                                                            <textbox readonly="false" id="nom2" cols="30"  value=""/>
+                                                            <textbox readonly="false"  id="par2"    value=""/>
+                                                            <textbox readonly="false"  id="cel2" cols="10"   value=""/>
+                                                            <textbox readonly="false"  id="con2" cols="10"   value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <intbox id="cod3" value="0"/>
+                                                            <textbox readonly="false"  id="nom3" cols="30"  value=""/>
+                                                            <textbox readonly="false"  id="par3"  value=""/>
+                                                            <textbox readonly="false"  id="cel3" cols="10"   value=""/>
+                                                            <textbox readonly="false"  id="con3" cols="10"   value=""/>
+                                                        </row>
+                                            
+                                                    </rows>
+                                                </grid>
+                                            </panelchildren>
+                                        </panel>  
+                     
+                    </portalchildren>    
+                    <portalchildren style="padding: 5px" width="50%">
+                     
+                       <panel collapsible="true"   framable="true"  border="normal"  title="DATOS DE MATRICULACIÓN" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight" width="100%"  height="100%">
+                                    <rows>
+                                        <row visible="false">
+                                            <span style="float:right">
+                                                                                
+                                                <label value="No.Matri.(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <span>
+                                                                                
+                                                <intbox maxlength="10"   cols="5"  id="numero"  />
+                                                <span >
+                                                    <label value="No.Folio(*)" style="font-weight: bold;"/>
+                                                </span>
+                                                <intbox maxlength="10" readonly="false" cols="5"  id="folio"  />
+                                                <intbox maxlength="14" cols="5"  visible="true"  style="font-size:8px;background:transparent;border:0px"  readonly="false" id="codigomat"  />
+                                                                                  
+                                                
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                                                
+                                                <label value="Repite el Año: " style="font-weight: bold;"/>
+                                            </span>
+                                            <span>
+                                            <radiogroup Id="repite" >
+                                                    <radio selected="true"  value="0" label="1ra."/>
+                                                    <radio value="1"  label="2da."/>
+                                                    <radio value="2"  label="3ra."/>
+                                                    <radio value="3"  label="4ta."/>
+                                           </radiogroup>
+                                                Matricula
+                                          </span>
+                                        </row>
+                                        <row visible="false">
+                                            <span style="float:right;">
+                                                <label value="Estado(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <span>
+                                                <combobox readonly="false"   id="accion"  >
+                                                    <comboitem  value="Matriculado" label="Matriculado"/>
+                                                    <comboitem value="Inscrito" label="Inscrito"/>
+                                                    <comboitem value="Retirado" label="Retirado"/>
+                                                    <comboitem value="Emitir Pase" label="Emitir Pase"/>
+                                                    <comboitem value="Recibir Pase" label="Recibir Pase"/>
+                                                    <comboitem value="Anulado" label="Anulado"/>
+                                                </combobox>
+                                                Inst. Anterior:
+                                                <textbox id="institucion" readonly="false"  maxlength="30" cols="20"/>
+                                            </span>
+
+                                        </row>
+                                        <row visible="false">
+                                            <span style="float:right;">
+                                                <label value="Fec.Matricula(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <span>
+                                                <datebox id="fechamatricula"  readonly="false"  />
+                                                <label value="Fec.Retiro(*)" style="font-weight: bold;"/>
+                                                <datebox id="fecharetiro"  readonly="false"  />
+                                          
+                                                                             
+                                            </span>
+                                                                
+                                        </row>
+                                        <row>
+                                            <span style="float:right">Toma Transporte:</span>
+
+                                            <span>
+                                                <checkbox id="transporte"  />
+                                                <textbox id="nobus" maxlength="100" cols="40" readonly="false"  />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> %Beca:</span>
+                                            <span>
+                                                <decimalbox id="beca" format="###.##"   maxlength="5" cols="10" readonly="false"  />
+
+                                                Otros Dsctos:
+                                                <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="false"  /> USD
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> ¿Asegurado?:</span>
+                                            <span>
+                                                  <checkbox id="asegurado"  />
+
+                                                Nombre Aseguradora:
+                                                <textbox id="aseguradora"  maxlength="50" cols="20" readonly="false"  /> 
+                                            </span>
+                                        </row>
+                                        <row visible="false">
+                                            <span style="float:right"> Observación:</span>
+                                            <textbox rows="2" id="observacion" cols="30"  readonly="false"  />
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                Provincia: 
+                                            </span>
+                                            <span>
+                                                <textbox cols="20" id="provincia"  />
+                                                Canton:
+                                                <textbox cols="20"  id="canton"  />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                Parroquia:    
+                                            </span> 
+                                        
+                                            <span>
+                                                <textbox  cols="20" id="lugarnacimiento"  />
+                                                <span style="color:blue;weight:bold">    
+                                                    Nac.(*)
+                                                </span>
+                                                <textbox id="nacionalidad"  />
+                                            </span>
+                                        
+                                         
+                                        </row>
+                                          
+                                    </rows>
+                                </grid>
+
+                            </panelchildren>
+                        </panel>
+                        <panel collapsible="true"   framable="true"  title="DATOS DE REPRESENTANTE" border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+                                        <row>
+                                            <span style="float:right; color:blue" >COPIAR DE:  </span>
+                                            <span>
+                                       
+                                     
+                                                <button id="padrecr"  label="Padre" image="/images/padre.png"  onClick="copiarpr();"/>
+                                                <button id="madrecr" label="Madre" image="/images/madre.png"     onClick="copiarmr();"/>
+                                                <button id="limpiar" label="Nuevo"   onClick="limpiarRepresentante();"/>
+                                            </span>
+                                        </row>
+                                     
+                                        <row>
+                                            <span style="float:right"> Identificación:</span>
+                                            <textbox maxlength="13" cols="10"   readonly="false" id="cedulare"  />
+
+                                        </row>
+                                        <row>
+                                            <span style="float:right;">
+                                                <label value="Nombres(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <span >
+                                                <textbox id="nombresre"  maxlength="60" cols="20" readonly="false"   />
+                                     
+                                            
+                                                <label value="Apellidos(*)" style="font-weight: bold;"/>
+                                                <textbox id="apellidosre"  maxlength="60" cols="20" readonly="false"  />
+                                            </span>
+                                            
+                                        </row>
+                                
+                                        <row>
+                                            <span style="float:right;">
+                                                <label value="Dirección(*)" style="font-weight: bold;"/>
+                                            </span>
+                                            <span>
+                                                <textbox id="direccionre" maxlength="100" cols="30"  readonly="false"    />
+                                                <span > Teléfono:</span>
+                                                <textbox id="telefonore" maxlength="100" cols="13"  readonly="false"  />
+                                
+                                            </span>
+                                        </row>
+                                        
+                                        <row>
+                                            <span style="float:right"> Email:</span>
+                                            <textbox id="emailre" maxlength="100" cols="40"  readonly="false"    />
+                                        </row>
+                                        <row>
+                                            <span  style="float:right">Parentesco</span>
+                                            <span>
+                                                <textbox id="parentesco" maxlength="100" cols="40"  readonly="false"    />
+                                            </span>
+                                        </row>
+                                
+                                        <row>
+
+                                            <span style="float:right"> Usuario:</span>
+                                            <span >
+                                                <textbox id="usuarior"   maxlength="30" cols="15" readonly="false"  />
+                                                Clave:
+                                                <textbox id="claver"   maxlength="30" cols="15" readonly="false"  />
+                                            </span>
+                                            <span> </span>
+
+                                            <span></span>
+                                        </row>
+                                
+                                    
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                        <panel collapsible="true" framable="true"  title="FACTURAR A" border="normal" >
+                            <panelchildren>
+                                <grid sclass="MyGridRowHeight">
+                                    <rows>
+                                        <row>
+                                            <span style="color:blue;float:right" >COPIAR DE: </span>
+                                            <span>
+                                                <button id="padrec" label="Padre"  image="/images/padre.png"    onClick="copiarp();"/>
+                                                <button id="madrec" label="Madre" image="/images/madre.png"      onClick="copiarm();"/>
+                                                <button id="representantec" label="Representante"    onClick="copiarr();"/>
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Tipo:</span>
+                                            <span>
+                                                <listbox mold="select" onSelect="llenarConsumidor();"   id="tipofac" width="150px">
+                                                    <listitem label="CEDULA" value="C">
+                                                    </listitem>
+                                                    <listitem label="RUC" value="R">
+                                                    </listitem>
+                                                    <listitem label="PASAPORTE" value="P">
+                                                    </listitem>
+                                                </listbox>
+                                         
+                                                Identificación:
+                                                <textbox maxlength="13" cols="13"  readonly="false" id="cedulafac"  />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Nombre Factura:</span>
+                                            <textbox id="nombresfac"  maxlength="100" cols="40" readonly="false"   />
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Dirección:</span>
+                                            <span>
+                                                <textbox id="direccionfac" maxlength="100" cols="30"  readonly="false"    />
+                                        
+                                                <span> Teléfono:</span>
+                                                <textbox id="telefonofac" maxlength="30" cols="13"  readonly="false"  /> 
+                                            </span>
+                                        </row>
+                                       
+                                    </rows>
+                                </grid>
+                            </panelchildren>
+                        </panel>
+                         
+                                <panel style="margin-bottom:10px" title="HERMANOS: " border="normal">
+                                        <panelchildren>            
+                                         
+                                                        <label></label>
+                                                    <span >No. de Hermanos(*) </span>
+                                                    <intbox id="hermanos"  />
+                                                    Ingrese los hermanos en la institución
                                                            
-                        </rows>
-                    </grid>
-                </panelchildren>
-                <toolbar  sclass="vista" align="end">
+                                          
+                                            <grid  width="100%" id="hermanos2">
+                                                <columns sizable="true">
+                                                    <column visible="false" label="codigo" />
+                                                    <column style="font-weight:bold" label="APELLIDOS Y NOMBRES" width="120px" />
+                                                    <column label="AÑO DE BÁSICA" width="50px"  />
+                                                </columns>
+                                                <rows>
+                                                    <row>
+                                                        <intbox id="codh1" value="0"/>
+                                                        <combobox  readonly="false"   cols="40" id="nomh1"   
+                                                        onSelect='try{ codh1.value = (self.selectedItem.value).getCodigoest(); }catch(Exception e){ codh1.value=0; nomh1.value = "";}'  
+                                                            autodrop="true" buttonVisible="false"  use="bean.AutoCompleteEstudiante"/>
+                                                        <textbox id="anioh1" value=""  readonly="false" />
+                                                    </row>
+                                                    <row>
+                                                        <intbox id="codh2" value="0"/>
+                                                        <combobox readonly="false"    cols="40" id="nomh2" onSelect="codh2.value = (self.selectedItem.value).getCodigoest()"   
+                                                            autodrop="true" buttonVisible="false"  use="bean.AutoCompleteEstudiante"/>
+                                                        <textbox id="anioh2" value=""  readonly="false" />
+                                                    </row>
+                                                    <row>
+                                                        <intbox id="codh3" value="0"/>
+                                                        <combobox  readonly="false"   cols="40" id="nomh3"  onSelect="codh3.value = (self.selectedItem.value).getCodigoest()"  
+                                                          autodrop="true" buttonVisible="false"  use="bean.AutoCompleteEstudiante"/>
+                                                        <textbox id="anioh3" value=""  readonly="false" />
+                                                    </row>
+                                            
+                                                </rows>
+                                            </grid>
+                                        </panelchildren>
+                                    </panel>   
+                                    
+                                      <panel style="margin-bottom:10px" title="PERSONAS AUTORIZADAS A RETIRAR AL ESTUDIANTE: " border="normal">
+                                            <panelchildren>
+                                                <grid  width="100%" id="opciones2">
+                                                 
+                                                    <columns sizable="true">
+                                                        <column label="codigo" visible="false"/>
+                                                        <column label="NOMBRES" width="120px" />
+                                                        <column label="PARENTESCO" width="50px"  />
+                                                        <column label="C.I."  width="30px" />
+  
+                                                    </columns>
+                                                    <rows id="filas2">
+                                                        <row>
+                                                            <intbox id="cod11" value="0"/>
+                                                            <textbox readonly="false"  id="nom11" cols="30" value=""/>
+                                                            <textbox readonly="false"  id="par11" value=""/>
+                                                            <textbox readonly="false"  id="ci11" cols="10" value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <intbox id="cod22" value="0"/>
+                                                            <textbox readonly="false"  id="nom22" cols="30"  value=""/>
+                                                            <textbox readonly="false"  id="par22"  value=""/>
+                                                            <textbox readonly="false"  id="ci22" cols="10" value=""/>
+                                                        </row>
+                                                        <row>
+                                                            <intbox id="cod33" value="0"/>
+                                                            <textbox readonly="false"  id="nom33" cols="30"  value=""/>
+                                                            <textbox  readonly="false" id="par33"  value=""/>
+                                                            <textbox  readonly="false" id="ci33" cols="10"  value=""/>
+                                                        </row>
+                                            
+                                                    </rows>
+                                                </grid>
+                                            </panelchildren>
+                                        </panel>
+                                     
                     
-                    <toolbarbutton image="/images/sig.png" onClick='dfactura.visible = false' />
-                </toolbar>
-            </panel>
-
-     
+                    </portalchildren>
+                    </portallayout>
+          
 
 
 
@@ -1473,6 +1667,9 @@ boolean validarRepresentante(){
                     <button  visible="false"  image="/images/imprimir.gif" id="certificado"  label="Certificado"   onClick='showReport("CM")' />
                     <button  visible="false"  image="/images/imprimir.gif" id="claveprint"  label="Clave"   onClick='showReport("CL")' />
                     <button visible="false"   image="/images/eliminar.gif" id="eliminar"  label="Eliminar"   onClick="eliminar();"/>
+                    
+                    <button id="btnguardar" image="/images/guardarimprimir.png" onClick='guardar();' />
+                 
                 </hbox>
             </vbox>
             <zscript>

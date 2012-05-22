@@ -1,0 +1,1487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <style>
+        .estil{
+        height:100%;
+        background-image: url(./images/fondo.jpg);
+        background-repeat: repeat-y;
+        background-repeat: repeat-x;
+        background-color:#004669;
+        }
+    </style>
+
+    <div  class="estil" >
+        <window  position="center"  width="700px" mode="overlapped" id="principales" >
+            <zscript>
+            <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+import java.util.Vector;
+import bean.matriculasBean;
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.notas;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    static Estudiantes estudent = new Estudiantes();
+    static Representante representante0 = new Representante();
+    static Matriculas matricula = new Matriculas();
+     Session ses = Sessions.getCurrent();
+ 
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    if(periodo == null){
+        Executions.sendRedirect("verificarCodigo.zul");
+    }
+ Permisos permiso = new Permisos();
+
+ java.util.Date fecha = new java.util.Date();
+ String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
+
+ 
+ 
+ 
+    Object media = null;
+   
+
+        //FUNCIONES
+        void cargarFoto(byte[] imageData){
+          //foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+        }
+        void cargarVacio(){
+          //foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+        }
+Integer nuevaMatricula() {
+                   Administrador adm = new Administrador();
+
+                    List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
+                            "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
+                    ParametrosGlobales parametros = new ParametrosGlobales();
+                    if(NoActualMatricula.size()<=0){
+                        alert("Falta copiar los parámetros a este Año Lectivo");
+                    }
+                    parametros = (ParametrosGlobales) NoActualMatricula.get(0);
+                    int noMatri = 0;
+                    Double decs = parametros.getNvalor();
+                    Long val = java.lang.Math.round(decs);
+                    noMatri = Integer.valueOf(val.toString());
+                    noMatri += 1;
+                    List  numeroYa = adm.query("Select o from Matriculas as o " +
+                            "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            "and o.numero = '" + noMatri + "'");
+                    if (numeroYa.size() > 0) {
+                        Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
+                                "where o.curso.periodo.codigoper= '" + periodo.getCodigoper() + "'"  );
+                        parametros.setNvalor(new Double(nClave + 1));
+                        adm.actualizar(parametros);
+                        return nClave + 1;
+                    } else {
+                        parametros.setNvalor(new Double(noMatri));
+                        adm.actualizar(parametros);
+                        return noMatri;
+                    }
+    }
+
+    void generarClave(Boolean boton){
+                try{
+                String uss = usuario.value;
+                if(boton==false){
+                    if(uss.trim() != ""){
+                            return;
+                    }
+                }
+                    String user ="";
+                    String caracter="JCINFORM";
+                    caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
+                    int numero_caracteres=10;
+                    int total=caracter.length();
+                    String  clave2="";
+                    for(int a=0;a<numero_caracteres;a++){
+                        clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                    }
+
+                        clave.value = clave2.toUpperCase();
+                         caracter=""+apellidos.value.trim().replace(" ","");
+                        caracter+="JC"+nombres.value.trim().replace(" ","");
+                        numero_caracteres=6;
+                        total=caracter.length();
+                        user ="";
+                        for(int a=0;a<numero_caracteres;a++){
+                            user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                        }
+                        usuario.value = user.toUpperCase();
+                        }catch(Exception e){
+                        System.out.println("ERROR EN GENERAR CLAVE"+e);
+                        }
+    }
+ void generarClaveRep(Boolean boton){
+                try{
+                String uss = usuarior.value;
+                if(boton==false){
+                    if(uss.trim() != ""){
+                            return;
+                    }
+                }
+                    String user ="";
+                    String caracter="JCINFORM";
+                    caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
+                    int numero_caracteres=10;
+                    int total=caracter.length();
+                    String  clave2="";
+                    for(int a=0;a<numero_caracteres;a++){
+                        clave2+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                    }
+
+                        claver.value = clave2.toUpperCase();
+                         caracter=""+apellidosre.value.trim().replace(" ","");
+                        caracter+="JC"+nombresre.value.trim().replace(" ","");
+                        numero_caracteres=6;
+                        total=caracter.length();
+                        user ="";
+                        for(int a=0;a<numero_caracteres;a++){
+                            user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+                        }
+                        usuarior.value = user.toUpperCase();
+                        }catch(Exception e){
+                        System.out.println("ERROR EN GENERAR CLAVE"+e);
+                        }
+    }
+
+void llenar(Estudiantes estudent){
+
+    List cursos = adm.queryNativo("Select o.* from Cursos as o where  '"+fechaString+"' between o.inicial and o.finali and o.periodo = '"+ periodo.getCodigoper() +"' ",Cursos.class);
+         if(cursos.size()<=0){
+         System.out.println("NO EXISTEN CURSOS HABILITADOS EN ÉSTAS FECHAS.............");
+                Executions.sendRedirect("592981728937491234M.zul");
+                return;
+        }
+ 
+        Cursos se = new Cursos(-1);
+        Global g = new Global(); g.setDescripcion("");
+        se.setParalelo(g);
+        se.setEspecialidad(g);
+        se.setDescripcion("[SELECCIONE UN CURSO PARA CONTINUAR]");
+        cursos.add(0,se);
+            for (Iterator it = cursos.iterator(); it.hasNext();) {
+                      Cursos estudent = (Cursos) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent+""));
+                        curso.appendChild(item);
+             }
+
+    codigoclave.value = estudent.getCodigo();
+    codigo.value = estudent.getCodigoest();
+    cedula.value = estudent.getCedula();
+    nombres.value = estudent.getNombre();
+    apellidos.value = estudent.getApellido();
+    direccion.value = estudent.getDireccion();
+    telefono.value = estudent.getTelefono();
+    masculino.selected  = (estudent.getGenero().equals("Masculino")?true:false);
+    femenino.selected  = (estudent.getGenero().equals("Femenino")?true:false);
+    nacido.value = estudent.getFechanacimiento();
+    mail.value = estudent.getMail();
+    usuario.value = estudent.getUsuario();
+    nobus.value = estudent.getNobus();
+    lugarnacimiento.value = estudent.getLugarnacimiento();
+    nacionalidad.value = estudent.getNacionalidad();
+    discapacidad.checked = estudent.getDiscapacidad();
+    tipodiscapacidad.value = estudent.getTipodiscapacidad();
+    hermanos.value = estudent.getHermanos();
+    clave.value = permiso.decriptar(estudent.getClave());
+    vivecon.value = estudent.getVivecon();
+    ingpadre.value = estudent.getIngpadre().intValue();
+    ingmadre.value = estudent.getIngmadre().intValue();
+    ingotros.value = estudent.getIngotros().intValue();
+    
+    lugar.value = estudent.getLugar();
+          if(estudent.getEstado()!=null){
+                estadoe.checked= estudent.getEstado();
+            }
+            if(estudent.getAdventista()!=null){
+
+                adventista.checked = estudent.getAdventista();
+            }
+            if(estudent.getTransporte()!=null){
+                transporte.checked = estudent.getTransporte();
+            }
+            if(estudent.getAplico()!=null){
+                aplico.checked = estudent.getAplico();
+            }
+
+
+ 
+        if(estudent.getRepresentante()==null){
+            Representante re = new Representante(0);
+            re.setTipoidentificacion("C");
+            estudent.setRepresentante(re);
+        }
+        llenarRepresentante(estudent.getRepresentante());
+
+List matricula = adm.query("Select o from Matriculas as o where o.estudiante.codigoest = '"+estudent.getCodigoest()+"' "
++ " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
+    if(matricula.size()>0)
+    {
+        llenarMatricula(matricula.get(0));
+    }else{
+        llenarMatricula(new Matriculas(0));
+        numero.value = 0;
+        //Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    }
+}
+void llenarMatricula(Matriculas matri){
+         codigomat.value =matri.getCodigomat();
+         accion.value = matri.getEstado();
+         fechamatricula.value =matri.getFechamat();
+         numero.value = matri.getNumero();
+         folio.value = matri.getFolio();
+         institucion.value = matri.getInstitucion();
+            if(matri.getNuevo()!=null){
+                nuevo.checked = matri.getNuevo();
+            }
+            if(matri.getRepite()!=null){
+                repite.checked = matri.getRepite();
+            }
+         try{
+            beca.value = new BigDecimal(matri.getBeca());
+            otros.value = new BigDecimal(matri.getOtros());
+         }catch(Exception e){}
+         observacion.value = matri.getObservacion();
+            if(matri.getCurso() != null){
+            int tam = curso.getItems().size();
+                    if( tam <= 0 ){
+                        System.out.println("hola bola");
+                        Executions.sendRedirect("/592981728937491234M.zul");
+                        return;
+                         
+                     }
+             
+
+
+            }
+            if(matri.getFoto() != null){
+                    cargarFoto(matri.getFoto());
+            }else{
+                    cargarVacio();
+            }
+}
+
+void copiarpr(){
+     cedulare.value = cedulapa.value;
+     nombresre.value = nombrespa.value ;
+     apellidosre.value = apellidospa.value;
+     telefonore.value = telefonopa.value;
+     direccionre.value = direccionpa.value;
+}
+
+void copiarmr(){
+     cedulare.value = cedulama.value;
+     nombresre.value = nombresma.value ;
+     apellidosre.value = apellidosma.value;
+     telefonore.value = telefonoma.value;
+     direccionre.value = direccionma.value;
+}
+
+
+void copiarp(){
+     cedulafac.value = cedulapa.value;
+     nombresfac.value = apellidospa.value + " "+ nombrespa.value ;
+     telefonofac.value = telefonopa.value;
+     direccionfac.value = direccionpa.value;
+}
+
+void copiarm(){
+     cedulafac.value = cedulama.value;
+     nombresfac.value = apellidosma.value + " "+ nombresma.value ;
+     telefonofac.value = telefonoma.value;
+     direccionfac.value = direccionma.value;
+}
+
+void copiarr(){
+     cedulafac.value = cedulare.value;
+     nombresfac.value = apellidosre.value + " "+ nombresre.value ;
+     telefonofac.value = telefonore.value;
+     direccionfac.value = direccionre.value;
+}
+
+void llenarRepresentante(Representante repren){
+    codigore.value = repren.getCodigorep();
+    cedulare.value = repren.getIdentificacionrepre();
+    nombresre.value = repren.getNombres();
+    apellidosre.value = repren.getApellidos();
+    direccionre.value = repren.getDireccion();
+    telefonore.value = repren.getTelefono();
+    emailre.value = repren.getEmail();
+
+     //Listitem item = new Listitem();
+     //String tip = repren.getTipoidentificacion();
+     //item.setValue(tip);
+     //item.appendChild(new Listcell( (tip.equals("C")?"CEDULA":"RUC") +""));
+     //tipofac.appendChild(item);
+     //tipofac.setSelectedItem(item);
+     //llenarConsumidor();
+     cedulafac.value = repren.getIdentificacionfactura();
+     nombresfac.value = repren.getNombrefactura();
+     telefonofac.value = repren.getTelfactura();
+     direccionfac.value = repren.getDirfactura();
+
+
+
+
+    cedulapa.value = repren.getIdentificacionpadre();
+    nombrespa.value = repren.getNompadre();
+    apellidospa.value = repren.getApepadre();
+    direccionpa.value = repren.getDirpadre();
+    telefonopa.value = repren.getTelpadre();
+    emailpa.value = repren.getMailpadre();
+    parentesco.value = repren.getParentesco();
+    ocupacionpa.value = repren.getOcupacionpadre();
+    profesionpa.value = repren.getProfesionpadre();
+
+    cedulama.value = repren.getIdentificacionmadre();
+    nombresma.value = repren.getNommadre();
+    apellidosma.value = repren.getApemadre();
+    direccionma.value = repren.getDirmadre();
+    telefonoma.value = repren.getTelmadre();
+    emailma.value = repren.getMailmadre();
+    ocupacionma.value = repren.getOcupacionmadre();
+    profesionma.value = repren.getProfesionmadre();
+
+    usuarior.value = repren.getUsuario();
+    claver.value = permiso.decriptar(repren.getClave());
+
+
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            estudent = (Estudiantes)datos.selectedItem.value;
+        }
+   padrec.disabled = estado;
+   madrec.disabled = estado;
+   padrecr.disabled = estado;
+   madrecr.disabled = estado;
+   subirb.disabled = estado;
+   limpiar.disabled = estado;
+   representantec.disabled = estado;
+   codigo.readonly = estado;
+    cedula.readonly = estado;
+    nombres.readonly = estado;
+    apellidos.readonly = estado;
+    direccion.readonly = estado;
+    telefono.readonly = estado;
+    genero.readonly = estado;
+    mail.readonly = estado;
+    nacido.readonly = estado;
+    tratamiento.readonly = estado;
+    usuario.readonly = estado;
+    clave.readonly = estado;
+    usuarior.readonly = estado;
+    claver.readonly = estado;
+    beca.readonly = estado;
+    otros.readonly = estado;
+    tipo.readonly= estado;
+    estadoe.disabled= estado;
+    perf.readonly = estado;
+    bd.readonly = estado;
+
+    codigomat.readonly = estado;
+    //numero.readonly = estado;
+    folio.readonly = estado;
+    curso.disabled = estado;
+    accion.readonly = estado;
+    fechamatricula.readonly = estado;
+    observacion.readonly= estado;
+    adventista.disabled= estado;
+    nuevo.disabled = estado;
+    transporte.disabled = estado;
+    repite.disabled = estado;
+    nobus.readonly = estado;
+    cedulare.readonly = estado;
+    nombresre.readonly = estado;
+    apellidosre.readonly = estado;
+    direccionre.readonly = estado;
+    telefonore.readonly = estado;
+    emailre.readonly = estado;
+    institucion.readonly = estado;
+
+    tipofac.disabled = estado;
+    cedulafac.readonly = estado;
+    nombresfac.readonly = estado;
+    direccionfac.readonly = estado;
+    telefonofac.readonly = estado;
+
+
+
+   cedulapa.readonly = estado;
+    nombrespa.readonly = estado;
+    apellidospa.readonly = estado;
+    direccionpa.readonly = estado;
+    telefonopa.readonly = estado;
+    emailpa.readonly = estado;
+    parentesco.readonly = estado;
+    ocupacionpa.readonly = estado;
+    profesionpa.readonly = estado;
+
+   cedulama.readonly = estado;
+    nombresma.readonly = estado;
+    apellidosma.readonly = estado;
+    direccionma.readonly = estado;
+    telefonoma.readonly = estado;
+    emailma.readonly = estado;
+    ocupacionma.readonly = estado;
+    profesionma.readonly = estado;
+
+
+}
+ 
+
+ void guardar(){
+ 
+ try{
+ if(validarRepresentante()== false)
+ {
+        btnguardar.disabled=false;
+        return;
+ }
+ 
+        Messagebox.show("Recuerde que toda la información será verificada y validada en secretaria...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        btnguardar.disabled=true;
+        representante0.setCodigorep(codigore.value);
+        representante0.setIdentificacionrepre(cedulare.value);
+        representante0.setNombres(nombresre.value);
+        representante0.setApellidos(apellidosre.value);
+        representante0.setDireccion(direccionre.value);
+        representante0.setTelefono(telefonore.value);
+        representante0.setEmail(emailre.value);
+
+      //  representante0.setTipoidentificacion(tipofac.selectedItem.value);
+        representante0.setIdentificacionfactura(cedulafac.value);
+        representante0.setNombrefactura(nombresfac.value);
+        representante0.setDirfactura(direccionfac.value);
+        representante0.setTelfactura(telefonofac.value);
+
+        representante0.setIdentificacionpadre(cedulapa.value);
+        representante0.setApepadre(apellidospa.value);
+        representante0.setNompadre(nombrespa.value);
+        representante0.setTelpadre(telefonopa.value);
+        representante0.setDirpadre(direccionpa.value);
+        representante0.setMailpadre(emailpa.value);
+        representante0.setParentesco(parentesco.value);
+        representante0.setProfesionpadre(profesionpa.value);
+        representante0.setOcupacionpadre(ocupacionpa.value);
+
+        representante0.setIdentificacionmadre(cedulama.value);
+        representante0.setApemadre(apellidosma.value);
+        representante0.setNommadre(nombresma.value);
+        representante0.setTelmadre(telefonoma.value);
+        representante0.setDirmadre(direccionma.value);
+        representante0.setMailmadre(emailma.value);
+        representante0.setProfesionmadre(profesionma.value);
+        representante0.setOcupacionmadre(ocupacionma.value);
+        representante0.setUsuario(usuarior.value);
+        representante0.setClave(permiso.encriptar(claver.value));
+         Boolean repreNuevo = false;
+         Boolean estuNuevo = false;
+
+         if((!representante0.getCodigorep().equals(0))){
+             adm.actualizar(representante0);
+         }else{
+            representante0.setCodigorep(adm.getNuevaClave("Representante","codigorep"));
+            adm.guardar(representante0);
+            repreNuevo = true;
+         }
+
+
+ //GUARDO EL ESTUDIANTE
+        estudent.setRepresentante(representante0);
+        estudent.setCodigoest(codigo.value);
+        estudent.setCedula(""+cedula.value);
+        estudent.setNombre(nombres.value);
+        estudent.setApellido(apellidos.value);
+        estudent.setDireccion(direccion.value);
+        estudent.setTelefono(telefono.value);
+        estudent.setMail(mail.value);
+        estudent.setFechanacimiento(nacido.value);
+        estudent.setEstado(true);
+        estudent.setAdventista(false);
+        estudent.setTransporte(transporte.checked);
+        estudent.setAplico(aplico.checked);
+        estudent.setNobus(nobus.value);
+        estudent.setUsuario(usuario.value);
+        estudent.setClave(permiso.encriptar(clave.value));
+        estudent.setGenero((masculino.selected == true?"Masculino":"Femenino"));
+        estudent.setPendientes(false);
+        estudent.setVivecon(vivecon.value);
+        estudent.setHermanos(hermanos.value);
+        estudent.setLugar(lugar.value);
+        estudent.setLugarnacimiento(lugarnacimiento.value);
+        estudent.setNacionalidad(nacionalidad.value);
+        estudent.setDiscapacidad(discapacidad.checked);
+        estudent.setTipodiscapacidad(tipodiscapacidad.value);
+        estudent.setIngpadre(new Double(ingpadre.value));
+        estudent.setIngmadre(new Double(ingmadre.value));
+        estudent.setIngotros(new Double(ingotros.value));
+        estudent.setCasa(casa.getSelectedItem().getLabel());
+        estudent.setAgua(agua.checked);
+        estudent.setLuz(luz.checked);
+        estudent.setSshh(sshh.checked);
+        estudent.setPozo(pozo.checked);
+        estudent.setTelefonob(telefonob.checked);
+        estudent.setInternet(internet.checked);
+        estudent.setCodigo(codigoclave.value);
+        estudent.setMatriculado(true);
+
+        if((!estudent.getCodigoest().equals(0))){
+             adm.actualizar(estudent);
+   
+         }else{
+            estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
+            adm.guardar(estudent);
+            estuNuevo = true;
+         }
+
+//GUARDAR MATRICULA
+        matricula.setCodigomat(codigomat.value);
+        matricula.setEstudiante(estudent);
+        matricula.setObservacion("Matricula por Internet "+ new Date().toLocaleString());
+       
+        matricula.setFechamat(new Date());   
+        matricula.setCurso(curso.selectedItem.value);
+        
+        matricula.setNumero(numero.value);
+        matricula.setEstado("Matriculado"); 
+        matricula.setNuevo(nuevo.checked);  
+        matricula.setRepite(new Integer(repite.selectedItem.value));  
+        matricula.setInstitucion(institucion.value);  
+
+        try{
+            matricula.setBeca(0.0);
+            matricula.setOtros(0.0);
+        }catch(Exception ea){}
+
+         if(matricula.getEstado().equals("Inscrito")){
+            matricula.setNumero(0);
+         }
+
+           // org.zkoss.image.Image nueva = foto0.getContent();
+
+           // matricula.setFoto(nueva.getByteData());
+            matricula.setFolio(folio.value);
+
+
+
+        if((!matricula.getCodigomat().equals(0)) ){
+
+                if(matricula.getNumero().equals(0)){
+                    matricula.setNumero(nuevaMatricula());
+                }
+                adm.actualizar(matricula);
+
+         }else{
+
+                if(matricula.getEstado().equals("Matriculado")){
+                    if(matricula.getNumero().equals(0)){
+                        matricula.setNumero(nuevaMatricula());
+                        numero.value = matricula.getNumero();
+                    }
+                    if(folio.value == "" || folio.value == null ){
+                        matricula.setFolio(matricula.getNumero());
+                        folio.value = matricula.getNumero();
+                    }
+
+                }else{
+                    matricula.setNumero(0);
+                }
+                 Integer matri = adm.getNuevaClave("Matriculas","codigomat");
+             matricula.setCodigomat(matri);
+             adm.guardar(matricula);
+             codigomat.value = matri;
+         }
+
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        btnguardar.disabled=true;
+        ses.setAttribute("userEstudiante",estudent);
+        showReport("AM",""+codigomat.value);
+       }catch(Exception e){
+                alert("Error:"+e);
+                System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
+                System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
+                System.out.println(""+e);
+        }
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Matricular",accion);
+
+    }
+ 
+ void move(){
+        llenar((Estudiantes)datos.selectedItem.value);
+        modificar.disabled = false;
+        acta.disabled = false;
+        certificado.disabled = false;
+        certificado2.disabled = false;
+        claveprint.disabled = false;
+        combo.value="";
+          registro.setSelected(true);
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false;
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             estudent = (Estudiantes)datos.selectedItem.value;
+             adm.eliminarObjeto(Estudiantes.class, estudent.getCodigoest());
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Estudiantes(0));
+            combo.value="";
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void buscarEstudiante(String valor){
+  
+    }
+void buscarRepresentante(String valor){
+
+int ini = valor.indexOf("[");
+int fin = valor.indexOf("]");
+valor = valor.substring(ini+1, fin);
+            List empleados = adm.query("Select o from Representante as o where o.codigorep = '"+valor+"' ");
+            if(empleados.size()>0){
+                Representante object = null;
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                 object = (Representante)it.next();
+                      //estudent = object;
+                 }
+            llenarRepresentante(object);
+            modificar.disabled=false;
+            }else{
+                estudent = new Representante(0);
+            }
+
+    }
+ 
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Estudiantes as o where o.cedula = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Estudiantes object = (Estudiantes)it.next();
+                        estudent = object;
+                 }
+            llenar(estudent);
+
+            }else{
+                estudent = new Estudiantes(0);
+            }
+
+        }
+    }
+
+
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o.estudiante from Matriculas as o " +
+        " where o.estudiante.apellido like '%"+p+"%' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.estudiante.apellido");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Estudiantes acceIt = (Estudiantes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCedula()+""));
+                      li.appendChild(new Listcell(acceIt.getApellido()+" "+acceIt.getNombre()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+    estudent.setPerfil(g);
+}
+
+void llenarConsumidor(){
+
+
+    cedulafac.value = "";
+    nombresfac.value = "";
+    direccionfac.value = "";
+    telefonofac.value = "";
+
+
+
+}
+
+
+
+//PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+        if(tipo.equals("CM")){
+             ds = new ReporteCertificadoDataSource(detalle);
+        }else{
+              ds = new ReporteActaDataSource(detalle);
+        }
+        return ds;
+
+}
+        void showReport(String tipo,String cod) {
+             
+            Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+cod+"&TP=pdf");
+            //Preparing parameters
+            
+             
+            Institucion insts = periodo.getInstitucion();
+
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Comprobante de Matricula");
+                    report.setSrc(directorioReportes + "actaMatricula.jasper");
+ 
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("html");
+                 
+            }
+        }
+
+
+validarEstudiante(){
+    if(lugarnacimiento.value == "" || nacionalidad.value  == "" || nombres.value == "" || apellidos.value == "" || direccion.value == "" || usuario.value == "" || clave.value == ""){
+        Messagebox.show("Registre todos los campos del ESTUDIANTE que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        destudiante.visible = true;
+        dmatricula.visible = false;
+    }
+}
+
+validarMatricula(){
+        try{
+               Cursos cur = curso.selectedItem.value;
+               if(cur.getCodigocur().equals(-1)){
+                    Messagebox.show("SELECCIONE el curso de la MATRICULA que está con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    dmatricula.visible = true;
+                    dpadre.visible = false;
+                    return;
+               }
+        }catch(Exception a){
+            System.out.println(a);
+           Messagebox.show("Registre o Seleccione todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           dmatricula.visible = true;
+           dpadre.visible = false;
+           return;
+        }
+    if(vivecon.value == "" || hermanos.value == null ){
+        Messagebox.show("Registre todos los campos de la MATRICULA que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        dmatricula.visible = true;
+        dpadre.visible = false;
+    }
+}
+
+boolean validarRepresentante(){
+
+
+    if(nombresre.value == ""||  apellidosre.value == "" ||  direccionre.value == "" || telefonore.value == "" || emailre.value == "" || parentesco.value == "" || usuarior.value == "" || claver.value == ""){
+        Messagebox.show("Registre todos los campos del REPRESENTANTE que están con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return false;
+    }
+    return true;
+}
+  ]]>
+            </zscript>
+      
+            <groupbox id="gb" mold="3d" >
+                <div visible="false">
+                    EL CURSO ACTUAL ES: 
+                    <textbox value=""/>
+                </div>
+	    		 
+            </groupbox>
+            <panel title="DATOS DEL ESTUDIANTE (Paso 1 de 5)" id="destudiante"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+                    <div id="viewer" style="overflow:auto;">
+                        <grid width="99%">
+                            <rows>
+
+                                <row spans="2">
+                                    <span style="color:red">
+                                        Todos los campos con
+                                        <span style="color:blue"> asterisco (*)</span> son obligatorios
+                                    </span>
+
+                                </row>
+                                <row spans="2">
+                                   
+                                      
+                                                                                
+                                </row>
+                                <row>
+                                    <span style="float:right"> Identificación:</span>
+                                    <span>
+                                        <intbox   cols="5"  visible="false"    id="codigo"  />
+                                        <textbox visible="false"    id="codigoclave"  />
+                                                                         
+                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
+                                        (no obligatorio)
+                                    </span>
+                                </row>
+                                <row>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Nombres
+                                        <span style="color:blue;weight:bold"> (*)</span>:
+                                    </span>
+                                    <textbox id="nombres" readonly="true" maxlength="60" cols="40"    />
+                                </row>
+
+                                <row>
+
+                                    <span style="float:right"> Apellidos
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <textbox id="apellidos" readonly="true" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
+                                </row>
+                                <row>
+
+                                    <span style="float:right"> Dirección
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <textbox id="direccion" maxlength="100" cols="40"      />
+                                </row>
+
+                                <row>
+                                    <span style="float:right"> Email:</span>
+                                    <span>
+                                        <textbox id="mail" maxlength="100" cols="30"      />
+                                        Teléfono:
+                                        <textbox id="telefono" maxlength="50" cols="13"    />
+                                    </span>
+                                </row>
+
+                                <row>
+
+
+
+
+                                </row>
+                                <row>
+                                    <span>Lugar de Nacimiento
+                                        <span style="color:blue;weight:bold"> (*)</span>:
+                                    </span>
+                                    <span>
+                                        <textbox id="lugarnacimiento"  />
+                                        Nacionalidad
+                                        <span style="color:blue;weight:bold"> (*)</span>:
+                                        <textbox id="nacionalidad"  />
+                                    </span>
+                                </row>
+                                <row>
+
+                                    <span style="float:right;font-size:11px">
+                                        <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
+                                    </span>
+                                    <span>
+
+                                        <checkbox id="discapacidad" label="SI" onCheck="tipodiscapacidad.readonly = self.checked? false: true" />
+                                        <label style="font-size:11px"  value="Describa su Discapacidad" id="t160"/>
+                                        <textbox    id="tipodiscapacidad" maxlength="100" cols="30" rows="1"  readonly="true"  />
+
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right"> Género
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <span>
+                                        <radiogroup Id="genero" >
+                                            <radio id="masculino"  label="Masculino"/>
+                                            <radio id = "femenino"  selected="true" label="Femenino"/>
+                                        </radiogroup>
+                                        <span> Fecha Nacimiento
+                                            <span style="color:blue"> (*)</span>:
+                                        </span>
+                                        <datebox id="nacido"    />
+                                    </span>
+                                <!--combobox id="genero" >
+                                    <comboitem value="Masculino" label="Masculino"/>
+                                    <comboitem value="Femenino" label="Femenino"/>
+                                </combobox-->
+                                </row>
+                                <row>
+                                
+                                </row>
+                                <row>
+                                    <span style="float:right"> Usuario
+                                        <span style="color:blue"> (*)</span>:
+                                    </span>
+                                    <span>
+                                        <textbox id="usuario" maxlength="30" cols="12"   />
+                                        <span> Clave
+                                            <span style="color:blue"> (*)</span>:
+                                        </span>
+                                        <textbox id="clave"   maxlength="30" cols="15"   />
+                                        <button label="Generar" onClick="generarClave(true);"/>
+                                    
+                                    </span>
+                                </row>
+                                <row spans="2">
+                                    <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
+                                </row>
+
+                            </rows>
+                        </grid>
+                    </div>
+
+
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                     <span  style="border:1px">
+                                        <button id="subirb" disabled="false" image="/images/subir.png" label="Subir Imagen">
+                                            <attribute name="onClick">{
+                                                Object media = Fileupload.get();
+
+                                                if (media instanceof org.zkoss.image.Image) {
+                                                        foto0.setContent(media);
+                                                        foto0.visible = true;    
+                                                        self.visible = false;
+                                                } else if (media != null)
+                                                Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                media = null;
+                                                }
+                                            </attribute>
+                                        </button>
+                                        <!--button label="Tomar Foto" disabled="false" id="nuevoE" image="/images/subir.png" >
+                                            <attribute name="onClick">{
+                                                final Window win = (Window) Executions.createComponents("tomarFoto.zul", null, null);
+                                                win.setMaximizable(true);
+                                                win.setClosable(true);
+                                                win.setAttribute("nuevo", true);
+                                                win.setTitle("Tomar Fotografía");
+                                                win.doModal();
+                                                }                            
+                                            </attribute>
+                                        </button--> 
+                                        <image border="1" height="150px" id="foto0"/>
+                                    </span>
+                    <toolbarbutton image="/images/sig.png" onClick='destudiante.visible = false; dmatricula.visible= true;validarEstudiante();' />
+                </toolbar>
+            </panel>
+ 
+        
+            <panel title="DATOS DE MATRICULA (Paso 2 de 5)"  height="400px"  id="dmatricula"  visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+
+   
+                    <grid width="100%" height="220">
+                        <rows>
+                            <row visible="false">
+                                <span style="float:right"> Codigo:</span>
+                                <span>
+                                    <intbox maxlength="14" cols="5"         id="codigomat"  />
+                                    No.Mat.(*):
+                                    <intbox maxlength="10"   cols="5"  id="numero"  />
+                                    No.Folio (*):
+                                    <intbox maxlength="10"  cols="5"  id="folio"  />
+                                </span>
+
+                                
+                            </row>
+                            <row style="background-color:yellow">
+                                <span style="float:right"> 
+                                    <label value="PASA A:" style="font-weight:bold;color:blue;font-size:14px"/>
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+
+                                <span>
+
+                                    <listbox id="curso" width="460px" mold="select" >
+                                        <listitem selected="true" forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                        </listitem>
+                                    </listbox>
+ 
+
+                                </span>
+                            </row>
+<!--
+    accion.value =""Matriculado
+    fechamatricula.value = new Date();
+    estadoe.value =  true;
+    beca.value = bigdecimal (0)
+    otros = 0
+    adventista = false;
+    observacion.vlaue = new Date() + internet
+-->
+                            <row>
+                                <span style="float:right"> Instituto Ant.:</span>
+                                <span>
+
+                                    <textbox id="institucion"   maxlength="30" cols="20"/>
+                                </span>
+                            </row>
+                         
+                            <row>
+                                <span style="float:right"> Toma Transporte:</span>
+                                <span>
+                                    <checkbox id="transporte" />
+                                    <checkbox visible="false" id="aplico" />
+                                    <textbox id="nobus" maxlength="100" cols="40"   />
+                                </span>
+                            </row>
+                            <row>
+                                     
+                                <span style="float:right"> Nuevo Est.</span>
+                                <span>
+                                    <checkbox id="nuevo"  />
+                                    No. de Hermanos
+                                    <span style="color:blue;weight:bold"> (*)</span>:
+                                    <intbox id="hermanos"  />
+                                    Repite el Año:
+                                    <radiogroup Id="repite" >
+                                        <radio selected="true"  value="0" label="1ra."/>
+                                        <radio value="1"  label="2da."/>
+                                        <radio value="2"  label="3ra."/>
+                                        <radio value="3"  label="4ta."/>
+                                    </radiogroup>
+                                </span>
+                            </row>
+
+                            <row>
+
+                                <span style="float:right">Lugar Ocupa
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                                    <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                                    Con quién vive
+                                    <span style="color:blue"> (*)</span>:
+                                    <textbox id="vivecon"  />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right">Ingresos:</span>
+                                <span>
+                                    Padre:
+                                    <intbox id="ingpadre" value="0" cols="10"  />
+                                    Madre:
+                                    <intbox id="ingmadre" cols="10"  value="0" />
+                                    Otros:
+                                    <intbox id="ingotros" cols="10" value="0"  />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right">Tipo Vivienda
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                                    <radiogroup Id="casa" >
+                                        <radio selected="true" label="Propia"/>
+                                        <radio label="Arrendada"/>
+                                        <radio label="Prestada"/>
+                                        <radio label="Anticresis"/>
+                                        <radio label="Prestamo"/>
+                                        <radio label="Departamento"/>
+                                        <radio label="Otros"/>
+                                    </radiogroup>
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right">Servicios
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                              
+                                    <checkbox id="luz" label="Luz Electrica"/>
+                                    <checkbox id="agua"  label="Agua"/>
+                                    <checkbox id="sshh"  label="SS.HH."/>
+                                    <checkbox id="pozo"  label="Pozo Séptico"/>
+                                    <checkbox id="telefonob"  label="Teléfono"/>
+                                    <checkbox id="internet"  label="Internet"/>
+                                </span>
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    
+                    <toolbarbutton image="/images/ant.png" onClick='destudiante.visible = true; dmatricula.visible = false' />
+                    <toolbarbutton image="/images/sig.png" onClick='dmatricula.visible = false; dpadre.visible = true; validarMatricula()' />
+                </toolbar>
+            </panel>
+            <panel title="DATOS DEL PADRE (Paso 3 de 5)" id="dpadre"   visible="false"    height="400px"  style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+
+
+                    <grid>
+                        <rows>
+
+                            <row>
+                                <span style="float:right"> Identificación:</span>
+                                <textbox maxlength="10" cols="13"   id="cedulapa"  />
+                            </row>
+                            <row>
+                                <span style="float:right"> Nombres:</span>
+                                <span>
+                                    <textbox id="nombrespa"  maxlength="60" cols="40"    />
+                                    <intbox maxlength="14" cols="5"  readonly = "true"   visible="false"  id="codigore"  />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Apellidos:</span>
+                                <textbox id="apellidospa"  maxlength="60" cols="40"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> Ocupación:</span>
+                                <textbox id="ocupacionpa" maxlength="100" cols="40"      />
+                            </row>
+                            <row>
+                                <span style="float:right"> Profesión:</span>
+                                <textbox id="profesionpa" maxlength="100" cols="40"      />
+                            </row>
+                            <row>
+                                <span style="float:right"> Dirección:</span>
+                                <span>
+                                    <textbox id="direccionpa" maxlength="100" cols="40"      />
+                                    <button  image="/images/anadir2.png"  label="Traer de Estudiante" onClick="direccionpa.value = direccion.value" />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Teléfono:</span>
+                                <span>
+                                    <textbox id="telefonopa" maxlength="100" cols="13"    />
+                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonopa.value = telefono.value" />
+                                </span>
+                            </row>
+                            <row>
+                                <span style="float:right"> Email:</span>
+                                <textbox id="emailpa" maxlength="100" cols="40"      />
+                            </row>
+                        </rows>
+                    </grid>
+
+
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    
+                    <toolbarbutton image="/images/ant.png" onClick='dmatricula.visible = true; dpadre.visible = false' />
+                    <toolbarbutton image="/images/sig.png" onClick='dpadre.visible = false;dmadre.visible = true' />
+                </toolbar>
+            </panel>
+
+            <panel title="DATOS DE LA MADRE (Paso 4 de 5)" id="dmadre" visible="false"  height="400px"    style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+
+
+                    <grid>
+                        <rows>
+
+                            <row>
+
+                                <span style="float:right"> Identificación:</span>
+                                <textbox maxlength="10" cols="13"   id="cedulama"  />
+                            </row>
+
+                            <row>
+
+
+
+                                <span style="float:right"> Nombres:</span>
+                                <textbox id="nombresma"  maxlength="60" cols="40"    />
+                            </row>
+
+                            <row>
+
+
+
+                                <span style="float:right"> Apellidos:</span>
+                                <textbox id="apellidosma"  maxlength="60" cols="40"   />
+                            </row>
+
+                            <row>
+
+
+
+                                <span style="float:right"> Ocupación:</span>
+                                <textbox id="ocupacionma" maxlength="100" cols="40"      />
+                            </row>
+                            <row>
+
+
+                                <span style="float:right"> Profesión:</span>
+                                <textbox id="profesionma" maxlength="100" cols="40"      />
+
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Dirección:</span>
+                                <span>
+                                    <textbox id="direccionma" maxlength="100" cols="40"      />
+                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="direccionma.value = direccion.value" />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Teléfono:</span>
+                                <span>
+                                    <textbox id="telefonoma" maxlength="50" cols="13"    />
+                                    <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="telefonoma.value = telefono.value" />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Email:</span>
+                                <textbox id="emailma" maxlength="100" cols="40"      />
+                            </row>
+
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    
+                    <toolbarbutton image="/images/ant.png" onClick='dpadre.visible = true; dmadre.visible = false' />
+                    <toolbarbutton image="/images/sig.png" onClick='dmadre.visible = false; drepresentante.visible = true' />
+                </toolbar>
+            </panel>
+            <panel title="DATOS DEL REPRESENTANTE  (Paso 5 de 5)" id="drepresentante"    height="400px"  visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+                    <grid>
+                        <rows>
+                            <row>
+                                <span style="float:right;color:blue" >Copiar del </span>
+                                <span>
+                                    <button id="padrecr" image="/images/padre.png" label="Padre"  onClick="copiarpr();"/>
+                                    <button id="madrecr" image="/images/madre.png" label="Madre"   onClick="copiarmr();"/>
+                   
+                                </span>
+                            </row>
+                               
+                            <row>
+                                <span style="float:right"> Identif.:</span>
+                                <textbox maxlength="13" cols="10"    id="cedulare"  />
+                            </row>
+                            <row>
+                                <span style="float:right"> Nombres
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="nombresre"  maxlength="60" cols="40"    />
+                            </row>
+                            <row>
+                                <span style="float:right"> Apellidos
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="apellidosre"  maxlength="60" cols="40"   />
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Dirección
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="direccionre" maxlength="100" cols="40"      />
+
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Teléfono
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="telefonore" maxlength="100" cols="13"    />
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Email
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <textbox id="emailre" maxlength="100" cols="40"      />
+                            </row>
+
+                            <row>
+                                <span  style="float:right">Parentesco
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span>
+                                    <textbox id="parentesco" maxlength="100" cols="40"      />
+                                </span>
+                            </row>
+                            <row>
+
+                                <span style="float:right"> Usuario
+                                    <span style="color:blue"> (*)</span>:
+                                </span>
+                                <span >
+                                    <textbox id="usuarior"   maxlength="30" cols="15"   />
+                                    Clave
+                                    <span style="color:blue"> (*)</span>:
+                                    <textbox id="claver"   maxlength="30" cols="15"   />
+                                    <button label="Generar" onClick="generarClaveRep(true);"/>
+                       
+                                </span>
+
+                            </row>
+                            <row spans="2">
+                                <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
+                            </row>
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar   sclass="vista" align="end">
+                    
+                    <toolbarbutton image="/images/ant.png" onClick='dmadre.visible = true; drepresentante.visible = false' />
+                    <toolbarbutton id="btnguardar" image="/images/guardarimprimir.png" onClick='guardar();' />
+                </toolbar>
+            </panel>
+
+               
+            <panel title="DATOS DE FACTURA" id="dfactura"  visible="false"   style="margin-bottom:10px" framable="true" >
+                <panelchildren>
+
+                    <grid>
+                        <rows>
+                            <row>
+                                <span style="color:blue" >Facturar a </span>
+                                <span>
+                                    <button id="padrec" label="Padre"   onClick="copiarp();"/>
+                                    <button id="madrec" label="Madre"    onClick="copiarm();"/>
+                                    <button id="representantec" label="Representante"   onClick="copiarr();"/>
+                                </span>
+ 
+                            </row>
+                            <row>
+                                <span style="float:right"> Tipo:</span>
+                                <listbox mold="select" onSelect="llenarConsumidor();"  id="tipofac" width="150px">
+                                    <listitem label="CEDULA" value="C">
+                                    </listitem>
+                                    <listitem label="RUC" value="R">
+                                    </listitem>
+                                    <listitem label="PASAPORTE" value="P">
+                                    </listitem>
+                                </listbox>
+
+
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Identificación:</span>
+                                <textbox maxlength="13" cols="13"   id="cedulafac"  />
+
+
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Nombre Factura:</span>
+                                <textbox id="nombresfac"  maxlength="100" cols="40"    />
+
+
+
+                            </row>
+
+                            <row>
+                                <span style="float:right"> Dirección:</span>
+                                <textbox id="direccionfac" maxlength="100" cols="40"      />
+
+
+                            </row>
+                            <row>
+                                <span style="float:right"> Teléfono:</span>
+                                <textbox id="telefonofac" maxlength="30" cols="13"    />
+                            </row>
+                                                           
+                        </rows>
+                    </grid>
+                </panelchildren>
+                <toolbar  sclass="vista" align="end">
+                    
+                    <toolbarbutton image="/images/sig.png" onClick='dfactura.visible = false' />
+                </toolbar>
+            </panel>
+
+     
+
+
+
+
+            <panel id="impresora" visible = "false" height="370px" style="margin-bottom:10px"
+                   title="Reporte" border="normal">
+                <panelchildren>
+                    <jasperreport id="report" />
+                </panelchildren>
+            </panel>
+
+             
+            <vbox>
+                <hbox>
+            
+                    <button visible="false"  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button visible="false"   image="/images/editar.gif" id="modificar"  label="Modificar"  onClick="modificar()"/>
+                    <button  visible="false"  image="/images/imprimir.gif" id="acta"  label="Acta"   onClick='showReport("AM")'/>
+                    <button  visible="false"  image="/images/imprimir.gif" id="certificado"  label="Certificado"   onClick='showReport("CM")' />
+                    <button  visible="false"  image="/images/imprimir.gif" id="claveprint"  label="Clave"   onClick='showReport("CL")' />
+                    <button visible="false"   image="/images/eliminar.gif" id="eliminar"  label="Eliminar"   onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+            <zscript>
+            <![CDATA[
+      
+            llenar(ses.getAttribute("userEstudiante"));
+            ]]>
+            </zscript>
+        </window>
+
+    </div>
+</zk>
