@@ -1991,6 +1991,43 @@ public class reportesClase {
 
             }
 
+            
+                        //IMPRIMO EL CUADRO DE EQUIVALENCIAS DE FALTAS
+
+            ArrayList lisAutoevaluacion = new ArrayList();
+             
+                try {
+                    //query = query3.substring(0, query3.length() - 1);
+                } catch (Exception e) {
+                    //Messagebox.show("No existen EQUIVALENCIAS \n Revise ADMINISTRACION > PARAMETROS > EQUIVALENCIAS >> DISCIPLINA", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                    //System.out.println("************** LINEA: 1276: REPORTECLASE ERROR NO HAY EQUIVALENCIAS PARAMETRIZADAS" + e);
+                    //return null;
+                }
+                 
+                //IMPRIMO LAS FALTAS
+                q = "Select o from Resultadoperfil where  "
+                        + "where o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
+                        + "and sis.orden <= '" + sistema.getOrden() + "'   AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
+                        + "  group by tri.codigotrim  order by  tri.codigotrim, sis.orden "
+                        + " ";
+//                System.out.println(""+q);
+                nativo = adm.queryNativo(q);
+                for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    int ksis = 0;
+                    for (int j = 0; j < vec.size() - 1; j++) {
+                        Object dos = vec.get(j);
+                        NotaCollection coll = new NotaCollection();
+                        coll.setNota(dos);
+                        coll.setMateria(equivalenciasFaltas.get(ksis).getNombre());
+                        coll.setMatricula("" + matriculas1.getCodigomat());
+                        coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                        coll.setSistema("" + vec.get(vec.size() - 1));
+                        lisAutoevaluacion.add(coll);
+                        ksis++;
+                    }
+                    //row.setParent(this);
+                }
             nota.setFirma1(firma1);
             nota.setFirma2(firma2);
             nota.setFirma3(firma3);
@@ -2045,6 +2082,7 @@ public class reportesClase {
             nota.setMatricula(matriculas1);
             nota.setNotas(lisNotasC);
             nota.setFaltas(lisFaltas);
+            nota.setAutoevaluacion(lisAutoevaluacion);
             lisNotas.add(nota);
 
 
