@@ -188,6 +188,10 @@ void doAdd(Cursos curso, MateriaProfesor materia){
             }
 
                 filas.addRow(curso,materia);
+                   if(periodo.getCerrado()){
+                        guardar1.disabled = true;
+                        guardar2.disabled = true;
+                    }
 
 }
 
@@ -277,7 +281,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" width="420px"
-                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value));">
 
                                             <listitem forEach="${materias}" value="${each}">
                                                 <listcell label="${each.descripcion}" />
