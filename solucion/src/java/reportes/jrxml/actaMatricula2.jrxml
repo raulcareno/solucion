@@ -44,6 +44,7 @@
 	<field name="emailPa" class="java.lang.String"/>
 	<field name="email" class="java.lang.String"/>
 	<field name="repite" class="java.lang.Boolean"/>
+	<field name="extension" class="java.lang.String"/>
 	<group name="estudiantes" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{estudiante}]]></groupExpression>
 		<groupHeader>
@@ -347,7 +348,7 @@
 				<graphicElement>
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 				</graphicElement>
-				<imageExpression class="java.io.InputStream"><![CDATA[$F{foto}]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$F{extension}]]></imageExpression>
 			</image>
 			<textField pattern="dd &apos;de&apos; MMMMM &apos;de&apos; yyyy" isBlankWhenNull="false">
 				<reportElement key="textField" x="142" y="71" width="148" height="18"/>
