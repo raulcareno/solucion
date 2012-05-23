@@ -959,12 +959,12 @@ void estado(Boolean estado,Boolean modificar){
                  Integer matri = adm.getNuevaClave("Matriculas","codigomat");
              matricula.setCodigomat(matri);
              if(!nueva.getName().equals("vacio")){
-            String  name =  periodo.getInstitucion().getFotos()+matricula.getCodigomat()+"."+nueva.getFormat();
-                InputStream objin=nueva.getStreamData();
-             FileOutputStream out=new FileOutputStream(name);
-            DataOutputStream objout=new DataOutputStream(out);
-                org.zkoss.io.Files.copy(objout,objin);
-                matricula.setExtension(nueva.getFormat());
+                String  name =  periodo.getInstitucion().getFotos()+matricula.getCodigomat()+"."+nueva.getFormat();
+                    InputStream objin=nueva.getStreamData();
+                    FileOutputStream out=new FileOutputStream(name);
+                    DataOutputStream objout=new DataOutputStream(out);
+                    org.zkoss.io.Files.copy(objout,objin);
+                    matricula.setExtension(nueva.getFormat());
              }else{
                 matricula.setExtension(null);
              }
@@ -1539,8 +1539,8 @@ public void quitarFila(String codigoBuscar){
                                                                         Object media = Fileupload.get();
 
                                                                         if (media instanceof org.zkoss.image.Image) {
-                                                                        foto0.setContent(media);
-                                                                        foto0.visible = true;    
+                                                                            foto0.setContent(media);
+                                                                            foto0.visible = true;    
 
                                                                         } else if (media != null)
                                                                         Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
@@ -2322,22 +2322,22 @@ public void quitarFila(String codigoBuscar){
         takePicture t = new takePicture();
     
         void llenar(){
-        datosIm = t.procesar();
-        if(datosIm != null){
-        foto0.visible = true;
-        foto0.setContent(new org.zkoss.image.AImage("fotito", datosIm));
-        camara.visible = false;
-        btomar.visible = true;
-        bcorrecto.visible = true;
-        cargandoFoto = true;
-        combo.value="";nuevo();
-        }else{
-        //foto0.visible = false;
-        camara.visible = true;
-        btomar.visible = false;
-        bcorrecto.visible = false;
-        cargandoFoto = false;
-        }
+                datosIm = t.procesar();
+                if(datosIm != null){
+                        foto0.visible = true;
+                        foto0.setContent(new org.zkoss.image.AImage("fotito", datosIm));
+                        camara.visible = false;
+                        btomar.visible = true;
+                        bcorrecto.visible = true;
+                        cargandoFoto = true;
+                        combo.value="";nuevo();
+                }else{
+                        //foto0.visible = false;
+                        camara.visible = true;
+                        btomar.visible = false;
+                        bcorrecto.visible = false;
+                        cargandoFoto = false;
+                }
             
         
         }
