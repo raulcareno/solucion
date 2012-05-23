@@ -38,6 +38,8 @@ void llenar(Global equi2){
             p = "Secciones";
         }else if(equi.getGrupo().equals("PAR")){
             p = "Paralelos";
+        }else if(equi.getGrupo().equals("PER")){
+            p = "Perfiles";
         }
 
     }catch(Exception ea)
@@ -172,6 +174,7 @@ equi.setPerfil(g);
             <comboitem  value="GRU" label="Grupo de Materias"/>
             <comboitem  value="SEC" label="Secciones"/>
             <comboitem  value="PAR" label="Paralelos"/>
+            <comboitem  value="PER" label="Perfiles"/>
     </combobox>
 </row>
 
@@ -203,6 +206,7 @@ equi.setPerfil(g);
                 <listitem  value="GRU" label="Grupo de Materias"/>
                 <listitem  value="SEC" label="Secciones"/>
                 <listitem  value="PAR" label="Paralelos"/>
+                <listitem  value="PER" label="Perfiles"/>
 </listbox>
  <button id="buscar"  image="/images/actualizar.png" label="Buscar" onClick="buscar(buscarText.selectedItem.getValue());"/> 
  

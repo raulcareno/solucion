@@ -38,6 +38,9 @@ void llenar(Equivalencias equi2){
         equi.setNota(0.0);
     }    
   
+  esfj.checked = equi.getEsfj();
+  esfi.checked = equi.getEsfi();
+  
  BigDecimal mini = new BigDecimal(equi.getValorminimo());
     desde.value = mini;
  BigDecimal maxi= new BigDecimal(equi.getValormaximo());
@@ -101,6 +104,8 @@ void estado(Boolean estado,Boolean modificar){
         equi.setValorminimo((desde.value).doubleValue());
         equi.setValormaximo((hasta.value).doubleValue());
         equi.setNota((nota.value).doubleValue());
+        equi.setEsfj(esfj.checked);
+        equi.setEsfi(esfi.checked);
 
 
         equi.setPeriodo(periodo);
@@ -215,7 +220,8 @@ void grupo(String tipo){
             rdesde.visible = false;
             rhasta.visible = false;
             rnota.visible = false;
-            
+            esfj.visible = false;
+            esfi.visible = false;
         if(tipo.equals("AP")){
             rnombre.visible = true;
             rabreviatura.visible = true;
@@ -231,6 +237,8 @@ void grupo(String tipo){
         }else if(tipo.equals("DI")){
             rnombre.visible = true;
             rabreviatura.visible = true;
+            esfj.visible = true;
+            esfi.visible = true;
             
         }if(tipo.equals("SU")){
             abreviatura.value = ".";
@@ -262,7 +270,11 @@ void grupo(String tipo){
                 </row>
                 <row  id="rnombre">
                     <span style="float:right"> <label id="lblnombre" value="Nombre(*):" /></span>
+                    <span>
                     <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   
+                    <checkbox id="esfj" label="Es F. Justificada" onCheck="esfi.checked = false;" />
+                    <checkbox id="esfi" label="Es F. Injustificada" onCheck="esfj.checked = false;" />
+                    </span>
                 </row>
                 <row id="rabreviatura"> 
                     <span style="float:right"><label id="lblabreviatura" value="Abreviatura(*):" /></span>
