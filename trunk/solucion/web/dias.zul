@@ -1,0 +1,135 @@
+<window  title="Control de Parámetros Generales"  border="normal"
+    >
+
+ <zscript>
+  import jcinform.persistencia.Dias;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+    import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+
+ Session ses = Sessions.getCurrent();
+ Administrador adm = new Administrador();
+  static Dias equi = new Dias();
+ Permisos permiso = new Permisos();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"'   and o.faltas = true  order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre(""+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    siste.setNombre(" .... "+siste.getNombre()+"");
+                    sistemas.add(siste);
+               }
+
+ }
+
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+Sistemacalificacion stodos0 = new Sistemacalificacion(-1);
+stodos0.setNombre("[Seleccione]");
+sistemas.add(0,stodos0);
+
+ 
+ void estado(Boolean estado,Boolean modificar){
+    if(modificar){
+        equi = (Dias)datos.selectedItem.value;
+    }
+    dias.readonly = estado;
+}
+
+
+ void guardar(){
+    if(dias.value == null){
+            Messagebox.show("Ingrese los días para continuar (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+        equi.setSistema(sistemasCombo.selectedItem.value);
+         equi.setDias(dias.value);
+        if((!equi.getCodigo().equals(0)) ){
+             adm.actualizar(equi);
+         }else{
+              equi.setCodigo(adm.getNuevaClave("Dias","codigo"));
+              adm.guardar(equi);
+         }
+              Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Parametros",accion);
+
+    }
+ 
+ void buscar(Sistemacalificacion sis){
+         List diasList = adm.query("Select o from Dias as o where o.sistema.codigosis = '"+sis.getCodigosis()+"' ");
+         if(diasList.size()>0){
+            equi = diasList.get(0);
+            dias.value = equi.getDias();
+          }else{
+            equi = new Dias(0);
+            dias.value = 0;
+          }
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ 
+void cargar(Dias g){
+    equi.setPerfil(g);
+}
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+	
+<grid width="100%">
+<rows> 
+ <row>
+    <span style="float:right">Seleccione un Periodo </span>
+    <listbox id="sistemasCombo" width="450px"  mold="select" onSelect="buscar(self.selectedItem.value)" >
+                                <listitem  forEach="${sistemas}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+</row>
+<row>
+    <span style="float:right">Días Laborados(*):</span>
+    <intbox id="dias"     />
+</row>
+
+ </rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"    onClick="guardar();"/>
+</hbox>
+</vbox>
+
+  </vbox>
+
+ </groupbox>
+ 
+</window>
