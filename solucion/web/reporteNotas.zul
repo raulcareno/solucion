@@ -820,7 +820,7 @@ void campos(String valor){
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">
             <panelchildren>
-                <grid  id="ver" style="background:transparent;border:1px" width="750px">
+                <grid  id="ver" style="background:transparent;border:1px" width="800px">
                     <rows>
                         <row  style="background:transparent;border:0px">
      
@@ -895,10 +895,10 @@ void campos(String valor){
                         <row  style="background:transparent;border:0px" id="fila" visible="false">
                             <span style="float:right;color:blue"> Rango Notas:</span>
                             <span style="color:blue"> Desde:
-                                <decimalbox id="desde" value="0" cols="5" /> 
+                                <decimalbox id="desde" value="0.0" cols="5" /> 
                                 <separator bar="true" orient="vertical" />
                                 Hasta:
-                                <decimalbox id="hasta" value="20" cols="5"/>
+                                <decimalbox id="hasta" value="20.0" cols="5"/>
                                 <separator bar="true" orient="vertical" />
                                 Nota de Peligro:
                                 <decimalbox id="peligro" value="13.33" cols="5"/>
@@ -1079,8 +1079,8 @@ void campos(String valor){
                         <row   spans="2">
                             <span>
                                 <button  image="/images/eliminar.gif" id="cerrar"   label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
-                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
-                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                                <button  id="reducir" label="Disminuir" image="/images/disminuir.gif" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar" image="/images/aumentar.gif" onClick="aumentar()"/>
                                 <button label="Refrescar Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
                             </span>
 
