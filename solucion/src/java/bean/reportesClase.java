@@ -273,7 +273,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta, Boolean incluyefaltas, Boolean incluyepromedio) {
+    public JRDataSource cuadrocalificaciones(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta, Boolean incluyefaltas, Boolean incluyepromedio,Boolean incluyedias) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -322,6 +322,17 @@ public class reportesClase {
         List<Equivalencias> equivalenciasFaltas = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'DI' "
                 + "and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasFaltasSoloDias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DI' and  (o.esfj = TRUE OR o.esfi = TRUE)  "
+                + "and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Dias> laborados = adm.query("Select o from Dias as o "
+                + " where o.sistema.codigosis  = '" + sistema.getCodigosis() + "' ");
+        Integer diasLaborados = 0;
+            if(laborados.size()>0){
+                    diasLaborados = laborados.get(0).getDias();
+            }else{
+
+            }
 
         Integer cont = 0;
         String matriculaAct = "";
@@ -500,6 +511,67 @@ public class reportesClase {
                                     }
 
                                 }
+
+                            }
+                              if (incluyedias) {
+
+                                /**
+                                 * AGREGRO LAS FALTAS AL REPORTE
+                                 */
+                                String query3 = "";
+                                int w = 1;
+
+                                for (int i = 0; i < equivalenciasFaltasSoloDias.size(); i++) {
+                                    query3 += "sum(nota" + w + "),";
+                                    w++;
+                                }
+                                query3 = query3.substring(0, query3.length() - 1);
+                                //IMPRIMO LAS FALTAS
+                                String qf = "Select " + query3 + "  from disciplina "
+                                        + "where matricula = '" + matriculaNo.getCodigomat() + "'  "
+                                        + "and sistema = '" + sistema.getCodigosis() + "' "
+                                        + " group by matricula ";
+                                //System.out.println(""+q);
+                                List nativoF = adm.queryNativo(qf);
+                                Integer faltasFustificadas =0;
+                                    Integer faltasInjustificadas =0;
+                                for (Iterator itnaF = nativoF.iterator(); itnaF.hasNext();) {
+                                    Vector vecF = (Vector) itnaF.next();
+                                   
+                                    for (int jF = 0; jF < vecF.size(); jF++) {
+                                        Object dosF = vecF.get(jF);
+                                        Integer valF = new Integer(dosF.toString());
+                                        Nota notaF = new Nota();
+                                        notaF.setContador(cont);
+                                        notaF.setMatricula(matriculaNo);
+                                        notaF.setNota(valF);
+                                        Global matNueva = new Global((equivalenciasFaltas.get(jF)).getCodigoequi());
+                                        matNueva.setDescripcion((equivalenciasFaltas.get(jF)).getNombre());
+                                        if((equivalenciasFaltas.get(jF)).getEsfj()){
+                                            faltasFustificadas = valF;
+                                        }else if((equivalenciasFaltas.get(jF)).getEsfi()){
+                                            faltasInjustificadas = valF;
+                                        }
+                                        notaF.setMateria(matNueva);
+                                        notaF.setMprofesor(maprofesor);
+                                        notaF.setSistema(sistema);
+                                        lisNotas.add(notaF);
+                                    }
+
+                                }
+                                 
+                                    Nota notaF = new Nota();
+                                    notaF.setContador(cont);
+                                    notaF.setMatricula(matriculaNo);
+                                    notaF.setNota((diasLaborados -faltasInjustificadas));
+                                    Global matNueva = new Global(1000);
+                                    matNueva.setDescripcion("Asistencia");
+                                    notaF.setMateria(matNueva);
+                                    notaF.setMprofesor(maprofesor);
+                                    notaF.setSistema(sistema);
+                                    lisNotas.add(notaF);
+                          
+                                
 
                             }
 

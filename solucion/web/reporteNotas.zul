@@ -491,18 +491,18 @@ void recalcular(){
             }else if(tipo.equals("CCAL2")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked);
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked,incluirfaltasydias.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones2.jasper");
                            
             }else if(tipo.equals("CCAL3")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked);
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked,incluirfaltasydias.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones3.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked);
+                    datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked,incluirfaltasydias.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones.jasper");
 
             }else if(tipo.equals("ESTA")){
@@ -635,6 +635,7 @@ void campos(String valor){
     filaaportes.visible = false;
      filasecuencia.visible = false;
      incluirfaltas.visible = false;
+     incluirfaltasydias.visible = false;
      incluirpromedio.visible = false;
         if(valor.equals("DIS")){
             curs.disabled = false;
@@ -729,6 +730,7 @@ void campos(String valor){
              filaestudiantes.visible = true;
         }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3")){
              incluirfaltas.visible = true;
+             incluirfaltasydias.visible = true;
              incluirpromedio.visible = true;
              curs.disabled = false;
              sistemasCombo.disabled = false;
@@ -892,9 +894,9 @@ void campos(String valor){
     
                             </span>
                         </row>
-                        <row  style="background:transparent;border:0px" id="fila" visible="false">
-                            <span style="float:right;color:blue"> Rango Notas:</span>
-                            <span style="color:blue"> Desde:
+                        <row  spans="2" style="background:transparent;border:0px" id="fila" visible="false">
+                            <vbox>
+                                   <span style="color:black"> Rango Notas: Desde:
                                 <decimalbox id="desde" value="0.0" cols="5" /> 
                                 <separator bar="true" orient="vertical" />
                                 Hasta:
@@ -902,11 +904,18 @@ void campos(String valor){
                                 <separator bar="true" orient="vertical" />
                                 Nota de Peligro:
                                 <decimalbox id="peligro" value="13.33" cols="5"/>
-                                <separator bar="true" orient="vertical" />
-                                INCLUIR: 
-                                <checkbox visible="false" checked="true" id="incluirpromedio" label="PROMEDIO" style="color:blue" />
-                                <checkbox visible="false" id="incluirfaltas" label=" FALTAS" style="color:blue" />
+                           
                             </span>
+                            <span style="color:black">  
+                               
+                                <separator bar="false" orient="vertical" />
+                                Incluir en Reporte:  
+                                <checkbox visible="false" checked="true" id="incluirpromedio" label="El Promedio" style="color:blue" />
+                                <checkbox visible="false" onCheck="incluirfaltasydias.checked = false;"  id="incluirfaltas" label=" Las Faltas" style="color:blue" />
+                                <checkbox visible="false" onCheck="incluirfaltas.checked = false;" id="incluirfaltasydias" label="Los Días Laborados y Faltas" style="color:blue" />
+                            </span>
+                            </vbox>
+                         
                         </row>
                         <row id="filarangos" visible="false" spans="2">
                             
