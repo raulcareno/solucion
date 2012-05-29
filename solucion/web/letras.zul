@@ -11,7 +11,7 @@
                 <row>
                     <span style="float:right"> Letras(*):</span>
                     <span>
-                        <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   /> 
+                        <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   /> 
                         <button label="TODO EL ABECEDARIO" onClick="todo()"/> Separe con " ; " Ejm. A; B; C;
                     </span>
                 </row>
@@ -95,27 +95,7 @@
  Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
  //FUNCIONES
- void habil(){
-String p = grupo.getValue();
-            try{
-
-             vc.visible=false;
-             vn.visible=false;
-             vl.visible=false;
-             vf.visible=false;
-
-                if(p.equals("Caracter")){
-                    vc.visible=true;
-                }else if(p.equals("Numerico")){
-                    vn.visible=true;
-                }else if(p.equals("Logico")){
-                    vl.visible=true;
-                }else if(p.equals("Fecha")){
-                    vf.visible=true;
-                }
-            }catch(Exception e){}
- }
-
+  
  void llenar(Letras equi2){
             equi = equi2;
             nombre.value = equi.getLetras();
@@ -147,6 +127,7 @@ void estado(Boolean estado,Boolean modificar){
         equi.setLetras(nombre.value);
         equi.setDesde(desde.value);
         equi.setHasta(hasta.value);
+        equi.setPeriodo(periodo);
     
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -210,7 +191,7 @@ void eliminar(){
    void buscar(String p){
      
       List equivaEncontrados = adm.query("Select o from Letras as o " +
-        " where o.letras like '%"+p+"%' ");
+        " where o.letras like '%"+p+"%' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
         datos = new Listbox();
         int a=0;
             for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
