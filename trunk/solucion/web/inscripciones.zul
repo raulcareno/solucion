@@ -103,10 +103,17 @@ String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.
  List periodosListadod = adm.queryNativo("Select o.* from Periodo as o where o.web = true and '"+fechaString+"' between o.fechai and o.fechaf order by o.descripcion",Periodo.class);
  String letrasparaHoy ="";
  try{
-
-        List letrasHoy = adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta ");
-        letrasparaHoy = "HOY SOLO APELLIDOS QUE EMPIEZAN CON: "+letrasHoy.get(0);
-        letrasparaHoy = letrasparaHoy.replace(";"," , ");
+List letrasHoy = null;
+ //adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta AND periodo = '"++"' "); 
+void cargarLetras(){
+    Periodo per = periodosListado.selectedItem.value
+    List letrasHoy = adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta "+ 
+        " AND periodo = '"+per.getCodigoper()+"' ");
+    letrasparaHoy = "HOY SOLO APELLIDOS QUE EMPIEZAN CON: "+letrasHoy.get(0);
+    letrasparaHoy = letrasparaHoy.replace(";"," , ");
+}
+        
+        
 
  }catch(Exception err1){
         letrasparaHoy = "  No se puede matricular el día de hoy, no existen, cierre y vuelva a intentar en otro día, o verifique su horario";
@@ -762,7 +769,7 @@ void validar(Textbox texto){
                         <rows>
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
-                                    <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="seleccionPeriodo();" >
+                                    <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="seleccionPeriodo();cargarLetras();" >
                                         <listitem  label="* S E L E C C I O N E  *  E L  *  P E R I O D O  *  P A R A  *  C O N T I N U A R *  " value="-1"/>
                                         <listitem forEach="${periodosListadod}" value="${each}">
                                             <listcell   label="**${each.institucion.tipo}** [${each.seccion}]  ${each.descripcion} ${each.institucion} " />
