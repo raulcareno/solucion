@@ -106,11 +106,7 @@ String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.
 List letrasHoy = null;
  //adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta AND periodo = '"++"' "); 
 void cargarLetras(){
-    Periodo per = periodosListado.selectedItem.value
-    List letrasHoy = adm.queryNativo("SELECT letras FROM letras WHERE NOW() BETWEEN desde AND hasta "+ 
-        " AND periodo = '"+per.getCodigoper()+"' ");
-    letrasparaHoy = "HOY SOLO APELLIDOS QUE EMPIEZAN CON: "+letrasHoy.get(0);
-    letrasparaHoy = letrasparaHoy.replace(";"," , ");
+
 }
         
         
@@ -664,6 +660,16 @@ Periodo periodo = periodosListado.selectedItem.value;
 
 void seleccionPeriodo(){
         
+         Periodo per = periodosListado.selectedItem.value;
+                letrasHoy = adm.queryNativo("SELECT * FROM letras WHERE NOW() BETWEEN desde AND hasta " + 
+                    " AND periodo = '"+per.getCodigoper()+"' ",Letras.class);
+                letrasparaHoy = "Hoy apellidos que empiezan con: "+((Letras)letrasHoy.get(0)).getLetras();
+                letrasparaHoy = letrasparaHoy.replace(";"," , ");
+                letras.value = "Hoy apellidos que empiezan con: [ "+((Letras)letrasHoy.get(0)).getLetras()+" ]";
+                letras.value = (letras.value).replace(";"," , ");
+                desdehasta.value = " HORARIO: " + ((Letras)letrasHoy.get(0)).getDesde().toLocaleString()+" - " + ((Letras)letrasHoy.get(0)).getHasta().toLocaleString();
+                
+                 
         try{
         String valor = ""+periodosListado.selectedItem.value;
         if(valor.equals("-1")){
@@ -769,7 +775,7 @@ void validar(Textbox texto){
                         <rows>
                             <row align="left"  spans="2" style="background:#6699CC;border:0px;color:blue" >
                                 <span>
-                                    <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="seleccionPeriodo();cargarLetras();" >
+                                    <listbox id="periodosListado" mold="select" style="font-size:15px"  onSelect="cargarLetras(); seleccionPeriodo();" >
                                         <listitem  label="* S E L E C C I O N E  *  E L  *  P E R I O D O  *  P A R A  *  C O N T I N U A R *  " value="-1"/>
                                         <listitem forEach="${periodosListadod}" value="${each}">
                                             <listcell   label="**${each.institucion.tipo}** [${each.seccion}]  ${each.descripcion} ${each.institucion} " />
@@ -791,7 +797,7 @@ void validar(Textbox texto){
                                     <label style="font-size:15px;color:white" id="now3" />
                                     <label style="font-size:15px;color:white" id="now" />
                                     <label style="font-size:15px;color:white" visible="false" id="now2" value=" Ud lleva:" />
-
+                                    
                                     <timer id="timer" delay="1000" repeats="true">
                                         <attribute name="onTimer">
                                             <![CDATA[
@@ -814,8 +820,14 @@ void validar(Textbox texto){
                                                 Resta="0"+Resta;
                                             now2.setValue(" Ud. lleva: "+Resta+" minutos ");
                                             
-                                            if(contador <= 7)
+                                            if(contador <= 7){
                                                 letras.visible = !letras.visible;
+                                                if(letras.visible)
+                                                        letras.setStyle("color:WHITE;font-size:22px;font-weight:bold;");
+                                                    if(contador==7){
+                                                        letras.setStyle("color:WHITE;font-size:14px;font-weight:bold;");
+                                                    }
+                                            }
                                              contador++;
                                             if(Resta.equals("30")){
                                                 Executions.sendRedirect("inscripciones.zul");
@@ -825,6 +837,9 @@ void validar(Textbox texto){
                                     </timer>
                                 </span>
                             </row>
+                            <row align="left"    spans="2" style="background:#6699CC;border:0px;color:blue" >
+                                <label style="font-size:15px;color:white" visible="true" id="desdehasta" value="." />
+                                </row>
                           
                             <row align="left"  spans="2" style="background:#E4EDF6;border:0px;left:30px;" >
                                 <separator bar="true"/>
@@ -1591,7 +1606,7 @@ void validar(Textbox texto){
                         }
                         void verificaLetra(){
                         verificarLetras ver = new verificarLetras();
-                        String paso = ver.verifica(apellidos.value,adm);
+                        String paso = ver.verifica(apellidos.value,adm,periodosListado.selectedItem.value);
                                  if(paso.contains("ERROR")){
                                     Messagebox.show(""+paso, "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                                     Executions.sendRedirect("/inscripciones.zul");

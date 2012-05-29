@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.Letras;
+import jcinform.persistencia.Periodo;
 import jcinform.procesos.Administrador;
 
 /**
@@ -19,8 +20,9 @@ public class verificarLetras {
     public void verificarLetras() {
 
     }
-    public String verifica(String apellido,Administrador adm) {
-        List<Letras> letr = adm.query("Select o from Letras as o");
+    public String verifica(String apellido,Administrador adm,Periodo per) {
+        List<Letras> letr = adm.query("Select o from Letras as o "
+                + " where o.periodo.codigoper = '"+per.getCodigoper()+"' ");
         Letras letraEncontrada = null;
         String primeraLetra ="";
         try {
