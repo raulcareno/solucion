@@ -248,9 +248,11 @@ void ingresarSoporte(Soporte sop){
                    
                     <zscript>
                         void soporteSeleccionado(Soporte sop){
-                        sop.setRevisoescalar(true);
-                        adm.actualizar(sop);
-                        ingresarSoporte(sop);
+                                //sop.setRevisoescalar(true);
+                                //adm.actualizar(sop);
+                                pendientes.clearSelection();
+                                ingresarSoporte(sop);
+                                
                     
                         }
                     </zscript>

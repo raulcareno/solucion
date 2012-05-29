@@ -1333,7 +1333,7 @@ void verificarCedula(String valor){
 
   void facturasPendientes(){
                 try{
-                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos, fa.numero FROM cxcobrar cx, factura  fa "   +
+                List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo,fa.contratos, fa.numero,fa.emision FROM cxcobrar cx, factura  fa "   +
                         " WHERE fa.clientes  =  "+codigocli.value+"  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
                 
@@ -1373,9 +1373,13 @@ void verificarCedula(String valor){
                                        row.setValue(dos);
                                         row.appendChild(new Label(dos+""));
                                     }else if(dos instanceof Date){
-                                     SimpleDateFormat d1 = new SimpleDateFormat("dd-MMMM-yyyy");
-                                     Date d = (Date)dos;
-                                      row.appendChild(new Label(d1.format(d)+""));
+                                        SimpleDateFormat d1 = new SimpleDateFormat("MMMM-yyyy");
+                                        SimpleDateFormat d2 = new SimpleDateFormat("dd-MMMM-yyyy");
+                                        Date d = (Date)dos;
+                                        if(j>2)
+                                            row.appendChild(new Label(d2.format(d)+""));
+                                        else
+                                            row.appendChild(new Label((d1.format(d)).toUpperCase()+""));
                                     }else{
                                         row.appendChild(new Label(dos+""));
                                     }
@@ -2980,11 +2984,12 @@ void llamar(){
                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
                         <columns>
                             <column  label="No."/>
-                            <column  label="Fecha Pago"/>
+                            <column  label="Obligación"/>
                             <column   label="Total"/>
                             <column   label="Saldo"/>
                             <column   label="Ref."/>
                             <column   label="No.Factura"/>
+                            <column   label="Emitida"/>
                             <column  width="150px"  label="Acciones"/>
                         </columns>
                         <rows id="filasFac">

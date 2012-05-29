@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="651" pageHeight="842" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="553"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="empresa" class="java.lang.String"/>
 	<parameter name="direccion" class="java.lang.String"/>
@@ -104,7 +104,7 @@
 				<textFieldExpression class="java.util.Date"><![CDATA[$P{hasta}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="72" width="50" height="16"/>
+				<reportElement x="0" y="72" width="40" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -118,7 +118,7 @@
 				<text><![CDATA[Factura]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="50" y="72" width="43" height="16"/>
+				<reportElement x="40" y="72" width="43" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -132,7 +132,7 @@
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="181" y="72" width="170" height="16"/>
+				<reportElement x="252" y="72" width="124" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -146,7 +146,7 @@
 				<text><![CDATA[Detalle]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="72" width="53" height="16"/>
+				<reportElement x="503" y="72" width="53" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -160,7 +160,7 @@
 				<text><![CDATA[Pago]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="553" y="72" width="55" height="16"/>
+				<reportElement x="556" y="72" width="55" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -174,7 +174,7 @@
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="93" y="72" width="88" height="16"/>
+				<reportElement x="83" y="72" width="53" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -185,10 +185,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[RUC/Cedula]]></text>
+				<text><![CDATA[Ident.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="72" width="53" height="16"/>
+				<reportElement x="376" y="72" width="43" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -202,7 +202,7 @@
 				<text><![CDATA[Subtotal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="404" y="72" width="44" height="16"/>
+				<reportElement x="419" y="72" width="32" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -216,7 +216,7 @@
 				<text><![CDATA[IVA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="448" y="72" width="52" height="16"/>
+				<reportElement x="451" y="72" width="52" height="16"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -229,6 +229,20 @@
 				</textElement>
 				<text><![CDATA[Total]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="136" y="72" width="116" height="16"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Clientes]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
@@ -240,7 +254,7 @@
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="0" width="50" height="16" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="0" y="0" width="40" height="16" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -249,12 +263,12 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+					<font size="7" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement mode="Transparent" x="50" y="0" width="43" height="16" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="40" y="0" width="43" height="16" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -268,7 +282,7 @@
 				<textFieldExpression class="java.util.Date"><![CDATA[$F{mes}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="181" y="0" width="170" height="16" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="252" y="0" width="124" height="16" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -282,7 +296,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{plan}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement mode="Transparent" x="448" y="0" width="52" height="16" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="451" y="0" width="52" height="16" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -296,7 +310,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="553" y="0" width="55" height="16"/>
+				<reportElement x="556" y="0" width="55" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -310,7 +324,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="500" y="0" width="53" height="16"/>
+				<reportElement x="503" y="0" width="53" height="16"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -324,7 +338,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorabonoefe}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="93" y="0" width="88" height="16"/>
+				<reportElement x="83" y="0" width="53" height="16"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -333,12 +347,12 @@
 					<rightPen lineWidth="0.5"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ruc}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement mode="Transparent" x="351" y="0" width="53" height="16" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="376" y="0" width="43" height="16" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -352,7 +366,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement mode="Transparent" x="404" y="0" width="44" height="16" backcolor="#EDECEC"/>
+				<reportElement mode="Transparent" x="419" y="0" width="32" height="16" backcolor="#EDECEC"/>
 				<box leftPadding="2" rightPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -365,6 +379,20 @@
 				</textElement>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{iva}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="136" y="0" width="116" height="16"/>
+				<box leftPadding="1">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -376,7 +404,7 @@
 	<summary>
 		<band height="20" splitType="Stretch">
 			<textField pattern="#,##0.00">
-				<reportElement x="500" y="0" width="53" height="20"/>
+				<reportElement x="503" y="0" width="53" height="20"/>
 				<box rightPadding="1">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -390,7 +418,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valorabonoefe_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="448" y="0" width="52" height="20"/>
+				<reportElement x="451" y="0" width="52" height="20"/>
 				<box rightPadding="1">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -404,7 +432,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{valor_1}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="553" y="0" width="55" height="20"/>
+				<reportElement x="556" y="0" width="55" height="20"/>
 				<box rightPadding="1">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -418,7 +446,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldo_1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="404" y="0" width="44" height="20"/>
+				<reportElement x="419" y="0" width="32" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -429,7 +457,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Totales:]]></text>
+				<text><![CDATA[Tot.:]]></text>
 			</staticText>
 		</band>
 	</summary>

@@ -1,23 +1,23 @@
 <?page id="contratospage"?>
 <window  onCreate="cargando()" id="crearSoporte"  border="normal" >
     <style>
-.MyGridRowHeight tr.z-row td.z-row-inner  
-{
-      background: white;
-      border-top: none;
-      border-left: 1px solid white;
-      border-right: 1px solid #CCC;
-      border-bottom: 1px solid #DDD;
+        .MyGridRowHeight tr.z-row td.z-row-inner  
+        {
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        border-bottom: 1px solid #DDD;
  
-}
-/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
-  background: #F8F8F8;
-} */
-.MyGridRowHeight td.z-row-inner
-{
-    padding: 0px;
-    //overflow: hidden;
-}
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px;
+        //overflow: hidden;
+        }
     </style>
     <zscript>   <![CDATA[
     
@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
             
+            Boolean esModal = false;
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
@@ -307,6 +308,7 @@ void buscarContratos(Clientes empa){
        
             List empleados = adm.query("Select o from Soporte as o where o.codigo = "+(valor)+" ");
             if(empleados.size()>0){
+                    esModal = true;
                 nuevos(empleados.get(0));
                 modificars.disabled = false;
                   llenarCliente((empleados.get(0)).getClientes());
@@ -340,12 +342,13 @@ void buscarContratos(Clientes empa){
                 }  
  }
                         
-                void guardars(){
- Integer valorEstado = new Integer(estadoSoporte.selectedItem.value);
- if( empleadosList.selectedItem == null && (valorEstado.equals(3) || valorEstado.equals(4)) ){
-    Messagebox.show("No ha seleccionado el Técnico para la asistencia...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    return;
- }
+void guardars(){
+                    Integer valorEstado = new Integer(estadoSoporte.selectedItem.value);
+
+                    if( empleadosList.selectedItem == null && (valorEstado.equals(3) || valorEstado.equals(4)) ){
+                        Messagebox.show("No ha seleccionado el Técnico para la asistencia...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        return;
+                    }
                                 Soporte sop = new Soporte();
                                 sop.setCodigo(codigos.value);
                                 sop.setEmpleados(new Empleados(atendida.value));
@@ -357,7 +360,12 @@ void buscarContratos(Clientes empa){
                                 sop.setGenerada(escalar.checked);
                                 sop.setDireccion(direccioni.value);
                                 sop.setTelefono(telefonoi.value);
-                                sop.setRevisoescalar(revisoescalar.checked);
+                                if(valorEstado.equals(new Integer("1"))){
+                                   sop.setRevisoescalar(true);
+                                }else{
+                                    sop.setRevisoescalar(false);
+                                }
+                                
                                
                                 sop.setEstado(valorEstado);
                                 if(valorEstado.equals(1)){
@@ -403,7 +411,7 @@ void buscarContratos(Clientes empa){
                                  }
                                  
                                         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                             
+                           
                                        noorden.value = sop.getNoorden();
                                               if(valorEstado.equals(3) || valorEstado.equals(4) ){  //GENERAR ORDEN DE COMPRA
                                          
@@ -446,7 +454,14 @@ void buscarContratos(Clientes empa){
                                             buscarSoportes();
                                       
                   
-                    }
+                    if(esModal){
+                                try{
+                                    crearSoporte.detach();
+                                }catch(Exception e){
+                                }
+                                
+                             }
+ }
                      
                     
   void buscarSoportes(){
@@ -594,10 +609,10 @@ void buscarContratos(Clientes empa){
                                         <span> Nombres:</span> 
                                         <span>  
                                             <combobox  cols="35" id="combo" 
-                                      onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" 
-                                      autodrop="true" 
-                                      buttonVisible="false"  
-                                      use="jcinform.bean.autoCompletarClientes"/>
+                                                       onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" 
+                                                       autodrop="true" 
+                                                       buttonVisible="false"  
+                                                       use="jcinform.bean.autoCompletarClientes"/>
                                     
                                         <!--textbox readonly="true" cols="42"   id="combo2" />
                            
@@ -620,12 +635,12 @@ void buscarContratos(Clientes empa){
                                 </row>
                                 <row>
                                    
-                                        <label value="Dirección: " style="font-weight:bold" />    
-                                        <span>
-                                            <textbox id="direccioni" cols="40" readonly="true"  visible="true" />
+                                    <label value="Dirección: " style="font-weight:bold" />    
+                                    <span>
+                                        <textbox id="direccioni" cols="40" readonly="true"  visible="true" />
                                         <label value="Teléfono: " style="font-weight:bold" />    
-                                            <textbox id="telefonoi" readonly="true" visible="true" />
-                                            </span>
+                                        <textbox id="telefonoi" readonly="true" visible="true" />
+                                    </span>
                                 </row> 
                                 <row visible="false">
                                     <span style="float:right">Dirección:  </span>
@@ -667,7 +682,7 @@ void buscarContratos(Clientes empa){
                                             </bandpopup>
                                         </bandbox>  
                                     
-                                    Actividad:
+                                        Actividad:
                                         <bandbox style="background-color:transparent" value="Asistencia" disabled="true" readonly="true" width="90px"  id="bdActividad">
                                             <bandpopup>
                                                 <vbox>
@@ -685,14 +700,14 @@ void buscarContratos(Clientes empa){
                                     
                                     </span>
                                 </row>
-                                   <row>
+                                <row>
                                     <span style="float:right"> No. Orden: </span>
                                     <span>   
                                         <checkbox visible ="false" id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
                                         <intbox id="noorden" readonly="true"   /> 
                                         Fecha:
                                         <datebox readonly="true" disabled="true"  style="background:white;"  
-                                    width="140px"  format="dd-MM-yyyy HH:mm"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
+                                                 width="140px"  format="dd-MM-yyyy HH:mm"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
                                         <span>Téc.Asignado:</span>
                                         <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
                                             <bandpopup>
@@ -711,7 +726,7 @@ void buscarContratos(Clientes empa){
                                         
                                     </span>
                                 </row>
-                                  <row>
+                                <row>
                                     <span style="float:right"> Escalar: </span>
                                     <span>   
                                         <checkbox visible ="true" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
@@ -761,7 +776,7 @@ void buscarContratos(Clientes empa){
                         
 	   
                                 <listbox mold="paging" rows="10" pageSize="10"  
-                                onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
+                                         onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
                                     <listhead>
                                         <listheader label="Ticket"/>
                                         <listheader label="Orden Trabajo"/>
@@ -835,7 +850,7 @@ void buscarContratos(Clientes empa){
 
      
         <panel height="1px" visible="false" style="margin-bottom:10px"
-                           title="Reporte" border="normal">
+               title="Reporte" border="normal">
             <panelchildren>
                 <jasperreport id="reportelocal" />
             </panelchildren>
@@ -846,13 +861,13 @@ void buscarContratos(Clientes empa){
     
     <zscript>
         void cargando(){
-          try{
-                   Soporte llegaSop = crearSoporte.getAttribute("soporteActual");
-                   buscarPrimaria(llegaSop.getCodigo());
-                   System.out.println("SOPORTE Q LLEGA: "+llegaSop);
-             }catch(Exception e){
-              System.out.println("ERROR EN CARGAR SOPOrTE: "+e);
-             }
+        try{
+        Soporte llegaSop = crearSoporte.getAttribute("soporteActual");
+        buscarPrimaria(llegaSop.getCodigo());
+        System.out.println("SOPORTE Q LLEGA: "+llegaSop);
+        }catch(Exception e){
+        System.out.println("ERROR EN CARGAR SOPOrTE: "+e);
+        }
         }
     </zscript>
 </window>

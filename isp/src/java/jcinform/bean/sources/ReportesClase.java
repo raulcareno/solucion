@@ -641,25 +641,28 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         List<Clientes> clientes = new ArrayList<Clientes>();
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
         String estadoComp = " and o.estado = '" + estado + "' ";
-        String estadoComp2 = " WHERE o.estado = '" + estado + "' ";
+
         if(estado.equals("Todos")){
             estadoComp ="";
-            estadoComp2 ="";
+
         }
+          String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
         if (emp.getCodigo().equals(-1)) {
-            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "  "+estadoComp2+" order by o.clientes.apellidos");
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o WHERE  o.fechainstalacion between '" + desdestr + "' "
+                    + " and '" + hastastr + "' " + "  "+estadoComp+ 
+                    " order by o.clientes.apellidos");
         } else {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + " WHERE o.empleados2.codigo = '" + emp.getCodigo() + "'   "
-                    + estadoComp
+                    + estadoComp +"  AND o.fechainstalacion between '" + desdestr + "' "
+                    + " and '" + hastastr + "'  "
                     + " order by o.clientes.apellidos");
         }
         
 
         List<Pendientes> detalles = new ArrayList();
-        String desdestr = convertiraString(desde);
-        String hastastr = convertiraString(hasta);
+   
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
             String sql = "SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  "
@@ -669,7 +672,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
                     + " AND cx.factura = fa.codigo "
-                    + "AND fa.fecha between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
+                    + " and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";
             //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
             List facEncontradas = adm.queryNativo(sql);
