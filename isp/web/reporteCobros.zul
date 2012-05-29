@@ -37,6 +37,8 @@ cantones.add(0,cantonTodos);
              
  List planes = adm.query("Select o from Plan as o " + 
      " where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre, o.valor ");
+List nodos = adm.query("Select o from Nodos as o " + 
+     " where o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre ");
  List proveedores2 = adm.query("Select o from Proveedores  as o ");
      
      Plan pSel = new Plan(-1);
@@ -147,6 +149,14 @@ cantones.add(0,cantonTodos);
                    }else{
                         report.setSrc(directorioReportes+"listacontratos2.jasper");
                    }
+                   
+                   
+            }else if(tipo.equals("PORNODOSCLI")){
+                  datasource = reportes.clientesxnodo(nodosList.selectedItem.value,estadoContrato.selectedItem.value);
+                        report.setSrc(directorioReportes+"listacontratos.jasper");
+                        report.setSrc(directorioReportes+"listacontratoscontador.jasper");
+                        report.setSrc(directorioReportes+"listacontratos2.jasper");
+                    
                    
                    
             }else if(tipo.equals("PORESTADO")){
@@ -414,6 +424,11 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;
             filaestado.visible = true;
+        }else if(valor.equals("PORNODOSCLI")){
+            titulo.value= "X Nodos";
+
+            filaestado.visible = true;
+            filanodos.visible = true;
         }else if(valor.equals("INVEMP")){
             titulo.value= "Inventario por Empleado";
             filaempleados.visible = true;
@@ -539,6 +554,7 @@ void campos(String valor){
                                     <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
                                     <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
                                     <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
+                                    <listitem id="PORNODOSCLI" label="Clientes por Nodos" value="PORNODOSCLI" />
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea3" label="========INVENTARIOS=================" value="linea2" />
                                     <listitem id="INVNORMAL" label="Inventario Totales x Producto E/S/Aju./Prest." value="INVNORMAL" />
@@ -650,23 +666,23 @@ void campos(String valor){
                                 <datebox onCreate="self.value = adm.Date()" id="desde"/>
                                 Hasta: 
                                 <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
-                              <checkbox id="todasfechas" onCheck="desde.disabled = !desde.disabled; hasta.disabled = !hasta.disabled;" label="Todas las fechas"/>
+                                <checkbox id="todasfechas" onCheck="desde.disabled = !desde.disabled; hasta.disabled = !hasta.disabled;" label="Todas las fechas"/>
                             </span>
                         </row>
                         <row id="filaproveedores">
-                             <span style="float:right"> Proveedor(*):</span>
-                                    <bandbox  width="400px" readonly="true"  id="bd1">
-                                        <bandpopup>
-                                            <vbox>
-                                                <listbox id="proveedoresList" width="660px" rows="10"
-                                                onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                                    <listitem selected="true" forEach="${proveedores2}" value="${each}">
-                                                        <listcell label="${each.razonsocial}" />
-                                                    </listitem>
-                                                </listbox>
-                                            </vbox>
-                                        </bandpopup>
-                                    </bandbox>
+                            <span style="float:right"> Proveedor(*):</span>
+                            <bandbox  width="400px" readonly="true"  id="bd1">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="proveedoresList" width="660px" rows="10"
+                                                         onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                            <listitem selected="true" forEach="${proveedores2}" value="${each}">
+                                                <listcell label="${each.razonsocial}" />
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
                         </row>
                         <row id="filanumerofactura">
                             <span style="float:right"> Número de Factura(*):</span>
@@ -742,6 +758,22 @@ void campos(String valor){
                                             <listitem forEach="${perfiles}" value="${each}">
                                                 <listcell label="${each.nombre}" />
 
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
+                        <row  visible = "false" id="filanodos">
+                            <span style="float:right"> Nodos(*):</span>
+                                                           
+                            <bandbox  width="200px" readonly="true"  id="bdNodo">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="nodosList" width="250px" rows="10"
+                                            onSelect="bdNodo.value=self.selectedItem.label;bdNodo.closeDropdown();">
+                                             <listitem forEach="${nodos}" value="${each}">
+                                                <listcell label="${each.nombre}" />
                                             </listitem>
                                         </listbox>
                                     </vbox>

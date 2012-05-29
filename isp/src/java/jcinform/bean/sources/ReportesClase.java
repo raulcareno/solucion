@@ -50,6 +50,23 @@ public class ReportesClase {
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
     }
+    
+     public JRDataSource clientesxnodo(Nodos nodo, String estado) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        String complemento = "  ";
+        List<Contratos> contra = adm.query("Select o from Contratos as o "
+                + "where o.radios.nodos.codigo = '" + nodo.getCodigo() + "' " 
+                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + " and o.estado = '" + estado + "' "
+                + " order by o.radios.nombre, o.clientes.apellidos ");
+        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+            Contratos contratos = it.next();
+            detalles.add(contratos);
+        }
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
+        return ds;
+    }
 
     public JRDataSource clientesxestadoplan(String estado, List planes, String tipo) {
         Administrador adm = new Administrador();
