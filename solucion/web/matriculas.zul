@@ -1338,6 +1338,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("nombre", insts.getNombre());
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
             JRDataSource datasource = null;
