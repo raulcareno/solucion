@@ -488,6 +488,14 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                                          + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                                          System.out.println("FECHAS"+query);
                                  }
+                                 if(tipo.equals("LCLA5")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Inscrito') "
+                                                 + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
                 
             List hoy = adm.queryNativo(query,Matriculas.class);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -981,6 +989,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LCLA2",listadoEstudiantes);
                     parametros.put("titulo",titulo.getValue());
                     report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
+            }else if(tipo.equals("LCLA5")){
+                    datasource = certificados(listadoCursos,"LCLA5",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
             }else if(tipo.equals("LCOR")){
                     datasource = certificados(listadoCursos,"LCOR",listadoEstudiantes);
                     parametros.put("titulo",titulo.getValue());
@@ -1184,6 +1196,7 @@ void campos(String valor){
                                 <listitem  id="LCLA2" label="Estudiantes con Claves (Individual-Recortar)" value="LCLA2"/>
                                 <listitem  id="LCLA3" label="Representantes con Claves (Todos)" value="LCLA3"/>
                                 <listitem  id="LCLA4" label="Representante con Claves (Individual-Recortar)" value="LCLA4"/>
+                                <listitem  id="LCLA5" label="Representante con Claves (Individual-Recortar) INNSCRITOS" value="LCLA5"/>
                                 <listitem  id="LCOR" label="Estudiantes con Correos electrónicos" value="LCOR"/>
                                 <listitem  id="LREP" label="Estudiantes con Representantes" value="LREP"/>
                                 <listitem  id="LREP3" label="Estudiantes con Representantes(Financiero)" value="LREP3"/>
@@ -1362,6 +1375,7 @@ void campos(String valor){
             LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
             LCLA3.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
             LCLA4.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCLA5.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
             LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
 
             LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
