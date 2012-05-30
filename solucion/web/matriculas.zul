@@ -258,6 +258,9 @@ void llenar(Estudiantes estudent){
             }
               if(estudent.getPendientes()!=null){
                 pendientes.checked = estudent.getPendientes();
+            } 
+            if(estudent.getBloquear()!=null){
+                bloquear.checked = estudent.getBloquear();
             }
             if(estudent.getAplico()!=null){
                 aplico.checked = estudent.getAplico();
@@ -692,6 +695,7 @@ void estado(Boolean estado,Boolean modificar){
         }
 
         estudent.setPendientes(pendientes.checked);
+        estudent.setBloquear(bloquear.checked);
 
         estudent.setVivecon(vivecon.value);
         estudent.setHermanos(hermanos.value);
@@ -1762,6 +1766,7 @@ public void quitarFila(String codigoBuscar){
                                                         <textbox id="codigoclave"  />
                                                         BLOQUEADO
                                                         <checkbox id="pendientes"/>
+                                                        <checkbox id="bloquear"/>
                                                         <checkbox visible = "false"  id="aplico"/>
                                                         <checkbox visible = "false"  id="perdio"/>
                                                         <checkbox visible = "false"  id="suspenso"/>

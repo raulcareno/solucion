@@ -51,7 +51,7 @@ public class pendientes extends Rows {
 
             label = new Checkbox();
             try {
-                label.setChecked(vec.getEstudiante().getPendientes());
+                label.setChecked(vec.getEstudiante().getBloquear());
             } catch (Exception e) {
                 label.setChecked(false);
             }
@@ -143,9 +143,9 @@ public class pendientes extends Rows {
 
                 nota = (Matriculas) adm.buscarClave(new Integer(valorCodigo), Matriculas.class);
                 Estudiantes est = nota.getEstudiante();
-                est.setPendientes(((Checkbox) labels.get(2)).isChecked());
+                est.setBloquear(((Checkbox) labels.get(2)).isChecked());
                 Representante rep = est.getRepresentante();
-                rep.setEstado(true);
+                rep.setEstado(((Checkbox) labels.get(2)).isChecked());
                 adm.actualizar(rep);
                 adm.actualizar(est);
                 nota = null;

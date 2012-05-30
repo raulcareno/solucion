@@ -68,8 +68,7 @@ void cambiarEstado(Estudiantes user){
       System.out.println("ESTUDIANTE:"+emp2);
      if(emp.getEstado() == null)
          emp.setEstado(false);
- 
-     if(emp.getEstado()){
+     if(emp.getEstado() || emp2.getBloquear()){
             Messagebox.show("Proceso bloqueado por la administración, acerquese a las oficinas..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
      }
