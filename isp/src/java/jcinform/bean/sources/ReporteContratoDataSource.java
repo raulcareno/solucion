@@ -99,6 +99,8 @@ public class ReporteContratoDataSource implements JRDataSource {
                 valor = nodo.getEmpleados2().toString();
             }else if ("formapago".equals(fieldName)) {
                 valor = (nodo.getFormapago().equals(1)?"Oficina":nodo.getFormapago().equals(2)?"Debito":"Domicilio");
+            }else if ("estado".equals(fieldName)) {
+                valor = nodo.getEstado();
             }
 
 

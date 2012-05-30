@@ -54,11 +54,18 @@ public class ReportesClase {
      public JRDataSource clientesxnodo(Nodos nodo, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-        String complemento = "  ";
+        String complemento = " and  o.radios.nodos.codigo = '" + nodo.getCodigo() + "' " ;
+        if(nodo.getCodigo().equals(new Integer(-1))){
+            complemento = "" ;
+        }
+          String estadoComp = " and o.estado = '" + estado + "' ";
+        if(estado.equals("Todos")){
+            estadoComp =" and  o.estado in ('Activo','Cortado','Suspendido') ";
+        }
+        
         List<Contratos> contra = adm.query("Select o from Contratos as o "
-                + "where o.radios.nodos.codigo = '" + nodo.getCodigo() + "' " 
-                + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + " and o.estado = '" + estado + "' "
+                + "where o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + " "+estadoComp +complemento
                 + " order by o.radios.nombre, o.clientes.apellidos ");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();

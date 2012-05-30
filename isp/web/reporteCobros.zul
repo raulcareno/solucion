@@ -39,7 +39,12 @@ cantones.add(0,cantonTodos);
      " where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre, o.valor ");
 List nodos = adm.query("Select o from Nodos as o " + 
      " where o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre ");
+     Nodos nSel = new Nodos(-1);
+     nSel.setNombre("[TODOS]");
+     nodos.add(0,nSel);
+     
  List proveedores2 = adm.query("Select o from Proveedores  as o ");
+     
      
      Plan pSel = new Plan(-1);
      pSel.setNombre("[TODOS]");
@@ -153,9 +158,7 @@ List nodos = adm.query("Select o from Nodos as o " +
                    
             }else if(tipo.equals("PORNODOSCLI")){
                   datasource = reportes.clientesxnodo(nodosList.selectedItem.value,estadoContrato.selectedItem.value);
-                        report.setSrc(directorioReportes+"listacontratos.jasper");
-                        report.setSrc(directorioReportes+"listacontratoscontador.jasper");
-                        report.setSrc(directorioReportes+"listacontratos2.jasper");
+                        report.setSrc(directorioReportes+"listacontratos3.jasper");
                     
                    
                    
@@ -300,6 +303,8 @@ void campos(String valor){
             estadossoporterow.visible = false;
              filanumerofactura.visible=false;
              filaproveedores.visible=false;
+             eterminado.visible = true;
+                        ependiente.visible = true;
       fec.setDate(1);
       todasfechas.visible = false;
       todasfechas.setChecked(false);
@@ -426,7 +431,8 @@ void campos(String valor){
             filaestado.visible = true;
         }else if(valor.equals("PORNODOSCLI")){
             titulo.value= "X Nodos";
-
+            eterminado.visible = false;
+            ependiente.visible = false;
             filaestado.visible = true;
             filanodos.visible = true;
         }else if(valor.equals("INVEMP")){
@@ -600,7 +606,7 @@ void campos(String valor){
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
-                        </row>
+                        </row> 
                         <row id="filaestado" visible="false">
                             <span style="float:right"> Estado: </span>
                             <radiogroup id="estadoContrato" >
