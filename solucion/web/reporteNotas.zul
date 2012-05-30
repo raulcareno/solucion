@@ -454,6 +454,9 @@ void recalcular(){
             }else if(tipo.equals("RECC1")){
                     datasource = noti.recordporcurso1(new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
+            }else if(tipo.equals("RECC2")){
+                    datasource = noti.recordporcurso2(curs.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"record.jasper");
             }else if(tipo.equals("RECE")){
                     datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
@@ -784,6 +787,10 @@ void campos(String valor){
            curs.disabled = false;
            filacursos.visible = true;
            titulo.value= "Record Académico";
+         }else if(valor.equals("RECC2") ){
+           curs.disabled = false;
+           filacursos.visible = true;
+           titulo.value= "Record Académico";
          }else if(valor.equals("RECC1") ){
            filasecuencia.visible = true;
            titulo.value= "Record Académico";
@@ -870,6 +877,7 @@ void campos(String valor){
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
                                     <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
                                     <listitem  id="RECC1" label="Record Académico por Cursos" value="RECC1"/>
+                                    <listitem  id="RECC2" label="Record Académico por Mejores x Cursos" value="RECC2"/>
                                     <listitem  id="linea" label="========= ENCUESTAS ================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="ENC3" label="Resumen y Resultados de Encuesta" value="ENC3"/>
