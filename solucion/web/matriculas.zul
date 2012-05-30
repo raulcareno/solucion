@@ -2304,7 +2304,7 @@ public void quitarFila(String codigoBuscar){
     <vbox >
         <separator id="separador" height="40px"> </separator>
     </vbox>
-            <panel height="100%" visible="false"  id="contenidoReporte">
+            <panel height="800px" visible="false"  id="contenidoReporte">
                 <toolbar align="center">
 		   <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
            onClick="contenidoReporte.visible=false; contenido.visible=true; botones1.visible=true; botones2.visible=true; separador.visible=true;  "/>
