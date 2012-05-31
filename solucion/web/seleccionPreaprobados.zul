@@ -11,7 +11,8 @@ import net.sf.jasperreports.engine.JRDataSource;
 import sources.*;   
   import jcinform.procesos.Administrador;
   import bean.Permisos;
-     
+import java.math.BigDecimal;
+import java.math.RoundingMode;     
  
      
       Administrador adm = new Administrador();
@@ -24,7 +25,8 @@ public void buscar(Integer desde, Integer hasta){
 
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat.* FROM Inscripciones AS mat " +
-                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC limit  "+desde+" , "+hasta+"    ";
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' " + 
+                " ORDER BY (mat.aprovechamiento6 + mat.aprovechamiento)/2 DESC,mat.discapacidad DESC limit  "+desde+" , "+hasta+"    ";
                 System.out.println(query);
       List hoy = adm.queryNativo(query,Inscripciones.class);
 filas.getChildren().clear();
@@ -55,6 +57,12 @@ int i=desde;
             cod = new Label(elem.getAprovechamiento()+"");
             row.appendChild(cod);
             
+            cod = new Label(elem.getAprovechamiento6()+"");
+            row.appendChild(cod);
+            
+             cod = new Label(redondear((elem.getAprovechamiento()+elem.getAprovechamiento6())/2,2)+"");
+            row.appendChild(cod);
+            
             cod = new Label((elem.getAbanderado().equals(true)?"SI":"")+"");
             row.appendChild(cod);
             
@@ -75,6 +83,17 @@ int i=desde;
       }
   
 }
+
+  public Double redondear(Double numero, int decimales) {
+        try {
+
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
 void guardar(){
         List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
@@ -215,7 +234,9 @@ void guardar(){
                                     </column>
                                     <column label="No" width="10px" />
                                     <column label="Nombres" width="300px" />
-                                    <column label="Aprovech." width="30px"  />
+                                    <column label="P.7" width="30px"  />
+                                    <column label="P.6" width="30px"  />
+                                    <column label="Promedio" width="30px"  />
                                     <column label="Abande." width="30px"  />
                                     <column label="Disc." width="30px"  />
                                     <column label="Herm." width="30px"  />
