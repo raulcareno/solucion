@@ -26,7 +26,7 @@ public void buscar(Integer desde, Integer hasta){
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat.* FROM Inscripciones AS mat " +
                 "WHERE mat.periodo = '"+periodo.getCodigoper()+"' " + 
-                " ORDER BY (mat.aprovechamiento6 + mat.aprovechamiento)/2 DESC,mat.discapacidad DESC limit  "+desde+" , "+hasta+"    ";
+                " ORDER BY mat.discapacidad DESC , (mat.aprovechamiento6 + mat.aprovechamiento)/2 DESC limit  "+desde+" , "+hasta+"    ";
                 System.out.println(query);
       List hoy = adm.queryNativo(query,Inscripciones.class);
 filas.getChildren().clear();

@@ -3642,8 +3642,8 @@ public class reportesClase {
                 n1.setPromedio2((promedio(n1.getP1(), n1.getP2(), n1.getP3(), n1.getP4(), n1.getP5(), n1.getP6())));
             } catch (Exception e) {
             }
-            
-             n1.setD1(new BigDecimal(vec.get(8) + ""));
+
+            n1.setD1(new BigDecimal(vec.get(8) + ""));
             n1.setD2(new BigDecimal(vec.get(9) + ""));
             n1.setD3(new BigDecimal(vec.get(10) + ""));
             n1.setD4(new BigDecimal(vec.get(11) + ""));
@@ -3656,8 +3656,8 @@ public class reportesClase {
             listaResultados.add(n1);
 
         }
-       
-          
+
+
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }
@@ -4413,6 +4413,34 @@ public class reportesClase {
 
         PromediosDataSource ds = new PromediosDataSource(arregloPromedios);
         return ds;
+
+    }
+
+    public void aprobadosPerdidos() {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
+                + "and o.sistema.promediofinal = 'PF' ");
+        try {
+            if (notas.size() <= 0) {
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Integer totalPerdidos = 0;
+        List<Cursos> cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        for (Iterator<Cursos> it = cursos.iterator(); it.hasNext();) {
+            Cursos curso = it.next();
+            List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema());
+            totalPerdidos += listaMatriculasPerdidos.size();
+
+        }
+        System.out.println("TOTAL PERDIDOS: " + totalPerdidos);
+
 
     }
 }
