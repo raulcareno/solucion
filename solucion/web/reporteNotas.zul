@@ -520,6 +520,11 @@ void recalcular(){
                     datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"estadisticoxdistributivo.jasper");
 
+            }else if(tipo.equals("APREP")){
+
+                    datasource = aprobadosReprobados();
+                    report.setSrc(directorioReportes+"aprobadosReprobados.jasper");
+
             }else if(tipo.equals("RESUL")){
 
                     datasource = noti.cuadrocalificacionesestadisticodistributivo(sistemasCombo.getSelectedItem().getValue(),new ArrayList(),rangos.getRows().getChildren());
@@ -825,6 +830,56 @@ void campos(String valor){
             titulo.value= " ";
         }
 }
+
+
+ public JRDataSource aprobadosReprobados(){
+ 
+    Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        reportesClase noti = new reportesClase();
+        List  notas = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
+                + "and o.sistema.promediofinal = 'PF' ");
+        try {
+            if (notas.size() <= 0) {
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Integer totalPerdidos = 0;
+        List  totalMatriculados = adm.query("SELECT COUNT(o) FROM Matriculas as o where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' AND o.estado in  ('Matriculado','Recibir Pase') ");
+        List  cursos = adm.query("Select o from Cursos as o " + 
+            " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+            Long totalM = new Long(totalMatriculados.get(0).toString());
+        for (Iterator  it = cursos.iterator(); it.hasNext();) {
+            Cursos curso = it.next();
+            List listaMatriculasPerdidos = noti.cuadroverificar(curso, notas.get(0).getSistema());
+            totalPerdidos += listaMatriculasPerdidos.size();
+
+        }
+
+               ArrayList detalle = new ArrayList();
+ 
+    General gen = new General(); 
+          gen.setOrden(1);
+          gen.setValor1("Reprobado");
+          gen.setValor2(new Long(totalPerdidos));
+          detalle.add(gen);
+          gen = new General(); 
+          gen.setOrden(1);
+          gen.setValor1("Aprobados");
+          gen.setValor2(totalM-new Long(totalPerdidos));
+          detalle.add(gen);
+     Collections.sort(detalle);
+     
+     ReporteGeneralDataSource ds = new ReporteGeneralDataSource(detalle);
+      return ds;
+}
+
+
 ]]>
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">
@@ -860,6 +915,7 @@ void campos(String valor){
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
                                     <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
                                     <listitem  id="RESUL" label="Resultados de Aprendizajes(Desde 2010)" value="RESUL" />
+                                    <listitem  id="APREP" label="Aprobados y Reprobados" value="APREP" />
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
