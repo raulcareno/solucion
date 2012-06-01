@@ -439,6 +439,9 @@ generaArch.disabled = false;
         byte[] data = cm.empezarGenerar(col,bancosList.selectedItem.value);
        Date fec = adm.Date();   
        String nombreArchivo = "NDE"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+"_01.txt"; 
+       if((bancosList.selectedItem.value).getNombre().toLowerCase().contains("bolivariano")){
+            nombreArchivo = "REC_BBOL"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+".BIZ"; 
+       }
        Filedownload.save(data, "file", ""+nombreArchivo);
          
  }
