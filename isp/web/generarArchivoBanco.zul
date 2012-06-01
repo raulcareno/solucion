@@ -438,71 +438,9 @@ generaArch.disabled = false;
         List col = facturasDatosAsignados.getRows().getChildren();
         byte[] data = cm.empezarGenerar(col,bancosList.selectedItem.value);
        Date fec = adm.Date();   
-       String nombreArchivo = "NDE"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? fec.getMonth()+"":"0"+fec.getMonth())+""+(fec.getDate()<10?"0"+fec.getDate()+"":fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+"01"; 
-        Filedownload.save(data, "file", ""+nombreArchivo);
-        
-        /* 
-        List col = facturasDatosAsignados.getRows().getChildren();
-            ArrayList detalles = new ArrayList();
-            String codigos = "";
-                           for (int i = 0; i < col.size(); i++) {
-                                     Row object = (Row) col.get(i);
-                                     List labels = object.getChildren();
-                                         Integer facCodigo = object.getValue();
-                                         codigos += facCodigo+",";
-                            }
-            if(codigos.length() >0){
-                codigos = codigos.substring(0,codigos.length()-1);
-//--------------------------------------------------------------------------------------------
-            String quer = "SELECT fa.codigo, fa.fecha,max(cx.fecha), fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos,fa.clientes "
-                     + "FROM cxcobrar cx, factura  fa "   +
-                        " WHERE fa.codigo in ("+ codigos +")  " + 
-                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
-                     System.out.println(quer);
-            List facEncontradas =  adm.queryNativo(quer); 
-            System.out.println(""+quer);
-            if (facEncontradas.size() > 0) {
-                Pendientes pendi = null;
-                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    pendi = new Pendientes();
-                    Clientes cli = adm.buscarClave(vec.get(6),Clientes.class);
-                    pendi.setCliente(cli);
-                    pendi.setFactura("" + vec.get(0));
-                    Date d = (Date) vec.get(1);
-                    pendi.setFecha(d);
-                    Date d = (Date) vec.get(2);
-                    pendi.setFechapago(d);
-                    
-                    Contratos c = (Contratos) adm.buscarClave(vec.get(5), Contratos.class);
-                    pendi.setPlan(c.getPlan()+"");
-                    pendi.setDireccion(c.getDireccion());
-                    pendi.setTotal((BigDecimal) vec.get(3));
-                    pendi.setSaldo((BigDecimal) vec.get(4));
-                    detalles.add(pendi);
-                }
-
-            }
-        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);                
-                
-                
-                
-//-------------------------------------------------------------------------------------------------------
-                Map parameters = new HashMap();
-                parameters.put("empresa",empresa.getRazonsocial());
-                parameters.put("ruc",empresa.getRuc());
-                parameters.put("direccion",empresa.getDireccion());
-                parameters.put("telefono",empresa.getTelefono());    
-                parameters.put("empleados",numeroinforme.value+"");    
-                   reportelocal.setSrc(directorioReportes+"facturasbanco.jasper");
-                   reportelocal.setParameters(parameters);
-                   reportelocal.setDatasource(ds);
-                   reportelocal.setType("pdf");
-                
-            }
-                
- */
+       String nombreArchivo = "NDE"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+"_01.txt"; 
+       Filedownload.save(data, "file", ""+nombreArchivo);
+         
  }
   ]]>
     </zscript>
