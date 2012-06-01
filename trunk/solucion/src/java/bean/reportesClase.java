@@ -662,8 +662,8 @@ public class reportesClase {
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
                 + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'"
-                + "  AND NOTAS.MATERIA NOT IN (SELECT CODIGO FROM GLOBAL WHERE GRUPO = 'MAT' AND DESCRIPCION LIKE '%PROME%')  ) "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' and estado in  ('Matriculado','Recibir Pase')  ) "
+                + "  AND NOTAS.MATERIA NOT IN (SELECT CODIGO FROM GLOBAL WHERE GRUPO = 'MAT' AND DESCRIPCION LIKE '%PROME%')   "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
