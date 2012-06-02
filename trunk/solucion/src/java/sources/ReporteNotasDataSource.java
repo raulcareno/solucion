@@ -59,29 +59,38 @@ public class ReporteNotasDataSource implements JRDataSource {
             } else if ("nota".equals(fieldName)) {
 
                 try {
-                    if (nodo.getNota().toString().contains(".0")) {
-                        String vale = nodo.getNota().toString();
-                        if (!vale.contains(".01") && !vale.contains(".02") && !vale.contains(".03") && !vale.contains(".04")
-                                && !vale.contains(".06") && !vale.contains(".07") && !vale.contains(".08") && !vale.contains(".05")
-                                && !vale.contains(".09")) {
-                            if(vale.contains(".00")){
-                                nodo.setNota(nodo.getNota().toString().replace(".00", ""));
-                            }else{
-                                nodo.setNota(nodo.getNota().toString().replace(".0", ""));
-                            }
-                            
+//                    if (nodo.getNota().toString().contains(".0")) {
+//                        String vale = nodo.getNota().toString();
+//                        if (!vale.contains(".01") && !vale.contains(".02") && !vale.contains(".03") && !vale.contains(".04")
+//                                && !vale.contains(".06") && !vale.contains(".07") && !vale.contains(".08") && !vale.contains(".05")
+//                                && !vale.contains(".09")) {
+//                            if(vale.contains(".00") && vale.contains(".000")){
+//                                nodo.setNota(nodo.getNota().toString().replace(".00", ""));
+//                            }else{
+//                                nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+//                            }
+//                            
+//                        }
+//                    }
+//                    String vale = nodo.getNota().toString();
+//                    if (vale.contains("0") || vale.contains("1") || vale.contains("2") || vale.contains("3") || vale.contains("4") || vale.contains("5")
+//                            || vale.contains("6") || vale.contains("7") || vale.contains("8") || vale.contains("9")) {
+//                        String codigo = vale;
+//                        while (codigo.length() < 2) {
+//                            codigo = "0" + codigo;
+//                        }
+//                        nodo.setNota(codigo);
+//                    }
+                        if (nodo.getNota().toString().contains(".0")) {
+                                String vale = nodo.getNota().toString();
+                                String valorDecimal = nodo.getNota().toString().substring(vale.indexOf("."));
+                                Double valorDouble = new Double(valorDecimal);
+                                if(valorDouble>0){
+                                    
+                                }else{
+                                        nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                                }
                         }
-                    }
-                    String vale = nodo.getNota().toString();
-                    if (vale.contains("0") || vale.contains("1") || vale.contains("2") || vale.contains("3") || vale.contains("4") || vale.contains("5")
-                            || vale.contains("6") || vale.contains("7") || vale.contains("8") || vale.contains("9")) {
-                        String codigo = vale;
-                        while (codigo.length() < 2) {
-                            codigo = "0" + codigo;
-                        }
-                        nodo.setNota(codigo);
-                    }
-
 
                     valor = nodo.getNota().toString();
                     if (nodo.getNota().toString().equals("00")) {
@@ -111,6 +120,18 @@ public class ReporteNotasDataSource implements JRDataSource {
 //            System.out.println("estudiante: "+valor);
             } else if ("matricula".equals(fieldName)) {
                 valor = nodo.getMatricula().getCodigomat();
+            } else if ("folio".equals(fieldName)) {
+                String mat = ""+nodo.getMatricula().getFolio();
+                                while(mat.length()<4){
+                                    mat = "0"+mat;
+                                }
+                valor = mat+"";
+            } else if ("matri".equals(fieldName)) {
+                String mat = ""+nodo.getMatricula().getNumero();
+                                while(mat.length()<4){
+                                    mat = "0"+mat;
+                                }
+                valor = mat+"";
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion() + " " + nodo.getMatricula().getCurso().getEspecialidad() + " " + nodo.getMatricula().getCurso().getParalelo();
             } else if ("cursos".equals(fieldName)) {

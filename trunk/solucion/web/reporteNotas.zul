@@ -751,6 +751,9 @@ void campos(String valor){
              fila.visible = true;
              filacursos.visible = true;
             filaaportes.visible = true;
+            if(valor.equals("CCALP")){
+                titulo.value= "CUADRO FINAL DE CALIFICACIONES";
+            }
             
         }else if(valor.equals("ESTA")){
              curs.disabled = false;

@@ -689,8 +689,15 @@ public class reportesClase {
                     nota.setContador(cont);
                     matriculaAct = matriculaNo.getCodigomat() + "";
                     if (maprofesor.getCuantitativa() == false) {
+                        
                         nota.setNota(equivalencia(dos, equivalencias));
-                        nota.setNota("APROBADO");
+                        if((Double)dos >  10.0){
+                            nota.setNota("Aprobado");
+                        }else if(matriculaNo.getEstado().equals("Retirado")){
+                            nota.setNota("");
+                        }else{
+                            nota.setNota(" ");
+                        }
                     } else {
                         nota.setNota(val.toString());
                         if (val == 0.0) {
@@ -890,36 +897,7 @@ public class reportesClase {
                                 notaF.setSistema(sistema);
                                 lisNotas.add(notaF);
                             }
-                           Nota notaF = new Nota();
-                                notaF.setContador(cont);
-                                notaF.setMatricula(matriculaNo);
-                                
-                                String mat = ""+matriculaNo.getNumero();
-                                while(mat.length()<4){
-                                    mat = "0"+mat;
-                                }
-                                notaF.setNota(""+mat);
-                                Global matNueva = new Global(-1);
-                                matNueva.setDescripcion("No. DE MATRÍCULA");
-                                notaF.setMateria(matNueva);
-                                notaF.setMprofesor(maprofesor);
-                                notaF.setSistema(sistema);
-                                lisNotas.add(notaF);
-                                
-                                notaF = new Nota();
-                                notaF.setContador(cont);
-                                notaF.setMatricula(matriculaNo);
-                                 mat = ""+matriculaNo.getFolio();
-                                while(mat.length()<4){
-                                    mat = "0"+mat;
-                                }
-                                notaF.setNota(""+mat);
-                                matNueva = new Global(-1);
-                                matNueva.setDescripcion("No. FOLIO");
-                                notaF.setMateria(matNueva);
-                                notaF.setMprofesor(maprofesor);
-                                notaF.setSistema(sistema);
-                                lisNotas.add(notaF);
+                                 
 
                         }//FIN DE TRUE DE PROMEDIO
 
