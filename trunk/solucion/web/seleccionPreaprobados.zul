@@ -117,8 +117,58 @@ void guardar(){
                       ((Checkbox) labels.get(0)).setChecked(todos);
              }
       }
+    public JRDataSource inscritos4(){
+    Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    
+                     List labels = object.getChildren();
+                     try{
+                         Inscripciones elem = (Inscripciones)object.getValue();
+                          elem = adm.buscarClave(elem.getCodigoest(),Inscripciones.class);
+                          Matriculas matri = new Matriculas();
+                        Estudiantes est = new Estudiantes();
+                        Cursos cur = new Cursos();
+                        Global gl = new Global();
+                        gl.setDescripcion("");
+                        cur.setEspecialidad(gl);
+                        cur.setParalelo(gl);
+                        matri.setCurso(cur);
+                        est.setApellido(elem.getApellido());
+                        est.setNombre(elem.getNombre());
+                        est.setFechanacimiento(elem.getFechanacimiento());
+                        est.setDiscapacidad(elem.getDiscapacidad());
+                        est.setTipodiscapacidad(elem.getTdiscapacidad());
+                        est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+                        est.setEconomia(elem.getAbanderado()); //si es abanderado 
+                        est.setDireccion(elem.getParroquia()); //si es sector 
+                        est.setIngpadre(redondear((elem.getAprovechamiento()+elem.getAprovechamiento6())/2,2));
+                        //est.setIngpadre(elem.getAprovechamiento());
+                        
+                        //+""
+                        est.setCodigoest(i+1);
+                        //i++;
+                        matri.setEstudiante(est);
+                        matri.setFechamat(elem.getFechamatricula());
 
-      public JRDataSource inscritos4(){
+                //ins.setPreaprobado(((Checkbox) labels.get(0)).isChecked());
+                    if(elem.getPreaprobado())
+                        detalle.add(matri);    
+                          
+                         }catch(Exception em) {
+                         System.out.println("ERROR: "+em);
+                         }
+                      
+             }
+              
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+             
+      }
+      public JRDataSource inscritos33(){
   String curso =  "";
 
 
@@ -127,7 +177,7 @@ void guardar(){
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat.* FROM Inscripciones AS mat " +
                 "WHERE mat.periodo = '"+periodo.getCodigoper()+"'  and mat.preaprobado = true " 
-                + " ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC   limit  "+desde.value+" , "+hasta.value+"     ";
+                + " ORDER BY mat.discapacidad DESC , (mat.aprovechamiento6 + mat.aprovechamiento)/2  limit  "+desde.value+" , "+hasta.value+"     ";
                 System.out.println(query);
       List hoy = adm.queryNativo(query,Inscripciones.class);
       int i=1;
