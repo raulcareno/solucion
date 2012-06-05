@@ -582,10 +582,15 @@ void recalcular(){
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc(directorioReportes+"actaslistado.jasper");
             }else if(tipo.equals("NOMA")){
-                    ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
+                    ArrayList arreglo = noti.actaGradoTodos(especialidad.getSelectedItem().getValue());
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
-                    report.setSrc(directorioReportes+"actaslistado.jasper");
+                    report.setSrc(directorioReportes+"nominagraduados.jasper");
+            }else if(tipo.equals("NOMA1")){
+                    ArrayList arreglo = noti.actaGradoTodosConstan(especialidad.getSelectedItem().getValue());
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
             }else if(tipo.equals("LIB")){
                    //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
 
@@ -801,7 +806,14 @@ void campos(String valor){
             filaespecialidad.visible = true;
             filaestudiantes.visible = true;
             estudiantesCombo.disabled = false;
-        }else if(valor.equals("CAG") || valor.equals("CAG2")){
+        }else if(valor.equals("NOMA") || valor.equals("NOMA1")  ){
+            especialidad.disabled = false;
+            titulo.value= "CUADRO DE RESUMEN DE LAS CALIFICACIONES QUE CONSTAN EN EL ACTA DE GRADO";
+            if(valor.equals("NOMA")){
+                titulo.value= "NOMINA OFICIAL DE GRADUADOS";
+            }
+            filaespecialidad.visible = true;
+         }else if(valor.equals("CAG") || valor.equals("CAG2")){
             especialidad.disabled = false;
             filaespecialidad.visible = true;
             filaestudiantes.visible = true;
@@ -957,6 +969,7 @@ void campos(String valor){
                                     <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="NOMA" label="Nómina Oficial de Graduados" value="NOMA"/>
+                                    <listitem  id="NOMA1" label="Cuadro de resumen de Calificaciones del Acta" value="NOMA1"/>
                                     
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
                                     <listitem  id="EXAMESP" label="Examenes de Grado por Especialidad" value="EXAMESP"/>

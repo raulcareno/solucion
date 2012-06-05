@@ -108,7 +108,17 @@ public class ActaGeneralDataSource implements JRDataSource {
             valor = nodo.getEstado();
         }else if ("equivalencia".equals(fieldName)) {
             valor = nodo.getEquivalencia();
-        }
+        }else if ("numero".equals(fieldName)) {
+            valor = nodo.getNumeroacta();
+        }else if ("fecha".equals(fieldName)) {
+            valor = nodo.getFecha();
+        }else if ("genero".equals(fieldName)) {
+            valor = nodo.getMatricula().getEstudiante().getGenero();
+        }else if ("titulo".equals(fieldName)) {
+            valor = nodo.getMatricula().getCurso().getTitulo().getDescripcion();
+        }else if ("acta".equals(fieldName)) {
+            valor = nodo.getMatricula().getCurso().getActa();
+        } 
         return valor;
     }
 }
