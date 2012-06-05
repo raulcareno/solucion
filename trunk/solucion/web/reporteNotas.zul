@@ -460,6 +460,9 @@ void recalcular(){
             }else if(tipo.equals("RECE")){
                     datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
+            }else if(tipo.equals("RECESP")){
+                    datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),6);
+                    report.setSrc(directorioReportes+"recordPrimeroQuinto.jasper");
             }else if(tipo.equals("NMAT")){
                     
                     ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
@@ -483,6 +486,9 @@ void recalcular(){
             }else if(tipo.equals("EXAM")){
                     datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"examenesgrado.jasper");
+            }else if(tipo.equals("EXAMESP")){
+                    datasource = noti.cuadroexamenesEspecialidad(especialidad.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"examenesgradoEspecialidad.jasper");
             }else if(tipo.equals("CDIS")){
                     ArrayList arreglo = discipli.reporteDisciplina(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     parametros = (HashMap) arreglo.get(1);
@@ -571,6 +577,11 @@ void recalcular(){
                     datasource = noti.actaGrado("copia",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue(),true);
                     report.setSrc(directorioReportes+"copiaactaGrado.jasper");
             }else if(tipo.equals("LAG")){
+                    ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"actaslistado.jasper");
+            }else if(tipo.equals("NOMA")){
                     ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
@@ -812,6 +823,15 @@ void campos(String valor){
             titulo.value= "Record Académico";
             filaespecialidad.visible = true;
             filasecuencia.visible = true;
+        }else if(valor.equals("RECESP") ){
+            especialidad.disabled = false;
+            titulo.value= "PROMEDIO DE NOTAS GLOBALES DE PRIMERO A QUINTO CURSO";
+            filaespecialidad.visible = true;
+        }else if(valor.equals("EXAMESP") ){
+            especialidad.disabled = false;
+            titulo.value= "Examenes de Grado";
+            filaespecialidad.visible = true;
+            //filasecuencia.visible = true;
         }else if(valor.equals("EXAM")){
             curs.disabled = false;
             titulo.value= "Examenes de Grado";
@@ -929,20 +949,24 @@ void campos(String valor){
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
-                                    <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
+                                    
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
                                     <listitem  id="CAG2" label="Copia de Acta de Grado(Suspendidos)" value="CAG2"/>
                                     <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
-                                    <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
+                                    <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
+                                    <listitem  id="NOMA" label="Nómina Oficial de Graduados" value="NOMA"/>
+                                    
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
+                                    <listitem  id="EXAMESP" label="Examenes de Grado por Especialidad" value="EXAMESP"/>
                                     <listitem  id="MEJE" label="Mejor egresado(*)" value="MEJE"/>
                                     <listitem  id="linea001" label="============RECORDS=============" value="linea" />
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
                                     <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
                                     <listitem  id="RECC1" label="Record Académico por Cursos" value="RECC1"/>
                                     <listitem  id="RECC2" label="Record Académico por Mejores x Cursos" value="RECC2"/>
+                                    <listitem  id="RECESP" label="Record Académico Notas de 1ero. a 5to." value="RECESP"/>
                                     <listitem  id="linea" label="========= ENCUESTAS ================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
                                     <listitem  id="ENC3" label="Resumen y Resultados de Encuesta" value="ENC3"/>
@@ -960,6 +984,7 @@ void campos(String valor){
                                     <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
                                     <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
                                     <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
+                                    <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
                                    
         
                                 </listbox>

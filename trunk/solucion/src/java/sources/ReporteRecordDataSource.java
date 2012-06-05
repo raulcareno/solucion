@@ -6,14 +6,11 @@
 package sources;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *

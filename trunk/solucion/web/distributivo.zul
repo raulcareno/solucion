@@ -275,7 +275,7 @@ profes.setSelectedIndex(0);
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getOrden()+""));
                       li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()));
-                      li.appendChild(new Listcell(acceIt.getMateria()+""));
+                      li.appendChild(new Listcell(acceIt.getMateria()+" [MA"+acceIt.getMateria().getCodigo()+"] " ));
                       li.appendChild(new Listcell((acceIt.getCuantitativa()?"SI":"NO")+""));
                       li.appendChild(new Listcell((acceIt.getMinisterio()?"SI":"NO")+""));
                       li.appendChild(new Listcell((acceIt.getOpcional()?"SI":"NO")+""));

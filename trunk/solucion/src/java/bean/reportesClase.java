@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -689,13 +690,13 @@ public class reportesClase {
                     nota.setContador(cont);
                     matriculaAct = matriculaNo.getCodigomat() + "";
                     if (maprofesor.getCuantitativa() == false) {
-                        
+
                         nota.setNota(equivalencia(dos, equivalencias));
-                        if((Double)dos >  10.0){
+                        if ((Double) dos > 10.0) {
                             nota.setNota("Aprobado");
-                        }else if(matriculaNo.getEstado().equals("Retirado")){
+                        } else if (matriculaNo.getEstado().equals("Retirado")) {
                             nota.setNota("");
-                        }else{
+                        } else {
                             nota.setNota(" ");
                         }
                     } else {
@@ -897,7 +898,7 @@ public class reportesClase {
                                 notaF.setSistema(sistema);
                                 lisNotas.add(notaF);
                             }
-                                 
+
 
                         }//FIN DE TRUE DE PROMEDIO
 
@@ -1662,6 +1663,94 @@ public class reportesClase {
         nativo = null;
         ReporteExamenesDataSource ds = new ReporteExamenesDataSource(lisNotas);
         return ds;
+
+    }
+
+    public JRDataSource cuadroexamenesEspecialidad(Global especialidad) {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Cursos> listadoCursos = adm.query("Select o from Cursos as o "
+                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.secuencia = 6 "
+                + " and o.especialidad.codigo = '" + especialidad.getCodigo() + "' ");
+        List<Nota> lisNotas = new ArrayList();
+        int m = 0;
+        for (Iterator<Cursos> it = listadoCursos.iterator(); it.hasNext();) {
+            Cursos curso = it.next();
+            //Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+            List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o "
+                    + "where  o.curso.codigocur = '" + curso.getCodigocur() + "' "
+                    + " order by o.codigo ");
+            String query = "";
+            for (Materiasgrado notass : notas) {
+                query += notass.getColumna() + ",";
+            }
+            query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+            String q = "SELECT CONCAT(est.apellido,' ',est.nombre), " + query + "   FROM notasgrado notas,matriculas mat,estudiantes est "
+                    + "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
+            System.out.println("" + q);
+            List nativo = adm.queryNativo(q);
+            
+            int i = 1;
+            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                int ksis = 0;
+                String estudiante = "";
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    Double val = 0.0;
+                    Nota nota = new Nota();
+                    if (j >= 1) {
+                        //                   val = redondear((Double) dos, 2);
+                        nota.setCargo2(((Materiasgrado) notas.get(ksis)).getNombre());
+
+                        nota.setNota(redondear((Double) dos, 0).intValue());
+                        if ((j + 1) == vec.size()) {
+                            String s = "##00.00##";
+                            DecimalFormat decimalFormat = new DecimalFormat(s);
+                            //DecimalFormat formateador = new DecimalFormat("####.###");
+                            // Esto sale en pantalla con cuatro decimales, es decir, 3,4324
+//                        System.out.println("formato: " + decimalFormat.format(redondear((Double) dos, 3)));
+                            nota.setNota(decimalFormat.format(redondear((Double) dos, 3)));
+                        }
+                        nota.setProfesor(((Materiasgrado) notas.get(ksis)).getProfesor().getApellidos() + " " + ((Materiasgrado) notas.get(0)).getProfesor().getNombres());
+                        nota.setCurso(curso);
+                        nota.setCargo1(estudiante);
+                        nota.setCargo3("" + m);
+                        lisNotas.add(nota);
+                        ksis++;
+                    } else if (j == 0) {
+                        estudiante = dos.toString();//en seteo el nombre del estudiante
+                        m++;
+                    }
+                }
+                i++;
+            }
+            nativo = null;
+            
+        }
+        Collections.sort(lisNotas);
+        int num = 1;
+        String anterior = "";
+        for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+            Nota nota = it.next();
+            if(anterior.equals("")){
+                anterior = nota.getCargo3();
+                nota.setCargo3(num+"");
+            }else if(nota.getCargo3().equals(anterior)){
+                nota.setCargo3(num+"");
+            }else {
+                num++;
+                anterior = nota.getCargo3();
+                nota.setCargo3(num+"");
+            }
+            
+        }
+        ReporteExamenesDataSource ds = new ReporteExamenesDataSource(lisNotas);
+            return ds;
+        //return null;
+
 
     }
 
@@ -3570,7 +3659,14 @@ public class reportesClase {
                 acta.setN3(encontrados.getTercero());
                 acta.setN4(encontrados.getCuarto());
                 acta.setN5(encontrados.getQuinto());
-                Double sumaPromedio = (encontrados.getPrimero() + encontrados.getSegundo() + encontrados.getTercero() + encontrados.getCuarto() + encontrados.getQuinto()) / 5;
+                Double sumaPromedio = 0d;
+                try {
+                    sumaPromedio = (encontrados.getPrimero() + encontrados.getSegundo() + encontrados.getTercero() + encontrados.getCuarto() + encontrados.getQuinto()) / 5;
+                } catch (Exception em) {
+                    sumaPromedio = 0d;
+                }
+
+
                 acta.setN6(sumaPromedio);
                 acta.setN7(encontrados.getSexto());
             } else {

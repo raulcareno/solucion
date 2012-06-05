@@ -122,6 +122,7 @@ void guardar(){
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
         List col = opciones.getRows().getChildren();
+        int k=1;
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
                     
@@ -149,8 +150,9 @@ void guardar(){
                         //est.setIngpadre(elem.getAprovechamiento());
                         
                         //+""
-                        est.setCodigoest(i+1);
+                        est.setCodigoest(k);
                         //i++;
+                        k++;
                         matri.setEstudiante(est);
                         matri.setFechamat(elem.getFechamatricula());
 

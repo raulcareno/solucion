@@ -449,14 +449,15 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                         + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                         + comple2
                                          + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
-                                         + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                         System.out.println("querylistados: "+query);
                                  if(tipo.equals("LMAT")){
                                     query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
                                                 + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
                                                 + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                                 + " AND c.codigocur IN ("+curso+") "
                                                  + " AND o.estado IN ('Matriculado') "
-                                                 + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                  }
                                  if(tipo.equals("LMATYR")){
                                     query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
@@ -464,7 +465,7 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                                 + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                                 + " AND c.codigocur IN ("+curso+") "
                                                  + " AND o.estado IN ('Matriculado','Retirado') "
-                                                 + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                  }
                                  if(tipo.equals("LMATF")){
                                          String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
@@ -474,7 +475,7 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                                         + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                                         + " AND c.codigocur IN ("+curso+") "
                                                          + " AND o.estado IN ('Matriculado') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
-                                                         + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                                          System.out.println("FECHAS"+query);
                                  }
                                  if(tipo.equals("LINSF")){
@@ -485,7 +486,7 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                                         + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                                         + " AND c.codigocur IN ("+curso+") "
                                                          + " AND o.estado IN ('Inscrito') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
-                                                         + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                                          System.out.println("FECHAS"+query);
                                  }
                                  if(tipo.equals("LCLA5")){
@@ -494,7 +495,7 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                                 + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                                 + " AND c.codigocur IN ("+curso+") "
                                                  + " AND o.estado IN ('Inscrito') "
-                                                 + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                  }
                 
             List hoy = adm.queryNativo(query,Matriculas.class);
@@ -546,7 +547,7 @@ public JRDataSource listadoMatriculas(ArrayList listadodeCursos,String tipo,Arra
                                         + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                                         + comple2
                                          + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
-                                         + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre, e.codigoest ";
+                                         + " ORDER BY  c.secuencia,c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre, e.codigoest ";
             List hoy = adm.queryNativo(query,Matriculas.class);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
                         Matriculas elem = (Matriculas) it.next();
@@ -577,7 +578,7 @@ public JRDataSource certificadosInsc(ArrayList listadodeCursos,String tipo){
                     + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
                     + " AND c.codigocur IN ("+curso+") "
                      + " AND o.estado IN ('Inscrito') "
-                     + " ORDER BY  c.secuencia,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                     + " ORDER BY  c.secuencia,c.codigocur, es.descripcion, p.descripcion,   e.apellido,e.nombre ";
             List hoy = adm.queryNativo(query,Matriculas.class);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
                         Matriculas elem = (Matriculas) it.next();
@@ -612,7 +613,8 @@ public JRDataSource pases(ArrayList listadodeCursos,String tipo){
                         query = "Select o from Matriculas as o " +
                                 "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                 "and o.curso.codigocur in (" + curso + ") " +
-                                " and o.estado in ('Recibir Pase') order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+                                " and o.estado in ('Recibir Pase') "+ 
+                                "order by o.curso.secuencia,o.codigocur, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
 
 
                     List hoy = adm.query(query);
@@ -830,7 +832,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"conanioscumplidos.jasper");
             }else if(tipo.equals("LCAS")){
-                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    datasource = certificados(listadoCursos,"LCAS",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"concasilleros.jasper");
             }else if(tipo.equals("LMIN")){
