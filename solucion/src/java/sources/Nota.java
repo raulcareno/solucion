@@ -13,7 +13,7 @@ import jcinform.persistencia.Sistemacalificacion;
  *
  * @author geovanny
  */
-public class Nota {
+public class Nota  implements Comparable {
 public Nota(){}
 
 private Matriculas matricula;
@@ -361,7 +361,18 @@ private BigDecimal disciplina2;
     }
  
     
-     
+
+    @Override
+    public int compareTo(Object o) {
+        Nota persona = (Nota) o;
+        if (this.cargo1.compareToIgnoreCase(persona.cargo1) == 0) {
+            return 0;
+        } else {
+             return this.cargo1.compareToIgnoreCase(persona.cargo1);
+        }
+        
+
+    }     
 
 
 }

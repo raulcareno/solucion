@@ -1,0 +1,136 @@
+
+<?page id="main-page"?>
+<window
+    title="Ingresar Recomendaciones"
+    id="principal">
+    <zscript>
+<![CDATA[
+import java.math.BigDecimal;
+import bean.recomendaciones;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+ import bean.Permisos;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+ Cursos curS = new Cursos(-1);
+ cursos.add(0,curS);
+Permisos permiso = new Permisos();
+recomendaciones no = new recomendaciones();
+
+List equivalen = adm.query("Select o from Perfil as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  ");
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"'  and o.faltas = true  order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+
+ }
+
+
+ 
+String[][] values = new String[equivalen.size()][2];
+
+          for (int i=0;i<equivalen.size();i++) {
+             values[i][0]= ((Perfil)equivalen.get(i)).getNombre();
+             values[i][1]= "String";
+           }
+guardar(){
+    recomendaciones nso = new recomendaciones();
+    recomendaciones r = (recomendaciones) datos.getRows();
+    nso.guardarPerfil(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
+    int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.QUESTION);
+ 
+
+}
+
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Recomendaciones",accion);
+ }
+ 
+doAdd(Cursos curso){
+ if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
+Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
+        filas.addPerfil(curso,sistema);
+}
+]]>
+    </zscript>
+    <grid>
+        <rows>
+            <row>
+
+                <span style="float:right"> Periodo Trimestre(*):</span>
+                <span>
+                    <listbox id="sisis" mold="select" width="420px"
+                             onSelect="curs.setSelectedIndex(0)">
+                        <listitem forEach="${sistemas}" value="${each}">
+                            <listcell label="${each.nombre}" />
+
+                        </listitem>
+                    </listbox>
+                    <button label="Guardar"  id="guardar1" image="/images/guardar.gif" onClick="guardar();"/>
+                </span>
+
+            </row>
+            <row>
+                <span style="float:right"> Curso(*):</span>
+
+                <listbox id="curs"  mold="select"  width="420px"
+                             onSelect="doAdd(((Cursos)curs.selectedItem.value));">
+
+                    <listitem forEach="${cursos}" value="${each}">
+                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                    </listitem>
+                </listbox>
+
+            </row>
+
+        </rows>
+    </grid>
+    <grid  id="datos"  >
+        <columns>
+            <column width="10px" label ="Mat."/>
+            <column width="400px" label ="Estudiante"/>
+            <column width="400px" label ="Recomendaciones"/>
+              
+ 
+        </columns>
+        <rows  id="filas" use="bean.recomendaciones">
+        </rows>
+    </grid>
+    <button label="Guardar"   id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
+  
+
+</window>
+
+	

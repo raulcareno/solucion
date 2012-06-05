@@ -176,9 +176,33 @@ public class ReportePromocionDataSource implements JRDataSource {
                     String valor1 = nodo.getAprovechamiento().toString();
                     int indice = valor1.indexOf(".");
                     String cortado = valor1.substring(indice + 1);
-                    String cientos = " " + num.GetHundreds(cortado).toUpperCase();
+                    String cientos = " ";
+                    Boolean milesimas = false;
+                    if(cortado.length()>2){
+                     cientos = " " + num.GetHundreds(cortado).toUpperCase();
+                        milesimas = true;
+                    }else if(cortado.equals("01")|| cortado.equals("02") || cortado.equals("03") || cortado.equals("04") || cortado.equals("05") ||
+                             cortado.equals("06") || cortado.equals("07") || cortado.equals("08") || cortado.equals("09")){
+                        cortado = cortado.replace("0", "");
+                        Integer valor2 = new Integer(cortado);
+                        cientos = " " + num.GetDigit(valor2).toUpperCase();
+                        milesimas = false;
+                     
+                    }else if(cortado.equals("1")|| cortado.equals("2") || cortado.equals("3") || cortado.equals("4") || cortado.equals("5") ||
+                             cortado.equals("6") || cortado.equals("7") || cortado.equals("8") || cortado.equals("9")){
+                        cortado = cortado+"0";
+                        Integer valor2 = new Integer(cortado);
+                        cientos = " " + num.GetTens(valor2).toUpperCase();
+                        milesimas = false;
+                     
+                    }else{
+                        Integer valor2 = new Integer(cortado);
+                      cientos = " " + num.GetTens(valor2).toUpperCase();
+                      milesimas = false;
+                    }
+                    
                     if (!cientos.trim().equals("")) {
-                        valor = formado + " PUNTOS CON " + cientos + " CENTESIMAS";
+                        valor = formado + " PUNTOS CON " + cientos + (milesimas?" MILESIMAS":" CENTESIMAS");
                     } else {
                         valor = formado + " PUNTOS ";
                     }
