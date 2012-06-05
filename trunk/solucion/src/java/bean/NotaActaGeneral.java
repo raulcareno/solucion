@@ -1,6 +1,7 @@
 
 package bean;
 
+import java.util.Date;
 import jcinform.persistencia.Matriculas;
 
 public class NotaActaGeneral {
@@ -11,7 +12,8 @@ public class NotaActaGeneral {
     private Integer codigomatricula;
     private Matriculas matricula;
     private String equivalencia;
-    private Integer j1,j2,j3,j4,j5,j6,j7,j8,j9,j10;
+    private Date fecha;
+    private Integer j1,j2,j3,j4,j5,j6,j7,j8,j9,j10,numeroacta;
     private Double n1,n2,n3,n4,n5,n6,n7,n8,n9,n10,n11,n12,n13,n14,n15,n16,n17,n18,n19,n20,profesores,inspector,finali;
 
     public String getEstado() {
@@ -326,6 +328,22 @@ public class NotaActaGeneral {
 
     public void setEquivalencia(String equivalencia) {
         this.equivalencia = equivalencia;
+    }
+
+    public Integer getNumeroacta() {
+        return numeroacta;
+    }
+
+    public void setNumeroacta(Integer numeroacta) {
+        this.numeroacta = numeroacta;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
 

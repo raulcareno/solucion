@@ -1691,7 +1691,7 @@ public class reportesClase {
                     + "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
-            
+
             int i = 1;
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
@@ -1728,27 +1728,27 @@ public class reportesClase {
                 i++;
             }
             nativo = null;
-            
+
         }
         Collections.sort(lisNotas);
         int num = 1;
         String anterior = "";
         for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
             Nota nota = it.next();
-            if(anterior.equals("")){
+            if (anterior.equals("")) {
                 anterior = nota.getCargo3();
-                nota.setCargo3(num+"");
-            }else if(nota.getCargo3().equals(anterior)){
-                nota.setCargo3(num+"");
-            }else {
+                nota.setCargo3(num + "");
+            } else if (nota.getCargo3().equals(anterior)) {
+                nota.setCargo3(num + "");
+            } else {
                 num++;
                 anterior = nota.getCargo3();
-                nota.setCargo3(num+"");
+                nota.setCargo3(num + "");
             }
-            
+
         }
         ReporteExamenesDataSource ds = new ReporteExamenesDataSource(lisNotas);
-            return ds;
+        return ds;
         //return null;
 
 
@@ -3829,6 +3829,227 @@ public class reportesClase {
 
     }
     //resumen encuesta
+    //nomina oficial de graduados
+
+    public ArrayList actaGradoTodos(Global especialidad) {
+//     int tamanio=0; -2
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Map parametros = new HashMap();
+        Institucion insts = periodo.getInstitucion();
+        parametros.put("denominacion", insts.getDenominacion());
+        parametros.put("nombre", insts.getNombre());
+        parametros.put("periodo", periodo.getDescripcion());
+        parametros.put("slogan", insts.getSlogan());
+        parametros.put("secretaria", insts.getSecretaria());
+        parametros.put("rectora", insts.getRector());
+
+        List<Actagrado> notas = adm.query("Select o from Actagrado as o "
+                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "   and o.esfinal = true order by o.codigo ");
+
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+
+        String query2 = "";
+        String numeroDecimales = "3";
+        for (Actagrado notass : notas) {
+            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,3))," + numeroDecimales + "),";
+        }
+        query2 = query2.substring(0, query2.length() - 1).replace("'", "");
+        ArrayList lisNotasC = new ArrayList();
+        List<Matriculas> matriculas = new ArrayList();
+        matriculas = adm.query("Select o from Matriculas as o "
+                + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 "
+                + " and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + " and o.curso.especialidad.codigo = '" + especialidad.getCodigo() + "' "
+                + "order by o.estudiante.apellido,o.estudiante.nombre");
+        parametros.put("n1", "Numero");
+
+        for (Matriculas matriculas1 : matriculas) {
+            //Matriculas matriculas1 = itm.next();
+            NotaActaGeneral acta = new NotaActaGeneral();
+            acta.setMatricula(matriculas1);
+            List nativo = adm.queryNativo("Select numeroacta,fecha, " + query2 + " from notasacta where matricula = '" + matriculas1.getCodigomat() + "' ");
+            for (Iterator it = nativo.iterator(); it.hasNext();) {
+                Vector object = (Vector) it.next();
+                if (notas.size() >= 1) {
+//                        parametros.put("n1", notas.get(1).getAbreviatura());
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN1(redondear(((BigDecimal) object.get(2)).doubleValue(), 0));
+                    if (notas.get(0).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+
+                }
+
+
+            }
+//
+//        
+            lisNotasC.add(acta);
+
+        }
+
+
+        ActaGeneralDataSource ds = new ActaGeneralDataSource(lisNotasC);
+        lisNotasC = new ArrayList();
+        ArrayList otro = new ArrayList();
+        otro.add(ds);
+        otro.add(parametros);
+        return otro;
+
+    }
+
+    //resumen de calificacioens de constan en el acta de grado
+    public ArrayList actaGradoTodosConstan(Global especialidad) {
+//     int tamanio=0; -2
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Map parametros = new HashMap();
+        Institucion insts = periodo.getInstitucion();
+        parametros.put("denominacion", insts.getDenominacion());
+        parametros.put("nombre", insts.getNombre());
+        parametros.put("periodo", periodo.getDescripcion());
+        parametros.put("slogan", insts.getSlogan());
+        parametros.put("secretaria", insts.getSecretaria());
+        parametros.put("rectora", insts.getRector());
+        parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+        parametros.put("regimen", periodo.getRegimen());
+
+        List<Actagrado> notas = adm.query("Select o from Actagrado as o "
+                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "    order by o.codigo ");
+
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+
+        String query2 = "";
+        String numeroDecimales = "3";
+        for (Actagrado notass : notas) {
+            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,3))," + numeroDecimales + "),";
+        }
+        query2 = query2.substring(0, query2.length() - 1).replace("'", "");
+        ArrayList lisNotasC = new ArrayList();
+        List<Matriculas> matriculas = new ArrayList();
+        matriculas = adm.query("Select o from Matriculas as o "
+                + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 "
+                + " and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + " and o.curso.especialidad.codigo = '" + especialidad.getCodigo() + "' "
+                + "order by o.estudiante.apellido,o.estudiante.nombre");
+        parametros.put("n1", "Numero");
+
+        for (Matriculas matriculas1 : matriculas) {
+            //Matriculas matriculas1 = itm.next();
+            NotaActaGeneral acta = new NotaActaGeneral();
+            acta.setMatricula(matriculas1);
+            List nativo = adm.queryNativo("Select numeroacta,fecha, " + query2 + " from notasacta where matricula = '" + matriculas1.getCodigomat() + "' ");
+            for (Iterator it = nativo.iterator(); it.hasNext();) {
+                Vector object = (Vector) it.next();
+                if (notas.size() >= 1) {
+                
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    parametros.put("n1", notas.get(0).getAbreviatura());  
+                    acta.setN1(redondear(((BigDecimal) object.get(2)).doubleValue(), 2));
+                    if (notas.get(0).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 2) {
+                    
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN2(redondear(((BigDecimal) object.get(3)).doubleValue(), 2));
+                    parametros.put("n2", notas.get(1).getAbreviatura());
+                    if (notas.get(1).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 3) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN3(redondear(((BigDecimal) object.get(4)).doubleValue(), 2));
+                    parametros.put("n3", notas.get(2).getAbreviatura());
+                    if (notas.get(2).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 4) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN4(redondear(((BigDecimal) object.get(5)).doubleValue(), 2));
+                    parametros.put("n4", notas.get(3).getAbreviatura());
+                    if (notas.get(3).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 5) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN5(redondear(((BigDecimal) object.get(6)).doubleValue(), 2));
+                    parametros.put("n5", notas.get(4).getAbreviatura());
+                    if (notas.get(4).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 6) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN6(redondear(((BigDecimal) object.get(7)).doubleValue(), 2));
+                    parametros.put("n6", notas.get(5).getAbreviatura());
+                    if (notas.get(5).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 7) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN7(redondear(((BigDecimal) object.get(8)).doubleValue(), 2));
+                    parametros.put("n7", notas.get(6).getAbreviatura());
+                    if (notas.get(6).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 8) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN8(redondear(((BigDecimal) object.get(9)).doubleValue(), 2));
+                    parametros.put("n8", notas.get(7).getAbreviatura());
+                    if (notas.get(7).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+                if (notas.size() >= 9) {
+                    acta.setNumeroacta(((Integer) object.get(0)));
+                    acta.setFecha(((Date) object.get(1)));
+                    acta.setN9(redondear(((BigDecimal) object.get(10)).doubleValue(), 2));
+                    parametros.put("n9", notas.get(8).getAbreviatura());
+                    if (notas.get(8).getEsfinal()) {
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                    }
+                }
+
+
+            }
+//
+//        
+            lisNotasC.add(acta);
+
+        }
+
+
+        ActaGeneralDataSource ds = new ActaGeneralDataSource(lisNotasC);
+        lisNotasC = new ArrayList();
+        ArrayList otro = new ArrayList();
+        otro.add(ds);
+        otro.add(parametros);
+        return otro;
+
+    }
 
     public JRDataSource resumen(Cursos cursoLlega) {
         Administrador adm = new Administrador();
