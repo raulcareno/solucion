@@ -109,7 +109,7 @@ void estado(Boolean estado,Boolean modificar){
                     valMostrar = ""+ valn.value;
                 }else if(p.equals("Logico")){
                     equi.setBvalor(vall.checked);
-                    valMostrar = ""+ vall.value;
+                    //valMostrar = ""+ vall.value;
                 }else if(p.equals("Fecha")){
                     equi.setDvalor(valf.value);
                     valMostrar = ""+ valf.value;
@@ -119,8 +119,10 @@ void estado(Boolean estado,Boolean modificar){
         if((!equi.getCodigopar().equals(0)) ){
              adm.actualizar(equi);
                 List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = equi.getVariable()+"";
+                  ((Listcell)children.get(0)).label = equi.getCodigopar()+"";
                   ((Listcell)children.get(1)).label = nombre.value+ "" ;
+                  ((Listcell)children.get(2)).label =  "" ;
+                  ((Listcell)children.get(3)).label =  equi.getVariable()+"";
          }else{
                 equi.setCodigopar(adm.getNuevaClave("ParametrosGlobales","codigopar"));
                 adm.guardar(equi);
