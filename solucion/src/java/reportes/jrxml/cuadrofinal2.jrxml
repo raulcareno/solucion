@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cuadrofinal2" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cuadrofinal2" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="14" bottomMargin="14" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="38"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -37,6 +37,8 @@
 	<field name="aprovechamiento" class="java.lang.Double"/>
 	<field name="disciplina" class="java.lang.Double"/>
 	<field name="contador" class="java.lang.Integer"/>
+	<field name="diasAsistidos" class="java.lang.Integer"/>
+	<field name="sumatoria" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -283,6 +285,61 @@
 								<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
+							<staticText>
+								<reportElement key="staticText-8" x="27" y="0" width="27" height="34"/>
+								<box leftPadding="2" bottomPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle" rotation="Left">
+									<font size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
+								</textElement>
+								<text><![CDATA[PROMEDIO]]></text>
+							</staticText>
+							<staticText>
+								<reportElement key="staticText-8" x="0" y="0" width="27" height="34"/>
+								<box leftPadding="2" bottomPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle" rotation="Left">
+									<font size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
+								</textElement>
+								<text><![CDATA[TOTAL]]></text>
+							</staticText>
+							<staticText>
+								<reportElement key="staticText-8" x="54" y="0" width="27" height="34"/>
+								<box leftPadding="2" bottomPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle" rotation="Left">
+									<font size="5" isBold="true" pdfFontName="Helvetica-Bold"/>
+								</textElement>
+								<text><![CDATA[DISCIPLINA]]></text>
+							</staticText>
+							<textField isBlankWhenNull="false">
+								<reportElement key="textField-9" x="81" y="0" width="98" height="34"/>
+								<box leftPadding="2" bottomPadding="2">
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA["OBSERVACION"]]></textFieldExpression>
+							</textField>
 						</cellContents>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
@@ -334,7 +391,7 @@
 				<measure name="optativa1" class="java.lang.String">
 					<measureExpression><![CDATA[$F{optativa}]]></measureExpression>
 				</measure>
-				<measure name="aprovechamiento" class="java.lang.Object" calculation="Average">
+				<measure name="aprovechamiento" class="java.lang.Object">
 					<measureExpression><![CDATA[$F{aprovechamiento}]]></measureExpression>
 				</measure>
 				<measure name="disciplina" class="java.lang.Object" calculation="Average">
@@ -345,6 +402,9 @@
 				</measure>
 				<measure name="minima" class="java.lang.Object">
 					<measureExpression><![CDATA[$P{minima}]]></measureExpression>
+				</measure>
+				<measure name="sumatoria" class="java.lang.Object">
+					<measureExpression><![CDATA[$F{sumatoria}]]></measureExpression>
 				</measure>
 				<crosstabCell width="21" height="9">
 					<cellContents mode="Transparent">
@@ -369,7 +429,7 @@
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="12" height="9" columnTotalGroup="materia">
+				<crosstabCell width="179" height="9" columnTotalGroup="materia">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -377,6 +437,62 @@
 							<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
+						<textField isBlankWhenNull="false">
+							<reportElement key="textField-9" x="81" y="0" width="98" height="9"/>
+							<box leftPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{observacion01}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="54" y="0" width="27" height="9"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[""+$V{disciplina}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.000">
+							<reportElement x="27" y="0" width="27" height="9"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Double"><![CDATA[$V{aprovechamiento}]]></textFieldExpression>
+						</textField>
+						<textField pattern="#,##0.000">
+							<reportElement x="0" y="0" width="27" height="9"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression class="java.lang.Double"><![CDATA[$V{sumatoria}]]></textFieldExpression>
+						</textField>
 					</cellContents>
 				</crosstabCell>
 				<crosstabCell width="21" height="0" rowTotalGroup="estudiante">
@@ -389,7 +505,7 @@
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="12" height="0" rowTotalGroup="estudiante" columnTotalGroup="materia">
+				<crosstabCell width="179" height="0" rowTotalGroup="estudiante" columnTotalGroup="materia">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -422,7 +538,7 @@
 				<crosstabCell width="21" height="0" rowTotalGroup="numero">
 					<cellContents/>
 				</crosstabCell>
-				<crosstabCell width="12" height="0" rowTotalGroup="numero" columnTotalGroup="materia">
+				<crosstabCell width="179" height="0" rowTotalGroup="numero" columnTotalGroup="materia">
 					<cellContents>
 						<box>
 							<bottomPen lineWidth="0.5"/>
