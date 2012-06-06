@@ -29,6 +29,8 @@ private Object promedioFinal;
 private Object disciplinaFinal;
 
 private Double aprovechamiento;
+private Double sumatoria;
+private Integer diasAsistidos;
 private Double disciplina;
 
 //para examenes de grado
@@ -358,6 +360,22 @@ private BigDecimal disciplina2;
 
     public void setPromedio2(BigDecimal promedio2) {
         this.promedio2 = promedio2;
+    }
+
+    public Integer getDiasAsistidos() {
+        return diasAsistidos;
+    }
+
+    public void setDiasAsistidos(Integer diasAsistidos) {
+        this.diasAsistidos = diasAsistidos;
+    }
+
+    public Double getSumatoria() {
+        return sumatoria;
+    }
+
+    public void setSumatoria(Double sumatoria) {
+        this.sumatoria = sumatoria;
     }
  
     
