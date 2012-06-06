@@ -545,11 +545,11 @@ public class reportesClase {
                                         notaF.setContador(cont);
                                         notaF.setMatricula(matriculaNo);
                                         notaF.setNota(valF);
-                                        Global matNueva = new Global((equivalenciasFaltas.get(jF)).getCodigoequi());
-                                        matNueva.setDescripcion((equivalenciasFaltas.get(jF)).getNombre());
-                                        if ((equivalenciasFaltas.get(jF)).getEsfj()) {
+                                        Global matNueva = new Global((equivalenciasFaltasSoloDias.get(jF)).getCodigoequi());
+                                        matNueva.setDescripcion((equivalenciasFaltasSoloDias.get(jF)).getNombre());
+                                        if ((equivalenciasFaltasSoloDias.get(jF)).getEsfj()) {
                                             faltasFustificadas = valF;
-                                        } else if ((equivalenciasFaltas.get(jF)).getEsfi()) {
+                                        } else if ((equivalenciasFaltasSoloDias.get(jF)).getEsfi()) {
                                             faltasInjustificadas = valF;
                                         }
                                         notaF.setMateria(matNueva);
@@ -1974,9 +1974,22 @@ public class reportesClase {
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
-//Sistemacalificacion sd;
-//sd.getTrimestre().getCodigotrim();
-
+//DIAS ASISTIDOS
+//                List<Equivalencias> equivalenciasFaltas = adm.query("Select o from Equivalencias as o "
+//                    + "where o.grupo = 'DI' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+//                List<Equivalencias> equivalenciasFaltasSoloDias = adm.query("Select o from Equivalencias as o "
+//                                + "where o.grupo = 'DI' and  (o.esfj = TRUE OR o.esfi = TRUE)  "
+//                                + "and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+//                if (equivalenciasFaltas.size() <= 0) {
+//                    try {
+//                        Messagebox.show("Ingrese primero a Adminsitración > Equivalencias y Seleccione cuales son FJ, FI...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+//                        return null;
+//                    } catch (InterruptedException ex) {
+//                        Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//                List<Dias> laborados = adm.query("Select o from Dias as o "
+//                                + " where o.sistema.codigosis  = '" + sistema.getCodigosis() + "' ");
 
         String query = "";
         for (Notanotas notass : notas) {
@@ -2011,6 +2024,10 @@ public class reportesClase {
             MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
             Double disciplina = 0.0;
+            Double sumatoria = 0.0;
+            Integer faltasFustificadas = 0;
+                                Integer faltasInjustificadas = 0;
+                                Integer diasLaborados = 0;
             int ksis = 0;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
@@ -2032,17 +2049,9 @@ public class reportesClase {
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
-//                        if(val < 14){
-//                            nota.setNota("REPROBADO");
-//                        }else{
-//                            nota.setNota("APROBADO");
-//
-//                        }
                         nota.setNota(equivalencia(dos, equivalencias));
                     } else {
                         nota.setNota(val.toString());
-//                        aprovecha+=val;
-//                        System.out.println(matriculaNo+":::"+aprovecha);
                         if (val == 0.0) {
                             nota.setNota("");
                         }
@@ -2062,45 +2071,87 @@ public class reportesClase {
                         nota.setMprofesor(mprofesor1);
 
                     }
-
-//                    if(mprofesor.getCuantitativa()){
-//                            nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-//                    }else{
-//                          Sistemacalificacion sis2 = (Sistemacalificacion) sistemas.get(ksis);
-//                          Sistemacalificacion sistemaN = new Sistemacalificacion();
-//                          sistemaN.setAbreviatura("PROMEDIO");
-//                          sistemaN.setTrimestre(sis2.getTrimestre());
-//                          nota.setSistema(sistemaN);
-//
-//                    }
+ 
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setContador(cont);
                     nota.setDisciplina(disciplina);
+                    nota.setSumatoria(sumatoria);
+                    nota.setDiasAsistidos(diasLaborados-faltasInjustificadas);
                     matricula = matriculaNo.toString();
-                    lisNotas.add(nota);
+                      lisNotas.add(nota);
                     ksis++;
                 } else if (j == 1) {
-
-//                    try{
-//                        Integer va = (Integer) dos;
-//                    }catch(Exception e){
-//                            dos = new Integer(0);
-//                    }
-
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-//                    System.out.println("SELECT DE PROMEDIO:  SELECT CAST(AVG("+nfinal.getNota()+")as decimal (9,3)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ");
+                    //System.out.println("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-                    //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
-                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
-//                    System.out.println(""+valor);
+                      valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-//                    disciplina = aprovecha;
+                    try{
+                        System.out.println("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                     valor = adm.queryNativo("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                    if (valor.size() > 0) {
+                        sumatoria = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    }
+                    }catch(Exception e){
+                    System.out.println("ERRRO EN SUMATORIA: "+e);
+                            }
+                     //aqui tengo que poner las faltas y los días laborados 
+                        /**
+                        * BUSCO LAS FLATA SI ASÍ LO REQUIEREN
+                        */
+                    
+//                       if (true) {
+//                        //if (incluyedias) {
+//                                /**
+//                                 * AGREGRO LAS FALTAS AL REPORTE
+//                                 */
+//                                String query3 = "";
+//                                int w = 1;
+//
+//                                for (int i = 0; i < equivalenciasFaltasSoloDias.size(); i++) {
+//                                    query3 += "sum(nota" + w + "),";
+//                                    w++;
+//                                }
+//                                query3 = query3.substring(0, query3.length() - 1);
+//                                //IMPRIMO LAS FALTAS
+//                                String qf = "Select " + query3 + "  from disciplina "
+//                                        + "where matricula = '" + matriculaNo.getCodigomat() + "'  "
+//                                        + "and sistema = '" + sistema.getCodigosis() + "' "
+//                                        + " group by matricula ";
+//                                //System.out.println(""+q);
+//                                List nativoF = adm.queryNativo(qf);
+//                                
+//                                for (Iterator itnaF = nativoF.iterator(); itnaF.hasNext();) {
+//                                    Vector vecF = (Vector) itnaF.next();
+//
+//                                    for (int jF = 0; jF < vecF.size(); jF++) {
+//                                        Object dosF = vecF.get(jF);
+//                                        Integer valF = new Integer(dosF.toString());
+// 
+//                                        if ((equivalenciasFaltasSoloDias.get(jF)).getEsfj()) {
+//                                            faltasFustificadas = valF;
+//                                        } else if ((equivalenciasFaltasSoloDias.get(jF)).getEsfi()) {
+//                                            faltasInjustificadas = valF;
+//                                        }
+// 
+//                                    }
+//
+//                                }
+// 
+//                                 //diasLaborados - faltasInjustificadas
+//
+//
+//                            }
+
+                
+   
+                
 
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);

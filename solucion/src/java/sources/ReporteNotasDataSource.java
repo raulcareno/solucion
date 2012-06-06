@@ -182,6 +182,8 @@ public class ReporteNotasDataSource implements JRDataSource {
                 valor = nodo.getAprovechamiento();
             } else if ("disciplina".equals(fieldName)) {
                 valor = nodo.getDisciplina();
+            } else if ("sumatoria".equals(fieldName)) {
+                valor = nodo.getSumatoria();
             } else if ("observacion".equals(fieldName)) {
                 try {
                     if (nodo.getMatricula().getEstado().equals("Retirado")) {
