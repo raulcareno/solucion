@@ -987,6 +987,8 @@ void estado(Boolean estado,Boolean modificar){
         estado(true,false);
         //representante0.setTipoidentificacion("CF");
         acta.disabled = false;
+        acta8.disabled = false;
+        acta9.disabled = false;
         certificado.disabled = false;
         certificado2.disabled = false;
         claveprint.disabled = false;
@@ -1064,6 +1066,8 @@ ParametrosGlobales para = new ParametrosGlobales();
         llenar((Estudiantes)datos.selectedItem.value);
         modificar.disabled = false;
         acta.disabled = false;
+        acta8.disabled = false;
+        acta9.disabled = false;
         certificado.disabled = false;
         certificado2.disabled = false;
         claveprint.disabled = false;
@@ -1212,6 +1216,8 @@ valor = valor.substring(ini+1, fin);
              }
             modificar.disabled=false;
             acta.disabled = false;
+            acta8.disabled = false;
+        acta9.disabled = false;
             certificado.disabled = false;
             certificado2.disabled = false;
             claveprint.disabled = false;
@@ -1318,6 +1324,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         String query = "SELECT mat FROM Matriculas AS mat " +
                 "WHERE  mat.estado like '%Matriculado%' " +
                 "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+                if(tipo.equals("INS")){
+                    query = "SELECT mat FROM Matriculas AS mat " +
+                        "WHERE  mat.estado like '%Inscrito%' " +
+                         "and mat.codigomat = '" + matricula.getCodigomat() + "' "; 
+                }
         List hoy = adm.query(query);
         for (Iterator it = hoy.iterator(); it.hasNext();) {
             Matriculas elem = (Matriculas) it.next();
@@ -1375,6 +1386,11 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Carnet ");
                     report.setSrc(directorioReportes+"carnetMinisterioIndividual.jasper");
+
+            } else if(tipo.equals("INS")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Carnet ");
+                    report.setSrc(directorioReportes+"actaInscripcion.jasper");
 
             }
             if(!tipo.equals("-1")){
@@ -1457,6 +1473,7 @@ public void quitarFila(String codigoBuscar){
             <button  image="/images/nuevo.gif" id="agregar3" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
             <button  image="/images/editar.gif" id="modificar3"  label="Modificar" disabled="true" onClick="modificar()"/>
             <button  image="/images/imprimir.gif" id="acta3"  label="Acta" disabled="true"  onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+            <button  image="/images/imprimir.gif" id="acta8"  label="Ficha Ins." disabled="true"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
             <button  image="/images/imprimir.gif" id="certificado3"  label="Certificado" disabled="true"  onClick='showReport("CM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
             <button  image="/images/imprimir.gif" id="certificado23"  label="Certificado2" disabled="true"  onClick='showReport("CM2"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
             <button  image="/images/imprimir.gif" id="claveprint3"  label="Clave" disabled="true"  onClick='showReport("CL"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
@@ -2299,6 +2316,7 @@ public void quitarFila(String codigoBuscar){
             <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
             <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
             <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  '/>
+            <button  image="/images/imprimir.gif" id="acta9"  label="Ficha Ins." disabled="true"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  '/>
             <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  ' />
             <button  image="/images/imprimir.gif" id="certificado2"  label="Certificado2" disabled="true"  onClick='showReport("CM2"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  '/>
             <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  ' />
