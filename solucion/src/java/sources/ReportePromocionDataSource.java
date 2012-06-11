@@ -117,7 +117,7 @@ public class ReportePromocionDataSource implements JRDataSource {
                 if (nodo.getMateriaProfesor().getCuantitativa() == true) {
                     valor = num.numeros((Double) nodo.getNota()) + "";
                 } else {
-                    valor = null;
+                    valor = "Aprobado";
                 }
 
             } else if ("matricula".equals(fieldName)) {
