@@ -786,7 +786,12 @@ public class reportesClase {
                                             coll.setMateria(promMate);
                                             coll.setMprofesor(maprofesor);
                                             coll.setSistema(sistema);
-                                            coll.setAprovechamiento(new Double(coll.getNota().toString()));
+                                            try{
+                                                coll.setAprovechamiento(new Double(coll.getNota().toString()));    
+                                            }catch(Exception a){
+                                                coll.setAprovechamiento(new Double("0")); 
+                                            }
+                                            
                                             lisNotas.add(coll);
                                             ksisProm++;
                                         }
@@ -1059,6 +1064,9 @@ public class reportesClase {
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                    if(matriculaNo.getCodigomat().equals(new Integer(1603))){
+                        System.out.println(""+matriculaNo.getEstudiante());
+                    }
                 } else if (j == 0) {
 //                    mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
                 }
