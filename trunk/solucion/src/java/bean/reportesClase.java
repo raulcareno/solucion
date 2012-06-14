@@ -1021,21 +1021,11 @@ public class reportesClase {
                     dos = new Double(0.0);
                 }
                 if (j == (vec.size() - 1)) {
-//                    val = redondear((Double) dos, 2);
-//                    nota.setMatricula(matriculaNo);
+ 
                     matricula = matriculaNo.toString();
                 } else if (j >= 3) {
                     val = redondear((Double) dos, 2);
-//                    nota.setMatricula(matriculaNo);
                     matricula = matriculaNo.toString();
-//                    if (mprofesor.getCuantitativa() == false) {
-//                        nota.setNota(equivalencia(dos, equivalencias));
-//                    } else {
-//                        nota.setNota(val.toString());
-//                        if (val == 0.0) {
-//                            nota.setNota("");
-//                        }
-//                    }
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
                         if (val < 25) {
