@@ -1089,15 +1089,20 @@ public class reportesClase {
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.orden <= '" + sistema.getOrden() + "' "
-                + "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
-                + "and o.seimprime = true order by o.orden ");
+                + "and o.seimprime = true and  o.ensupletorio = true  order by o.orden ");
 
-        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
-                + "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
-                + "order by o.sistema.orden ");
-
+                + "and o.sistema.ensupletorio = true order by o.sistema.orden ");
+        if (notas.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Impresiones para el Supletorio en Aportes (Impr.Supletorios)...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
@@ -1147,7 +1152,7 @@ public class reportesClase {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
 
-        String q = "Select codigomap, matricula,notas.materia, " + query + ", 'obs'  from notas, materia_profesor , matriculas mat, estudiantes est "
+        String q = "Select codigomap, mat.codigomat,notas.materia, " + query + ", 'obs'  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
                 + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
@@ -1220,21 +1225,13 @@ public class reportesClase {
 //                    } else {
 //                        nota.setNota("");
 //                    }
-                    int tamaSistema = sistemas.size() - 1;
-//                    if (ksis == tamaSistema) {
-//                        nota.setMprofesor(mprofesor);
-//                    } else {
-//                        mprofesor1.getEmpleado().setApellidos("");
-//                        mprofesor1.getEmpleado().setNombres("");
-//                        nota.setMprofesor(mprofesor1);
-//
-//                    }
-
-
-                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    //int tamaSistema = sistemas.size() - 1;
+                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
                         if (val < 25) {
                             obs = "Pierde";
+                        }else if (val < 40) {
+                            obs = "Sup.";
                         }
                         sumatoria = val;
                     } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
@@ -1295,7 +1292,25 @@ public class reportesClase {
             }
         }
         nativo = null;
-        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        ArrayList<Matriculas> listaMatriculas = new ArrayList<Matriculas>();
+        List<Nota> lisNotasArreglado = new ArrayList();
+         for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+            Nota nota = it.next();
+                if(nota.getSistema().getNombre().equals("OBS")){
+                        if(nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("Sup")){
+                                listaMatriculas.add(nota.getMatricula());
+                        }
+                }
+        }
+         
+         for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+            Nota nota = it.next();
+                if(listaMatriculas.contains(nota.getMatricula())){
+                    lisNotasArreglado.add(nota); 
+                }
+                  
+        }
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotasArreglado);
         return ds;
 
     }
@@ -1768,7 +1783,7 @@ public class reportesClase {
                 + "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.seimprime = true order by o.orden ");
 
-        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+              List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
                 + "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "

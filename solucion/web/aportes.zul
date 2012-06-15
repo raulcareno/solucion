@@ -235,6 +235,7 @@ void llenar(Sistemacalificacion empa){
     esdisciplina.checked = empa.getEsdisciplina();
     faltas.checked = empa.getFaltas();
     espromedio.checked = empa.getEspromedio();
+    ensupletorio.checked = empa.getEnsupletorio();
     esequivalencia.checked = empa.getEsequivalencia();
     formula.value = empa.getFormula();
     formuladisciplina.value = empa.getFormuladisciplina();
@@ -305,6 +306,7 @@ void estado(Boolean estado,Boolean modificar){
     //formulafaltas.disabled = estado;
 conducta.readonly =estado;
 espromedio.disabled= estado;
+ensupletorio.disabled= estado;
 esequivalencia.disabled= estado;
 }
 
@@ -333,6 +335,7 @@ esequivalencia.disabled= estado;
         empa.setEsdisciplina(esdisciplina.checked);
         empa.setFaltas(faltas.checked);
         empa.setEspromedio(espromedio.checked);
+        empa.setEnsupletorio(ensupletorio.checked);
         empa.setEsequivalencia(esequivalencia.checked);
 
         empa.setOrden(orden.value);
@@ -650,7 +653,10 @@ if(formula1.equals("")){
                                 <checkbox id="espromedio" label="Impr. en Prom Final"/> 
                                 <separator bar="true" orient="vertical" />
                                 <checkbox id="esequivalencia" label="Es Equivalencia"/> 
-                                <separator bar="true" orient="vertical" /> 
+                                <separator bar="true" orient="vertical" />
+                                <checkbox id="ensupletorio" label="Impr.Supletorios"/> 
+                                <separator bar="true" orient="vertical" />
+                                
                             </span>
                         </row>
                         <row> 
