@@ -297,7 +297,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-									<font size="8" isBold="true" isStrikeThrough="false"/>
+									<font size="8" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}.replace("(N)","").replace("(1)","").replace("(2)","")]]></textFieldExpression>
 							</textField>
@@ -389,6 +389,36 @@
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="9" pdfEncoding="Cp1252" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}).equals("0")?"":$V{nota_Average})+""]]></textFieldExpression>
+						</textField>
+						<textField pattern="" isBlankWhenNull="true">
+							<reportElement key="detalleNota" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="24" height="12" isPrintWhenDetailOverflows="true" backcolor="#E2E2E2">
+								<printWhenExpression><![CDATA[(($V{nota_Average}).toString().contains("Sup") || ($V{nota_Average}).toString().contains("Pie"))]]></printWhenExpression>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="true"/>
+							</textElement>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}).equals("0")?"":$V{nota_Average})+""]]></textFieldExpression>
+						</textField>
+						<textField pattern="" isBlankWhenNull="true">
+							<reportElement key="detalleNota" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="24" height="12" isPrintWhenDetailOverflows="true">
+								<printWhenExpression><![CDATA[($V{sistema}).toString().contains("Sum")]]></printWhenExpression>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="9" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="true"/>
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}).equals("0")?"":$V{nota_Average})+""]]></textFieldExpression>
 						</textField>

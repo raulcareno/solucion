@@ -1302,14 +1302,28 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                         }
                 }
         }
-         
+         int contador =1;
+         int matriculaActual = 0;
+          
          for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
             Nota nota = it.next();
                 if(listaMatriculas.contains(nota.getMatricula())){
-                    lisNotasArreglado.add(nota); 
+                    nota.setContador(contador);
+                    int matriculaInt = nota.getMatricula().getCodigomat();
+                    if(matriculaActual==0){
+                            matriculaActual = matriculaInt;
+                    }else if(matriculaActual == matriculaInt){
+                        nota.setContador(contador);
+                    }else{
+                        contador++;
+                        matriculaActual = matriculaInt;
+                        nota.setContador(contador);
+                    }
+                        lisNotasArreglado.add(nota); 
                 }
                   
         }
+         
         ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotasArreglado);
         return ds;
 
