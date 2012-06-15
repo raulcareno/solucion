@@ -794,7 +794,7 @@ void campos(String valor){
         }else if(valor.equals("CSUP")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
-             titulo.value= "Cuadro de Calificaciones";
+             titulo.value= "Cuadro de Estudiantes a Supletorios";
              fila.visible = true;
              hasta.value = new java.math.BigDecimal(40);
              filacursos.visible = true;
