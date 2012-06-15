@@ -786,12 +786,12 @@ public class reportesClase {
                                             coll.setMateria(promMate);
                                             coll.setMprofesor(maprofesor);
                                             coll.setSistema(sistema);
-                                            try{
-                                                coll.setAprovechamiento(new Double(coll.getNota().toString()));    
-                                            }catch(Exception a){
-                                                coll.setAprovechamiento(new Double("0")); 
+                                            try {
+                                                coll.setAprovechamiento(new Double(coll.getNota().toString()));
+                                            } catch (Exception a) {
+                                                coll.setAprovechamiento(new Double("0"));
                                             }
-                                            
+
                                             lisNotas.add(coll);
                                             ksisProm++;
                                         }
@@ -1021,7 +1021,7 @@ public class reportesClase {
                     dos = new Double(0.0);
                 }
                 if (j == (vec.size() - 1)) {
- 
+
                     matricula = matriculaNo.toString();
                 } else if (j >= 3) {
                     val = redondear((Double) dos, 2);
@@ -1054,8 +1054,8 @@ public class reportesClase {
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    if(matriculaNo.getCodigomat().equals(new Integer(1603))){
-                        System.out.println(""+matriculaNo.getEstudiante());
+                    if (matriculaNo.getCodigomat().equals(new Integer(1603))) {
+                        System.out.println("" + matriculaNo.getEstudiante());
                     }
                 } else if (j == 0) {
 //                    mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
@@ -1081,7 +1081,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadrofinalsupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
+    public JRDataSource cuadrofinalsupletorio(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta, Boolean soloSupletoriados) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -1091,7 +1091,7 @@ public class reportesClase {
                 + "and o.orden <= '" + sistema.getOrden() + "' "
                 + "and o.seimprime = true and  o.ensupletorio = true  order by o.orden ");
 
-List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
                 + "and o.sistema.ensupletorio = true order by o.sistema.orden ");
@@ -1199,7 +1199,7 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                     sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis - 1)).getTrimestre());
                     nota.setNota("APRO");
                     nota.setNota("" + obs);
-                    if(matriculaNo.getEstado().contains("Retir") || matriculaNo.getEstado().contains("Emitir")){
+                    if (matriculaNo.getEstado().contains("Retir") || matriculaNo.getEstado().contains("Emitir")) {
                         nota.setNota("Ret.");
                     }
                     nota.setSistema(sistemp1);
@@ -1229,11 +1229,11 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
 //                        nota.setNota("");
 //                    }
                     //int tamaSistema = sistemas.size() - 1;
-                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
                         if (val < 25) {
                             obs = "Pierde";
-                        }else if (val < 40) {
+                        } else if (val < 40) {
                             obs = "Sup.";
                         }
                         sumatoria = val;
@@ -1297,37 +1297,45 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
         nativo = null;
         ArrayList<Matriculas> listaMatriculas = new ArrayList<Matriculas>();
         List<Nota> lisNotasArreglado = new ArrayList();
-         for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
-            Nota nota = it.next();
-                if(nota.getSistema().getNombre().equals("OBS")){
-                        if(nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("Sup")){
-                                listaMatriculas.add(nota.getMatricula());
-                        }
+        if (soloSupletoriados) {
+            for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+                Nota nota = it.next();
+                if (nota.getSistema().getNombre().equals("OBS")) {
+                    if (nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("Sup")) {
+                        listaMatriculas.add(nota.getMatricula());
+                    }
                 }
-        }
-         int contador =1;
-         int matriculaActual = 0;
-          
-         for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
-            Nota nota = it.next();
-                if(listaMatriculas.contains(nota.getMatricula())){
+            }
+            int contador = 1;
+            int matriculaActual = 0;
+
+            for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+                Nota nota = it.next();
+                if (listaMatriculas.contains(nota.getMatricula())) {
                     nota.setContador(contador);
                     int matriculaInt = nota.getMatricula().getCodigomat();
-                    if(matriculaActual==0){
-                            matriculaActual = matriculaInt;
-                    }else if(matriculaActual == matriculaInt){
+                    if (matriculaActual == 0) {
+                        matriculaActual = matriculaInt;
+                    } else if (matriculaActual == matriculaInt) {
                         nota.setContador(contador);
-                    }else{
+                    } else {
                         contador++;
                         matriculaActual = matriculaInt;
                         nota.setContador(contador);
                     }
-                        lisNotasArreglado.add(nota); 
+                    lisNotasArreglado.add(nota);
                 }
-                  
+
+            }
+
         }
-         
-        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotasArreglado);
+
+        ReporteNotasDataSource ds = null;
+        if (soloSupletoriados) {
+            ds = new ReporteNotasDataSource(lisNotasArreglado);
+        } else {
+            ds = new ReporteNotasDataSource(lisNotas);
+        }
         return ds;
 
     }
@@ -1800,7 +1808,7 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.seimprime = true order by o.orden ");
 
-              List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
                 + "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
@@ -2056,8 +2064,8 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
             Double disciplina = 0.0;
             Double sumatoria = 0.0;
             Integer faltasFustificadas = 0;
-                                Integer faltasInjustificadas = 0;
-                                Integer diasLaborados = 0;
+            Integer faltasInjustificadas = 0;
+            Integer diasLaborados = 0;
             int ksis = 0;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
@@ -2101,15 +2109,15 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                         nota.setMprofesor(mprofesor1);
 
                     }
- 
+
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setContador(cont);
                     nota.setDisciplina(disciplina);
                     nota.setSumatoria(sumatoria);
-                    nota.setDiasAsistidos(diasLaborados-faltasInjustificadas);
+                    nota.setDiasAsistidos(diasLaborados - faltasInjustificadas);
                     matricula = matriculaNo.toString();
-                      lisNotas.add(nota);
+                    lisNotas.add(nota);
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
@@ -2118,24 +2126,23 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-                      valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
+                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-                    try{
+                    try {
                         System.out.println("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-                     valor = adm.queryNativo("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-                    if (valor.size() > 0) {
-                        sumatoria = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                        valor = adm.queryNativo("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                        if (valor.size() > 0) {
+                            sumatoria = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                        }
+                    } catch (Exception e) {
+                        System.out.println("ERRRO EN SUMATORIA: " + e);
                     }
-                    }catch(Exception e){
-                    System.out.println("ERRRO EN SUMATORIA: "+e);
-                            }
-                     //aqui tengo que poner las faltas y los días laborados 
-                        /**
-                        * BUSCO LAS FLATA SI ASÍ LO REQUIEREN
-                        */
-                    
+                    //aqui tengo que poner las faltas y los días laborados 
+                    /**
+                     * BUSCO LAS FLATA SI ASÍ LO REQUIEREN
+                     */
 //                       if (true) {
 //                        //if (incluyedias) {
 //                                /**
@@ -2178,11 +2185,6 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
 //
 //
 //                            }
-
-                
-   
-                
-
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
                 } else if (j == 0) {
@@ -3998,7 +4000,7 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
         parametros.put("slogan", insts.getSlogan());
         parametros.put("secretaria", insts.getSecretaria());
         parametros.put("rectora", insts.getRector());
-        parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+        parametros.put("jornada", periodo.getSeccion().getDescripcion());
         parametros.put("regimen", periodo.getRegimen());
 
         List<Actagrado> notas = adm.query("Select o from Actagrado as o "
@@ -4031,17 +4033,17 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
             for (Iterator it = nativo.iterator(); it.hasNext();) {
                 Vector object = (Vector) it.next();
                 if (notas.size() >= 1) {
-                
+
                     acta.setNumeroacta(((Integer) object.get(0)));
                     acta.setFecha(((Date) object.get(1)));
-                    parametros.put("n1", notas.get(0).getAbreviatura());  
+                    parametros.put("n1", notas.get(0).getAbreviatura());
                     acta.setN1(redondear(((BigDecimal) object.get(2)).doubleValue(), 2));
                     if (notas.get(0).getEsfinal()) {
                         acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 2) {
-                    
+
                     acta.setNumeroacta(((Integer) object.get(0)));
                     acta.setFecha(((Date) object.get(1)));
                     acta.setN2(redondear(((BigDecimal) object.get(3)).doubleValue(), 2));

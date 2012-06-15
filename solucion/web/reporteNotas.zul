@@ -543,9 +543,15 @@ void recalcular(){
                     
 
             }else if(tipo.equals("CSUP")){
-                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+  
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    datasource = noti.cuadrofinalsupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrofinalsupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),true);
+                    report.setSrc(directorioReportes+"cuadrofinalsupletorio.jasper");
+                           
+            }else if(tipo.equals("CSUP2")){
+ 
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadrofinalsupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),false);
                     report.setSrc(directorioReportes+"cuadrofinalsupletorio.jasper");
                            
             }else if(tipo.equals("CNF")){
@@ -791,7 +797,7 @@ void campos(String valor){
              filaaportes.visible = true;
              fila.visible = true;
             
-        }else if(valor.equals("CSUP")){
+        }else if(valor.equals("CSUP") || valor.equals("CSUP2") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Estudiantes a Supletorios";
@@ -946,6 +952,7 @@ void campos(String valor){
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
                                     <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
+                                    <listitem id="CSUP2"  label="Cuadro de Supletorios(Todos)" value="CSUP2" />
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="linea0281222" label="============ ESTADISTICOS =============" value="linea2801222" />
@@ -1248,6 +1255,7 @@ void campos(String valor){
             CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
             CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
             CSUP.visible = per.verificarPermisoReporte("CSUP", "Ingresar");
+            
             CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
             APRO.visible = per.verificarPermisoReporte("APRO", "Ingresar");
             EST.visible = per.verificarPermisoReporte("EST", "Ingresar");
