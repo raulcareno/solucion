@@ -10,10 +10,14 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.Message;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 
 /**
@@ -123,6 +127,24 @@ public class generarCM {
                         }
                     } catch (Exception e) {
                     }
+                    String nombreCliente = fac.getFactura().getContratos().getClientes().getApellidos() +" "+fac.getFactura().getContratos().getClientes().getNombres();
+                    try {
+                        if(nombreCliente.length()>25){
+                            nombreCliente = nombreCliente.substring(0,25);    
+                        }else if(nombreCliente.length() == 25){
+                            
+                        }else{
+                            while(nombreCliente.length()<25)
+                                nombreCliente = nombreCliente+".";     
+                        }
+                    } catch (Exception e) {
+                            nombreCliente = nombreCliente.substring(0,25);
+                    }
+                    if(fac.getFactura().getContratos().getTipocuenta().equals("") || fac.getFactura().getContratos().getTipocuenta().equals(" ")){
+                        Messagebox.show("El cliente: "+ nombreCliente +" NO tiene tipo de cuenta AHO, COR ");
+                        return null;
+                    }
+                            
                     writer.write("" + fac.getFactura().getContratos().getTipocuenta().substring(0, 1) //1 Tipo de cuenta	Alfanumérico	A/C	1	Tipo de cuenta del cliente.  A: Ahorros.  C: Corriente.
                             + "\t" + cuenta// Nro Cuenta Numérico 10	Número de cuenta del cliente a debitar
                             + "\t" + valor //3 Valor	Numérico 15 Valor a debitar.  13 enteros, 2 decimales.
@@ -130,7 +152,7 @@ public class generarCM {
                             + "\t" + "W" //5	Tipo nota Alfanumérico	W	1	Tipo de transacción.  W: Débito en dólares.
                             + "\t" + "01" //6	Agencia	Numérico 01/06	2 Tipo de agencia.  01: Matriz.  06: Sucursal. 01 si es por Banca Transaccional ( Internet)
                             + "\t" + banco.getEmpresa()
-                            + "\t" + fac.getFactura().getNumero());
+                            + "\t" + nombreCliente);
                                 //                  Código empresa recaudadora; lo suministra el banco.(Motivo)
                                 //Campo opcional.  Podrá contener datos que relacionen al cliente con la empresa, como: código del cliente, número de identificación, etc
 
@@ -268,6 +290,8 @@ public class generarCM {
             adm.guardar(archivo);
 
             return data;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(generarCM.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException e) {
             System.err.println(e);
             System.exit(1);
