@@ -1199,6 +1199,9 @@ List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                     sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis - 1)).getTrimestre());
                     nota.setNota("APRO");
                     nota.setNota("" + obs);
+                    if(matriculaNo.getEstado().contains("Retir") || matriculaNo.getEstado().contains("Emitir")){
+                        nota.setNota("Ret.");
+                    }
                     nota.setSistema(sistemp1);
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
