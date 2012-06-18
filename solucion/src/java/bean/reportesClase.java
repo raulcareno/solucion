@@ -1175,6 +1175,7 @@ public class reportesClase {
             Double disciplina = 0.0;
             Double sumatoria = 0.0;
             String obs = "";
+            Boolean sn = false;
             int ksis = 0;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
@@ -1199,9 +1200,13 @@ public class reportesClase {
                     sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis - 1)).getTrimestre());
                     nota.setNota("APRO");
                     nota.setNota("" + obs);
+                    if (sn==true) {
+                        nota.setNota("SN");
+                    }
                     if (matriculaNo.getEstado().contains("Retir") || matriculaNo.getEstado().contains("Emitir")) {
                         nota.setNota("Ret.");
                     }
+
                     nota.setSistema(sistemp1);
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -1252,6 +1257,9 @@ public class reportesClase {
                         } else {
                             obs = "";
                         }
+                    }
+                    if(sn==false && val==0) {
+                            sn = true;
                     }
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -2106,6 +2114,7 @@ public class reportesClase {
                     } else {
                         mprofesor1.getEmpleado().setApellidos("");
                         mprofesor1.getEmpleado().setNombres("");
+                        mprofesor1.getEmpleado().setIdentificacion("");
                         nota.setMprofesor(mprofesor1);
 
                     }
