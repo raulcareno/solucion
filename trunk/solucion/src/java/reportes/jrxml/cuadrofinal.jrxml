@@ -26,6 +26,7 @@
 	<field name="observacion" class="java.lang.String"/>
 	<field name="profesor" class="java.lang.String"/>
 	<field name="contador" class="java.lang.Integer"/>
+	<field name="identificacion" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -387,6 +388,9 @@
 				<measure name="profesor" class="java.lang.String" calculation="Count">
 					<measureExpression><![CDATA[$F{profesor}]]></measureExpression>
 				</measure>
+				<measure name="identificacion" class="java.lang.Object">
+					<measureExpression><![CDATA[$F{identificacion}]]></measureExpression>
+				</measure>
 				<crosstabCell width="24" height="17">
 					<cellContents mode="Transparent">
 						<box>
@@ -487,7 +491,7 @@
 								<rightPen lineWidth="0.5"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left"/>
-							<textFieldExpression class="java.lang.String"><![CDATA[$V{profesor}]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[$V{profesor}+" \n" +$V{identificacion}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
