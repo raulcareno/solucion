@@ -412,9 +412,10 @@ public class reportesClase {
                                         + "and notas.promedia = true "
                                         + "and notas.disciplina = false "
                                         + " and notas.materia != 0 "
+                                        + " and "+query+" >0 "
                                         //+ "and notas.cuantitativa = true and notas.materia != 0 "
                                         + "group by matricula  ";
-                                //                System.out.println("NOTAS DE promedio " + q);
+                                                System.out.println("NOTAS DE promedio " + q);
                                 List nativo2 = null;
                                 nativo2 = adm.queryNativo(q);
                                 for (Iterator itProm = nativo2.iterator(); itProm.hasNext();) {
