@@ -244,7 +244,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="SansSerif" size="9"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Nothing}+"").equals("")  || ($V{nota_Nothing}+"").equals("null")  || ($V{nota_Nothing}+"").contains("S")  || ($V{nota_Nothing}+"").contains("B")  || ($V{nota_Nothing}+"").contains("R") || ($V{nota_Nothing}+"").contains("I") || ($V{nota_Nothing}+"").contains("M") || ($V{nota_Nothing}+"").contains("A")  ?$V{nota_Nothing}+"":(new Double($V{nota_Nothing}+"") > new Double("13.33")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+"" ))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Nothing}+"").equals("")  || ($V{nota_Nothing}+"").equals(".")  || ($V{nota_Nothing}+"").contains("P")  || ($V{nota_Nothing}+"").equals("null")  || ($V{nota_Nothing}+"").contains("S")  || ($V{nota_Nothing}+"").contains("B")  || ($V{nota_Nothing}+"").contains("R") || ($V{nota_Nothing}+"").contains("I") || ($V{nota_Nothing}+"").contains("M") || ($V{nota_Nothing}+"").contains("A")  ?$V{nota_Nothing}+"":(new Double($V{nota_Nothing}+"") > new Double("13.33")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+"" ))]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="false">
 							<reportElement key="textField-1" mode="Opaque" x="0" y="0" width="27" height="18" backcolor="#F9F9FB">
@@ -259,7 +259,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Nothing}+"").equals("")  || ($V{nota_Nothing}+"").equals("null")  || ($V{nota_Nothing}+"").contains("S")  || ($V{nota_Nothing}+"").contains("B")  || ($V{nota_Nothing}+"").contains("R") || ($V{nota_Nothing}+"").contains("I") || ($V{nota_Nothing}+"").contains("M") || ($V{nota_Nothing}+"").contains("A")  ?$V{nota_Nothing}+"":(new Double($V{nota_Nothing}+"") > new Double("13.33")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+"*" ))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Nothing}+"").equals("") || ($V{nota_Nothing}+"").contains("P")   || ($V{nota_Nothing}+"").equals("null")  || ($V{nota_Nothing}+"").equals(".")  || ($V{nota_Nothing}+"").contains("S")  || ($V{nota_Nothing}+"").contains("B")  || ($V{nota_Nothing}+"").contains("R") || ($V{nota_Nothing}+"").contains("I") || ($V{nota_Nothing}+"").contains("M") || ($V{nota_Nothing}+"").contains("A")  ?$V{nota_Nothing}+"":(new Double($V{nota_Nothing}+"") > new Double("13.33")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Nothing}.toString()))+"*" ))]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
