@@ -412,10 +412,10 @@ public class reportesClase {
                                         + "and notas.promedia = true "
                                         + "and notas.disciplina = false "
                                         + " and notas.materia != 0 "
-                                        + " and "+query+" >0 "
+                                        + " and " + query + " >0 "
                                         //+ "and notas.cuantitativa = true and notas.materia != 0 "
                                         + "group by matricula  ";
-                                                System.out.println("NOTAS DE promedio " + q);
+                                System.out.println("NOTAS DE promedio " + q);
                                 List nativo2 = null;
                                 nativo2 = adm.queryNativo(q);
                                 for (Iterator itProm = nativo2.iterator(); itProm.hasNext();) {
@@ -1201,7 +1201,7 @@ public class reportesClase {
                     sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis - 1)).getTrimestre());
                     nota.setNota("APRO");
                     nota.setNota("" + obs);
-                    if (sn==true) {
+                    if (sn == true) {
                         nota.setNota("SN");
                     }
                     if (matriculaNo.getEstado().contains("Retir") || matriculaNo.getEstado().contains("Emitir")) {
@@ -1259,8 +1259,8 @@ public class reportesClase {
                             obs = "";
                         }
                     }
-                    if(sn==false && val==0) {
-                            sn = true;
+                    if (sn == false && val == 0) {
+                        sn = true;
                     }
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -1982,11 +1982,14 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-//        List sistemas = adm.query("Select o from Sistemacalificacion as o " +
-//                "where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.espromedio = true   order by o.orden ");
-//        List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
-//                "where  o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' and  o.sistema.espromedio = true  " +
-//                "order by o.sistema.orden ");
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+ 
+        Boolean promCuantitativo = regresaVariableParametrosLogico("PROMCUAN", parametrosGlobales);
+        Boolean discCuantitativo = regresaVariableParametrosLogico("DISCCUAN", parametrosGlobales);
+        Boolean impPromedio = regresaVariableParametrosLogico("IMPPROM", parametrosGlobales);
+        Boolean impDisciplina = regresaVariableParametrosLogico("IMPDISC", parametrosGlobales);
+        
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " and o.orden <= '" + sistema.getOrden() + "' "
@@ -2132,7 +2135,12 @@ public class reportesClase {
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
                     //System.out.println("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                    String queryProm = "SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ";
+                    
+                    if (!promCuantitativo) {
+                            queryProm =  "SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND  disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ";
+                    }
+                    List valor = adm.queryNativo(queryProm);
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
@@ -2370,6 +2378,15 @@ public class reportesClase {
                         + "and notas.disciplina = false "
                         + "and notas.cuantitativa = true and notas.materia != 0 "
                         + "group by matricula  ";
+                if(!promCuantitativo){
+                    q = "Select matricula," + query2 + "  from notas "
+                            + "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
+                            + "and notas.seimprime = true "
+                            + "and notas.promedia = true "
+                            + "and notas.disciplina = false "
+                            + "and notas.cuantitativa = false and notas.materia != 0 "
+                            + "group by matricula  ";
+                }
 //                System.out.println("NOTAS DE promedio " + q);
                 nativo = null;
                 nativo = adm.queryNativo(q);
@@ -2396,7 +2413,7 @@ public class reportesClase {
                         if (j > 0) {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
-                            if (promCuantitativo == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
+                            if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                             } else {
                                 if (val == 0.0) {
@@ -2452,7 +2469,7 @@ public class reportesClase {
                         if (j > 0) {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
-                            if (discCuantitativo == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
+                            if (!discCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                             } else {
                                 if (val == 0.0) {
