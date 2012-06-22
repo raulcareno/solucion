@@ -88,7 +88,15 @@ public class ReporteNotasDataSource implements JRDataSource {
                                 if(valorDouble>0){
                                     
                                 }else{
-                                        nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                                        
+                                        if (nodo.getNota().toString().contains(".000")) {
+                                            //nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                                        }else if (nodo.getNota().toString().contains(".00")) {
+                                            nodo.setNota(nodo.getNota().toString().replace(".00", ""));    
+                                        }else if (nodo.getNota().toString().contains(".0")) {
+                                            nodo.setNota(nodo.getNota().toString().replace(".0", ""));    
+                                        }
+                                        
                                 }
                         }
 
