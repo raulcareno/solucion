@@ -1055,9 +1055,9 @@ public class reportesClase {
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    if (matriculaNo.getCodigomat().equals(new Integer(1603))) {
-                        System.out.println("" + matriculaNo.getEstudiante());
-                    }
+//                    if (matriculaNo.getCodigomat().equals(new Integer(1603))) {
+//                        System.out.println("" + matriculaNo.getEstudiante());
+//                    }
                 } else if (j == 0) {
 //                    mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
                 }
@@ -1067,9 +1067,9 @@ public class reportesClase {
                     }
                 }
             }
-            if (matricula.contains("HERMIDA")) {
-                System.out.println("cambios ");
-            }
+//            if (matricula.contains("HERMIDA")) {
+//                System.out.println("cambios ");
+//            }
 
             if (obs1 > 0) {
                 if (!aprobadMatriculas.contains(matriculaNo)) {
@@ -2011,6 +2011,9 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notaFinal.get(0).getSistema());
+        
         Notanotas nfinal = notaFinal.get(0);
         if (notas.size() <= 0) {
             try {
@@ -2020,7 +2023,7 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
@@ -2153,6 +2156,9 @@ public class reportesClase {
                        nota.setObservacion("SIN EXAMEN");
                    }else{
                        nota.setObservacion("APROBADO");
+                       if(listaMatriculasPerdidos.contains(matriculaNo)){
+                           nota.setObservacion("REPROBADO");
+                       }
                    }
                    
                     matricula = matriculaNo.toString();
