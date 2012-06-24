@@ -2053,7 +2053,15 @@ public class reportesClase {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
 
-        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
+            List<Notanotas> notasRequeridas = adm.query("Select o from Notanotas as o "
+                    + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                    + " and o.sistema.requerida = true "
+                    + " order by o.sistema.orden ");
+         
+        
+     
+        
+        String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
                 + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
@@ -2078,6 +2086,7 @@ public class reportesClase {
             Integer faltasFustificadas = 0;
             Integer faltasInjustificadas = 0;
             Integer diasLaborados = 0;
+            String observacion = "";
             int ksis = 0;
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
@@ -2094,10 +2103,6 @@ public class reportesClase {
                     val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
-
-
-                    //nota.setNota(val);
-
                     if (mprofesor.getCuantitativa() == false) {
                         nota.setNota(equivalencia(dos, equivalencias));
                     } else {
@@ -2106,12 +2111,10 @@ public class reportesClase {
                             nota.setNota("");
                         }
                     }
-                    if (val >= desde && val <= hasta) {
-                    } else {
-                        nota.setNota("");
-                    }
-
-
+//                    if (val >= desde && val <= hasta) {
+//                    } else {
+//                        nota.setNota("");
+//                    }
                     int tamaSistema = sistemas.size() - 1;
                     if (ksis == tamaSistema) {
                         nota.setMprofesor(mprofesor);
@@ -2120,15 +2123,38 @@ public class reportesClase {
                         mprofesor1.getEmpleado().setNombres("");
                         mprofesor1.getEmpleado().setIdentificacion("");
                         nota.setMprofesor(mprofesor1);
-
                     }
-
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setContador(cont);
                     nota.setDisciplina(disciplina);
                     nota.setSumatoria(sumatoria);
                     nota.setDiasAsistidos(diasLaborados - faltasInjustificadas);
+                   //verifico si es que tiene notas pendientes y las pongo en observación 
+                   if (notaFinal.get(0).getSistema().getCodigosis().equals(nota.getSistema().getCodigosis()) 
+                            && nota.getMatricula().getEstado().contains("Matriculado")) {
+                        for (Iterator<Notanotas> it = notasRequeridas.iterator(); it.hasNext();) {
+                            Notanotas notanotas = it.next();
+                                List<Notas> notaBus = adm.query("Select o from Notas as o "
+                                        + "where o."+notanotas.getNota()+" <=0  "
+                                        + "and o.matricula.codigomat = '"+nota.getMatricula().getCodigomat()+"' "
+                                        + "and o.materia.codigo = '"+nota.getMateria().getCodigo()+"' "
+                                        + "and o.promedia = true and o.disciplina = false  "
+                                        + " ");
+                                if(notaBus.size()>0){
+                                    nota.setNota("SN");
+                                }
+                                
+                            
+                        }
+                         
+                    }
+                   if(observacion.length()>0) {
+                       nota.setObservacion("SIN EXAMEN");
+                   }else{
+                       nota.setObservacion("APROBADO");
+                   }
+                   
                     matricula = matriculaNo.toString();
                     lisNotas.add(nota);
                     ksis++;
@@ -2157,6 +2183,21 @@ public class reportesClase {
                     } catch (Exception e) {
                         System.out.println("ERRRO EN SUMATORIA: " + e);
                     }
+                    
+                     if (matriculaNo.getEstado().contains("Matriculado")) {
+                        for (Iterator<Notanotas> it = notasRequeridas.iterator(); it.hasNext();) {
+                            Notanotas notanotas = it.next();
+                                List<Notas> notaBus = adm.query("Select o from Notas as o "
+                                        + "where o."+notanotas.getNota()+" <=0  "
+                                        + "and o.matricula.codigomat = '"+matriculaNo.getCodigomat()+"' "
+                                        + "and o.promedia = true and o.disciplina = false  "
+                                        + " ");
+                                if(notaBus.size()>0){
+                                    observacion ="SIN EXAMEN";
+                                }
+                        }
+                    }
+                    
                     //aqui tengo que poner las faltas y los días laborados 
                     /**
                      * BUSCO LAS FLATA SI ASÍ LO REQUIEREN

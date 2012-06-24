@@ -4,17 +4,23 @@
  */
 package sources;
 
-import bean.notas;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jcinform.persistencia.Notanotas;
+import jcinform.persistencia.Notas;
+import jcinform.persistencia.Periodo;
+import jcinform.persistencia.Sistemacalificacion;
+import jcinform.procesos.Administrador;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 /**
  *
@@ -41,7 +47,8 @@ public class ReporteNotasDataSource implements JRDataSource {
     /*
      * (non-Javadoc)
      *
-     * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
+     * @see
+     * net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
      */
 
     public Object getFieldValue(JRField campo) throws JRException {
@@ -81,24 +88,23 @@ public class ReporteNotasDataSource implements JRDataSource {
 //                        }
 //                        nodo.setNota(codigo);
 //                    }
-                        if (nodo.getNota().toString().contains(".0")) {
-                                String vale = nodo.getNota().toString();
-                                String valorDecimal = nodo.getNota().toString().substring(vale.indexOf("."));
-                                Double valorDouble = new Double(valorDecimal);
-                                if(valorDouble>0){
-                                    
-                                }else{
-                                        
-                                        if (nodo.getNota().toString().contains(".000")) {
-                                            //nodo.setNota(nodo.getNota().toString().replace(".0", ""));
-                                        }else if (nodo.getNota().toString().contains(".00")) {
-                                            nodo.setNota(nodo.getNota().toString().replace(".00", ""));    
-                                        }else if (nodo.getNota().toString().contains(".0")) {
-                                            nodo.setNota(nodo.getNota().toString().replace(".0", ""));    
-                                        }
-                                        
-                                }
+                    if (nodo.getNota().toString().contains(".0")) {
+                        String vale = nodo.getNota().toString();
+                        String valorDecimal = nodo.getNota().toString().substring(vale.indexOf("."));
+                        Double valorDouble = new Double(valorDecimal);
+                        if (valorDouble > 0) {
+                        } else {
+
+                            if (nodo.getNota().toString().contains(".000")) {
+                                //nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                            } else if (nodo.getNota().toString().contains(".00")) {
+                                nodo.setNota(nodo.getNota().toString().replace(".00", ""));
+                            } else if (nodo.getNota().toString().contains(".0")) {
+                                nodo.setNota(nodo.getNota().toString().replace(".0", ""));
+                            }
+
                         }
+                    }
 
                     valor = nodo.getNota().toString();
                     if (nodo.getNota().toString().equals("00")) {
@@ -129,17 +135,17 @@ public class ReporteNotasDataSource implements JRDataSource {
             } else if ("matricula".equals(fieldName)) {
                 valor = nodo.getMatricula().getCodigomat();
             } else if ("folio".equals(fieldName)) {
-                String mat = ""+nodo.getMatricula().getFolio();
-                                while(mat.length()<4){
-                                    mat = "0"+mat;
-                                }
-                valor = mat+"";
+                String mat = "" + nodo.getMatricula().getFolio();
+                while (mat.length() < 4) {
+                    mat = "0" + mat;
+                }
+                valor = mat + "";
             } else if ("matri".equals(fieldName)) {
-                String mat = ""+nodo.getMatricula().getNumero();
-                                while(mat.length()<4){
-                                    mat = "0"+mat;
-                                }
-                valor = mat+"";
+                String mat = "" + nodo.getMatricula().getNumero();
+                while (mat.length() < 4) {
+                    mat = "0" + mat;
+                }
+                valor = mat + "";
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion() + " " + nodo.getMatricula().getCurso().getEspecialidad() + " " + nodo.getMatricula().getCurso().getParalelo();
             } else if ("cursos".equals(fieldName)) {
@@ -168,18 +174,18 @@ public class ReporteNotasDataSource implements JRDataSource {
 
 
                     valor = nodo.getMprofesor().getEmpleado().getApellidos() + " " + nodo.getMprofesor().getEmpleado().getNombres() + " ";
-                if (valor.equals("")) {
-                    valor = null;
-                }
+                    if (valor.equals("")) {
+                        valor = null;
+                    }
                 } catch (Exception e) {
                 }
-                
-            }  else if ("identificacion".equals(fieldName)) {
+
+            } else if ("identificacion".equals(fieldName)) {
                 try {
-                    valor = nodo.getMprofesor().getEmpleado().getIdentificacion()+"";
+                    valor = nodo.getMprofesor().getEmpleado().getIdentificacion() + "";
                 } catch (Exception e) {
                 }
-                
+
             } else if ("optativa".equals(fieldName)) {
                 try {
                     valor = nodo.getMprofesor().getEmpleado().getApellidos() + " " + nodo.getMprofesor().getEmpleado().getNombres() + " ";
@@ -205,6 +211,9 @@ public class ReporteNotasDataSource implements JRDataSource {
                     }
                 } catch (Exception e) {
                     valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado" : "");
+                }
+                if (nodo.getObservacion().contains("SIN") && nodo.getMatricula().getEstado().equals("Matriculado")) {
+                        valor = nodo.getObservacion()+""+valor;
                 }
 
             } else if ("observacion1".equals(fieldName)) {

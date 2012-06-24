@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="94"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -23,6 +23,7 @@
 	<parameter name="minima" class="java.lang.Double">
 		<defaultValueExpression><![CDATA[new Double(13.33)]]></defaultValueExpression>
 	</parameter>
+	<parameter name="cuantitativo" class="java.lang.Boolean"/>
 	<field name="curso" class="java.lang.String"/>
 	<field name="estudiante" class="java.lang.String"/>
 	<field name="materia" class="java.lang.String"/>
@@ -428,7 +429,7 @@
 							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField isBlankWhenNull="false">
-							<reportElement key="textField-9" x="54" y="0" width="98" height="9"/>
+							<reportElement key="textField-9" x="54" y="0" width="98" height="9" isPrintWhenDetailOverflows="true"/>
 							<box leftPadding="2">
 								<pen lineWidth="0.5"/>
 								<topPen lineWidth="0.5"/>
@@ -453,7 +454,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="7"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(new Double($V{disciplina}+"").equals(new Double(1)) ? "PS" : new Double($V{disciplina}+"").equals(new Double(2)) ? "S": new Double($V{disciplina}+"").equals(new Double(3)) ? "MS": "" )]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(new Double($V{disciplina}+"").equals(new Double(1)) ? "PS" : new Double($V{disciplina}+"").equals(new Double(2)) ? "S": new Double($V{disciplina}+"").equals(new Double(3)) ? "MS": $V{disciplina}+"" )]]></textFieldExpression>
 						</textField>
 						<textField pattern="">
 							<reportElement x="0" y="0" width="27" height="9"/>
@@ -467,7 +468,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="7"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(new Double($V{aprovechamiento}+"").equals(new Double(1)) ? "PS" : new Double($V{aprovechamiento}+"").equals(new Double(2)) ? "S": new Double($V{aprovechamiento}+"").equals(new Double(3)) ? "MS": "" )]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(new Double($V{aprovechamiento}+"").equals(new Double(1)) ? "PS" : new Double($V{aprovechamiento}+"").equals(new Double(2)) ? "S": new Double($V{aprovechamiento}+"").equals(new Double(3)) ? "MS": $V{aprovechamiento}+"" )]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
