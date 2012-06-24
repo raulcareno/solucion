@@ -235,6 +235,7 @@ void llenar(Sistemacalificacion empa){
     seimprime.checked = empa.getSeimprime();
     esdisciplina.checked = empa.getEsdisciplina();
     faltas.checked = empa.getFaltas();
+    requerida.checked = empa.getRequerida();
     espromedio.checked = empa.getEspromedio();
     ensupletorio.checked = empa.getEnsupletorio();
     esequivalencia.checked = empa.getEsequivalencia();
@@ -299,6 +300,7 @@ void estado(Boolean estado,Boolean modificar){
     aprovechamiento.readonly = estado;
     //disciplina.disabled = estado;
     faltas.disabled = estado;
+    requerida.disabled = estado;
     orden.readonly = estado;
     trime.disabled = estado;
     tipo.disabled= estado;
@@ -335,6 +337,7 @@ esequivalencia.disabled= estado;
         empa.setSeimprime(seimprime.checked);
         empa.setEsdisciplina(esdisciplina.checked);
         empa.setFaltas(faltas.checked);
+        empa.setRequerida(requerida.checked);
         empa.setEspromedio(espromedio.checked);
         empa.setEnsupletorio(ensupletorio.checked);
         empa.setEsequivalencia(esequivalencia.checked);
@@ -663,6 +666,9 @@ if(formula1.equals("")){
                                 <separator bar="true" orient="vertical" />
          
                                 <checkbox label="Ingresa Faltas" id="faltas"/>     
+                                <separator bar="true" orient="vertical" />
+                                
+                                <checkbox label="Es Requerida" id="requerida"/>     
                                 <separator bar="true" orient="vertical" />
                             </span>
                         </row>

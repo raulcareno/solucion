@@ -36,6 +36,7 @@ private Double disciplina;
 //para examenes de grado
 private Cursos curso;
 private String profesor;
+private String observacion;
 
 private String firma1,firma2,firma3;
 private String cargo1,cargo2,cargo3;
@@ -376,6 +377,14 @@ private BigDecimal disciplina2;
 
     public void setSumatoria(Double sumatoria) {
         this.sumatoria = sumatoria;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
  
     
