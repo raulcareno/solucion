@@ -29,6 +29,8 @@
 	<field name="letrasDisciplina" class="java.lang.String"/>
 	<field name="sello" class="java.io.InputStream"/>
 	<field name="estudiante" class="java.lang.String"/>
+	<field name="letrasAprovechamiento2" class="java.lang.String"/>
+	<field name="letrasAprovechamiento3" class="java.lang.String"/>
 	<group name="estudiantes" isStartNewPage="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
 		<groupHeader>
@@ -322,7 +324,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="Arial" size="9"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{letrasAprovechamiento}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{letrasAprovechamiento3}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement key="textField" x="303" y="25" width="232" height="25"/>
