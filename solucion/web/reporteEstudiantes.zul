@@ -308,7 +308,7 @@ public JRDataSource inscritos4(ArrayList listadodeCursos, String tipo){
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat.* FROM Inscripciones AS mat " +
-                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC";
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' and mat.preaprobado = true ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC";
                 System.out.println(query);
       List hoy = adm.queryNativo(query,Inscripciones.class);
       int i=1;
@@ -347,7 +347,9 @@ public JRDataSource inscritos6(ArrayList listadodeCursos, String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
-        String query = "SELECT mat.apellido,mat.nombre FROM Inscripciones AS mat  WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.validada = TRUE UNION SELECT   est.apellido, est.nombre  FROM matriculas AS mati, estudiantes est WHERE   mati.estado = 'Inscrito'  AND mati.estudiante = est.codigoest AND mati.curso IN (SELECT  codigocur FROM cursos WHERE periodo =  '"+periodo.getCodigoper()+"' )  ORDER BY  1" ;
+        String query = "SELECT mat.apellido,mat.nombre FROM Inscripciones AS mat  "  + 
+        " WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.preaprobado = true " +
+        "AND mat.validada = "+ verificada.checked +" UNION SELECT   est.apellido, est.nombre  FROM matriculas AS mati, estudiantes est WHERE   mati.estado = 'Inscrito'  AND mati.estudiante = est.codigoest AND mati.curso IN (SELECT  codigocur FROM cursos WHERE periodo =  '"+periodo.getCodigoper()+"' )  ORDER BY  1" ;
                
                 System.out.println(query);
       List hoy = adm.queryNativo(query);
@@ -1041,6 +1043,7 @@ void campos(String valor){
     filacurso.visible=true;
      filatitulo.visible=true;
      filafechas.visible = false;
+                filaverificada.visible = false;   
         if(valor.equals("INS2")){
             titulo.value = "Listado de Inscritos por Internet";
            filacurso.visible = false;
@@ -1049,9 +1052,16 @@ void campos(String valor){
             titulo.value = "Califiación de Inscritos por Internet";
            filacurso.visible = false;
         }
-        if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS6")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
+        if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
            titulo.value = "Listado";
            filacurso.visible = false;
+        }
+        
+     
+        if(valor.equals("INS6")){
+           titulo.value = "Listado de Estudiantes Pre-aprobados";
+           filacurso.visible = false;
+           filaverificada.visible = true;
         }
         if(valor.equals("LREP2")  || valor.equals("LINSF") || valor.equals("RET") ){
             filaestudiantes.visible = false;
@@ -1220,6 +1230,10 @@ void campos(String valor){
                                 <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
                                 <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                             </listbox>
+                        </row>
+                         <row  id="filaverificada" visible="false" style="background:transparent;border:0px" >
+                            <span style="float:right"> Con Información Verificada: </span>
+                             <checkbox id="verificada" />
                         </row>
                         <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Desde:</span>
