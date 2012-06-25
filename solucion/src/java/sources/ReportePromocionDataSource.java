@@ -223,6 +223,19 @@ public class ReportePromocionDataSource implements JRDataSource {
                 }
                 valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, (Double) nodo.getAprovechamiento()).getNombre();
                 
+            } else if ("letrasAprovechamiento3".equals(fieldName)) {
+                
+                double numero = redondear((Double) nodo.getAprovechamiento(), 3).doubleValue();
+                String cadena = Double.toString(numero);
+                String parte_decimal_cadena = cadena.substring(cadena.lastIndexOf("."), cadena.length());
+                String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
+                Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
+                parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
+                while(parte_decimal_cadena.length() < 4){
+                    parte_decimal_cadena = parte_decimal_cadena + "0";
+                }
+                valor = num.numeros(parte_entera_numero) + " con " + parte_decimal_cadena+" ";
+                
             }else if ("equivaleAprovechamiento".equals(fieldName)) {
                 try {
                     valor =  " "+devolverNombre(equ,nodo.getAprovechamiento()).getNombre();    
