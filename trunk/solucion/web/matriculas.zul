@@ -735,6 +735,7 @@ void estado(Boolean estado,Boolean modificar){
             estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
             adm.guardar(estudent);
             estuNuevo = true;
+             llenar(estudent);
          }
          
          
