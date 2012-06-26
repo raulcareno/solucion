@@ -693,7 +693,7 @@ public class reportesClase {
                     if (maprofesor.getCuantitativa() == false) {
 
                         nota.setNota(equivalencia(dos, equivalencias));
-                        if ((Double) dos > 10.0) {
+                        if ((Double) dos > 10.0 && !matriculaNo.getEstado().equals("Retirado")) {
                             nota.setNota("Aprobado");
                         } else if (matriculaNo.getEstado().equals("Retirado")) {
                             nota.setNota("");
@@ -703,6 +703,9 @@ public class reportesClase {
                     } else {
                         nota.setNota(val.toString());
                         if (val == 0.0) {
+                            nota.setNota("");
+                        }
+                        if (matriculaNo.getEstado().equals("Retirado")){
                             nota.setNota("");
                         }
                     }

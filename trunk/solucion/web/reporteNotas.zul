@@ -369,6 +369,12 @@ void recalcular(){
             parametros.put("regimen", periodo.getRegimen());
             parametros.put("minima",(peligro.value).doubleValue());
             parametros.put("curso", curs.selectedItem.value+"");
+            try{
+                parametros.put("tutor", (curs.selectedItem.value).getTutor()+"");
+            }catch(Exception insp){System.out.println(""+tu);}
+            try{
+                parametros.put("inspector", (curs.selectedItem.value).getInspector()+"");
+            }catch(Exception insp){System.out.println(""+insp);}
                            
  List equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.valorminimo desc ");
