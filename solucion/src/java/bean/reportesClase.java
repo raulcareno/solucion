@@ -795,7 +795,10 @@ public class reportesClase {
                                             } catch (Exception a) {
                                                 coll.setAprovechamiento(new Double("0"));
                                             }
-
+                                            if (matriculaNo.getEstado().equals("Retirado")) {
+                                                coll.setNota("");
+                                                coll.setAprovechamiento(new Double("0"));
+                                            }
                                             lisNotas.add(coll);
                                             ksisProm++;
                                         }
