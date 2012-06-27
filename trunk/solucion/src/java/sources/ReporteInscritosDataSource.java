@@ -110,6 +110,10 @@ public class ReporteInscritosDataSource implements JRDataSource{
            valor = nodo.getCurso().getPeriodo().getDescripcion();
         }else if ("numero".equals(fieldName)) {
            valor = nodo.getNumero();
+        }else if ("usuario".equals(fieldName)) {
+           valor = nodo.getEstudiante().getUsuario();
+        }else if ("clave".equals(fieldName)) {
+           valor = nodo.getEstudiante().getClave();
         }
         
 

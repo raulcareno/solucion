@@ -347,9 +347,9 @@ public JRDataSource inscritos6(ArrayList listadodeCursos, String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
-        String query = "SELECT mat.apellido,mat.nombre FROM Inscripciones AS mat  "  + 
+        String query = "SELECT mat.apellido,mat.nombre, mat.usuario, mat.clave FROM Inscripciones AS mat  "  + 
         " WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.preaprobado = true " +
-        "AND mat.validada = "+ verificada.checked +" UNION SELECT   est.apellido, est.nombre  FROM matriculas AS mati, estudiantes est WHERE   mati.estado = 'Inscrito'  AND mati.estudiante = est.codigoest AND mati.curso IN (SELECT  codigocur FROM cursos WHERE periodo =  '"+periodo.getCodigoper()+"' )  ORDER BY  1" ;
+        "AND mat.validada = "+ verificada.checked +" UNION SELECT   est.apellido, est.nombre, est.usuario,est.clave  FROM matriculas AS mati, estudiantes est WHERE   mati.estado = 'Inscrito'  AND mati.estudiante = est.codigoest AND mati.curso IN (SELECT  codigocur FROM cursos WHERE periodo =  '"+periodo.getCodigoper()+"' )  ORDER BY  1" ;
                
                 System.out.println(query);
       List hoy = adm.queryNativo(query);
@@ -366,6 +366,8 @@ public JRDataSource inscritos6(ArrayList listadodeCursos, String tipo){
             matri.setCurso(cur);
             est.setApellido(vec.get(0)+"");
             est.setNombre(vec.get(1)+"");
+            est.setUsuario(vec.get(2)+"");
+            est.setClave(per.decriptar(vec.get(3)+""));
             est.setCodigoest(i);
             i++;
             matri.setEstudiante(est);
