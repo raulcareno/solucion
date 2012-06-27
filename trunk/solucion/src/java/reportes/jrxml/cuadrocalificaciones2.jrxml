@@ -434,7 +434,7 @@
 								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#051206"/>
 							</box>
 							<textField isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="0" width="150" height="11" isPrintWhenDetailOverflows="true"/>
+								<reportElement key="textField" x="0" y="0" width="150" height="11"/>
 								<box leftPadding="2">
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -517,16 +517,16 @@
 					<measureExpression><![CDATA[$F{profesor}]]></measureExpression>
 				</measure>
 				<measure name="riesgos" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R"))?new Integer(1):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("S")  || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R"))?new Integer(1):null)]]></measureExpression>
 				</measure>
 				<measure name="suma" class="java.lang.Double" calculation="Sum">
-					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R"))?new Double($F{nota}.toString()):new Double(0))]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("S")  || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")  || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R"))?new Double($F{nota}.toString()):new Double(0))]]></measureExpression>
 				</measure>
 				<measure name="riesgos1" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?new Integer(1):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B")  || $F{nota}.toString().contains("S")  || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?new Integer(1):null)]]></measureExpression>
 				</measure>
 				<measure name="sumaho" class="java.lang.Double" calculation="Sum">
-					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?new Double($F{nota}.toString()):new Double(0))]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("S")  || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")  || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?new Double($F{nota}.toString()):new Double(0))]]></measureExpression>
 				</measure>
 				<measure name="minima" class="java.lang.Object">
 					<measureExpression><![CDATA[$P{minima}]]></measureExpression>
@@ -547,19 +547,19 @@
 					<measureExpression><![CDATA[$P{eq5}]]></measureExpression>
 				</measure>
 				<measure name="sobresalientes" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran1} && new Double($F{nota}.toString()) <= $P{ranf1}  ? new Integer(1):null):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M")  || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")  || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran1} && new Double($F{nota}.toString()) <= $P{ranf1}  ? new Integer(1):null):null)]]></measureExpression>
 				</measure>
 				<measure name="muybuenas" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran2} && new Double($F{nota}.toString()) <= $P{ranf2}  ? new Integer(1):null):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M")  || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")|| $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran2} && new Double($F{nota}.toString()) <= $P{ranf2}  ? new Integer(1):null):null)]]></measureExpression>
 				</measure>
 				<measure name="buenas" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran3} && new Double($F{nota}.toString()) <= $P{ranf3}  ? new Integer(1):null):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")  || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran3} && new Double($F{nota}.toString()) <= $P{ranf3}  ? new Integer(1):null):null)]]></measureExpression>
 				</measure>
 				<measure name="regular" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran4} && new Double($F{nota}.toString()) <= $P{ranf4}  ? new Integer(1):null):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")  || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran4} && new Double($F{nota}.toString()) <= $P{ranf4}  ? new Integer(1):null):null)]]></measureExpression>
 				</measure>
 				<measure name="insuficiente" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran5} && new Double($F{nota}.toString()) <= $P{ranf5}  ? new Integer(1):null):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("") && !($F{nota}.toString().contains("M")|| $F{nota}.toString().contains("null") || $F{nota}.toString().equals("") || $F{nota}.toString().equals(".")  || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R")) && !$F{materia}.contains("DISCIPLINA")?(new Double($F{nota}.toString()) >= $P{ran5} && new Double($F{nota}.toString()) <= $P{ranf5}  ? new Integer(1):null):null)]]></measureExpression>
 				</measure>
 				<crosstabCell width="28" height="11">
 					<cellContents mode="Transparent">
@@ -582,7 +582,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("") || ($V{nota_Average}+"").equals("null")  || ($V{nota_Average}+"").contains("S")  || ($V{nota_Average}+"").contains("B")  || ($V{nota_Average}+"").contains("R") || ($V{nota_Average}+"").contains("I") || ($V{nota_Average}+"").contains("M") || ($V{nota_Average}+"").contains("A")  ?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+"*" ))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("") || ($V{nota_Average}+"").equals(".")  || ($V{nota_Average}+"").equals("null")  || ($V{nota_Average}+"").contains("S")  || ($V{nota_Average}+"").contains("B")  || ($V{nota_Average}+"").contains("R") || ($V{nota_Average}+"").contains("I") || ($V{nota_Average}+"").contains("M") || ($V{nota_Average}+"").contains("A")  ?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+"*" ))]]></textFieldExpression>
 						</textField>
 						<textField pattern="" isBlankWhenNull="false">
 							<reportElement key="textField" x="0" y="0" width="28" height="11">
@@ -597,7 +597,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("")  || ($V{nota_Average}+"").equals("null")  || ($V{nota_Average}+"").contains("S")  || ($V{nota_Average}+"").contains("B")  || ($V{nota_Average}+"").contains("R") || ($V{nota_Average}+"").contains("I") || ($V{nota_Average}+"").contains("M") || ($V{nota_Average}+"").contains("A")  ?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+"*" ))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[(($V{nota_Average}+"").equals("")  || ($V{nota_Average}+"").equals(".") || ($V{nota_Average}+"").equals("null")  || ($V{nota_Average}+"").contains("S")  || ($V{nota_Average}+"").contains("B")  || ($V{nota_Average}+"").contains("R") || ($V{nota_Average}+"").contains("I") || ($V{nota_Average}+"").contains("M") || ($V{nota_Average}+"").contains("A")  ?$V{nota_Average}+"":(new Double($V{nota_Average}+"") > new Double($V{minima}+"")? (new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+""):new java.text.DecimalFormat("##00.00").format(new Double($V{nota_Average}.toString()))+"*" ))]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
