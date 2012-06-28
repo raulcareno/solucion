@@ -81,6 +81,7 @@ void llenar(Materiasgrado estudent){
         }
 
   promediada.checked = estudent.getEspromedio();
+  trabajo.checked = estudent.getEstrabajo();
 
 }
  
@@ -91,6 +92,7 @@ void estado(Boolean estado,Boolean modificar){
    codigo.disabled = estado;
 
     promediada.disabled = estado;
+    trabajo.disabled = estado;
 
     formula.disabled = estado;
 
@@ -138,6 +140,7 @@ public  String disponible(){
         matricula.setProfesor2(encarg.selectedItem.value);
         matricula.setFormula(formula.value);
         matricula.setEspromedio(promediada.checked);
+        matricula.setEstrabajo(trabajo.checked);
  
 
         if((!matricula.getCodigo().equals(0)) ){
@@ -392,10 +395,17 @@ Cursos cur = curs.selectedItem.value;
 
             </row>
             <row>
-                <span style="float:right"> Es promedio
+                <span style="float:right"> Es el promedio
                 </span>
                 <span>
                     <checkbox id="promediada"  disabled="true"  />
+                </span>
+            </row>
+              <row>
+                <span style="float:right"> Es el Trab.Inv.
+                </span>
+                <span>
+                    <checkbox id="trabajo"  disabled="true"  />
                 </span>
             </row>
 

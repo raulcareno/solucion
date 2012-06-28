@@ -207,7 +207,7 @@ void materias123(){
               li.appendChild(new Listcell("Tercero"));
               materiaslista2.appendChild(li);
 
-               li = new Listitem();
+              li = new Listitem();
               li.setValue("cuarto");
               li.appendChild(new Listcell("Cuarto"));
               materiaslista2.appendChild(li);
@@ -225,6 +225,11 @@ void materias123(){
               li = new Listitem();
               li.setValue("examenes");
               li.appendChild(new Listcell("Examenes"));
+              materiaslista2.appendChild(li);
+              
+              li = new Listitem();
+              li.setValue("trabajo");
+              li.appendChild(new Listcell("Trabajo"));
               materiaslista2.appendChild(li);
 
               li = new Listitem();
