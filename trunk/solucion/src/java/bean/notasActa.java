@@ -43,6 +43,15 @@ String columnaExamen ="";
         }else{
 
         }
+        List<Materiasgrado> mtrabajo = adm.query("select o from Materiasgrado as o "
+                + " where o.estrabajo = true "
+                + " and o.curso.codigocur = '"+curso.getCodigocur()+"' ");
+        String columnaTrabajo ="";
+        if(mgrado.size()>0){
+            columnaTrabajo = mtrabajo.get(0).getColumna();
+        }else{
+
+        }
         String query = "";
         for (Actagrado notass : notas) {
             query += notass.getColumna() + ",";
@@ -146,6 +155,20 @@ String columnaExamen ="";
                     }else if(formula.contains("examenes")){
                         try{
                          List rec =  adm.queryNativo("Select ("+columnaExamen+") from Notasgrado " +
+                                 "where matricula = '"+matricula.getCodigomat()+"' ");
+                              if(rec==null){
+                                  txtNota.setValue(new BigDecimal(0));
+                              }else{
+                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 3)));
+
+                              }
+                        }catch(Exception e){
+                            System.out.println(""+e);
+                        }
+
+                    }else if(formula.contains("trabajo")){
+                        try{
+                         List rec =  adm.queryNativo("Select ("+columnaTrabajo+") from Notasgrado " +
                                  "where matricula = '"+matricula.getCodigomat()+"' ");
                               if(rec==null){
                                   txtNota.setValue(new BigDecimal(0));
@@ -263,7 +286,7 @@ String columnaExamen ="";
                             && !formula0.contains("segundo")
                             && !formula0.contains("tercero")
                             && !formula0.contains("cuarto")
-                            && !formula0.contains("sexto")  && !formula0.contains("examenes")   ){
+                            && !formula0.contains("sexto")  && !formula0.contains("examenes")   && !formula0.contains("trabajo")   ){
                             
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }
