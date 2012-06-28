@@ -588,7 +588,7 @@ void estado(Boolean estado,Boolean modificar){
     profesionma.readonly = estado;
     
     
-    cod1.readonly = estado; nom1.readonly = estado; par1.readonly = estado; cel1.readonly = estado; con1.value="";
+    cod1.readonly = estado; nom1.readonly = estado; par1.readonly = estado; cel1.readonly = estado; con1.readonly = estado;
         cod2.readonly = estado;nom2.readonly = estado; par2.readonly = estado; cel2.readonly = estado; con2.readonly = estado;
         cod3.readonly = estado;nom3.readonly = estado; par3.readonly = estado; cel3.readonly = estado; con3.readonly = estado;
 
