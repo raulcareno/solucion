@@ -123,6 +123,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
             noTicket.requestFocusInWindow();
             noTicket.requestFocusInWindow();
             noTicket.requestFocusInWindow();
+            int f = hastaF.getDate().getMonth()+1;
+            Date fefin = new Date();
+            fefin.setMonth(f); 
+            hastaF.setDate(fefin); 
+            
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -294,6 +299,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel26 = new javax.swing.JLabel();
         txtSubtotal = new javax.swing.JFormattedTextField();
         txtIva = new javax.swing.JFormattedTextField();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        observacionF = new javax.swing.JTextArea();
+        hastaF = new com.toedter.calendar.JDateChooser();
+        desdeF = new com.toedter.calendar.JDateChooser();
+        jLabel30 = new javax.swing.JLabel();
+        jLabel31 = new javax.swing.JLabel();
+        jLabel32 = new javax.swing.JLabel();
         cmbProductos = new javax.swing.JComboBox();
         btnAnadirProducto = new javax.swing.JButton();
         txtCantidad = new javax.swing.JFormattedTextField();
@@ -1069,7 +1081,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(btnAgregar1);
-        btnAgregar1.setBounds(440, 10, 60, 50);
+        btnAgregar1.setBounds(450, 120, 60, 50);
 
         btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir1.setMnemonic('S');
@@ -1088,7 +1100,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(btnSalir1);
-        btnSalir1.setBounds(500, 10, 60, 50);
+        btnSalir1.setBounds(510, 120, 60, 50);
 
         txtTotal1.setBorder(null);
         txtTotal1.setEditable(false);
@@ -1105,32 +1117,63 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel6.setLabelFor(total);
         jLabel6.setText("A PAGAR:");
         jPanel8.add(jLabel6);
-        jLabel6.setBounds(20, 70, 130, 30);
+        jLabel6.setBounds(10, 70, 130, 30);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("IVA:");
         jPanel8.add(jLabel25);
-        jLabel25.setBounds(67, 30, 90, 14);
+        jLabel25.setBounds(60, 40, 90, 14);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("SUBTOTAL:");
         jPanel8.add(jLabel26);
-        jLabel26.setBounds(80, 10, 80, 14);
+        jLabel26.setBounds(70, 10, 80, 14);
 
         txtSubtotal.setEditable(false);
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSubtotal.setText("0.0");
         jPanel8.add(txtSubtotal);
-        txtSubtotal.setBounds(172, 10, 110, 20);
+        txtSubtotal.setBounds(160, 10, 110, 20);
 
         txtIva.setEditable(false);
         txtIva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtIva.setText("0.0");
         jPanel8.add(txtIva);
-        txtIva.setBounds(172, 30, 110, 20);
+        txtIva.setBounds(160, 30, 110, 20);
+
+        observacionF.setColumns(20);
+        observacionF.setRows(5);
+        jScrollPane8.setViewportView(observacionF);
+
+        jPanel8.add(jScrollPane8);
+        jScrollPane8.setBounds(20, 120, 340, 60);
+
+        hastaF.setBackground(new java.awt.Color(255, 255, 255));
+        hastaF.setDate(new Date());
+        hastaF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel8.add(hastaF);
+        hastaF.setBounds(420, 50, 150, 20);
+
+        desdeF.setBackground(new java.awt.Color(255, 255, 255));
+        desdeF.setDate(new Date());
+        desdeF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel8.add(desdeF);
+        desdeF.setBounds(420, 30, 150, 20);
+
+        jLabel30.setText("Hasta:");
+        jPanel8.add(jLabel30);
+        jLabel30.setBounds(380, 50, 40, 14);
+
+        jLabel31.setText("Fechas de Validez de Tarjeta");
+        jPanel8.add(jLabel31);
+        jLabel31.setBounds(400, 10, 140, 14);
+
+        jLabel32.setText("Desde: ");
+        jPanel8.add(jLabel32);
+        jLabel32.setBounds(380, 30, 37, 14);
 
         jPanel6.add(jPanel8);
-        jPanel8.setBounds(20, 190, 600, 100);
+        jPanel8.setBounds(20, 190, 590, 190);
 
         cmbProductos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1374,17 +1417,21 @@ public class frmFactura extends javax.swing.JInternalFrame {
             JRDataSource ds = null;
             ArrayList detalle = new ArrayList();
             Map parametros = new HashMap();
+            String observacion = "";
             if (mensual) {
                 List<Detalle> fac = adm.query("Select o from Detalle as o where o.factura.codigo = " + cod + " ");
+                
                 for (Iterator<Detalle> it = fac.iterator(); it.hasNext();) {
                     Detalle detalle1 = it.next();
                     Factura fac1 = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + detalle1.getFactura().getCodigo() + " ");
+                    observacion = fac1.getObservacion();
                     detalle1.setFactura(fac1);
                     detalle.add(detalle1);
                 }
                 ds = new FacturaDetalleSource(detalle);
             } else {
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+                observacion = fac.getObservacion();
                 Clientes cli1 = (Clientes) fac.getClientes();
                 cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
                 System.out.println("" + cli1.getCodigo());
@@ -1399,6 +1446,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             parametros.put("direccion", cli.getDireccion());
             parametros.put("telefono", cli.getTelefono());
             parametros.put("placa", placa.getText());
+            parametros.put("observacion", observacion);
             parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
@@ -2253,6 +2301,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             facActual.setUsuario(principal.usuarioActual);
             facActual.setUsuarioc(principal.usuarioActual);
             facActual.setNumero(emp.getDocumentofac());
+            facActual.setObservacion(" Desde:"+desdeF.getDate().toLocaleString().substring(0,11) +" Hasta:"+ hastaF.getDate().toLocaleString().substring(0,11)+" "+observacionF.getText());
             adm.guardar(facActual);
             Integer numero = new Integer(emp.getDocumentofac());
             emp.setDocumentofac((numero + 1) + "");
@@ -2891,6 +2940,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox cmbProductos;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
+    private com.toedter.calendar.JDateChooser desdeF;
     private javax.swing.JLabel dias;
     private javax.swing.JLabel dias1;
     private javax.swing.JLabel dias2;
@@ -2904,6 +2954,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JButton frmGuardarMulta;
     private javax.swing.JInternalFrame frmTarifa0;
     private javax.swing.JButton guardarTarifa0;
+    private com.toedter.calendar.JDateChooser hastaF;
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
@@ -2933,6 +2984,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2957,6 +3011,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel miBotonImagen;
     public javax.swing.JFormattedTextField noTicket;
@@ -2964,6 +3019,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JTextArea observacion;
     private javax.swing.JTextArea observacion1;
+    private javax.swing.JTextArea observacionF;
     private javax.swing.JPanel panelencontrados;
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JPanel panelencontrados2;

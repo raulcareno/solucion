@@ -32,7 +32,6 @@ import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.Vector;
 import sources.ClientesSource;
 import sources.ConsolidadoSource;
 import sources.FacturaSource;
@@ -422,12 +421,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
             List fac = adm.queryNativo(query);
             ArrayList detalle = new ArrayList();
             for (Iterator it = fac.iterator(); it.hasNext();) {
-                Vector faci = (Vector)it.next();
+                Object[] faci = (Object[])it.next();
                 General gen = new General();
-                gen.setDato1(faci.get(0)+"");  
-                gen.setNumero1(new Integer(faci.get(2).toString()));  
-                gen.setValor1(new BigDecimal(faci.get(1).toString()));  
-                gen.setValor2(new BigDecimal(faci.get(3).toString()));  
+                gen.setDato1(faci[0]+"");  
+                gen.setNumero1(new Integer(faci[2].toString()));  
+                gen.setValor1(new BigDecimal(faci[1].toString()));  
+                gen.setValor2(new BigDecimal(faci[3].toString()));  
                 detalle.add(gen);
             }
             ConsolidadoSource  ds = new ConsolidadoSource(detalle);
@@ -539,9 +538,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
             ArrayList detalle = new ArrayList();
             for (Iterator it = fac.iterator(); it.hasNext();) {
                 Factura fac01 = new Factura();
-                 Vector factura =   (Vector) it.next();
-                 Date fecha = (Date) factura.get(0);
-                 BigDecimal valor = (BigDecimal) factura.get(1);
+                 Object[] factura =   (Object[]) it.next();
+                 Date fecha = (Date) factura[0];
+                 BigDecimal valor = (BigDecimal) factura[1];
                  fac01.setFecha(fecha);
                  fac01.setTotal(valor);
                 detalle.add(fac01);
@@ -630,12 +629,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
             List fac = adm.queryNativo(query);
              for (Iterator it = fac.iterator(); it.hasNext();) {
                 Clientes cli = new Clientes();
-                 Vector clienteIt =   (Vector) it.next();
-                 Integer fecha = (Integer) clienteIt.get(0);
-                 Long valor = (Long) clienteIt.get(1);
+                 Object[] clienteIt =   (Object[]) it.next();
+                 Integer fecha = (Integer) clienteIt[0];
+                 Long valor = (Long) clienteIt[1];
                  cli = (Clientes)adm.buscarClave(fecha, Clientes.class);
                  cli.setTelefono(""+valor);//CARGO EL NUMERO DE INGRESOS
-                 cli.setUltimoacceso( (Date) clienteIt.get(2));
+                 cli.setUltimoacceso( (Date) clienteIt[2]);
                 detalle.add(cli);
             }
         
@@ -1006,15 +1005,20 @@ public class frmReportes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     cmbUsuarios.setEnabled(false);  
     cmbClientes.setEnabled(false);
-        if(cmbTipoReporte.getSelectedIndex() == 0  || cmbTipoReporte.getSelectedIndex() == 1
-                || cmbTipoReporte.getSelectedIndex() == 3 || cmbTipoReporte.getSelectedIndex() == 4
-                || cmbTipoReporte.getSelectedIndex() == 5 || cmbTipoReporte.getSelectedIndex() == 12){
-                cmbUsuarios.setEnabled(true);    
-    }else if(cmbTipoReporte.getSelectedIndex() == 9){
+    //106 CIERRE CAJA
+     if(cmbTipoReporte.getSelectedItem().toString().contains("103") || cmbTipoReporte.getSelectedItem().toString().contains("104") || 
+                cmbTipoReporte.getSelectedItem().toString().contains("105") ||  cmbTipoReporte.getSelectedItem().toString().contains("102") ||
+                cmbTipoReporte.getSelectedItem().toString().contains("200") ||                 cmbTipoReporte.getSelectedItem().toString().contains("201") ||
+                cmbTipoReporte.getSelectedItem().toString().contains("202")){
+                 cmbUsuarios.setEnabled(true);    
+//               if(principal.getUsuario().getGlobal().getNombre().contains("Administrador")){
+//                     cmbUsuarios.setEnabled(true);    
+//                }
+    }else if(cmbTipoReporte.getSelectedItem().toString().contains("304")){
             try {
                 cmbClientes.setEnabled(true);
-                cmbUsuarios.setEnabled(true);   
-                cmbClientes.removeAllItems();
+                //cmbUsuarios.setEnabled(true);   
+                cmbClientes.removeAllItems(); 
                 Clientes cliE = new Clientes(-1);
                 cliE.setNombres("[TODOS]");
                 cmbClientes.addItem(cliE);
@@ -1028,7 +1032,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
             }
            
-        } 
+        }
+        
+        
+        
     }//GEN-LAST:event_cmbTipoReporteItemStateChanged
 
     private void cmbTipoReporteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbTipoReporteKeyPressed

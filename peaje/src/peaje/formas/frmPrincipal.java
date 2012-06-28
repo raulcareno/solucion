@@ -6778,8 +6778,8 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             String sFichero = "C:\\WINDOWS\\system32\\mysqldump.exe";
             File fichero = new File(sFichero);
             if (!fichero.exists()) {
-                JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar");
-                return;
+                JOptionPane.showMessageDialog(this, "No existe el archivo mysqldump.exe \n En el directorio  c:\\windows\\system32 \n copielo en el directorio indicado y vuelva a ejecutar \\es posible que no se respalde su base completa.");
+                //return;
             }
             String ip = UsuarioActivo.getIp();
             String direc = ubicacionArchivo.getText();
