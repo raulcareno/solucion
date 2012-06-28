@@ -3670,12 +3670,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);
                 }
                 try {
-                    if (empresaObj.getRetardoEntrada() != null) {
-                            if (empresaObj.getRetardoEntrada().length() > 0) {
-                                Integer retardo = new Integer(empresaObj.getRetardoEntrada());
-                                Thread.sleep(retardo * 1000);
-                            }
-                   }
+ //LE QUITO EL RETARDO YA QUE NO NECESITO EN CASO DE LECTURA DE TARJETA DE PROXIMIDAD
+            //                    if (empresaObj.getRetardoEntrada() != null) {
+            //                            if (empresaObj.getRetardoEntrada().length() > 0) {
+            //                                Integer retardo = new Integer(empresaObj.getRetardoEntrada());
+            //                                Thread.sleep(retardo * 1000);
+            //                            }
+            //                   }
                     abrirPuerta(puertoViene);
                 } catch (Exception e) {
                     System.out.println("PROCESO CORRECTO NO ABRIÓ PUERTA POR PUERTO DESHABILITADO");

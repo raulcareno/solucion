@@ -248,16 +248,23 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         frmEliminar = new javax.swing.JInternalFrame();
         jLabel28 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        frmGuardarMulta = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
+        frmTarifa0 = new javax.swing.JInternalFrame();
+        jLabel29 = new javax.swing.JLabel();
+        guardarTarifa0 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        observacion1 = new javax.swing.JTextArea();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         btnMulta = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnAgregar2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -377,13 +384,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Facturación de Tickets ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona GUARDAR..::..");
         jPanel3.add(jLabel10);
@@ -433,7 +440,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14));
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(ingreso);
         ingreso.setBounds(70, 50, 210, 20);
 
@@ -443,7 +450,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(10, 10, 60, 14);
 
-        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12));
+        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
@@ -464,18 +471,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         salida.setBackground(new java.awt.Color(255, 255, 255));
         salida.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        salida.setFont(new java.awt.Font("Tahoma", 1, 14));
+        salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(salida);
         salida.setBounds(70, 70, 210, 20);
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(10, 50, 60, 20);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Salida: ");
@@ -484,7 +491,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
         tiempo.setDateFormatString("HH:mm");
-        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14));
+        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(tiempo);
         tiempo.setBounds(70, 90, 110, 20);
 
@@ -507,24 +514,24 @@ public class frmFactura extends javax.swing.JInternalFrame {
         codigo.setBorder(null);
         codigo.setEditable(false);
         codigo.setEnabled(false);
-        codigo.setFont(new java.awt.Font("Tahoma", 0, 3));
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
         jPanel1.add(codigo);
         codigo.setBounds(10, 30, 20, 20);
 
-        dias.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
         dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 13));
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
         dias1.setBounds(80, 110, 40, 20);
 
-        dias2.setFont(new java.awt.Font("Tahoma", 1, 11));
+        dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");
@@ -637,7 +644,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente.setEditable(false);
         cliente.setText("1");
         cliente.setEnabled(false);
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel2.add(cliente);
         cliente.setBounds(190, 10, 20, 20);
 
@@ -675,14 +682,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
         frmEliminar.getContentPane().add(jLabel28);
         jLabel28.setBounds(20, 0, 220, 30);
 
-        jButton1.setText("SI");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        frmGuardarMulta.setText("SI");
+        frmGuardarMulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                frmGuardarMultaActionPerformed(evt);
             }
         });
-        frmEliminar.getContentPane().add(jButton1);
-        jButton1.setBounds(50, 80, 60, 23);
+        frmEliminar.getContentPane().add(frmGuardarMulta);
+        frmGuardarMulta.setBounds(50, 80, 60, 23);
 
         jButton2.setText("NO");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -703,11 +710,46 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.add(frmEliminar);
         frmEliminar.setBounds(10, 0, 270, 140);
 
+        frmTarifa0.setTitle("Anular tickets");
+        frmTarifa0.getContentPane().setLayout(null);
+
+        jLabel29.setText("Va ha aplicar la Tarifa 0.0?, Escriba una razón");
+        frmTarifa0.getContentPane().add(jLabel29);
+        jLabel29.setBounds(20, 0, 220, 30);
+
+        guardarTarifa0.setText("SI");
+        guardarTarifa0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarTarifa0ActionPerformed(evt);
+            }
+        });
+        frmTarifa0.getContentPane().add(guardarTarifa0);
+        guardarTarifa0.setBounds(50, 80, 60, 23);
+
+        jButton5.setText("NO");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        frmTarifa0.getContentPane().add(jButton5);
+        jButton5.setBounds(140, 80, 60, 23);
+
+        observacion1.setColumns(20);
+        observacion1.setRows(5);
+        jScrollPane7.setViewportView(observacion1);
+
+        frmTarifa0.getContentPane().add(jScrollPane7);
+        jScrollPane7.setBounds(20, 30, 220, 40);
+
+        jPanel4.add(frmTarifa0);
+        frmTarifa0.setBounds(10, 0, 270, 140);
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnAgregar.setMnemonic('G');
         btnAgregar.setText("Guardar");
         btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnAgregar.setOpaque(false);
         btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -721,13 +763,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(170, 130, 60, 50);
+        btnAgregar.setBounds(160, 130, 70, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
         btnSalir.setText("Salir");
         btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnSalir.setOpaque(false);
         btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -741,7 +783,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(230, 130, 60, 50);
+        btnSalir.setBounds(230, 130, 70, 50);
 
         total.setBorder(null);
         total.setEditable(false);
@@ -749,11 +791,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         total.setText("0.0");
         total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel4.add(total);
-        total.setBounds(10, 60, 240, 50);
+        total.setBounds(90, 60, 200, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setLabelFor(total);
         jLabel2.setText("A PAGAR:");
@@ -764,7 +806,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnMulta.setMnemonic('G');
         btnMulta.setText("Aplicar Multa");
         btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMulta.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnMulta.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnMulta.setOpaque(false);
         btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnMulta.addActionListener(new java.awt.event.ActionListener() {
@@ -778,7 +820,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnMulta);
-        btnMulta.setBounds(90, 130, 80, 50);
+        btnMulta.setBounds(80, 130, 80, 50);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
         btnEliminar.setText("Anular Ticket");
@@ -792,7 +834,27 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnEliminar);
-        btnEliminar.setBounds(10, 130, 80, 50);
+        btnEliminar.setBounds(0, 130, 80, 50);
+
+        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnAgregar2.setMnemonic('G');
+        btnAgregar2.setText("TARIFA 0.0");
+        btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAgregar2.setOpaque(false);
+        btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar2ActionPerformed(evt);
+            }
+        });
+        btnAgregar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar2KeyPressed(evt);
+            }
+        });
+        jPanel4.add(btnAgregar2);
+        btnAgregar2.setBounds(0, 70, 80, 60);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 300, 190);
@@ -929,7 +991,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente1.setEditable(false);
         cliente1.setText("1");
         cliente1.setEnabled(false);
-        cliente1.setFont(new java.awt.Font("Tahoma", 0, 8));
+        cliente1.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
         jPanel7.add(cliente1);
         cliente1.setBounds(190, 10, 20, 10);
 
@@ -1034,11 +1096,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         txtTotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtTotal1.setText("0.0");
         txtTotal1.setCaretColor(new java.awt.Color(0, 204, 0));
-        txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36));
+        txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel8.add(txtTotal1);
         txtTotal1.setBounds(140, 60, 140, 40);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setLabelFor(total);
         jLabel6.setText("A PAGAR:");
@@ -1094,7 +1156,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("1");
-        txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11));
+        txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtCantidadKeyPressed(evt);
@@ -1170,6 +1232,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
 
 
+
+
                     Date fecSalida = new Date();
                     fecSalida.setHours(salida.getDate().getHours());
                     fecSalida.setMinutes(salida.getDate().getMinutes());
@@ -1231,7 +1295,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
                         try {
                             LeerTarjeta ta = principal.buscarPuerto("principal");
-                            
+
                             ta.outputSream.write(empresaObj.getPuertafac().getBytes());
                             //TEMPORAL
                             Thread.sleep(20);
@@ -2517,7 +2581,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMultaKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void frmGuardarMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmGuardarMultaActionPerformed
         // TODO add your handling code here:
         if (observacion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un motivo por el cuál está anulando el ticket...!");
@@ -2549,7 +2613,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_frmGuardarMultaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -2604,9 +2668,216 @@ public class frmFactura extends javax.swing.JInternalFrame {
         direccion.setText("");
         telefono.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
+        // TODO add your handling code here:
+
+
+        try {
+            // TODO add your handling code here:
+            Accesos permisos = null;
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
+                    + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (permisos.getAgregar()) {
+                if (codigo.getText().isEmpty()) {
+                    codigo.setText("");
+                    JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                    noTicket.requestFocusInWindow();
+                    return;
+                } else {
+                    observacion1.setText("");
+                    frmTarifa0.setVisible(true);
+                }
+
+            } else {
+                System.out.println("NO TIENE PERMISOS");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAgregar2ActionPerformed
+
+    private void btnAgregar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregar2KeyPressed
+
+    private void guardarTarifa0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarTarifa0ActionPerformed
+        // TODO add your handling code here:
+        if (observacion1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese un motivo por el cuál está anulando el ticket...!");
+            observacion1.requestFocusInWindow();
+        } else {
+            try {
+                     guardando = true;
+
+                    if (principal.permisos.getAgregar()) {
+                        try {
+                            if (codigo.getText().isEmpty()) {
+                                JOptionPane.showMessageDialog(this, "Ingrese un Ticket ...!", "", JOptionPane.ERROR_MESSAGE);
+                                noTicket.requestFocusInWindow();
+                                return;
+                            }
+                            if (cliente.getText().equals("0") && nombres.getText().trim().isEmpty()) {
+                                JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                                identificacion.requestFocusInWindow();
+                                return;
+                            }
+                            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                            Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
+                            Clientes cli = new Clientes();
+                            if (cliente.getText().equals("0")) {
+                                Clientes nuevoCl = new Clientes();
+                                Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                                nuevoCl.setCodigo(codigoC);
+                                nuevoCl.setDireccion(direccion.getText());
+                                nuevoCl.setIdentificacion(identificacion.getText());
+                                nuevoCl.setTelefono(telefono.getText());
+                                nuevoCl.setNombres(nombres.getText());
+                                cli = nuevoCl;
+                                adm.guardar(nuevoCl);
+                                identificacion.setText("9999999999999");
+                                nombres.setText("CONSUMIDOR FINAL");
+                                direccion.setText("S/D");
+                                telefono.setText("9999999999999");
+                                cliente.setText("1");
+                                facActual.setClientes(nuevoCl);
+                            } else {
+                                facActual.setClientes(new Clientes(new Integer(cliente.getText())));
+                                cli.setDireccion(direccion.getText());
+                                cli.setIdentificacion(identificacion.getText());
+                                cli.setTelefono(telefono.getText());
+                                cli.setNombres(nombres.getText());
+                                adm.actualizar(cli);
+                            }
+
+
+
+
+                            Date fecSalida = new Date();
+                            fecSalida.setHours(salida.getDate().getHours());
+                            fecSalida.setMinutes(salida.getDate().getMinutes());
+                            fecSalida.setSeconds(salida.getDate().getSeconds());
+                            facActual.setFechafin(fecSalida);
+                            facActual.setTarifa0(true); 
+
+                            Double ivav = ((empresaObj.getIva() + 100) / 100);
+                            Double totalv = Double.parseDouble(total.getText());
+                            Double subtotalv = totalv / ivav;
+                            Double ivav1 = subtotalv * (empresaObj.getIva() / 100);
+                            facActual.setTotal(new BigDecimal(totalv));
+                            facActual.setSubtotal(new BigDecimal(subtotalv));
+                            facActual.setIva(new BigDecimal(ivav1));
+
+                            Date fecTiempo = new Date();
+                            fecTiempo.setHours(tiempo.getDate().getHours());
+                            fecTiempo.setMinutes(tiempo.getDate().getMinutes());
+                            fecTiempo.setSeconds(tiempo.getDate().getSeconds());
+                            facActual.setTiempo(fecTiempo);
+                            facActual.setUsuarioc(principal.usuarioActual);
+                            facActual.setTarifa0(true);
+                            facActual.setObservacion(observacion1.getText());
+                            adm.actualizar(facActual);
+//                    Integer numero = new Integer(emp.getDocumentofac());
+//                    emp.setDocumentofac((numero + 1) + "");
+                            int dia = 0;
+                            try {
+                                dia = new Integer(dias1.getText());
+                            } catch (Exception e) {
+                                dia = 0;
+                            }
+                            //imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                            if (empresaObj.getSeabrefac()) {
+                                if (empresaObj.getRetardoSalida() != null) {
+                                    if (empresaObj.getRetardoSalida().length() > 0) {
+                                        Integer retardo = new Integer(empresaObj.getRetardoSalida());
+                                        Thread.sleep(retardo * 1000);
+                                    }
+                                }
+
+                                try {
+                                    LeerTarjeta ta = principal.buscarPuerto("principal");
+
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    //TEMPORAL
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+                                    Thread.sleep(20);
+                                    ta.outputSream.write(empresaObj.getPuertafac().getBytes());
+
+
+                                    //TEMPORAL
+                                } catch (Exception ex) {
+                                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
+                            } else {
+                                System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
+                            }
+
+//                cargar.start();
+                            principal.noDisponibles();
+                            ingreso.setDate(null);
+                            salida.setDate(null);
+                            placa.setText(null);
+                            tiempo.setDate(null);
+                            noTicket.setText("");
+                            codigo.setText("");
+                            principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
+                            principal.contenedor.requestFocus();
+                            this.setVisible(false);
+                            principal = null;
+                            empresaObj = null;
+                            System.gc();
+
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                        //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito");
+                     
+                    guardando = false;
+                }
+                frmTarifa0.setVisible(false);
+                principal.noDisponibles();
+            } catch (Exception ex) {
+                Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_guardarTarifa0ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        frmTarifa0.setVisible(false);
+    }//GEN-LAST:event_jButton5ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
+    private javax.swing.JButton btnAgregar2;
     private javax.swing.JButton btnAnadirProducto;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnMulta;
@@ -2630,12 +2901,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JList encontrados2;
     private javax.swing.JDialog formaBusqueda;
     private javax.swing.JInternalFrame frmEliminar;
+    private javax.swing.JButton frmGuardarMulta;
+    private javax.swing.JInternalFrame frmTarifa0;
+    private javax.swing.JButton guardarTarifa0;
     private javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private com.toedter.calendar.JDateChooser ingreso;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2657,6 +2931,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2681,12 +2956,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel miBotonImagen;
     public javax.swing.JFormattedTextField noTicket;
     private javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JTextArea observacion;
+    private javax.swing.JTextArea observacion1;
     private javax.swing.JPanel panelencontrados;
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JPanel panelencontrados2;

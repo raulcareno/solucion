@@ -208,7 +208,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar", "Tickets cobrados", "Puestos ocupados", "Facturas Tickest y Tarjetas", "Facturas de Tickets", "Facturas de Tarjetas", "Consolidado por Mes", "Clientes mas frecuentes", "Listado clientes", "No. de Ingresos x Cliente", "Tickets Anulados", "Fotos de Vehiculos", "CIERRE DE CAJA", "Tarjetas Ocupadas(Dentro del Parqu.)", "Consolidado x fechas" }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -351,7 +351,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -780,14 +780,14 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
         
 
-        if (cmbTipoReporte.getSelectedIndex() == 0) { //TICKEST POR COBRAR
+        if (cmbTipoReporte.getSelectedItem().toString().contains("(101)")) {//TICKEST x cobrar
             query = "Select o from Factura as o" +
                     " where o.fecha between '" + desde2 + "' and '" + hasta2 + "'  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + "and o.fechafin is null ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsporcobrar.jasper";
             titulo = "Tickest por Cobrar";
             tickets(dirreporte, query, titulo);
-        } else if (cmbTipoReporte.getSelectedIndex() == 1) {//TICKEST COBRADOS
+        } else if (cmbTipoReporte.getSelectedItem().toString().contains("(102)")) { //TICKEST COBRADOS
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
@@ -803,14 +803,50 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 2) {//PUESTO OCUPADOS
+        } else if (cmbTipoReporte.getSelectedItem().toString().contains("(103)")) { //TICKEST ANULADOS
             query = "Select o from Factura as o" +
-                    " where o.placa = 'xxxxxx..'";
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"ocupados.jasper";
-            titulo = "Cupos Disponibles";
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.anulado = TRUE ";
+            if(cmbUsuarios.getSelectedIndex()>0){
+                    query = "Select o from Factura as o" +
+                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            + "  AND  o.anulado = true ";
+            }
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsanulados.jasper";
+            titulo = "Tickest Anulados";
             tickets(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 3) {//FACTURADO
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(104)")) { //TICKEST TARIFA 0
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.tarifa0 = TRUE ";
+            if(cmbUsuarios.getSelectedIndex()>0){
+                    query = "Select o from Factura as o" +
+                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            + "  AND  o.tarifa0 = true ";
+            }
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsanulados.jasper";
+            titulo = "Tickest con Tarifa 0.0";
+            tickets(dirreporte, query, titulo);
+ 
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(105)")) { //FOTOS DE VEHÍCULOS
+            query = "Select o from Factura as o" +
+                    " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " ";
+            if(cmbUsuarios.getSelectedIndex()>0){
+                    query = "Select o from Factura as o" +
+                            " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
+                            + " and o.usuario.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                            + "    ";
+            }
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsfotos.jasper";
+            titulo = "Tickest Fotos";
+            tickets(dirreporte, query, titulo);
+
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(106)")) { //CIERRE DE CAJA
+        //} else if (cmbTipoReporte.getSelectedIndex() == 12) {//FACTURADO
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
@@ -824,11 +860,37 @@ public class frmReportes extends javax.swing.JInternalFrame {
                }
             
             
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"cierrecaja.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
-        }  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS
+        //} else if (cmbTipoReporte.getSelectedIndex() == 2) {//PUESTO OCUPADOS
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(305)")) { //PUESTOS OCUPADOS
+            query = "Select o from Factura as o" +
+                    " where o.placa = 'xxxxxx..'";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"ocupados.jasper";
+            titulo = "Cupos Disponibles";
+            tickets(dirreporte, query, titulo);
+
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(200)")) { 
+        //} else if (cmbTipoReporte.getSelectedIndex() == 3) {//Facturas Tickest y Tarjetas (200) 3
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin is not null and o.numero is not null  "
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+              if(cmbUsuarios.getSelectedIndex()>0){
+                  query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " and o.fechafin is not null and o.numero is not null  "
+                    + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+               }
+            
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
+            titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(201)")) { 
+        //}  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS         Facturas de Tickets (201) 4
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null "
@@ -847,7 +909,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
 
-        }  else if (cmbTipoReporte.getSelectedIndex() == 5) {//FACTURADO SOLO TARJETAS MENSUALES
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(202)")) {     //Facturas de Tarjetas (202) 5
+        //}  else if (cmbTipoReporte.getSelectedIndex() == 5) {//FACTURADO SOLO TARJETAS MENSUALES
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null "
@@ -856,8 +919,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastarjetas.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
-
-        }else if (cmbTipoReporte.getSelectedIndex() == 6) {//CONSOLIDADO POR MES CLIENTES
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(300)")) {     //Consolidado por Mes (300) 6
+        //}else if (cmbTipoReporte.getSelectedIndex() == 6) {//CONSOLIDADO POR MES CLIENTES
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
@@ -867,23 +930,27 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = " ";
             consolidado(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 7) {//CLIENTES MAS FRECUENTS CON TARJETAS
-        String desde3 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
-        String hasta3 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(302)")) {     //Clientes mas frecuentes (302) 7
+        //} else if (cmbTipoReporte.getSelectedIndex() == 7) {//CLIENTES MAS FRECUENTS CON TARJETAS
             
+            String desde3 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
+            String hasta3 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
+
             query = "SELECT CLIENTE,COUNT(*), MAX(fechaini)  FROM FACTURA WHERE CLIENTE > 1 AND "
                     + "FECHA  between '" + desde3 + "' and '" + hasta3 + "' GROUP BY CLIENTE  ORDER BY COUNT(*) desc ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes2.jasper";
             titulo = " ";
             clientes2(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 8) {//LISTADO DE CLIENTES
+       }else if (cmbTipoReporte.getSelectedItem().toString().contains("(303)")) {     //Listado clientes (303) 8
+        //} else if (cmbTipoReporte.getSelectedIndex() == 8) {//LISTADO DE CLIENTES
             query = "Select o from Clientes as o where o.codigo > 1 order by o.nombres";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientes.jasper";
             titulo = " ";
             clientes(dirreporte, query, titulo);
 
-        }else if (cmbTipoReporte.getSelectedIndex() == 9) {//no de ingresos por cliente
+            }else if (cmbTipoReporte.getSelectedItem().toString().contains("(304)")) {     //No. de Ingresos x Cliente (304) 9
+        //}else if (cmbTipoReporte.getSelectedIndex() == 9) {//no de ingresos por cliente
             String complemento = "";
             
             if(cmbUsuarios.getSelectedIndex()>0){
@@ -908,61 +975,16 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = " ";
             noingresos(dirreporte, query, titulo);
 
-        } else if (cmbTipoReporte.getSelectedIndex() == 10) {//TICKEST ANULADOS
-            query = "Select o from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.anulado = TRUE ";
-            if(cmbUsuarios.getSelectedIndex()>0){
-                    query = "Select o from Factura as o" +
-                            " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                            + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
-                            + "  AND  o.anulado = true ";
-            }
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsanulados.jasper";
-            titulo = "Tickest Anulados";
-            tickets(dirreporte, query, titulo);
-
-        } else if (cmbTipoReporte.getSelectedIndex() == 11) {//TICKEST FOTOS
-            query = "Select o from Factura as o" +
-                    " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
-                    + " ";
-            if(cmbUsuarios.getSelectedIndex()>0){
-                    query = "Select o from Factura as o" +
-                            " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
-                            + " and o.usuario.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
-                            + "    ";
-            }
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsfotos.jasper";
-            titulo = "Tickest Fotos";
-            tickets(dirreporte, query, titulo);
-
-        } else if (cmbTipoReporte.getSelectedIndex() == 12) {//FACTURADO
-            query = "Select o from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and o.numero is not null  "
-                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
-              if(cmbUsuarios.getSelectedIndex()>0){
-                  query = "Select o from Factura as o" +
-                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + " and o.fechafin is not null and o.numero is not null  "
-                    + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
-                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
-               }
-            
-            
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"cierrecaja.jasper";
-            titulo = "Facturas ";
-            tickets(dirreporte, query, titulo);
-
-        } else if (cmbTipoReporte.getSelectedIndex() == 13) {//TARJETAS DENTRO
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(306)")) {     //Tarjetas Ocupadas(Dentro del Parqu.) (306) 13
+        //}  else if (cmbTipoReporte.getSelectedIndex() == 13) {//TARJETAS DENTRO
             query = "Select o from Factura as o" +
                     " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
                     + "AND o.fechafin is null AND o.ticket  IS NULL order by o.fechaini ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientesActuales.jasper";
             titulo = "Clientes dentro del parqueadero";
             tickets(dirreporte, query, titulo);
-
-        } else if (cmbTipoReporte.getSelectedIndex() == 14) {//CONSOLIDADO
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(301)")) {      //Consolidado x fechas (301) 14
+        //} else if (cmbTipoReporte.getSelectedIndex() == 14) {//CONSOLIDADO
                 query = "SELECT placa, total, COUNT(*), SUM(total) FROM factura  "
                         + "WHERE fechafin BETWEEN '"+desde2+"' "
                         + "AND  '"+hasta2+"' GROUP BY placa "; 

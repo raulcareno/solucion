@@ -46,7 +46,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" pref="110" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelReportes" pref="329" max="32767" attributes="0"/>
+              <Component id="panelReportes" pref="333" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -134,22 +134,23 @@
           <Properties>
             <Property name="maximumRowCount" type="int" value="12"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="15">
-                <StringItem index="0" value="Tickets por cobrar"/>
-                <StringItem index="1" value="Tickets cobrados"/>
-                <StringItem index="2" value="Puestos ocupados"/>
-                <StringItem index="3" value="Facturas Tickest y Tarjetas"/>
-                <StringItem index="4" value="Facturas de Tickets"/>
-                <StringItem index="5" value="Facturas de Tarjetas"/>
-                <StringItem index="6" value="Consolidado por Mes"/>
-                <StringItem index="7" value="Clientes mas frecuentes"/>
-                <StringItem index="8" value="Listado clientes"/>
-                <StringItem index="9" value="No. de Ingresos x Cliente"/>
-                <StringItem index="10" value="Tickets Anulados"/>
-                <StringItem index="11" value="Fotos de Vehiculos"/>
-                <StringItem index="12" value="CIERRE DE CAJA"/>
-                <StringItem index="13" value="Tarjetas Ocupadas(Dentro del Parqu.)"/>
-                <StringItem index="14" value="Consolidado x fechas"/>
+              <StringArray count="16">
+                <StringItem index="0" value="Tickets por cobrar  (101)"/>
+                <StringItem index="1" value="Tickets cobrados (102)"/>
+                <StringItem index="2" value="Tickets Anulados (103)"/>
+                <StringItem index="3" value="Tickets Tarifa 0 (104)"/>
+                <StringItem index="4" value="Fotos de Vehiculos (105)"/>
+                <StringItem index="5" value="CIERRE DE CAJA (106)"/>
+                <StringItem index="6" value="Facturas Tickest y Tarjetas (200)"/>
+                <StringItem index="7" value="Facturas de Tickets (201)"/>
+                <StringItem index="8" value="Facturas de Tarjetas (202)"/>
+                <StringItem index="9" value="Consolidado por Mes (300)"/>
+                <StringItem index="10" value="Consolidado x fechas (301)"/>
+                <StringItem index="11" value="Clientes mas frecuentes (302)"/>
+                <StringItem index="12" value="Listado clientes (303)"/>
+                <StringItem index="13" value="No. de Ingresos x Cliente (304)"/>
+                <StringItem index="14" value="Puestos ocupados (305) "/>
+                <StringItem index="15" value="Tarjetas Ocupadas(Dentro del Parqu.) (304) "/>
               </StringArray>
             </Property>
           </Properties>
