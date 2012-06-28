@@ -418,6 +418,7 @@ public class reportesClase {
                                 System.out.println("NOTAS DE promedio " + q);
                                 List nativo2 = null;
                                 nativo2 = adm.queryNativo(q);
+                                if(nativo2.size()>0){
                                 for (Iterator itProm = nativo2.iterator(); itProm.hasNext();) {
                                     Vector vecProm = (Vector) itProm.next();
 
@@ -451,7 +452,7 @@ public class reportesClase {
                                                 }
                                             }
                                             promedioFinal = dosProm;
-                                            Global promMate = new Global(1000);
+                                            Global promMate = new Global(1111);
                                             promMate.setDescripcion("PROMEDIO");
 
                                             coll.setContador(cont);
@@ -468,6 +469,29 @@ public class reportesClase {
                                     }
                                     //row.setParent(this);
                                 }
+                            }else{
+                                
+                                    Boolean cuantitativa = false;
+                                    Global mate = new Global();
+                                    mate.setCodigo(0);
+                                    mate.setDescripcion("PROMEDIO");
+                                    int ksisProm = 0;
+                                    Double valProm = 0.0;
+                                    Nota coll = new Nota();
+                                    coll.setNota("");
+                                    Global promMate = new Global(1111);
+                                    promMate.setDescripcion("PROMEDIO");
+                                            coll.setContador(cont);
+                                            coll.setMatricula(matriculaNo);
+                                            coll.setMateria(promMate);
+                                            coll.setMprofesor(maprofesor);
+                                            coll.setSistema(sistema);
+                                            lisNotas.add(coll);
+                                            ksisProm++;
+  
+                                
+                                }
+                                
                             }
 
 
