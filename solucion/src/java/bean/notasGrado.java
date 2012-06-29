@@ -145,22 +145,15 @@ public class notasGrado extends Rows {
             Administrador adm = new Administrador();
             List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o "
                     + "where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.codigo ");
-//            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o " +
-
-//            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
-//                Sistemacalificacion siCal = it.next();
-//                        if(verificar(siCal.getFormula(), notas)){
-//                              return "Revise la formula de ['"+siCal.getNombre()+"'] del Sistema de Calificacion " ;
-//                        }
-//            }
             secuencial sec = new secuencial();
-            String del = "Delete from Notasgrado where matricula.curso.codigocur = '" + curso.getCodigocur() + "' ";
-            adm.ejecutaSql(del);
+           
+            String codigoNoIncluir = "";
             for (int i = 0; i < col.size(); i++) {
                 try {
                     Row object = (Row) col.get(i);
                     Notasgrado nota = new Notasgrado();
                     nota.setCodigo(sec.generarClave());
+                    codigoNoIncluir += "'"+nota.getCodigo()+"',";
                     List labels = object.getChildren();
                     nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                     nota.setFecha(new Date());
@@ -191,6 +184,9 @@ public class notasGrado extends Rows {
                     Logger.getLogger(notasGrado.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            codigoNoIncluir = codigoNoIncluir.substring(0, codigoNoIncluir.length()-1);
+            String del = "Delete from Notasgrado where matricula.curso.codigocur = '" + curso.getCodigocur() + "' and codigo not in ("+codigoNoIncluir+") ";
+            adm.ejecutaSql(del);
 //            recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
             return "ok";

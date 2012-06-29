@@ -213,11 +213,13 @@ public class ReporteNotasDataSource implements JRDataSource {
                     valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado" : "");
                 }
                 if (nodo.getMatricula().getEstado().equals("Matriculado")) {
+                    try{
                     if(nodo.getObservacion().contains("SIN")){
                         valor = nodo.getObservacion()+""+valor;
                     }else{
                         valor = nodo.getObservacion()+"";
                     }
+                    }catch(Exception e){valor = "";}
                 } 
 
             } else if ("observacion1".equals(fieldName)) {
