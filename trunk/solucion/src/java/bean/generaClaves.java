@@ -46,7 +46,8 @@ String codigo ="";
             if (estudianteEncontrado != null) {
                 System.out.println(i + " " + in.getApellido() + " " + in.getNombre());
                 Representante repreEst = estudianteEncontrado.getRepresentante();
-                codigo += ", "+repreEst.getCodigorep();
+                codigo += "; update representante set usuario = '"+in.getUsuario()+"' "
+                        + ", clave =  '"+in.getClave()+"' where codigorep = "+repreEst.getCodigorep();
                 i++;
             } else {
                 Representante repreEst = new Representante(adm.getNuevaClave("Representante", "codigorep"));
