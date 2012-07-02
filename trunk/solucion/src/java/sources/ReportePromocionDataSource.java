@@ -88,17 +88,18 @@ public class ReportePromocionDataSource implements JRDataSource {
 
                 if (nodo.getMateriaProfesor().getCuantitativa() == true) {
 
-                    double numero = redondear((Double) nodo.getNota(), 2).doubleValue();
+                    double numero = redondear((Double) nodo.getNota(), 3).doubleValue();
                     String cadena = Double.toString(numero);
                     String parte_decimal_cadena = cadena.substring(cadena.lastIndexOf("."), cadena.length());
                     String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
                     Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
                     parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
-                    if (parte_decimal_cadena.length() < 3) {
+                    if (parte_decimal_cadena.length() < 4) {
                         parte_decimal_cadena = parte_decimal_cadena + "0";
                     }
                     
                     if((nodo.getMateria()+"").contains("APROVECHAMIENTO")){
+                         //valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
                          valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
                     }else{
                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena;
@@ -140,9 +141,12 @@ public class ReportePromocionDataSource implements JRDataSource {
 
             } else if ("promedio2".equals(fieldName)) {
                 if (nodo.getMateriaProfesor().getCuantitativa() == true) {
-                    valor = redondear((Double) nodo.getNota(), 2).doubleValue();
+                    valor = redondear((Double) nodo.getNota(), 3).doubleValue();
                 } else {
                     valor = nodo.getNotaCuali();
+                }
+                if(valor.equals("")){
+                    valor = "0";
                 }
 
 
