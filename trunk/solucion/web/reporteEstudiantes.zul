@@ -802,6 +802,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"CM",listadoEstudiantes);
                     report.setSrc(directorioReportes+"certificadoMatricula.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
+                    try{
+                    parametros.put("tutor", ""+(curs.getSelectedItem().getValue()).getTutor());
+                    }catch(Exception exs){}
+                    
             }else if(tipo.equals("CD")){
                     datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
                     report.setSrc(directorioReportes+"certificadoconducta.jasper");
