@@ -1145,6 +1145,7 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
         Notanotas nfinal = notaFinal.get(0);
         if (notas.size() <= 0) {
             try {
@@ -1154,7 +1155,10 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+// List<Notanotas> notasRequeridas = adm.query("Select o from Notanotas as o "
+//                    + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+//                    + " and o.sistema.requerida = true "
+//                    + " order by o.sistema.orden ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
@@ -1277,9 +1281,11 @@ public class reportesClase {
                         if (sumatoria < 40) {
                             try {
                                 Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
-                                if (val < valor) {
+                                if (val < valor && val > 0.0) {
                                     obs = "Pierde";
-                                } else {
+                                }else if(val == 0 ){
+                                obs = "Sup.";
+                                }else {
                                     obs = "";
                                 }
                             } catch (Exception e) {
@@ -1289,7 +1295,7 @@ public class reportesClase {
                             obs = "";
                         }
                     }
-                    if (sn == false && val == 0) {
+                    if (sn == false && val == 0 &&nota.getSistema().getRequerida() ==true) {
                         sn = true;
                     }
                     nota.setAprovechamiento(aprovecha);
@@ -1299,7 +1305,9 @@ public class reportesClase {
                 } else if (j == 1) {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-
+                    if(matriculaNo.toString().contains("AYERVE MONTÚFAR")){
+                        System.out.println("..");
+                    }
                     List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
@@ -1340,7 +1348,7 @@ public class reportesClase {
             for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
                 Nota nota = it.next();
                 if (nota.getSistema().getNombre().equals("OBS")) {
-                    if (nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("Sup")) {
+                    if (nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("Sup") || nota.getNota().toString().contains("SN")) {
                         listaMatriculas.add(nota.getMatricula());
                     }
                 }

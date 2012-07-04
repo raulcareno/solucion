@@ -47,7 +47,7 @@ String columnaExamen ="";
                 + " where o.estrabajo = true "
                 + " and o.curso.codigocur = '"+curso.getCodigocur()+"' ");
         String columnaTrabajo ="";
-        if(mgrado.size()>0){
+        if(mtrabajo.size()>0){
             columnaTrabajo = mtrabajo.get(0).getColumna();
         }else{
 
