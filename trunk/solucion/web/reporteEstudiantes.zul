@@ -266,7 +266,7 @@ public JRDataSource inscritos8(ArrayList listadodeCursos, String tipo){
       Session ses = Sessions.getCurrent();
       ArrayList detalle = new ArrayList();
         String query = "SELECT mat.* FROM Inscripciones AS mat " +
-                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.validada = false ORDER BY mat.apellido ";
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.preaprobado = false ORDER BY mat.apellido ";
                 System.out.println(query);
       List hoy = adm.queryNativo(query,Inscripciones.class);
       int i=1;
