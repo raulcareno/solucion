@@ -157,7 +157,17 @@ public class notasGrado extends Rows {
                     List labels = object.getChildren();
                     nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                     nota.setFecha(new Date());
-                    inter.set("nota", nota);
+                    
+                    List<Notasgrado> notaGrado = adm.query("Select o from Notasgrado as o "
+                            + " where o.matricula.codigomat = '"+((Label) labels.get(0)).getValue()+"' ");
+                    Boolean actualizar = false;
+                    if(notaGrado.size() > 0 ){
+                        inter.set("nota", notaGrado.get(0));
+                         actualizar = true;
+                    }else{
+                        inter.set("nota", nota);
+                    }
+                    
                     for (int j = 2; j < labels.size(); j++) {
                         Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
@@ -178,15 +188,19 @@ public class notasGrado extends Rows {
                         }
                     }
                     nota = (Notasgrado) inter.get("nota");
-                    adm.guardar(nota);
+                    if(actualizar){
+                        adm.actualizar(nota);
+                    }else{
+                        adm.guardar(nota);
+                    }
 
                 } catch (EvalError ex) {
                     Logger.getLogger(notasGrado.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            codigoNoIncluir = codigoNoIncluir.substring(0, codigoNoIncluir.length()-1);
-            String del = "Delete from Notasgrado where matricula.curso.codigocur = '" + curso.getCodigocur() + "' and codigo not in ("+codigoNoIncluir+") ";
-            adm.ejecutaSql(del);
+//            codigoNoIncluir = codigoNoIncluir.substring(0, codigoNoIncluir.length()-1);
+//            String del = "Delete from Notasgrado where matricula.curso.codigocur = '" + curso.getCodigocur() + "' and codigo not in ("+codigoNoIncluir+") ";
+//            adm.ejecutaSql(del);
 //            recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
             return "ok";
