@@ -1725,8 +1725,8 @@ public class reportesClase {
                     nota.setCargo2(((Materiasgrado) notas.get(ksis)).getNombre());
 
                     nota.setNota(redondear((Double) dos, 0).intValue());
-                    if ((j + 1) == vec.size()) {
-                        String s = "##00.00##";
+                    if (((Materiasgrado) notas.get(ksis)).getEspromedio()) {
+                        String s = "##00.000#";
                         DecimalFormat decimalFormat = new DecimalFormat(s);
                         //DecimalFormat formateador = new DecimalFormat("####.###");
                         // Esto sale en pantalla con cuatro decimales, es decir, 3,4324

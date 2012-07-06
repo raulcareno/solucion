@@ -1376,7 +1376,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             } else if(tipo.equals("CL")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
-                    report.setSrc(directorioReportes+"clavePersonal.jasper");
+                    report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
 
             } else if(tipo.equals("CAR")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
