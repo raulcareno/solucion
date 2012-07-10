@@ -1692,7 +1692,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadroexamenes(Cursos curso) {
+    public JRDataSource cuadroexamenes(Cursos curso, Boolean suspendidos) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -1707,7 +1707,8 @@ public class reportesClase {
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         String q = "SELECT CONCAT(est.apellido,' ',est.nombre), " + query + "   FROM notasgrado notas,matriculas mat,estudiantes est "
-                + "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
+                + "WHERE notas.matricula = mat.codigomat "
+                + " AND mat.suspenso = '"+suspendidos+"'  AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
@@ -1724,7 +1725,7 @@ public class reportesClase {
                     //                   val = redondear((Double) dos, 2);
                     nota.setCargo2(((Materiasgrado) notas.get(ksis)).getNombre());
 
-                    nota.setNota(redondear((Double) dos, 0).intValue());
+                    nota.setNota(redondear((Double) dos, 2));
                     if (((Materiasgrado) notas.get(ksis)).getEspromedio()) {
                         String s = "##00.000#";
                         DecimalFormat decimalFormat = new DecimalFormat(s);
@@ -1751,7 +1752,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadroexamenesEspecialidad(Global especialidad) {
+    public JRDataSource cuadroexamenesEspecialidad(Global especialidad,Boolean suspendidos) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -1773,7 +1774,8 @@ public class reportesClase {
             }
             query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
             String q = "SELECT CONCAT(est.apellido,' ',est.nombre), " + query + "   FROM notasgrado notas,matriculas mat,estudiantes est "
-                    + "WHERE notas.matricula = mat.codigomat AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
+                    + "WHERE notas.matricula = mat.codigomat  "
+                    + " AND mat.suspenso = '"+suspendidos+"' AND mat.estudiante = est.codigoest AND mat.curso = '" + curso.getCodigocur() + "' order by 1";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
 
@@ -1790,7 +1792,7 @@ public class reportesClase {
                         //                   val = redondear((Double) dos, 2);
                         nota.setCargo2(((Materiasgrado) notas.get(ksis)).getNombre());
 
-                        nota.setNota(redondear((Double) dos, 0).intValue());
+                        nota.setNota(redondear((Double) dos, 2));
                         if ((j + 1) == vec.size()) {
                             String s = "##00.00##";
                             DecimalFormat decimalFormat = new DecimalFormat(s);
@@ -4026,7 +4028,7 @@ public class reportesClase {
     //resumen encuesta
     //nomina oficial de graduados
 
-    public ArrayList actaGradoTodos(Global especialidad) {
+    public ArrayList actaGradoTodos(Global especialidad,Boolean suspendidos) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -4058,7 +4060,7 @@ public class reportesClase {
         matriculas = adm.query("Select o from Matriculas as o "
                 + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 "
                 + " and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.curso.titulo.codigo = '" + especialidad.getCodigo() + "' "
+                + " and o.curso.titulo.codigo = '" + especialidad.getCodigo() + "'  and o.suspenso = '"+suspendidos+"'  "
                 + "order by o.estudiante.apellido,o.estudiante.nombre");
         parametros.put("n1", "Numero");
 
@@ -4099,7 +4101,7 @@ public class reportesClase {
     }
 
     //resumen de calificacioens de constan en el acta de grado
-    public ArrayList actaGradoTodosConstan(Global especialidad) {
+    public ArrayList actaGradoTodosConstan(Global especialidad, Boolean suspendidos) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -4133,7 +4135,7 @@ public class reportesClase {
         matriculas = adm.query("Select o from Matriculas as o "
                 + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 "
                 + " and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.curso.especialidad.codigo = '" + especialidad.getCodigo() + "' "
+                + " and o.curso.especialidad.codigo = '" + especialidad.getCodigo() + "' and o.suspenso = '"+suspendidos+"' "
                 + "order by o.estudiante.apellido,o.estudiante.nombre");
         parametros.put("n1", "Numero");
 
