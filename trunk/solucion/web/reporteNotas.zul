@@ -490,10 +490,16 @@ void recalcular(){
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     report.setSrc(directorioReportes+"notaspor.jasper");
             }else if(tipo.equals("EXAM")){
-                    datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue());
+                    datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue(),false);
+                    report.setSrc(directorioReportes+"examenesgrado.jasper");
+            }else if(tipo.equals("EXAMS")){
+                    datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue(),true);
                     report.setSrc(directorioReportes+"examenesgrado.jasper");
             }else if(tipo.equals("EXAMESP")){
-                    datasource = noti.cuadroexamenesEspecialidad(especialidad.getSelectedItem().getValue());
+                    datasource = noti.cuadroexamenesEspecialidad(especialidad.getSelectedItem().getValue(),false);
+                    report.setSrc(directorioReportes+"examenesgradoEspecialidad.jasper");
+            }else if(tipo.equals("EXAMESPS")){
+                    datasource = noti.cuadroexamenesEspecialidad(especialidad.getSelectedItem().getValue(),true);
                     report.setSrc(directorioReportes+"examenesgradoEspecialidad.jasper");
             }else if(tipo.equals("CDIS")){
                     ArrayList arreglo = discipli.reporteDisciplina(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -594,12 +600,22 @@ void recalcular(){
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc(directorioReportes+"actaslistado.jasper");
             }else if(tipo.equals("NOMA")){
-                    ArrayList arreglo = noti.actaGradoTodos(especialidad.getSelectedItem().getValue());
+                    ArrayList arreglo = noti.actaGradoTodos(especialidad.getSelectedItem().getValue(),false);
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"nominagraduados.jasper");
+            }else if(tipo.equals("NOMAS")){
+                    ArrayList arreglo = noti.actaGradoTodos(especialidad.getSelectedItem().getValue(),true);
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc(directorioReportes+"nominagraduados.jasper");
             }else if(tipo.equals("NOMA1")){
-                    ArrayList arreglo = noti.actaGradoTodosConstan(especialidad.getSelectedItem().getValue());
+                    ArrayList arreglo = noti.actaGradoTodosConstan(especialidad.getSelectedItem().getValue(),false);
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
+            }else if(tipo.equals("NOMA1S")){
+                    ArrayList arreglo = noti.actaGradoTodosConstan(especialidad.getSelectedItem().getValue(),true);
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
@@ -818,10 +834,10 @@ void campos(String valor){
             filaespecialidad.visible = true;
             filaestudiantes.visible = true;
             estudiantesCombo.disabled = false;
-        }else if(valor.equals("NOMA") || valor.equals("NOMA1")  ){
+        }else if(valor.equals("NOMA") || valor.equals("NOMAS") || valor.equals("NOMA1")  || valor.equals("NOMA1S")   ){
             especialidad.disabled = false;
             titulo.value= "CUADRO DE RESUMEN DE LAS CALIFICACIONES QUE CONSTAN EN EL ACTA DE GRADO";
-            if(valor.equals("NOMA")){
+            if(valor.equals("NOMA") || valor.equals("NOMAS")){
                 titulo.value= "NOMINA OFICIAL DE GRADUADOS";
             }
             filaespecialidad.visible = true;
@@ -982,10 +998,14 @@ void campos(String valor){
                                     <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
                                     <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
                                     <listitem  id="NOMA" label="Nómina Oficial de Graduados" value="NOMA"/>
+                                    <listitem  id="NOMAS" label="Nómina Oficial de Graduados(Suspendidos)" value="NOMAS"/>
                                     <listitem  id="NOMA1" label="Cuadro de resumen de Calificaciones del Acta" value="NOMA1"/>
+                                    <listitem  id="NOMA1S" label="Cuadro de resumen de Calificaciones del Acta(Suspendidos)" value="NOMA1S"/>
                                     
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
+                                    <listitem  id="EXAMS" label="Examenes de Grado(Suspendidos)" value="EXAMS"/>
                                     <listitem  id="EXAMESP" label="Examenes de Grado por Especialidad" value="EXAMESP"/>
+                                    <listitem  id="EXAMESPS" label="Examenes de Grado por Especialidad(Suspendidos)" value="EXAMESPS"/>
                                     <listitem  id="MEJE" label="Mejor egresado(*)" value="MEJE"/>
                                     <listitem  id="linea001" label="============RECORDS=============" value="linea" />
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
@@ -1247,51 +1267,7 @@ void campos(String valor){
             object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
             }
      
-            /*
-            NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
-            NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
-            LIB.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-            LIB2.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-            LIB3.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-            LIBF.visible = per.verificarPermisoReporte("LIB", "Ingresar");
-            CCAL.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
-            CCAL2.visible = per.verificarPermisoReporte("CCAL2", "Ingresar");
-            CCAL3.visible = per.verificarPermisoReporte("CCAL", "Ingresar");
-            CNF.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-            CNF2.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-            CNF3.visible = per.verificarPermisoReporte("CNF", "Ingresar");
-            CSUP.visible = per.verificarPermisoReporte("CSUP", "Ingresar");
             
-            CDIS.visible = per.verificarPermisoReporte("CDIS", "Ingresar");
-            APRO.visible = per.verificarPermisoReporte("APRO", "Ingresar");
-            EST.visible = per.verificarPermisoReporte("EST", "Ingresar");
-            AG.visible = per.verificarPermisoReporte("AG", "Ingresar");
-            CAG.visible = per.verificarPermisoReporte("CAG", "Ingresar");
-            AG2.visible = per.verificarPermisoReporte("AG", "Ingresar");
-            CAG2.visible = per.verificarPermisoReporte("CAG", "Ingresar");
-            LAG.visible = per.verificarPermisoReporte("AG", "Ingresar");
-            CERT.visible = per.verificarPermisoReporte("CERT", "Ingresar");
-            CERT2.visible = per.verificarPermisoReporte("CERT", "Ingresar");
-            CERD.visible = per.verificarPermisoReporte("CERD", "Ingresar");
-            EXAM.visible = per.verificarPermisoReporte("EXAM", "Ingresar");
-            MEJE.visible = per.verificarPermisoReporte("MEJE", "Ingresar");
-            DIS.visible = per.verificarPermisoReporte("DIS", "Ingresar");
-            DIS2.visible = per.verificarPermisoReporte("DIS2", "Ingresar");
-            PROF.visible = per.verificarPermisoReporte("PROF", "Ingresar");
-            PROFC.visible = per.verificarPermisoReporte("PROFC", "Ingresar");
-
-            PCUR.visible = per.verificarPermisoReporte("PCUR", "Ingresar");
-            MEJ.visible = per.verificarPermisoReporte("MEJ", "Ingresar");
-            ENC2.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-            ENC3.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-            ENC4.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-            ENC5.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-            ENC6.visible = per.verificarPermisoReporte("ETD", "Ingresar");
-            RECC.visible = per.verificarPermisoReporte("RECC", "Ingresar");
-            RECE.visible = per.verificarPermisoReporte("RECE", "Ingresar");
-            RECC1.visible = per.verificarPermisoReporte("RECC1", "Ingresar");
-            */
-
             }
         </zscript>
 
