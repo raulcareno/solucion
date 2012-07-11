@@ -249,22 +249,27 @@ public class Permisos {
 
             return true;
         } else {
-//            Accesos ac = new Accesos();
-//            Administrador adm = new Administrador();
-//            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
-//            if (pantalla) {
-//                ac.setModulo(idVariable);
-//                ac.setGrupo("MATRICULAS");
-//            } else {
-//                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
-//            }
-//            ac.setGrupo(grupo);
-//            ac.setGuardar(true);
-//            ac.setIngresar(true);
-//            ac.setActualizar(true);
-//            ac.setEliminar(Boolean.TRUE);
-//            ac.setPerfil(null);
-//            adm.guardar(ac);
+            Accesos ac = new Accesos();
+            Administrador adm = new Administrador();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+            }
+            ac.setGrupo(grupo);
+            ac.setGuardar(false);
+            ac.setIngresar(false);
+            ac.setActualizar(false);
+            ac.setEliminar(false);
+            ac.setPerfil(empleadoAc.getPerfil());
+//            if(adm.query("Select o from Accesos as o where o.modulo = '"+ac.getModulo()+"' and perfil is null ").size()>0)
+            adm.guardar(ac);
+            accesosList.add(ac);
+            a.removeAttribute("accesos");
+            a.setAttribute("accesos", accesosList);
+            
             return false;
         }
 
