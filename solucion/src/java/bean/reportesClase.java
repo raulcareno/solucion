@@ -4165,7 +4165,7 @@ try {
                     acta.setN2(redondear(((BigDecimal) object.get(3)).doubleValue(), 3));
                     parametros.put("n2", notas.get(1).getAbreviatura());
                     if (notas.get(1).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(3)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 3) {
@@ -4174,7 +4174,7 @@ try {
                     acta.setN3(redondear(((BigDecimal) object.get(4)).doubleValue(), 3));
                     parametros.put("n3", notas.get(2).getAbreviatura());
                     if (notas.get(2).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(4)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 4) {
@@ -4183,7 +4183,7 @@ try {
                     acta.setN4(redondear(((BigDecimal) object.get(5)).doubleValue(), 3));
                     parametros.put("n4", notas.get(3).getAbreviatura());
                     if (notas.get(3).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(4)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 5) {
@@ -4192,7 +4192,7 @@ try {
                     acta.setN5(redondear(((BigDecimal) object.get(6)).doubleValue(), 3));
                     parametros.put("n5", notas.get(4).getAbreviatura());
                     if (notas.get(4).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(6)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 6) {
@@ -4201,7 +4201,7 @@ try {
                     acta.setN6(redondear(((BigDecimal) object.get(7)).doubleValue(), 3));
                     parametros.put("n6", notas.get(5).getAbreviatura());
                     if (notas.get(5).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(7)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 7) {
@@ -4210,7 +4210,7 @@ try {
                     acta.setN7(redondear(((BigDecimal) object.get(8)).doubleValue(), 3));
                     parametros.put("n7", notas.get(6).getAbreviatura());
                     if (notas.get(6).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(8)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 8) {
@@ -4219,7 +4219,7 @@ try {
                     acta.setN8(redondear(((BigDecimal) object.get(9)).doubleValue(), 3));
                     parametros.put("n8", notas.get(7).getAbreviatura());
                     if (notas.get(7).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(9)).doubleValue(), 0), equivalencias));
                     }
                 }
                 if (notas.size() >= 9) {
@@ -4228,7 +4228,7 @@ try {
                     acta.setN9(redondear(((BigDecimal) object.get(10)).doubleValue(), 3));
                     parametros.put("n9", notas.get(8).getAbreviatura());
                     if (notas.get(8).getEsfinal()) {
-                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(2)).doubleValue(), 0), equivalencias));
+                        acta.setEquivalencia("" + equivalencia2(redondear(((BigDecimal) object.get(10)).doubleValue(), 0), equivalencias));
                     }
                 }
 
