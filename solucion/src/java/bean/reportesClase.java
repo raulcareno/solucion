@@ -1734,7 +1734,8 @@ public class reportesClase {
 //                        System.out.println("formato: " + decimalFormat.format(redondear((Double) dos, 3)));
                         nota.setNota(decimalFormat.format(redondear((Double) dos, 3)));
                     }
-                    nota.setProfesor(((Materiasgrado) notas.get(ksis)).getProfesor().getApellidos() + " " + ((Materiasgrado) notas.get(0)).getProfesor().getNombres());
+                    nota.setProfesor(((Materiasgrado) notas.get(ksis)).getProfesor().getApellidos() + " " + ((Materiasgrado) notas.get(ksis)).getProfesor().getNombres()+ " CC:" + ((Materiasgrado) notas.get(ksis)).getProfesor().getIdentificacion());
+                    nota.setCargo3(q);
                     nota.setCurso(curso);
                     nota.setCargo1(estudiante);
                     nota.setCargo3("" + i);
