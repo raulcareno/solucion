@@ -108,6 +108,31 @@ public class ReportePromocionDataSource implements JRDataSource {
                     valor = null;
                 }
 
+            } else if ("letrasDos".equals(fieldName)) {
+
+
+                if (nodo.getMateriaProfesor().getCuantitativa() == true) {
+
+                    double numero = redondear((Double) nodo.getNota(), 2).doubleValue();
+                    String cadena = Double.toString(numero);
+                    String parte_decimal_cadena = cadena.substring(cadena.lastIndexOf("."), cadena.length());
+                    String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
+                    Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
+                    parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
+                    if (parte_decimal_cadena.length() < 3) {
+                        parte_decimal_cadena = parte_decimal_cadena + "0";
+                    }
+                    
+                    if((nodo.getMateria()+"").contains("APROVECHAMIENTO")){
+                         //valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
+                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
+                    }else{
+                        valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena;
+                    }
+                } else {
+                    valor = null;
+                }
+
             } else if ("equivale".equals(fieldName)) {
                 try {
                         valor =  " "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();    
