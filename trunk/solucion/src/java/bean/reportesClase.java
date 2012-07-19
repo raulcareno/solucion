@@ -3063,6 +3063,14 @@ public class reportesClase {
             noDecimales = 3;
 
         }
+        Integer noDecimalesProme = 3;
+        try {
+            noDecimalesProme = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesProme = 3;
+
+        }
+        
         try {
             if (notas.size() <= 0) {
                 Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -4136,7 +4144,7 @@ public class reportesClase {
         matriculas = adm.query("Select o from Matriculas as o "
                 + "where o.estado in ('Matriculado','Recibir Pase') and  o.curso.secuencia = 6 "
                 + " and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.curso.especialidad.codigo = '" + especialidad.getCodigo() + "' and o.suspenso = '"+suspendidos+"' "
+                + " and  o.curso.titulo.codigo  = '" + especialidad.getCodigo() + "' and o.suspenso = '"+suspendidos+"' "
                 + "order by o.estudiante.apellido,o.estudiante.nombre");
         parametros.put("n1", "Numero");
 
