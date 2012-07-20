@@ -633,6 +633,35 @@ void validar(){
             Messagebox.show("SELECCIONE EL CURSO PARA CONTINUAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
         }
+        int secAnterior = cursoActual.getSecuencia()+1;
+        int secNueva = cur.getSecuencia();
+        if(secNueva > secAnterior ){
+                  Messagebox.show("EL CURSO EL CUAL HA SELECCIONADO ES MUY SUPERIOR AL QUE LE CORRESPONDE \n " + 
+                        " EL SISTEMA REGRESARÁ AL INICIO ", "JCINFORM",  Messagebox.OK, Messagebox.ERROR);
+                                Representante repre = ses.getAttribute("userRepresentante");
+                                if(repre==null){
+                                    Executions.sendRedirect("indexEstudiantes.zul");
+                                }else{
+                                    Executions.sendRedirect("indexRepresentantes.zul");
+                                }
+                            return; 
+                       
+        }
+          secAnterior = cursoActual.getSecuencia();
+          secNueva = cur.getSecuencia();
+         if(secNueva < secAnterior ){
+                  Messagebox.show("NO PUEDE ESCOGER UN CURSO INFERIOR AL QUE YA HA APROBADO  \n " + 
+                        " EL SISTEMA REGRESARÁ AL INICIO ", "JCINFORM",  Messagebox.OK, Messagebox.ERROR);
+                                Representante repre = ses.getAttribute("userRepresentante");
+                                if(repre==null){
+                                    Executions.sendRedirect("indexEstudiantes.zul");
+                                }else{
+                                    Executions.sendRedirect("indexRepresentantes.zul");
+                                }
+                            return; 
+                       
+        }
+        
         if(cur.getSecuencia().equals(cursoActual.getSecuencia())){
                     //AQUI VALIDO SI SE VA A MATRICULAR EN EL MISMO CURSO X SECUENCIA
                     
