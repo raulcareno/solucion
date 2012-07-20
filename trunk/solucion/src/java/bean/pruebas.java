@@ -38,7 +38,7 @@ public class pruebas {
  AND m.curso = c.codigocur  AND c.especialidad = esp.codigo 
 AND n.numeroacta >0 AND n.matricula IN (
 SELECT codigomat FROM matriculas WHERE curso IN (
-SELECT codigocur FROM cursos WHERE periodo = 4 AND secuencia = 6)   AND suspenso = TRUE AND perdio = FALSE AND estado NOT IN ('Inscrito','Retirado','Anulado') )
+SELECT codigocur FROM cursos WHERE periodo = 4 AND secuencia = 13)   AND suspenso = TRUE AND perdio = FALSE AND estado NOT IN ('Inscrito','Retirado','Anulado') )
 ORDER BY esp.codigo, n.numeroactapeaje
          */
     }
