@@ -261,10 +261,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <rows>
                     <row>
                         <span style="float:right"> Curso(*):</span>
-                        <bandbox  width="200px" readonly="true"  id="bd1">
+                        <bandbox  width="200px"  readonly="true"  id="bd1">
                             <bandpopup>
                                 <vbox>
-                                    <listbox id="curs" width="420px"
+                                    <listbox id="curs" height="300px" width="420px"
                                              onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
                                         <listitem forEach="${cursos}" value="${each}">
@@ -280,7 +280,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             <bandbox  width="200px" readonly="true"  id="bd2">
                                 <bandpopup>
                                     <vbox>
-                                        <listbox id="mates" width="420px"
+                                        <listbox id="mates" height="300px"  width="420px"
                                                  onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value));">
 
                                             <listitem forEach="${materias}" value="${each}">

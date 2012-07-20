@@ -17,7 +17,7 @@ Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 Permisos permiso = new Permisos();
 Boolean guardando = false;
-List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.secuencia, o.paralelo.descripcion ");
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 disciplina no = new disciplina();
 
@@ -146,7 +146,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                 <bandbox  width="400px" readonly="true"  id="bd1">
                     <bandpopup>
                         <vbox>
-                            <listbox id="curs" width="420px"
+                            <listbox id="curs"  height="300px"  width="420px"
                                      onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
 
                                 <listitem forEach="${cursos}" value="${each}">
@@ -164,7 +164,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                     <bandbox  width="300px" readonly="true"  id="bd2">
                         <bandpopup>
                             <vbox>
-                                <listbox id="mates" width="320px"
+                                <listbox id="mates" height="300px"  width="320px"
                                          onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
 
                                     <listitem forEach="${materias}" value="${each}">

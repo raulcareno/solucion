@@ -20,7 +20,7 @@ Empleados user = ses.getAttribute("user");
 List cursos = adm.queryNativo("SELECT DISTINCT cursos.* " + 
     " FROM cursos,materiasgrado WHERE cursos.codigocur = materiasgrado.curso " + 
     " and materiasgrado.profesor = '"+user.getCodigoemp()+"' " + 
-    " and cursos.secuencia = 6 and cursos.periodo = '"+periodo.getCodigoper()+"'  ",Cursos.class);
+    " and cursos.secuencia = 13 and cursos.periodo = '"+periodo.getCodigoper()+"'  ",Cursos.class);
 
 void verNotasCursoEstudiante(Cursos elcurso){
             if(elcurso != null){

@@ -102,6 +102,11 @@ Para:
 <row spans="2">
   <columnlayout>
         <columnchildren width="40%">
+            <panel title="A quien se va a enviar">
+                <panelchildren>
+                    
+                 </panelchildren>
+            </panel>
             <panel title="Estudiantes">
                 <panelchildren>
                     <listbox id="left" multiple="true" height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">

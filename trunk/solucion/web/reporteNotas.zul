@@ -150,7 +150,7 @@ materiasCombo.setSelectedIndex(0);
                     " where o.curso.especialidad.codigo = '"+cur.getCodigo()+"' "+
                     " "+ comple +" "+
                     " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper()+"' "+
-                    " and o.curso.secuencia = 6  order by o.estudiante.apellido");
+                    " and o.curso.secuencia = 13  order by o.estudiante.apellido");
         
         estudiantesCombo.getChildren().clear();
         
@@ -495,6 +495,9 @@ void recalcular(){
             }else if(tipo.equals("EXAMS")){
                     datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue(),true);
                     report.setSrc(directorioReportes+"examenesgrado.jasper");
+            }else if(tipo.equals("EXAMT")){
+                    datasource = noti.cuadroexamenes(curs.getSelectedItem().getValue(),null);
+                    report.setSrc(directorioReportes+"examenesgrado.jasper");
             }else if(tipo.equals("EXAMESP")){
                     datasource = noti.cuadroexamenesEspecialidad(especialidad.getSelectedItem().getValue(),false);
                     report.setSrc(directorioReportes+"examenesgradoEspecialidad.jasper");
@@ -616,6 +619,11 @@ void recalcular(){
                     report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
             }else if(tipo.equals("NOMA1S")){
                     ArrayList arreglo = noti.actaGradoTodosConstan(especialidad.getSelectedItem().getValue(),true);
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
+            }else if(tipo.equals("NOMA1T")){
+                    ArrayList arreglo = noti.actaGradoTodosConstan(especialidad.getSelectedItem().getValue(),null);
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
@@ -834,7 +842,7 @@ void campos(String valor){
             filaespecialidad.visible = true;
             filaestudiantes.visible = true;
             estudiantesCombo.disabled = false;
-        }else if(valor.equals("NOMA") || valor.equals("NOMAS") || valor.equals("NOMA1")  || valor.equals("NOMA1S")   ){
+        }else if(valor.equals("NOMA") || valor.equals("NOMAS") || valor.equals("NOMA1")  || valor.equals("NOMA1S")  || valor.equals("NOMA1T")   ){
             especialidad.disabled = false;
             titulo.value= "CUADRO DE RESUMEN DE LAS CALIFICACIONES QUE CONSTAN EN EL ACTA DE GRADO";
             if(valor.equals("NOMA") || valor.equals("NOMAS")){
@@ -872,7 +880,7 @@ void campos(String valor){
             titulo.value= "Examenes de Grado";
             filaespecialidad.visible = true;
             //filasecuencia.visible = true;
-        }else if(valor.equals("EXAM")){
+        }else if(valor.equals("EXAM") || valor.equals("EXAMS") || valor.equals("EXAMT")){
             curs.disabled = false;
             titulo.value= "Examenes de Grado";
             filacursos.visible = true;
@@ -1001,9 +1009,11 @@ void campos(String valor){
                                     <listitem  id="NOMAS" label="Nómina Oficial de Graduados(Suspendidos)" value="NOMAS"/>
                                     <listitem  id="NOMA1" label="Cuadro de resumen de Calificaciones del Acta" value="NOMA1"/>
                                     <listitem  id="NOMA1S" label="Cuadro de resumen de Calificaciones del Acta(Suspendidos)" value="NOMA1S"/>
+                                    <listitem  id="NOMA1T" label="Cuadro de resumen de Calificaciones del Acta(Todos)" value="NOMA1T"/>
                                     
                                     <listitem  id="EXAM" label="Examenes de Grado" value="EXAM"/>
                                     <listitem  id="EXAMS" label="Examenes de Grado(Suspendidos)" value="EXAMS"/>
+                                    <listitem  id="EXAMT" label="Examenes de Grado(Todos)" value="EXAMT"/>
                                     <listitem  id="EXAMESP" label="Examenes de Grado por Especialidad" value="EXAMESP"/>
                                     <listitem  id="EXAMESPS" label="Examenes de Grado por Especialidad(Suspendidos)" value="EXAMESPS"/>
                                     <listitem  id="MEJE" label="Mejor egresado(*)" value="MEJE"/>

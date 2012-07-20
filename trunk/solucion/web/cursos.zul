@@ -272,15 +272,15 @@ void cargarPar(Global g){
                     <span style="float:right"> Nombres(*):</span>
                     
                     <span> 
-                    <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />
-                    <intbox id="codigocurso" readonly="true" cols="2" />
+                        <textbox id="nombres"  maxlength="100" cols="40" readonly="true"   />
+                        <intbox id="codigocurso" readonly="true" cols="2" />
                     </span>
                 </row>
                 <row>
                     <span style="float:right"> Especialidad:</span>
                     <span>
                         <listbox disabled="true" id="especialidadesL" width="300px" mold="select"
-		onSelect="cargarEspe(((Global)self.selectedItem.value));">
+                                 onSelect="cargarEspe(((Global)self.selectedItem.value));">
                             <listhead>
                                 <listheader label="Especialidad"/>
                             </listhead>
@@ -290,7 +290,7 @@ void cargarPar(Global g){
                             </listitem>
                         </listbox>
                         <listbox id="paralelosL"  disabled="true"  mold="select"
-                onSelect="cargarPar(((Global)self.selectedItem.value));">
+                                 onSelect="cargarPar(((Global)self.selectedItem.value));">
                             <listhead>
                                 <listheader label="Paralelos"/>
                             </listhead>
@@ -308,12 +308,28 @@ void cargarPar(Global g){
                 <row>
                     <span style="float:right"> Orden(*):</span>
                     <span>
-                        <spinner value="1" cols="2" id="secuencia"  constraint="no negative,min 0 max 20" />
+                        <spinner tooltip="ayudate" popup="ayudate" value="1" cols="2" id="secuencia"  constraint="no negative,min 0 max 20" />
+                        <image  src="/images/information.png" height="18px" width="18px" 
+                        tooltip="ayudate" popup="ayudate" style="cursor: pointer" />
+                                                         
+                        <popup id="ayudate" width="400px">
+                            <html>
+                                NUEVOS ORDENES DE CURSOS  &lt;p&gt;
+                                (1)Primero de Básica, (2)Segundo de Básica  &lt;p&gt;
+                                (3)Tercero de Básica, (4)Cuarto de Básica &lt;p&gt;
+                                (5)Quinto de Básica, (6)Sexto de Básica  &lt;p&gt;
+                                (7)Séptimo de Básica, (8)Octavo de Básica &lt;p&gt;
+                                (9)Noveno de Básica, (10)Décimo de Básica  &lt;p&gt;
+                                (11)Primero de Bachillerato, (12)Segundo de Bachillerato &lt;p&gt;
+                                
+                                (13)Tercero de Bachillerato
+                            </html>
+                        </popup>
                         <separator orient="vertical" bar="true"  />
                         Aprueba con:
                         <decimalbox id="aprobacion" maxlength="5" cols="3"  readonly="true"    /> pts.
                         <separator orient="vertical" bar="true"  />
-                                Pierde con:
+                        Pierde con:
                         <decimalbox id="minima" maxlength="5" cols="3"  readonly="true"  /> pts.
                     </span>
                 </row>
@@ -323,11 +339,11 @@ void cargarPar(Global g){
                     <span style="float:right"> Inspector:</span>
                     <span>
                         <!--textbox id="inspector" maxlength="100" cols="35"  readonly="true"  /-->
-                         <bandbox  width="220px" readonly="true"  id="inspector">
+                        <bandbox  width="220px" readonly="true"  id="inspector">
                             <bandpopup>
                                 <vbox>
                                     <listbox id="curs" width="420px"
-                                                 onSelect="inspector.value=self.selectedItem.label;inspector.closeDropdown();">
+                                             onSelect="inspector.value=self.selectedItem.label;inspector.closeDropdown();">
                                         <listitem forEach="${empleados}" value="${each}">
                                             <listcell label="${each.tratamiento} ${each.nombres} ${each.apellidos}" />
                                         </listitem>
@@ -335,7 +351,7 @@ void cargarPar(Global g){
                                 </vbox>
                             </bandpopup>
                         </bandbox>
-      CI: 
+                        CI: 
                         <textbox id="cedulaiden" maxlength="13" cols="13" readonly="true"  />
                     </span>
                 </row>
@@ -343,11 +359,11 @@ void cargarPar(Global g){
                     <span style="float:right"> Tutor:</span>
                     <span>
                         <!--textbox id="tutor" maxlength="100" cols="35"  readonly="true"  /-->
-                          <bandbox  width="220px" readonly="true"  id="tutor">
+                        <bandbox  width="220px" readonly="true"  id="tutor">
                             <bandpopup>
                                 <vbox>
                                     <listbox id="curs2" width="420px"
-                                                 onSelect="tutor.value=self.selectedItem.label;tutor.closeDropdown();">
+                                             onSelect="tutor.value=self.selectedItem.label;tutor.closeDropdown();">
                                         <listitem forEach="${empleados}" value="${each}">
                                             <listcell label="${each.tratamiento} ${each.nombres} ${each.apellidos}" />
                                         </listitem>
@@ -355,7 +371,7 @@ void cargarPar(Global g){
                                 </vbox>
                             </bandpopup>
                         </bandbox>
-      CI:
+                        CI:
                         <textbox id="cedulatut" maxlength="13" cols="13" readonly="true"  />
                     </span>
                 </row>
@@ -371,7 +387,8 @@ void cargarPar(Global g){
 
                             </listitem>
                         </listbox>
-                        Nombre Acta G.<textbox id="acta" maxlength="200" cols="40"  readonly="true"  />
+                        Nombre Acta G.
+                        <textbox id="acta" maxlength="200" cols="40"  readonly="true"  />
 
                     </span>
                 </row>

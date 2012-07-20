@@ -5,6 +5,7 @@
 <window id="impresion" onCreate="notasd()" height="100%" border="normal">
  <jasperreport visible="true" id="report"  height="90%"  />
        <button id="bimprimir"  visible="false" label="CLICK AQUI SI NO  LOGRO VISUALIZAR EL COMPROBANTE DE MATRICULA" onClick="pdf()" />
+       <button id="bsalir"  visible="true" label="VOLVER AL INICIO" onClick="regresar()" />
   
  <zscript><![CDATA[
 
@@ -21,7 +22,17 @@ pdf(){
         Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+ codigo +"&TP=html");
         
 }
- 
+ regresar(){
+  Session ses = Sessions.getCurrent();
+
+            Representante repre = ses.getAttribute("userRepresentante");
+                    if(repre==null){
+                        Executions.sendRedirect("indexEstudiantes.zul");
+                    }else{
+                        Executions.sendRedirect("indexRepresentantes.zul");
+                    }
+                    return;
+ }
 
 public ArrayList certificados(Matriculas matricula,String tipo){
       Administrador adm = new Administrador();
