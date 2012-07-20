@@ -37,7 +37,7 @@
         <window  position="center" style="background-color:#004669;" width="85%" mode="overlapped" id="principales" >
             <zscript>
             <![CDATA[
-  import jcinform.persistencia.Global;
+  import jcinform.persistencia.*;
   import bean.EventDAO;
   import java.util.ArrayList;
   import jcinform.persistencia.*;
@@ -78,11 +78,9 @@ import miniaturas.*;
  
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
     Cursos cursoActual = (Cursos) ses.getAttribute("cursoActualizando");
-    System.out.println(""+cursoActual);
     if(periodo == null){
         Executions.sendRedirect("verificarCodigo.zul");
     }
-    
  Permisos permiso = new Permisos();
 
  java.util.Date fecha = new java.util.Date();
@@ -99,6 +97,7 @@ import miniaturas.*;
             
             try{
                 System.out.println(periodo.getInstitucion().getFotos()+""+imageData);
+
                     try {
                         java.io.File f = new java.io.File(periodo.getInstitucion().getFotos()+""+imageData);
                         fin = new FileInputStream(f);
@@ -118,7 +117,7 @@ import miniaturas.*;
           }
         }
         void cargarVacio(){
-          foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+            foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));   
         }
 Integer nuevaMatricula() {
                    Administrador adm = new Administrador();
@@ -225,19 +224,13 @@ void llenar(Estudiantes estudent){
                 return;
         }
  
-        Cursos se = new Cursos(-1);
-        Global g = new Global(); g.setDescripcion("");
-        se.setParalelo(g);
-        se.setEspecialidad(g);
-        se.setDescripcion("[SELECCIONE UN CURSO PARA CONTINUAR]");
-        cursos.add(0,se);
-            for (Iterator it = cursos.iterator(); it.hasNext();) {
-                      Cursos estudent = (Cursos) it.next();
-                        Listitem item = new Listitem();
-                        item.setValue(estudent);
-                        item.appendChild(new Listcell(estudent+""));
-                        curso.appendChild(item);
-             }
+        
+                Listitem item = new Listitem();
+                item.setValue(cursoActual);
+                item.appendChild(new Listcell(cursoActual+""));
+                item.setSelected(true);
+                curso.appendChild(item);
+
 
     codigoclave.value = estudent.getCodigo();
     codigo.value = estudent.getCodigoest();
@@ -409,7 +402,7 @@ void llenarMatricula(Matriculas matri){
                 nuevo.checked = matri.getNuevo();
             }
             if(matri.getRepite()!=null){
-              //  repite.checked = matri.getRepite();
+               // repite.checked = matri.getRepite();
             }
          try{
             beca.value = new BigDecimal(matri.getBeca());
@@ -424,9 +417,6 @@ void llenarMatricula(Matriculas matri){
                         return;
                          
                      }
-             
-
-
             }
             if(matri.getExtension() != null){
                 cargarFoto(matri.getCodigomat()+"."+matri.getExtension());
@@ -620,38 +610,7 @@ void estado(Boolean estado,Boolean modificar){
         anioh1.readonly = estado;  anioh2.readonly = estado; anioh3.readonly = estado; 
 }
  
-void validar(){
 
-        if(curso.selectedItem == null){
-            Messagebox.show("SELECCIONE EL CURSO PARA CONTINUAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-            curso.focus();
-            return;
-        }
-      Cursos cur = curso.selectedItem.value;
-        
-        if(cur.getCodigocur().equals(-1)){
-            Messagebox.show("SELECCIONE EL CURSO PARA CONTINUAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-            return;
-        }
-        if(cur.getSecuencia().equals(cursoActual.getSecuencia())){
-                    //AQUI VALIDO SI SE VA A MATRICULAR EN EL MISMO CURSO X SECUENCIA
-                    
-                        int val = Messagebox.show("EL CURSO QUE ESTÁ SELECCIONANDO ES IGUAL AL DEL AÑO ANTERIOR  \n " + 
-                        " ¿DESEA CONTINUAR ACTUALIZANDO SUS DATOS COMO REPROBADO (SI) ? \n "+ 
-                        " PARA SALIR PRESIONE (NO)", "JCINFORM",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
-                        if(val == 16){
-                         
-                         }else{
-                                Representante repre = ses.getAttribute("userRepresentante");
-                                if(repre==null){
-                                    Executions.sendRedirect("indexEstudiantes.zul");
-                                }else{
-                                    Executions.sendRedirect("indexRepresentantes.zul");
-                                }
-                            return; 
-                        } 
-        }
-}
  void guardar(){
       if(curso.selectedItem == null){
             Messagebox.show("SELECCIONE EL CURSO PARA CONTINUAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -663,22 +622,6 @@ void validar(){
         if(cur.getCodigocur().equals(-1)){
             Messagebox.show("SELECCIONE EL CURSO PARA CONTINUAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             return;
-        }
-        if(cur.getSecuencia().equals(cursoActual.getSecuencia())){
-                    //AQUI VALIDO SI SE VA A MATRICULAR EN EL MISMO CURSO X SECUENCIA
-                    
-                        int val = Messagebox.show("Está seguro que desea matricularse en el curso seleccionado?", "JCINFORM",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
-                        if(val == 16){
-                         
-                         }else{
-                                Representante repre = ses.getAttribute("userRepresentante");
-                                if(repre==null){
-                                    Executions.sendRedirect("indexEstudiantes.zul");
-                                }else{
-                                    Executions.sendRedirect("indexRepresentantes.zul");
-                                }
-                            return; 
-                        } 
         }
  
  try{
@@ -978,7 +921,6 @@ void validar(){
                 if(matricula.getNumero().equals(0)){
                     matricula.setNumero(nuevaMatricula());
                 }
-                
                     if(!nueva.getName().equals("vacio")){
                         InputStream objin=nueva.getStreamData();
                         String  name =  periodo.getInstitucion().getFotos()+matricula.getCodigomat()+"."+nueva.getFormat();
@@ -1262,25 +1204,21 @@ boolean validarRepresentante(){
                 <vbox> 
  
                     <div>
-                        <label value="VIENE DE:" style="font-weight:bold;color:blue;font-size:14px"/>
-                        <textbox  width="460px" readonly="true" id="cursoactual" visible="true" />
                         
-                        </div>
-                        <div>
+                        <textbox id="cursoactual" visible="false" value=""/>
                         <span> 
-                            <label value="PASA A:" style="font-weight:bold;color:blue;font-size:14px"/>
+                            <label value="CURSO EN EL CUAL ESTÁ MATRICULADO" style="font-weight:bold;color:blue;font-size:14px"/>
                             <span style="color:blue"> (*)</span>:
                         </span>
 
                         <span>
 
-                            <listbox onSelect="validar()" id="curso" width="460px" mold="select" >
+                            <listbox disabled="true" id="curso" width="460px" mold="select" >
                                 <listitem selected="true" forEach="${cursos}" value="${each}">
                                     <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                                 </listitem>
                             </listbox>
-                            <image src="/images/selec.png"  height="30px"/>
-
+                            
                         </span>
                     </div>
                 </vbox>
@@ -1387,8 +1325,8 @@ boolean validarRepresentante(){
                                                     </row>
                                                     <row>
                                                         <span style="border:1px">
-                                                            <image border="1" height="117px"  id="foto0"/>
-                                                                    <!--vbox width="50px" height="125px" style="border:1px" id="miimagen"/-->
+                                                             <image border="1" height="117px"  id="foto0"/>
+                                                                   
                                                         </span>
                                                     </row>
                                                 </rows>
@@ -2080,7 +2018,9 @@ boolean validarRepresentante(){
             <![CDATA[
                     llenar(ses.getAttribute("userEstudiante"));
                     //foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));   
-                    cursoactual.value = cursoActual+"";
+                  
+                    
+                    
             ]]>
             </zscript>
         </window>

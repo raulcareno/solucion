@@ -74,6 +74,8 @@ import bean.email;
               static Representante representante0 = new Representante();
               static Matriculas matricula = new Matriculas();
              Session ses = Sessions.getCurrent();
+              ses.removeAttribute("cursoActualizando");
+                ses.removeAttribute("periodo");
              Matriculas matActual = ses.getAttribute("matriculaActual");
              java.util.Date fecha = new java.util.Date();
              String fechaString = (fecha.getYear()+1900)+"-"+(fecha.getMonth()+1)+"-"+(fecha.getDate());
@@ -108,11 +110,18 @@ void seleccionPeriodo(){
                 return;
         }
         if(matActual.getCurso().getPeriodo().getCodigoper().equals(((Periodo)periodosListado.selectedItem.value).getCodigoper())){
-                          int val = Messagebox.show("¿Ud. ya se ha matriculado en éste periodo...!, \n Desea imprimir el Comprobante de Matriculación?", "Seguridad",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+           int val = Messagebox.show("Usted ya está matriculado en éste periodo, ¿Desea Actualizar sus Datos ?", "JCINFORM",  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                        //AQUI VALIDO SI YA ESTÁ MATRICULADO EN ÉSTE PERIODO
                         if(val == 16){
+                             ses.setAttribute("periodo",periodosListado.selectedItem.value);
+                             ses.setAttribute("cursoActualizando",matActual.getCurso());
+                             Executions.sendRedirect("matriculacionEstudiantes2de2Actualizar.zul");
+                             return; 
+                         }else{
                             Executions.sendRedirect("/592981728937491235M.zul?AASL2KSO348934934="+(""+matActual.getCodigomat())+"&TP=pdf");
                             return; 
-                        }else{
+                        } 
+                      /*  }else{
                             Representante repre = ses.getAttribute("userRepresentante");
                              if(repre==null){
                                 Executions.sendRedirect("indexEstudiantes.zul");
@@ -120,8 +129,9 @@ void seleccionPeriodo(){
                                 Executions.sendRedirect("indexRepresentantes.zul");
                              }
                              return;
-                        }
+                        }*/
         }
+     ses.setAttribute("cursoActualizando",matActual.getCurso());
      ses.setAttribute("periodo",periodosListado.selectedItem.value);
      Executions.sendRedirect("matriculacionEstudiantes2de2.zul");
             

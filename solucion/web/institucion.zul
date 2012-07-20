@@ -78,10 +78,15 @@ void cargarVacio(){
                         <a:bind value="inobjeto.rector"/>
                         <textbox id="rector" onChange="update();"/>
                     </row>
-                    <row>
-                        <span style="float:right"> Email(*):</span>
+                     <row>
+                        <span style="float:right"> Email Salida(*):</span>
                         <a:bind value="inobjeto.usuariomail"/>
                         <textbox id="email" onChange="update();"/>
+                    </row>
+                    <row>
+                        <span style="float:right"> Email Respuesta(*):</span>
+                        <a:bind value="inobjeto.email"/>
+                        <textbox id="email2" onChange="update();"/>
                     </row>
                     <row>
                         <span style="float:right"> Clave(*):</span>
@@ -259,6 +264,7 @@ void estado(Boolean estado,Boolean modificar){
     nombre.readonly = estado;
     telefono.readonly = estado;
     email.readonly = estado;
+    email2.readonly = estado;
     direccion.readonly = estado;
     secretaria.readonly = estado;
     rector.readonly = estado;
