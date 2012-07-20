@@ -875,7 +875,7 @@ public class notas extends Rows {
         List<Global> especial = adm.query("Select o from Global as o where o.grupo = 'ESP' ");
         for (Iterator<Global> it = especial.iterator(); it.hasNext();) {
             Global especialidad = it.next();
-            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 6  "
+            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 13  "
                     + "and o.titulo.codigo = '" + especialidad.getCodigo() + "' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
             String codigosCursos = "(";
             for (Iterator<Cursos> itCursos = curs.iterator(); itCursos.hasNext();) {
@@ -891,7 +891,7 @@ public class notas extends Rows {
                     if (codigosCursos.length() > 1) {
                         
                         List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false "
+                                + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
                                 + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
                                 + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
@@ -919,13 +919,13 @@ public class notas extends Rows {
                           
 
 //                        String q = "Select o from Notasacta as o "
-//                                + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
+//                                + "where o.matricula.curso.secuencia = 13 and o.matricula.suspenso = true "
 //                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  "
 //                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ";
 //                        System.out.println("" + q);
 //                        List<Notasacta> matriculas = adm.query(q);
                          List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false "
+                                + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
                                 + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = true "
                                 + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
@@ -988,14 +988,6 @@ public class notas extends Rows {
             tipo = param.getCvalor();
         }
 
-//        List<ParametrosGlobales> para = adm.query("Select o from ParametrosGlobales as o " +
-//                "where o.variable = 'TIPODISCIPLINA' " +
-//                "and o.periodo.codigoper = '"+curso0.getPeriodo().getCodigoper()+"'");
-//        if(para.size()>0){
-//            ParametrosGlobales param = para.get(0);
-//            tipo = param.getCvalor();
-//        }
-
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.sistema.esdisciplina = true "
@@ -1054,6 +1046,19 @@ public class notas extends Rows {
                         + "where o.codigo in (Select t.materia.codigo from MateriaProfesor as t"
                         + " where t.curso.codigocur = '" + ActualCurso.getCodigocur() + "' and t.opcional = true  ) "
                         + " ");
+//                boolean siHayInspector = false;
+//                for (Iterator<Global> it = materias.iterator(); it.hasNext();) {
+//                    Global global = it.next();
+//                    if(global.getCodigo().equals(new Integer(1))){
+//                        siHayInspector = true;
+//                    }
+//                }
+//                if(siHayInspector==false){
+//                    Global glb = new Global(1);
+//                    glb.setDescripcion("DISCIPLINA INSPECTOR");
+//                    glb.setGrupo("MAT");
+//                    materias.add(glb); 
+//                }
                 String formula = formu;
 
                 List<Global> Nmaterias = new ArrayList<Global>();

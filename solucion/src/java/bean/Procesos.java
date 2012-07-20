@@ -91,32 +91,60 @@ public class Procesos {
                     if(est.size()>0){
                         Notasrecord actualizaR = est.get(0);
                         if(matriculas1.getCurso().getSecuencia().equals(1))
-                            actualizaR.setPrimero(promedio);
+                            actualizaR.setPrimerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(2))
-                            actualizaR.setSegundo(promedio);
+                            actualizaR.setSegundob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(3))
-                            actualizaR.setTercero(promedio);
+                            actualizaR.setTercerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(4))
-                            actualizaR.setCuarto(promedio);
+                            actualizaR.setCuartob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(5))
-                            actualizaR.setQuinto(promedio);
+                            actualizaR.setQuintob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
+                            actualizaR.setSextob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(7))
+                            actualizaR.setSeptimob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(8))
+                            actualizaR.setPrimero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(9))
+                            actualizaR.setSegundo(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(10))
+                            actualizaR.setTercero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(11))
+                            actualizaR.setCuarto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(12))
+                            actualizaR.setQuinto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(13))
                             actualizaR.setSexto(promedio);
                         adm.actualizar(actualizaR);
                     }else{
                         Notasrecord nuevoR = new Notasrecord();
                         nuevoR.setEstudiante(matriculas1.getEstudiante());
-                            if(matriculas1.getCurso().getSecuencia().equals(1))
-                            nuevoR.setPrimero(promedio);
+                        if(matriculas1.getCurso().getSecuencia().equals(1))
+                            nuevoR.setPrimerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(2))
-                            nuevoR.setSegundo(promedio);
+                            nuevoR.setSegundob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(3))
-                            nuevoR.setTercero(promedio);
+                            nuevoR.setTercerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(4))
-                            nuevoR.setCuarto(promedio);
+                            nuevoR.setCuartob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(5))
-                            nuevoR.setQuinto(promedio);
+                            nuevoR.setQuintob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
+                            nuevoR.setSextob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(7))
+                            nuevoR.setSeptimob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(8))
+                            nuevoR.setPrimero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(9))
+                            nuevoR.setSegundo(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(10))
+                            nuevoR.setTercero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(11))
+                            nuevoR.setCuarto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(12))
+                            nuevoR.setQuinto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(13))
                             nuevoR.setSexto(promedio);
                             adm.guardar(nuevoR);
                     }
@@ -181,34 +209,62 @@ public class Procesos {
                     if(est.size()>0){
                         Notasrecord actualizaR = est.get(0);
                         if(matriculas1.getCurso().getSecuencia().equals(1))
-                            actualizaR.setPrimero(promedio);
+                            actualizaR.setPrimerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(2))
-                            actualizaR.setSegundo(promedio);
+                            actualizaR.setSegundob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(3))
-                            actualizaR.setTercero(promedio);
+                            actualizaR.setTercerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(4))
-                            actualizaR.setCuarto(promedio);
+                            actualizaR.setCuartob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(5))
-                            actualizaR.setQuinto(promedio);
+                            actualizaR.setQuintob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
+                            actualizaR.setSextob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(6))
+                            actualizaR.setSeptimob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(8))
+                            actualizaR.setPrimero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(9))
+                            actualizaR.setSegundo(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(10))
+                            actualizaR.setTercero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(11))
+                            actualizaR.setCuarto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(12))
+                            actualizaR.setQuinto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(13))
                             actualizaR.setSexto(promedio);
                         adm.actualizar(actualizaR);
                     }else{
                         Notasrecord nuevoR = new Notasrecord();
                         nuevoR.setEstudiante(matriculas1.getEstudiante());
                             if(matriculas1.getCurso().getSecuencia().equals(1))
-                            nuevoR.setPrimero(promedio);
+                            nuevoR.setPrimerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(2))
-                            nuevoR.setSegundo(promedio);
+                            nuevoR.setSegundob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(3))
-                            nuevoR.setTercero(promedio);
+                            nuevoR.setTercerob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(4))
-                            nuevoR.setCuarto(promedio);
+                            nuevoR.setCuartob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(5))
-                            nuevoR.setQuinto(promedio);
+                            nuevoR.setQuintob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
+                            nuevoR.setSextob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(7))
+                            nuevoR.setSeptimob(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(8))
+                            nuevoR.setPrimero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(9))
+                            nuevoR.setSegundo(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(10))
+                            nuevoR.setTercero(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(11))
+                            nuevoR.setCuarto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(12))
+                            nuevoR.setQuinto(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(13))
                             nuevoR.setSexto(promedio);
-                            adm.guardar(nuevoR);
+                       adm.guardar(nuevoR);
                     }
                 }
                 }
@@ -265,33 +321,62 @@ public class Procesos {
                     if(est.size()>0){
                         Notasrecord actualizaR = est.get(0);
                         if(matriculas1.getCurso().getSecuencia().equals(1))
-                            actualizaR.setPrimerod(promedio);
+                            actualizaR.setPrimerobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(2))
-                            actualizaR.setSegundod(promedio);
+                            actualizaR.setSegundobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(3))
-                            actualizaR.setTercerd(promedio);
+                            actualizaR.setTercerobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(4))
-                            actualizaR.setCuartod(promedio);
+                            actualizaR.setCuartobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(5))
-                            actualizaR.setQuintod(promedio);
+                            actualizaR.setQuintobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
+                            actualizaR.setSextobd(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(7))
+                            actualizaR.setSeptimobd(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(8))
+                            actualizaR.setPrimerod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(9))
+                            actualizaR.setSegundod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(10))
+                            actualizaR.setTercerd(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(11))
+                            actualizaR.setCuartod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(12))
+                            actualizaR.setQuintod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(13))
                             actualizaR.setSextod(promedio);
                         adm.actualizar(actualizaR);
                     }else{
                         Notasrecord nuevoR = new Notasrecord();
                         nuevoR.setEstudiante(matriculas1.getEstudiante());
                             if(matriculas1.getCurso().getSecuencia().equals(1))
-                            nuevoR.setPrimerod(promedio);
+                            nuevoR.setPrimerobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(2))
-                            nuevoR.setSegundod(promedio);
+                            nuevoR.setSegundobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(3))
-                            nuevoR.setTercerd(promedio);
+                            nuevoR.setTercerobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(4))
-                            nuevoR.setCuartod(promedio);
+                            nuevoR.setCuartobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(5))
-                            nuevoR.setQuintod(promedio);
+                            nuevoR.setQuintobd(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
-                            nuevoR.setSextod(promedio);
+                            nuevoR.setSextobd(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(7))
+                            nuevoR.setSeptimobd(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(8))
+                            nuevoR.setPrimerod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(9))
+                            nuevoR.setSegundod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(10))
+                            nuevoR.setTercerd(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(11))
+                            nuevoR.setCuartod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(12))
+                            nuevoR.setQuintod(promedio);
+                        else if(matriculas1.getCurso().getSecuencia().equals(13))
+                            nuevoR.setSextod(promedio); 
+                            
                             adm.guardar(nuevoR);
                     }
                 }

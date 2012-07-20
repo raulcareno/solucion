@@ -917,7 +917,7 @@ ArrayList grid = null;
         List<Global> especial = adm.query("Select o from Global as o where o.grupo = 'ESP' ");
         for (Iterator<Global> it = especial.iterator(); it.hasNext();) {
             Global especialidad = it.next();
-            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 6  "
+            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 13  "
                     + "and o.titulo.codigo = '" + especialidad.getCodigo() + "' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
             String codigosCursos = "(";
             for (Iterator<Cursos> itCursos = curs.iterator(); itCursos.hasNext();) {
@@ -933,7 +933,7 @@ ArrayList grid = null;
                     if (codigosCursos.length() > 1) {
                         
                         List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false "
+                                + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
                                 + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
                                 + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
@@ -961,13 +961,13 @@ ArrayList grid = null;
                           
 
 //                        String q = "Select o from Notasacta as o "
-//                                + "where o.matricula.curso.secuencia = 6 and o.matricula.suspenso = true "
+//                                + "where o.matricula.curso.secuencia = 13 and o.matricula.suspenso = true "
 //                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  "
 //                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ";
 //                        System.out.println("" + q);
 //                        List<Notasacta> matriculas = adm.query(q);
                          List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                                + "where o.matricula.curso.secuencia = 6 and o.matricula.perdio = false "
+                                + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
                                 + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = true "
                                 + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
