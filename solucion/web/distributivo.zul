@@ -1132,7 +1132,7 @@ void guardarc(){
 	</button-->
                         </hbox>
                         <hbox width="100%">
-                            <listbox mold="paging" rows="13" pageSize="13"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                            <listbox mold="paging" rows="17" pageSize="17"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                                 <listhead>
                                     <listheader label="Orden"   sort="auto"/>
                                     <listheader label="Empleado"  sort="auto"/>
