@@ -420,7 +420,7 @@ void cargarPar(Global g){
                     <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                 </hbox>
                 <hbox width="100%">
-                    <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                    <listbox mold="paging" rows="15" pageSize="15" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                         <listhead>
                             <listheader label="Cod."/>
                             <listheader label="Nombres"/>
