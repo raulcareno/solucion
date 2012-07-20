@@ -21,7 +21,7 @@ public class CrearMiniaturas {
     /**
      * @param args the command line arguments
      */
-    public static void reducir(String ubicacion, String nombre, String formato) throws IOException {
+    public void reducir(String ubicacion, String nombre, String formato) throws IOException {
         // TODO code application logic here
         ProcesadorImagenes p = new ProcesadorImagenes();
         File f = new File(ubicacion + nombre + "." + formato);
