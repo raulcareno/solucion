@@ -660,9 +660,9 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource facturasComision(Empleados emp, Date desde, Date hasta, String estado) {
+    public JRDataSource facturasComision(Empleados emp, Date desde, Date hasta, String estado,List planes) {
         Administrador adm = new Administrador();
-        List<Clientes> clientes = new ArrayList<Clientes>();
+        List<Contratos> contratosList = new ArrayList<Contratos>();
         //clientes = adm.query("Select o from Clientes as o order by o.apellidos");
         String estadoComp = " and o.estado = '" + estado + "' ";
 
@@ -670,79 +670,60 @@ String estadoComp = " and o.estado = '" + estado + "' ";
             estadoComp ="";
 
         }
+        String codigosPlanes = "";
+        Boolean todoslosPlanes = false;
+        String complemento2 ="";
+         if (planes != null) {
+            for (Iterator it = planes.iterator(); it.hasNext();) {
+                Listitem object = (Listitem) it.next();
+                if (((Plan) object.getValue()).getCodigo().equals(-1)) {
+                    todoslosPlanes = true;
+                    break;
+                }
+                codigosPlanes += ((Plan) object.getValue()).getCodigo() + ",";
+            }
+            if (codigosPlanes.length() > 0) {
+                codigosPlanes = codigosPlanes.substring(0, codigosPlanes.length() - 1);
+            }
+
+            if (todoslosPlanes == false) {
+                complemento2 = " and o.plan.codigo in (" + codigosPlanes + ") ";
+            }
+
+        }
           String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         if (emp.getCodigo().equals(-1)) {
-            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o WHERE  o.fechainstalacion between '" + desdestr + "' "
-                    + " and '" + hastastr + "' " + "  "+estadoComp+ 
+            contratosList = adm.query("Select o from Contratos as o WHERE  o.fechainstalacion between '" + desdestr + "' "
+                    + " and '" + hastastr + "' " + "  "+estadoComp+ complemento2+
                     " order by o.clientes.apellidos");
         } else {
-            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+            contratosList = adm.query("Select o from Contratos as o "
                     + " WHERE o.empleados2.codigo = '" + emp.getCodigo() + "'   "
                     + estadoComp +"  AND o.fechainstalacion between '" + desdestr + "' "
-                    + " and '" + hastastr + "'  "
+                    + " and '" + hastastr + "'  " + complemento2
                     + " order by o.clientes.apellidos");
         }
         
 
         List<Pendientes> detalles = new ArrayList();
-   
-        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
-            Clientes clientes1 = itCli.next();
-            String sql = "SELECT fa.codigo, fa.numero, fa.fecha, p.nombre, fa.total,  "
-                    + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, "
-                    + " fa.contratos FROM plan p, detalle de, cxcobrar cx, factura  fa "
-                    + " WHERE p.codigo = de.plan AND  de.factura = fa.codigo "
-                    + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
-                    + " AND cx.factura = fa.codigo "
-                    + " and fa.numero > 0 "
-                    + "GROUP BY fa.numero    ";
-            //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
-            List facEncontradas = adm.queryNativo(sql);
-            if (facEncontradas.size() > 0) {
-                Pendientes pendi = null;
-                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    int i = 1;
-                    List<Detalle> detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.get(0) + "'");
-                    int ii = 0;
-                    pendi = new Pendientes();
+      
+        for (Iterator<Contratos> itCli = contratosList.iterator(); itCli.hasNext();) {
+            Contratos contra = itCli.next();
+            
+                    Pendientes pendi = new Pendientes();
                     pendi.setPlan("");
-                    for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
-                        Detalle detalle = it.next();
-                        String pth = " / ";
-                        if (ii == 0) {
-                            pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
-                        }
-                        if (detalle.getEquipos() != null) {
-                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
-                        }
-                        if (detalle.getPlan() != null) {
-                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
-                        }
-                        ii++;
-                    }
-                    detalleLocal = null;
-
-                    Contratos contra = (Contratos) adm.buscarClave((Integer) vec.get(7), Contratos.class);
                     pendi.setContratos(contra);
                     pendi.setEmpleado(contra.getEmpleados2().toString());
                     pendi.setContrato(contra.getContrato() + "");
-                    pendi.setCliente(clientes1);
-                    pendi.setFactura("" + vec.get(1));
-                    Date d = (Date) vec.get(2);
-                    pendi.setFecha(d);
-
-                    pendi.setTotal((BigDecimal) vec.get(4));
-                    pendi.setSaldo((BigDecimal) vec.get(5));
-                    pendi.setValorabonoefe((BigDecimal) vec.get(6));
+                    pendi.setCliente(contra.getClientes());
+                    pendi.setFactura("0000000000000000");
+                    pendi.setFecha(contra.getFechainstalacion());
+                    pendi.setTotal(null);
+                    pendi.setSaldo(null);
+                    pendi.setValorabonoefe(null);
                     detalles.add(pendi);
-                    i++;
-
-                }
-
-            }
+ 
 
         }
 

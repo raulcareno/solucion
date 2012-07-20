@@ -263,7 +263,13 @@ List nodos = adm.query("Select o from Nodos as o " +
                    datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
                     report.setSrc(directorioReportes+"listacontratosComision.jasper");
             }else  if(tipo.equals("COMISIONES2")){
-                 datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value);
+            Set items2 = planList.getSelectedItems();
+                    List listPlanes = new ArrayList(items2);
+                    if(listPlanes.size()<=0){
+                    alert("Seleccione al menos un plan");
+                    return;
+                    }
+                 datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value,listPlanes);
                  report.setSrc(directorioReportes+"listacontratosComision2.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
@@ -415,6 +421,7 @@ void campos(String valor){
             desde.value = adm.Date();
             hasta.value = adm.Date();
             filaestado.visible=true;
+            filaplan.visible=true;
         }else if(valor.equals("ARQUEOU")){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;

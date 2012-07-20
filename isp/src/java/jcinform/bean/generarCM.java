@@ -146,13 +146,13 @@ public class generarCM {
                     }
                             
                     writer.write("" + fac.getFactura().getContratos().getTipocuenta().substring(0, 1) //1 Tipo de cuenta	Alfanumérico	A/C	1	Tipo de cuenta del cliente.  A: Ahorros.  C: Corriente.
-                            + "\t" + cuenta// Nro Cuenta Numérico 10	Número de cuenta del cliente a debitar
-                            + "\t" + valor //3 Valor	Numérico 15 Valor a debitar.  13 enteros, 2 decimales.
-                            + "\t" + "XX" //4 Constante	Alfanumérico	XX	2	Valor constante XX
-                            + "\t" + "W" //5	Tipo nota Alfanumérico	W	1	Tipo de transacción.  W: Débito en dólares.
-                            + "\t" + "01" //6	Agencia	Numérico 01/06	2 Tipo de agencia.  01: Matriz.  06: Sucursal. 01 si es por Banca Transaccional ( Internet)
-                            + "\t" + banco.getEmpresa()
-                            + "\t" + nombreCliente);
+                            + "" + cuenta// Nro Cuenta Numérico 10	Número de cuenta del cliente a debitar
+                            + "" + valor //3 Valor	Numérico 15 Valor a debitar.  13 enteros, 2 decimales.
+                            + "" + "XX" //4 Constante	Alfanumérico	XX	2	Valor constante XX
+                            + "" + "W" //5	Tipo nota Alfanumérico	W	1	Tipo de transacción.  W: Débito en dólares.
+                            + "" + "01" //6	Agencia	Numérico 01/06	2 Tipo de agencia.  01: Matriz.  06: Sucursal. 01 si es por Banca Transaccional ( Internet)
+                            + "" + banco.getEmpresa()
+                            + "" + fac.getFactura().getNumero());
                                 //                  Código empresa recaudadora; lo suministra el banco.(Motivo)
                                 //Campo opcional.  Podrá contener datos que relacionen al cliente con la empresa, como: código del cliente, número de identificación, etc
 

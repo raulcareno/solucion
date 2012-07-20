@@ -4,6 +4,8 @@
  */
 package jcinform.bean.sources;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.bean.sources.clasestmp.Pendientes;
@@ -60,7 +62,11 @@ public class ReportePendientesDataSource implements JRDataSource {
             }   else if ("saldo".equals(fieldName)) {
                 valor = nodo.getSaldo();
             }else if ("cliente".equals(fieldName)) {
-                valor = nodo.getCliente().getApellidos()+" "+nodo.getCliente().getNombres();
+                if(nodo.getCliente().getRazonsocial() != null && !nodo.getCliente().getRazonsocial().isEmpty()){
+                    valor = nodo.getCliente().getRazonsocial() + "" ;
+                }else{
+                    valor = nodo.getCliente().getApellidos()+" "+nodo.getCliente().getNombres();
+                }
             }  else if ("fechaabono".equals(fieldName)) {
                 valor = nodo.getFechapago();
             }  else if ("valorabonoefe".equals(fieldName)) {
@@ -113,6 +119,10 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getEninstalaciones();
             } else if ("telefono".equals(fieldName)) {
                 valor = nodo.getTelefono();
+            }else if ("emision".equals(fieldName)) {
+                valor = nodo.getEmision();
+            }else if ("vencimiento".equals(fieldName)) {
+                valor = ultimoDia(nodo.getEmision());
             } else if ("subtotal".equals(fieldName)) {
                 valor = nodo.getSubtotal();
             } else if ("iva".equals(fieldName)) {
@@ -135,5 +145,16 @@ public class ReportePendientesDataSource implements JRDataSource {
 
         return valor;
     }
+  public static Date ultimoDia(Date fecha) {
+        //Calendar calInicio = Calendar.getInstance();
+        Calendar calFin = Calendar.getInstance();
+        String anioFin = (fecha.getYear() + 1900) + "";
+        String mesFin = fecha.getMonth() + "";
+        calFin.set(Integer.parseInt(anioFin), Integer.parseInt(mesFin), 1);
+        calFin.set(Integer.parseInt(anioFin), Integer.parseInt(mesFin), calFin.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date fechaFin = calFin.getTime();
+        System.out.println("ULTIMO: " + fechaFin.toLocaleString());
+        return fechaFin;
 
+    }
 }
