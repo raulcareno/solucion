@@ -107,6 +107,7 @@ import miniaturas.*;
                         foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
                         System.out.println("foto, cargada...");
                         //foto0.visible = true;
+                        buffer = null;
                     } catch (FileNotFoundException ex) {
                         cargarVacio();
                         Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
@@ -929,6 +930,8 @@ void estado(Boolean estado,Boolean modificar){
                         org.zkoss.io.Files.copy(objout,objin);
                         mini.reducir(periodo.getInstitucion().getFotos(),matricula.getCodigomat()+"",nueva.getFormat()+"");
                         matricula.setExtension(nueva.getFormat());
+                        out = null;
+                        obout = null;
                     }else{
                         matricula.setExtension(null);
                     }
@@ -967,7 +970,7 @@ void estado(Boolean estado,Boolean modificar){
              adm.guardar(matricula);
              codigomat.value = matri;
          }
-
+                foto0 = null;
             Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             btnguardar.disabled=true;
             ses.setAttribute("userEstudiante",estudent);
