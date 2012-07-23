@@ -31,7 +31,8 @@ public class CrearMiniaturas {
         } catch (IOException e) {
             System.out.println("Error de escritura");
         }
-
+        f= null;
+        bf = null;
 
 
     }
