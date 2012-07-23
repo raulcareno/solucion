@@ -254,14 +254,22 @@ void llenar(Estudiantes estudent){
     nobus.value = estudent.getNobus();
     lugarnacimiento.value = estudent.getLugarnacimiento();
     nacionalidad.value = estudent.getNacionalidad();
-    discapacidad.checked = estudent.getDiscapacidad();
+    try{
+        discapacidad.checked = estudent.getDiscapacidad();
+     }catch(Exception e){
+       discapacidad.checked = false;
+    }
     tipodiscapacidad.value = estudent.getTipodiscapacidad();
     hermanos.value = estudent.getHermanos();
     clave.value = permiso.decriptar(estudent.getClave());
     vivecon.value = estudent.getVivecon();
+    try{
     ingpadre.value = estudent.getIngpadre().intValue();
     ingmadre.value = estudent.getIngmadre().intValue();
     ingotros.value = estudent.getIngotros().intValue();
+    }catch(Exception e){
+       
+    }
     
     lugar.value = estudent.getLugar();
           if(estudent.getEstado()!=null){
