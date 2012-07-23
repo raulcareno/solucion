@@ -33,6 +33,7 @@ public class CrearMiniaturas {
         }
         f= null;
         bf = null;
+        p = null;
 
 
     }
