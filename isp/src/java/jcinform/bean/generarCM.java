@@ -152,7 +152,7 @@ public class generarCM {
                             + "" + "W" //5	Tipo nota Alfanumérico	W	1	Tipo de transacción.  W: Débito en dólares.
                             + "" + "01" //6	Agencia	Numérico 01/06	2 Tipo de agencia.  01: Matriz.  06: Sucursal. 01 si es por Banca Transaccional ( Internet)
                             + "" + banco.getEmpresa()
-                            + "" + fac.getFactura().getNumero());
+                            + "" + nombreCliente);
                                 //                  Código empresa recaudadora; lo suministra el banco.(Motivo)
                                 //Campo opcional.  Podrá contener datos que relacionen al cliente con la empresa, como: código del cliente, número de identificación, etc
 
