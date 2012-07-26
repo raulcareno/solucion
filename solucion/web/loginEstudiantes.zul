@@ -20,7 +20,7 @@
 </style>
 
     <div  class="estil" >
-    <window onLoad="usuario.focus();" onCreate="usuario.focus();" mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="390px">
+    <window onLoad="usuario.focus();" onCreate="usuario.focus();cargar();" mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="470px">
         <zscript>
 
             <![CDATA[
@@ -34,7 +34,14 @@
   import bean.email;
             Administrador adm = new Administrador();
             Session ses = Sessions.getCurrent();
-
+List instListado = adm.query("Select o from Institucion as o",0,1);
+ Institucion instituto = instListado.get(0);
+ 
+ System.out.println(inst+"");
+cargar(){
+foto0.setContent(new org.zkoss.image.AImage("logo_jcinform", instituto.getEscudo()));
+    derechos.value = "Todos los derechos reservados a JC INFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+}
     void verPantall(Boolean esEstudiante){
             //true es estudiante
             //false es representante
@@ -135,6 +142,19 @@
         </zscript>
         <grid id="login" style="background:transparent;border:0px">
             <rows>
+                  <row align="center" style="background:transparent;border:0px" spans="2">
+                        <span style="float:center">
+                            <hbox>
+                                <image src="/images/about.png" style="aling:center"/><separator/>
+                                <image border="1" height="80px" id="foto0"/>
+                            </hbox>
+                            
+                                             
+                        </span>
+                    </row>
+                    <row align="center" style="background:transparent;border:0px" spans="2">
+                        <label style="  align:center;color:#0D3584;font-size:15px;text-shadow: black 0.1em 0.1em 0.2em" value="${instituto.denominacion} ${instituto.nombre}"> </label>
+                    </row>
                 <row style="background:transparent;border:0px"  align="center" visible="false" id="error" spans="2">
                         <image  src="/images/error.gif"  />
                     </row>
