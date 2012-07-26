@@ -5,31 +5,31 @@
 <separator bar="true"/-->
 
 <zk>
-     <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
-  <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
-  <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
-  <script type="text/javascript" src="/js/jquery.login.js"/>
-  <script type="text/javascript" src="/js/masks.js"/>
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/jquery.login.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
   <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
-  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+    <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
     <style>
-.estil{
-	height:100%;
-    background-image: url(./images/fondo.jpg)   ;
-    background-color:#004669;
-     background-repeat: no-repeat; 
+        .estil{
+        height:100%;
+        background-image: url(./images/fondo.jpg)   ;
+        background-color:#004669;
+        background-repeat: no-repeat; 
     
     
-}
-.estilo2{
-    background-image: url(./images/mensajes.gif)   ;
-}
+        }
+        .estilo2{
+        background-image: url(./images/mensajes.gif)   ;
+        }
     </style>
  
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JCINFORM" width="460px" sizable="true">
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JC INFORM" width="470px" sizable="true">
             <zscript>
                 <![CDATA[
   import jcinform.persistencia.Global;
@@ -57,10 +57,15 @@
  Date fec = adm.Date();
  String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate();
  adm.ejecutaSqlNativo("DELETE FROM cursoocupado  ");
+ List instListado = adm.query("Select o from Institucion as o",0,1);
+ Institucion instituto = instListado.get(0);
  
+ System.out.println(inst+"");
 cargar(){
-    derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+foto0.setContent(new org.zkoss.image.AImage("logo_jcinform", instituto.getEscudo()));
+    derechos.value = "Todos los derechos reservados a JC INFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
 }
+ 
  
 
 
@@ -186,10 +191,21 @@ void verificarSistema(){
             <grid style="background-color:transparent;border:0px">
 	 
                 <rows style="background:transparent;border:0px">
-                    <row style="background:transparent;border:0px" spans="2">
+                    <row align="center" style="background:transparent;border:0px" spans="2">
                         <span style="float:center">
-                            <image src="/images/about.jpg" style="aling:center"/>
+                            <hbox>
+                                <image src="/images/about.png" style="aling:center"/><separator/>
+                                <image border="1" height="80px" id="foto0"/>
+                            </hbox>
+                            
+                                             
                         </span>
+                    </row>
+                    <row align="center" style="background:transparent;border:0px" spans="2">
+                        <label style="  align:center;color:#0D3584;font-size:15px;text-shadow: black 0.1em 0.1em 0.2em" value="${instituto.denominacion} ${instituto.nombre}"> </label>
+                    </row>
+                    <row align="center" style="background:transparent;border:0px" spans="2">
+                        <separator bar="true"/>
                     </row>
                     <row style="background:transparent;border:0px"  align="center" visible="false" id="error" spans="2">
                         <image  src="/images/error.gif"  />
@@ -218,9 +234,9 @@ void verificarSistema(){
                 
                         <toolbarbutton label="¿Ha olvidado su usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
                             <attribute name="onClick">{
-                             Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
-                            win.doModal();
-                        }
+                                Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
+                                win.doModal();
+                                }
                             </attribute>
                         </toolbarbutton>
 

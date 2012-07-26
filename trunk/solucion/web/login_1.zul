@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page   id="loginjx" title="Administrador Educativo" ?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
+<!--window  id="principalImagen">
+<separator bar="true"/-->
+
+<zk>
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/jquery.login.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
+    <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+    <style>
+        .estil{
+        height:100%;
+        background-image: url(./images/fondo2.png)   ;
+        //background-color:#004669;
+        background-color:#FFFFFF;
+        background-repeat: no-repeat; 
+    
+    
+        }
+        .estilo2{
+        background-image: url(./images/mensajes.gif)   ;
+        }
+    </style>
+    <style>
+        .btndiv .z-button-cr, .btndiv .z-button-cl, 
+        .btndiv .z-button-bl, .btndiv .z-button-bm,
+        .btndiv .z-button-br, .btndiv .z-button-tl,
+        .btndiv .z-button-tm, .btndiv .z-button-tr {
+        background-image:none;
+        }
+        .btndiv .z-button-cm {
+        background : transparent url('') no-repeat 0 0 ;
+        }
+        .myBlack .z-button-cm { 
+        background-image: url(./images/boton.png)   ;
+        border: 0px;
+        }
+        			
+    </style>
+    <div  class="estil" >
+
+  <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
+        <window onLoad="usuario.focus();"   onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:15%; left:1;"  width="99%" sizable="true">
+            <zscript>
+                <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.persistencia.Periodo;
+  import jcinform.persistencia.Global;
+  import jcinform.persistencia.Institucion;
+  import bean.Permisos;
+  import jcinform.procesos.Administrador;
+  //import javax.faces.context.FacesContext;
+   
+ Session a = Sessions.getCurrent();
+ 
+        a.removeAttribute("accesos");
+        a.removeAttribute("user");
+        a.removeAttribute("periodo");
+//a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
+        //a.invalidate();
+
+
+ Administrador adm = new Administrador();
+ Permisos permisos = new Permisos();
+ Date fec = adm.Date();
+ String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate();
+ adm.ejecutaSqlNativo("DELETE FROM cursoocupado  ");
+ List instListado = adm.query("Select o from Institucion as o",0,1);
+ Institucion instituto = instListado.get(0);
+ 
+ System.out.println(inst+"");
+cargar(){
+foto0.setContent(new org.zkoss.image.AImage("fotito", instituto.getEscudo()));
+    derechos.value = "Todos los derechos reservados a JCINFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+}
+ 
+
+
+void verificar(){
+error.visible = false;
+  Empleados user =adm.ingresoSistema(usuario.value, clave.value);
+  
+  if(user != null){
+              servicionestudiantes.visible = true;
+                // cargo los periodos que tienen
+ List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' " + 
+            " order by o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion ");
+             if(user.getCodigoemp().equals(-1)){
+                  equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+             }
+                if(equivaEncontrados.size()>0){
+                            Empleadoperiodo p = new Empleadoperiodo();
+                             Periodo per = new Periodo(-1);
+                             Institucion ins = new Institucion(-1);
+                             ins.setTipo("");
+                              per.setDescripcion("[Seleccione]");
+                              p.setPeriodo(per);
+                              ins.setDenominacion("");
+                              ins.setNombre("");
+                              Global secc = new Global();
+                              per.setSeccion(secc);
+                              secc.setDescripcion("");
+                              per.setInstitucion(ins);
+                              equivaEncontrados.add(0,p);
+                                verificar.visible = false;
+                                btnIngresar.visible = true;
+                                clave.disabled = true;
+                                usuario.disabled = true;
+                                rperiodo.visible = true;
+
+                            periodo = new Listbox();
+
+                                int a=0;
+                                      for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+                                            periodo.getItems().remove(a);
+                                        }
+                                       for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                                              Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+                                              Listitem li = new Listitem();
+                                              li.setValue(acceIt.getPeriodo());
+                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" . " +acceIt.getPeriodo().getInstitucion().getTipo() + " ["+acceIt.getPeriodo().getSeccion()+"] " +  acceIt.getPeriodo().getInstitucion() + "" ));
+                                              periodo.appendChild(li);
+                                     }
+                                     periodo.setSelectedIndex(0);
+                                     usuarios.visible= false;
+                                     claves.visible= false;
+                                     seleccione.visible= true;
+                                     cancelar.visible = true;
+                                     consultar.visible =false;
+                                     olvidado.visible =false;
+                                     if(equivaEncontrados.size() == 2){
+                                        periodo.setSelectedIndex(1);
+                                        ingresoSistemas();
+                                     } 
+
+            }else{
+                Messagebox.show("Usuario Correcto NO tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                usuario.focus();
+            }
+
+                
+            }else{
+                //Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+             String command2 = "animar('"+loginWin.getUuid()+"')";
+             Clients.evalJavaScript(command2);
+                error.visible = true;
+                usuario.focus();
+                clave.setRawValue(null);
+             }
+  
+}
+
+void ingresoSistemas(){
+    if(periodo.getSelectedItem()==null){
+        Messagebox.show("Seleccione un periodo...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+    }
+    if(((Periodo)periodo.getSelectedItem().getValue()).getCodigoper().equals(-1)){
+        Messagebox.show("Seleccione un periodo...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+    }
+
+    Institucion inst = (Institucion) adm.buscarClave(new Integer(1), Institucion.class);
+    String bas = inst.getIniciales().substring(1,inst.getIniciales().length());
+     
+            Empleados user = adm.ingresoSistema(usuario.value, clave.value);
+            if(user != null){
+                    Periodo perio = (Periodo)periodo.selectedItem.value;
+                    permisos.llenar(user,perio);
+                    
+                if(user.getTipo().equals("Interna"))
+                    Executions.sendRedirect("index.zul");
+                else
+                    Executions.sendRedirect("indexProfesores.zul");
+
+            }else{
+                Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                usuario.focus();
+
+             }
+    
+
+}
+
+void verificarSistema(){
+        Permisos per = new Permisos();
+        if(per.verificarSistema()){
+            //Messagebox.show("PERMITIDO...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }else{
+            Messagebox.show("ACCESO DENEGADO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            Executions.sendRedirect("confirmar.zul");
+        }
+}
+
+
+]]>
+            </zscript>
+             <groupbox  style="border:0px" height="80px"   width="100px">
+                    <separator/>
+                </groupbox>
+            <hbox>
+                <groupbox id="is" style="border:0px"    width="450px">
+ 
+                    <vbox>
+                        <grid width="450px" style="background-color:transparent;border:0px">
+                            <rows  style="background:transparent;border:0px">
+                                <row   style="background:transparent;border:0px" spans="2">
+                                    <label style="font-size:28px;  color:#DD4B39" value="Bienvenidos: "> </label>
+                                </row> 
+                            </rows>
+                        </grid>
+                        <grid width="460px" style="background-color:transparent;border:0px">
+	 
+                            <rows  style="background:transparent;border:0px">
+                               
+                                <row align="center" style="background:transparent;border:0px" spans="2">
+                                    <separator/> <grid   style="background-color:transparent;border:0px">
+	 
+                                        <rows  style="background:transparent;border:0px">
+                                            <row align="rigth" style="background:transparent;border:0px" spans="2">
+                                                <image border="1" height="80px" id="foto0"/>
+                                            </row> 
+                               
+                 
+                                        </rows>
+                                    </grid>
+                                    <grid   style="background-color:transparent;border:0px">
+	 
+                                        <rows style="background:transparent;border:0px">
+                                
+                                    
+                                            <row  style="background:transparent;border:0px" align="center" >
+                                             
+                                            </row>
+                                            <row align="center" style="background:transparent;border:0px" spans="2">
+                                                <label style="color:#666666;font-size:20px" value="${instituto.denominacion}"> </label>
+                                            </row> 
+                                            <row align="center" style="background:transparent;border:0px" spans="2">
+                                                <label style="color:#666666;font-size:20px" value="${instituto.nombre}"> </label>
+                                            </row> 
+                                           
+                 
+                                        </rows>
+                                    </grid>
+                                </row> 
+                                <row  spans="4" align="center" style="background:transparent;border:0px"  >
+                                                <label style="color:#666666;font-size:13px" value="${instituto.slogan}"> </label>
+                                            </row> 
+                 
+                            </rows>
+                        </grid>
+                     
+                      
+                    </vbox>
+                </groupbox>
+                <groupbox  style="border:0px"    width="200px">
+                    <separator/>
+                </groupbox>
+            
+                <groupbox id="gb" style="color:orange;font-weight:bold;size:18px"   width="310px">
+                    <caption label="Iniciar sesión"/>
+                    <separator orient="horizontal"/>
+               
+                    <vbox>
+                        <separator orient="horizontal"/>
+                        <separator orient="horizontal"/>
+      
+                        <grid width="300px" style="background-color:transparent;border:0px">
+	 
+                            <rows style="background:transparent;border:0px">
+                    <!--row align="center" style="background:transparent;border:0px" spans="2">
+                         <label style="font-size:28px"> iniciar sesión</label>
+                    </row-->
+                                <row style="background:transparent;border:0px"  align="center" visible="false" id="error" spans="2">
+                                    <image  src="/images/error.gif"  />
+                                </row>
+                                <row style="background:transparent;border:0px"  id="usuarios0" >
+                                    <separator/>
+                        
+                                    <label style="font-weight:bold">Nombre de usuario:</label>
+                                    <separator/>
+                                </row>
+                                <row style="background:transparent;border:0px"  id="usuarios" >
+                                    <separator/>
+                                    <textbox onOK="clave.focus()" style="height:22px" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="30"  />
+                       
+                                </row>
+                                <row style="background:transparent;border:0px"  id="claves0" > 
+                                    <separator/> 
+                                    <label style="font-weight:bold">Contraseña:</label>
+                                </row>
+                                <row style="background:transparent;border:0px"  id="claves" >
+                                    <separator/>
+                                    <textbox  onOK="usuario.getValue(); clave.getValue(); verificar()"  style="height:22px" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="30"   />
+               
+                                </row>
+                                <row visible="false" id="seleccione"  align="center" spans="2" style="background:transparent;border:0px">
+                                    <label style="float:center;font-size:16px;color:red" value="SELECCIONE UN PERIODO:"></label>
+                                </row>
+                                <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
+                                    <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
+                                        <listitem forEach="${perfiles}" value="${each}">
+                                            <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                                        </listitem>
+                                    </listbox>
+
+                  
+                                </row>
+                    
+                                <row  spans="2"   style="background:transparent;border:0px" >
+                                    
+                                    <span style="float:center">
+                                        <separator orient="vertical"/>
+                                   
+                                        <button label="Iniciar sesión"    style="color:#DFDFDF"  height="28px"  width="119px"  sclass="myBlack"  image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
+                                        <button label="Ingresar Sistema" height="30px" width="150px"   visible="false" image="/images/ingreso.gif" id="btnIngresar" onClick="usuario.getValue(); clave.getValue(); ingresoSistemas();"/>
+
+                                        <button target="_top" height="30px" width="150px" visible="false"  label="Servicios Estudiantes" id="servicionestudiantes" image="/images/usr.png"  href="./loginEstudiantes.zul"></button>
+                                        <button target="_top" height="30px" width="150px"  label="Cancelar" id="cancelar"  visible="false"  image="/images/exit.gif"  href="./login.zul"></button>
+                <!--button label="Olvidó su clave" image="/images/notas.png">
+                        <attribute name="onClick">{
+                             Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
+                            win.doModal();
+                        }</attribute>
+                </button-->
+                
+                                    </span>
+                                </row>
+                                <row   id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
+                
+                                    <toolbarbutton label="¿Ha olvidado su usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
+                                        <attribute name="onClick">{
+                                            Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
+                                            win.doModal();
+                                            }
+                                        </attribute>
+                                    </toolbarbutton>
+
+                                </row>
+
+                              
+            
+                            </rows>
+                        </grid>
+                        <separator orient="horizontal"/>
+                        <separator orient="horizontal"/>
+              
+                    </vbox>
+                </groupbox>
+            </hbox>
+               <groupbox  style="border:0px" height="120px"   width="200px">
+                    <separator/>
+                </groupbox>
+                
+            <grid>
+                <rows>
+                    <row  style="background:white;border:0px" align="center" spans="2">
+                        <span>
+                            <label id="derechos" style="font-size:10px"  />
+                            <html>
+                                &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+                            </html>
+                            <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                             
+                        </span>
+                    </row>
+
+
+
+                </rows>
+            </grid>
+       
+	 
+		
+        </window>
+    </div>
+</zk>
+	<!--/window-->
+    
