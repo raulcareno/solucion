@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?page title="Administrador Educativo"?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
-<borderlayout id="todo" height="250%" onCreate="cargando();" >
+<borderlayout id="todo" height="100%" onCreate="cargando();" >
     <zscript>
         <![CDATA[
         
