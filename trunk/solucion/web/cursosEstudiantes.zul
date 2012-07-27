@@ -296,12 +296,10 @@ void showReport(String tipo) {
             <row>
                 <hbox>
                     <separator orient="vertical" width="50px"/>
-                    <listbox id="cursosList" width="100%" >
-                   
+                    <listbox style="background:transparent"  id="cursosList"  width="500px"  >
                         <listitem  image="/images/cursoC.png"  forEach="${cursos}" value="${each}">
                             <listcell label="${each.curso.descripcion} ${each.curso.especialidad}  ${each.curso.paralelo}" />
                             <listcell label="${each.curso.periodo}" />
-
                         </listitem>
                     </listbox>
                 </hbox>
@@ -312,7 +310,7 @@ void showReport(String tipo) {
             <row>
                 <hbox>
                     <separator orient="vertical" width="50px"/>
-                    <listbox style="background:transparent" id="reporte" onSelect="showReport(self.selectedItem.value)" width="400px"  >
+                    <listbox style="background:transparent" id="reporte" onSelect="showReport(self.selectedItem.value)" width="500px"  >
                         <listitem image="/images/medialibreta.png"  id="PCUR" label="LIBRETA TRIMESTRAL" value="LIB"/> 
                         <listitem/>
                         <listitem image="/images/libreta.png"   id="FAL" label="PASE DE AÑO" value="LIBF"/>
