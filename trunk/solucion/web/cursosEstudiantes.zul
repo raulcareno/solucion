@@ -1,6 +1,6 @@
 
 <?page id="main-page"?>
-<window mode="overlapped"    title="SELECCIONE UN CURSO O GRADO"  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="500px" id="cursosForma">
+<window       border="normal" width="800px" id="cursosForma">
     <zscript>
 <![CDATA[
 import bean.notas;
@@ -12,13 +12,16 @@ import bean.Permisos;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
-
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.reportesClase;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
 Permisos permiso = new Permisos();
 List cursos = adm.query("SELECT distinct o FROM Matriculas as o WHERE o.estudiante.codigoest = '"+user.getCodigoest()+"'");
- 
+ reportesClase  noti = new reportesClase();
 void buscar2(Matriculas mat){
 try{
             if(mat.getCurso().getPeriodo().getVernotas()){
@@ -40,29 +43,300 @@ try{
            }
            cursosList.clearSelection();
 }
+ 
+              
+ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
+    String curso =  "";
+    String matricula = "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+        if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      for(Iterator itE = listadoEstudiantes.iterator(); itE.hasNext();) {
+            Matriculas elem2 = (Matriculas) itE.next();
+            matricula  +=""+elem2.getCodigomat()+",";
+      }
+      
+      if(matricula.length()>0){
+         matricula = matricula.substring(0,matricula.length()-1);
+      }
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                    String comple2 = "";
+                 if(matricula.length() <= 0){
+                    comple2 = " AND c.codigocur IN ("+curso+") ";
+                 }else{
+                    comple2 = " AND o.codigomat IN ("+matricula+") ";
+                 }
+                 
+                             query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                        + comple2
+                                         + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
+                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                         System.out.println("querylistados: "+query);
+                                 if(tipo.equals("LMAT")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Matriculado') "
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
+                                 if(tipo.equals("LMATYR")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Matriculado','Retirado') "
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
+                                 if(tipo.equals("LMATF")){
+                                         String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
+                                         String hasta2 = (hasta.getValue().getYear()+1900) +"-"+ (hasta.getValue().getMonth()+1)+"-"+ (hasta.getValue().getDate());
+                                                query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                        + " AND c.codigocur IN ("+curso+") "
+                                                         + " AND o.estado IN ('Matriculado') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
+                                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                         System.out.println("FECHAS"+query);
+                                 }
+                                 if(tipo.equals("LINSF")){
+                                         String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
+                                         String hasta2 = (hasta.getValue().getYear()+1900) +"-"+ (hasta.getValue().getMonth()+1)+"-"+ (hasta.getValue().getDate());
+                                                query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                        + " AND c.codigocur IN ("+curso+") "
+                                                         + " AND o.estado IN ('Inscrito') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
+                                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                         System.out.println("FECHAS"+query);
+                                 }
+                                 if(tipo.equals("LCLA5")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Inscrito') "
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
+                
+            List hoy = adm.queryNativo(query,Matriculas.class);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+                if(tipo.equals("CM")){
+                     ds = new ReporteCertificadoDataSource(detalle);
+                }else if(tipo.equals("LREL2")){
+                     reportesClase noti = new reportesClase();
+                     ds = noti.conteoReligion();
+
+                }else{
+                      ds = new ReporteActaDataSource(detalle);
+                }
+
+            return ds;
+
+}
+
+ 
+
+
+
+void showReport(String tipo) {
+
+    if(cursosList.getSelectedItem()==null){
+        Messagebox.show("Seleccione primero el Curso(*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        reporte.clearSelection();
+        return;
+    }
+    Matriculas mat = cursosList.selectedItem.value;
+ //String tipo = reporte.getSelectedItem().getValue();
+           if(tipo.equals("")){
+                return;
+           }
+           Periodo periodo = mat.getCurso().getPeriodo();
+            ver.visible = false;
+              reportese.visible = true;
+             //cerrar.setVisible(true);
+             
+             List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden desc");
+              Sistemacalificacion sistemaUltimo = sistemas0.get(0);
+            Institucion insts = periodo.getInstitucion();
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("direccion", insts.getDireccion());
+            parametros.put("telefono",insts.getTelefono());
+            //parametros.put("titulo", titulo.value);
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("regimen", periodo.getRegimen());
+            //parametros.put("minima",(peligro.value).doubleValue());
+            parametros.put("curso", mat.getCurso()+"");
+            try{
+                parametros.put("tutor", (mat.getCurso()).getTutor()+"");
+            }catch(Exception insp){System.out.println(""+tu);}
+            try{
+                parametros.put("inspector", (mat.getCurso()).getInspector()+"");
+            }catch(Exception insp){System.out.println(""+insp);}
+                           
+ List equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.valorminimo desc ");
+                int m = 1;
+        for (Iterator it = equivalencias.iterator(); it.hasNext();) {
+            Equivalencias equivalencias1 = (Equivalencias)it.next();
+            parametros.put("eq"+m,""+equivalencias1.getNombre()+"");
+            parametros.put("ran"+m,equivalencias1.getValorminimo());
+            parametros.put("ranf"+m,equivalencias1.getValormaximo());
+            
+            m++;
+        }
+               
+        List parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.variable = 'DISCIPLINAIMPR' ");
+                if(parametrosGlobales.size()>0){
+                    parametros.put("faltas",((parametrosGlobales).get(0)).getBvalor());
+                }else{
+                    parametros.put("faltas",false);
+                }
+                     
+         String directorioReportes = insts.getReportes();
+                /* try{
+            if(sistemasCombo.disabled == false)
+                parametros.put("perseleccionado", sistemaUltimo.getTrimestre().getDescripcion()+ " - "+sistemaUltimo.getNombre()+"");
+                }catch(Exception exs){
+                }
+                */
+            
+            
+            JRDataSource datasource = null;
+
+            if(tipo.equals("CERT")){
+                    datasource = noti.promocion(mat.getCurso(),mat);
+                    report.setSrc(directorioReportes+"promocion.jasper");
+            }else if(tipo.equals("CERT2")){
+                    datasource = noti.promocion2(mat.getCurso(),mat);
+                    report.setSrc(directorioReportes+"promocion2.jasper");
+            }else if(tipo.equals("LIB")){
+                   
+                    datasource = noti.libretas(mat.getCurso(),mat,sistemaUltimo);
+                    report.setSrc(directorioReportes+"libreta.jasper");
+                    parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
+                    parametros.put("titulo", "LIBRETA TRIMESTRAL");
+                   
+            }else if(tipo.equals("AM")){
+            ArrayList listadoCursos = new ArrayList();
+            ArrayList listadoEstudiantes = new ArrayList();
+            listadoCursos.add(mat.getCurso());
+            listadoEstudiantes.add(mat);
+                    datasource = certificados(listadoCursos,"AM",listadoEstudiantes);
+                    parametros.put("titulo", "Acta de Matricula");
+                    report.setSrc(directorioReportes+"actaMatricula.jasper");
+
+            }else if(tipo.equals("LIBF")){
+
+                    datasource = noti.libretas(mat.getCurso(),mat,sistemaUltimo);
+                    report.setSrc(directorioReportes+"libretaSupletorios.jasper");
+                    parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
+                     parametros.put("titulo", "PASE DE AÑO");
+            } else if(tipo.equals("LIB2")){
+
+                    datasource = noti.libretas(mat.getCurso(),mat,sistemaUltimo);
+                    report.setSrc(directorioReportes+"libreta2.jasper");
+                    parametros.put("pathSubRel", directorioReportes);//libreta_subPequeno.jasper
+                    parametros.put("pathSubRel2", directorioReportes);//libreta_subFaltas.jasper
+
+            }else if(tipo.equals("LIB3")){
+                    datasource = noti.libretas(mat.getCurso(),mat,sistemaUltimo);
+                    report.setSrc(directorioReportes+"libreta3.jasper");
+                    parametros.put("pathSubRel", directorioReportes);//libreta_sub.jasper
+                    parametros.put("pathSubRel2", directorioReportes);//libreta_sub.jasper
+
+            }else if(tipo.equals("-1")){
+                   alert("No ha seleccionado ningún reporte...!");
+                    return;
+            }
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                 report.setType("pdf");
+                
+            }
+            contenidoReporte.visible = true;
+            contenido.visible = false;
+		}
+
 ]]>
     </zscript>
-    <grid>
+    <grid id="contenido">
         <rows>
             <row>
-                <listbox id="cursosList" width="99%" onSelect="buscar2(((Matriculas)self.selectedItem.value)); ">
-                    <listhead sizable="true">
-                        <listheader label="Curso/Nivel" sort="auto" />
-                        <listheader label="Periodo" sort="auto" />
-                    </listhead>
-                    <listitem forEach="${cursos}" value="${each}">
-                        <listcell label="${each.curso.descripcion} ${each.curso.especialidad}  ${each.curso.paralelo}" />
-                        <listcell label="${each.curso.periodo}" />
-
-                    </listitem>
-                </listbox>
-                 
+                <span>
+                    <separator />
+                    <label style="font-size:16px;color:blue;text-shadow: black 0.1em 0.1em 0.2em" value="(1) SELECCIONE UN CURSO" />
+                </span>
             </row>
+            <row>
+                <hbox>
+                    <separator orient="vertical" width="50px"/>
+                    <listbox id="cursosList" width="100%" >
+                   
+                        <listitem  image="/images/cursoC.png"  forEach="${cursos}" value="${each}">
+                            <listcell label="${each.curso.descripcion} ${each.curso.especialidad}  ${each.curso.paralelo}" />
+                            <listcell label="${each.curso.periodo}" />
 
+                        </listitem>
+                    </listbox>
+                </hbox>
+            </row>
+            <row>
+                <label style="font-size:16px;color:blue;text-shadow: black 0.1em 0.1em 0.2em" value="(2) SELECCIONE EL REPORTE QUE DESEA VER" />
+            </row>
+            <row>
+                <hbox>
+                    <separator orient="vertical" width="50px"/>
+                    <listbox style="background:transparent" id="reporte" onSelect="showReport(self.selectedItem.value)" width="400px"  >
+                        <listitem image="/images/medialibreta.png"  id="PCUR" label="LIBRETA TRIMESTRAL" value="LIB"/> 
+                        <listitem/>
+                        <listitem image="/images/libreta.png"   id="FAL" label="PASE DE AÑO" value="LIBF"/>
+                        <listitem/>
+                        <listitem image="/images/libreta.png"   id="AM" label="FICHA DE MATRICULA" value="AM"/>
+                        <listitem/>
+                    </listbox>
+                </hbox>
+            </row>
+            
         </rows>
     </grid>
+    
+    <panel height="90%" visible="false"  id="contenidoReporte">
+        <toolbar align="center">
+            <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
+                    onClick="contenidoReporte.visible=false; contenido.visible=true;
+                    cursosList.clearSelection();reporte.clearSelection();"/>
+        </toolbar>
+        <panelchildren>
 
-
+            <jasperreport id="report" />
+        </panelchildren>
+    </panel>
 </window>
 
 	
