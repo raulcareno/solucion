@@ -337,18 +337,30 @@ String estadoComp = " and o.estado = '" + estado + "' ";
     }
 
     
-    public JRDataSource facturasPendientesestven(Sector sec, Canton canton, String estado, Empleados emp) {
+    public JRDataSource facturasPendientesestven(Sector sec, Canton canton, String estado, List emp) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         String estadoComp = " and o.estado = '" + estado + "' ";
         if(estado.equals("Todos")){
             estadoComp ="";
         }
-        
-        String compleEmpleado = "  and o.empleados2.codigo = '"+emp.getCodigo()+"'  ";
-        if(emp.getCodigo().equals(-1)){
-            compleEmpleado ="";
+        String compleEmpleado = "";
+        String codigosEmpleados = "";
+         
+        for (Iterator it = emp.iterator(); it.hasNext();) {
+              Listitem object = (Listitem) it.next();
+                Empleados empleA = ((Empleados) object.getValue()); 
+                codigosEmpleados += empleA.getCodigo()+",";
+                if(empleA.getCodigo().equals(new Integer(-1))){
+                    codigosEmpleados="";
+                    break;
+                }
+            
         }
+        if(codigosEmpleados.length()>0){
+            compleEmpleado = "  and o.empleados2.codigo in ("+codigosEmpleados.substring(0, codigosEmpleados.length()-1) +") ";
+        }
+       
         if (sec.getCodigo().equals(-1)) {
             if (canton.getCodigo().equals(-1)) {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
@@ -368,7 +380,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         } else {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "' " +compleEmpleado+"    order by o.clientes.apellidos");
+                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "' " +compleEmpleado+"    order by o.clientes.apellidos, o.empleados2.codigo ");
 
         }
 
@@ -381,9 +393,9 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
-
+            System.out.println(""+quer);
             List facEncontradas = adm.queryNativo(quer);
-
+ 
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
@@ -400,6 +412,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     pendi.setDireccion(c.getDireccion());
                     pendi.setTotal((BigDecimal) vec.get(2));
                     pendi.setSaldo((BigDecimal) vec.get(3));
+                    pendi.setEmpleado(c.getEmpleados2()+"");
                     detalles.add(pendi);
                 }
 
@@ -712,7 +725,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
             Contratos contra = itCli.next();
             
                     Pendientes pendi = new Pendientes();
-                    pendi.setPlan("");
+                   
                     pendi.setContratos(contra);
                     pendi.setEmpleado(contra.getEmpleados2().toString());
                     pendi.setContrato(contra.getContrato() + "");
@@ -721,6 +734,8 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     pendi.setFecha(contra.getFechainstalacion());
                     pendi.setTotal(null);
                     pendi.setSaldo(null);
+                    pendi.setPlan(contra.getPlan()+"");
+//                    pendi.setValorabonotot(contra.getPlan().getValor());
                     pendi.setValorabonoefe(null);
                     detalles.add(pendi);
  

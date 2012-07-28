@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="602" pageHeight="842" columnWidth="562" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="103"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="empresa" class="java.lang.String"/>
 	<parameter name="direccion" class="java.lang.String"/>
@@ -20,6 +20,7 @@
 	<field name="factura" class="java.lang.String"/>
 	<field name="direccioncontrato" class="java.lang.String"/>
 	<field name="contrato" class="java.lang.String"/>
+	<field name="empleado" class="java.lang.String"/>
 	<variable name="saldo_1" class="java.math.BigDecimal" resetType="Group" resetGroup="clientes" calculation="Sum">
 		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
 	</variable>
@@ -29,12 +30,62 @@
 	<variable name="variable1" class="java.lang.Integer" resetType="Group" resetGroup="clientes" calculation="Count">
 		<variableExpression><![CDATA[$F{factura}]]></variableExpression>
 	</variable>
+	<variable name="empleado_1" class="java.lang.Integer" resetType="Group" resetGroup="empleados" calculation="Count">
+		<variableExpression><![CDATA[$F{empleado}]]></variableExpression>
+	</variable>
+	<variable name="saldo_3" class="java.math.BigDecimal" resetType="Group" resetGroup="empleados" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<group name="empleados">
+		<groupExpression><![CDATA[$F{empleado}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField>
+					<reportElement mode="Opaque" x="8" y="0" width="554" height="13" backcolor="#CCCCCC"/>
+					<textElement>
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{empleado}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="18">
+				<textField>
+					<reportElement mode="Opaque" x="472" y="0" width="90" height="18" backcolor="#EDECEC"/>
+					<box rightPadding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{saldo_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Transparent" x="8" y="0" width="464" height="18" backcolor="#EDECEC"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Subtotal: ]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
 	<group name="clientes">
 		<groupExpression><![CDATA[$F{cliente}]]></groupExpression>
 		<groupHeader>
 			<band height="12">
 				<textField>
-					<reportElement mode="Opaque" x="8" y="0" width="553" height="12" backcolor="#EDECEC"/>
+					<reportElement mode="Transparent" x="8" y="0" width="553" height="12" backcolor="#EDECEC"/>
 					<box leftPadding="3" rightPadding="3">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -187,13 +238,6 @@
 				</textElement>
 				<text><![CDATA[Teléfonos]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="85" y="0" width="386" height="16"/>
-				<textElement textAlignment="Center">
-					<font pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{empleado}]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -328,7 +372,7 @@
 	<summary>
 		<band height="18" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="453" height="18" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="0" y="0" width="472" height="18" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -342,7 +386,7 @@
 				<text><![CDATA[Total  X Cobrar: ]]></text>
 			</staticText>
 			<textField pattern="#,##0.00">
-				<reportElement mode="Opaque" x="453" y="0" width="108" height="18" backcolor="#EDECEC"/>
+				<reportElement mode="Opaque" x="472" y="0" width="89" height="18" backcolor="#EDECEC"/>
 				<box leftPadding="3" rightPadding="3">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>

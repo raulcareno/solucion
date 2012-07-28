@@ -139,7 +139,13 @@ List nodos = adm.query("Select o from Nodos as o " +
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
             }else if(tipo.equals("CXCLIESTVEN")){
-                datasource = reportes.facturasPendientesestven(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value,empleadosList.selectedItem.value);
+                 Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                datasource = reportes.facturasPendientesestven(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value,listEmpleados);
                 report.setSrc(directorioReportes+"cxcclientesestven.jasper");
             }else if(tipo.equals("PORSECTOR")){
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
@@ -593,13 +599,10 @@ void campos(String valor){
     
                             </span>
                         </row>
-                        <row id="filaempleados">
+                        <row id="filaempleados" visible="false">
                             <span style="float:right"> Empleado: </span>
-                            <bandbox style="background-color:transparent" disabled="false" readonly="true" width="240px"  id="bdEmp">
-                                <bandpopup>
-                                    <vbox>
-                                                       
-                                        <listbox   onSelect="bdEmp.value=(self.selectedItem.value).getApellidos() + ' ' +  (self.selectedItem.value).getNombres(); bdEmp.closeDropdown();"   id="empleadosList"  >
+                                       
+                                        <listbox  multiple="true" checkmark="true" height="200px"   id="empleadosList"  >
                                             <listitem label=" - TODOS - " selected="true" value="${empSel}">
                                                 <listcell label="${empSel.apellidos}" />
                                                 <listcell label="${empSel.nombres}" />
@@ -610,9 +613,7 @@ void campos(String valor){
                                                 <listcell label="${each.nombres}" />
                                             </listitem>
                                         </listbox> 
-                                    </vbox>
-                                </bandpopup>
-                            </bandbox>
+                                   
                         </row> 
                         <row id="filaestado" visible="false">
                             <span style="float:right"> Estado: </span>
