@@ -188,7 +188,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton,Date desde, Date hasta, Boolean todasLasFechas) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton,Date desde, Date hasta, Boolean todasLasFechas,Integer formapago) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         String desdestr = convertiraString(desde) + "";
@@ -197,6 +197,10 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         if(todasLasFechas){
             compleme = "";
         }
+         String formaPago = " and o.formapago = '" + formapago + "' ";
+        if(formapago.equals(0)){
+            formaPago =" and o.formapago in (0,1,2,3) ";
+        }
         if (cli.getCodigo().equals(-1)) {
 
 
@@ -204,23 +208,31 @@ String estadoComp = " and o.estado = '" + estado + "' ";
 
                 if (canton.getCodigo().equals(-1)) {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                            + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+                            + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                            +" "+ formaPago
+                            + "order by o.clientes.apellidos");
 
                 } else {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                            + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+                            + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                            +" "+ formaPago
+                            + " order by o.clientes.apellidos");
 
                 }
             } else if (canton.getCodigo().equals(-1)) {
 
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                        +" "+ formaPago
+                        + " order by o.clientes.apellidos");
 
 
             } else {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                        + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' order by o.clientes.apellidos");
+                        + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                        +" "+ formaPago
+                        + " order by o.clientes.apellidos");
 
             }
 
@@ -269,33 +281,47 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource facturasPendientesest(Sector sec, Canton canton, String estado) {
+    public JRDataSource facturasPendientesest(Sector sec, Canton canton, String estado,Integer formapago) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         String estadoComp = " and o.estado = '" + estado + "' ";
         if(estado.equals("Todos")){
             estadoComp ="";
         }
+        String formaPago = " and o.formapago = '" + formapago + "' ";
+        if(formapago.equals(0)){
+            formaPago =" and o.formapago in (0,1,2,3) ";
+        }
         if (sec.getCodigo().equals(-1)) {
             if (canton.getCodigo().equals(-1)) {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+"  order by o.clientes.apellidos");
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+" "
+                        + " "+formaPago
+                        + " order by o.clientes.apellidos");
             } else {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.canton.codigo = '" + canton.getCodigo() + "'  "
-                        + "and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+"   order by o.clientes.apellidos");
+                        + " and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "+estadoComp+"   "
+                        + " "+formaPago
+                        + " order by o.clientes.apellidos");
 
             }
         } else if (canton.getCodigo().equals(-1)) {
 
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "'  order by o.clientes.apellidos");
+                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + "and o.estado = '" + estado + "'  "
+                    + " "+formaPago
+                    + " order by o.clientes.apellidos");
 
 
         } else {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = '" + estado + "'  order by o.clientes.apellidos");
+                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                    + " and o.estado = '" + estado + "'  "
+                    + " "+formaPago
+                    + " order by o.clientes.apellidos");
 
         }
 
@@ -347,6 +373,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         String compleEmpleado = "";
         String codigosEmpleados = "";
          
+        
         for (Iterator it = emp.iterator(); it.hasNext();) {
               Listitem object = (Listitem) it.next();
                 Empleados empleA = ((Empleados) object.getValue()); 
@@ -891,25 +918,35 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource reporteCaja(Date desde, Date hasta, Empleados empleado) {
+    public JRDataSource reporteCaja(Date desde, Date hasta, List emp) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         Pendientes pendi = null;
+            String compleEmpleado = "";
+        String codigosEmpleados = "";
+       
+        for (Iterator it = emp.iterator(); it.hasNext();) {
+              Listitem object = (Listitem) it.next();
+                Empleados empleA = ((Empleados) object.getValue()); 
+                codigosEmpleados += empleA.getCodigo()+",";
+                if(empleA.getCodigo().equals(new Integer(-1))){
+                    codigosEmpleados="";
+                    break;
+                }
+            
+        }
+        if(codigosEmpleados.length()>0){
+            compleEmpleado = "  and o.empleados.codigo in ("+codigosEmpleados.substring(0, codigosEmpleados.length()-1) +") ";
+        }
         String query = "Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
                 + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                + "and o.empleados.codigo = '" + empleado.getCodigo() + "' order by o.factura.numero, o.fecha ";
-        if (empleado.getCodigo().equals(-1)) {
-            query = "Select o from Cxcobrar as o "
-                    + "where o.haber > 0 "
-                    + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                    + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
-                    + " order by  o.empleados.apellidos,o.factura.numero ";
-            empleado.setApellidos("TODOS");
-        }
+                + compleEmpleado
+                + " order by   o.empleados.apellidos,o.factura.numero, o.fecha ";
+     
 
         List<Cxcobrar> abonos = adm.query(query);
         int i = 1;
@@ -1088,22 +1125,40 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
- public JRDataSource inventarioEmpleados(Empleados emp,Date desde, Date hasta) {
+ public JRDataSource inventarioEmpleados(List emp,Date desde, Date hasta) {
         Administrador adm = new Administrador();
         String desdestr = convertiraString(desde) + "";
         String hastastr = convertiraString(hasta) + "";
         ArrayList detalles = new ArrayList();
+        String compleEmpleado = "";
+        String codigosEmpleados = "";
+         
+        
+        for (Iterator it = emp.iterator(); it.hasNext();) {
+              Listitem object = (Listitem) it.next();
+                Empleados empleA = ((Empleados) object.getValue()); 
+                codigosEmpleados += empleA.getCodigo()+",";
+                if(empleA.getCodigo().equals(new Integer(-1))){
+                    codigosEmpleados="";
+                    break;
+                }
+            
+        }
+        if(codigosEmpleados.length()>0){
+            compleEmpleado = "  and o.empleados.codigo in ("+codigosEmpleados.substring(0, codigosEmpleados.length()-1) +") ";
+        }
+        
         List<Seriesempleados> equivaEncontrados = adm.query("Select o from Seriesempleados as o " + 
-                " where o.empleados.codigo = '"+emp.getCodigo()+"' "
-                + " and o.estado = true   "
+                " where o.estado = true   " + compleEmpleado
                 //+ " and o.estado = true and o.fecha between '"+desdestr+"' and '"+hastastr+"'  "
-                + " order by o.fecha ");
+                + " order by o.empleados.apellidos, o.fecha ");
          for (Iterator<Seriesempleados> it = equivaEncontrados.iterator(); it.hasNext();) {
             Seriesempleados seriesempleados = it.next();
             InventarioNormal inv = new InventarioNormal();
             inv.setProducto(seriesempleados.getSeries().getDetallecompra().getEquipos() + "");
             inv.setSerie(seriesempleados.getSeries().getSerie());
             inv.setFecha(seriesempleados.getFecha()); 
+            inv.setEmpleado(seriesempleados.getEmpleados()+"");
             detalles.add(inv);
          }
         ReporteInventarioNormalDataSource ds = new ReporteInventarioNormalDataSource(detalles);
@@ -1373,26 +1428,34 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return ds;
     }
 
-    public JRDataSource facturasComisiones1(Empleados empleado, Date desde, Date hasta) {
+    public JRDataSource facturasComisiones1(List emp, Date desde, Date hasta) {
         Administrador adm = new Administrador();
         String desdestr = convertiraString(desde) + " 00:00:01";
         String hastastr = convertiraString(hasta) + " 23:59:59";
-        List<Contratos> contratos = new ArrayList<Contratos>();
-        if (empleado.getCodigo().equals(-1)) {
-            String q = "Select o.*  from Contratos as o "
-                    + " where o.fechainstalacion between '" + desdestr + "' and '" + hastastr + "'  "
-                    + "  order by o.empleados ";
-            System.out.println("" + q);
-            contratos = adm.queryNativo(q, Contratos.class);
-            //contratos.get(0).getEmpleados() 
-        } else {
-            String q = "Select o.*  from Contratos as o "
-                    + " where o.empleados  = '" + empleado.getCodigo() + "'   "
-                    + " and o.fechainstalacion between '" + desdestr + "' and '" + hastastr + "'  "
-                    + " order by o.fecha  ";
-            System.out.println("" + q);
-            contratos = adm.queryNativo(q, Contratos.class);
+        List<Contratos> contratos = new ArrayList<Contratos>();  
+        
+        String compleEmpleado = "";
+        String codigosEmpleados = "";
+        for (Iterator it = emp.iterator(); it.hasNext();) {
+              Listitem object = (Listitem) it.next();
+                Empleados empleA = ((Empleados) object.getValue()); 
+                codigosEmpleados += empleA.getCodigo()+",";
+                if(empleA.getCodigo().equals(new Integer(-1))){
+                    codigosEmpleados="";
+                    break;
+                }
+            
         }
+        if(codigosEmpleados.length()>0){
+            compleEmpleado = "  and o.empleados in ("+codigosEmpleados.substring(0, codigosEmpleados.length()-1) +") ";
+        }
+ 
+            String q = "Select o.*  from Contratos as o "
+                    + " where o.fechainstalacion between '" + desdestr + "' and '" + hastastr + "'  " + compleEmpleado
+                    + " order by o.empleados , o.fecha  ";
+            System.out.println("" + q);
+            contratos = adm.queryNativo(q, Contratos.class);
+  
         ArrayList detalles = new ArrayList();
         String quer = "";
         List<Equipos> equ = adm.queryNativo("SELECT * FROM Equipos WHERE CAST(tipo AS SIGNED)  BETWEEN 1 AND  10 ", Equipos.class);
@@ -1458,14 +1521,32 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         return beanCollectionDataSource;
     }
 
-    public JRDataSource historiaTecnicaUsuario(Empleados emple,Date desde, Date hasta) {
+    public JRDataSource historiaTecnicaUsuario(List emp,Date desde, Date hasta) {
          
         Administrador adm = new Administrador();
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         List detalles = new ArrayList();
-        String quer = "SELECT  o FROM Soporte as o WHERE o.empleados.codigo  =  " + emple.getCodigo() + "  "
-                + "and  o.fecha between '"+desdestr+"' and '"+hastastr+"' "
+          String compleEmpleado = "";
+ 
+        String codigosEmpleados = "";
+         
+        
+        for (Iterator it = emp.iterator(); it.hasNext();) {
+              Listitem object = (Listitem) it.next();
+                Empleados empleA = ((Empleados) object.getValue()); 
+                codigosEmpleados += empleA.getCodigo()+",";
+                if(empleA.getCodigo().equals(new Integer(-1))){
+                    codigosEmpleados="";
+                    break;
+                }
+            
+        }
+        if(codigosEmpleados.length()>0){
+            compleEmpleado = " and o.empleados.codigo in ("+codigosEmpleados.substring(0, codigosEmpleados.length()-1) +")    ";
+        }
+        String quer = "SELECT  o FROM Soporte as o WHERE  "
+                + " o.fecha between '"+desdestr+"' and '"+hastastr+"' "+ compleEmpleado
                 + "order by o.fecha ";
         List facEncontradas = adm.query(quer);
         for (Iterator it = facEncontradas.iterator(); it.hasNext();) {
@@ -1531,17 +1612,35 @@ String estadoComp = " and o.estado = '" + estado + "' ";
     }
     
     
-    public JRDataSource hojaRutaEmpleado(Empleados emple,Date desde, Date hasta) {
+    public JRDataSource hojaRutaEmpleado(List emp,Date desde, Date hasta) {
          
         Administrador adm = new Administrador();
         String desdestr = convertiraString(desde) +" 00:00:01";
         String hastastr = convertiraString(hasta)+ " 23:59:59";
         List detalles = new ArrayList();
-        String comple = "o.tecnico.codigo  =  " + emple.getCodigo() + "  and ";
-        if(emple.getCodigo().equals(-1)){
-            comple ="";
+        String compleEmpleado = "";
+//        if(emple.getCodigo().equals(-1)){
+//            comple ="";
+//        }
+//            String compleEmpleado = "";
+        String codigosEmpleados = "";
+         
+        
+        for (Iterator it = emp.iterator(); it.hasNext();) {
+              Listitem object = (Listitem) it.next();
+                Empleados empleA = ((Empleados) object.getValue()); 
+                codigosEmpleados += empleA.getCodigo()+",";
+                if(empleA.getCodigo().equals(new Integer(-1))){
+                    codigosEmpleados="";
+                    break;
+                }
+            
         }
-        String quer = "SELECT  o FROM Soporte as o WHERE "+comple
+        if(codigosEmpleados.length()>0){
+            compleEmpleado = " o.tecnico.codigo in ("+codigosEmpleados.substring(0, codigosEmpleados.length()-1) +") and  ";
+        }
+        
+        String quer = "SELECT  o FROM Soporte as o WHERE "+compleEmpleado
                 + " o.fecha between '"+desdestr+"' and '"+hastastr+"' and o.estado in (3,4) "
                 + "order by o.fecha ";
         List facEncontradas = adm.query(quer);

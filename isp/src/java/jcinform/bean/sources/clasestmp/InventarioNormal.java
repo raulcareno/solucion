@@ -22,6 +22,7 @@ public class InventarioNormal {
     
     String contrato;
     String direccion;
+    String empleado;
 
     public Integer getEntrada() {
         return entrada;
@@ -157,6 +158,14 @@ public class InventarioNormal {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(String empleado) {
+        this.empleado = empleado;
     }
     
     

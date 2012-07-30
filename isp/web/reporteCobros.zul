@@ -102,9 +102,9 @@ List nodos = adm.query("Select o from Nodos as o " +
                         cclientev = -1; //TODOS LOS CLIENTES
                 }
                 if(cclientev.equals(-1)){
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked());
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
                 }else{
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked());
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
                 }
                 
                 
@@ -124,19 +124,32 @@ List nodos = adm.query("Select o from Nodos as o " +
                 
                 report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("HISTORIA2")){
-                datasource = reportes.historiaTecnicaUsuario(empleadosList.selectedItem.value,desde.value, hasta.value);
+                     Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                datasource = reportes.historiaTecnicaUsuario(listEmpleados,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("HISTORIA3")){
                 datasource = reportes.historiaTecnicaSector(sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"soporte.jasper");
             }else if(tipo.equals("HOJARUTA")){
-                datasource = reportes.hojaRutaEmpleado(empleadosList.selectedItem.value,desde.value, hasta.value);
+                        Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                datasource = reportes.hojaRutaEmpleado(listEmpleados,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"agendadoEmpleado.jasper");
             }else if(tipo.equals("HOJARUTA2")){
                 datasource = reportes.soporteEstado(estadoActividad.selectedItem.value,estadoSoporte.selectedItem.value,desde.value, hasta.value);
                 report.setSrc(directorioReportes+"agendadoEmpleado.jasper");
             }else if(tipo.equals("CXCLIEST")){
-                datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
+            
+                datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value,new Integer(formapago.selectedItem.value));
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
             }else if(tipo.equals("CXCLIESTVEN")){
                  Set items2 = empleadosList.getSelectedItems();
@@ -210,7 +223,13 @@ List nodos = adm.query("Select o from Nodos as o " +
                    report.setSrc(directorioReportes+"inventarioAjuste.jasper");
                    
             }else if(tipo.equals("INVEMP")){
-                  datasource = reportes.inventarioEmpleados(empleadosList.selectedItem.value,desde.value, hasta.value);
+            Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                  datasource = reportes.inventarioEmpleados(listEmpleados,desde.value, hasta.value);
                    report.setSrc(directorioReportes+"inventarioEmpleados.jasper");
                    
             }else  if(tipo.equals("COBROS")){
@@ -262,11 +281,23 @@ List nodos = adm.query("Select o from Nodos as o " +
                    datasource = reportes.reporteCaja2(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcajapei.jasper");
             }else  if(tipo.equals("ARQUEOU")){
-                   datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
+                Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                   datasource = reportes.reporteCaja(desde.value, hasta.value, listEmpleados );
                     report.setSrc(directorioReportes+"rpcaja.jasper");
             }
             else  if(tipo.equals("COMISIONES1")){
-                   datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
+             Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                   datasource = reportes.facturasComisiones1(listEmpleados,desde.value, hasta.value);
                     report.setSrc(directorioReportes+"listacontratosComision.jasper");
             }else  if(tipo.equals("COMISIONES2")){
             Set items2 = planList.getSelectedItems();
@@ -311,6 +342,7 @@ void campos(String valor){
       filaempleados.visible=false;
       filaestado.visible = false;
       filaplan.visible = false;
+       filaformapago.visible = false;
             filatipoplan.visible = false;
             estadossoporterow.visible = false;
              filanumerofactura.visible=false;
@@ -371,6 +403,7 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;      
             filafechas.visible=true;
+             filaformapago.visible = true;
             todasfechas.visible = true;
             desde.value = fec; 
         }else if(valor.equals("CXCLIEST")){
@@ -378,6 +411,7 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;      
             filaestado.visible = true;
+            filaformapago.visible = true;
             desde.value = fec; 
         }else if(valor.equals("CXCLIESTVEN")){
             titulo.value= "Cuentas por Pagar";
@@ -671,15 +705,25 @@ void campos(String valor){
                               
                             </span>
                         </row>
-                        
+                        <row id="filaformapago"  visible="false" >
+                             <span>
+                                <label style="font-weight:bold2;float:right" value=" Forma de Pago: " />
+                            </span>
+                            <radiogroup Id="formapago" onCheck="">
+                                <radio id="tod1" selected="true" value="0" label="Todos"/>
+                                <radio id="efe" value="1" label="Oficina"/>
+                                <radio id="cbr" value="3" label="Domicilio"/>
+                                <radio id="deb"   value="2" label="Débito"/>
+                            </radiogroup>
+                        </row>
                         <row   id="filafechas"  visible="false">
                             <span style="float:right"> Fechas: </span>
 
                             <span>
                                 Desde:
-                                <datebox onCreate="self.value = adm.Date()" id="desde"/>
+                                <datebox format="dd/MM/yyyy" onCreate="self.value = adm.Date()" id="desde"/>
                                 Hasta: 
-                                <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
+                                <datebox format="dd/MM/yyyy" onCreate="self.value = adm.Date()"  id="hasta"/>
                                 <checkbox id="todasfechas" onCheck="desde.disabled = !desde.disabled; hasta.disabled = !hasta.disabled;" label="Todas las fechas"/>
                             </span>
                         </row>

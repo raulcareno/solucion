@@ -75,6 +75,8 @@ public class ReporteInventarioNormalDataSource implements JRDataSource {
                 valor = nodo.getContrato();
             }   else if ("direccion".equals(fieldName)) {
                 valor = nodo.getDireccion();
+            } else if ("empleado".equals(fieldName)) {
+                valor = nodo.getEmpleado();
             } 
         } catch (Exception e) {
             System.out.println("en datasource Acta " + e);
