@@ -208,13 +208,14 @@ void showReport(String tipo) {
         }
                
         List parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.variable = 'DISCIPLINAIMPR' ");
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
                 if(parametrosGlobales.size()>0){
-                    parametros.put("faltas",((parametrosGlobales).get(0)).getBvalor());
+                    parametros.put("faltas",noti.regresaVariableParametrosLogico("DISCIPLINAIMPR",parametrosGlobales));
                 }else{
                     parametros.put("faltas",false);
                 }
-                     
+                
+         Boolean conDecimalesPromocion =  noti.regresaVariableParametrosLogico("DISCIPLINAIMPR",parametrosGlobales);
          String directorioReportes = insts.getReportes();
                 /* try{
             if(sistemasCombo.disabled == false)
@@ -225,13 +226,19 @@ void showReport(String tipo) {
             
             
             JRDataSource datasource = null;
-
+            if(tipo.equals("CERT")){
+                    if(conDecimalesPromocion){
+                        tipo = "CERT2";
+                    }
+             }
             if(tipo.equals("CERT")){
                     datasource = noti.promocion(mat.getCurso(),mat);
                     report.setSrc(directorioReportes+"promocion.jasper");
+                       parametros.put("titulo", "CERTIFICADO DE PROMOCIÓN");
             }else if(tipo.equals("CERT2")){
                     datasource = noti.promocion2(mat.getCurso(),mat);
                     report.setSrc(directorioReportes+"promocion2.jasper");
+                       parametros.put("titulo", "CERTIFICADO DE PROMOCIÓN");
             }else if(tipo.equals("LIB")){
                    
                     datasource = noti.libretas(mat.getCurso(),mat,sistemaUltimo);
@@ -241,10 +248,10 @@ void showReport(String tipo) {
                     parametros.put("titulo", "LIBRETA TRIMESTRAL");
                    
             }else if(tipo.equals("AM")){
-            ArrayList listadoCursos = new ArrayList();
-            ArrayList listadoEstudiantes = new ArrayList();
-            listadoCursos.add(mat.getCurso());
-            listadoEstudiantes.add(mat);
+                ArrayList listadoCursos = new ArrayList();
+                ArrayList listadoEstudiantes = new ArrayList();
+                listadoCursos.add(mat.getCurso());
+                listadoEstudiantes.add(mat);
                     datasource = certificados(listadoCursos,"AM",listadoEstudiantes);
                     parametros.put("titulo", "Acta de Matricula");
                     report.setSrc(directorioReportes+"actaMatricula.jasper");
@@ -313,7 +320,7 @@ void showReport(String tipo) {
                     <listbox style="background:transparent" id="reporte" onSelect="showReport(self.selectedItem.value)" width="500px"  >
                         <listitem image="/images/medialibreta.png"  id="PCUR" label="LIBRETA TRIMESTRAL" value="LIB"/> 
                         <listitem/>
-                        <listitem image="/images/libreta.png"   id="FAL" label="PASE DE AÑO" value="LIBF"/>
+                        <listitem image="/images/libreta.png"   id="FAL" label="PASE DE AÑO" value="CERT"/>
                         <listitem/>
                         <listitem image="/images/libreta.png"   id="AM" label="FICHA DE MATRICULA" value="AM"/>
                         <listitem/>
