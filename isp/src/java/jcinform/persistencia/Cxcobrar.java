@@ -34,45 +34,47 @@ public class Cxcobrar implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
-    @Column(name = "debe")
+      @Column(name = "debe", precision = 9, scale = 2)
     private BigDecimal debe;
-    @Column(name = "haber")
+    @Column(name = "haber", precision = 9, scale = 2)
     private BigDecimal haber;
-    @Column(name = "total")
+    @Column(name = "total", precision = 9, scale = 2)
     private BigDecimal total;
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Column(name = "tipo")
     private String tipo;
-    @Column(name = "efectivo")
-    private BigDecimal efectivo;
-    @Column(name = "cheque")
-    private BigDecimal cheque;
-    @Column(name = "deposito")
-    private BigDecimal deposito;
-    @Column(name = "tarjeta")
-    private BigDecimal tarjeta;
-    @Column(name = "descuento")
+     @Column(name = "descuento", precision = 9, scale = 2)
     private BigDecimal descuento;
+    @Column(name = "efectivo", precision = 9, scale = 2)
+    private BigDecimal efectivo;
+    @Column(name = "cheque", precision = 9, scale = 2)
+    private BigDecimal cheque;
+    @Column(name = "deposito", precision = 9, scale = 2)
+    private BigDecimal deposito;
+    @Column(name = "tarjeta", precision = 9, scale = 2)
+    private BigDecimal tarjeta;
+    @Column(name = "transferencia", precision = 9, scale = 2)
+    private BigDecimal transferencia;
+    @Column(name = "bancario", precision = 9, scale = 2)
+    private BigDecimal bancario;
+    @Column(name = "riva", precision = 9, scale = 2)
+    private BigDecimal riva;
+    @Column(name = "rfuente", precision = 9, scale = 2)
+    private BigDecimal rfuente;
+    @Column(name = "rtotal", precision = 9, scale = 2)
+    private BigDecimal rtotal;
+ 
     @Column(name = "nocheque")
     private String nocheque;
     @Column(name = "notarjeta")
     private String notarjeta;
     @Column(name = "nocuenta")
     private String nocuenta;
-    @Column(name = "transferencia")
-    private BigDecimal transferencia;
-    @Column(name = "riva")
-    private BigDecimal riva;
-    @Column(name = "rfuente")
-    private BigDecimal rfuente;
-    @Column(name = "rtotal")
-    private BigDecimal rtotal;
     @Column(name = "numeroretencion")
     private String numeroretencion;
-     @Column(name = "bancario")
-    private BigDecimal bancario;
+    
       @Column(name = "nocuentaban")
     private String nocuentaban;
     @Column(name = "notransferencia")
@@ -123,29 +125,7 @@ public class Cxcobrar implements Serializable {
         this.codigo = codigo;
     }
 
-    public BigDecimal getDebe() {
-        return debe;
-    }
-
-    public void setDebe(BigDecimal debe) {
-        this.debe = debe;
-    }
-
-    public BigDecimal getHaber() {
-        return haber;
-    }
-
-    public void setHaber(BigDecimal haber) {
-        this.haber = haber;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
+    
 
     public Date getFecha() {
         return fecha;
@@ -163,13 +143,7 @@ public class Cxcobrar implements Serializable {
         this.tipo = tipo;
     }
 
-    public BigDecimal getEfectivo() {
-        return efectivo;
-    }
-
-    public void setEfectivo(BigDecimal efectivo) {
-        this.efectivo = efectivo;
-    }
+    
 
     public String getNocuenta() {
         return nocuenta;
@@ -179,32 +153,9 @@ public class Cxcobrar implements Serializable {
         this.nocuenta = nocuenta;
     }
 
-    public BigDecimal getCheque() {
-        return cheque;
-    }
-
-    public void setCheque(BigDecimal cheque) {
-        this.cheque = cheque;
-    }
-
-    public BigDecimal getDeposito() {
-        return deposito;
-    }
-
-    public void setDeposito(BigDecimal deposito) {
-        this.deposito = deposito;
-    }
-
+   
   
-
-    public BigDecimal getTarjeta() {
-        return tarjeta;
-    }
-
-    public void setTarjeta(BigDecimal tarjeta) {
-        this.tarjeta = tarjeta;
-    }
-
+ 
     public String getNocheque() {
         return nocheque;
     }
@@ -229,13 +180,7 @@ public class Cxcobrar implements Serializable {
         this.factura = factura;
     }
 
-    public BigDecimal getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(BigDecimal descuento) {
-        this.descuento = descuento;
-    }
+    
 
     public Bancos getBanco() {
         return banco;
@@ -261,13 +206,7 @@ public class Cxcobrar implements Serializable {
         this.notransferencia = notransferencia;
     }
 
-    public BigDecimal getTransferencia() {
-        return transferencia;
-    }
-
-    public void setTransferencia(BigDecimal transferencia) {
-        this.transferencia = transferencia;
-    }
+  
 
    
     public String getNumeroretencion() {
@@ -277,31 +216,9 @@ public class Cxcobrar implements Serializable {
     public void setNumeroretencion(String numeroretencion) {
         this.numeroretencion = numeroretencion;
     }
+ 
 
-    public BigDecimal getRfuente() {
-        return rfuente;
-    }
-
-    public void setRfuente(BigDecimal rfuente) {
-        this.rfuente = rfuente;
-    }
-
-    public BigDecimal getRiva() {
-        return riva;
-    }
-
-    public void setRiva(BigDecimal riva) {
-        this.riva = riva;
-    }
-
-    public BigDecimal getRtotal() {
-        return rtotal;
-    }
-
-    public void setRtotal(BigDecimal rtotal) {
-        this.rtotal = rtotal;
-    }
-
+  
     public Empleados getEmpleados() {
         return empleados;
     }
@@ -326,13 +243,7 @@ public class Cxcobrar implements Serializable {
         this.fechacheque = fechacheque;
     }
 
-    public BigDecimal getBancario() {
-        return bancario;
-    }
-
-    public void setBancario(BigDecimal bancario) {
-        this.bancario = bancario;
-    }
+   
 
     public Bancos getBancoban() {
         return bancoban;
@@ -376,6 +287,110 @@ public class Cxcobrar implements Serializable {
 
     public void setFechadeposito(Date fechadeposito) {
         this.fechadeposito = fechadeposito;
+    }
+
+    public BigDecimal getBancario() {
+        return bancario;
+    }
+
+    public void setBancario(BigDecimal bancario) {
+        this.bancario = bancario;
+    }
+
+    public BigDecimal getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(BigDecimal cheque) {
+        this.cheque = cheque;
+    }
+
+    public BigDecimal getDebe() {
+        return debe;
+    }
+
+    public void setDebe(BigDecimal debe) {
+        this.debe = debe;
+    }
+
+    public BigDecimal getDeposito() {
+        return deposito;
+    }
+
+    public void setDeposito(BigDecimal deposito) {
+        this.deposito = deposito;
+    }
+
+    public BigDecimal getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(BigDecimal descuento) {
+        this.descuento = descuento;
+    }
+
+    public BigDecimal getEfectivo() {
+        return efectivo;
+    }
+
+    public void setEfectivo(BigDecimal efectivo) {
+        this.efectivo = efectivo;
+    }
+
+    public BigDecimal getHaber() {
+        return haber;
+    }
+
+    public void setHaber(BigDecimal haber) {
+        this.haber = haber;
+    }
+
+    public BigDecimal getRfuente() {
+        return rfuente;
+    }
+
+    public void setRfuente(BigDecimal rfuente) {
+        this.rfuente = rfuente;
+    }
+
+    public BigDecimal getRiva() {
+        return riva;
+    }
+
+    public void setRiva(BigDecimal riva) {
+        this.riva = riva;
+    }
+
+    public BigDecimal getRtotal() {
+        return rtotal;
+    }
+
+    public void setRtotal(BigDecimal rtotal) {
+        this.rtotal = rtotal;
+    }
+
+    public BigDecimal getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(BigDecimal tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public BigDecimal getTransferencia() {
+        return transferencia;
+    }
+
+    public void setTransferencia(BigDecimal transferencia) {
+        this.transferencia = transferencia;
     }
 
     

@@ -35,13 +35,13 @@ public class Detalle implements Serializable {
     private Integer mes;
     @Column(name = "cantidad")
     private Integer cantidad;
-    @Column(name = "precio")
+    @Column(name = "precio", precision = 9, scale = 2)
     private BigDecimal precio;
     @Column(name = "descuento")
     private BigDecimal descuento;
-    @Column(name = "beca")
+    @Column(name = "beca", precision = 9, scale = 2)
     private BigDecimal beca;
-    @Column(name = "total")
+    @Column(name = "total", precision = 9, scale = 2)
     private BigDecimal total;
     @Column(name = "descripcion")
     private String descripcion;

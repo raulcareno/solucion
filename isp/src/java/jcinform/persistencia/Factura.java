@@ -43,21 +43,21 @@ public class Factura implements Serializable {
     @Column(name = "emision")
     @Temporal(TemporalType.DATE)
     private Date emision;
-    @Column(name = "total")
+    @Column(name = "total", precision = 9, scale = 2)
     private BigDecimal total;
     @Column(name = "estado")
     private Boolean estado;
     @Column(name = "observacion")
     private String observacion;
-       @Column(name = "subtotal")
+       @Column(name = "subtotal", precision = 9, scale = 2)
     private BigDecimal subtotal;
     @Column(name = "descuento")
     private BigDecimal descuento;
-    @Column(name = "baseiva")
+    @Column(name = "baseiva", precision = 9, scale = 2)
     private BigDecimal baseiva;
-    @Column(name = "porcentajeiva")
+    @Column(name = "porcentajeiva", precision = 9, scale = 2)
     private BigDecimal porcentajeiva;
-    @Column(name = "valoriva")
+    @Column(name = "valoriva", precision = 9, scale = 2)
     private BigDecimal valoriva;
     @Column(name = "autorizacion")
     private String autorizacion;

@@ -351,6 +351,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     pendi.setDireccion(c.getDireccion());
                     pendi.setTotal((BigDecimal) vec.get(2));
                     pendi.setSaldo((BigDecimal) vec.get(3));
+                    pendi.setTelefono(clientes1.getTelefono());
                     detalles.add(pendi);
                 }
 
