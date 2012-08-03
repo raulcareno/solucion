@@ -631,6 +631,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 identificacionFocusLost(evt);
             }
         });
+        identificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                identificacionKeyPressed(evt);
+            }
+        });
         jPanel2.add(identificacion);
         identificacion.setBounds(80, 10, 110, 20);
 
@@ -1259,6 +1264,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         nuevoCl.setNombres(nombres.getText());
                         cli = nuevoCl;
                         adm.guardar(nuevoCl);
+                        
+                        //cliente.setText(""+nuevoCl.getCodigo());
                         identificacion.setText("9999999999999");
                         nombres.setText("CONSUMIDOR FINAL");
                         direccion.setText("S/D");
@@ -1267,6 +1274,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facActual.setClientes(nuevoCl);
                     } else {
                         facActual.setClientes(new Clientes(new Integer(cliente.getText())));
+                        cli.setCodigo(new Integer(cliente.getText()));
                         cli.setDireccion(direccion.getText());
                         cli.setIdentificacion(identificacion.getText());
                         cli.setTelefono(telefono.getText());
@@ -2923,6 +2931,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         frmTarifa0.setVisible(false);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void identificacionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_identificacionKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()== evt.VK_ENTER){
+            nombres.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_identificacionKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;

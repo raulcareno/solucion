@@ -29,7 +29,7 @@ public class logger {
     public void logger(String clase, String novedades) {
         try {
             Logger log = Logger.getLogger(clase);
-            SimpleDateFormat formato = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat formato = new SimpleDateFormat("MM.yyyy");
             String fechaAc = formato.format(fecha);
             PatternLayout defaultLayout = new PatternLayout("%p %c,line %L,%d{dd.MM.yyyy/HH:mm:ss},%m%n");
             RollingFileAppender rollingFileAppender = new RollingFileAppender();
