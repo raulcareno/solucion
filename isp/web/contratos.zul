@@ -1516,7 +1516,7 @@ void verificarCedula(String valor){
                 try{
                 List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
                     "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')),cx.fechadeposito  " + 
-                    " ,fa.codigo FROM cxcobrar cx, factura  fa "   +
+                    " ,fa.codigo,'cero', concat('abc',cx.empleados)  FROM cxcobrar cx, factura  fa "   +
                     "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
                     "  AND cx.factura = fa.codigo and cx.haber > 0 GROUP BY cx.codigo " + 
                     " order by fa.codigo desc, fa.fecha desc, cx.fecha "); 
@@ -1574,7 +1574,21 @@ void verificarCedula(String valor){
                                                 row.appendChild(la);
                                                 mostrarEliminar = true;
                                             }else{
-                                                row.appendChild(new Label(""));
+                                                if(j==11){
+                                                  Empleados empleadoA = adm.buscarClave(new Integer(val.replace("abc","")), Empleados.class);
+                                                    row.appendChild(new Label(empleadoA+""));
+                                                }else if(j==10){
+                                                    try{
+                                                        List descA = adm.query("Select o from Descuentos as o where " + 
+                                                            "  o.factura.codigo = '"+row.getValue()+"' and o.aplicado = true ");
+                                                            row.appendChild(new Label(((Descuentos)descA.get(0)).getValor()+""));
+                                                    }catch(Exception er){
+                                                                row.appendChild(new Label("0.0"));
+                                                    }
+                                                
+                                                }else{
+                                                  row.appendChild(new Label(""));
+                                                 }
                                             }
                                     }else{
                                         if(dos!=null){
@@ -1671,6 +1685,7 @@ void verificarCedula(String valor){
                             bDeta = new Button("Detalles");//"Eliminar"
                             bDeta.setImage("/images/control.png");
                             bDeta.setId(vec.get(0)+"c"+vec.get(9));
+                            System.out.println(vec.get(0)+"c"+vec.get(9)+"***********************************************");
                             bDeta.setVisible(mostrarEliminar);
                             bDeta.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
@@ -1678,7 +1693,7 @@ void verificarCedula(String valor){
                                 try{
                                   
                                 //System.out.println(""+);
-                                 facCodi = new Integer(bDeta.getId().substring(val.indexOf("c")+1, bDeta.getId().length()));
+                                 facCodi = new Integer(bDeta.getId().substring(bDeta.getId().indexOf("c")+1, bDeta.getId().length()));
 //                                 alert(""+facCodi);
                                  }catch(Exception e){
                                     System.out.println("error en conversion a integer:"+e);
@@ -3055,6 +3070,8 @@ void llamar(){
                             <column   label="Haber"/>
                             <column   label="Observación"/>
                             <column   label="Fec.Depo"/>
+                            <column   label="Dscto."/>
+                            <column   label="Usuario"/>
                             <column   label="Acción"/>
                             <column   label="-"/>
                         </columns>

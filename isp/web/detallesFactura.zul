@@ -89,7 +89,11 @@
                     Factura fac = acceIt.getFactura();
                     cliente.value = fac.getClientes()+"";
                     fecha.value = fac.getFecha().toLocaleString()+"";
+                    try{
                     nofactura.value = fac.getNumero().replace("FAC","-")+"";
+                    }catch(Exception e){
+                        nofactura.value = "";
+                    }
                     subtotal.value =""+ fac.getSubtotal();
                     descuento.value = fac.getDescuento()+"";
                     baseiva.value = fac.getPorcentajeiva()+"%";
@@ -110,6 +114,20 @@
                         li.appendChild(new Listcell(acceIt.getTotal()+" "));
                         datos.appendChild(li);
                         System.out.println("detalle: "+acceIt);
+                }
+                try{
+                    //descuento.value = fac.getDescuento()+"";
+                    List descuentos = adm.query("Select o from Descuentos as o " + 
+                            " where o.aplicado = true " + 
+                            " and o.factura.codigo = '"+ facCod +"' ");
+                    if(descuentos.size()>0){
+                            Descuentos descuentoIt = descuentos.get(0);
+                            descuento.value = descuentoIt.getValor()+"";
+                    }else{
+                            descuento.value = "0.0";
+                    }
+                }catch(Exception abc){
+                
                 }
            
             }

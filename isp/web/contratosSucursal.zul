@@ -978,17 +978,19 @@ void verificarCedula(String valor){
                 
  }
  
-   void facturasPagadas(){
+     void facturasPagadas(){
                 try{
                 List facEncontradas =  adm.queryNativo("SELECT cx.codigo, fa.numero, fa.fecha, " + 
                     "  fa.total, cx.fecha, cx.debe, cx.haber,IF(cx.haber < fa.total && cx.haber >0,'ABONO',IF(cx.haber = fa.total,'PAGADO','')),cx.fechadeposito  " + 
-                    " FROM cxcobrar cx, factura  fa "   +
+                    " ,fa.codigo,'cero', concat('abc',cx.empleados) FROM cxcobrar cx, factura  fa  "   +
                     "   WHERE fa.clientes  =  "+codigocli.value+"  " + 
-                    "  AND cx.factura = fa.codigo GROUP BY cx.codigo " + 
+                    "  AND cx.factura = fa.codigo and cx.haber > 0 GROUP BY cx.codigo " + 
                     " order by fa.codigo desc, fa.fecha desc, cx.fecha "); 
                 
                 facturasPag.getRows().getChildren().clear();
                   int i =0;
+                  //11 ES EL CODIGO DEL EMPLEADO
+                  //10 ES EL CERO DEL DESCUENTO
                   ArrayList facturasAnadidos = new ArrayList();
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
@@ -1040,7 +1042,21 @@ void verificarCedula(String valor){
                                                 row.appendChild(la);
                                                 mostrarEliminar = true;
                                             }else{
-                                                row.appendChild(new Label(""));
+                                                if(j==11){
+                                                  Empleados empleadoA = adm.buscarClave(new Integer(val.replace("abc","")), Empleados.class);
+                                                    row.appendChild(new Label(empleadoA+""));
+                                                }else if(j==10){
+                                                    try{
+                                                        List descA = adm.query("Select o from Descuentos as o where " + 
+                                                            "  o.factura.codigo = '"+row.getValue()+"' ");
+                                                            row.appendChild(new Label(((Descuentos)descA.get(0)).getValor()+""));
+                                                    }catch(Exception er){
+                                                                row.appendChild(new Label("0.0"));
+                                                    }
+                                                
+                                                }else{
+                                                  row.appendChild(new Label(""));
+                                                 }
                                             }
                                     }else{
                                         if(dos!=null){
@@ -1063,13 +1079,14 @@ void verificarCedula(String valor){
                                   seriespanel.visible = false;
                                    
                                    if(valor0 == 16){
-                                     
                                       Integer facCodi = new Integer(aButtonEli.getId().replace("elip",""));
-                                      List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
+                                      Cxcobrar cobro = adm.buscarClave(facCodi, Cxcobrar.class);
+                                      /* List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+cobro.getFactura().getCodigo()+"'");
                                       if(siEx.size()>1){
                                                  Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
                                       }else{
-                                              Cxcobrar cobro = adm.buscarClave(facCodi, Cxcobrar.class);
+                                      */
+                                              
                                               Factura mifac = cobro.getFactura();
                                               observacionanula.value = "";
                                               continuar.checked = false;
@@ -1078,21 +1095,14 @@ void verificarCedula(String valor){
                                                       final Window win = (Window) Executions.createComponents("anularFactura.zul", null, null);
                                                         win.setMaximizable(true);
                                                         win.setClosable(true);
-                                                        win.setTitle("Observación de Anular Factura");
+                                                        win.setTitle("Observación de Elimación del Pago");
                                                         win.doModal();
-                                                      Facturaanulada facAnulada = new Facturaanulada();
-                                                      facAnulada.setFactura(mifac);
-                                                      facAnulada.setEmpleados(usuarioActual);
-                                                      facAnulada.setFecha(adm.Date());
-                                                      facAnulada.setNumero(mifac.getNumero());
-                                                      facAnulada.setObservacion(observacionanula.value);
-                                                      facAnulada.setValorpago(cobro.getHaber());
-                                                      facAnulada.setNopago(cobro.getCodigo());
+                                                       
                                                       if(continuar.isChecked()){
-                                                        adm.guardar(facAnulada);
+                                                        
                                                         adm.eliminarObjeto(Cxcobrar.class, facCodi );
-                                                        mifac.setNumero(null);
-                                                        adm.actualizar(mifac);
+                                                        //mifac.setNumero(null);
+                                                        //adm.actualizar(mifac);
                                                       }else{
                                                             historial.setSelected(true);
                                                           return;
@@ -1104,7 +1114,7 @@ void verificarCedula(String valor){
                                                     win.setClosable(true);
                                                     win.setTitle("Observación de Anular Cobro");
                                                     win.doModal();
-                                               
+                                                    /*
                                                       Facturaanulada facAnulada = new Facturaanulada();
                                                       facAnulada.setFactura(null);
                                                       facAnulada.setEmpleados(usuarioActual);
@@ -1112,17 +1122,17 @@ void verificarCedula(String valor){
                                                       facAnulada.setNumero(null);
                                                       facAnulada.setObservacion(observacionanula.value);
                                                       facAnulada.setValorpago(cobro.getHaber());
-                                                      facAnulada.setNopago(cobro.getCodigo());
-                                                    if(continuar.isChecked()){
-                                                        adm.guardar(facAnulada);
+                                                      facAnulada.setNopago(cobro.getCodigo()); */
+                                                    //if(continuar.isChecked()){
+                                                        //adm.guardar(facAnulada);
                                                         adm.eliminarObjeto(Cxcobrar.class, facCodi );
-                                                    }
+                                                    //}
                                           
                                                      historial.setSelected(true);
                                                }
                                        
                                       
-                                      }
+                                      //}
                                       
                                       
                                     }
@@ -1137,7 +1147,35 @@ void verificarCedula(String valor){
                                
                               }
                                 });
-                            row.appendChild(aButtonEli);
+                            //row.appendChild(aButtonEli);
+                            
+                            Button bDeta = null;
+                            bDeta = new Button("Detalles");//"Detalles"
+                            bDeta.setImage("/images/control.png");
+                            bDeta.setId(vec.get(0)+"c"+vec.get(9));
+                            System.out.println(vec.get(0)+"c"+vec.get(9)+"***********************************************");
+                            bDeta.setVisible(mostrarEliminar);
+                            bDeta.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                             Integer facCodi = null;
+                                try{
+                                  
+                                //System.out.println(""+);
+                                 facCodi = new Integer(bDeta.getId().substring(bDeta.getId().indexOf("c")+1, bDeta.getId().length()));
+//                                 alert(""+facCodi);
+                                 }catch(Exception e){
+                                    System.out.println("error en conversion a integer:"+e);
+                                 }
+                                   final Window win = (Window) Executions.createComponents("detallesFactura.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("codigoFactura", facCodi);
+                                    win.setTitle("Detalle de Factura");
+                                    win.doModal();
+                               
+                              }
+                                });
+                            row.appendChild(bDeta);
     
                             filasPag.appendChild(row);
                 }
@@ -1305,8 +1343,10 @@ void llamar(){
             <tabs  width="150px">
                 <tab id="registro" label="Contratos"/>
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
+                
                 <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
-                 
+                <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
+                
                
             </tabs>
             <tabpanels>
@@ -1799,6 +1839,8 @@ void llamar(){
                             <column   label="Haber"/>
                             <column   label="Observación"/>
                             <column   label="Fec.Depo"/>
+                            <column   label="Dscto."/>
+                            <column   label="Usuario"/>
                             <column   label="Acción"/>
                         </columns>
                         <rows id="filasPag">

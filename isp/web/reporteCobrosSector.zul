@@ -186,14 +186,32 @@ cantonTodos.setNombre("- TODOS - ");
                    datasource = reportes.reporteCaja2(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcajapei.jasper");
             }else  if(tipo.equals("ARQUEOU")){
-                   datasource = reportes.reporteCaja(desde.value, hasta.value,empleadosList.selectedItem.value);
+             Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                   datasource = reportes.reporteCaja(desde.value, hasta.value,listEmpleados);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
             }
             else  if(tipo.equals("COMISIONES1")){
-                   datasource = reportes.facturasComisiones1(empleadosList.selectedItem.value,desde.value, hasta.value);
+             Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                   datasource = reportes.facturasComisiones1(listEmpleados,desde.value, hasta.value);
                     report.setSrc(directorioReportes+"listacontratosComision.jasper");
             }else  if(tipo.equals("COMISIONES2")){
-                 datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value);
+             Set items2 = empleadosList.getSelectedItems();
+                        List listEmpleados = new ArrayList(items2);
+                        if(listEmpleados.size()<=0){
+                            alert("Seleccione al menos un Empleado");
+                            return;
+                        }
+                 datasource = reportes.facturasComision(listEmpleados, desde.value, hasta.value, estadoContrato.selectedItem.value);
                  report.setSrc(directorioReportes+"listacontratosComision2.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
@@ -407,13 +425,13 @@ void campos(String valor){
                             </bandbox>
                         </row>
                         <row id="filaestado" visible="false">
-                                        <span style="float:right"> Estado: </span>
-                                        <radiogroup id="estadoContrato" >
-                                                <radio id="eactivo" selected="true" value="Activo" label="Activo" style="font-weight:bold2" />
-                                                <radio id="ecortado"  value="Cortado"  label="Cortado" style="font-weight:bold2" />
-                                                <radio id="esuspendido"  value="Suspendido"  label="Suspendido" style="font-weight:bold2" />
-                                                <radio  id="eterminado" value="Terminado"  label="Terminado" style="font-weight:bold2" />
-                                            </radiogroup>    
+                            <span style="float:right"> Estado: </span>
+                            <radiogroup id="estadoContrato" >
+                                <radio id="eactivo" selected="true" value="Activo" label="Activo" style="font-weight:bold2" />
+                                <radio id="ecortado"  value="Cortado"  label="Cortado" style="font-weight:bold2" />
+                                <radio id="esuspendido"  value="Suspendido"  label="Suspendido" style="font-weight:bold2" />
+                                <radio  id="eterminado" value="Terminado"  label="Terminado" style="font-weight:bold2" />
+                            </radiogroup>    
                         </row>
                         <row id="filaclientes" visible="false" >
                             <span style="float:right"> Clientes: </span>
@@ -429,7 +447,7 @@ void campos(String valor){
                                     <groupbox>
                                         <vbox>
                                             <hbox>
-                                            Buscar: 
+                                                Buscar: 
                                                 <textbox value="" id="btcliente" constraint="no empty"  onChanging="buscar(event.value)"  onOK="buscar(self.value)" maxlength="60" />
                                                 <button id="buscar"   label="Buscar" onClick="buscar(btcliente.getValue());"/>
                                             </hbox>
@@ -465,9 +483,9 @@ void campos(String valor){
                             <span style="float:right"> Fechas: </span>
 
                             <span>
-                           Desde:
+                                Desde:
                                 <datebox onCreate="self.value = adm.Date()" id="desde"/>
-                           Hasta: 
+                                Hasta: 
                                 <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
                               
                             </span>
@@ -478,7 +496,7 @@ void campos(String valor){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="cant" width="250px"
-                                                     onSelect='bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();bdSector.value = "" ;'>
+                                                 onSelect='bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();bdSector.value = "" ;'>
                         
                                             <listitem forEach="${cantones}" value="${each}">
                                                 <listcell label="${each.nombre}" />
@@ -490,34 +508,34 @@ void campos(String valor){
                             </bandbox>
 
                         </row>
-                      <row visible = "false" id="filatipoplan">
+                        <row visible = "false" id="filatipoplan">
                             <span style="float:right"> Tipo(*):</span>
-                                        <listbox mold="select" id="tipoplanList" width="250px">
-                                            <listitem  value="HOME" label="HOME" />
-                                            <listitem value="BASICO" label="BASICO" />
-                                            <listitem value="CORPORATIVO" label="CORPORATIVO" />
-                                            <listitem value="PREMIUM" label="PREMIUM" />
-                                        </listbox>
+                            <listbox mold="select" id="tipoplanList" width="250px">
+                                <listitem  value="HOME" label="HOME" />
+                                <listitem value="BASICO" label="BASICO" />
+                                <listitem value="CORPORATIVO" label="CORPORATIVO" />
+                                <listitem value="PREMIUM" label="PREMIUM" />
+                            </listbox>
                               
 
                         </row>
                         <row visible = "false" id="filaplan">
                             <span style="float:right"> Plan(*):</span>
-                                        <listbox height="80px" id="planList" width="250px" multiple="true" checkmark="true" >
-                                            <listitem forEach="${planes}" value="${each}">
-                                                <listcell label="${each.nombre}" />
-                                            </listitem>
-                                        </listbox>
+                            <listbox height="80px" id="planList" width="250px" multiple="true" checkmark="true" >
+                                <listitem forEach="${planes}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
                               
 
                         </row>
-                      <row visible = "false" id="filasector">
+                        <row visible = "false" id="filasector">
                             <span style="float:right"> Sector(*):</span>
                             <bandbox  width="200px" readonly="true"  id="bdSector">
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="sectorList" width="250px"
-                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                                 onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
                                  
                                             <listitem forEach="${perfiles}" value="${each}">
                                                 <listcell label="${each.nombre}" />
@@ -535,7 +553,7 @@ void campos(String valor){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="sectorList2" width="250px"
-                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
+                                                 onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();">
                                  
                                             <listitem forEach="${perfiles}" value="${each}">
                                                 <listcell label="${each.nombre}" />
@@ -579,7 +597,7 @@ void campos(String valor){
                                     <listitem value="Z" label="Z" /> 
 						
                                 </listbox>
-                            Hasta:
+                                Hasta:
                             
                                 <listbox width="50px" mold="select" id="hastaletra">
                                     <listitem value="A" label="A" /> 
@@ -666,13 +684,13 @@ void campos(String valor){
                 <zscript>
                     public void aumentar(){
                     String tamanio = report.height.replace("px","").replace("%","");
-                       Integer t = new Integer(tamanio);
-                       report.height = (t+100)+"px";
+                    Integer t = new Integer(tamanio);
+                    report.height = (t+100)+"px";
                     }
                     public void reducir(){
                     String tamanio = report.height.replace("px","").replace("%","");
-                       Integer t = new Integer(tamanio);
-                       report.height = (t-100)+"px";
+                    Integer t = new Integer(tamanio);
+                    report.height = (t-100)+"px";
                     }
 
                 </zscript>
@@ -700,12 +718,12 @@ void campos(String valor){
 
         <zscript>
 
-Permisos per = new Permisos();
-void cargando(){
-        NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
-        NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
+            Permisos per = new Permisos();
+            void cargando(){
+            NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
+            NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
    
-}
+            }
         </zscript>
 
 
