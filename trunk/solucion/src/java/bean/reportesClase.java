@@ -2052,7 +2052,9 @@ public class reportesClase {
 
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
-                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'    and o.sistema.espromedio = true");
+                    + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'"
+                + " and o.sistema.promediofinal = 'PF'   "
+                + " ");
         if (notaFinal.size() <= 0) {
             try {
                 Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
@@ -2061,7 +2063,17 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+    List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
+        if (notaGeneral.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+           Notanotas nGeneral  = notaGeneral.get(0);
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notaFinal.get(0).getSistema());
 
         Notanotas nfinal = notaFinal.get(0);
@@ -2185,6 +2197,24 @@ public class reportesClase {
                     nota.setDiasAsistidos(diasLaborados - faltasInjustificadas);
                     //verifico si es que tiene notas pendientes y las pongo en observación 
                     if (notaFinal.get(0).getSistema().getCodigosis().equals(nota.getSistema().getCodigosis())
+                            && nota.getMatricula().getEstado().contains("Matriculado")) {
+                        for (Iterator<Notanotas> it = notasRequeridas.iterator(); it.hasNext();) {
+                            Notanotas notanotas = it.next();
+                            List<Notas> notaBus = adm.query("Select o from Notas as o "
+                                    + "where o." + notanotas.getNota() + " <=0  "
+                                    + "and o.matricula.codigomat = '" + nota.getMatricula().getCodigomat() + "' "
+                                    + "and o.materia.codigo = '" + nota.getMateria().getCodigo() + "' "
+                                    + "and o.promedia = true and o.disciplina = false  "
+                                    + " ");
+                            if (notaBus.size() > 0) {
+                                nota.setNota("SN");
+                            }
+
+
+                        }
+
+                    }
+                     if (notaGeneral.get(0).getSistema().getCodigosis().equals(nota.getSistema().getCodigosis())
                             && nota.getMatricula().getEstado().contains("Matriculado")) {
                         for (Iterator<Notanotas> it = notasRequeridas.iterator(); it.hasNext();) {
                             Notanotas notanotas = it.next();
