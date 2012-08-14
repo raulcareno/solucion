@@ -745,7 +745,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
     String tipo = reporte.getSelectedItem().getValue();
      ArrayList listadoCursos = new ArrayList();
                 	Set items = curs.getSelectedItems();
-						if (items.isEmpty() &&  !tipo.equals("LMAT2") && !tipo.equals("INS2") && !tipo.equals("INS3")  && !tipo.equals("INS3")  && !tipo.equals("INS4")  && !tipo.equals("INS5")  && !tipo.equals("INS6")  && !tipo.equals("INS7")  && !tipo.equals("INS8")) {
+						if (items.isEmpty() &&  !tipo.equals("LMAT2") && !tipo.equals("INS2") && !tipo.equals("INS3")  && !tipo.equals("INS3")  && !tipo.equals("INS4")  && !tipo.equals("INS5")  && !tipo.equals("INS6")  && !tipo.equals("INS99") && !tipo.equals("INS7")  && !tipo.equals("INS8")) {
                             Messagebox.show("SELECCIONE POR LO MENOS UN CURSO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             return;
 						} else {
@@ -933,6 +933,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = inscritos6(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"fichaMatriculados.jasper");
+            }else if(tipo.equals("INS99")){
+                    datasource = inscritos6(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"fichaMatriculados2.jasper");
             }else if(tipo.equals("INS5")){
                     datasource = inscritos5(listadoCursos,"Inscrito");
                     parametros.put("titulo", titulo.getValue());
@@ -1058,7 +1062,7 @@ void campos(String valor){
             titulo.value = "Califiación de Inscritos por Internet";
            filacurso.visible = false;
         }
-        if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
+        if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS99")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
            titulo.value = "Listado";
            filacurso.visible = false;
         }
@@ -1191,6 +1195,7 @@ void campos(String valor){
                                 <listitem  id="INS5" label="Listado de Pre-aprobados(Escuela)" value="INS5" />
                                 <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
                                 <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
+                                <listitem  id="INS99" label="Listado de Pre-aprobados(Solo Claves)" value="INS99" />
                                 <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
                                 <listitem  id="LCLA33" label="Claves de Inscritos para Matriculación" value="LCLA33"/>
                                 <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
