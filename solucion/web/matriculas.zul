@@ -735,7 +735,6 @@ void estado(Boolean estado,Boolean modificar){
             estudent.setCodigoest(adm.getNuevaClave("Estudiantes","codigoest"));
             adm.guardar(estudent);
             estuNuevo = true;
-             llenar(estudent);
          }
          
          
@@ -744,7 +743,12 @@ void estado(Boolean estado,Boolean modificar){
      String sqls = "Delete from Hermanos "+ 
                 " where estudiante.codigoest = '"+ estudent.getCodigoest() +"'  ";
                 System.out.println(sqls);
+                try{
                     adm.ejecutaSql(sqls);
+                }catch(Exception err){
+                System.out.println("ERROR EN EJECUTAR: "+sqls);
+                }
+                
         if(!(codh1.value).equals(0)){
                 Hermanos her = new Hermanos(adm.getNuevaClave("Hermanos","codigo"));
                 her.setHermanos(new Estudiantes(codh1.value));
@@ -776,7 +780,7 @@ void estado(Boolean estado,Boolean modificar){
                 }
          }
                                                      
- 
+
  //GUARDO RETIRAN O EMERGENCIAS
  if(!(cod11.value).equals(0)){
                 Retiran ret = new Retiran(cod11.value);
@@ -977,7 +981,7 @@ void estado(Boolean estado,Boolean modificar){
              codigomat.value = matri;
          }
 
-
+          llenar(estudent);
 //TERMINA AREA DE MATRICULA
         cargandoFoto = false;
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
