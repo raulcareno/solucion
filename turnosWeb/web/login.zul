@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page   id="loginjx" title="Administrador Educativo" ?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
+<!--window  id="principalImagen">
+<separator bar="true"/-->
+
+<zk>
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/jquery.login.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+  <!--script type="text/javascript" src="/widgets/effects/login_effect/jquery-ui-1.8.6.custom.min.js" /-->
+    <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+    <style>
+        .estil{
+        height:100%;
+        background-image: url(./images/fondo.jpg)   ;
+        background-color:#004669;
+        background-repeat: no-repeat; 
+    
+    
+        }
+        .estilo2{
+        background-image: url(./images/mensajes.gif)   ;
+        }
+    </style>
+ 
+    <div  class="estil" >
+
+  <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JC INFORM" width="470px" sizable="true">
+            <zscript>
+                <![CDATA[
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.Administrador.*;
+   import jcinform.persistencia.*;
+ Session a = Sessions.getCurrent();
+ 
+        a.removeAttribute("accesos");
+        a.removeAttribute("user");
+        a.removeAttribute("periodo");
+//a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
+        //a.invalidate();
+
+
+ Administrador adm = new Administrador();
+ 
+ Date fec = adm.Date();
+  
+cargar(){
+    //foto0.setContent(new org.zkoss.image.AImage("logo_jcinform", instituto.getEscudo()));
+    derechos.value = "Todos los derechos reservados a JC INFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
+}
+ 
+ 
+
+
+void verificar(){
+error.visible = false;
+  Empleados us = adm.ingresoSistema(usuario.getValue().trim(), clave.getValue());
+            if (us != null) {
+
+    
+                us.setUltimoingreso(adm.Date());
+                adm.actualizar(us);
+
+                if (us.getTipousuario().equals(0)) {
+                a.setAttribute("user",us);
+                     Executions.sendRedirect("reportes.zul");
+                } else {
+                     a.setAttribute("user",us);
+                     a.setAttribute("ipservidor","192.168.10.101");
+                     Executions.sendRedirect("turnos.zul");
+                    //Messagebox.show("No puede ingrear a éste sitio ...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);    
+                }
+            } else {
+//                Messagebox.show("Usuario Incorrecto...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            
+             String command2 = "animar('"+loginWin.getUuid()+"')";
+             Clients.evalJavaScript(command2);
+                error.visible = true;
+                usuario.focus();
+                clave.setRawValue(null);
+             }
+  
+}
+
+ 
+
+
+]]>
+            </zscript>
+            <grid style="background-color:transparent;border:0px">
+	 
+                <rows style="background:transparent;border:0px">
+                    <row align="center" style="background:transparent;border:0px" spans="2">
+                        <span style="float:center">
+                            <hbox>
+                                <image src="/images/about.png" style="aling:center"/><separator/>
+                                <image border="1" height="80px" id="foto0"/>
+                            </hbox>
+                            
+                                             
+                        </span>
+                    </row>
+                    <row align="center" style="background:transparent;border:0px" spans="2">
+                        <label style="  align:center;color:#0D3584;font-size:15px;text-shadow: black 0.1em 0.1em 0.2em" value="${instituto.denominacion} ${instituto.nombre}"> </label>
+                    </row>
+                    <row align="center" style="background:transparent;border:0px" spans="2">
+                        <separator bar="true"/>
+                    </row>
+                    <row style="background:transparent;border:0px"  align="center" visible="false" id="error" spans="2">
+                        <image  src="/images/error.gif"  />
+                    </row>
+                    <row style="background:transparent;border:0px"  id="usuarios" >
+                        <span style="float:right;font-weight:bold">Usuario:(*):</span>
+                        <textbox onOK="clave.focus()"  id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+                    </row>
+                    <row style="background:transparent;border:0px"  id="claves" >
+                        <span style="float:right">Contraseña:(*):</span>
+                        <textbox  onOK="usuario.getValue(); clave.getValue(); verificar()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+                    </row>
+                    
+                  
+                    <row id="olvidado" align="center" spans="2"  style="background:transparent;border:0px">
+                
+                        <toolbarbutton label="¿Ha olvidado su usuario o contraseña haz click AQUI?" onClick='alert("Network")'>
+                            <attribute name="onClick">{
+                                Window win = (Window) Executions.createComponents("/recuperacionClave.zul", null, null);
+                                win.doModal();
+                                }
+                            </attribute>
+                        </toolbarbutton>
+
+                    </row>
+                    <row spans="2" align="center"  style="background:transparent;border:0px" >
+                        <span style="float:center">
+                            <button label="Verificar"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="usuario.getValue(); clave.getValue(); verificar()"/>
+                
+                        </span>
+                    </row>
+
+
+                              
+            
+                </rows>
+            </grid>
+            <grid>
+                <rows>
+                    <row  style="background:white;border:0px" align="center" spans="2">
+                        <span>
+                            <label id="derechos" style="font-size:10px"  />
+                            <html>
+                                &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+                            </html>
+                            <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                             
+                        </span>
+                    </row>
+
+
+
+                </rows>
+            </grid>
+       
+	 
+		
+        </window>
+    </div>
+</zk>
+	<!--/window-->
+    

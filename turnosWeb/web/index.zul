@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <div height="100%" class="estilo2" >
+        <zscript>
+         Executions.sendRedirect("login.zul");
+        </zscript>
+ 
+    </div>
+</zk>

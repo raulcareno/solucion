@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
+
+<zk onCreate="cargar()" forward="cargar()" xmlns="http://www.zkoss.org/2005/zul">
+    <div height="100%" class="estilo2" >
+       
+     
+        <separator/>
+
+
+        <applet   id="ticker"
+        archive="turnosApplet.jar" name="JCINFORM Sistema de Calificacion"
+        code="jcinform.Applet.VentanillaUsuario.class" height="400px" width="513px">
+        </applet>
+        <toolbarbutton label="Enviar Datos" onClick='cargar(); ' />
+           <separator/>
+        <label value="ABC"/>
+    </div>
+     <zscript>
+            <![CDATA[		cargar(){
+                                     Session a = Sessions.getCurrent();
+                                        String ipservidor = a.getAttribute("ipservidor");
+                                        ticker.setField("user","root");
+                                        ticker.setField("clave","j/eDF6Vyqmgzcb6udqpFMA==");
+                                        ticker.setField("puerto","3306");
+                                        ticker.setField("ip",ipservidor);
+                                        ticker.setField("empleado;","2");
+ 
+                                }
+                                
+			]]>
+        </zscript>
+    <!--zscript>
+          <![CDATA[
+          cargar(){
+            String appletDef= "<applet id=\"appletVisor\"   name=\"appletVisor\" width=\"100%\" height=\"100%\" code=\"jcinform.Applet.Acceso\" ></applet>";
+            htmlComponent.setContent(appletDef);
+        }
+
+]]>
+    </zscript-->
+</zk>

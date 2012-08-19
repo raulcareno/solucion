@@ -1,0 +1,22 @@
+<?taglib uri="/WEB-INF/tld/web/core.dsp.tld" prefix="c" ?>
+<zk>
+    <?script content="zk.useStackup = true;"?>
+	<window id="wnd" title="Smalltalk - ZK - Applets" width="500px" style="margin-left:auto;margin-right:auto;" use="org.zkoss.zk.smalltalk.ui.SmalltalkWindow" apply="org.zkoss.zk.smalltalk.ui.SmalltalkWindowComposer" forward="onCreate=onCreateApplet">
+	    <script type="text/javascript">
+	    	function notifyServer() {
+	    		var varUuid= $e("${wnd.uuid}").id;
+				zkau.send({uuid: varUuid,cmd:"onNotifyServer",data:null,ctl:true});
+	    	}
+	    </script>
+		<grid>
+			<rows>
+				<row spans="2"><label value="Choose a color:"/></row>
+				<row><label value="Red"/><intbox id="redBox" value="255" maxlength="3" forward="onChange=onChangeColor"/></row>
+				<row><label value="Green"/><intbox id="greenBox" value="255" maxlength="3" forward="onChange=onChangeColor"/></row>
+				<row><label value="Blue"/><intbox id="blueBox" value="255" maxlength="3" forward="onChange=onChangeColor"/></row>
+			</rows>
+		</grid>
+		<html id="htmlComponent">
+		</html>
+	</window>
+</zk>

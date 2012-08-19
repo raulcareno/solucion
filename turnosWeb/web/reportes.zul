@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window   onCreate="cargando();"   height="100%" border="normal">
+    
+        <zscript>
+<![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import jcinform.Administrador.*;
+import jcinform.persistencia.*;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import jcinform.source.*;
+ import java.io.File; 
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+ Administrador adm = new Administrador();
+Empleados empActual = ses.getAttribute("user");
+if(empActual==null){
+            Executions.sendRedirect("login.zul");
+}
+Empleados user = (Empleados)ses.getAttribute("user");
+Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+List empleados = adm.query("Select o from Empleados as o ");
+ Empleados user = new Empleados(-1);
+user.setNombres("[TODOS]");
+user.setApellidos("");
+ empleados.add(user);
+
+Date desde1 = new Date();
+reportesClase rep = new reportesClase();
+  String separador = File.separatorChar + "";
+ Date hasta1 = new Date();
+        desde1.setHours(06);
+        desde1.setMinutes(00);
+        desde1.setSeconds(00);
+        hasta1.setHours(23);
+        hasta1.setMinutes(59);
+        hasta1.setSeconds(59);
+
+  
+ void showReport() {
+    parametrosReportes.visible= false;
+    contenidoReporte.visible= true;
+    
+    String tipo = reporte.getSelectedItem().getValue();
+    String titulo = reporte.getSelectedItem().getLabel();
+           if(tipo.equals("linea")){
+                return;
+           }
+            
+         
+            
+             
+            Map parametros = new HashMap();
+            //parametros.put("denominacion", insts.getDenominacion());
+        String directorioReportes = emp.getReportes();
+              
+           
+            JRDataSource datasource = null;
+ 
+//"100"  //"Turnos atendidos x Empleado Detallado" 
+//"101"  //"Turnos atendidos x Empleado" 
+//"102"  //"Turnos en Espera de ser atendidos" 
+//"103"  //"Turnos Atendidos x Ventanilla" 
+//"104"  //"Turnos más demorados en atender" 
+//"105"  //"Empleados más demorados en atender" 
+//"106"  //"Horas PICO de atención" 
+//"107"  //"Horas PICO de atención x Ventanilla" 
+//"108"  //"Turnos Perdidos" 
+//"v"  //"------------------------------------------" 
+//"201"  //"Calificaciones x Empleado" 
+//"202"  //"Calificaciones  Totales" 
+//"203"  //"Calificaciones x Meses" 
+//"204"  //"Calificaciones x Empleado y Mes" 
+//"205"  //"Comparativo Mejor Empleado"
+
+             if(tipo.equals("-1")){
+                   alert("No ha seleccionado ningún reporte...!");
+                   parametrosReportes.visible= true;
+                    contenidoReporte.visible= false;
+                    return;
+            }else{
+            
+             ArrayList datos = rep.ejecutarReporte(tipo,titulo,empleadosCombo.selectedItem.value,desde.value,hasta.value,desdehora.value,hastahora.value);
+                if(datos!=null){     
+                        parametros = datos.get(0);
+                        datasource = datos.get(1);
+                        String directorio2 = emp.getReportes()+separador+datos.get(2);
+
+                        report.setSrc(directorio2); 
+                }else{
+                        parametrosReportes.visible= true;
+                    contenidoReporte.visible= false;
+                } 
+            }
+
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                if(format.getSelectedItem().getValue().equals("xlsm")){
+                    Map exportParams = new HashMap();
+                    exportParams.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);
+                    parametros.put("exportParameter", exportParams);
+                    report.setType("xls");
+                }else{
+                    report.setType((String) format.getSelectedItem().getValue());
+                }
+            }
+
+}
+
+void campos(String valor){
+        estudiantesCombo.disabled = true;
+        materiasCombo.disabled = true;
+        curs.disabled = true;
+        sistemasCombo.disabled = true;
+        if(valor.equals("DIS")){
+            curs.disabled = false;
+            filacursos.visible = true;
+            titulo.value= "Distributivo";
+        }else{
+            titulo.value= " ";
+        }
+}
+ 
+
+]]>
+        </zscript>
+            <vbox id="parametrosReportes"  width="800px" height="500px" >
+        <panel   height="500px" width="800px" title="reportes"   border="normal">
+            <panelchildren>
+                <grid  id="ver"   height="500px" width="800px">
+                    <rows>
+                        <row>
+     
+                            <span style="float:right"> Reporte:</span>
+                            <span>
+                                <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="450px"  mold="select" >
+                                    <listitem label="[SELECCIONE]" value="-1" selected="true" />
+                                    <listitem value="100"  label="Turnos atendidos x Empleado Detallado" />
+                                    <listitem value="101"  label="Turnos atendidos x Empleado" />
+                                    <listitem value="102"  label="Turnos en Espera de ser atendidos" />
+                                    <listitem value="103"  label="Turnos Atendidos x Ventanilla" />
+                                    <listitem value="104"  label="Turnos más demorados en atender" />
+                                    <listitem value="105"  label="Empleados más demorados en atender" />
+                                    <listitem value="106"  label="Horas PICO de atención" />
+                                    <listitem value="107"  label="Horas PICO de atención x Ventanilla" />
+                                    <listitem value="108"  label="Turnos Perdidos" />
+                                    <listitem value="v"  label="------------------------------------------" />
+                                    <listitem value="201"  label="Calificaciones x Empleado" />
+                                    <listitem value="202"  label="Calificaciones  Totales" />
+                                    <listitem value="203"  label="Calificaciones x Meses" />
+                                    <listitem value="204"  label="Calificaciones x Empleado y Mes" />
+                                    <listitem value="205"  label="Comparativo Mejor Empleado" />
+                                </listbox>
+                              
+    
+                            </span>
+                        </row>
+                            
+                        <row   id="filaestudiantes"   >
+                            <span style="float:right"> Empleados: </span>
+                            <listbox id="empleadosCombo" width="450px"  mold="select" >
+                                <listitem  forEach="${empleados}" selected="true" value="${each}" label="${each.apellidos} ${each.nombres}" />
+                            </listbox>
+                        </row>
+ 
+                        <row   id="filafechas"    >
+                            <span style="float:right"> Desde: </span>
+                            <div>
+                                <datebox  onCreate="self.value = new Date()" format="dd/MM/yyyy" id="desde"/>
+                                <span> Hasta: </span>
+                                <datebox  onCreate="self.value = new Date()" format="dd/MM/yyyy" id="hasta"/>
+                            </div>
+                        </row>
+                        <row   id="filahoras"    >
+                            <span style="float:right"> Desde Hora: </span>
+                            <div>
+                                <timebox  onCreate="self.value = desde1"  id="desdehora"  /> 
+                                <span > Hasta Hora: </span>
+                             
+                                <timebox  onCreate="self.value = hasta1"  id="hastahora"  /> 
+                            
+                            </div>
+                        </row>
+                         
+
+                        <row  >
+                            <span style="float:right">  </span>
+                            <span>
+                               
+                                <span>
+                                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox width="137px" id="format"  onSelect="bd.value=self.selectedItem.label; bd.close();showReport();">
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                    </listitem>
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    </listitem>
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Múlt.Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="xlsm">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Una.Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    </listitem>
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    </listitem>
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    </listitem>
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    </listitem>
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                                    <button label="Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+                                
+                                </span>
+
+                            </span>
+                        </row>
+
+                      
+                    </rows>
+                </grid>
+                <zscript>
+                    public void aumentar(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                    Integer t = new Integer(tamanio);
+                    report.height = (t+100)+"px";
+                    }
+                    public void reducir(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                    Integer t = new Integer(tamanio);
+                    report.height = (t-100)+"px";
+                    }
+
+                </zscript>
+                
+            </panelchildren>
+        </panel></vbox>
+        <panel height="800px" visible="false"  id="contenidoReporte">
+            <toolbar align="center">
+                <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
+                        onClick="parametrosReportes.visible=true; contenidoReporte.visible=false;    "/>
+                <button  id="reducir" label="Disminuir" image="/images/disminuir.gif" onClick="reducir()"/>
+                <button  id="aumentar" label="Aumentar" image="/images/aumentar.gif" onClick="aumentar()"/>
+                <button label="Refrescar Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+            </toolbar>
+            <panelchildren>
+
+                <jasperreport id="report" />
+            </panelchildren>
+        </panel>
+        <zscript>
+            void cargando(){
+            }
+        </zscript>
+    </window>
+</zk>

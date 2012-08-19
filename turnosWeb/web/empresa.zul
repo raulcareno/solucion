@@ -1,0 +1,279 @@
+ 
+<window  id="ventana"  border="normal"  onCreate='buscar("");' xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+
+  
+    <hbox>
+
+
+        <grid align="center" width="100%">
+            <rows>
+                <row>
+                    <span style="float:right"> RUC(*):</span>
+                    <a:bind value="inobjeto.ruc"/>
+                    <textbox id="ruc" onChange="update();" width="120px" />
+                </row>
+                <row>
+                    <span style="float:right"> Razon Social(*):</span>
+                    <a:bind value="inobjeto.razonsocial"/>
+                    <textbox id="razonsocial" onChange="update();"  width="200px"  />
+                </row>
+                <row>
+                    <span style="float:right"> Empresa(*):</span>
+                    <span>
+                        <a:bind value="inobjeto.empresa"/>
+                        <textbox id="representante" onChange="update();"  width="200px"  />
+                          Ejm.: Juan Perez
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right"> Dirección(*):</span>
+                    <a:bind value="inobjeto.direccion"/>
+                    <textbox id="direccion" onChange="update();"  width="200px" />
+                </row>
+                <row>
+                    <span style="float:right"> Telefono 1:</span>
+                    <a:bind value="inobjeto.telefono"/>
+                    <textbox id="telefono1" onChange="update();" width="200px" />
+                </row>
+                <row>
+                    <span style="float:right"> Slogan: </span>
+                    <a:bind value="inobjeto.slogan"/>
+                    <textbox id="telefono2" onChange="update();"/>
+                </row>
+                  
+                
+            </rows>
+        </grid>
+        <grid align="center" width="100%">
+            <rows>
+                 
+                <row>
+                    <span style="float:right"> Email(*):</span>
+                    <a:bind value="inobjeto.email"/>
+                    <textbox id="email" onChange="update();"/>
+                </row>
+                <row>
+                    <span style="float:right"> Clave(*):</span>
+                    <a:bind value="inobjeto.clave"/>
+                    <textbox  type="password" id="clave" onChange="update();"/>
+                </row>
+                <row>
+                    <span  style="float:right"> Requ.Auten.(*):</span>
+                    <span>
+                        <a:bind checked="inobjeto.autorizacion"/>
+                        <checkbox  id="autorizacion" onChange="update();"/>
+                                StartTLS(*):
+                        <a:bind   checked="inobjeto.star"/>
+                        <checkbox  id="star" onChange="update();"/>
+
+
+                    </span>
+                </row>
+                <row>
+                    <span style="float:right">SMTP: </span>
+                    <a:bind value="inobjeto.smtp"/>
+                    <textbox  id="smtp" onChange="update();" />
+                </row>
+                <row>
+                    <span style="float:right">Puerto: </span>
+                    <a:bind value="inobjeto.puertosmtp"/>
+                    <textbox  id="puertosmtp" onChange="update();" width="30px"/>
+
+                </row>
+              
+                <row>
+                    <span style="float:right">Ubicación Reportes: </span>
+                    <span>
+                        <a:bind value="inobjeto.reportes"/>
+                        <textbox  id="reportes" onChange="update();"  />
+                        <button   label="Crear" >
+                            <attribute name="onClick">
+                                 File duir = new File(reportes.value);
+                                duir.mkdir();
+                            </attribute>
+                        </button>
+                    </span>
+                </row>
+
+            </rows>
+        </grid>
+    
+        
+        
+
+    </hbox>
+    <vbox>
+        <vbox>
+            <hbox>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="false"  onClick="guardar();"/>
+                <button  image="/images/nuevo.gif" id="agregar" disabled="true" label="Agregar" onClick="nuevo();" />
+                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+            </hbox>
+        </vbox>
+
+    </vbox>
+    <zscript>
+ import java.io.File;
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+    import java.io.InputStream;
+  import java.io.IOException;
+  import jcinform.Administrador.*;
+    Administrador adm = new Administrador();
+  
+
+
+    //FUNCIONES
+
+            Session a = Sessions.getCurrent();
+            jcinform.persistencia.Empleados emp = a.getAttribute("user");
+            if(emp==null) Executions.sendRedirect("login.zul");
+
+
+void cargarEscudo(byte[] imageData){
+  foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+}
+void cargarVacio(){
+  foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+}
+
+   List allEvents = adm.query("Select o from Empresa as o ");
+   Empresa inobjeto = (Empresa) allEvents.get(0);
+
+    AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
+    binder.bindBean("inobjeto", inobjeto);
+    binder.loadAll();
+
+    void update() {
+          binder.saveAll();
+          binder.loadAll();
+    }
+
+
+  void cargarVacio(){
+          foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+        }
+
+//FUNCIONES
+ 
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            inobjeto = (Empresa)datos.selectedItem.value;
+        }
+
+    ruc.readonly = estado;
+    nombre.readonly = estado;
+    telefono.readonly = estado;
+    usuarioemail.readonly = estado;
+    direccion.readonly = estado;
+    secretaria.readonly = estado;
+    rector.readonly = estado;
+    clave.readonly = estado;
+    tipo.readonly = estado;
+    slogan.readonly = estado;
+     
+
+}
+
+
+ void guardar(){
+ if(ruc.value=="" || razonsocial.value=="" || representante=="" || telefono =="" || secretaria =="" ||rector ==""  || direccion =="" ){
+    Messagebox.show("Ingrese todos los campos para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    return ;
+ }
+
+        if((!inobjeto.getRuc().equals(0)) ){
+             adm.actualizar(inobjeto);
+         }else{
+            inobjeto.setRuc(ruc.value);
+             adm.guardar(inobjeto);
+         }
+                //matricula.setExtension(nueva.getFormat());
+                //permiso.auditar("Empresa","Guardar",""+razonsocial.value);
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Empresa",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false; 
+       inobjeto = new Empresa(0);
+        binder.bindBean("inobjeto",inobjeto);
+        binder.loadAll();
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        binder.bindBean("inobjeto",(Empresa)datos.selectedItem.value);
+        binder.loadAll();
+        /*
+            if(((Empresa)datos.selectedItem.value).getEscudo() != null){
+                    cargarEscudo(((Empresa)datos.selectedItem.value).getEscudo());
+            }else{
+                    cargarVacio();
+            }*/
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             inobjeto = (Empresa)datos.selectedItem.value;
+             adm.eliminarObjeto(Empresa.class, inobjeto.getRuc());
+            datos.removeItemAt(datos.getSelectedIndex());
+           
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Empresa","Eliminar",""+razonsocial);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+   
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Empresa as o  ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Empresa acceIt = (Empresa) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getRuc()+""));
+                      li.appendChild(new Listcell(acceIt.getRazonsocial() ));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+
+    </zscript>
+</window>
