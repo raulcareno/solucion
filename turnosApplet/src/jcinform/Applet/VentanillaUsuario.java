@@ -5,23 +5,27 @@
 package jcinform.Applet;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.comm.CommPortIdentifier;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import jcinform.Administrador.Administrador;
 import jcinform.Administrador.UsuarioActivo;
 import jcinform.Administrador.claves;
 import jcinform.Administrador.logger;
 import jcinform.persistencia.*;
+import jcinform.transmision.cliente.ControlCliente;
 
 /**
  *
@@ -55,179 +59,178 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     public boolean active;
     public boolean expired;
 
-//    VentanillaUsuario(Administrador ad, Empleados em, Empresa emp) {
-//          try {
+   public void iVentanillaUsuario() {
+          try {
 ////            initComponents();
-//            panelCambiar.setVisible(false);
-//            adm = ad;
-//            empresaObj = emp;
-//            usuario = em;
-//            this.setName(empresaObj.getVentanilla());
+            panelCambiar.setVisible(false);
+//         
+            this.setName(empresaObj.getVentanilla());
 //            
-//            totalAtencionesxVentanilla = empresaObj.getNoturnos();
+            totalAtencionesxVentanilla = empresaObj.getNoturnos();
 //     
-//                this.setSize(478, 419);
+                this.setSize(478, 419);
 //                calificaciones.setVisible(true);
 //     
 //                calificaciones.setLocation(10, 10);
-////                empezarThreadCiclico();
+//                empezarThreadCiclico();
 // 
 //
 ////            this.setLocationRelativeTo(null);
 ////            panelBotones.setLayout(new GridLayout(4, 1));
 //            //PruebaPanelPersonalizado();
 //
-//            ventanillasActuales = adm.query("Select o from VentanillasEmpleados as o "
-//                    + "where o.codigoemp.codigoemp = '" + usuario.getCodigoemp() + "' and o.estado = true "
-//                    + "and o.opcional = false order by o.codigovenemp");
-//            totalVentanillasAsignadas = ventanillasActuales.size();
-//            for (Iterator<VentanillasEmpleados> it = ventanillasActuales.iterator(); it.hasNext();) {
-//                VentanillasEmpleados ventanillasEmpleados = it.next();
-//                ventanillasActualesString += ventanillasEmpleados.getCodigoven().getCodigoven() + ",";
-//
-//            }
-//            if (ventanillasActualesString.length() > 0) {
-//                ventanillasActualesString = ventanillasActualesString.substring(0, ventanillasActualesString.length() - 1);
-//            }
-//            //INICIALIZO VENTANILLAS OPCIONALES
-//            ventanillasActualesOpcionales = adm.query("Select o from VentanillasEmpleados as o "
-//                    + "where o.codigoemp.codigoemp = '" + usuario.getCodigoemp() + "' and o.estado = true "
-//                    + "and o.opcional = true order by o.codigovenemp");
-//            totalVentanillasAsignadasOpcionales = ventanillasActualesOpcionales.size();
-//            for (Iterator<VentanillasEmpleados> it = ventanillasActualesOpcionales.iterator(); it.hasNext();) {
-//                VentanillasEmpleados ventanillasEmpleados = it.next();
-//                ventanillasActualesStringOpcionales += ventanillasEmpleados.getCodigoven().getCodigoven() + ",";
-//
-//            }
-//            if (ventanillasActualesStringOpcionales.length() > 0) {
-//                ventanillasActualesStringOpcionales = ventanillasActualesStringOpcionales.substring(0, ventanillasActualesStringOpcionales.length() - 1);
-//            }
-//
-//            usuarioLogeado.setText("" + usuario.getApellidos() + " " + usuario.getNombres());
-//            PruebaPanelPersonalizado();
+            ventanillasActuales = adm.query("Select o from VentanillasEmpleados as o "
+                    + "where o.codigoemp.codigoemp = '" + usuario.getCodigoemp() + "' and o.estado = true "
+                    + "and o.opcional = false order by o.codigovenemp");
+            totalVentanillasAsignadas = ventanillasActuales.size();
+            for (Iterator<VentanillasEmpleados> it = ventanillasActuales.iterator(); it.hasNext();) {
+                VentanillasEmpleados ventanillasEmpleados = it.next();
+                ventanillasActualesString += ventanillasEmpleados.getCodigoven().getCodigoven() + ",";
+
+            }
+            if (ventanillasActualesString.length() > 0) {
+                ventanillasActualesString = ventanillasActualesString.substring(0, ventanillasActualesString.length() - 1);
+            }
+            //INICIALIZO VENTANILLAS OPCIONALES
+            ventanillasActualesOpcionales = adm.query("Select o from VentanillasEmpleados as o "
+                    + "where o.codigoemp.codigoemp = '" + usuario.getCodigoemp() + "' and o.estado = true "
+                    + "and o.opcional = true order by o.codigovenemp");
+            totalVentanillasAsignadasOpcionales = ventanillasActualesOpcionales.size();
+            for (Iterator<VentanillasEmpleados> it = ventanillasActualesOpcionales.iterator(); it.hasNext();) {
+                VentanillasEmpleados ventanillasEmpleados = it.next();
+                ventanillasActualesStringOpcionales += ventanillasEmpleados.getCodigoven().getCodigoven() + ",";
+
+            }
+            if (ventanillasActualesStringOpcionales.length() > 0) {
+                ventanillasActualesStringOpcionales = ventanillasActualesStringOpcionales.substring(0, ventanillasActualesStringOpcionales.length() - 1);
+            }
+
+            usuarioLogeado.setText("" + usuario.getApellidos() + " " + usuario.getNombres());
+            PruebaPanelPersonalizado();
 //            repaint();
 //            iniciarPuertos();
-//        } catch (Exception ex) {
-//            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        } catch (Exception ex) {
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //      
-//        Image im = new ImageIcon(getClass().getResource("/jcinform/imagenes/icono.png")).getImage();
-//        try {
-//            Image image = im;
-//            PopupMenu men = new PopupMenu("JCINFORMAMENU");
-//            acerca = new MenuItem("Acerca de..");
-//            acerca.addActionListener(new ActionListener() {
-//
-//                public void actionPerformed(ActionEvent e) {
-////                    acerca ac = new acerca();
-////                    ac.setLocation(0, 0);
-////                    ac.show();
-//                }
-//            });
-//            men.add(acerca);
-//            acerca = new MenuItem("Salir ");
-//            acerca.addActionListener(new ActionListener() {
-//
-//                public void actionPerformed(ActionEvent e) {
-//                    System.exit(0);
-//                }
-//            });
-//            men.add(acerca);
-//            trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informáticas \n Sistema de Turnos \n www.jcinform.com ", men);
-//            if (SystemTray.isSupported()) {
-//                SystemTray tray = SystemTray.getSystemTray();
-//                trayIcon.setImageAutoSize(true);
-//                trayIcon.addActionListener(new ActionListener() {
-//
-//                    public void actionPerformed(ActionEvent e) {
-//                       
-//                    }
-//                });
-//                trayIcon.displayMessage("Bienvenidos al Sistema", " Sistema de Turnos \n www.jcinform.com ", TrayIcon.MessageType.INFO);
-//                try {
-//                    tray.add(trayIcon);
-//                } catch (AWTException e) {
-//                    System.err.println("No se puede añadir el icono al tray :...");
-//                }
-//            }
-////            this.setIconImage(im);
-//        } catch (Exception e) {
-//            System.out.println("ERROR EN ICONOS" + e);
-//        }
-//        Thread cargar = new Thread() {
-//
-//            public void run() {
-//                try {
-//                    while (true) {
-//                        Date fecha = adm.Date();
-//                        String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-//                        String complementoAdicional = " in (" + ventanillasActualesString + ") ";
-//                        if(ventanillasActualesOpcionales.size()>0){
-//                             complementoAdicional = " in (" + ventanillasActualesString+","+ventanillasActualesStringOpcionales + ") ";
+        Image im = new ImageIcon(getClass().getResource("/jcinform/imagenes/icono.png")).getImage();
+        try {
+            Image image = im;
+            PopupMenu men = new PopupMenu("JCINFORMAMENU");
+            acerca = new MenuItem("Acerca de..");
+            acerca.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+//                    acerca ac = new acerca();
+//                    ac.setLocation(0, 0);
+//                    ac.show();
+                }
+            });
+            men.add(acerca);
+            acerca = new MenuItem("Salir ");
+            acerca.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
+            });
+            men.add(acerca);
+            trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informáticas \n Sistema de Turnos \n www.jcinform.com ", men);
+            if (SystemTray.isSupported()) {
+                SystemTray tray = SystemTray.getSystemTray();
+                trayIcon.setImageAutoSize(true);
+                trayIcon.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent e) {
+                       
+                    }
+                });
+                trayIcon.displayMessage("Bienvenidos al Sistema", " Sistema de Turnos \n www.jcinform.com ", TrayIcon.MessageType.INFO);
+                try {
+                    tray.add(trayIcon);
+                } catch (AWTException e) {
+                    System.err.println("No se puede añadir el icono al tray :...");
+                }
+            }
+//            this.setIconImage(im);
+        } catch (Exception e) {
+            System.out.println("ERROR EN ICONOS" + e);
+        }
+        Thread cargar = new Thread() {
+
+            public void run() {
+                try {
+                    while (true) {
+                        Date fecha = adm.Date();
+                        String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+                        String complementoAdicional = " in (" + ventanillasActualesString + ") ";
+                        if(ventanillasActualesOpcionales.size()>0){
+                             complementoAdicional = " in (" + ventanillasActualesString+","+ventanillasActualesStringOpcionales + ") ";
+                        }
+                        List turnos = adm.query("SELECT count(o.codigotur) FROM Turnos  as o "
+                                + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                                + "and o.ventanilla.codigoven " + complementoAdicional  + "  "
+                                + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ");
+                        if (turnos.size() > 0) {
+                            Long valor = (Long) turnos.get(0);
+                            if (valor > 0) {
+                                Toolkit.getDefaultToolkit().beep();
+                                trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
+                                        " ..: TIENE TURNOS POR ATENDER :.."
+                                        + " \n Llame al siguiente Turno, "
+                                        + " Clic AQUÍ para llamar al siguiente turno", TrayIcon.MessageType.INFO);
+                            } else {
+                                mensajes.setText("...");
+                            }
+                        } else {
+                        }
+                        turnos = null;
+                        System.gc();
+                        Thread.sleep(60000);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        };
+        cargar.start();
+        iniciarSocket();
+//        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//            this.addWindowListener(new java.awt.event.WindowAdapter(){
+//            @Override
+//           public void windowClosing(WindowEvent e){
+//                
+//                //GUARDO 
+//                if (turnoSeleccionado != null) {
+//                    try {
+//                        turnoSeleccionado.setFechaatendido(adm.Date());
+//                        if(!turnoSeleccionado.getEstado().equals(new Integer(2))){
+//                            turnoSeleccionado.setEstado(1); //atendido
 //                        }
-//                        List turnos = adm.query("SELECT count(o.codigotur) FROM Turnos  as o "
-//                                + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-//                                + "and o.ventanilla.codigoven " + complementoAdicional  + "  "
-//                                + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ");
-//                        if (turnos.size() > 0) {
-//                            Long valor = (Long) turnos.get(0);
-//                            if (valor > 0) {
-//                                Toolkit.getDefaultToolkit().beep();
-//                                trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
-//                                        " ..: TIENE TURNOS POR ATENDER :.."
-//                                        + " \n Llame al siguiente Turno, "
-//                                        + " Clic AQUÍ para llamar al siguiente turno", TrayIcon.MessageType.INFO);
-//                            } else {
-//                                mensajes.setText("...");
-//                            }
-//                        } else {
-//                        }
-//                        turnos = null;
-//                        System.gc();
-//                        Thread.sleep(60000);
+//                        adm.actualizar(turnoSeleccionado);
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
 //                    }
-//                } catch (Exception ex) {
-//                    Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-//
-//            }
-//        };
-//        cargar.start();
-////        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-////            this.addWindowListener(new java.awt.event.WindowAdapter(){
-////            @Override
-////           public void windowClosing(WindowEvent e){
-////                
-////                //GUARDO 
-////                if (turnoSeleccionado != null) {
-////                    try {
-////                        turnoSeleccionado.setFechaatendido(adm.Date());
-////                        if(!turnoSeleccionado.getEstado().equals(new Integer(2))){
-////                            turnoSeleccionado.setEstado(1); //atendido
-////                        }
-////                        adm.actualizar(turnoSeleccionado);
-////                    } catch (Exception ex) {
-////                        Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
-////                    }
-////                }
+//                System.exit(0);
+////            if (validarSiCalifico()) {
+////                mensajes.setText("...");
 ////                System.exit(0);
-//////            if (validarSiCalifico()) {
-//////                mensajes.setText("...");
-//////                System.exit(0);
-//////            } else {
-//////                mensajes.setText("Solicite la calificación de su Atención...!");
-//////                JOptionPane.showMessageDialog(getContentPane(),"Solicite la calificación de su Atención...!");
-//////                return;
-//////            }
-////               
-////           }
-////        }
-////        );
-//    }
+////            } else {
+////                mensajes.setText("Solicite la calificación de su Atención...!");
+////                JOptionPane.showMessageDialog(getContentPane(),"Solicite la calificación de su Atención...!");
+////                return;
+////            }
+//               
+//           }
+//        }
+//        );
+    }
 //    
     void iniciarPuertos() {
         try {
-           String temp_string = "F:\\PROYECTOS\\turnos\\" + "lib" + separador + "javax.comm.properties";
+            String temp_string = "F:\\PROYECTOS\\turnos\\" + "lib" + separador + "javax.comm.properties";
 //            String temp_string = "com.sun.comm.Win32Driver";
             Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
             loadDriver_Method.setAccessible(true);
@@ -368,6 +371,15 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     public String puerto="3306";
     public String ip="192.168.10.101";
     public String empleado="15";
+    public String secalifica = "false";
+    public String ventanilla = "1";
+//    public String user = null;
+//    public String clave = null;
+//    public String puerto = null;
+//    public String ip = null;
+//    public String empleado = null;
+//    public String secalifica = null;
+//    public String ventanilla = null;
     Thread cargar = new Thread() {
 
         @Override
@@ -378,44 +390,45 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
             while (sinconexion) {
                 try {
                     //String s = getParameter("empleado");
-                    if(user!=null){
-                   
-                    UsuarioActivo usr = new UsuarioActivo();
-                    UsuarioActivo.setNombre(user);
-                    UsuarioActivo.setContrasenia(clave);
-                    UsuarioActivo.setPuerto(puerto);
-                    UsuarioActivo.setIp(ip);
-                        System.out.println(""+user+"c:"+clave+"p:"+puerto+"ip"+ip);
-                    try {
-                        adm = new Administrador(usr);
-                        System.out.println("intentando: "+i);
-                        Thread.sleep(5000);
-                        i++;
-                        List<Empresa> empresas = adm.query("Select o from Empresa as o ");
-                        sinconexion = false;
-                        empresaObj = empresas.get(0);
-                        empresaObj.setPuerto("COM5");
-                        usuario = (Empleados) adm.buscarClave(new Integer(empleado), Empleados.class);
-                        iniciarPuertos();
-                        
-                        repaint();
-                        
-                    } catch (Exception ab) {
-                        System.out.println("FALTA CONECTARSE: " + ab);
-                    }
-                         
-                    }else{
+                    if (user != null) {
+                        UsuarioActivo usr = new UsuarioActivo();
+                        UsuarioActivo.setNombre(user);
+                        UsuarioActivo.setContrasenia(clave);
+                        UsuarioActivo.setPuerto(puerto);
+                        UsuarioActivo.setIp(ip);
+                        UsuarioActivo.setSeCalifica(false);
+                        System.out.println("u: " + user + "c: " + clave + "p: " + puerto + "ip: " + ip + "emp: " + empleado);
+                        try {
+                            adm = new Administrador(usr);
+                            System.out.println("intentando: " + i);
+                            Thread.sleep(5000);
+                            i++;
+                            List<Empresa> empresas = adm.query("Select o from Empresa as o ");
+                            sinconexion = false;
+                            empresaObj = empresas.get(0);
+                            empresaObj.setVentanilla(ventanilla); 
+                            empresaObj.setPuerto("COM5");
+                            usuario = (Empleados) adm.buscarClave(new Integer(empleado), Empleados.class);
+                            iniciarPuertos();
+                    iVentanillaUsuario();
+                            //repaint();
+
+                        } catch (Exception ab) {
+                            System.out.println("FALTA CONECTARSE: " + ab);
+                        }
+
+                    } else {
                         Thread.sleep(1000);
-                        System.out.println("NO SE HA CARGADO AUN EL USER"+user);
+                        System.out.println("NO SE HA CARGADO AUN EL USER" + user);
                     }
 
                 } catch (Exception ex) {
                     Logger.getLogger(iniciarComm.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
-              System.out.println("SALIO cargar");
-              cargar.stop();
+
+            System.out.println("SALIO cargar");
+            cargar.stop();
         }
     };
 
@@ -424,12 +437,22 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
             java.awt.EventQueue.invokeAndWait(new Runnable() {
 
                 public void run() {
-                    
-                    initComponents();
-                 
-                System.setSecurityManager(null);
-                cargar.start();
-                
+                    try {
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //WINDOWS
+                                           initComponents();
+
+                                           System.setSecurityManager(null);
+                                           cargar.start();
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InstantiationException ex) {
+                        Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IllegalAccessException ex) {
+                        Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (UnsupportedLookAndFeelException ex) {
+                        Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
                 }
             });
         } catch (Exception ex) {
@@ -447,7 +470,6 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
         jLabel1 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        calificaciones = new javax.swing.JPanel();
         panelCambiar = new javax.swing.JPanel();
         guardarCambioClave = new javax.swing.JButton();
         usuarioA = new javax.swing.JLabel();
@@ -458,9 +480,16 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         repiteClave = new javax.swing.JPasswordField();
         jButton7 = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
+        calificaciones = new javax.swing.JPanel();
         mensajes = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        turnosPanel = new javax.swing.JPanel();
+        turnoActual = new javax.swing.JLabel();
+        botonSiguiente = new javax.swing.JButton();
+        conectar = new javax.swing.JButton();
+        enviado = new javax.swing.JButton();
+        volverLlamar = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -471,7 +500,6 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
         panelCambiar.setBackground(new java.awt.Color(241, 237, 237));
         panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
-        panelCambiar.setOpaque(false);
         panelCambiar.setLayout(null);
 
         guardarCambioClave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/filesave.gif"))); // NOI18N
@@ -493,11 +521,11 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
         jLabel40.setText("Nueva Clave:");
         panelCambiar.add(jLabel40);
-        jLabel40.setBounds(30, 60, 65, 14);
+        jLabel40.setBounds(15, 60, 80, 14);
 
         jLabel41.setText("Repite Clave:");
         panelCambiar.add(jLabel41);
-        jLabel41.setBounds(30, 80, 65, 14);
+        jLabel41.setBounds(15, 80, 80, 14);
 
         claveActual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -524,25 +552,23 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
         jLabel42.setText("Clave Actual:");
         panelCambiar.add(jLabel42);
-        jLabel42.setBounds(30, 40, 64, 14);
+        jLabel42.setBounds(14, 40, 80, 14);
+
+        panelCambiar.setBounds(10, 180, 300, 160);
+        jDesktopPane1.add(panelCambiar, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout calificacionesLayout = new javax.swing.GroupLayout(calificaciones);
         calificaciones.setLayout(calificacionesLayout);
         calificacionesLayout.setHorizontalGroup(
             calificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(calificacionesLayout.createSequentialGroup()
-                .addComponent(panelCambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 150, Short.MAX_VALUE))
+            .addGap(0, 440, Short.MAX_VALUE)
         );
         calificacionesLayout.setVerticalGroup(
             calificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, calificacionesLayout.createSequentialGroup()
-                .addContainerGap(159, Short.MAX_VALUE)
-                .addComponent(panelCambiar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGap(0, 310, Short.MAX_VALUE)
         );
 
-        calificaciones.setBounds(10, 10, 440, 310);
+        calificaciones.setBounds(220, 10, 440, 310);
         jDesktopPane1.add(calificaciones, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         mensajes.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -583,6 +609,74 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         });
         jButton1.setBounds(460, 340, 30, 23);
         jDesktopPane1.add(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        turnosPanel.setLayout(null);
+
+        turnoActual.setFont(new java.awt.Font("Tahoma", 1, 40)); // NOI18N
+        turnoActual.setForeground(new java.awt.Color(255, 51, 0));
+        turnoActual.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        turnoActual.setText("TURNO");
+        turnosPanel.add(turnoActual);
+        turnoActual.setBounds(10, 200, 170, 70);
+
+        botonSiguiente.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        botonSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/ticket.png"))); // NOI18N
+        botonSiguiente.setText("<html> <div style=\"text-align:center\" >SIGUIENTE TURNO (F1)</div> </html>");
+        botonSiguiente.setActionCommand("<html> <div style=\"align:center\">SIGUIENTE TURNO </div></html>");
+        botonSiguiente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        botonSiguiente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonSiguiente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSiguienteActionPerformed(evt);
+            }
+        });
+        botonSiguiente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                botonSiguienteKeyPressed(evt);
+            }
+        });
+        turnosPanel.add(botonSiguiente);
+        botonSiguiente.setBounds(10, 10, 172, 100);
+
+        conectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/conectar.png"))); // NOI18N
+        conectar.setText("CONECTAR");
+        conectar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        conectar.setOpaque(false);
+        conectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conectarActionPerformed(evt);
+            }
+        });
+        turnosPanel.add(conectar);
+        conectar.setBounds(10, 270, 160, 30);
+
+        enviado.setFont(new java.awt.Font("Tahoma", 1, 42)); // NOI18N
+        enviado.setForeground(new java.awt.Color(255, 0, 0));
+        enviado.setText("TURNO");
+        enviado.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        enviado.setOpaque(false);
+        turnosPanel.add(enviado);
+        enviado.setBounds(160, 270, 10, 10);
+
+        volverLlamar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        volverLlamar.setText("VOLVER A LLAMAR");
+        volverLlamar.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        volverLlamar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volverLlamarActionPerformed(evt);
+            }
+        });
+        volverLlamar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                volverLlamarKeyPressed(evt);
+            }
+        });
+        turnosPanel.add(volverLlamar);
+        volverLlamar.setBounds(10, 110, 172, 80);
+
+        turnosPanel.setBounds(10, 10, 200, 310);
+        jDesktopPane1.add(turnosPanel, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         add(jDesktopPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -631,7 +725,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
     private void usuarioLogeadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioLogeadoActionPerformed
         // TODO add your handling code here:
-        
+
         usuarioA.setText("" + usuario.getApellidos() + " " + usuario.getNombres());
         if (panelCambiar.isVisible()) {
             panelCambiar.setVisible(false);
@@ -654,135 +748,376 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         ac.setLocationByPlatform(true);
         ac.show(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void botonSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSiguienteActionPerformed
+        try {
+            //lger.logger(VentanillaUsuario.class.getName(), "LLANDO TURNO");
+            turnoActual.setText("");
+            volverLlamar.setText("VOLVER A LLAMAR ");
+            if (UsuarioActivo.getListaConexion() == false && empresaObj.getTouch()) {
+                this.botonSiguiente.setEnabled(false);
+                botonSiguiente.setText("SIN CONEXIÓN");
+                volverLlamar.setText("Sin conexión");
+                volverLlamar.setEnabled(false);
+                enviado.setText("-");
+                enviado.setEnabled(false);
+                conectar.setEnabled(true);
+                return;
+//                cerraryAbrir();
+            } else {
+                UsuarioActivo.setListaConexion(true);
+                conectar.setEnabled(false);
+            }
+
+            //VERIFICO SI ES QYE YA HA CALIFICADO
+//            if (validarSiCalifico()) {
+//                mensajes.setText("...");
+//            } else {
+//                mensajes.setText("Solicite la calificación de su Atención...!");
+//                return;
+//            }
+
+            //VERIFICO QUE EXISTAN TURNOS PARA LAS VENTANILLAS ASIGNADAS.
+            Date fecha = adm.Date();
+            boolean siHayTurnos = true;
+            String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+            List turnos = adm.query("SELECT count(o.codigotur) FROM Turnos  as o "
+                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                    + "and o.ventanilla.codigoven  in (" + ventanillasActualesString + ") "
+                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ");
+            if (turnos.size() > 0) {
+                Long valor = (Long) turnos.get(0);
+                if (valor > 0) {
+                    siguienteTurno();
+
+                    mensajes.setText("...");
+                } else {
+                    if (UsuarioActivo.getSeCalifica()) {
+                        botonSiguiente.setEnabled(true);
+                        volverLlamar.setEnabled(false);
+                    }
+                    siHayTurnos = false;
+                    System.out.println("NO HAY TURNOS NORMALES...!");
+//                    System.out.println("NO EXISTEN AÚN TURNOS PARA LAS VENTANILLAS QUE ATIENDE: CODVEN: " + ventanillasActualesString);
+//                    mensajes.setText("No hay turnos...!");
+//                    enviado.setText("----");
+//                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+            boolean siHayTurnosOpcionales = true;
+            if (siHayTurnos == false && ventanillasActualesOpcionales.size() > 0) {
+
+                turnos = adm.query("SELECT count(o.codigotur) FROM Turnos  as o "
+                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                        + "and o.ventanilla.codigoven  in (" + ventanillasActualesStringOpcionales + ") "
+                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ");
+                if (turnos.size() > 0) {
+                    Long valor = (Long) turnos.get(0);
+                    if (valor > 0) {
+                        siguienteTurnoOpc();
+                        mensajes.setText("...");
+                    } else {
+                        if (UsuarioActivo.getSeCalifica()) {
+                            botonSiguiente.setEnabled(true);
+                            volverLlamar.setEnabled(false);
+                        }
+                        siHayTurnosOpcionales = false;
+                        System.out.println("NO HAY TURNOS OPCIONALES...!");
+
+                    }
+                }
+
+            }
+            if (siHayTurnos == false && ventanillasActualesOpcionales.size() <= 0) {
+                System.out.println("NO EXISTEN AÚN TURNOS PARA LAS VENTANILLAS QUE ATIENDE: CODVEN: " + ventanillasActualesString);
+                mensajes.setText("No hay turnos...!");
+                enviado.setText("----");
+                turnoActual.setText("----");
+                Toolkit.getDefaultToolkit().beep();
+                if (UsuarioActivo.getSeCalifica()) {
+                    botonSiguiente.setEnabled(true);
+                    volverLlamar.setEnabled(false);
+                }
+            }
+            if (siHayTurnosOpcionales == false && ventanillasActualesOpcionales.size() > 0) {
+                System.out.println("NO EXISTEN AÚN TURNOS PARA LAS VENTANILLAS QUE ATIENDE: CODVEN: " + ventanillasActualesString);
+                mensajes.setText("No hay turnos...!");
+                enviado.setText("----");
+                turnoActual.setText("----");
+                Toolkit.getDefaultToolkit().beep();
+                if (UsuarioActivo.getSeCalifica()) {
+                    botonSiguiente.setEnabled(true);
+                    volverLlamar.setEnabled(false);
+                }
+            }
+
+        } catch (Exception ex) {
+            lger.logger(VentanillaUsuario.class.getName(), ex + "");
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_botonSiguienteActionPerformed
+
+    private void botonSiguienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_botonSiguienteKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_F1) {
+            botonSiguiente.doClick();
+        }
+    }//GEN-LAST:event_botonSiguienteKeyPressed
+ public void iniciarSocket() {
+        try {
+            sinconexion = false;
+            socket = new Socket("" + empresaObj.getIp(), 5557);
+            ControlCliente control = new ControlCliente(socket, enviado, this.getName());
+        } catch (UnknownHostException ex) {
+            try {
+                socket.close();
+            } catch (Exception e) {
+                System.out.println("cierro el socket por no existir conexión");
+            }
+
+
+            System.out.println("NO EXISTE CONEXIÓN CON EL SERVIDOR" + ex);
+            ex.printStackTrace();
+            if (empresaObj.getTouch()) {
+                sinconexion = true;
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            if (empresaObj.getTouch()) {
+                sinconexion = true;
+            }
+            System.out.println("NO EXISTE CONEXIÓN CON EL SERVIDOR: 2" + ex);
+        }
+
+    }
+        
+    private void conectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectarActionPerformed
+// TODO add your handling code here:
+        Thread cargar = new Thread() {
+
+            public void run() {
+                conectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/procesando.gif"))); // NOI18N
+                conectar.setText("");
+                conectar.setEnabled(false);
+                iniciarSocket();
+                
+                if (sinconexion == false && empresaObj.getTouch()) {
+
+                    botonSiguiente.setEnabled(true);
+                    botonSiguiente.setText("<html> <div style='text-align:center' >SIGUIENTE TURNO (F1)</div> </html>");
+                    volverLlamar.setText("VOLVER A LLAMAR");
+                    volverLlamar.setEnabled(true);
+                    enviado.setText("-");
+                    turnoActual.setText("-");
+                    enviado.setEnabled(true);
+                    conectar.setIcon(null); // NOI18N
+                    conectar.setEnabled(false);
+                    UsuarioActivo.setListaConexion(true);
+                    conectar.setText("CONECTAR");
+                    mensajes.setText("...");
+                    conectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/conectar.png"))); // NOI18N
+                } else {
+                    conectar.setIcon(null); // NOI18N
+                    mensajes.setText("No existe conexión con el servidor...!");
+                    conectar.setText("Intentar Nuevamente");
+                    conectar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/conectar.png"))); // NOI18N
+                    conectar.setEnabled(true);
+                    UsuarioActivo.setListaConexion(false);
+                }
+
+            }
+        };
+        cargar.start();
+    }//GEN-LAST:event_conectarActionPerformed
+
+    private void volverLlamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverLlamarActionPerformed
+
+
+        try {
+            Date fecha = adm.Date();
+            turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados() + 1);
+            if (turnoSeleccionado.getLlamados() >= 4) {
+                turnoSeleccionado.setFechaatendido(fecha);
+                turnoSeleccionado.setEstado(2); //usuario perdido
+                if (UsuarioActivo.getSeCalifica()) {
+                    volverLlamar.setEnabled(false);
+                    botonSiguiente.setEnabled(true);
+                }
+                volverLlamar.setText("VOLVER A LLAMAR ");
+                turnoSeleccionado.setLlamados(0);
+                abandonado = true;
+            }
+            volverLlamar.setText("VOLVER A LLAMAR(" + turnoSeleccionado.getLlamados() + ")");
+            adm.actualizar(turnoSeleccionado);
+            if (turnoSeleccionado.getLlamados() < 4) {
+                enviado.doClick();
+            }
+
+
+
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//            }
+//        };
+//        cargar.start();
+
+    }//GEN-LAST:event_volverLlamarActionPerformed
+
+    private void volverLlamarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_volverLlamarKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_F1) {
+            botonSiguiente.doClick();
+        }
+    }//GEN-LAST:event_volverLlamarKeyPressed
     public int actual = 0;
     public int totalVentanillasAsignadas = 0;
     public int totalVentanillasAsignadasOpcionales = 0;
     public int yaAtendidosenVentanilla = 0;
     public static int vecesIntentando = 0;
 
-    public void siguienteTurno() {
-
-        try {
-            PruebaPanelPersonalizado();
-            Date fecha = adm.Date();
-            if (turnoSeleccionado != null) {
-                turnoSeleccionado.setFechaatendido(fecha);
-                if (!turnoSeleccionado.getEstado().equals(new Integer(2))) {
-                    turnoSeleccionado.setEstado(1); //atendido
-                }
-                adm.actualizar(turnoSeleccionado);
-            }
-
-
-            if (yaAtendidosenVentanilla == totalAtencionesxVentanilla) {
-                actual++;
-                yaAtendidosenVentanilla = 0;
-                if (actual == (totalVentanillasAsignadas)) {
-                    actual = 0;
-                    yaAtendidosenVentanilla = 0;
-                }
-            }
-
-            VentanillasEmpleados venA = null;
+  public void siguienteTurno() {
+         
             try {
-                venA = ventanillasActuales.get(actual);
+                PruebaPanelPersonalizado();
+                Date fecha = adm.Date();
+                if (turnoSeleccionado != null) {
+                    turnoSeleccionado.setFechaatendido(fecha);
+                    if(!turnoSeleccionado.getEstado().equals(new Integer(2))){
+                        turnoSeleccionado.setEstado(1); //atendido
+                    }
+                    adm.actualizar(turnoSeleccionado);
+                }
+
+
+                if (yaAtendidosenVentanilla == totalAtencionesxVentanilla) {
+                    actual++;
+                    yaAtendidosenVentanilla = 0;
+                    if (actual == (totalVentanillasAsignadas)) {
+                        actual = 0;
+                        yaAtendidosenVentanilla = 0;
+                    }
+                }
+
+                VentanillasEmpleados venA = null;
+                try {
+                     venA = ventanillasActuales.get(actual);
+                 } catch (Exception ex) {
+                            actual = 0;
+                            venA = ventanillasActuales.get(actual);
+                             
+                  }
+                String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+//            List turnos = null;
+                List turnos = adm.query("SELECT o FROM Turnos  as o "
+                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                        + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
+                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
+                Boolean encontro = true;
+                int vecesPasa = 0;
+                int elQueleTocaba = actual;
+                System.out.println("# DE VENTANILLAS" + ventanillasActuales.size());
+                while (encontro && turnos.size() <= 0) {
+                    actual++;
+                    vecesPasa++;
+                    try {
+                        venA = ventanillasActuales.get(actual);
+                    } catch (Exception e) {
+                        encontro = true;
+                        break;
+                    }
+
+                    turnos = adm.query("SELECT o FROM Turnos  as o "
+                            + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                            + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
+                            + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
+                    if (turnos.size() > 0) {
+                        encontro = true;
+                        break;
+                    }
+                    if (vecesPasa == ventanillasActuales.size() && turnos.size() < 0) {
+                        actual=0;
+                        vecesPasa=0;
+                        encontro = true;
+                        break;
+                    }
+                }
+                if(turnos.size() <= 0){
+                       actual=0;
+                      vecesPasa=0;
+                }
+                
+                while (encontro && turnos.size() <= 0) {
+                    vecesPasa++;
+                    try {
+                        venA = ventanillasActuales.get(actual);
+                    } catch (Exception e) {
+                        encontro = true;
+                        break;
+                    }
+                    
+                    turnos = adm.query("SELECT o FROM Turnos  as o "
+                            + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                            + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
+                            + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
+                    if (turnos.size() > 0) {
+                        encontro = true;
+                        break;
+                    }
+                    if (vecesPasa == elQueleTocaba && turnos.size() < 0) {
+                        encontro = true;
+                        actual = 0;
+                        break;
+                    }
+                    actual++;
+                }
+                 
+
+                //CON ESTO AVANZO LAS VENTANILLAS QUE ESTOY ATENDIENDO
+
+
+                if (turnos.size() > 0) {
+                    yaAtendidosenVentanilla++;
+                    String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
+                    while (actulTurno.length() < 3) {
+                        actulTurno = "0" + actulTurno;
+                    }
+                    turnoActual.setText(venA.getCodigoven().getCodificacion() + "" + actulTurno);
+                    //HILO
+                    turnoSeleccionado = ((Turnos) turnos.get(0));
+                    turnoSeleccionado.setCodigoemp(usuario);
+                    turnoSeleccionado.setFechallamada(fecha);
+                    turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
+                    turnoSeleccionado.setOcupado(true);
+                    adm.actualizar(turnoSeleccionado);
+                    enviado.setLabel(turnoActual.getText());
+                    enviado.setName("" + turnoSeleccionado.getCodigotur());
+                    turnoActual.setText(turnoActual.getText());
+                    enviado.doClick();
+                   if(UsuarioActivo.getSeCalifica()){
+                        volverLlamar.setEnabled(true);
+                        botonSiguiente.setEnabled(false);
+                    }
+
+                }else{
+                    enviado.setLabel(turnoActual.getText());
+                    enviado.setName("---");
+                    turnoActual.setText(turnoActual.getText());
+                    if(UsuarioActivo.getSeCalifica()){
+                        volverLlamar.setEnabled(false);
+                        botonSiguiente.setEnabled(true);
+                    }
+                }
+
             } catch (Exception ex) {
                 actual = 0;
-                venA = ventanillasActuales.get(actual);
-
+                lger.logger(VentanillaUsuario.class.getName(), ex + "");
+                Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-//            List turnos = null;
-            List turnos = adm.query("SELECT o FROM Turnos  as o "
-                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                    + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
-                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-            Boolean encontro = true;
-            int vecesPasa = 0;
-            int elQueleTocaba = actual;
-            System.out.println("# DE VENTANILLAS" + ventanillasActuales.size());
-            while (encontro && turnos.size() <= 0) {
-                actual++;
-                vecesPasa++;
-                try {
-                    venA = ventanillasActuales.get(actual);
-                } catch (Exception e) {
-                    encontro = true;
-                    break;
-                }
-
-                turnos = adm.query("SELECT o FROM Turnos  as o "
-                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                        + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
-                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-                if (turnos.size() > 0) {
-                    encontro = true;
-                    break;
-                }
-                if (vecesPasa == ventanillasActuales.size() && turnos.size() < 0) {
-                    actual = 0;
-                    vecesPasa = 0;
-                    encontro = true;
-                    break;
-                }
-            }
-            if (turnos.size() <= 0) {
-                actual = 0;
-                vecesPasa = 0;
-            }
-
-            while (encontro && turnos.size() <= 0) {
-                vecesPasa++;
-                try {
-                    venA = ventanillasActuales.get(actual);
-                } catch (Exception e) {
-                    encontro = true;
-                    break;
-                }
-
-                turnos = adm.query("SELECT o FROM Turnos  as o "
-                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                        + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
-                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-                if (turnos.size() > 0) {
-                    encontro = true;
-                    break;
-                }
-                if (vecesPasa == elQueleTocaba && turnos.size() < 0) {
-                    encontro = true;
-                    actual = 0;
-                    break;
-                }
-                actual++;
-            }
-
-
-            //CON ESTO AVANZO LAS VENTANILLAS QUE ESTOY ATENDIENDO
-
-
-            if (turnos.size() > 0) {
-                yaAtendidosenVentanilla++;
-                String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
-                while (actulTurno.length() < 3) {
-                    actulTurno = "0" + actulTurno;
-                }
-                //HILO
-                turnoSeleccionado = ((Turnos) turnos.get(0));
-                turnoSeleccionado.setCodigoemp(usuario);
-                turnoSeleccionado.setFechallamada(fecha);
-                turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
-                turnoSeleccionado.setOcupado(true);
-                adm.actualizar(turnoSeleccionado);
-
-
-            } else {
-            }
-
-        } catch (Exception ex) {
-            actual = 0;
-            lger.logger(VentanillaUsuario.class.getName(), ex + "");
-            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
 //        if(turnoActual.getText()=="----"){
 //            botonSiguiente();
 //            //voy a validar que no exista turnos para las ventanillas que estoy atendiendo
@@ -790,73 +1125,82 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 //            //tengo que validar de todas las ventanillas 
 //             sdd
 //            vecesIntentando+=1;
-
+        
     }
-
     public void siguienteTurnoOpc() {
-
-        try {
-            PruebaPanelPersonalizado();
-            Date fecha = adm.Date();
-            if (turnoSeleccionado != null) {
-                turnoSeleccionado.setFechaatendido(fecha);
-                turnoSeleccionado.setEstado(1); //atendido
-                adm.actualizar(turnoSeleccionado);
-            }
-            //VentanillasEmpleados venA = ventanillasActualesOpcionales.get(actual);
-            String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-            List ventanillaconMasTurnos = adm.query("SELECT o.ventanilla.codigoven,count(o.ventanilla.codigoven) FROM Turnos  as o "
-                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                    + "and o.ventanilla.codigoven  in (" + ventanillasActualesStringOpcionales + ") "
-                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) group by o.ventanilla.codigoven "
-                    + " order by 2 desc ");
-
-            int ventanillaMayor = 0;
-            if (ventanillaconMasTurnos.size() > 0) {
-                Object[] ventanillaIt = (Object[]) ventanillaconMasTurnos.get(0);
-                ventanillaMayor = (Integer) ventanillaIt[0];
-            }
-            if (ventanillaMayor == 0) {
-                return;
-            }
-
-            List turnos = adm.query("SELECT o FROM Turnos  as o "
-                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                    + "and o.ventanilla.codigoven  = '" + ventanillaMayor + "' "
-                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-            if (turnos.size() > 0) {
-                Ventanillas ven = (Ventanillas) adm.buscarClave(new Integer(ventanillaMayor), Ventanillas.class);
-                yaAtendidosenVentanilla++;
-                String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
-                while (actulTurno.length() < 3) {
-                    actulTurno = "0" + actulTurno;
+        
+            try {
+                PruebaPanelPersonalizado();
+                Date fecha = adm.Date();
+                if (turnoSeleccionado != null) {
+                    turnoSeleccionado.setFechaatendido(fecha);
+                    turnoSeleccionado.setEstado(1); //atendido
+                    adm.actualizar(turnoSeleccionado);
+                }
+                //VentanillasEmpleados venA = ventanillasActualesOpcionales.get(actual);
+                String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+                List ventanillaconMasTurnos = adm.query("SELECT o.ventanilla.codigoven,count(o.ventanilla.codigoven) FROM Turnos  as o "
+                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                        + "and o.ventanilla.codigoven  in (" + ventanillasActualesStringOpcionales  + ") "
+                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) group by o.ventanilla.codigoven "
+                        + " order by 2 desc ");
+ 
+                int ventanillaMayor =0;
+                if(ventanillaconMasTurnos.size()>0){
+                    Object[] ventanillaIt = (Object[]) ventanillaconMasTurnos.get(0);
+                    ventanillaMayor = (Integer)ventanillaIt[0];
+                }
+                if(ventanillaMayor==0){
+                    return;
+                }
+                
+               List turnos = adm.query("SELECT o FROM Turnos  as o "
+                            + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                            + "and o.ventanilla.codigoven  = '" + ventanillaMayor + "' "
+                            + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ",0,2);
+                if (turnos.size() > 0) {
+                    Ventanillas ven = (Ventanillas) adm.buscarClave(new Integer(ventanillaMayor),Ventanillas.class);
+                    yaAtendidosenVentanilla++;
+                    String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
+                    while (actulTurno.length() < 3) {
+                        actulTurno = "0" + actulTurno;
+                    }
+                    turnoActual.setText(ven.getCodificacion() + "" + actulTurno);
+                    //HILO
+                    turnoSeleccionado = ((Turnos) turnos.get(0));
+                    turnoSeleccionado.setCodigoemp(usuario);
+                    turnoSeleccionado.setFechallamada(fecha);
+                    turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
+                    turnoSeleccionado.setOcupado(true);
+                    adm.actualizar(turnoSeleccionado);
+                    enviado.setLabel(turnoActual.getText());
+                    enviado.setName("" + turnoSeleccionado.getCodigotur());
+                    turnoActual.setText(turnoActual.getText());
+                    enviado.doClick();
+                    //volverLlamar.setEnabled(true);
+                        if(UsuarioActivo.getSeCalifica()){
+                            botonSiguiente.setEnabled(false);
+                            volverLlamar.setEnabled(true);
+                        }
+                }else{
+                         if(UsuarioActivo.getSeCalifica()){
+                            botonSiguiente.setEnabled(true);
+                            volverLlamar.setEnabled(false);
+                        }
                 }
 
-                //HILO
-                turnoSeleccionado = ((Turnos) turnos.get(0));
-                turnoSeleccionado.setCodigoemp(usuario);
-                turnoSeleccionado.setFechallamada(fecha);
-                turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
-                turnoSeleccionado.setOcupado(true);
-                adm.actualizar(turnoSeleccionado);
-
-                //volverLlamar.setEnabled(true);
-                if (UsuarioActivo.getSeCalifica()) {
-                }
-            } else {
-                if (UsuarioActivo.getSeCalifica()) {
-                }
+            } catch (Exception ex) {
+                lger.logger(VentanillaUsuario.class.getName(), ex + "");
+                Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (Exception ex) {
-            lger.logger(VentanillaUsuario.class.getName(), ex + "");
-            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton botonSiguiente;
     private javax.swing.JPanel calificaciones;
     private javax.swing.JPasswordField claveActual;
+    private javax.swing.JButton conectar;
+    private javax.swing.JButton enviado;
     private javax.swing.JButton guardarCambioClave;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton7;
@@ -869,16 +1213,18 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     private javax.swing.JPasswordField nuevaClave;
     private javax.swing.JPanel panelCambiar;
     private javax.swing.JPasswordField repiteClave;
+    private javax.swing.JLabel turnoActual;
+    private javax.swing.JPanel turnosPanel;
     private javax.swing.JLabel usuarioA;
     private javax.swing.JButton usuarioLogeado;
+    public javax.swing.JButton volverLlamar;
     // End of variables declaration//GEN-END:variables
 
-
-    public VentanillaUsuario() {
-
-        active = false;
-        expired = false;
-    }
+//    public VentanillaUsuario() {
+//
+//        active = false;
+//        expired = false;
+//    }
 
     @Override
     public void run() {

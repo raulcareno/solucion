@@ -1,0 +1,7 @@
+INFO jcinform.Applet.VentanillaUsuario,line 42,18.08.2012/21:36:09,java.lang.IllegalArgumentException: An exception occurred while creating a query in EntityManager: 
+Exception Description: Syntax error parsing the query [SELECT count(o.codigotur) FROM Turnos  as o where o.fechasolicitado between '2012-8-18 00:00:01' and '2012-8-18 23:59:59' and o.ventanilla.codigoven  in () and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ], line 1, column 154: unexpected token [)].
+Internal Exception: NoViableAltException(84@[709:9: (itemNode= scalarOrSubSelectExpression ( COMMA itemNode= scalarOrSubSelectExpression )* | subqueryNode= subquery )])
+INFO jcinform.Applet.VentanillaUsuario,line 42,18.08.2012/21:37:46,java.lang.IllegalArgumentException: An exception occurred while creating a query in EntityManager: 
+Exception Description: Syntax error parsing the query [SELECT count(o.codigotur) FROM Turnos  as o where o.fechasolicitado between '2012-8-18 00:00:01' and '2012-8-18 23:59:59' and o.ventanilla.codigoven  in () and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ], line 1, column 154: unexpected token [)].
+Internal Exception: NoViableAltException(84@[709:9: (itemNode= scalarOrSubSelectExpression ( COMMA itemNode= scalarOrSubSelectExpression )* | subqueryNode= subquery )])
+INFO jcinform.Applet.VentanillaUsuario,line 42,18.08.2012/21:45:58,java.lang.NullPointerException
