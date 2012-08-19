@@ -21,6 +21,8 @@
                 ticker.setField("puerto","3306");
                 ticker.setField("ip",ipservidor);
                 ticker.setField("empleado",emple.getCodigoemp()+"");
+                ticker.setField("secalifica","false");
+                ticker.setField("ventanilla","8");
                 ip.value = ipservidor;
                 }
             </attribute>
@@ -31,13 +33,17 @@
     </div>
     <zscript>
             <![CDATA[		cargar(){
-                                     Session a = Sessions.getCurrent();
-                                        String ipservidor = a.getAttribute("ipservidor");
-                                        ticker.setField("user","root");
-                                        ticker.setField("clave","j/eDF6Vyqmgzcb6udqpFMA==");
-                                        ticker.setField("puerto","3306");
-                                        ticker.setField("ip",ipservidor);
-                                        ticker.setField("empleado;","2");
+                                    Session a = Sessions.getCurrent();
+                String ipservidor = a.getAttribute("ipservidor");
+                jcinform.persistencia.Empleados emple = a.getAttribute("user");
+                ticker.setField("user","root");
+                ticker.setField("clave","j/eDF6Vyqmgzcb6udqpFMA==");
+                ticker.setField("puerto","3306");
+                ticker.setField("ip",ipservidor);
+                ticker.setField("empleado",emple.getCodigoemp()+"");
+                ticker.setField("secalifica","false");
+                ticker.setField("ventanilla","8");
+                ip.value = ipservidor;
  
                                 }
                                 
