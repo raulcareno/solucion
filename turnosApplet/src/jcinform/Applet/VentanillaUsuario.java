@@ -366,20 +366,20 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
             JOptionPane.showMessageDialog(this, "error: " + e);
         }
     }
-   public String user="root";
-   public String clave="j/eDF6Vyqmgzcb6udqpFMA==";
-    public String puerto="3306";
-    public String ip="192.168.10.101";
-    public String empleado="15";
-    public String secalifica = "false";
-    public String ventanilla = "1";
-//    public String user = null;
-//    public String clave = null;
-//    public String puerto = null;
-//    public String ip = null;
-//    public String empleado = null;
-//    public String secalifica = null;
-//    public String ventanilla = null;
+//   public String user="root";
+//   public String clave="j/eDF6Vyqmgzcb6udqpFMA==";
+//    public String puerto="3306";
+//    public String ip="192.168.10.101";
+//    public String empleado="15";
+//    public String secalifica = "false";
+//    public String ventanilla = "1";
+    public String user = null;
+    public String clave = null;
+    public String puerto = null;
+    public String ip = null;
+    public String empleado = null;
+    public String secalifica = null;
+    public String ventanilla = null;
     Thread cargar = new Thread() {
 
         @Override
