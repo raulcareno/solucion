@@ -77,7 +77,8 @@ public class Empresa implements Serializable {
 transient String puerto;
 transient Integer tipoterminal;
 transient String ventanilla;
-transient String ip;
+   @Column(name = "ip")
+    private String ip;
     public Empresa() {
     }
 
@@ -294,6 +295,8 @@ transient String ip;
     public void setIp(String ip) {
         this.ip = ip;
     }
+
+   
 
     public String getPuerto() {
         return puerto;
