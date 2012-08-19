@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="tpLinktrnPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>jcinform.persistencia.Empresa</class>
+    <class>jcinform.persistencia.Calificacion</class>
+    <class>jcinform.persistencia.Perfiles</class>
+    <class>jcinform.persistencia.Mensajes</class>
+    <class>jcinform.persistencia.Cola</class>
+    <class>jcinform.persistencia.Ventanillas</class>
+    <class>jcinform.persistencia.Videos</class>
+    <class>jcinform.persistencia.VentanillasActivas</class>
+    <class>jcinform.persistencia.Tipos</class>
+    <class>jcinform.persistencia.VentanillasEmpleados</class>
+    <class>jcinform.persistencia.Empleados</class>
+    <class>jcinform.persistencia.Turnos</class>
+    <class>jcinform.persistencia.Accesos</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/turnos"/>
+      <property name="javax.persistence.jdbc.password" value="jcinform@2020"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>
