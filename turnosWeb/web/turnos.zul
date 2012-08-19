@@ -7,11 +7,11 @@
        
      
         <separator/>
-<label id="ip" />
+ 
 
         <applet   id="ticker"
                   archive="turnosApplet.jar" name="JCINFORM Sistema de Calificacion"
-                  code="jcinform.Applet.VentanillaUsuario.class" height="400px" width="513px">
+                  code="jcinform.Applet.VentanillaUsuario.class" height="400px" width="653px">
             <attribute name="onCreate">{
                 Session a = Sessions.getCurrent();
                 String ipservidor = a.getAttribute("ipservidor");
@@ -27,9 +27,9 @@
                 }
             </attribute>
         </applet>
-        <toolbarbutton label="Enviar Datos" onClick='cargar(); ' />
+         
         <separator/>
-        <label value="ABC"/>
+        
     </div>
     <zscript>
             <![CDATA[		cargar(){
