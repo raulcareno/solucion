@@ -7,17 +7,29 @@
        
      
         <separator/>
-
+<label id="ip" />
 
         <applet   id="ticker"
-        archive="turnosApplet.jar" name="JCINFORM Sistema de Calificacion"
-        code="jcinform.Applet.VentanillaUsuario.class" height="400px" width="513px">
+                  archive="turnosApplet.jar" name="JCINFORM Sistema de Calificacion"
+                  code="jcinform.Applet.VentanillaUsuario.class" height="400px" width="513px">
+            <attribute name="onCreate">{
+                Session a = Sessions.getCurrent();
+                String ipservidor = a.getAttribute("ipservidor");
+                jcinform.persistencia.Empleados emple = a.getAttribute("user");
+                ticker.setField("user","root");
+                ticker.setField("clave","j/eDF6Vyqmgzcb6udqpFMA==");
+                ticker.setField("puerto","3306");
+                ticker.setField("ip",ipservidor);
+                ticker.setField("empleado",emple.getCodigoemp()+"");
+                ip.value = ipservidor;
+                }
+            </attribute>
         </applet>
         <toolbarbutton label="Enviar Datos" onClick='cargar(); ' />
-           <separator/>
+        <separator/>
         <label value="ABC"/>
     </div>
-     <zscript>
+    <zscript>
             <![CDATA[		cargar(){
                                      Session a = Sessions.getCurrent();
                                         String ipservidor = a.getAttribute("ipservidor");
@@ -30,7 +42,7 @@
                                 }
                                 
 			]]>
-        </zscript>
+    </zscript>
     <!--zscript>
           <![CDATA[
           cargar(){
