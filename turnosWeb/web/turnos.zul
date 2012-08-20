@@ -23,6 +23,7 @@
                 ticker.setField("empleado",emple.getCodigoemp()+"");
                 ticker.setField("secalifica","false");
                 ticker.setField("ventanilla","8");
+                ticker.setField("comm","COM1");
                 ip.value = ipservidor;
                 }
             </attribute>
@@ -32,8 +33,13 @@
         
     </div>
     <zscript>
-            <![CDATA[		cargar(){
-                                    Session a = Sessions.getCurrent();
+            <![CDATA[		
+            cargar(){
+               Session a = Sessions.getCurrent();
+               Empleados empActual = a.getAttribute("user");
+                if(empActual==null){
+                   Executions.sendRedirect("login.zul");
+                }
                 String ipservidor = a.getAttribute("ipservidor");
                 jcinform.persistencia.Empleados emple = a.getAttribute("user");
                 ticker.setField("user","root");
@@ -43,9 +49,10 @@
                 ticker.setField("empleado",emple.getCodigoemp()+"");
                 ticker.setField("secalifica","false");
                 ticker.setField("ventanilla","8");
+                ticker.setField("comm","COM1");
                 ip.value = ipservidor;
  
-                                }
+              }
                                 
 			]]>
     </zscript>

@@ -36,6 +36,7 @@
   import java.util.ArrayList;
   import jcinform.Administrador.*;
    import jcinform.persistencia.*;
+   
  Session a = Sessions.getCurrent();
  
         a.removeAttribute("accesos");
@@ -55,7 +56,11 @@ cargar(){
 }
  
  
+obtenerMac(){
+obtenerMac ab = new obtenerMac();
 
+	 System.out.println(""+ab.devolverMac());
+}
 
 void verificar(){
 error.visible = false;
@@ -165,7 +170,7 @@ error.visible = false;
                 </rows>
             </grid>
        
-	 
+	 <button label="asdfasdfasdfasd" onClick="obtenerMac()"/>
 		
         </window>
     </div>
