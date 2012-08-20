@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,6 +18,7 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.comm.CommDriver;
 import javax.comm.CommPortIdentifier;
 import javax.swing.*;
 import jcinform.Administrador.Administrador;
@@ -67,7 +69,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 //            
             totalAtencionesxVentanilla = empresaObj.getNoturnos();
 //     
-            this.setSize(478, 419);
+            this.setSize(678, 448);
 //                calificaciones.setVisible(true);
 //     
 //                calificaciones.setLocation(10, 10);
@@ -78,7 +80,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 ////            panelBotones.setLayout(new GridLayout(4, 1));
 //            //PruebaPanelPersonalizado();
 //
-            
+
             ventanillasActuales = adm.query("Select o from VentanillasEmpleados as o "
                     + "where o.codigoemp.codigoemp = '" + usuario.getCodigoemp() + "' and o.estado = true "
                     + "and o.opcional = false order by o.codigovenemp");
@@ -230,11 +232,19 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
     void iniciarPuertos() {
         try {
-            String temp_string = "F:\\PROYECTOS\\turnos\\" + "lib" + separador + "javax.comm.properties";
+//            String temp_string = "F:\\PROYECTOS\\turnos\\" + "lib" + separador + "javax.comm.properties";
 //            String temp_string = "com.sun.comm.Win32Driver";
-            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
-            loadDriver_Method.setAccessible(true);
-            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+//            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
+//            loadDriver_Method.setAccessible(true);
+//            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+            String driverName = "com.sun.comm.Win32Driver";
+            try {
+                CommDriver commdriver =
+                        (CommDriver) Class.forName(driverName).newInstance();
+                commdriver.initialize();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
             LeerTarjetaUsuario reader;
@@ -366,11 +376,11 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
             JOptionPane.showMessageDialog(this, "error: " + e);
         }
     }
-//   public String user="root";
-//   public String clave="j/eDF6Vyqmgzcb6udqpFMA==";
-//    public String puerto="3306";
-//    public String ip="192.168.10.101";
-//    public String empleado="15";
+//    public String user = "root";
+//    public String clave = "j/eDF6Vyqmgzcb6udqpFMA==";
+//    public String puerto = "3306";
+//    public String ip = "192.168.10.101";
+//    public String empleado = "15";
 //    public String secalifica = "false";
 //    public String ventanilla = "1";
     public String user = null;
@@ -414,8 +424,18 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                                 empresaObj.setPuerto(ma.get(0).getCom());
                                 UsuarioActivo.setSeCalifica(ma.get(0).getConcalificador());
                             } else {
-                                empresaObj.setVentanilla("SV");
-                                empresaObj.setPuerto("COM1");
+                                String ventanilla = JOptionPane.showInputDialog(null, "Ingrese el No. de Ventanilla");
+                                JComboBox cmb = llenarPuertos();
+                                JOptionPane.showMessageDialog(null, cmb, "Seleccione el Puerto de su calificador", JOptionPane.QUESTION_MESSAGE);
+//                                JOptionPane.showMessageDialog(null, new JLabel("User selected: " + cmb.getSelectedItem()));
+
+                                Mac macNueva = new Mac(devolverMac());
+                                macNueva.setConcalificador(true);
+                                macNueva.setVentanilla(ventanilla);
+                                macNueva.setCom(cmb.getSelectedItem().toString());
+                                adm.guardar(macNueva);
+                                empresaObj.setVentanilla("" + ventanilla);
+                                empresaObj.setPuerto("COM1" + cmb.getSelectedItem().toString());
                                 UsuarioActivo.setSeCalifica(false);
                             }
 
@@ -443,6 +463,53 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
             cargar.stop();
         }
     };
+
+    private JComboBox llenarPuertos() {
+        try {
+//            String temp_string = "com.sun.comm.Win32Driver";
+//            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
+//            loadDriver_Method.setAccessible(true);
+//            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+            String driverName = "com.sun.comm.Win32Driver";
+            try {
+                CommDriver commdriver =
+                        (CommDriver) Class.forName(driverName).newInstance();
+                commdriver.initialize();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+            CommPortIdentifier portId;
+            Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+            LeerTarjetaUsuario reader;
+
+//            String[] list = {"Banana", "Apple", "Pear", "Grape"};
+            JComboBox jcb = new JComboBox();
+            jcb.setEditable(true);
+
+
+            ArrayList arr = new ArrayList();
+            while (portList.hasMoreElements()) {
+                portId = (CommPortIdentifier) portList.nextElement();
+                if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                    if (!arr.contains(portId.getName())) {
+                        arr.add(portId.getName());
+                    }
+                }
+
+            }
+            for (Iterator it = arr.iterator(); it.hasNext();) {
+                Object object = it.next();
+                jcb.addItem(object);
+            }
+            return jcb;
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+
+    }
 
     public void init() {
         try {
@@ -916,7 +983,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     }//GEN-LAST:event_botonSiguienteKeyPressed
 
     public void iniciarSocket() {
-      
+
         try {
             sinconexion = false;
             socket = new Socket("" + empresaObj.getIp(), 5557);
