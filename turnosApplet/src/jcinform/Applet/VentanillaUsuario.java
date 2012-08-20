@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,8 +58,8 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     public boolean active;
     public boolean expired;
 
-   public void iVentanillaUsuario() {
-          try {
+    public void iVentanillaUsuario() {
+        try {
 ////            initComponents();
             panelCambiar.setVisible(false);
 //         
@@ -68,7 +67,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 //            
             totalAtencionesxVentanilla = empresaObj.getNoturnos();
 //     
-                this.setSize(478, 419);
+            this.setSize(478, 419);
 //                calificaciones.setVisible(true);
 //     
 //                calificaciones.setLocation(10, 10);
@@ -79,6 +78,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 ////            panelBotones.setLayout(new GridLayout(4, 1));
 //            //PruebaPanelPersonalizado();
 //
+            
             ventanillasActuales = adm.query("Select o from VentanillasEmpleados as o "
                     + "where o.codigoemp.codigoemp = '" + usuario.getCodigoemp() + "' and o.estado = true "
                     + "and o.opcional = false order by o.codigovenemp");
@@ -142,7 +142,6 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                 trayIcon.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent e) {
-                       
                     }
                 });
                 trayIcon.displayMessage("Bienvenidos al Sistema", " Sistema de Turnos \n www.jcinform.com ", TrayIcon.MessageType.INFO);
@@ -164,12 +163,12 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                         Date fecha = adm.Date();
                         String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
                         String complementoAdicional = " in (" + ventanillasActualesString + ") ";
-                        if(ventanillasActualesOpcionales.size()>0){
-                             complementoAdicional = " in (" + ventanillasActualesString+","+ventanillasActualesStringOpcionales + ") ";
+                        if (ventanillasActualesOpcionales.size() > 0) {
+                            complementoAdicional = " in (" + ventanillasActualesString + "," + ventanillasActualesStringOpcionales + ") ";
                         }
                         List turnos = adm.query("SELECT count(o.codigotur) FROM Turnos  as o "
                                 + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                                + "and o.ventanilla.codigoven " + complementoAdicional  + "  "
+                                + "and o.ventanilla.codigoven " + complementoAdicional + "  "
                                 + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ");
                         if (turnos.size() > 0) {
                             Long valor = (Long) turnos.get(0);
@@ -228,6 +227,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 //        );
     }
 //    
+
     void iniciarPuertos() {
         try {
             String temp_string = "F:\\PROYECTOS\\turnos\\" + "lib" + separador + "javax.comm.properties";
@@ -404,14 +404,26 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                             Thread.sleep(5000);
                             i++;
                             List<Empresa> empresas = adm.query("Select o from Empresa as o ");
+
                             sinconexion = false;
                             empresaObj = empresas.get(0);
-                            empresaObj.setVentanilla(ventanilla); 
-                            empresaObj.setPuerto("COM5");
+                            String mac = devolverMac();
+                            List<Mac> ma = adm.query("Select o from Mac as o where o.mac = '" + mac + "' ");
+                            if (ma.size() > 0) {
+                                empresaObj.setVentanilla(ma.get(0).getVentanilla());
+                                empresaObj.setPuerto(ma.get(0).getCom());
+                                UsuarioActivo.setSeCalifica(ma.get(0).getConcalificador());
+                            } else {
+                                empresaObj.setVentanilla("SV");
+                                empresaObj.setPuerto("COM1");
+                                UsuarioActivo.setSeCalifica(false);
+                            }
+
                             usuario = (Empleados) adm.buscarClave(new Integer(empleado), Empleados.class);
                             iniciarPuertos();
-                    iVentanillaUsuario();
+                            iVentanillaUsuario();
                             //repaint();
+                            cargando.setVisible(false);
 
                         } catch (Exception ab) {
                             System.out.println("FALTA CONECTARSE: " + ab);
@@ -439,10 +451,11 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                 public void run() {
                     try {
                         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); //WINDOWS
-                                           initComponents();
+                        initComponents();
 
-                                           System.setSecurityManager(null);
-                                           cargar.start();
+                        System.setSecurityManager(null);
+                        cargar.start();
+
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (InstantiationException ex) {
@@ -470,6 +483,9 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
         jLabel1 = new javax.swing.JLabel();
         jDesktopPane1 = new javax.swing.JDesktopPane();
+        cargando = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         panelCambiar = new javax.swing.JPanel();
         guardarCambioClave = new javax.swing.JButton();
         usuarioA = new javax.swing.JLabel();
@@ -497,6 +513,39 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
         jDesktopPane1.setBackground(new java.awt.Color(190, 213, 255));
+
+        cargando.setBackground(new java.awt.Color(230, 230, 230));
+
+        jLabel2.setBackground(new java.awt.Color(230, 230, 230));
+        jLabel2.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Cargando, espere uno segundos ...!");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/procesando.gif"))); // NOI18N
+
+        javax.swing.GroupLayout cargandoLayout = new javax.swing.GroupLayout(cargando);
+        cargando.setLayout(cargandoLayout);
+        cargandoLayout.setHorizontalGroup(
+            cargandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cargandoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(cargandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        cargandoLayout.setVerticalGroup(
+            cargandoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, cargandoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(264, Short.MAX_VALUE))
+        );
+
+        cargando.setBounds(10, 10, 650, 400);
+        jDesktopPane1.add(cargando, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         panelCambiar.setBackground(new java.awt.Color(241, 237, 237));
         panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
@@ -575,7 +624,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         mensajes.setForeground(new java.awt.Color(255, 0, 0));
         mensajes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mensajes.setText("...");
-        mensajes.setBounds(100, 320, 430, 40);
+        mensajes.setBounds(100, 320, 510, 40);
         jDesktopPane1.add(mensajes, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -607,7 +656,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                 jButton1ActionPerformed(evt);
             }
         });
-        jButton1.setBounds(460, 340, 30, 23);
+        jButton1.setBounds(630, 340, 30, 23);
         jDesktopPane1.add(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         turnosPanel.setLayout(null);
@@ -623,6 +672,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         botonSiguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/jcinform/imagenes/ticket.png"))); // NOI18N
         botonSiguiente.setText("<html> <div style=\"text-align:center\" >SIGUIENTE TURNO (F1)</div> </html>");
         botonSiguiente.setActionCommand("<html> <div style=\"align:center\">SIGUIENTE TURNO </div></html>");
+        botonSiguiente.setEnabled(false);
         botonSiguiente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         botonSiguiente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         botonSiguiente.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -661,6 +711,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 
         volverLlamar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         volverLlamar.setText("VOLVER A LLAMAR");
+        volverLlamar.setEnabled(false);
         volverLlamar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         volverLlamar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -863,7 +914,9 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
             botonSiguiente.doClick();
         }
     }//GEN-LAST:event_botonSiguienteKeyPressed
- public void iniciarSocket() {
+
+    public void iniciarSocket() {
+      
         try {
             sinconexion = false;
             socket = new Socket("" + empresaObj.getIp(), 5557);
@@ -891,7 +944,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
         }
 
     }
-        
+
     private void conectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectarActionPerformed
 // TODO add your handling code here:
         Thread cargar = new Thread() {
@@ -901,7 +954,7 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
                 conectar.setText("");
                 conectar.setEnabled(false);
                 iniciarSocket();
-                
+
                 if (sinconexion == false && empresaObj.getTouch()) {
 
                     botonSiguiente.setEnabled(true);
@@ -980,144 +1033,144 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     public int yaAtendidosenVentanilla = 0;
     public static int vecesIntentando = 0;
 
-  public void siguienteTurno() {
-         
-            try {
-                PruebaPanelPersonalizado();
-                Date fecha = adm.Date();
-                if (turnoSeleccionado != null) {
-                    turnoSeleccionado.setFechaatendido(fecha);
-                    if(!turnoSeleccionado.getEstado().equals(new Integer(2))){
-                        turnoSeleccionado.setEstado(1); //atendido
-                    }
-                    adm.actualizar(turnoSeleccionado);
+    public void siguienteTurno() {
+
+        try {
+            PruebaPanelPersonalizado();
+            Date fecha = adm.Date();
+            if (turnoSeleccionado != null) {
+                turnoSeleccionado.setFechaatendido(fecha);
+                if (!turnoSeleccionado.getEstado().equals(new Integer(2))) {
+                    turnoSeleccionado.setEstado(1); //atendido
                 }
+                adm.actualizar(turnoSeleccionado);
+            }
 
 
-                if (yaAtendidosenVentanilla == totalAtencionesxVentanilla) {
-                    actual++;
+            if (yaAtendidosenVentanilla == totalAtencionesxVentanilla) {
+                actual++;
+                yaAtendidosenVentanilla = 0;
+                if (actual == (totalVentanillasAsignadas)) {
+                    actual = 0;
                     yaAtendidosenVentanilla = 0;
-                    if (actual == (totalVentanillasAsignadas)) {
-                        actual = 0;
-                        yaAtendidosenVentanilla = 0;
-                    }
+                }
+            }
+
+            VentanillasEmpleados venA = null;
+            try {
+                venA = ventanillasActuales.get(actual);
+            } catch (Exception ex) {
+                actual = 0;
+                venA = ventanillasActuales.get(actual);
+
+            }
+            String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+//            List turnos = null;
+            List turnos = adm.query("SELECT o FROM Turnos  as o "
+                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                    + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
+                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
+            Boolean encontro = true;
+            int vecesPasa = 0;
+            int elQueleTocaba = actual;
+            System.out.println("# DE VENTANILLAS" + ventanillasActuales.size());
+            while (encontro && turnos.size() <= 0) {
+                actual++;
+                vecesPasa++;
+                try {
+                    venA = ventanillasActuales.get(actual);
+                } catch (Exception e) {
+                    encontro = true;
+                    break;
                 }
 
-                VentanillasEmpleados venA = null;
-                try {
-                     venA = ventanillasActuales.get(actual);
-                 } catch (Exception ex) {
-                            actual = 0;
-                            venA = ventanillasActuales.get(actual);
-                             
-                  }
-                String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-//            List turnos = null;
-                List turnos = adm.query("SELECT o FROM Turnos  as o "
+                turnos = adm.query("SELECT o FROM Turnos  as o "
                         + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
                         + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
                         + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-                Boolean encontro = true;
-                int vecesPasa = 0;
-                int elQueleTocaba = actual;
-                System.out.println("# DE VENTANILLAS" + ventanillasActuales.size());
-                while (encontro && turnos.size() <= 0) {
-                    actual++;
-                    vecesPasa++;
-                    try {
-                        venA = ventanillasActuales.get(actual);
-                    } catch (Exception e) {
-                        encontro = true;
-                        break;
-                    }
-
-                    turnos = adm.query("SELECT o FROM Turnos  as o "
-                            + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                            + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
-                            + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-                    if (turnos.size() > 0) {
-                        encontro = true;
-                        break;
-                    }
-                    if (vecesPasa == ventanillasActuales.size() && turnos.size() < 0) {
-                        actual=0;
-                        vecesPasa=0;
-                        encontro = true;
-                        break;
-                    }
-                }
-                if(turnos.size() <= 0){
-                       actual=0;
-                      vecesPasa=0;
-                }
-                
-                while (encontro && turnos.size() <= 0) {
-                    vecesPasa++;
-                    try {
-                        venA = ventanillasActuales.get(actual);
-                    } catch (Exception e) {
-                        encontro = true;
-                        break;
-                    }
-                    
-                    turnos = adm.query("SELECT o FROM Turnos  as o "
-                            + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                            + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
-                            + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
-                    if (turnos.size() > 0) {
-                        encontro = true;
-                        break;
-                    }
-                    if (vecesPasa == elQueleTocaba && turnos.size() < 0) {
-                        encontro = true;
-                        actual = 0;
-                        break;
-                    }
-                    actual++;
-                }
-                 
-
-                //CON ESTO AVANZO LAS VENTANILLAS QUE ESTOY ATENDIENDO
-
-
                 if (turnos.size() > 0) {
-                    yaAtendidosenVentanilla++;
-                    String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
-                    while (actulTurno.length() < 3) {
-                        actulTurno = "0" + actulTurno;
-                    }
-                    turnoActual.setText(venA.getCodigoven().getCodificacion() + "" + actulTurno);
-                    //HILO
-                    turnoSeleccionado = ((Turnos) turnos.get(0));
-                    turnoSeleccionado.setCodigoemp(usuario);
-                    turnoSeleccionado.setFechallamada(fecha);
-                    turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
-                    turnoSeleccionado.setOcupado(true);
-                    adm.actualizar(turnoSeleccionado);
-                    enviado.setLabel(turnoActual.getText());
-                    enviado.setName("" + turnoSeleccionado.getCodigotur());
-                    turnoActual.setText(turnoActual.getText());
-                    enviado.doClick();
-                   if(UsuarioActivo.getSeCalifica()){
-                        volverLlamar.setEnabled(true);
-                        botonSiguiente.setEnabled(false);
-                    }
+                    encontro = true;
+                    break;
+                }
+                if (vecesPasa == ventanillasActuales.size() && turnos.size() < 0) {
+                    actual = 0;
+                    vecesPasa = 0;
+                    encontro = true;
+                    break;
+                }
+            }
+            if (turnos.size() <= 0) {
+                actual = 0;
+                vecesPasa = 0;
+            }
 
-                }else{
-                    enviado.setLabel(turnoActual.getText());
-                    enviado.setName("---");
-                    turnoActual.setText(turnoActual.getText());
-                    if(UsuarioActivo.getSeCalifica()){
-                        volverLlamar.setEnabled(false);
-                        botonSiguiente.setEnabled(true);
-                    }
+            while (encontro && turnos.size() <= 0) {
+                vecesPasa++;
+                try {
+                    venA = ventanillasActuales.get(actual);
+                } catch (Exception e) {
+                    encontro = true;
+                    break;
                 }
 
-            } catch (Exception ex) {
-                actual = 0;
-                lger.logger(VentanillaUsuario.class.getName(), ex + "");
-                Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                turnos = adm.query("SELECT o FROM Turnos  as o "
+                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                        + "and o.ventanilla.codigoven  = '" + venA.getCodigoven().getCodigoven() + "' "
+                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
+                if (turnos.size() > 0) {
+                    encontro = true;
+                    break;
+                }
+                if (vecesPasa == elQueleTocaba && turnos.size() < 0) {
+                    encontro = true;
+                    actual = 0;
+                    break;
+                }
+                actual++;
             }
+
+
+            //CON ESTO AVANZO LAS VENTANILLAS QUE ESTOY ATENDIENDO
+
+
+            if (turnos.size() > 0) {
+                yaAtendidosenVentanilla++;
+                String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
+                while (actulTurno.length() < 3) {
+                    actulTurno = "0" + actulTurno;
+                }
+                turnoActual.setText(venA.getCodigoven().getCodificacion() + "" + actulTurno);
+                //HILO
+                turnoSeleccionado = ((Turnos) turnos.get(0));
+                turnoSeleccionado.setCodigoemp(usuario);
+                turnoSeleccionado.setFechallamada(fecha);
+                turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
+                turnoSeleccionado.setOcupado(true);
+                adm.actualizar(turnoSeleccionado);
+                enviado.setLabel(turnoActual.getText());
+                enviado.setName("" + turnoSeleccionado.getCodigotur());
+                turnoActual.setText(turnoActual.getText());
+                enviado.doClick();
+                if (UsuarioActivo.getSeCalifica()) {
+                    volverLlamar.setEnabled(true);
+                    botonSiguiente.setEnabled(false);
+                }
+
+            } else {
+                enviado.setLabel(turnoActual.getText());
+                enviado.setName("---");
+                turnoActual.setText(turnoActual.getText());
+                if (UsuarioActivo.getSeCalifica()) {
+                    volverLlamar.setEnabled(false);
+                    botonSiguiente.setEnabled(true);
+                }
+            }
+
+        } catch (Exception ex) {
+            actual = 0;
+            lger.logger(VentanillaUsuario.class.getName(), ex + "");
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        if(turnoActual.getText()=="----"){
 //            botonSiguiente();
 //            //voy a validar que no exista turnos para las ventanillas que estoy atendiendo
@@ -1125,79 +1178,115 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 //            //tengo que validar de todas las ventanillas 
 //             sdd
 //            vecesIntentando+=1;
-        
-    }
-    public void siguienteTurnoOpc() {
-        
-            try {
-                PruebaPanelPersonalizado();
-                Date fecha = adm.Date();
-                if (turnoSeleccionado != null) {
-                    turnoSeleccionado.setFechaatendido(fecha);
-                    turnoSeleccionado.setEstado(1); //atendido
-                    adm.actualizar(turnoSeleccionado);
-                }
-                //VentanillasEmpleados venA = ventanillasActualesOpcionales.get(actual);
-                String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
-                List ventanillaconMasTurnos = adm.query("SELECT o.ventanilla.codigoven,count(o.ventanilla.codigoven) FROM Turnos  as o "
-                        + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                        + "and o.ventanilla.codigoven  in (" + ventanillasActualesStringOpcionales  + ") "
-                        + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) group by o.ventanilla.codigoven "
-                        + " order by 2 desc ");
- 
-                int ventanillaMayor =0;
-                if(ventanillaconMasTurnos.size()>0){
-                    Object[] ventanillaIt = (Object[]) ventanillaconMasTurnos.get(0);
-                    ventanillaMayor = (Integer)ventanillaIt[0];
-                }
-                if(ventanillaMayor==0){
-                    return;
-                }
-                
-               List turnos = adm.query("SELECT o FROM Turnos  as o "
-                            + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
-                            + "and o.ventanilla.codigoven  = '" + ventanillaMayor + "' "
-                            + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ",0,2);
-                if (turnos.size() > 0) {
-                    Ventanillas ven = (Ventanillas) adm.buscarClave(new Integer(ventanillaMayor),Ventanillas.class);
-                    yaAtendidosenVentanilla++;
-                    String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
-                    while (actulTurno.length() < 3) {
-                        actulTurno = "0" + actulTurno;
-                    }
-                    turnoActual.setText(ven.getCodificacion() + "" + actulTurno);
-                    //HILO
-                    turnoSeleccionado = ((Turnos) turnos.get(0));
-                    turnoSeleccionado.setCodigoemp(usuario);
-                    turnoSeleccionado.setFechallamada(fecha);
-                    turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
-                    turnoSeleccionado.setOcupado(true);
-                    adm.actualizar(turnoSeleccionado);
-                    enviado.setLabel(turnoActual.getText());
-                    enviado.setName("" + turnoSeleccionado.getCodigotur());
-                    turnoActual.setText(turnoActual.getText());
-                    enviado.doClick();
-                    //volverLlamar.setEnabled(true);
-                        if(UsuarioActivo.getSeCalifica()){
-                            botonSiguiente.setEnabled(false);
-                            volverLlamar.setEnabled(true);
-                        }
-                }else{
-                         if(UsuarioActivo.getSeCalifica()){
-                            botonSiguiente.setEnabled(true);
-                            volverLlamar.setEnabled(false);
-                        }
-                }
 
-            } catch (Exception ex) {
-                lger.logger(VentanillaUsuario.class.getName(), ex + "");
-                Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    public String devolverMac() {
+        // TODO code application logic here
+//        Session a = Sessions.getCurrent();
+//             String abc = a.getRemoteAddr();
+        InetAddress ip;
+
+        try {
+            ip = InetAddress.getLocalHost();
+//            ip = InetAddress.getAllByName(abc)[0];
+            System.out.println("Current IP address : " + ip);
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+
+            byte[] mac = network.getHardwareAddress();
+
+            System.out.print("Current MAC address : ");
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
             }
-        
+            System.out.println(sb.toString());
+            return sb.toString();
+        } catch (UnknownHostException e) {
+
+            e.printStackTrace();
+
+        } catch (SocketException e) {
+
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    public void siguienteTurnoOpc() {
+
+        try {
+            PruebaPanelPersonalizado();
+            Date fecha = adm.Date();
+            if (turnoSeleccionado != null) {
+                turnoSeleccionado.setFechaatendido(fecha);
+                turnoSeleccionado.setEstado(1); //atendido
+                adm.actualizar(turnoSeleccionado);
+            }
+            //VentanillasEmpleados venA = ventanillasActualesOpcionales.get(actual);
+            String fec = (fecha.getYear() + 1900) + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate();
+            List ventanillaconMasTurnos = adm.query("SELECT o.ventanilla.codigoven,count(o.ventanilla.codigoven) FROM Turnos  as o "
+                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                    + "and o.ventanilla.codigoven  in (" + ventanillasActualesStringOpcionales + ") "
+                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) group by o.ventanilla.codigoven "
+                    + " order by 2 desc ");
+
+            int ventanillaMayor = 0;
+            if (ventanillaconMasTurnos.size() > 0) {
+                Object[] ventanillaIt = (Object[]) ventanillaconMasTurnos.get(0);
+                ventanillaMayor = (Integer) ventanillaIt[0];
+            }
+            if (ventanillaMayor == 0) {
+                return;
+            }
+
+            List turnos = adm.query("SELECT o FROM Turnos  as o "
+                    + "where o.fechasolicitado between '" + fec + " 00:00:01' and '" + fec + " 23:59:59' "
+                    + "and o.ventanilla.codigoven  = '" + ventanillaMayor + "' "
+                    + "and o.estado = false and (o.ocupado = false or o.ocupado is null ) order by o.numero ", 0, 2);
+            if (turnos.size() > 0) {
+                Ventanillas ven = (Ventanillas) adm.buscarClave(new Integer(ventanillaMayor), Ventanillas.class);
+                yaAtendidosenVentanilla++;
+                String actulTurno = ((Turnos) turnos.get(0)).getNumero() + "";
+                while (actulTurno.length() < 3) {
+                    actulTurno = "0" + actulTurno;
+                }
+                turnoActual.setText(ven.getCodificacion() + "" + actulTurno);
+                //HILO
+                turnoSeleccionado = ((Turnos) turnos.get(0));
+                turnoSeleccionado.setCodigoemp(usuario);
+                turnoSeleccionado.setFechallamada(fecha);
+                turnoSeleccionado.setLlamados(turnoSeleccionado.getLlamados());
+                turnoSeleccionado.setOcupado(true);
+                adm.actualizar(turnoSeleccionado);
+                enviado.setLabel(turnoActual.getText());
+                enviado.setName("" + turnoSeleccionado.getCodigotur());
+                turnoActual.setText(turnoActual.getText());
+                enviado.doClick();
+                //volverLlamar.setEnabled(true);
+                if (UsuarioActivo.getSeCalifica()) {
+                    botonSiguiente.setEnabled(false);
+                    volverLlamar.setEnabled(true);
+                }
+            } else {
+                if (UsuarioActivo.getSeCalifica()) {
+                    botonSiguiente.setEnabled(true);
+                    volverLlamar.setEnabled(false);
+                }
+            }
+
+        } catch (Exception ex) {
+            lger.logger(VentanillaUsuario.class.getName(), ex + "");
+            Logger.getLogger(VentanillaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton botonSiguiente;
     private javax.swing.JPanel calificaciones;
+    private javax.swing.JPanel cargando;
     private javax.swing.JPasswordField claveActual;
     private javax.swing.JButton conectar;
     private javax.swing.JButton enviado;
@@ -1206,6 +1295,8 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
     private javax.swing.JButton jButton7;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
@@ -1225,7 +1316,6 @@ public class VentanillaUsuario extends java.applet.Applet implements Runnable {
 //        active = false;
 //        expired = false;
 //    }
-
     @Override
     public void run() {
         throw new UnsupportedOperationException("Not supported yet.");

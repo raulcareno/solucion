@@ -15,6 +15,7 @@
     <class>jcinform.persistencia.Empleados</class>
     <class>jcinform.persistencia.Turnos</class>
     <class>jcinform.persistencia.Accesos</class>
+    <class>jcinform.persistencia.Mac</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/turnos"/>
       <property name="javax.persistence.jdbc.password" value="jcinform@2020"/>
