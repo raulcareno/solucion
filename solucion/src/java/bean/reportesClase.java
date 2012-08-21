@@ -964,12 +964,20 @@ public class reportesClase {
         return ds;
 
     }
+    List<ParametrosGlobales> parametrosGlobales = null;
 
     public List<Matriculas> cuadroverificar(Cursos curso, Sistemacalificacion sistema) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+
+
+        Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
+        Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
+        Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
+
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.orden <= '" + sistema.getOrden() + "' "
@@ -1035,7 +1043,9 @@ public class reportesClase {
             Vector vec = (Vector) itna.next();
             Matriculas matriculaNo = null;
             MateriaProfesor mprofesor = null;
+            Global materia = null;
             Double sumatoria = 0.0;
+            Double pg = 0.0;
             String obs = "";
             Integer obs1 = 0;
             int ksis = 0;
@@ -1059,28 +1069,57 @@ public class reportesClase {
                     matricula = matriculaNo.toString();
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
-                        if (val < 25) {
+                        if (val < sumaPierde) {
                             obs = "Pierde";
+                            System.out.println("pierde SM (1):"+matricula+" mat:"+materia+" not:"+val);
                             obs1++;
                         } else {
                             obs = "";
                         }
                         sumatoria = val;
-                    } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
-                        if (sumatoria < 40) {
-                            try {
-                                Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
-                                if (val < valor) {
-                                    obs = "Pierde";
-                                    obs1++;
-                                } else {
-                                    obs = "";
-                                }
-                            } catch (Exception e) {
-                            }
+                    }else if (nota.getSistema().getPromediofinal().equals("PG")) {
+                        if (val < sumaPierde) {
+                            obs = "Pierde";
+                            System.out.println("pierde PG (1):"+matricula+" mat:"+materia+" not:"+val);
+                            obs1++;
                         } else {
                             obs = "";
                         }
+                        pg = val;
+                    } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
+                        if (validaConPromedioGeneral) {
+                                try {
+                                    Double valor = new Double(equivalenciaSupletorio(pg, equivalenciasSuple) + "");
+                                    if (val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde PG:"+matricula+" mat:"+materia+" not:"+val);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                    }
+                                } catch (Exception e) {
+                                }
+
+                             
+                        } else {
+                            if (sumatoria < sumaAprueba) {
+                                try {
+                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
+                                    if (val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde SU:"+matricula+" mat:"+materia+" not:"+val);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                    }
+                                } catch (Exception e) {
+                                }
+
+                            } else {
+                                obs = "";
+                            }
+                        }
+
                     }
                     ksis++;
                 } else if (j == 1) {
@@ -1090,6 +1129,8 @@ public class reportesClase {
 //                    }
                 } else if (j == 0) {
 //                    mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
+                } else if (j == 2) {
+                    materia = (Global) adm.buscarClave((Integer) dos, Global.class);
                 }
                 if (matriculaNo != null && j > 1) {
                     if (!matriculaNo.toString().equals(matricula)) {
@@ -1392,7 +1433,7 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
@@ -1520,7 +1561,7 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
@@ -1633,7 +1674,7 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
@@ -2032,7 +2073,7 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
         Boolean promCuantitativo = regresaVariableParametrosLogico("PROMCUAN", parametrosGlobales);
@@ -2052,7 +2093,7 @@ public class reportesClase {
 
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
-                    + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'"
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'"
                 + " and o.sistema.promediofinal = 'PF'   "
                 + " ");
         if (notaFinal.size() <= 0) {
@@ -2063,7 +2104,7 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
+        List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
                 + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
         if (notaGeneral.size() <= 0) {
             try {
@@ -2073,7 +2114,7 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-           Notanotas nGeneral  = notaGeneral.get(0);
+        Notanotas nGeneral = notaGeneral.get(0);
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notaFinal.get(0).getSistema());
 
         Notanotas nfinal = notaFinal.get(0);
@@ -2214,7 +2255,7 @@ public class reportesClase {
                         }
 
                     }
-                     if (notaGeneral.get(0).getSistema().getCodigosis().equals(nota.getSistema().getCodigosis())
+                    if (notaGeneral.get(0).getSistema().getCodigosis().equals(nota.getSistema().getCodigosis())
                             && nota.getMatricula().getEstado().contains("Matriculado")) {
                         for (Iterator<Notanotas> it = notasRequeridas.iterator(); it.hasNext();) {
                             Notanotas notanotas = it.next();
@@ -2357,7 +2398,7 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         String firma1 = regresaVariableParametros("FIR1", parametrosGlobales);
         String cargo1 = regresaVariableParametros("CAR1", parametrosGlobales);
@@ -2857,7 +2898,7 @@ public class reportesClase {
         String cabecera = regresaTexto("CMAT", textos);
         String aprobado = regresaTexto("PACMAT", textos);
         String reprobado = regresaTexto("PRCMAT", textos);
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
@@ -3074,7 +3115,7 @@ public class reportesClase {
         String cabecera = regresaTexto("CMAT", textos);
         String aprobado = regresaTexto("PACMAT", textos);
         String reprobado = regresaTexto("PRCMAT", textos);
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
@@ -3109,7 +3150,7 @@ public class reportesClase {
             noDecimalesProme = 3;
 
         }
-        
+
         try {
             if (notas.size() <= 0) {
                 Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -4667,7 +4708,7 @@ public class reportesClase {
         return "";
     }
 
-    public static Object equivalenciaSupletorio(Object no, List<Equivalencias> equivalencias) {
+    public Object equivalenciaSupletorio(Object no, List<Equivalencias> equivalencias) {
         Double nota = (Double) no;
         ArrayList listado = new ArrayList();
         for (Equivalencias acaEquivalencias : equivalencias) {
@@ -4686,8 +4727,10 @@ public class reportesClase {
                 return object[2];
             }
         }
+        //Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
+        //System.out.println("FALTA PARAMETRIZAR EL CUADRO DE EQUIVALENCIAS EL VALOR CERO DE SUMATORIA");
+        return 0;
 
-        return "40";
     }
 
     public static Object equivalencia2(Object no, List<Equivalencias> equivalencias) {

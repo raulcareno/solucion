@@ -1024,8 +1024,13 @@ ParametrosGlobales para = new ParametrosGlobales();
 //*****************************************************************************
 
         }catch(Exception e){
-                alert("Error:"+e); System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
-                System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
+                alert("Error:"+e); 
+                System.out.println(""+e.getCause()); 
+                System.out.println(""+e.getLocalizedMessage());                
+                System.out.println(""+e.getMessage());
+                System.out.println(""+e.getStackTrace()); 
+                System.out.println(""+e.getCause());
+                Logger.getLogger("matriculacion ").log(Level.SEVERE, null, e);
         }
     guardando = false;
 }
