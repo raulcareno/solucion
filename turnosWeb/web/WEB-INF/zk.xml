@@ -93,9 +93,9 @@
         <description>[Optional] Mointor the statistic</description>
         <listener-class>org.zkoss.zk.ui.util.Statistic</listener-class>
     </listener>
-    <desktop-config>
+    <!--desktop-config>
         <theme-provider-class>zkthemer.ThemeProvider</theme-provider-class>
-    </desktop-config>
+    </desktop-config-->
 	 
 
 	<!-- Configure the error page
