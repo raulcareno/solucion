@@ -20,7 +20,7 @@
 </style>
 
     <div  class="estil" >
-    <window onLoad="usuario.focus();" onCreate="usuario.focus();cargar();" mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="470px">
+    <window onLoad="usuario.focus();" onCreate="usuario.focus();cargar();" mode="overlapped" id="win2" title="SERVICIOS...! "  style="background-color:transparent;position:absolute; top:24%; left:32%;"  border="normal" width="499px">
         <zscript>
 
             <![CDATA[
