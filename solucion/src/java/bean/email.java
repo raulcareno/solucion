@@ -204,6 +204,7 @@ public class email {
             StringTokenizer tokens = new StringTokenizer(direcciones, ";");
             ArrayList matriculados2 = new ArrayList();
             int i = 0;
+            int k = 1;
             while (tokens.hasMoreTokens()) {
                 String str = tokens.nextToken();
                 str = str.replace(" ", "");
@@ -211,7 +212,8 @@ public class email {
                     if (!matriculados2.contains(str)) {
                         if (validaEmail(str.replace(" ", ""))) {
                             matriculados2.add(str.replace(" ", ""));
-                            System.out.println(str);
+                            System.out.println(""+str);
+                            k++;
                         }
                     }
 
@@ -219,6 +221,7 @@ public class email {
                 }
                 i++;
             }
+            System.out.println("enviado a: ("+k+") emails");
             if (matriculados2.size() > 0) {
                 EnviarAutenticacion.EnviarCorreo(matriculados2, mensaje, tema, periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(), empleado.getEmail(),periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             }

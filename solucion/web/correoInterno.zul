@@ -1,8 +1,9 @@
+
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-<window  title="Envio de Comunicados"  border="normal" >
+    <window  border="normal" >
 
-    <zscript><![CDATA[
+        <zscript><![CDATA[
 import bean.notas;
 import java.math.BigDecimal;
 import bean.notas;
@@ -13,35 +14,60 @@ import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 import bean.Permisos;
-
+import java.util.HashSet;
+import java.util.Iterator;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 Empleados user =  (Empleados)ses.getAttribute("user");
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
    Permisos permiso = new Permisos();
+   HashSet correosH = new HashSet();
+   String correos = "";
 void enviarCorreo(){
+
             email em = new email();
-            String correos = "";
+              correosH = new HashSet();
+                 correos = "";
+            
                 for(Iterator it = right.getItems().iterator(); it.hasNext();) {
                      Listitem object = (Listitem)it.next();
                      Estudiantes emp = object.getValue();
-                     correos += emp.getMail()+";"+emp.getRepresentante().getMailpadre()+";"+emp.getRepresentante().getMailmadre()+";";
-                     //mailpadre; mailmadre;
+                     //correos += emp.getMail()+";\n"+emp.getRepresentante().getMailpadre()+";\n"+emp.getRepresentante().getMailmadre()+";\n";
+                      if(!emp.getMail().isEmpty() && emp.getMail().contains("@"))
+                            correosH.add(emp.getMail().replace("/","; "));
+                     if(!emp.getRepresentante().getMailpadre().isEmpty() && emp.getRepresentante().getMailpadre().contains("@"))
+                            correosH.add(emp.getRepresentante().getMailpadre().replace("/","; "));
+                     if(!emp.getRepresentante().getMailmadre().isEmpty() && emp.getRepresentante().getMailmadre().contains("@"))
+                        correosH.add(emp.getRepresentante().getMailmadre().replace("/","; "));
                 }
+                //System.out.println(" - Lista de mandado con " + correosH.size() + " elementos");
+
+                for( Iterator it = correosH.iterator(); it.hasNext();) { 
+                    String x = (String)it.next();
+                    //System.out.println("" + x);
+                    correos +=x+";";
+                }
+                if(correosH.size()>100){
+                    alert("Es posible que no se envien ha superado la candiad de 400 emails, disminuya y vuelva a intentarlo");
+                    return;
+                }
+                 System.out.println("IMPRESION: " + correos);
+                     //return;
                 em.setCorreos(correos);
                 em.setMensaje(mensaje.getValue());
                 em.setTema(titulo.getValue());
                 em.enviarEmail(periodo,user);
                 
             Messagebox.show("Correo Enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-           permiso.auditar("Correo",""+titulo.getValue(),""+correos);
+            permiso.auditar("Correo",""+titulo.getValue(),""+titulo.getValue());
 }
   void buscar2(Cursos p){
        List equivaEncontrados = adm.query("Select d from Matriculas as d " + 
-       " where d.curso.codigocur = '"+p.getCodigocur()+"' and (d.estudiante.mail is not null or d.estudiante.mail <> ''  ) ");
-        left = new Listbox();
-        int a=0;
+       " where d.curso.codigocur = '"+p.getCodigocur()+"' " + 
+       " and (d.estudiante.mail is not null or d.estudiante.mail <> ''  ) order by d.estudiante.apellido ");
+            left = new Listbox();
+            int a=0;
               for(Iterator it = left.getItems().iterator(); it.hasNext();) {
                     left.getItems().remove(a);
                 }
@@ -49,7 +75,7 @@ void enviarCorreo(){
                       Matriculas acceIt = (Matriculas) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt.getEstudiante());
-                      li.appendChild(new Listcell(acceIt.estudiante.getApellido()+" "+ acceIt.estudiante.getNombre()+" "+acceIt.estudiante.getMail()));
+                      li.appendChild(new Listcell(acceIt.estudiante.getApellido()+" "+ acceIt.estudiante.getNombre()+" "));
                       left.appendChild(li);
              }
     }
@@ -69,120 +95,141 @@ void enviarCorreo(){
                      right.appendChild(li);
                      para.setValue(null);
     }
+    void contarEmails(){
+      correosH = new HashSet();
+                 correos = "";
+                for(Iterator it = right.getItems().iterator(); it.hasNext();) {
+                     Listitem object = (Listitem)it.next();
+                     Estudiantes emp = object.getValue();
+                     //correos += emp.getMail()+";\n"+emp.getRepresentante().getMailpadre()+";\n"+emp.getRepresentante().getMailmadre()+";\n";
+                      if(!emp.getMail().isEmpty() && emp.getMail().contains("@"))
+                            correosH.add(emp.getMail().replace("/","; "));
+                     if(!emp.getRepresentante().getMailpadre().isEmpty() && emp.getRepresentante().getMailpadre().contains("@"))
+                            correosH.add(emp.getRepresentante().getMailpadre().replace("/","; "));
+                     if(!emp.getRepresentante().getMailmadre().isEmpty() && emp.getRepresentante().getMailmadre().contains("@"))
+                        correosH.add(emp.getRepresentante().getMailmadre().replace("/","; "));
+                }
+            int contador = 1;
+                for( Iterator it = correosH.iterator(); it.hasNext();) { 
+                    String x = (String)it.next();
+                    //System.out.println("" + x);
+                    correos +=x+";";
+                    contador++;
+                }
+                totalDestinos.value =""+contador;
+     }
 
 ]]>
-    </zscript>
-    <grid>
-        <rows>
-            <row>
-                <span style="float:right"> Curso(*):</span>
+        </zscript>
+<label value="Seleccione un Curso:" style="color:black;font-size:14px; font-weight:bold" />
+        <listbox id="curs" width="420px" mold="select"
+                 onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
+            <listitem value="-1">
+                <listcell label="Seleccione" />
+            </listitem>
+            <listitem forEach="${cursos}" value="${each}">
+                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
-                <listbox id="curs" width="420px" mold="select"
-                    onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
-                    <listitem value="-1">
-                        <listcell label="Seleccione" />
-                    </listitem>
-                    <listitem forEach="${cursos}" value="${each}">
-                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+            </listitem>
+        </listbox>
+        <label value="Recuerde puede enviar Maximo a "   style="font-size:14px;color:blue"  /> 
+                <label value="100 EMAILS "   style="font-size:14px;color:red;font-weight:bold"  /> 
+                <label value=" a la vez"   style="font-size:14px;color:blue;"  /> 
+        <hbox>
+            Añadir Email Extra:                
+            <textbox cols="35" id="para"/>
+            <button image="/images/expa.png" height="10px" id="anadir" label="Agregar"  onClick="anadir();"/>
+            <label value="Titulo/Asunto:" style="color:black;font-size:14px; font-weight:bold" />
+            <textbox cols="55" id="titulo"  style="color:black;font-size:13px; font-weight:bold;height:25px" />
+        </hbox>
+        <hbox>
+            <vbox width="450px">
+                <panel>
+                    <panelchildren>
+                        <listbox id="left" multiple="true" mold="paging" pageSize="10" rows="10"  style="font-size:10px"  height="190px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                            <listhead>
+                                <listheader label="Estudiantes Disponibles"/>
+                            </listhead>
+                            <listitem  forEach="${allEvents}" value="${each}">
+                                <listcell label="${each.codigocur}" />
+                                <listcell label="${each.especialidad}" />
+                            </listitem>
+                        </listbox>
+                    </panelchildren>
+                </panel>
+                <panel>
+                    <panelchildren style="margin: 6px 4px;">
+                         <separator orient="vertical"/>
+                         <separator orient="vertical"/>
+                         <separator orient="vertical"/>
+                         <toolbarbutton   image="/images/expa.png"  height="20px"  tooltiptext="AÑADIR EMAIL"  label="AÑADIR" >
+                             <attribute name="onClick">
+                                Set items = left.getSelectedItems();
+                                if (items.isEmpty()) {
+                                alert("Seleccion un Estudiante para Anadir!");
+                                } else {
+                                List al = new ArrayList(items);
+                                for (Iterator it = al.iterator(); it.hasNext();) {
+                                Listitem li = (Listitem)it.next();
+                                li.setSelected(false);
+                                right.appendChild(li);
+                                }
+                                contarEmails();
+                                }
+                            </attribute>
+                         </toolbarbutton>
+                         <separator orient="vertical"/>
+                         <toolbarbutton  src="/images/contra.png" height="20px" tooltiptext="QUITAR EMAIL" label="QUITAR" >
+                             <attribute name="onClick">
+                                Set items = right.getSelectedItems();
+                                if (items.isEmpty()) {
+                                alert("Seleccion un Correo para Quitar!");
+                                } else {
+                                List al = new ArrayList(items);
+                                for (Iterator it = al.iterator(); it.hasNext();) {
+                                Listitem li = (Listitem)it.next();
+                                li.setSelected(false);
+                                left.appendChild(li);
+                                }
+                                contarEmails();
+                                }
+                            </attribute>
+                         </toolbarbutton>
+                          
+                        <span>
+                        
+                         
+                        <label value="TOTAL: " style="color:black;font-size:14px;font-weight:bold"/>
+                        <label id="totalDestinos" value="(0)" style="color:blue;font-size:14px;font-weight:bold"/>
 
-                    </listitem>
-                </listbox>
-
-            </row>
-            <row>
-Titulo:
-                <textbox id="titulo"/>
-            </row>
-            <row>
-Para:
+                    </span>
+                    </panelchildren>
+                </panel>
+                <panel>
+                    <panelchildren>
+                        <listbox id="right" multiple="true"   style="font-size:10px"   height="170px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+                            <listhead>
+                                <listheader label="DESTINATARIOS"/>
+                            </listhead>
+                            <listitem  style="font-size:10px" forEach="${allEvents}" value="${each}">
+                                <listcell label="${each.codigocur}" />
+                                <listcell label="${each.especialidad}" />
+                            </listitem>
+                        </listbox>
+                    </panelchildren>
+                </panel>
+ 
+            </vbox>
+            <vbox width="600px">
+                <fckeditor height="380px"   id="mensaje"/>
                 <span>
-
-                    <textbox width="150px" id="para"/>
-                    <button image="/images/anadir2.png" height="10px" id="anadir" label="Agregar"  onClick="anadir();"/>
+                <button image="/images/enviados.png" height="10px" id="enviar" label="ENVIAR EMAIL"  onClick="enviarCorreo();"/>
+                
                 </span>
-            </row>
-            <row spans="2">
-                <columnlayout>
-                    <columnchildren width="50%">
-                        <panel title="Estudiantes">
-                            <panelchildren>
-                                <listbox id="left" multiple="true"   style="font-size:10px"  height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                                    <listhead>
-                                        <listheader label="Estudiantes"/>
-                                    </listhead>
-                                    <listitem  forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigocur}" />
-                                        <listcell label="${each.especialidad}" />
-                                    </listitem>
-                                </listbox>
-                            </panelchildren>
-                        </panel>
-                    </columnchildren>
-                    <columnchildren width="100px">
-                        <panel>
-                            <panelchildren style="margin: 6px 4px;">
-                                <image sclass="pointer" src="/images/anadir.png" tooltiptext="Add Project">
-                                    <attribute name="onClick">
-						Set items = left.getSelectedItems();
-						if (items.isEmpty()) {
-							alert("Seleccion un Estudiante para Anadir!");
-						} else {
-							List al = new ArrayList(items);
-							for (Iterator it = al.iterator(); it.hasNext();) {
-								Listitem li = (Listitem)it.next();
-								li.setSelected(false);
-								right.appendChild(li);
-							}
-						}
-                                    </attribute>
-                                </image>
-                                <separator height="5px"/>
-                                <image sclass="pointer" src="/images/quitar.png"  tooltiptext="Remove Project">
-                                    <attribute name="onClick">
-						Set items = right.getSelectedItems();
-						if (items.isEmpty()) {
-							alert("Seleccion un Correo para Quitar!");
-						} else {
-							List al = new ArrayList(items);
-							for (Iterator it = al.iterator(); it.hasNext();) {
-								Listitem li = (Listitem)it.next();
-								li.setSelected(false);
-								left.appendChild(li);
-							}
-						}
-                                    </attribute>
-                                </image>
-                            </panelchildren>
-                        </panel>
-                    </columnchildren>
-                    <columnchildren width="50%">
-                        <panel title="Estudiantes a los que se envia" height="">
-                            <panelchildren>
-                                <listbox id="right" multiple="true"   style="font-size:10px"   height="150px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
-                                    <listhead>
-                                        <listheader label="Estudiantes"/>
-                                    </listhead>
-                                    <listitem  style="font-size:10px" forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigocur}" />
-                                        <listcell label="${each.especialidad}" />
-                                    </listitem>
-                                </listbox>
-                            </panelchildren>
-                        </panel>
-                    </columnchildren>
-                </columnlayout>
-            </row>
-
-            <row spans="2">
-                <fckeditor    id="mensaje"/>
-
-            </row>
-            <row>
-                <button height="10px" id="enviar" label="Enviar"  onClick="enviarCorreo();"/>
-            </row>
-
-        </rows>
-    </grid>
+            </vbox>
+                          
+        </hbox>
+ 
    
-</window>
+    </window>
 </zk>
