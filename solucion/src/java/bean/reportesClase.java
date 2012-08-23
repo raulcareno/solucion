@@ -2953,7 +2953,7 @@ public class reportesClase {
             String pier = reprobado;
 
             boolean estadoEstudiante = true;
-            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ") from matriculas "
+            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -2983,7 +2983,7 @@ public class reportesClase {
                 }
             }
 
-            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ")  from matriculas "
+            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ")  from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -3187,7 +3187,7 @@ public class reportesClase {
             String pier = reprobado;
             boolean estadoEstudiante = true;
             //PARA CARGAR EL APROVECHAMIENTO
-            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ") from matriculas "
+            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -3217,7 +3217,7 @@ public class reportesClase {
                 }
             }
 //PARA CARGAR LA DISCIPLINA
-            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal(8,4))," + 3 + ")  from matriculas "
+            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ")  from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -3362,7 +3362,7 @@ public class reportesClase {
 //        }
         for (Matriculas matriculas1 : matriculas) {
             boolean estadoEstudiante = true;
-            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ") from matriculas "
+            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal)," + 3 + ") from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -3391,7 +3391,7 @@ public class reportesClase {
                 }
             }
 
-            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ")  from matriculas "
+            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal)," + 3 + ")  from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -3466,7 +3466,7 @@ public class reportesClase {
             String pier = reprobado;
 
             boolean estadoEstudiante = true;
-            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ") from matriculas "
+            String q = "Select round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal)," + 3 + ") from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
@@ -3495,7 +3495,7 @@ public class reportesClase {
                 }
             }
 
-            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4))) as decimal)," + 3 + ")  from matriculas "
+            q = "Select  round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal)," + 3 + ")  from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
                     + "left join notas on matriculas.codigomat = notas.matricula "
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
