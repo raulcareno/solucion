@@ -286,7 +286,7 @@
                                             <menuitem onClick="ingresar(self)" image="/images/cursos.png"   label="Cursos"  id="Cursos"  value="/cursos.zul"   />
                                             <menuitem onClick="ingresar(self)" id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" />
                                             <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos(Estudiantes del A al B)" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
-                                            <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" />
+                                            <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar(Cedulals,Suspensos,Perdidos)" image="/images/actualizar.png"  value="/actualizacion.zul" />
                                             <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
                                             <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet(Inscribir-Modificar)"     image="/images/inscripciones.gif"   value="/inscripcionesModificar.zul" />
                                             <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"    image="/images/preaprobados.png"  value="/seleccionPreaprobados.zul" />

@@ -70,7 +70,7 @@ List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '
     </zscript>
 
     <groupbox mold="3d" >
-        <caption label="Bloquear estudiantes para el consultar notas" />
+        <caption label="Ingresar Cedulas y bloquear estudiantes" />
         <vbox>
 
             <hbox>
