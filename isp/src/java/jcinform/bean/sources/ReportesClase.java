@@ -663,7 +663,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
         }
         Collections.sort(detalles);
         List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada as o "
-                + "where o.fecha between '" + desdestr + "' and  '" + hastastr + "' "
+                + "where o.fecha between '" + desdestr + " 00:01:01' and  '" + hastastr + " 23:59:59' "
                 + " and o.numero LIKE '" + sucursal.getSerie1() + sucursal.getSerie2() + "FAC%'", Facturaanulada.class);
         for (Iterator<Facturaanulada> it = anuladas.iterator(); it.hasNext();) {
             Facturaanulada facturaanulada = it.next();
