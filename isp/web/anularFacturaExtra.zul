@@ -40,10 +40,11 @@ anular(){
                             }
             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));                
             fac.setNumero(vali);
-            fac.setClientes(null);
+            fac.setClientes(new Clientes(0));
             fac.setEstado(true);
             fac.setFecha(fechaanula.value);
-            fac.setContratos(null);
+            fac.setContratos(new Contratos(1111));
+            fac.setSector(new Sector(1));
             fac.setSucursal(sucursalEmp.getSucursal());
             fac.setSubtotal(new BigDecimal(0));
             fac.setDescuento(new BigDecimal(0));
