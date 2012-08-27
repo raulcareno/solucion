@@ -1562,7 +1562,7 @@ public void quitarFila(String codigoBuscar){
                                     <rows>
                                         <row>
                                             <span>
-                                                <grid width="200px" height="100%" sclass="MyGridRowHeight" >
+                                                <grid width="160px" height="100%" sclass="MyGridRowHeight" >
                                                     <rows>
                                                         <row>
                                                             <span  style="border:1px">
@@ -1637,28 +1637,32 @@ public void quitarFila(String codigoBuscar){
                                                                 <checkbox visible="false" id="estadoe" disabled="true"  />
                                                             </span>
                                                         </row>
-                                                        <row>
-
-                                                            <span style="float:right"> Es Interno?:</span>
-                                                            <span>
-                                                                <checkbox id="adventista" disabled="true" /> Es Nuevo?:
-                                                                <checkbox id="nuevo" disabled="true" />
-                                                            </span>
-
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Religión:</span>
-                                                            <combobox id="religion" readonly="true">
-                                                                <comboitem  value="Ninguno" label="Ninguno"/>
-                                                                <comboitem value="Adventista" label="Adventista"/>
-                                                                <comboitem value="Cristiano" label="Cristiano"/>
-                                                                <comboitem value="Evangélico" label="Evangélico"/>
-                                                                <comboitem value="Católico" label="Catolico"/>
-                                                                <comboitem value="Otra" label="Otra"/>
-
-
-                                                            </combobox>
-                                                        </row>
+                                                                                                <row>
+                                            <span style="float:right">
+                                                Provincia: 
+                                            </span>
+                                            <span>
+                                                <textbox cols="10" id="provincia"  />
+                                                Canton:
+                                                <textbox cols="10"  id="canton"  />
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span style="float:right">
+                                                Parroquia:    
+                                            </span> 
+                                        
+                                            <span>
+                                                <textbox  cols="10" id="lugarnacimiento"  />
+                                                <span style="color:blue;weight:bold">    
+                                                    Nacionalidad(*)
+                                                </span>
+                                                <textbox cols="10" id="nacionalidad"  />
+                                            </span>
+                                        
+                                         
+                                        </row>
+                                              
                                                     </rows>
                                                 </grid>
                                             </span>
@@ -1970,14 +1974,14 @@ public void quitarFila(String codigoBuscar){
                                                 Matricula
                                           </span>
                                         </row>
-                                        <row>
-                                            <span style="float:right;">
+                                        <row spans="2">
+                                            <span >
                                                 <label value="Curso(*)" style="font-weight: bold;"/>
-                                            </span>
-                                            <bandbox  width="400px" readonly="true"  id="bd1">
+                                            
+                                            <bandbox  width="380px" readonly="true"  id="bd1">
                                                 <bandpopup>
                                                     <vbox>
-                                                        <listbox id="curso" width="660px" rows="10" 
+                                                        <listbox id="curso" width="500px" rows="10" 
                                                                  onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
                                                             <listitem selected="true" forEach="${cursos}" value="${each}">
                                                                 <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -1986,6 +1990,7 @@ public void quitarFila(String codigoBuscar){
                                                     </vbox>
                                                 </bandpopup>
                                             </bandbox>
+                                            </span>
                                         </row>
                                         <row>
                                             <span style="float:right;">
@@ -2048,31 +2053,28 @@ public void quitarFila(String codigoBuscar){
                                             <span style="float:right"> Observación:</span>
                                             <textbox rows="2" id="observacion" cols="65"  readonly="true"  />
                                         </row>
-                                        <row>
-                                            <span style="float:right">
-                                                Provincia: 
-                                            </span>
-                                            <span>
-                                                <textbox cols="20" id="provincia"  />
-                                                Canton:
-                                                <textbox cols="20"  id="canton"  />
-                                            </span>
-                                        </row>
-                                        <row>
-                                            <span style="float:right">
-                                                Parroquia:    
-                                            </span> 
-                                        
-                                            <span>
-                                                <textbox  cols="20" id="lugarnacimiento"  />
-                                                <span style="color:blue;weight:bold">    
-                                                    Nacionalidad(*)
-                                                </span>
-                                                <textbox id="nacionalidad"  />
-                                            </span>
-                                        
-                                         
-                                        </row>
+          <row>
+
+                                                            <span style="float:right"> Es Interno?:</span>
+                                                            <span>
+                                                                <checkbox id="adventista" disabled="true" /> Es Nuevo?:
+                                                                <checkbox id="nuevo" disabled="true" />
+                                                            </span>
+
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Religión:</span>
+                                                            <combobox id="religion" readonly="true">
+                                                                <comboitem  value="Ninguno" label="Ninguno"/>
+                                                                <comboitem value="Adventista" label="Adventista"/>
+                                                                <comboitem value="Cristiano" label="Cristiano"/>
+                                                                <comboitem value="Evangélico" label="Evangélico"/>
+                                                                <comboitem value="Católico" label="Catolico"/>
+                                                                <comboitem value="Otra" label="Otra"/>
+
+
+                                                            </combobox>
+                                                        </row>
                                           
                                     </rows>
                                 </grid>

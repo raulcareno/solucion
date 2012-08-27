@@ -651,7 +651,7 @@ public JRDataSource transporte(ArrayList listadodeCursos,String tipo){
                                     "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                                     "and o.curso.codigocur in (" + curso + ") and  " +
                                     "o.estudiante.transporte = true  " +
-                                    "order by o.curso.secuencia, (o.curso.descripcion, o.curso.paralelo.descripcion), (o.estudiante.apellido,o.estudiante.nombre) ";
+                                    "order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
                     
 
                         List hoy = adm.query(query);
