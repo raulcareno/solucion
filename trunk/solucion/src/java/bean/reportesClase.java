@@ -4663,22 +4663,35 @@ public class reportesClase {
                 + "  in (Select m.estudiante from Matriculas as m, Cursos as cu "
                 + "where cu.codigocur = m.curso and cu.secuencia = '"+cursoLlega.getSecuencia()+"'  and cu.periodo = '"+cursoLlega.getPeriodo().getCodigoper()+"' ) "
                 + " order by  6 DESC ");
-
+//        System.out.println(" Select " + complementoPromedio + ", " + complementoDisciplina + " "
+//                + ", " + complementoPromedioBac + ", " + complementoDisciplinaBac + ", "
+//                + " o.estudiante,  "
+//                + " CAST( (" + complementoPromedio + "  "
+//                + "   + " + complementoPromedioBac + ") /2 AS DECIMAL(5,3)) AS PROM_APROV  "
+//                + " from Notasrecord as o where o.estudiante  "
+//                + "  in (Select m.estudiante from Matriculas as m, Cursos as cu "
+//                + "where cu.codigocur = m.curso and cu.secuencia = '"+cursoLlega.getSecuencia()+"'  and cu.periodo = '"+cursoLlega.getPeriodo().getCodigoper()+"' ) "
+//                + " order by  6 DESC ");
         for (Iterator itna = notas.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             Nota n1 = new Nota();
-            n1.setCurso(cursoLlega);
-            n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(4), Estudiantes.class));
+            //n1.setCurso(cursoLlega);
             n1.setP1(new BigDecimal(vec.get(0) + ""));
             n1.setD1(new BigDecimal(vec.get(1) + ""));
             n1.setP2(new BigDecimal(vec.get(2) + ""));
             n1.setD2(new BigDecimal(vec.get(3) + ""));
- 
+            n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(4), Estudiantes.class));
+            try {
+                List<Cursos> matri = adm.query("Select o.curso from Matriculas as o  "
+                    + "where o.estudiante.codigoest = '"+n1.getEstudiante().getCodigoest()+"' "
+                    + "and o.curso.periodo.codigoper = '"+cursoLlega.getPeriodo().getCodigoper()+"' ");
+                n1.setCurso(matri.get(0));
+            } catch (Exception e) {
+            }
+            n1.setP3(new BigDecimal(vec.get(5) + ""));
             listaResultados.add(n1);
 
         }
-
-
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }

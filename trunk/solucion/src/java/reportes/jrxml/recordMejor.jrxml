@@ -40,6 +40,7 @@
 	<field name="d6" class="java.math.BigDecimal"/>
 	<field name="promedio" class="java.math.BigDecimal"/>
 	<field name="disciplina" class="java.math.BigDecimal"/>
+	<field name="paralelo" class="java.lang.String"/>
 	<variable name="SUM_nota_1" class="java.lang.Object" calculation="Sum">
 		<variableExpression><![CDATA[$F{nota}]]></variableExpression>
 	</variable>
@@ -52,7 +53,7 @@
 	<pageHeader>
 		<band height="120" splitType="Stretch">
 			<staticText>
-				<reportElement x="33" y="100" width="322" height="20"/>
+				<reportElement x="33" y="100" width="232" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -66,7 +67,7 @@
 				<text><![CDATA[ESTUDIANTES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="355" y="100" width="45" height="20"/>
+				<reportElement x="307" y="100" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -80,7 +81,7 @@
 				<text><![CDATA[Prom.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="445" y="100" width="45" height="20"/>
+				<reportElement x="397" y="100" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -94,7 +95,7 @@
 				<text><![CDATA[Prom.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="355" y="61" width="90" height="39"/>
+				<reportElement x="307" y="61" width="90" height="39"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -108,7 +109,7 @@
 				<text><![CDATA[PROMEDIOS DE 2DO. A 10MO DE EDUC. GENEL BASICA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="490" y="100" width="45" height="20"/>
+				<reportElement x="442" y="100" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -122,7 +123,7 @@
 				<text><![CDATA[Disc.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="100" width="45" height="20"/>
+				<reportElement x="352" y="100" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -161,13 +162,8 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="0" y="41" width="535" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{curso}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="445" y="61" width="90" height="39"/>
+				<reportElement x="397" y="61" width="90" height="39"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -180,6 +176,34 @@
 				</textElement>
 				<text><![CDATA[PROMEDIOS DE 1RO. A 2DO DE BACHILLERATO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="487" y="61" width="48" height="59"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PROM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="100" width="42" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Paralelo]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -188,7 +212,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="355" y="0" width="45" height="20"/>
+				<reportElement x="307" y="0" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -202,7 +226,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{p1}.equals(new BigDecimal(0)) ? null: $F{p1})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="445" y="0" width="45" height="20"/>
+				<reportElement x="397" y="0" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -216,7 +240,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{p2}.equals(new BigDecimal(0)) ? null: $F{p2})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="490" y="0" width="45" height="20"/>
+				<reportElement x="442" y="0" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -230,7 +254,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{d2}.equals(new BigDecimal(0)) ? null: $F{d2})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.000" isBlankWhenNull="true">
-				<reportElement x="400" y="0" width="45" height="20"/>
+				<reportElement x="352" y="0" width="45" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -244,7 +268,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{d1}.equals(new BigDecimal(0)) ? null: $F{d1})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="33" y="0" width="322" height="20"/>
+				<reportElement x="33" y="0" width="232" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -270,6 +294,34 @@
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000" isBlankWhenNull="true">
+				<reportElement x="487" y="0" width="48" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[($F{p3}.equals(new BigDecimal(0)) ? null: $F{p3})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="265" y="0" width="42" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{paralelo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

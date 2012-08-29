@@ -48,6 +48,12 @@ public class ReporteRecordDataSource implements JRDataSource{
            valor = nodo.getEstudiante().getApellido()+" "+nodo.getEstudiante().getNombre();
         }else    if ("curso".equals(fieldName)) {
            valor = nodo.getCurso()+"";
+        }else    if ("paralelo".equals(fieldName)) {
+            try {
+                valor = nodo.getCurso().getParalelo().getDescripcion()+"";     
+            } catch (Exception e) {
+            }
+           
         }else    if ("p1".equals(fieldName)) {
             valor = nodo.getP1();
         }else    if ("p2".equals(fieldName)) {
