@@ -10,14 +10,7 @@ import javax.faces.convert.FacesConverter;
  
 import jcinform.persistencia.Pais;
 
-/**
- * Clase Converter para la entidad SicCalle.
- * <p>
- * <H6>Soporte:APLINFO <I>mtupiza@gmail.com</I></H6>
- * @author Marco Tupiza mtupiza@gmail.com
- * @author APLINFO
- * @version 1.0 17/09/2010
- */
+ 
 @FacesConverter(value = "ConvPais", forClass = Pais.class)
 public class ConvPais  implements Converter {
 

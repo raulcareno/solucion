@@ -8,11 +8,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
  
-import jcinform.persistencia.TipoMateria;
-
+import jcinform.persistencia.Facultad;
  
-@FacesConverter(value = "ConvTipoMateria", forClass = TipoMateria.class)
-public class ConvTipoMateria  implements Converter {
+@FacesConverter(value = "ConvFacultad", forClass = Facultad.class)
+public class ConvFacultad  implements Converter {
 
  
     
@@ -22,7 +21,7 @@ public class ConvTipoMateria  implements Converter {
             return null;
         }
         try {
-           TipoMateria cat = new TipoMateria(Integer.parseInt(value));
+           Facultad cat = new Facultad(Integer.parseInt(value));
             return cat;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(CantonBean.class.getName()).log(Level.SEVERE, null, e);
@@ -31,14 +30,14 @@ public class ConvTipoMateria  implements Converter {
     }
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value instanceof TipoMateria) {
-            if (((TipoMateria)value) == null) {
+        if (value instanceof Facultad) {
+            if (((Facultad)value) == null) {
                 return null;
             }
-            if (((TipoMateria)value).getIdTipoMateria() == null) {
+            if (((Facultad)value).getIdFacultad() == null) {
                 return null;
             }
-            return Integer.toString(((TipoMateria)value).getIdTipoMateria());
+            return Integer.toString(((Facultad)value).getIdFacultad());
         }else{
             return null;
             

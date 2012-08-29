@@ -18,7 +18,7 @@
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
                         <h:outputText value="TIPO MATERIA" /> 
-                        <p:selectOneMenu id="tipoMateria" label="tipoMateria" converter="ConvTipoMateria" value="#{materiasBean.object.idMaterias}"   effect="fade"  >
+                        <p:selectOneMenu id="tipoMateria" label="tipoMateria" converter="ConvTipoMateria" value="#{materiasBean.object.idTipoMateria}"   effect="fade"  >
                             <f:selectItems value="#{materiasBean.selectedItemTipoMateria}" var="ob2"  itemValue="#{ob2}"></f:selectItems>
                         </p:selectOneMenu>
                         
@@ -49,11 +49,15 @@
 
                 <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="materias" var="obj" value="#{materiasBean.model}">  
 
-                    <p:column headerText="TIPO" style="width:80%">  
+                    <p:column headerText="TIPO" style="width:20%">  
                         <h:outputText value="#{obj.idTipoMateria.nombre}" />  
                     </p:column>  
-                    <p:column headerText="NOMBRE" style="width:80%">  
+                    <p:column headerText="NOMBRE" style="width:20%">  
                         <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="ESTADO" style="width:20%">  
+                        <h:outputText value="ACTIVA" rendered="#{obj.activa==true}" />  
+                        <h:outputText value="-" rendered="#{obj.activa==false}" />  
                     </p:column>  
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">

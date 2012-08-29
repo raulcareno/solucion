@@ -47,10 +47,10 @@
     position: relative;
     background-color: #ffffff;
     padding: 10px;
-     border-top: solid buttonface;
-  border-right: solid buttonface;
-  border-bottom: solid buttonface;
-  border-left: solid buttonface;
+    border-width: thin;
+  border-right: thin solid #95CAFF;
+  border-bottom: thin solid #95CAFF;
+  border-left: thin solid #95CAFF;
     margin: -5px 55px 0px 55px;
  
 
