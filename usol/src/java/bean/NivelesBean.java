@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import jcinform.persistencia.Pais;
+import jcinform.persistencia.Niveles;
 import jcinform.procesos.Administrador;
  
 import utilerias.Permisos;
@@ -26,19 +26,19 @@ import utilerias.Permisos;
  */
 @ManagedBean
 @ViewScoped
-public class PaisBean {
+public class NivelesBean {
 
     /**
-     * Creates a new instance of PaisBean
+     * Creates a new instance of NivelesBean
      */
-    Pais object;
+    Niveles object;
     Administrador adm;
-    protected List<Pais> model;
+    protected List<Niveles> model;
     public String textoBuscar;
     Permisos permisos;
    
 
-    public PaisBean() {
+    public NivelesBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
 //        String s = context.getExternalContext().getRequestParameterMap().get("skp");
@@ -51,30 +51,30 @@ public class PaisBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Pais", "ingresar_pais", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Niveles", "ingresar_niveles", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
-            } //selectedPais = new Pais();
+            } //selectedNiveles = new Niveles();
             catch (IOException ex) {
-                java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, ex);
-//                Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, ex);
+                java.util.logging.Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //selectedPais = new Pais();
+        //selectedNiveles = new Niveles();
 
     }
 
-    public String editarAction(Pais obj) {
+    public String editarAction(Niveles obj) {
         inicializar();
 
         object = obj;
-        System.out.println("" + object.getIdPais());
+        System.out.println("" + object.getIdNiveles());
         return null;
     }
 
     protected void inicializar() {
-        object = new Pais(0);
+        object = new Niveles(0);
         cargarDataModel();
     }
 
@@ -83,17 +83,21 @@ public class PaisBean {
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
- if (object.getNombre().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
+        if (object.getNombre().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", "Ingrese el NOMBRE"));
             return null;
         }
-        if (object.getIdPais() == 0) {
-            if (!permisos.verificarPermisoReporte("Pais", "agregar_pais", "agregar", true, "PARAMETROS")) {
+        if (object.getSecuencia()<=0) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la SECUENCIA", "Ingrese la SECUENCIA"));
+            return null;
+        }
+        if (object.getIdNiveles() == 0) {
+            if (!permisos.verificarPermisoReporte("Niveles", "agregar_niveles", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             try {
-                if (adm.existe("Pais", "nombre", object.getNombre()).size() <= 0) {
-                    object.setIdPais(adm.getNuevaClave("Pais", "idPais"));
+                if (adm.existe("Niveles", "nombre", object.getNombre(),"secuencia",new Integer(object.getSecuencia())," ").size() <= 0) {
+                    object.setIdNiveles(adm.getNuevaClave("Niveles", "idNiveles"));
                     adm.guardar(object);
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
@@ -104,8 +108,8 @@ public class PaisBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Pais", "actualizar_pais", "agregar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+            if (!permisos.verificarPermisoReporte("Niveles", "actualizar_niveles", "agregar", true, "PARAMETROS")) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
             }
             try {
                 adm.actualizar(object);
@@ -113,7 +117,7 @@ public class PaisBean {
                 inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
-                java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+                java.util.logging.Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
 
@@ -125,19 +129,19 @@ public class PaisBean {
     /**
      * Elimina un registro asociado a la página
      */
-    public String eliminar(Pais obj) {
+    public String eliminar(Niveles obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Pais", "eliminar_pais", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Niveles", "eliminar_niveles", "eliminar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
-            adm.eliminarObjeto(Pais.class, obj.getIdPais());
+            adm.eliminarObjeto(Niveles.class, obj.getIdNiveles());
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, e);
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         return null;
@@ -149,14 +153,14 @@ public class PaisBean {
      */
     public List<SelectItem> getSelectedItem() {
         try {
-            List<Pais> datos = adm.query("Select o from Pais as o");
+            List<Niveles> datos = adm.query("Select o from Niveles as o");
             List<SelectItem> items = new ArrayList<SelectItem>();
-            for (Pais obj : datos) {
+            for (Niveles obj : datos) {
                 items.add(new SelectItem(obj, obj.getNombre()));
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e.getMessage());
         }
         return null;
@@ -167,17 +171,17 @@ public class PaisBean {
      */
     public void cargarDataModel() {
         try {
-            model = (adm.listar("Pais"));
+            model = (adm.listar("Niveles"));
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
 
     public void limpiar() {
-        object = new Pais(0);
+        object = new Niveles(0);
     }
 
     /**
@@ -185,12 +189,12 @@ public class PaisBean {
      */
     public void buscar() {
         try {
-            //setModel(adm.listar("Pais"));
-            model = (adm.query("Select o from Pais as o where o.nombre like '%" + textoBuscar + "%'"));
+            //setModel(adm.listar("Niveles"));
+            model = (adm.query("Select o from Niveles as o where o.nombre like '%" + textoBuscar + "%'"));
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NivelesBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -200,14 +204,14 @@ public class PaisBean {
      *
      * @return
      */
-    public List<Pais> getModel() {
+    public List<Niveles> getModel() {
         if (model == null) {
             cargarDataModel();
         }
         return model;
     }
 
-    public void setModel(List<Pais> model) {
+    public void setModel(List<Niveles> model) {
         this.model = model;
     }
 
@@ -241,14 +245,14 @@ public class PaisBean {
     }
     private static final long serialVersionUID = 1L;
 
-    public Pais getObject() {
+    public Niveles getObject() {
         if (object == null) {
-            object = new Pais(0);
+            object = new Niveles(0);
         }
         return object;
     }
 
-    public void setObject(Pais object) {
+    public void setObject(Niveles object) {
         this.object = object;
     }
 }

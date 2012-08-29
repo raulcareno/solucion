@@ -15,7 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import jcinform.persistencia.Pais;
+import jcinform.persistencia.Modalidad;
 import jcinform.procesos.Administrador;
  
 import utilerias.Permisos;
@@ -26,19 +26,19 @@ import utilerias.Permisos;
  */
 @ManagedBean
 @ViewScoped
-public class PaisBean {
+public class ModalidadBean {
 
     /**
-     * Creates a new instance of PaisBean
+     * Creates a new instance of ModalidadBean
      */
-    Pais object;
+    Modalidad object;
     Administrador adm;
-    protected List<Pais> model;
+    protected List<Modalidad> model;
     public String textoBuscar;
     Permisos permisos;
    
 
-    public PaisBean() {
+    public ModalidadBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
 //        String s = context.getExternalContext().getRequestParameterMap().get("skp");
@@ -51,30 +51,30 @@ public class PaisBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Pais", "ingresar_pais", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Modalidad", "ingresar_modalidad", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
-            } //selectedPais = new Pais();
+            } //selectedModalidad = new Modalidad();
             catch (IOException ex) {
-                java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, ex);
-//                Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, ex);
+                java.util.logging.Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //selectedPais = new Pais();
+        //selectedModalidad = new Modalidad();
 
     }
 
-    public String editarAction(Pais obj) {
+    public String editarAction(Modalidad obj) {
         inicializar();
 
         object = obj;
-        System.out.println("" + object.getIdPais());
+        System.out.println("" + object.getIdModalidad());
         return null;
     }
 
     protected void inicializar() {
-        object = new Pais(0);
+        object = new Modalidad(0);
         cargarDataModel();
     }
 
@@ -87,13 +87,13 @@ public class PaisBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
             return null;
         }
-        if (object.getIdPais() == 0) {
-            if (!permisos.verificarPermisoReporte("Pais", "agregar_pais", "agregar", true, "PARAMETROS")) {
+        if (object.getIdModalidad() == 0) {
+            if (!permisos.verificarPermisoReporte("Modalidad", "agregar_modalidad", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             try {
-                if (adm.existe("Pais", "nombre", object.getNombre()).size() <= 0) {
-                    object.setIdPais(adm.getNuevaClave("Pais", "idPais"));
+                if (adm.existe("Modalidad", "nombre", object.getNombre()).size() <= 0) {
+                    object.setIdModalidad(adm.getNuevaClave("Modalidad", "idModalidad"));
                     adm.guardar(object);
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
@@ -104,7 +104,7 @@ public class PaisBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Pais", "actualizar_pais", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Modalidad", "actualizar_modalidad", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             try {
@@ -113,7 +113,7 @@ public class PaisBean {
                 inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
-                java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+                java.util.logging.Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
 
@@ -125,19 +125,19 @@ public class PaisBean {
     /**
      * Elimina un registro asociado a la página
      */
-    public String eliminar(Pais obj) {
+    public String eliminar(Modalidad obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Pais", "eliminar_pais", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Modalidad", "eliminar_modalidad", "eliminar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
-            adm.eliminarObjeto(Pais.class, obj.getIdPais());
+            adm.eliminarObjeto(Modalidad.class, obj.getIdModalidad());
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, e);
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         return null;
@@ -149,14 +149,14 @@ public class PaisBean {
      */
     public List<SelectItem> getSelectedItem() {
         try {
-            List<Pais> datos = adm.query("Select o from Pais as o");
+            List<Modalidad> datos = adm.query("Select o from Modalidad as o");
             List<SelectItem> items = new ArrayList<SelectItem>();
-            for (Pais obj : datos) {
+            for (Modalidad obj : datos) {
                 items.add(new SelectItem(obj, obj.getNombre()));
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e.getMessage());
         }
         return null;
@@ -167,17 +167,17 @@ public class PaisBean {
      */
     public void cargarDataModel() {
         try {
-            model = (adm.listar("Pais"));
+            model = (adm.listar("Modalidad"));
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
 
     public void limpiar() {
-        object = new Pais(0);
+        object = new Modalidad(0);
     }
 
     /**
@@ -185,12 +185,12 @@ public class PaisBean {
      */
     public void buscar() {
         try {
-            //setModel(adm.listar("Pais"));
-            model = (adm.query("Select o from Pais as o where o.nombre like '%" + textoBuscar + "%'"));
+            //setModel(adm.listar("Modalidad"));
+            model = (adm.query("Select o from Modalidad as o where o.nombre like '%" + textoBuscar + "%'"));
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(PaisBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(ModalidadBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -200,14 +200,14 @@ public class PaisBean {
      *
      * @return
      */
-    public List<Pais> getModel() {
+    public List<Modalidad> getModel() {
         if (model == null) {
             cargarDataModel();
         }
         return model;
     }
 
-    public void setModel(List<Pais> model) {
+    public void setModel(List<Modalidad> model) {
         this.model = model;
     }
 
@@ -241,14 +241,14 @@ public class PaisBean {
     }
     private static final long serialVersionUID = 1L;
 
-    public Pais getObject() {
+    public Modalidad getObject() {
         if (object == null) {
-            object = new Pais(0);
+            object = new Modalidad(0);
         }
         return object;
     }
 
-    public void setObject(Pais object) {
+    public void setObject(Modalidad object) {
         this.object = object;
     }
 }
