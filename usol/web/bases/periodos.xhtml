@@ -13,16 +13,16 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-
+  <script src="locales.js" type="text/javascript"/>
                 <p:panel id="registro"  style="width: 600px;" header="Pais">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="FECHA INICIO: " />  
-                        <p:calendar value="#{periodosBean.object.fechaInicio}"  id="fechaInicio"   showOn="button" style="font-weight:bold;"/>  
+                        <p:calendar value="#{periodosBean.object.fechaInicio}" pattern="dd/mm/yyyy" locale="es"  id="fechaInicio"   showOn="button" style="font-weight:bold;"/>  
                         <h:outputText value="FECHA FIN: " />  
-                        <p:calendar value="#{periodosBean.object.fechaFin}" id="fechaFin"   showOn="button" style="font-weight:bold;"/>  
+                        <p:calendar value="#{periodosBean.object.fechaFin}" pattern="dd/mm/yyyy"  locale="es"  id="fechaFin"   showOn="button" style="font-weight:bold;"/>  
                         <h:outputText value="PERIODO ACTIVO: " />  
                         <p:selectBooleanCheckbox value="#{periodosBean.object.activo}"  id="Activo"   style="font-weight:bold;"/>  
                         <h:outputText value="ORDEN: " />  

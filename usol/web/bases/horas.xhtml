@@ -13,7 +13,7 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-
+                <script src="locales.js" type="text/javascript"/>
                 <p:panel id="registro"  style="width: 600px;" header="Pais">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
@@ -24,7 +24,7 @@
                         <h:outputText value="HORA INICIAL: " />  
                         <p:calendar value="#{horasBean.object.desdeHor}" locale="es"  pattern="HH:mm" timeOnly="true" id="fechaInicio"   showOn="button" style="font-weight:bold;"/>  
                         <h:outputText value="HORA FINAL: " />  
-                        <p:calendar value="#{horasBean.object.hastaHor}" id="fechaFin"    pattern="HH:mm" timeOnly="true"   showOn="button"  style="font-weight:bold;"/>  
+                        <p:calendar value="#{horasBean.object.hastaHor}" locale="es"   id="fechaFin"    pattern="HH:mm" timeOnly="true"   showOn="button"  style="font-weight:bold;"/>  
                          <p:inputText  value="#{horasBean.object.idHoras}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 
                     </h:panelGrid>  

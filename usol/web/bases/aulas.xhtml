@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form"  enctype="multipart/form-data">
+
+                <p:panel id="registro"  style="width: 600px;" header="Aulases">
+                    <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                        <h:outputText value="NOMBRE" />  
+                        <p:inputText value="#{aulasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="Ubicación" />  
+                        <p:inputText id="ubicacion" value="#{aulasBean.object.ubicacion}" style="font-weight:bold"/>  
+                        <h:outputText value="Long" />  
+                        <p:inputText id="coordenadaX" value="#{aulasBean.object.coordenadaX}" style="font-weight:bold"/>  
+                        <h:outputText value="Latit." />  
+                        <p:inputText id="coordenadaY" value="#{aulasBean.object.coordenadaY}" style="font-weight:bold"/>  
+                        
+                        <p:commandLink id="enlaceGmaps" onclick="fotoDialog.show()">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/icono.png"  />
+                        </p:commandLink>
+                        <p:inputText  value="#{aulasBean.object.idAulas}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+
+                    </h:panelGrid>  
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:aulas"   action="#{aulasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{aulasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        </p:commandButton> 
+
+                    </h:panelGrid>
+                    <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:600px;height:400px" /> 
+                </p:panel>
+                <p:dialog header="Selecciona un lugar" widgetVar="fotoDialog" modal="true"
+                          width="600" height="500" visible="false" resizable="false">
+                 
+                    <br />
+                    <p:commandButton type="button" value="Hacer foto" >
+                        <p:ajax oncomplete="fotoDialog.hide();"  />
+                    </p:commandButton>
+                </p:dialog>
+                <p:panel  style="width: 600px;">
+                    <h:panelGrid  columns="4">
+
+                        <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
+                        <p:inputText id="textoBuscar" value="#{aulasBean.textoBuscar}" style="font-weight:bold"/>  
+
+
+                        <p:commandButton id="buscar" value="Buscar" update="aulas" actionListener="#{aulasBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+
+                    </h:panelGrid>
+
+                </p:panel>
+                
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="aulas" var="obj" value="#{aulasBean.model}">  
+                    <p:column headerText="ID" style="width:10%">  
+                        <h:outputText value="#{obj.idAulas}" />  
+                    </p:column>  
+                    <p:column headerText="NOMBRE" style="width:80%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{aulasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+
+                            </p:commandButton>  
+                            <p:commandButton id="eliminarButton" actionListener="#{aulasBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash" title="Editar">  
+
+                            </p:commandButton>  
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>
