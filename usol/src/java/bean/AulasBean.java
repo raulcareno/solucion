@@ -178,7 +178,8 @@ public class AulasBean {
       
     public void onPointSelect(PointSelectEvent event) {  
         LatLng latlng = event.getLatLng();  
-          object.setCoordenadaX(textoBuscar);
+          object.setCoordenadaX(latlng.getLat()+"");
+          object.setCoordenadaY(latlng.getLng()+"");
 //        addMessage(new FacesMessage(FacesMessage.SEVERITY_INFO, "Point Selected", "Lat:" + latlng.getLat() + ", Lng:" + latlng.getLng()));  
     }  
       

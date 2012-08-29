@@ -13,23 +13,29 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form"  enctype="multipart/form-data">
-
+                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript" ></script>
                 <p:panel id="registro"  style="width: 600px;" header="Aulases">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                    <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="NOMBRE" />  
                         <p:inputText value="#{aulasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <f:verbatim/>
                         <h:outputText value="Ubicación" />  
                         <p:inputText id="ubicacion" value="#{aulasBean.object.ubicacion}" style="font-weight:bold"/>  
-                        <h:outputText value="Long" />  
+                        <f:verbatim/>
+                        <h:outputText value="Lat." />  
                         <p:inputText id="coordenadaX" value="#{aulasBean.object.coordenadaX}" style="font-weight:bold"/>  
-                        <h:outputText value="Latit." />  
+                        <p:commandLink id="enlaceGmaps" onclick="verMapa.show()">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/maps.png"  />
+                        </p:commandLink>
+
+                        <h:outputText value="Long." />  
                         <p:inputText id="coordenadaY" value="#{aulasBean.object.coordenadaY}" style="font-weight:bold"/>  
-                        
-                        <p:commandLink id="enlaceGmaps" onclick="fotoDialog.show()">
-                            <p:graphicImage value="#{pageContext.contextPath}/images/icono.png"  />
+                        <p:commandLink id="enlaceGmaps2" onclick="verMapa2.show()">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png"  />
+                            <p:ajax event="click" update="vermap"/>
                         </p:commandLink>
                         <p:inputText  value="#{aulasBean.object.idAulas}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 
@@ -40,35 +46,50 @@
                         </p:commandButton> 
 
                     </h:panelGrid>
-                    <p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID" style="width:600px;height:400px" /> 
+
                 </p:panel>
-                <p:dialog header="Selecciona un lugar" widgetVar="fotoDialog" modal="true"
+                <p:dialog header="Selecciona un lugar" widgetVar="verMapa" modal="true"
                           width="600" height="500" visible="false" resizable="false">
-                 
+                    <p:gmap  center="-0.21676206459871, -78.51618037292678" 
+                             zoom="15" type="ROADMAP" style="width:600px;height:400px">  
+                        <p:ajax event="pointSelect" listener="#{aulasBean.onPointSelect}" update="coordenadaX coordenadaY" />  
+                    </p:gmap>  
                     <br />
-                    <p:commandButton type="button" value="Hacer foto" >
-                        <p:ajax oncomplete="fotoDialog.hide();"  />
+                    <p:commandButton type="button" value="Listo" >
+                        <p:ajax oncomplete="verMapa.hide();"  />
+                    </p:commandButton>
+                </p:dialog>
+                <p:dialog header="Selecciona un lugar" widgetVar="verMapa2" modal="true"
+                          width="600" height="500" visible="false" resizable="false">
+                    <p:gmap   id="vermap" center="#{aulasBean.object.coordenadaX},#{aulasBean.object.coordenadaY}"
+                              zoom="15" type="ROADMAP" style="width:600px;height:400px"/>    
+
+                    <br />
+                    <p:commandButton type="button" value="Salir" >
+                        <p:ajax oncomplete="verMapa2.hide();"  />
                     </p:commandButton>
                 </p:dialog>
                 <p:panel  style="width: 600px;">
                     <h:panelGrid  columns="4">
-
                         <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
                         <p:inputText id="textoBuscar" value="#{aulasBean.textoBuscar}" style="font-weight:bold"/>  
-
-
                         <p:commandButton id="buscar" value="Buscar" update="aulas" actionListener="#{aulasBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
 
                     </h:panelGrid>
-
                 </p:panel>
-                
+
                 <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="aulas" var="obj" value="#{aulasBean.model}">  
-                    <p:column headerText="ID" style="width:10%">  
-                        <h:outputText value="#{obj.idAulas}" />  
-                    </p:column>  
-                    <p:column headerText="NOMBRE" style="width:80%">  
+                    <p:column headerText="NOMBRE" style="width:30%">  
                         <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="UBICACIÓN" style="width:30%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="LAT" style="width:30%">  
+                        <h:outputText value="#{obj.coordenadaX}" />  
+                    </p:column>  
+                    <p:column headerText="LONG" style="width:30%">  
+                        <h:outputText value="#{obj.coordenadaY}" />  
                     </p:column>  
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
