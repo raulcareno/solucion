@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+
+        <h:head>
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <title>Prueba PhotoCam</title>
+            <style type="text/css">
+                table td {
+                    vertical-align: top;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <h:form enctype="multipart/form-data">
+
+                <p:panel header="Introduce los datos de tu mascota">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="nombre" value="Nombre" />
+                        <p:inputText id="nombre" value="#{photoCamBean.nombre}" />
+                        <h:outputLabel for="edad" value="Edad" />
+                        <p:inputMask id="edad"  mask="999" value="#{photoCamBean.edad}" />
+                        <h:outputLabel for="fotoLink" value="Foto" />
+                        <p:commandLink id="fotoLink" onclick="fotoDialog.show()">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/logo.png"
+                                            rendered="#{! photoCamBean.verFoto}" />
+                            <p:graphicImage rendered="#{photoCamBean.verFoto}"
+                                            value="#{pageContext.contextPath}/fotos/#{photoCamBean.foto}"
+                                            cache="false" />
+                        </p:commandLink>
+                    </h:panelGrid>
+                    <p:fileUpload fileUploadListener="#{fileUploadController.handleFileUpload}"  
+                                  mode="advanced"  
+                                  update="messages"  
+                                  auto="true"  
+                                  sizeLimit="100000"   
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+
+                    <p:growl id="messages" showDetail="true"/>  
+                    <p:message id="messages3" for="messages" />
+                    
+                    <p:commandButton action="#{photoCamBean.guardarDatos}"
+                                     value="Guardar" />
+                </p:panel>
+                <p:dialog header="Haz una foto" widgetVar="fotoDialog" modal="true"
+                          fixedCenter="true" width="400" visible="false" resizable="false">
+                    <p:photoCam widgetVar="pc" listener="#{photoCamBean.oncapture}"
+                                update="fotoLink" />
+                    <br />
+                    <p:commandButton type="button" value="Hacer foto"
+                                     onclick="pc.capture()">
+                        <p:ajax oncomplete="fotoDialog.hide();" />
+                    </p:commandButton>
+                </p:dialog>
+<p:growl id="growl" />
+	<p:panel header="Prueba con Primefaces">
+		<h:panelGrid columns="2">
+			 
+			<p:calendar pattern="dd/MM/yyyy"
+				 
+				onSelectUpdate="growl" />
+		</h:panelGrid>
+	</p:panel>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+
+

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+        INICIO
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+             <h:form id="form">
+  <h:panelGrid styleClass="tablaFull content_container">
+            <br />
+            <h:panelGrid styleClass="tablaFull" rowClasses="alignCenter">
+                <h:outputText  styleClass="texto18"/>
+                <p:graphicImage url="/images/denegado.png"/>
+                <h:outputText value="NO SE LE HA PERMITIDO EL INGRESO AL CONTENIDO, ESCOJA OTRA OPCIÓN" styleClass="textoColorTomate texto16"/>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+         
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                 
+            </h:panelGrid>
+            <br />
+            <br />
+            <br />
+        </h:panelGrid> 
+              
+             
+        </h:form>
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <f:view contentType="text/html">
+        <h:head>
+
+            <ui:insert name="isLogin">
+                <c:if test="#{empty user}">
+                    <meta  HTTP-EQUIV="REFRESH" content="0; url =#{facesContext.externalContext.requestContextPath}/login.jspx" />
+                </c:if>
+            </ui:insert>
+
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="Cache-control" content="no-cache"/>
+            <meta http-equiv="Cache-control" content="no-store"/>          
+            <meta http-equiv="Pragma" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputStylesheet library="css" name="default1.css"/>
+            <h:outputStylesheet library="css" name="cssLayout.css"/>
+            <h:outputStylesheet library="css" name="cssLayout1.css"/>
+            <h:outputStylesheet library="css" name="informe.css"/>
+            <title><ui:insert name="title">Bienvenido..</ui:insert></title>
+        </h:head>
+        <h:body style="background-color: gainsboro">
+            <div id="top">
+                <ui:insert name="encabezado">
+                    <ui:include src="/templates/includes/encabezado.xhtml" />
+                </ui:insert>
+                <ui:insert name="menu">
+                    <ui:include src="/templates/includes/menu.xhtml" />
+                </ui:insert>
+            </div>
+
+            <div id="content" class="center_content">
+                <ui:insert name="contenido">
+                    <ui:include src="/templates/includes/novedades.xhtml" />
+                </ui:insert>
+            </div>
+
+            <div id="bottom">
+                <ui:insert name="pie">
+                    <ui:include src="/templates/includes/pie.xhtml" />
+                </ui:insert>
+            </div>
+
+
+
+
+
+        </h:body>
+    </f:view>
+</html>

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+
+                <p:panel id="registro"  style="width: 600px;" header="Perfiles">
+                    <!--p:growl id="growl" showDetail="true" sticky="true" /--> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                        <h:outputText value="NOMBRE" />  
+                        <p:inputText value="#{perfilesBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <p:inputText  value="#{perfilesBean.object.idPerfiles}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+
+                    </h:panelGrid>  
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:pais"   action="#{perfilesBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{perfilesBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        </p:commandButton> 
+                        
+                    </h:panelGrid>
+                </p:panel>
+                <p:panel  style="width: 600px;">
+                    <h:panelGrid  columns="4">
+
+                    <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
+                    <p:inputText id="textoBuscar" value="#{perfilesBean.textoBuscar}" style="font-weight:bold"/>  
+                    <p:commandButton id="buscar" value="Buscar" update="pais" actionListener="#{perfilesBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+
+                </h:panelGrid>
+                </p:panel>
+                
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="pais" var="obj" value="#{perfilesBean.model}">  
+                    <p:column headerText="ID" style="width:10%">  
+                        <h:outputText value="#{obj.idPerfiles}" />  
+                    </p:column>  
+                    <p:column headerText="NOMBRE" style="width:80%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{perfilesBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+
+                            </p:commandButton>  
+                            <p:commandButton id="eliminarButton" actionListener="#{perfilesBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash" title="Editar">  
+
+                            </p:commandButton>  
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

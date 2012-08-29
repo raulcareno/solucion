@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+ <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <title>Ingreso al Sistema</title>
+            <style type="text/css">
+                table td {
+                    vertical-align: top;
+                    border: 0px;
+                }
+            </style>
+             
+        </h:head>
+        <h:body >
+            <div  >
+                <h:form prependId="false"  id="login" enctype="multipart/form-data">
+                    <p:panel   style="width: 100%;height:600px">
+
+                        <!--p:growl id="growl" showDetail="true" sticky="true" /--> 
+                          <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                            <p:panel id="mipanel" style="width: 320px;border: 0px;border-color: transparent">
+                                <p:focus context="mipanel"/> 
+                                
+                                <p:graphicImage value="/images/logo2.png"/>
+                                <p:separator style="width:0;height:0px" />
+                                <h:outputText value=" Ingrese el nombre de Usuario y Contraseña" />
+                                <p:separator style="width:0;height:0px" />
+                                    <h:outputLabel value="Cuenta de Usuario:" /><f:verbatim/> 
+                                    
+                                <h:panelGrid style="font-size: 12px;border: 0px;border-color: transparent" columns="3">
+                                    
+                                    
+                                    <p:inputText style="height: 30px;font-size: 11px" size="40" required="true"  id="usuario" value="#{loginBean.usuario}" />
+                                    <p:message  for="usuario"  display="icon" /> 
+                                    <p:watermark for="usuario" value="Diqite aquí su Usuario" />  
+                                    <p:password style="height: 30px;font-size: 11px" size="40"   id="clave" required="true" value="#{loginBean.clave}"/>  
+                                    <p:message for="clave"  display="icon" /> 
+                                    <p:watermark for="clave" value="Diqite aquí su Contraseña" />  
+                                    <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
+                                </h:panelGrid>
+                                    <h:outputLink target="_blank" styleClass="texto12"
+                                          value="http://www.jcinform.com/">
+                                <f:verbatim>¿No puedes acceder a tu Cuenta?</f:verbatim>
+                            </h:outputLink>
+
+                            </p:panel>
+                        
+
+                    </p:panel>
+                </h:form>
+            </div>
+        </h:body>
+    </f:view>
+</html>
+
+

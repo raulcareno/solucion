@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:panelGroup>
+
+        <h:form id="formMenuH">
+            <p:toolbar  style=" height: 20px; margin: -5px 0px 0px 0px">  
+                <p:toolbarGroup  style="margin: -7px 0px 0px 0px" align="left">
+                    <p:menubar style="background-color: transparent;border: 0px" >  
+                        <p:menuitem value="Inicio" url="/index.jspx" icon="ui-icon-home" />  
+                        <p:submenu label="Administracion" icon="ui-icon-document">  
+
+                            <p:menuitem  value="Pais"  url="/bases/pais.jspx" icon="ui-icon-carat-1-e"  />  
+                            <p:menuitem    value="Provincia"  url="/bases/provincia.jspx" icon="ui-icon-carat-1-e"  />  
+                            <p:menuitem    value="Canton"  url="/bases/canton.jspx" icon="ui-icon-carat-1-e"  />  
+                            <p:separator />  
+                            <p:menuitem   value="Perfiles" url="/bases/perfiles.jspx" icon="ui-icon-carat-1-e"  />  
+                            <p:menuitem    value="Titulos" url="/bases/titulos.jspx" icon="ui-icon-carat-1-e" />  
+                            <p:menuitem     value="Tipos de Materia" url="/bases/tipomateria.jspx" icon="ui-icon-carat-1-e"  />  
+                            <p:separator />  
+                            <p:menuitem     value="Rubros" url="/bases/rubros.jspx" icon="ui-icon-carat-1-e"  />  
+                            <p:menuitem      value="Periodos" url="/bases/periodos.jspx" icon="ui-icon-carat-1-e"  />  
+                             
+                        </p:submenu>  
+
+                        <p:submenu label="Edit" icon="ui-icon-pencil">  
+                            <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />  
+                            <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />  
+                        </p:submenu>  
+
+                        <p:menuitem value="Salir" url="/login.jspx" icon="ui-icon-close" />  
+                    </p:menubar>  
+
+                </p:toolbarGroup>
+               
+            </p:toolbar>
+
+
+        </h:form>
+    </h:panelGroup>
+</ui:composition>

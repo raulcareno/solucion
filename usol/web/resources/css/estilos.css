@@ -1,0 +1,79 @@
+/* 
+    Document   : estilos
+    Created on : 25-ago-2012, 19:59:09
+    Author     : Geovanny
+    Description:
+        Purpose of the stylesheet follows.
+*/
+ 
+.principal22{
+    width: 1024px;
+    padding:0px;
+    border-width: 0px;
+    border-spacing: 0px;
+    border-spacing:0px;
+    border: 0px;
+
+    border-collapse:collapse;
+    margin: 0 auto;
+}
+
+.cabecera22{
+    background-attachment: scroll;
+    background-clip: border-box;
+    /* background-color: transparent; */
+    background-image: url('/images/cabecera2.png');
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    height: 144px;
+    background-color: red;
+}
+
+.header22{
+    background-attachment: scroll;
+    background-clip: border-box;
+    /* background-color: transparent; */
+    background-image: url('/images/cabecera2.png');
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: auto auto;
+    height: 144px;
+    background-color: red;
+}
+
+.container22 {
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    text-align: left;
+    width: 1024px;
+}
+
+.logo22 {
+    height: 69px;
+    margin-left: 500px;
+    padding-top: 5px;
+    text-align: center;
+    width: 300px;
+}
+
+.logo22_titulo {
+    padding-top: 0px;
+    text-align: center;
+    vertical-align: top;
+}
+
+.logo22_fecha {
+    color: #919396;
+    padding-top: 50px;
+}
+.campo-obligatorio{
+    font-weight: bold;
+    color:firebrick;
+}
+/*background-image: url("#{resource['images/mdmq:cabecera2.png']}");*/
+

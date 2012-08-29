@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:rich="http://richfaces.org/rich">
+
+    <h:dataTable styleClass="tablaFull tablaNoPadding transparencia95">
+        <f:facet name="header">            
+             
+                    <p:toolbar >  
+                        <p:toolbarGroup  align="left">
+                           
+
+                        </p:toolbarGroup>
+                        <p:toolbarGroup  align="right">
+                            <h:outputText value="Desarrollado por " styleClass="texto10"/>
+                            <h:outputLink target="_blank" styleClass="texto12"
+                                          value="http://www.jcinform.com/">
+                                <f:verbatim>JC INFORM</f:verbatim>
+                            </h:outputLink>
+                            <p:graphicImage value="/images/logo.png" width="20" height="20" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+ 
+        </f:facet>
+    </h:dataTable>
+
+</ui:composition>
