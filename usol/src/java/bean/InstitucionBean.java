@@ -77,7 +77,16 @@ public class InstitucionBean {
         inicializar();
 
         object = obj;
+        paisSeleccionado = object.getIdCanton().getIdProvincia().getIdPais();
+        buscarProvincia();
+        provinciaSeleccionado = object.getIdCanton().getIdProvincia();
+        buscarCanton();
+        cantonSeleccionado = object.getIdCanton();
+        generarImagen("logo.png", object.getLogo());
+        generarImagen("imagen.png", object.getImagen());
         System.out.println("" + object.getIdInstitucion());
+        foto1 = "logo.png";
+        foto2 = "imagen.png";
         return null;
     }
 
@@ -95,18 +104,10 @@ public class InstitucionBean {
 
 
    static int contarImagen = 0;
-
-    public void handleFileUpload(FileUploadEvent event) {
-        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        
-        if (contarImagen == 0) {
-            foto1 = event.getFile().getFileName();
-            object.setLogo(event.getFile().getContents());
-            contarImagen++;
-            final byte[] datos = event.getFile().getContents();
+public void generarImagen(String nombre, byte[] datos){
+   
             final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            this.foto1 = "logo.png";
+            this.foto1 = nombre;
             final String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + foto1;
             FileImageOutputStream outputStream = null;
             try {
@@ -120,35 +121,29 @@ public class InstitucionBean {
                 } catch (IOException e) {
                 }
             }
-
+            datos = null;
+}
+    public void handleFileUpload(FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        if (contarImagen == 0) {
+            foto1 = "logo.png";
+            object.setLogo(event.getFile().getContents());
+            contarImagen++;
+             byte[] datos = event.getFile().getContents();
+             generarImagen("logo.png", datos);
+            datos = null;
         } else {
-            foto2 = event.getFile().getFileName();
+            foto2 = "imagen.png";
             object.setImagen(event.getFile().getContents());
             contarImagen = 0;
-            final byte[] datos = event.getFile().getContents();
-            final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            this.foto2 = "foto.png";
-            final String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + foto2;
-            FileImageOutputStream outputStream = null;
-            try {
-                outputStream = new FileImageOutputStream(new File(fileFoto));
-                outputStream.write(datos, 0, datos.length);
-            } catch (IOException e) {
-                throw new FacesException("Error guardando la foto.", e);
-            } finally {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                }
-            }
-
-
-
+            byte[] datos = event.getFile().getContents();
+//            final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+             generarImagen("imagen.png", datos);
+             datos = null;
         }
-
-
-
-    }
+   }
     private DefaultStreamedContent content, content2;
 
     public static int getContarImagen() {
@@ -182,6 +177,7 @@ public class InstitucionBean {
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
+        object.setIdCanton(cantonSeleccionado);
         if (object.getNombre().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
             return null;
@@ -334,11 +330,11 @@ public Canton cantonSeleccionado= new Canton();
                         }
                     }else{
                         Canton obj = new Canton(0);
-                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado la provincia"));
                     } 
                     } catch (Exception e) {
                         Canton obj = new Canton(0);
-                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado la provincia"));
                     }
                     
 //                }

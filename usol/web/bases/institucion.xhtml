@@ -29,7 +29,7 @@
                         </p:selectOneMenu>  
 
                         <h:outputText value="PROVINCIA: " /> 
-                        <p:selectOneMenu immediate="true" id="provincia" label="provincia"  value="#{institucionBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
+                        <p:selectOneMenu  id="provincia" label="provincia"  value="#{institucionBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
                            <f:selectItems value="#{institucionBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
                            <p:ajax event="change" listener="#{institucionBean.buscarCanton()}"  update="canton" />  
                         </p:selectOneMenu>  
@@ -38,19 +38,22 @@
                         <p:selectOneMenu immediate="true" id="canton" label="canton"  value="#{institucionBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
                             <f:selectItems value="#{institucionBean.cantonesEncontradas}" var="ob3"  itemValue="#{ob3}"/>  
                         </p:selectOneMenu>  
-                        <h:outputText value="LOGO REPORTES" />  
-                        <div>
-                            <p:graphicImage id="logoSubido" width="100" value="#{pageContext.contextPath}/fotos/#{institucionBean.foto1}"
+                        <h:outputText value="DIRECCION" />  
+                        <p:inputText value="#{institucionBean.object.direccion}" id="direccion"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="LUGAR" />  
+                        <p:inputText value="#{institucionBean.object.lugar}" id="Lugar"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="SEDE" />  
+                        <p:inputText value="#{institucionBean.object.sede}" id="Sede"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="SUB AREA UNESCO" />  
+                        <p:inputText value="#{institucionBean.object.subAreaUnesco}" id="SubAreaUnesco"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="LOGO REPORTES" rendered="#{not empty institucionBean.foto1}"  />  
+                        <p:graphicImage id="logoSubido" width="100" rendered="#{not empty institucionBean.foto1}" value="#{pageContext.contextPath}/fotos/#{institucionBean.foto1}"
                                             cache="false" />
-                            <h:outputText value="IMAGEN PORTADA" />  
-                            <p:graphicImage id="logoSubido2" width="100" value="#{pageContext.contextPath}/fotos/#{institucionBean.foto2}"
+                        <h:outputText value="IMAGEN PORTADA" rendered="#{not empty institucionBean.foto2}"   />  
+                        <p:graphicImage id="logoSubido2" width="100" rendered="#{not empty institucionBean.foto2}"  value="#{pageContext.contextPath}/fotos/#{institucionBean.foto2}"
                                             cache="false" />
-                            <p:commandLink id="enlaceImagen" onclick="subirImagen1.show()">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/ver.png"  />
-                                <p:ajax event="click" update="vermap"/>
-                            </p:commandLink>
-                        </div>
-                        <h:outputText value="IMAGEN INICIAL" />  
+                        
+                      
                         <p:inputText  value="#{institucionBean.object.idInstitucion}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
                     </h:panelGrid>  
                     <h:panelGrid columns="4">

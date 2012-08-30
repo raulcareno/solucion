@@ -31,7 +31,9 @@ public class Permisos {
         idVariable = idVariable.replace("_", " ");
         List<Accesos> accesosList =  (List<Accesos>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("accesos");
         Empleados empleadoAc = (Empleados) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-
+            if(empleadoAc == null){
+                return false;
+            }
         if (idVariable.equals("-1")) {
             return true;
         }

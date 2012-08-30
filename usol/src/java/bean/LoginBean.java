@@ -5,15 +5,22 @@ package bean;
  * and open the template in the editor.
  */
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
+import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Institucion;
 import jcinform.procesos.Administrador;
 
 /**
@@ -33,6 +40,22 @@ Administrador adm;
         usuario = "";
         clave = "";
         adm = new Administrador();
+        try {
+               ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+               String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + "logo.png";
+               String fileFoto2 = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + "imagen.png";
+
+                if(!new File(fileFoto).exists() && !new File(fileFoto2).exists()){
+                        System.out.println("ENTRO A SELECCIONAR LA IMAGEN...");
+                        List<Institucion> user = adm.query("Select o from Institucion as o ");    
+                        generarImagen("logo.png", user.get(0).getLogo());
+                        generarImagen("imagen.png", user.get(0).getImagen());
+                }
+        } catch (Exception e) {
+            System.out.println("NO SE PUDO CARGAR LA IMAGEN DE INICIO");
+        }
+        
+        
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
     }
@@ -96,7 +119,26 @@ Administrador adm;
         }
         return "index";
     }
-    
+    public void generarImagen(String nombre, byte[] datos){
+   
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + nombre;
+            FileImageOutputStream outputStream = null;
+            try {
+                if(!new File(fileFoto).exists()){
+                        outputStream = new FileImageOutputStream(new File(fileFoto));
+                        outputStream.write(datos, 0, datos.length);
+                }
+            } catch (IOException e) {
+                throw new FacesException("Error cargando fotografía.", e);
+            } finally {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                }
+            }
+            datos = null;
+}
       protected UIComponent findComponent(UIComponent c, String id) {
         if (id.equals(c.getId())) {
             return c;
