@@ -19,7 +19,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
+import jcinform.persistencia.Canton;
 import jcinform.persistencia.Institucion;
+import jcinform.persistencia.Pais;
+import jcinform.persistencia.Provincia;
 import jcinform.procesos.Administrador;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -80,6 +83,9 @@ public class InstitucionBean {
 
     protected void inicializar() {
         object = new Institucion(0);
+        object.setIdCanton(new Canton());
+                object.getIdCanton().setIdProvincia(new Provincia());
+                object.getIdCanton().getIdProvincia().setIdPais(new Pais());
         cargarDataModel();
     }
     
@@ -254,7 +260,172 @@ public class InstitucionBean {
         }
         return null;
     }
+ List<SelectItem> provinciasEncontradas ;
+  List<SelectItem> cantonesEncontradas ;
+public Pais paisSeleccionado= new Pais();
+public Provincia provinciaSeleccionado= new Provincia();
+public Canton cantonSeleccionado= new Canton();
 
+    public List<SelectItem> getProvinciasEncontradas() {
+        return provinciasEncontradas;
+    }
+
+    public void setProvinciasEncontradas(List<SelectItem> provinciasEncontradas) {
+        this.provinciasEncontradas = provinciasEncontradas;
+    }
+
+    public Pais getPaisSeleccionado() {
+        return paisSeleccionado;
+    }
+
+    public void setPaisSeleccionado(Pais paisSeleccionado) {
+        this.paisSeleccionado = paisSeleccionado;
+    }
+
+    public List<SelectItem> getCantonesEncontradas() {
+        return cantonesEncontradas;
+    }
+
+    public void setCantonesEncontradas(List<SelectItem> cantonesEncontradas) {
+        this.cantonesEncontradas = cantonesEncontradas;
+    }
+
+    public Provincia getProvinciaSeleccionado() {
+        return provinciaSeleccionado;
+    }
+
+    public void setProvinciaSeleccionado(Provincia provinciaSeleccionado) {
+        this.provinciaSeleccionado = provinciaSeleccionado;
+    }
+
+    public Canton getCantonSeleccionado() {
+        return cantonSeleccionado;
+    }
+
+    public void setCantonSeleccionado(Canton cantonSeleccionado) {
+        this.cantonSeleccionado = cantonSeleccionado;
+    }
+    
+    
+    /**
+     * Obtiene el el listado de provincias
+     * @return 
+     */
+     public void buscarCanton() {
+        try {
+            List<Canton> divisionPoliticas = new ArrayList<Canton>();
+            cantonesEncontradas = new ArrayList<SelectItem>();
+            
+            if (object == null) {
+                object = new Institucion();
+                object.setIdCanton(new Canton());
+                object.getIdCanton().setIdProvincia(new Provincia());
+                object.getIdCanton().getIdProvincia().setIdPais(new Pais());
+            }
+            if (object != null) {
+//                if (!object.getIdCanton().equals("")) {
+                    try {
+                       divisionPoliticas = adm.query("Select o from Canton as o where o.idProvincia.idProvincia = '"+provinciaSeleccionado.getIdProvincia()+"' order by o.nombre ");
+                        if(divisionPoliticas.size()>0){
+                            Canton objSel = new Canton(0);
+                            cantonesEncontradas.add(new SelectItem(objSel, "Seleccione..."));
+                        for (Canton obj : divisionPoliticas) {
+                            cantonesEncontradas.add(new SelectItem(obj, obj.getNombre()));
+                        }
+                    }else{
+                        Canton obj = new Canton(0);
+                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                    } 
+                    } catch (Exception e) {
+                        Canton obj = new Canton(0);
+                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                    }
+                    
+//                }
+            }
+//            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(CantonBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+//        return null;
+    }
+    /**
+     * Obtiene el el listado de provincias
+     * @return 
+     */
+     public void buscarProvincia() {
+        try {
+            List<Provincia> divisionPoliticas = new ArrayList<Provincia>();
+            provinciasEncontradas = new ArrayList<SelectItem>();
+            
+            if (object == null) {
+                object = new Institucion();
+                object.setIdCanton(new Canton());
+                object.getIdCanton().setIdProvincia(new Provincia());
+                object.getIdCanton().getIdProvincia().setIdPais(new Pais());
+            }
+            if (object != null) {
+//                if (!object.getIdCanton().equals("")) {
+                    try {
+                       divisionPoliticas = adm.query("Select o from Provincia as o where o.idPais.idPais= '"+paisSeleccionado.getIdPais()+"' order by o.nombre ");
+                        if(divisionPoliticas.size()>0){
+                            Provincia objSel = new Provincia(0);
+                            provinciasEncontradas.add(new SelectItem(objSel, "Seleccione..."));
+                        for (Provincia obj : divisionPoliticas) {
+                            provinciasEncontradas.add(new SelectItem(obj, obj.getNombre()));
+                        }
+                    }else{
+                        Provincia obj = new Provincia(0);
+                        provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                    } 
+                    } catch (Exception e) {
+                        Provincia obj = new Provincia(0);
+                        provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                    }
+                    
+//                }
+            }
+//            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(CantonBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+//        return null;
+    }
+     /**
+     * Obtiene el el listado de paises
+     * @return 
+     */
+ public List<SelectItem> getSelectedItemPais() {
+        try {
+            List<Pais> divisionPoliticas = new ArrayList<Pais>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+              if (object == null) {
+                //object = new Institucion();
+                object.setIdCanton(new Canton());
+                object.getIdCanton().setIdProvincia(new Provincia());
+                object.getIdCanton().getIdProvincia().setIdPais(new Pais());
+            }
+            if (object != null) {
+               
+                    divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
+                    if(divisionPoliticas.size()>0){
+                        Pais objSel = new Pais(0);
+                        items.add(new SelectItem(objSel, "Seleccione..."));
+                    for (Pais obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj, obj.getNombre()));
+                    }
+                    }else{
+                        Pais obj = new Pais(0);
+                        items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
+                    }
+                
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(CantonBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
     /**
      * llena el listado con datos
      */

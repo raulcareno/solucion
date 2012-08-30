@@ -1,7 +1,5 @@
 package convertidores;
 
-import bean.CantonBean;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -9,7 +7,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
  
 import jcinform.persistencia.Canton;
-import jcinform.persistencia.Provincia;
+
 
  
 @FacesConverter(value = "ConvCanton", forClass = Canton.class)
@@ -48,14 +46,19 @@ public class ConvCanton  implements Converter {
      */
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value == null) {
+        if(value instanceof Canton){
+           if (value == null) {
             return null;
         }
         if(((Canton)value).getIdCanton() ==null){
             return null;
         }
         
-            return Integer.toString(((Canton)value).getIdCanton());
+            return Integer.toString(((Canton)value).getIdCanton());  
+        }else{
+            return null;
+        }
+       
         
     }
  
