@@ -46,17 +46,17 @@
                                 <p:separator style="width:0;height:0px" />
                                 <h:panelGrid  style="margin: 0px 55px 0px 60px;" columns="1">
                                     <p:separator style="border:none; background-color: transparent; width:0;height:120px" />
-                                    <p:graphicImage id="logoSubido2" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />
+                                    <p:graphicImage id="logoSubido2" width="300" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />
 
                                     <p:separator style="width:0;height:0px" />
                                     <h:outputText style="font-size: 12px;color: #D20005" value=" Cuenta de Usuario" />
                                     <h:panelGrid style="font-size: 12px;border: 0px;border-color: transparent" columns="3">
 
 
-                                        <p:inputText style="height: 30px;font-size: 11px" size="40" required="true"  id="usuario" value="#{loginBean.usuario}" />
+                                        <p:inputText style="height: 30px;font-size: 11px" size="50" required="true"  id="usuario" value="#{loginBean.usuario}" />
                                         <p:message  for="usuario"  display="icon" /> 
                                         <p:watermark for="usuario" value="Diqite aquí su Usuario" />  
-                                        <p:password style="height: 30px;font-size: 11px" size="40"   id="clave" required="true" value="#{loginBean.clave}"/>  
+                                        <p:password style="height: 30px;font-size: 11px" size="50"   id="clave" required="true" value="#{loginBean.clave}"/>  
                                         <p:message for="clave"  display="icon" /> 
                                         <p:watermark for="clave" value="Diqite aquí su Contraseña" />  
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
