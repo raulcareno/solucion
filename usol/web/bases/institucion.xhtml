@@ -73,8 +73,8 @@
                     </h:panelGrid>
                     <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
                               fixedCenter="true" width="400" visible="false" resizable="false">
-                        <p:fileUpload   
-                            style="width:100px; font-size: 150% !important;"
+                        <p:fileUpload  label="Seleccionar Imagen (click aquí)"
+                            style="width:100%; font-size: 150% !important;"
                             fileUploadListener="#{institucionBean.handleFileUpload}"  
                             mode="advanced"  id="fileSubir"
                             update="logoSubido logoSubido2"  
@@ -113,9 +113,7 @@
                             <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{institucionBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
 
                             </p:commandButton>  
-                            <p:commandButton id="eliminarButton" actionListener="#{institucionBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash" title="Editar">  
-
-                            </p:commandButton>  
+                             
                         </h:panelGrid>
 
                     </p:column>  
