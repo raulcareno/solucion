@@ -45,7 +45,7 @@ Administrador adm;
                String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + "logo.png";
                String fileFoto2 = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + "imagen.png";
 
-                if(!new File(fileFoto).exists() && !new File(fileFoto2).exists()){
+                if(!new File(fileFoto).exists() || !new File(fileFoto2).exists()){
                         System.out.println("ENTRO A SELECCIONAR LA IMAGEN...");
                         List<Institucion> user = adm.query("Select o from Institucion as o ");    
                         generarImagen("logo.png", user.get(0).getLogo());
