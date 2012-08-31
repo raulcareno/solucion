@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+
+                <p:panel id="registro"  style="width: 700px;" header="Carreras">
+                    <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:panelGrid id="Cdisplay" columns="2" cellpadding="4" style="margin:0 auto;">
+                         <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
+                        <h:outputText value="ESCUELA: " /> 
+                        <p:selectOneMenu   id="pais" label="escuela"  value="#{carrerasBean.object.idEscuela}" effect="fade" converter="ConvEscuela">  
+                            <f:selectItems value="#{carrerasBean.selectedItemEscuela}" var="ob"  itemValue="#{ob}"/>  
+                        </p:selectOneMenu> 
+                        <h:outputText value="MODALIDAD: " /> 
+                        <p:selectOneMenu   id="modalidad" label="modalidad"  value="#{carrerasBean.object.idModalidad}" effect="fade" converter="ConvModalidad">  
+                            <f:selectItems value="#{carrerasBean.selectedItemModalidad}" var="ob2"  itemValue="#{ob2}"/>  
+                        </p:selectOneMenu> 
+                        <h:outputText value="JORNADA: " /> 
+                        <p:selectOneMenu   id="jornada" label="jornada"  value="#{carrerasBean.object.idJornada}" effect="fade" converter="ConvJornada">  
+                            <f:selectItems value="#{carrerasBean.selectedItemJornada}" var="ob3"  itemValue="#{ob3}"/>  
+                        </p:selectOneMenu> 
+                        <h:outputText value="NOMBRE" />  
+                        <p:inputText value="#{carrerasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                          <h:outputText value="TITULO" />  
+                          <p:inputText value="#{carrerasBean.object.titulo}" id="titulo"  maxlength="200" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="ESTADO" />  
+                        <p:inputText value="#{carrerasBean.object.estado}" id="estado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="AÑO" />  
+                        <p:inputText value="#{carrerasBean.object.anio}" id="anio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="SEDE" />  
+                        <p:inputText value="#{carrerasBean.object.sede}" id="sede"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="CENTRO DE APOYO" />  
+                        <p:inputText value="#{carrerasBean.object.centroApoyo}" id="centroApoyo"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="CIUDAD" />  
+                        <p:inputText value="#{carrerasBean.object.estado}" id="ciudad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="CON CONVENIO" />  
+                        <p:selectBooleanCheckbox value="#{carrerasBean.object.conConvenio}" id="conConvenio"  style="font-weight:bold;"/>  
+                        <h:outputText value="INST_CONVENIO" />  
+                        <p:inputText value="#{carrerasBean.object.instConvenio}" id="instConvenio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="ESTADO" />  
+                        <p:inputText value="#{carrerasBean.object.estado}" id="estado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        
+                        
+                        
+                        
+                        
+                        
+                        <p:inputText  value="#{carrerasBean.object.idCarreras}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+    
+                        
+                        <f:verbatim/>
+  
+                    </h:panelGrid> 
+                    </h:panelGrid> 
+                    
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:display2 :form:carreras"   action="#{carrerasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display :form:display2" actionListener="#{carrerasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        </p:commandButton> 
+
+                    </h:panelGrid>
+                    <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
+                              fixedCenter="true" width="400" visible="false" resizable="false">
+                        <p:fileUpload  label="Seleccionar Imagen (click aquí)"
+                            style="width:100%; font-size: 150% !important;"
+                            fileUploadListener="#{carrerasBean.handleFileUpload}"  
+                            mode="advanced"  id="fileSubir"
+                            update="logoSubido logoSubido2"  
+                            auto="true"  oncomplete="modalSubir.hide();" 
+                            sizeLimit="1000000"   
+                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+                        <br />
+                        <p:commandButton type="button" value="CANCELAR">
+                            <p:ajax oncomplete="modalSubir.hide();" />
+                        </p:commandButton>
+                    </p:dialog>
+
+
+                </p:panel>
+
+                <p:panel  style="width: 600px;">
+                    <h:panelGrid  columns="4">
+
+                        <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
+                        <p:inputText id="textoBuscar" value="#{carrerasBean.textoBuscar}" style="font-weight:bold"/>  
+                        <p:commandButton id="buscar" value="Buscar" update="carreras" actionListener="#{carrerasBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="carreras" var="obj" value="#{carrerasBean.model}">  
+                    <p:column headerText="ID" style="width:10%">  
+                        <h:outputText value="#{obj.idCarreras}" />  
+                    </p:column>  
+                    <p:column headerText="NOMBRE" style="width:80%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+
+                            <p:commandButton  id="editarButton" update=":form:display :form:display2"  actionListener="#{carrerasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+
+                            </p:commandButton>  
+                             
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

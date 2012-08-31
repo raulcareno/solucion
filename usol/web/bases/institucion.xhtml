@@ -8,17 +8,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core" >
     <ui:define name="title">
-
     </ui:define>    
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
 
-                <p:panel id="registro"  style="width: 600px;" header="Institucion">
+                <p:panel id="registro"  style="width: 700px;" header="Institucion">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
+                    <h:panelGrid id="Cdisplay" columns="2" cellpadding="4" style="margin:0 auto;">
+                         <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="NOMBRE" />  
                         <p:inputText value="#{institucionBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <f:verbatim/>
@@ -52,22 +52,43 @@
                         <p:commandLink update="fileSubir"  actionListener="#{institucionBean.setEsLogo(true)}" oncomplete="modalSubir.show()" id="versubirLogo">
                             <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Logo
                         </p:commandLink>
-
-
-
                         <h:outputText value="IMAGEN PORTADA" rendered="#{not empty institucionBean.foto2}"   />  
                         <p:graphicImage id="logoSubido2" width="100" rendered="#{not empty institucionBean.foto2}"  value="#{pageContext.contextPath}/fotos/#{institucionBean.foto2}"
                                         cache="false" />
-
-
                         <p:commandLink update="fileSubir" actionListener="#{institucionBean.setEsLogo(false)}" oncomplete="modalSubir.show()"  id="versubirImagen">
                             <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Imagen
                         </p:commandLink>
                         <p:inputText  value="#{institucionBean.object.idInstitucion}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
                     </h:panelGrid>  
+                    <h:panelGrid id="display2" columns="3" cellpadding="4" style="margin:0 auto;">  
+                        <h:outputText value="EMAIL" />  
+                        <p:inputText value="#{institucionBean.object.email}" id="email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <f:verbatim/>
+                        <h:outputText value="REPLY" />  
+                        <p:inputText value="#{institucionBean.object.reply}" id="reply"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <f:verbatim/>
+                        <h:outputText value="CLAVE" />  
+                        <p:password value="#{institucionBean.object.clave}" goodLabel="true" redisplay="true" id="clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <f:verbatim/>
+                        <h:outputText value="PUERTO" />  
+                        <p:inputText value="#{institucionBean.object.puerto}" id="puerto"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <f:verbatim/>
+                        <h:outputText value="SMTP" />  
+                        <p:inputText value="#{institucionBean.object.smtp}" id="smtp"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <f:verbatim/>
+                        <h:outputText value="REQ.AUTORIZACION" />  
+                        <p:selectBooleanCheckbox value="#{institucionBean.object.autorizacion}" id="ReqAutorizacion" style="font-weight:bold;"/>  
+                        <f:verbatim/>
+                        <h:outputText value="STARTTLS" />  
+                        <p:selectBooleanCheckbox value="#{institucionBean.object.star}" id="star" style="font-weight:bold;"/>  
+                        <f:verbatim/>
+  
+                    </h:panelGrid> 
+                    </h:panelGrid> 
+                    
                     <h:panelGrid columns="4">
-                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:institucion"   action="#{institucionBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{institucionBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:display2 :form:institucion"   action="#{institucionBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display :form:display2" actionListener="#{institucionBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
                         </p:commandButton> 
 
                     </h:panelGrid>
@@ -110,7 +131,7 @@
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
 
-                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{institucionBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+                            <p:commandButton  id="editarButton" update=":form:display :form:display2"  actionListener="#{institucionBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
 
                             </p:commandButton>  
                              
