@@ -31,7 +31,7 @@
                         <p:panel id="mipanel" style="width: 100%;border: 0px;border-color: transparent">
                             <p:focus context="mipanel"/> 
                             <h:panelGrid columns="3">
-                                <p:graphicImage  style="margin: 50px 50px 0px 60px;" id="logoSubido" width="500" height="400" value="#{pageContext.contextPath}/fotos/imagen.png" cache="true" />    
+                                <p:graphicImage   style="margin: 50px 50px 0px 60px;" id="logoSubido" width="500" height="400" value="#{pageContext.contextPath}/fotos/imagen.png" cache="true" />    
                                 <p:separator style="width:0;height:0px" />
                                 <h:panelGrid  style="margin: 0px 55px 0px 60px;" columns="1">
                                     <p:separator style="border:none; background-color: transparent; width:0;height:120px" />
@@ -50,15 +50,26 @@
                                         <p:watermark for="clave" value="Diqite aquí su Contraseña" />  
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
                                     </h:panelGrid>
-                                    <h:outputLink  style="font-size: 12px;color: #D20005"  target="_blank" styleClass="texto12"
-                                                   value="http://www.jcinform.com/">
-                                        <f:verbatim>¿No puedes acceder a tu Cuenta?</f:verbatim>
-                                    </h:outputLink>
+
+                                    <p:commandLink  style="margin-right:20px;font-size: 12px;color: #D20005"  immediate="true" id="ajax"  
+                                                    onclick="recuperarClave.show();" >  
+                                        <h:outputText value="¿No puedes acceder a tu Cuenta?" />  
+                                    </p:commandLink> 
+                                   
 
 
                                 </h:panelGrid>
                             </h:panelGrid>
+                            <p:dialog header="Recuperar Clave" widgetVar="recuperarClave" modal="true" fixedCenter="true" width="400" visible="false" resizable="false">
 
+                                <br />
+                                 <h:outputLabel for="cedula" value="Tu Cédula o Passaporte: " />
+                                <p:inputText id="cedula" value="" />
+                                <p:commandButton type="button" value="Recuperar"
+                                                 onclick="pc.capture()">
+                                    <p:ajax oncomplete="recuperarClave.hide();" />
+                                </p:commandButton>
+                            </p:dialog>
 
 
 
@@ -68,7 +79,7 @@
                         <br />
                         <br />
                         <hr style="width: 90%"/>
-                        
+
                         <div style=" margin:0px 50px 0px 60px; float: left;">
                             ©2012 JCINFORM
                         </div>
@@ -77,10 +88,10 @@
                             <h:outputLink target="_blank" styleClass="texto12"
                                           value="http://www.jcinform.com/">
                                 <f:verbatim>JC INFORM</f:verbatim>
-                               
+
                             </h:outputLink>
                         </div>
-                        
+
 
 
 
