@@ -45,6 +45,8 @@ public class InstitucionBean {
     protected List<Institucion> model;
     public String textoBuscar;
     Permisos permisos;
+    boolean esLogo;
+    boolean verSubir;
 
     public InstitucionBean() {
         //super();
@@ -93,57 +95,54 @@ public class InstitucionBean {
     protected void inicializar() {
         object = new Institucion(0);
         object.setIdCanton(new Canton());
-                object.getIdCanton().setIdProvincia(new Provincia());
-                object.getIdCanton().getIdProvincia().setIdPais(new Pais());
+        object.getIdCanton().setIdProvincia(new Provincia());
+        object.getIdCanton().getIdProvincia().setIdPais(new Pais());
         cargarDataModel();
     }
-    
- 
     String foto1 = "";
     String foto2 = "";
+    static int contarImagen = 0;
 
+    public void generarImagen(String nombre, byte[] datos) {
 
-   static int contarImagen = 0;
-public void generarImagen(String nombre, byte[] datos){
-   
-            final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            this.foto1 = nombre;
-            final String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + foto1;
-            FileImageOutputStream outputStream = null;
+        final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+         
+        final String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + nombre;
+        FileImageOutputStream outputStream = null;
+        try {
+            outputStream = new FileImageOutputStream(new File(fileFoto));
+            outputStream.write(datos, 0, datos.length);
+        } catch (IOException e) {
+            throw new FacesException("Error guardando la foto.", e);
+        } finally {
             try {
-                outputStream = new FileImageOutputStream(new File(fileFoto));
-                outputStream.write(datos, 0, datos.length);
+                outputStream.close();
             } catch (IOException e) {
-                throw new FacesException("Error guardando la foto.", e);
-            } finally {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                }
             }
-            datos = null;
-}
+        }
+        datos = null;
+    }
+
     public void handleFileUpload(FileUploadEvent event) {
-        FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        
-        if (contarImagen == 0) {
+        //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
+        byte[] datos = event.getFile().getContents();
+        if (esLogo) {
             foto1 = "logo.png";
             object.setLogo(event.getFile().getContents());
-            contarImagen++;
-             byte[] datos = event.getFile().getContents();
-             generarImagen("logo.png", datos);
+            generarImagen(foto1, datos);
             datos = null;
+            verSubir = false;
         } else {
             foto2 = "imagen.png";
             object.setImagen(event.getFile().getContents());
-            contarImagen = 0;
-            byte[] datos = event.getFile().getContents();
-//            final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-             generarImagen("imagen.png", datos);
-             datos = null;
+            generarImagen(foto2, datos);
+            datos = null;
+            verSubir = false;
         }
-   }
+
+
+    }
     private DefaultStreamedContent content, content2;
 
     public static int getContarImagen() {
@@ -169,8 +168,6 @@ public void generarImagen(String nombre, byte[] datos){
     public void setFoto2(String foto2) {
         this.foto2 = foto2;
     }
-
-    
 
     /**
      * Graba el registro asociado al objeto que
@@ -256,11 +253,11 @@ public void generarImagen(String nombre, byte[] datos){
         }
         return null;
     }
- List<SelectItem> provinciasEncontradas ;
-  List<SelectItem> cantonesEncontradas ;
-public Pais paisSeleccionado= new Pais();
-public Provincia provinciaSeleccionado= new Provincia();
-public Canton cantonSeleccionado= new Canton();
+    List<SelectItem> provinciasEncontradas;
+    List<SelectItem> cantonesEncontradas;
+    public Pais paisSeleccionado = new Pais();
+    public Provincia provinciaSeleccionado = new Provincia();
+    public Canton cantonSeleccionado = new Canton();
 
     public List<SelectItem> getProvinciasEncontradas() {
         return provinciasEncontradas;
@@ -301,17 +298,17 @@ public Canton cantonSeleccionado= new Canton();
     public void setCantonSeleccionado(Canton cantonSeleccionado) {
         this.cantonSeleccionado = cantonSeleccionado;
     }
-    
-    
+
     /**
      * Obtiene el el listado de provincias
-     * @return 
+     *
+     * @return
      */
-     public void buscarCanton() {
+    public void buscarCanton() {
         try {
             List<Canton> divisionPoliticas = new ArrayList<Canton>();
             cantonesEncontradas = new ArrayList<SelectItem>();
-            
+
             if (object == null) {
                 object = new Institucion();
                 object.setIdCanton(new Canton());
@@ -320,23 +317,23 @@ public Canton cantonSeleccionado= new Canton();
             }
             if (object != null) {
 //                if (!object.getIdCanton().equals("")) {
-                    try {
-                       divisionPoliticas = adm.query("Select o from Canton as o where o.idProvincia.idProvincia = '"+provinciaSeleccionado.getIdProvincia()+"' order by o.nombre ");
-                        if(divisionPoliticas.size()>0){
-                            Canton objSel = new Canton(0);
-                            cantonesEncontradas.add(new SelectItem(objSel, "Seleccione..."));
+                try {
+                    divisionPoliticas = adm.query("Select o from Canton as o where o.idProvincia.idProvincia = '" + provinciaSeleccionado.getIdProvincia() + "' order by o.nombre ");
+                    if (divisionPoliticas.size() > 0) {
+                        Canton objSel = new Canton(0);
+                        cantonesEncontradas.add(new SelectItem(objSel, "Seleccione..."));
                         for (Canton obj : divisionPoliticas) {
                             cantonesEncontradas.add(new SelectItem(obj, obj.getNombre()));
                         }
-                    }else{
-                        Canton obj = new Canton(0);
-                        cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado la provincia"));
-                    } 
-                    } catch (Exception e) {
+                    } else {
                         Canton obj = new Canton(0);
                         cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado la provincia"));
                     }
-                    
+                } catch (Exception e) {
+                    Canton obj = new Canton(0);
+                    cantonesEncontradas.add(new SelectItem(obj, "No ha seleccionado la provincia"));
+                }
+
 //                }
             }
 //            return items;
@@ -345,15 +342,17 @@ public Canton cantonSeleccionado= new Canton();
         }
 //        return null;
     }
+
     /**
      * Obtiene el el listado de provincias
-     * @return 
+     *
+     * @return
      */
-     public void buscarProvincia() {
+    public void buscarProvincia() {
         try {
             List<Provincia> divisionPoliticas = new ArrayList<Provincia>();
             provinciasEncontradas = new ArrayList<SelectItem>();
-            
+
             if (object == null) {
                 object = new Institucion();
                 object.setIdCanton(new Canton());
@@ -362,23 +361,23 @@ public Canton cantonSeleccionado= new Canton();
             }
             if (object != null) {
 //                if (!object.getIdCanton().equals("")) {
-                    try {
-                       divisionPoliticas = adm.query("Select o from Provincia as o where o.idPais.idPais= '"+paisSeleccionado.getIdPais()+"' order by o.nombre ");
-                        if(divisionPoliticas.size()>0){
-                            Provincia objSel = new Provincia(0);
-                            provinciasEncontradas.add(new SelectItem(objSel, "Seleccione..."));
+                try {
+                    divisionPoliticas = adm.query("Select o from Provincia as o where o.idPais.idPais= '" + paisSeleccionado.getIdPais() + "' order by o.nombre ");
+                    if (divisionPoliticas.size() > 0) {
+                        Provincia objSel = new Provincia(0);
+                        provinciasEncontradas.add(new SelectItem(objSel, "Seleccione..."));
                         for (Provincia obj : divisionPoliticas) {
                             provinciasEncontradas.add(new SelectItem(obj, obj.getNombre()));
                         }
-                    }else{
-                        Provincia obj = new Provincia(0);
-                        provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
-                    } 
-                    } catch (Exception e) {
+                    } else {
                         Provincia obj = new Provincia(0);
                         provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
                     }
-                    
+                } catch (Exception e) {
+                    Provincia obj = new Provincia(0);
+                    provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                }
+
 //                }
             }
 //            return items;
@@ -387,34 +386,36 @@ public Canton cantonSeleccionado= new Canton();
         }
 //        return null;
     }
-     /**
+
+    /**
      * Obtiene el el listado de paises
-     * @return 
+     *
+     * @return
      */
- public List<SelectItem> getSelectedItemPais() {
+    public List<SelectItem> getSelectedItemPais() {
         try {
             List<Pais> divisionPoliticas = new ArrayList<Pais>();
             List<SelectItem> items = new ArrayList<SelectItem>();
-              if (object == null) {
+            if (object == null) {
                 //object = new Institucion();
                 object.setIdCanton(new Canton());
                 object.getIdCanton().setIdProvincia(new Provincia());
                 object.getIdCanton().getIdProvincia().setIdPais(new Pais());
             }
             if (object != null) {
-               
-                    divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
-                    if(divisionPoliticas.size()>0){
-                        Pais objSel = new Pais(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
+
+                divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
+                if (divisionPoliticas.size() > 0) {
+                    Pais objSel = new Pais(0);
+                    items.add(new SelectItem(objSel, "Seleccione..."));
                     for (Pais obj : divisionPoliticas) {
                         items.add(new SelectItem(obj, obj.getNombre()));
                     }
-                    }else{
-                        Pais obj = new Pais(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
-                    }
-                
+                } else {
+                    Pais obj = new Pais(0);
+                    items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
+                }
+
             }
             return items;
         } catch (Exception e) {
@@ -422,6 +423,7 @@ public Canton cantonSeleccionado= new Canton();
         }
         return null;
     }
+
     /**
      * llena el listado con datos
      */
@@ -510,5 +512,22 @@ public Canton cantonSeleccionado= new Canton();
 
     public void setObject(Institucion object) {
         this.object = object;
+    }
+
+    public boolean getVerSubir() {
+        return verSubir;
+    }
+
+    public void setVerSubir(boolean verSubir) {
+        this.verSubir = verSubir;
+    }
+
+    public boolean getEsLogo() {
+        return esLogo;
+    }
+
+    public void setEsLogo(boolean esLogo) {
+        verSubir = true;
+        this.esLogo = esLogo;
     }
 }

@@ -18,42 +18,51 @@
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                    <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="NOMBRE" />  
                         <p:inputText value="#{institucionBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                          <h:outputText value="PAIS: " /> 
-            
+                        <f:verbatim/>
+                        <h:outputText value="PAIS: " /> 
                         <p:selectOneMenu   id="pais" label="pais"  value="#{institucionBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
                             <f:selectItems value="#{institucionBean.selectedItemPais}" var="ob"  itemValue="#{ob}"/>  
                             <p:ajax event="change" listener="#{institucionBean.buscarProvincia()}"  update="provincia" />  
                         </p:selectOneMenu>  
-
+                        <f:verbatim/>
                         <h:outputText value="PROVINCIA: " /> 
                         <p:selectOneMenu  id="provincia" label="provincia"  value="#{institucionBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
-                           <f:selectItems value="#{institucionBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
-                           <p:ajax event="change" listener="#{institucionBean.buscarCanton()}"  update="canton" />  
+                            <f:selectItems value="#{institucionBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
+                            <p:ajax event="change" listener="#{institucionBean.buscarCanton()}"  update="canton" />  
                         </p:selectOneMenu>  
-                        
+                        <f:verbatim/>
                         <h:outputText value="CANTON: " /> 
                         <p:selectOneMenu immediate="true" id="canton" label="canton"  value="#{institucionBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
                             <f:selectItems value="#{institucionBean.cantonesEncontradas}" var="ob3"  itemValue="#{ob3}"/>  
-                        </p:selectOneMenu>  
+                        </p:selectOneMenu>  <f:verbatim/>
                         <h:outputText value="DIRECCION" />  
-                        <p:inputText value="#{institucionBean.object.direccion}" id="direccion"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <p:inputText value="#{institucionBean.object.direccion}" id="direccion"  maxlength="50" size="35"  style="font-weight:bold;"/>  <f:verbatim/>
                         <h:outputText value="LUGAR" />  
-                        <p:inputText value="#{institucionBean.object.lugar}" id="Lugar"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <p:inputText value="#{institucionBean.object.lugar}" id="Lugar"  maxlength="50" size="35"  style="font-weight:bold;"/>  <f:verbatim/>
                         <h:outputText value="SEDE" />  
-                        <p:inputText value="#{institucionBean.object.sede}" id="Sede"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <p:inputText value="#{institucionBean.object.sede}" id="Sede"  maxlength="50" size="35"  style="font-weight:bold;"/>  <f:verbatim/>
                         <h:outputText value="SUB AREA UNESCO" />  
-                        <p:inputText value="#{institucionBean.object.subAreaUnesco}" id="SubAreaUnesco"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <p:inputText value="#{institucionBean.object.subAreaUnesco}" id="SubAreaUnesco"  maxlength="50" size="35"  style="font-weight:bold;"/>  <f:verbatim/>
                         <h:outputText value="LOGO REPORTES" rendered="#{not empty institucionBean.foto1}"  />  
                         <p:graphicImage id="logoSubido" width="100" rendered="#{not empty institucionBean.foto1}" value="#{pageContext.contextPath}/fotos/#{institucionBean.foto1}"
-                                            cache="false" />
+                                        cache="false" />
+                        <p:commandLink update="fileSubir"  actionListener="#{institucionBean.setEsLogo(true)}" oncomplete="modalSubir.show()" id="versubirLogo">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Logo
+                        </p:commandLink>
+
+
+
                         <h:outputText value="IMAGEN PORTADA" rendered="#{not empty institucionBean.foto2}"   />  
                         <p:graphicImage id="logoSubido2" width="100" rendered="#{not empty institucionBean.foto2}"  value="#{pageContext.contextPath}/fotos/#{institucionBean.foto2}"
-                                            cache="false" />
-                        
-                      
+                                        cache="false" />
+
+
+                        <p:commandLink update="fileSubir" actionListener="#{institucionBean.setEsLogo(false)}" oncomplete="modalSubir.show()"  id="versubirImagen">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Imagen
+                        </p:commandLink>
                         <p:inputText  value="#{institucionBean.object.idInstitucion}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
                     </h:panelGrid>  
                     <h:panelGrid columns="4">
@@ -62,15 +71,25 @@
                         </p:commandButton> 
 
                     </h:panelGrid>
-                    <p:fileUpload style="font-size: 150% !important;" fileUploadListener="#{institucionBean.handleFileUpload}"  
-                              mode="advanced"  
-                              update="logoSubido logoSubido2"  
-                              auto="true"  
-                              sizeLimit="1000000"   
-                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
-                   
+                    <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
+                              fixedCenter="true" width="400" visible="false" resizable="false">
+                        <p:fileUpload   
+                            style="width:100px; font-size: 150% !important;"
+                            fileUploadListener="#{institucionBean.handleFileUpload}"  
+                            mode="advanced"  id="fileSubir"
+                            update="logoSubido logoSubido2"  
+                            auto="true"  oncomplete="modalSubir.hide();" 
+                            sizeLimit="1000000"   
+                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+                        <br />
+                        <p:commandButton type="button" value="CANCELAR">
+                            <p:ajax oncomplete="modalSubir.hide();" />
+                        </p:commandButton>
+                    </p:dialog>
+
+
                 </p:panel>
-               
+
                 <p:panel  style="width: 600px;">
                     <h:panelGrid  columns="4">
 
