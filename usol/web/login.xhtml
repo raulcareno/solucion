@@ -24,16 +24,17 @@
         <h:body >
             <div  >
                 <h:form prependId="false"  id="login" enctype="multipart/form-data">
-                    <p:panel   style="width: 100%;height:600px">
+                    <p:panel   style="border: none; width: 100%;height:600px">
 
                         <!--p:growl id="growl" showDetail="true" sticky="true" /--> 
                         <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                         <p:panel id="mipanel" style="width: 100%;border: 0px;border-color: transparent">
                             <p:focus context="mipanel"/> 
-                            <h:panelGrid columns="2">
-                                <p:graphicImage id="logoSubido" width="800" height="600" value="#{pageContext.contextPath}/fotos/imagen.png" cache="true" />    
-                                <h:panelGrid columns="1">
-                                    <p:separator style="border:none; width:0;height:120px" />
+                            <h:panelGrid columns="3">
+                                <p:graphicImage  style="margin: 50px 50px 0px 60px;" id="logoSubido" width="500" height="400" value="#{pageContext.contextPath}/fotos/imagen.png" cache="true" />    
+                                <p:separator style="width:0;height:0px" />
+                                <h:panelGrid  style="margin: 0px 55px 0px 60px;" columns="1">
+                                    <p:separator style="border:none; background-color: transparent; width:0;height:120px" />
                                     <p:graphicImage id="logoSubido2" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />
 
                                     <p:separator style="width:0;height:0px" />
@@ -50,7 +51,7 @@
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
                                     </h:panelGrid>
                                     <h:outputLink  style="font-size: 12px;color: #D20005"  target="_blank" styleClass="texto12"
-                                                  value="http://www.jcinform.com/">
+                                                   value="http://www.jcinform.com/">
                                         <f:verbatim>¿No puedes acceder a tu Cuenta?</f:verbatim>
                                     </h:outputLink>
 
@@ -62,6 +63,26 @@
 
 
                         </p:panel>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <hr style="width: 90%"/>
+                        
+                        <div style=" margin:0px 50px 0px 60px; float: left;">
+                            ©2012 JCINFORM
+                        </div>
+                        <div style=" margin:-1px 50px 0px 60px; float: right;">
+                            <h:outputText value="Desarrollado por " styleClass="texto10"/>
+                            <h:outputLink target="_blank" styleClass="texto12"
+                                          value="http://www.jcinform.com/">
+                                <f:verbatim>JC INFORM</f:verbatim>
+                               
+                            </h:outputLink>
+                        </div>
+                        
+
+
 
 
                     </p:panel>
