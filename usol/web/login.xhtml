@@ -71,16 +71,32 @@
 
                                 </h:panelGrid>
                             </h:panelGrid>
-                            <p:dialog header="Recuperar Clave" widgetVar="recuperarClave" modal="true" width="400" visible="false" resizable="false">
+                            <h:form>
+                            <p:dialog header="Recuperar Clave" widgetVar="recuperarClave" modal="true" width="450" visible="false" resizable="false">
+                                <p:panelGrid columns="2" >
+                                    <h:outputText value="Tu Cédula o Passaporte: " />
+                                <p:inputText id="cedula" value="#{recuperarBean.cedula}" >
+                                    <p:ajax event="blur" update="cedula" />
+                                </p:inputText>
+                                    <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">  
+                                        <f:facet name="start">  
+                                              <h:graphicImage value="images/procesando.gif" />
+                                              Procesando...
+                                        </f:facet>  
 
-                                <br />
-                                <h:outputText value="Tu Cédula o Passaporte: " />
-                                <p:inputText id="cedula"  />
-                                <p:commandButton type="button" value="Recuperar" >
-                                    <p:ajax oncomplete="recuperarClave.hide();" />
+                                        <f:facet name="complete">  
+                                            <h:outputText value="" />  
+                                        </f:facet>  
+                                    </p:ajaxStatus> 
+                                <p:commandButton update="cedula"   action="#{recuperarBean.recuperarClave()}" immediate="true"
+                                                 oncomplete="recuperarClave.hide();" value="Recuperar" >
                                 </p:commandButton>
+                                </p:panelGrid>
+                                 
+                                
+                                
                             </p:dialog>
-
+</h:form>
 
 
                         </p:panel>
