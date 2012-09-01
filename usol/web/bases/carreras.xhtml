@@ -12,13 +12,13 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-
-                <p:panel id="registro"  style="width: 700px;" header="Carreras">
+                <script src="locales.js" type="text/javascript"/>
+                <p:panel id="registro"  style="width: 800px;" header="Carreras">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="Cdisplay" columns="2" cellpadding="4" style="margin:0 auto;">
-                         <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
+                         <h:panelGrid id="display" columns="4" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="ESCUELA: " /> 
                         <p:selectOneMenu   id="pais" label="escuela"  value="#{carrerasBean.object.idEscuela}" effect="fade" converter="ConvEscuela">  
                             <f:selectItems value="#{carrerasBean.selectedItemEscuela}" var="ob"  itemValue="#{ob}"/>  
@@ -49,8 +49,32 @@
                         <p:selectBooleanCheckbox value="#{carrerasBean.object.conConvenio}" id="conConvenio"  style="font-weight:bold;"/>  
                         <h:outputText value="INST_CONVENIO" />  
                         <p:inputText value="#{carrerasBean.object.instConvenio}" id="instConvenio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                        <h:outputText value="ESTADO" />  
-                        <p:inputText value="#{carrerasBean.object.estado}" id="estado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="FIN_INST_CONVENIO" />  
+                        <p:inputText value="#{carrerasBean.object.finanInstConv}" id="finanInstConv"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="AÑO DE CREACIÓN" />  
+                        <p:calendar pattern="dd/MM/yyyy" locale="es"  value="#{carrerasBean.object.anioCreacion}" id="anioCreacion" showOn="button"    size="28"  style="font-weight:bold;"/>  
+                        <h:outputText value="AÑO DE APROBACION" />  
+                        <p:calendar pattern="dd/MM/yyyy" locale="es" value="#{carrerasBean.object.anioAprobacion}" id="anioAprobacion"  showOn="button"  size="28"  style="font-weight:bold;"/>  
+                        <h:outputText value="# DE RESOLUCION DEL CONESUP" />  
+                        <p:inputText value="#{carrerasBean.object.numResConesup}" id="numResConesup"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="# DE RESOLUCION DEL CONESUP EXTRA." />  
+                        <p:inputText value="#{carrerasBean.object.numResExtraordinaria}" id="numResExtraordinaria"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="FECHA APROBACIÓN EXTRAORDINARIA" />  
+                        <p:inputText value="#{carrerasBean.object.fechaAprobacionExt}" id="fechaAprobacionExt"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        
+                        <h:outputText value="SUB AREA" />  
+                        <p:inputText value="#{carrerasBean.object.subarea}" id="subarea"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="NIVEL" />  
+                        <p:inputText value="#{carrerasBean.object.nivel}" id="nivel"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="ORGANIZACIÓN CP" />  
+                        <p:inputText value="#{carrerasBean.object.organizacionCp}" id="organizacionCp"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        
+                        <h:outputText value="# NUMERO DE CRÉDITOS CT" />  
+                        <p:inputText value="#{carrerasBean.object.numCreditosCt}" id="numCreditosCt"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="# NUMERO DE CRÉDITOS ST" />  
+                        <p:inputText value="#{carrerasBean.object.numCreditosSt}" id="numCreditosSt"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        
+                        
                         
                         
                         
@@ -66,31 +90,14 @@
                     </h:panelGrid> 
                     
                     <h:panelGrid columns="4">
-                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:display2 :form:carreras"   action="#{carrerasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display :form:display2" actionListener="#{carrerasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display  :form:carreras"   action="#{carrerasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display " actionListener="#{carrerasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
                         </p:commandButton> 
-
                     </h:panelGrid>
-                    <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
-                              fixedCenter="true" width="400" visible="false" resizable="false">
-                        <p:fileUpload  label="Seleccionar Imagen (click aquí)"
-                            style="width:100%; font-size: 150% !important;"
-                            fileUploadListener="#{carrerasBean.handleFileUpload}"  
-                            mode="advanced"  id="fileSubir"
-                            update="logoSubido logoSubido2"  
-                            auto="true"  oncomplete="modalSubir.hide();" 
-                            sizeLimit="1000000"   
-                            allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
-                        <br />
-                        <p:commandButton type="button" value="CANCELAR">
-                            <p:ajax oncomplete="modalSubir.hide();" />
-                        </p:commandButton>
-                    </p:dialog>
-
-
+                     
                 </p:panel>
 
-                <p:panel  style="width: 600px;">
+                <p:panel  style="width: 800px;">
                     <h:panelGrid  columns="4">
 
                         <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
@@ -100,20 +107,30 @@
                     </h:panelGrid>
                 </p:panel>
 
-                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="carreras" var="obj" value="#{carrerasBean.model}">  
-                    <p:column headerText="ID" style="width:10%">  
-                        <h:outputText value="#{obj.idCarreras}" />  
+                <p:dataTable style="width:800px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="carreras" var="obj" value="#{carrerasBean.model}">  
+                    <p:column headerText="ESCUELA" style="width:30%">  
+                        <h:outputText value="#{obj.idEscuela.nombre}" />  
                     </p:column>  
-                    <p:column headerText="NOMBRE" style="width:80%">  
+                    <p:column headerText="NOMBRE" style="width:30%">  
                         <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="TITULO" style="width:30%">  
+                        <h:outputText value="#{obj.titulo}" />  
+                    </p:column>  
+                    <p:column headerText="NOMBRE" style="width:30%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="MODALIDAD" style="width:30%">  
+                        <h:outputText value="#{obj.idModalidad.nombre}" />  
                     </p:column>  
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
 
-                            <p:commandButton  id="editarButton" update=":form:display :form:display2"  actionListener="#{carrerasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+                            <p:commandButton  id="editarButton" update=":form:display "  actionListener="#{carrerasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
 
                             </p:commandButton>  
-                             
+                            <p:commandButton id="eliminarButton" actionListener="#{carrerasBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar"/>  
+ 
                         </h:panelGrid>
 
                     </p:column>  

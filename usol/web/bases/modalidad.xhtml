@@ -54,7 +54,7 @@
                             <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{modalidadBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
 
                             </p:commandButton>  
-                            <p:commandButton id="eliminarButton" actionListener="#{modalidadBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash" title="Editar">  
+                            <p:commandButton id="eliminarButton" actionListener="#{modalidadBean.eliminar(obj)}"  update=":form"   icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
 
                             </p:commandButton>  
                         </h:panelGrid>
