@@ -28,18 +28,12 @@
                     </h:panelGrid>
                 </p:panel>
 
-                <p:dataTable style="width:100%;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="auditoria" var="obj" value="#{auditoriaBean.model}">  
+                <p:dataTable style="width:100%;" rowsPerPageTemplate="5,10,15,20,25,50,100" paginator="true" rows="25"  id="auditoria" var="obj" value="#{auditoriaBean.model}">  
                     <p:column >  
                          <f:facet name="header">  
                                 <h:outputText value="EMPLEADO" />  
                         </f:facet>  
                         <h:outputText value="#{obj.idEmpleados.apellidoPaterno} #{obj.idEmpleados.nombre}" />  
-                    </p:column>  
-                    <p:column   >  
-                        <f:facet name="header">  
-                                <h:outputText value="DESCRIPCIÓN" />  
-                        </f:facet>  
-                        <h:outputText value="#{obj.descripcion}" />  
                     </p:column>  
                     <p:column  >  
                         <f:facet name="header">  
@@ -47,6 +41,13 @@
                         </f:facet>  
                         <h:outputText value="#{obj.tabla}" />  
                     </p:column>  
+                    <p:column >  
+                        <f:facet name="header">  
+                                <h:outputText value="ACCIÓN" />  
+                        </f:facet>  
+                        <h:outputText value="#{obj.accion}" />  
+                    </p:column>  
+                    
                     <p:column  >  
                          <f:facet name="header">  
                                 <h:outputText value="IP" />  
@@ -64,15 +65,10 @@
                                 <h:outputText value="FECHA" />  
                         </f:facet>  
                         <h:outputText value="#{obj.fecha}">
-                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+                            <f:convertDateTime  pattern="d/M/yyyy hh:mm a" />
                         </h:outputText>  
                     </p:column>  
-                    <p:column >  
-                        <f:facet name="header">  
-                                <h:outputText value="ACCIÓN" />  
-                        </f:facet>  
-                        <h:outputText value="#{obj.accion}" />  
-                    </p:column>  
+                    
                     <p:column  >  
                         <f:facet name="header">  
                                 <h:outputText value="REGISTROS" />  

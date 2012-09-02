@@ -12,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 import jcinform.persistencia.Auditoria;
 import jcinform.persistencia.Empleados;
 import jcinform.procesos.Administrador;
@@ -77,12 +78,29 @@ public class AuditoriaBean {
     /**
      * Graba el registro asociado al objeto que
      */
-    public String guardar() {
+    public String auditar(String pantalla, String accion,String registros,String codigosmodificados) {
         FacesContext context = FacesContext.getCurrentInstance();
- 
-        if (object.getIdAuditoria() == 0) {
+            object = new Auditoria();
             try {
- 
+            String ipRemota  = ((HttpServletRequest) context.getExternalContext().getRequest()).getRemoteAddr();
+            String ipHost = ((HttpServletRequest) context.getExternalContext().getRequest()).getRemoteHost();
+            String ipUsuario = ((HttpServletRequest) context.getExternalContext().getRequest()).getRemoteUser();
+            
+                System.out.println("ipusuario"+ipUsuario);
+                System.out.println("ipremota;: "+ipRemota);
+                System.out.println("host:"+ipHost);
+            object.setAccion(accion);
+            object.setDescripcion("");
+            object.setFecha(adm.Date());
+            Empleados empleadoAc = (Empleados) context.getExternalContext().getSessionMap().get("user");
+            object.setIdEmpleados(empleadoAc);
+            object.setIp(ipRemota);
+            object.setPc(ipHost);
+            object.setTabla(pantalla);
+            object.setRegistro(registros);
+            object.setCodigosmodificados(codigosmodificados); 
+            
+            
                     object.setIdAuditoria(adm.getNuevaClave("Auditoria", "idAuditoria"));
                     adm.guardar(object);
                     inicializar();
@@ -91,44 +109,9 @@ public class AuditoriaBean {
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
-        } else {
-             
-            try {
-                adm.actualizar(object);
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
-                inicializar();
-            } catch (Exception e) {
-                //log.error("grabarAction() {} ", e.getMessage());
-                java.util.logging.Logger.getLogger(AuditoriaBean.class.getName()).log(Level.SEVERE, null, e);
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-            }
-
-        }
-
         return null;
     }
-
-    /**
-     * Elimina un registro asociado a la página
-     */
-    public String eliminar(Auditoria obj) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        try {
-            if (!permisos.verificarPermisoReporte("Auditoria", "eliminar_auditoria", "eliminar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
-            }
-            adm.eliminarObjeto(Auditoria.class, obj.getIdAuditoria());
-            inicializar();
-            cargarDataModel();
-            context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
-        } catch (Exception e) {
-            //log.error("eliminarAction() {} ", e.getMessage());
-            java.util.logging.Logger.getLogger(AuditoriaBean.class.getName()).log(Level.SEVERE, null, e);
-            context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-        }
-        return null;
-    }
-
+ 
     /**
      *
      * Obtiene el registro seleccionado
@@ -141,10 +124,12 @@ public class AuditoriaBean {
             Empleados empTodos = new Empleados("-1");
             empTodos.setApellidoPaterno("Todos");
             empTodos.setNombre("");
-            datos.add(empTodos); 
+            
+            items.add(new SelectItem(empTodos, "Todos.."));
             for (Empleados obj : datos) {
                 items.add(new SelectItem(obj, obj.getApellidoPaterno()+" "+obj.getNombre()));
             }
+            
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(AuditoriaBean.class.getName()).log(Level.SEVERE, null, e);
@@ -183,7 +168,7 @@ public class AuditoriaBean {
         try {
             //setModel(adm.listar("Auditoria"));
             String complemento = " and o.idEmpleados.idEmpleados = '"+empleado.getIdEmpleados()+"' ";
-            if(complemento.equals("-1")){
+            if(empleado.getIdEmpleados().equals("-1")){
                 complemento = "";
             }
             String fechaI = (desde.getYear()+1900)+"-"+(desde.getMonth()+1)+"-"+desde.getDate() +" 00:00:01";
