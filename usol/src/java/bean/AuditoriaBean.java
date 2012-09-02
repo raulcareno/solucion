@@ -159,7 +159,7 @@ public class AuditoriaBean {
      */
     public void cargarDataModel() {
         try {
-            model = (adm.listar("Auditoria"));
+            model = (adm.query("Select o from Auditoria as o where o.idAuditoria = 0 "));
             setModel(model);
 
         } catch (Exception e) {
@@ -186,10 +186,10 @@ public class AuditoriaBean {
             if(complemento.equals("-1")){
                 complemento = "";
             }
-            String fechaI = (desde.getYear()+1900)+"-"+(desde.getMonth()+1)+"-"+desde.getDate();
-            String fechaF = (hasta.getYear()+1900)+"-"+(hasta.getMonth()+1)+"-"+hasta.getDate();
+            String fechaI = (desde.getYear()+1900)+"-"+(desde.getMonth()+1)+"-"+desde.getDate() +" 00:00:01";
+            String fechaF = (hasta.getYear()+1900)+"-"+(hasta.getMonth()+1)+"-"+hasta.getDate() +" 23:59:59";
             
-            model = (adm.query("Select o from Auditoria as o where o.fecha  between  '"+fechaI+" and '"+fechaF+"' " + complemento));
+            model = (adm.query("Select o from Auditoria as o where o.fecha  between  '"+fechaI+"' and '"+fechaF+"' " + complemento));
             setModel(model);
 
         } catch (Exception e) {
@@ -204,9 +204,9 @@ public class AuditoriaBean {
      * @return
      */
     public List<Auditoria> getModel() {
-        if (model == null) {
-            cargarDataModel();
-        }
+//        if (model == null) {
+//            cargarDataModel();
+//        }
         return model;
     }
 
