@@ -38,7 +38,7 @@ public class EscuelaBean {
     protected List<Escuela> model;
     public String textoBuscar;
     Permisos permisos;
-
+Auditar  aud = new Auditar();
     public EscuelaBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -97,6 +97,7 @@ public class EscuelaBean {
                 if (adm.existe("Escuela", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdEscuela(adm.getNuevaClave("Escuela", "idEscuela"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdEscuela()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -111,6 +112,7 @@ public class EscuelaBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdEscuela()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -134,6 +136,7 @@ public class EscuelaBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Escuela.class, obj.getIdEscuela());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""),  "eliminar", "", object.getIdEscuela()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

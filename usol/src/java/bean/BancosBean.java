@@ -27,7 +27,7 @@ import utilerias.Permisos;
 @ManagedBean
 @ViewScoped
 public class BancosBean {
-
+Auditar  aud = new Auditar();
     /**
      * Creates a new instance of BancosBean
      */
@@ -95,6 +95,7 @@ public class BancosBean {
                 if (adm.existe("Bancos", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdBancos(adm.getNuevaClave("Bancos", "idBancos"));
                     adm.guardar(object);
+                     aud.auditar(adm,"Bancos", "guardar", "", object.getIdBancos()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -109,6 +110,7 @@ public class BancosBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,"Bancos", "actualizar", "", object.getIdBancos()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -132,6 +134,7 @@ public class BancosBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Bancos.class, obj.getIdBancos());
+            aud.auditar(adm,"Bancos", "eliminar", "", obj.getIdBancos()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

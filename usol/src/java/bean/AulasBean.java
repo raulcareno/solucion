@@ -81,11 +81,13 @@ public class AulasBean {
         object = new Aulas(0);
         cargarDataModel();
     }
-
+Auditar  aud = new Auditar();
     /**
      * Graba el registro asociado al objeto que
      */
     public String guardar() {
+          
+                
         FacesContext context = FacesContext.getCurrentInstance();
  if (object.getNombre().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
@@ -99,6 +101,7 @@ public class AulasBean {
                 if (adm.existe("Aulas", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdAulas(adm.getNuevaClave("Aulas", "idAulas"));
                     adm.guardar(object);
+                    aud.auditar(adm,"Aulas", "guardar", "", object.getIdAulas()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -113,6 +116,7 @@ public class AulasBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,"Aulas", "actualizar", "", object.getIdAulas()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -136,6 +140,7 @@ public class AulasBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Aulas.class, obj.getIdAulas());
+            aud.auditar(adm,"Aulas", "eliminar", "", obj.getIdAulas()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

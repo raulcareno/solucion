@@ -37,7 +37,7 @@ public class PerfilesBean {
     protected List<Perfiles> model;
     public String textoBuscar;
     Permisos permisos;
-   
+   Auditar  aud = new Auditar();
 
     public PerfilesBean() {
         //super();
@@ -95,6 +95,7 @@ if (object.getNombre().isEmpty()) {
                 if (adm.existe("Perfiles", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdPerfiles(adm.getNuevaClave("Perfiles", "idPerfiles"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdPerfiles()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -109,6 +110,7 @@ if (object.getNombre().isEmpty()) {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdPerfiles()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -132,6 +134,7 @@ if (object.getNombre().isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Perfiles.class, obj.getIdPerfiles());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdPerfiles()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

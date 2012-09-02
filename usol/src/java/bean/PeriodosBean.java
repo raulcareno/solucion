@@ -36,7 +36,7 @@ public class PeriodosBean {
     protected List<Periodos> model;
     public String textoBuscar;
     Permisos permisos;
-   
+   Auditar  aud = new Auditar();
 
     public PeriodosBean() {
         //super();
@@ -105,6 +105,7 @@ if(object.getFechaInicio().getTime() >= object.getFechaFin().getTime()){
                 if (adm.existe("Periodos", "fechaInicio", object.getFechaInicio(), "fechaInicio", object.getFechaFin(),"").size() <= 0) {
                     object.setIdPeriodos(adm.getNuevaClave("Periodos", "idPeriodos"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdPeriodos()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -119,6 +120,7 @@ if(object.getFechaInicio().getTime() >= object.getFechaFin().getTime()){
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdPeriodos()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -142,6 +144,7 @@ if(object.getFechaInicio().getTime() >= object.getFechaFin().getTime()){
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Periodos.class, obj.getIdPeriodos());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdPeriodos()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

@@ -36,7 +36,7 @@ public class ModalidadBean {
     protected List<Modalidad> model;
     public String textoBuscar;
     Permisos permisos;
-   
+   Auditar  aud = new Auditar();
 
     public ModalidadBean() {
         //super();
@@ -95,6 +95,7 @@ public class ModalidadBean {
                 if (adm.existe("Modalidad", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdModalidad(adm.getNuevaClave("Modalidad", "idModalidad"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdModalidad()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -109,6 +110,7 @@ public class ModalidadBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdModalidad()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -132,6 +134,7 @@ public class ModalidadBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Modalidad.class, obj.getIdModalidad());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdModalidad()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

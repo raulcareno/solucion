@@ -35,7 +35,7 @@ public class RubrosBean {
     protected List<Rubros> model;
     public String textoBuscar;
     Permisos permisos;
-   
+   Auditar  aud = new Auditar();
 
     public RubrosBean() {
         //super();
@@ -101,6 +101,7 @@ if (object.getNombre().isEmpty()) {
                 if (adm.existe("Rubros", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdRubros(adm.getNuevaClave("Rubros", "idRubros"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdRubros()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -115,6 +116,7 @@ if (object.getNombre().isEmpty()) {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdRubros()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {

@@ -47,7 +47,7 @@ public class InstitucionBean {
     Permisos permisos;
     boolean esLogo;
     boolean verSubir;
-
+Auditar  aud = new Auditar();
     public InstitucionBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -187,6 +187,7 @@ public class InstitucionBean {
                 if (adm.existe("Institucion", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdInstitucion(adm.getNuevaClave("Institucion", "idInstitucion"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdInstitucion()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -201,6 +202,7 @@ public class InstitucionBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdInstitucion()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -224,6 +226,7 @@ public class InstitucionBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Institucion.class, obj.getIdInstitucion());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdInstitucion()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

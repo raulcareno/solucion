@@ -38,7 +38,7 @@ public class MateriasBean {
     protected List<Materias> model;
     public String textoBuscar;
     Permisos permisos;
-
+Auditar  aud = new Auditar();
     public MateriasBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -97,6 +97,7 @@ public class MateriasBean {
                 if (adm.existe("Materias", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdMaterias(adm.getNuevaClave("Materias", "idMaterias"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMaterias()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -111,6 +112,7 @@ public class MateriasBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdMaterias()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -134,6 +136,7 @@ public class MateriasBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Materias.class, obj.getIdMaterias());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdMaterias()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

@@ -41,7 +41,7 @@ public class CarrerasBean {
     Permisos permisos;
     boolean esLogo;
     boolean verSubir;
-
+Auditar  aud = new Auditar();
     public CarrerasBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -107,6 +107,7 @@ public class CarrerasBean {
                 if (adm.existe("Carreras", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdCarreras(adm.getNuevaClave("Carreras", "idCarreras"));
                     adm.guardar(object);
+                    aud.auditar(adm,"Carreras", "guardar", "", object.getIdCarreras()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -121,6 +122,7 @@ public class CarrerasBean {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,"Carreras", "actualizar", "", object.getIdCarreras()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -144,6 +146,7 @@ public class CarrerasBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Carreras.class, obj.getIdCarreras());
+            aud.auditar(adm,"Carreras", "eliminar", "", obj.getIdCarreras()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

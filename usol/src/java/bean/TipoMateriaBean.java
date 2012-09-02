@@ -37,7 +37,7 @@ public class TipoMateriaBean {
     protected List<TipoMateria> model;
     public String textoBuscar;
     Permisos permisos;
-   
+   Auditar  aud = new Auditar();
 
     public TipoMateriaBean() {
         //super();
@@ -96,6 +96,7 @@ if (object.getNombre().isEmpty()) {
                 if (adm.existe("TipoMateria", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdTipoMateria(adm.getNuevaClave("TipoMateria", "idTipoMateria"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdTipoMateria()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -110,6 +111,7 @@ if (object.getNombre().isEmpty()) {
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdTipoMateria()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -133,6 +135,7 @@ if (object.getNombre().isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(TipoMateria.class, obj.getIdTipoMateria());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdTipoMateria()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));

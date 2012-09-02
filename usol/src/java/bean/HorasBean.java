@@ -17,7 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import jcinform.persistencia.Horas;
 import jcinform.procesos.Administrador;
- 
+
 import utilerias.Permisos;
 
 /**
@@ -36,7 +36,7 @@ public class HorasBean {
     protected List<Horas> model;
     public String textoBuscar;
     Permisos permisos;
-   
+    Auditar aud = new Auditar();
 
     public HorasBean() {
         //super();
@@ -83,35 +83,36 @@ public class HorasBean {
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
-if(object.getNombre().isEmpty()){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
-        return null;
-}
-        
-        if(object.getDesdeHor() == null){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la HORA DE INICIO", ""));
-        return null;
-}
-if(object.getHastaHor() == null){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la HORA FINAL ", ""));
-        return null;
-}
-if(object.getDesdeHor().getTime() >= object.getHastaHor().getTime()){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "La HORA DE INICIO no puede ser igual(=) o menor(<) a la HORA FINAL", ""));
-        return null;
-}
+        if (object.getNombre().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
+            return null;
+        }
+
+        if (object.getDesdeHor() == null) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la HORA DE INICIO", ""));
+            return null;
+        }
+        if (object.getHastaHor() == null) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la HORA FINAL ", ""));
+            return null;
+        }
+        if (object.getDesdeHor().getTime() >= object.getHastaHor().getTime()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "La HORA DE INICIO no puede ser igual(=) o menor(<) a la HORA FINAL", ""));
+            return null;
+        }
         if (object.getIdHoras() == 0) {
             if (!permisos.verificarPermisoReporte("Horas", "agregar_horas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             try {
-                if (adm.existe("Horas", "desdeHor", object.getDesdeHor(), "hastaHor", object.getDesdeHor(),"").size() <= 0) {
+                if (adm.existe("Horas", "desdeHor", object.getDesdeHor(), "hastaHor", object.getDesdeHor(), "").size() <= 0) {
                     object.setIdHoras(adm.getNuevaClave("Horas", "idHoras"));
                     adm.guardar(object);
+                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdHoras()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Periodo ya existe...!","Periodo ya existe...!"));
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Periodo ya existe...!", "Periodo ya existe...!"));
                 }
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -122,6 +123,7 @@ if(object.getDesdeHor().getTime() >= object.getHastaHor().getTime()){
             }
             try {
                 adm.actualizar(object);
+                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdHoras()+"");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -145,6 +147,7 @@ if(object.getDesdeHor().getTime() >= object.getHastaHor().getTime()){
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Horas.class, obj.getIdHoras());
+            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdHoras()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
@@ -165,7 +168,7 @@ if(object.getDesdeHor().getTime() >= object.getHastaHor().getTime()){
             List<Horas> datos = adm.query("Select o from Horas as o");
             List<SelectItem> items = new ArrayList<SelectItem>();
             for (Horas obj : datos) {
-                items.add(new SelectItem(obj, obj.getDesdeHor()+"-"+obj.getHastaHor()));
+                items.add(new SelectItem(obj, obj.getDesdeHor() + "-" + obj.getHastaHor()));
             }
             return items;
         } catch (Exception e) {

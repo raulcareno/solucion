@@ -39,7 +39,7 @@ public class CantonBean {
     protected List<Canton> model;
     public String textoBuscar;
     Permisos permisos;
- 
+ Auditar  aud = new Auditar();
 
     public CantonBean() {
         //super();
@@ -117,6 +117,7 @@ public class CantonBean {
                 if (adm.existe("Canton", "nombre", object.getNombre()).size() <= 0) {
                     object.setIdCanton(adm.getNuevaClave("Canton", "idCanton"));
                     adm.guardar(object);
+                    aud.auditar(adm,"Canton", "guardar", "", object.getIdCanton()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -132,6 +133,7 @@ public class CantonBean {
             try {
                 adm.actualizar(object);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
+                aud.auditar(adm,"Canton", "actualizar", "", object.getIdCanton()+"");
                 inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
@@ -154,6 +156,7 @@ public class CantonBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Canton.class, obj.getIdCanton());
+            aud.auditar(adm,"Canton", "eliminar", "", obj.getIdCanton()+"");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
