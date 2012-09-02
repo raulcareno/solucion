@@ -4,31 +4,22 @@
  */
 package bean;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.servlet.ServletContext;
-import jcinform.persistencia.Canton;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.Escuela;
 import jcinform.persistencia.Jornada;
 import jcinform.persistencia.Modalidad;
-import jcinform.persistencia.Pais;
-import jcinform.persistencia.Provincia;
 import jcinform.procesos.Administrador;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
 
 import utilerias.Permisos;
 
@@ -98,6 +89,14 @@ public class CarrerasBean {
  
         if (object.getNombre().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
+            return null;
+        }
+        if (object.getTitulo().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el TITULO", ""));
+            return null;
+        }
+        if (object.getTitulo().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el TITULO", ""));
             return null;
         }
         if (object.getIdCarreras() == 0) {
@@ -185,7 +184,7 @@ public class CarrerasBean {
             List<Escuela> divisionPoliticas = new ArrayList<Escuela>();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object == null) {
-                //object = new Carreras();
+                object = new Carreras();
                 object.setIdEscuela(new Escuela());
             }
             if (object != null) {

@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form"  enctype="multipart/form-data">
+                <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript" ></script>
+                <p:panel  style="width: 600px;">
+                    <h:panelGrid  columns="4">
+                        <h:outputLabel for="desde" style="font-weight: bold" value="Fecha Desde:" />
+                        <p:inputText id="desde" value="#{auditoriaBean.desde}" style="font-weight:bold"/>  
+
+                        <h:outputLabel for="hasta" style="font-weight: bold" value="Hasta" />
+                        <p:inputText id="hasta" value="#{auditoriaBean.hasta}" style="font-weight:bold"/>  
+
+                        <h:outputText value="EMPLEADOS:" /> 
+                        <p:selectOneMenu id="empleados" label="empleados" converter="ConvEmpleado" value="#{auditoriaBean.selectedItemEmpleados}"   effect="fade"  >
+                            <f:selectItems value="#{auditoriaBean.selectedItemEmpleados}" var="ob2"  itemValue="#{ob2}"></f:selectItems>
+                        </p:selectOneMenu>
+
+                        <p:commandButton id="buscar" value="Buscar" update="auditoria" actionListener="#{auditoriaBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="auditoria" var="obj" value="#{auditoriaBean.model}">  
+                    <p:column headerText="EMPLEADO" style="width:30%">  
+                        <h:outputText value="#{obj.idEmpleados.apellidoPaterno} #{obj.idEmpleados.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="DESCRIPCIÓN" style="width:30%">  
+                        <h:outputText value="#{obj.descripcion}" />  
+                    </p:column>  
+                    <p:column headerText="PANTALLA" style="width:30%">  
+                        <h:outputText value="#{obj.tabla}" />  
+                    </p:column>  
+                    <p:column headerText="IP" style="width:30%">  
+                        <h:outputText value="#{obj.ip}" />  
+                    </p:column>  
+                    <p:column headerText="PC" style="width:30%">  
+                        <h:outputText value="#{obj.pc}" />  
+                    </p:column>  
+                    <p:column headerText="FECHA" style="width:30%">  
+                        <h:outputText value="#{obj.fecha}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>  
+                    </p:column>  
+                    <p:column headerText="ACCIÓN" style="width:30%">  
+                        <h:outputText value="#{obj.accion}" />  
+                    </p:column>  
+                    <p:column headerText="REGISTROS" style="width:30%">  
+                        <h:outputText value="#{obj.registro}" />  
+                    </p:column>  
+                    <p:column headerText="CODIGOS EDITADOS" style="width:30%">  
+                        <h:outputText value="#{obj.codigosmodificados}" />  
+                    </p:column>  
+
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+                            <h:commandLink>  
+                                <p:graphicImage value="/images/excel.png" />  
+                                <p:dataExporter type="xls" target="auditoria" fileName="cars" />  
+                            </h:commandLink>  
+
+                            <h:commandLink>  
+                                <p:graphicImage value="/images/pdf.png" />  
+                                <p:dataExporter type="pdf" target="auditoria" fileName="cars"/>  
+                            </h:commandLink>  
+
+                            <h:commandLink>  
+                                <p:graphicImage value="/images/csv.png" />  
+                                <p:dataExporter type="csv" target="auditoria" fileName="cars" />  
+                            </h:commandLink>  
+
+                            <h:commandLink>  
+                                <p:graphicImage value="/images/xml.png" />  
+                                <p:dataExporter type="xml" target="auditoria" fileName="cars" />  
+                            </h:commandLink> 
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>
