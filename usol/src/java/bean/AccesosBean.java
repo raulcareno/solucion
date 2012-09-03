@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import jcinform.persistencia.Accesos;
 import jcinform.persistencia.Pais;
+import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Provincia;
 import jcinform.procesos.Administrador;
  
@@ -39,6 +40,8 @@ public class AccesosBean {
     protected List<Accesos> model;
     public String textoBuscar;
     Permisos permisos;
+    Perfiles perfil;
+    String modulo;
  Auditar  aud = new Auditar();
 
     public AccesosBean() {
@@ -70,7 +73,8 @@ public class AccesosBean {
         modificar = true;
         eliminar = true;
         agregar = true;
-
+perfil = new Perfiles();
+modulo = "";
     }
 
     public String editarAction(Accesos obj) {
@@ -147,11 +151,11 @@ public class AccesosBean {
      *
      * Obtiene el registro seleccionado
      */
-    public List<SelectItem> getSelectedItem() {
+    public List<SelectItem> getSelectedItemPerfiles() {
         try {
-            List<Accesos> datos = adm.query("Select o from Accesos as o");
+            List<Perfiles> datos = adm.query("Select o from Perfiles as o");
             List<SelectItem> items = new ArrayList<SelectItem>();
-            for (Accesos obj : datos) {
+            for (Perfiles obj : datos) {
                 items.add(new SelectItem(obj, obj.getNombre()));
             }
             return items;
@@ -280,7 +284,14 @@ public class AccesosBean {
      */
     public void cargarDataModel() {
         try {
-            model = (adm.listar("Accesos"));
+            String query = "Select o from Accesos as o  "
+                    + " where o.idPerfiles.idPerfiles = '"+perfil.getIdPerfiles()+"' "
+                    + "and o.modulo = '"+modulo+"'  ";
+            if(modulo.toLowerCase().equals("todos")){
+             query = "Select o from Accesos as o  "
+                    + " where o.idPerfiles.idPerfiles = '"+perfil.getIdPerfiles()+"' ";
+            }
+            model = (adm.query(query));
             setModel(model);
 
         } catch (Exception e) {
@@ -334,9 +345,9 @@ public Provincia provinciaSeleccionado= new Provincia();
      * @return
      */
     public List<Accesos> getModel() {
-        if (model == null) {
-            cargarDataModel();
-        }
+//        if (model == null) {
+//            cargarDataModel();
+//        }
         return model;
     }
 
@@ -418,6 +429,22 @@ public Provincia provinciaSeleccionado= new Provincia();
 
     public void setModificar(Boolean modificar) {
         this.modificar = modificar;
+    }
+
+    public Perfiles getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfiles perfil) {
+        this.perfil = perfil;
+    }
+
+    public String getModulo() {
+        return modulo;
+    }
+
+    public void setModulo(String modulo) {
+        this.modulo = modulo;
     }
     
     

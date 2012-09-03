@@ -15,98 +15,118 @@
             <h:form prependId="false" id="form">
 
                 <p:panel  style="width: 600px;">
-                    <h:panelGrid  columns="4">
+                    <h:panelGrid style="width: 600px"  columns="6">
 
-                        <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
-                        <p:inputText id="textoBuscar" value="#{accesosBean.textoBuscar}" style="font-weight:bold"/>  
-                        <p:commandButton id="buscar" value="Buscar" update="accesosList" actionListener="#{accesosBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+                        <h:outputText value="PERFILES" /> 
+                        <h:selectOneMenu id="perfiles" label="perfiles" converter="ConvPerfiles" value="#{accesosBean.perfil}" rendered="true">
+                            <f:selectItems value="#{accesosBean.selectedItemPerfiles}"></f:selectItems>
+                        </h:selectOneMenu>
 
+                        <h:outputText value="MODULO" /> 
+                        <h:selectOneMenu id="modulo" label="modulo"  value="#{accesosBean.modulo}" rendered="true">
+                            <f:selectItem itemValue="TODOS" itemLabel="TODOS"/>
+                            <f:selectItem itemValue="PARAMETROS" itemLabel="PARAMETROS"/>
+                            <f:selectItem itemValue="ADMINISTRACION" itemLabel="ADMINISTRACION"/>
+                            <f:selectItem itemValue="PAGOS" itemLabel="PAGOS"/>
+                            <f:selectItem itemValue="NOTAS" itemLabel="NOTAS"/>
+                        </h:selectOneMenu>
+                        <p:commandButton id="buscar" value="Buscar" update="accesosList guardar" actionListener="#{accesosBean.cargarDataModel()}"  icon="ui-icon-search" title="Buscar"/>      
+                        <h:panelGrid id="guardar"  style="border: none">
+                                <p:commandButton  rendered="#{accesosBean.model.size()>0}"   value="Guardar"  update="accesosList"   action="#{accesosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        </h:panelGrid>
+                        
+
+                        
                     </h:panelGrid>
                 </p:panel>
-    
-                <p:panelGrid style="width: 600px" columns="5">
-                     
-                    <p:separator style="width: 255px;background-color: transparent;color: transparent" />
-                     
-                    <h:outputText value="INGRESAR " />
-                    <h:outputText value="MODIFICAR" />
-                    <h:outputText value="AGREGAR" />
-                    <h:outputText value="ELIMINAR" />
-                      
-                    <h:outputText value="SELECCIONAR TODO " style="float:right" />
-                     <p:selectBooleanCheckbox id="ingresar" value="#{accesosBean.ingresar}">
-                                        <p:ajax event="change" listener="#{accesosBean.seleccionarIngresar()}"  update="accesosList" />
-                               </p:selectBooleanCheckbox>
-                     <p:selectBooleanCheckbox  value="#{accesosBean.modificar}">
-                                        <p:ajax event="change" listener="#{accesosBean.seleccionarModificar()}"  update="accesosList" />
-                                    </p:selectBooleanCheckbox>
-                     
-                     <p:selectBooleanCheckbox value="#{accesosBean.agregar}">
-                                        <p:ajax event="change" listener="#{accesosBean.seleccionarAgregar()}"  update="accesosList" />
-                                    </p:selectBooleanCheckbox>
-                     <p:selectBooleanCheckbox value="#{accesosBean.eliminar}">
-                                        <p:ajax event="change" listener="#{accesosBean.seleccionarEliminar()}"  update="accesosList" />
-                                    </p:selectBooleanCheckbox>
-                     
-                                    
+
+
+                <p:panelGrid style="border: none; border-color: transparent; width: 600px" columns="1" id="accesosList">
+                    <p:panelGrid rendered="#{accesosBean.model.size()>0}" style="width: 600px" columns="5">
+
+                        <p:separator style="border:none; width: 255px;background-color: transparent;color: transparent" />
+
+                        <h:outputText value="INGRESAR " />
+                        <h:outputText value="MODIFICAR" />
+                        <h:outputText value="AGREGAR" />
+                        <h:outputText value="ELIMINAR" />
+
+                        <h:outputText value="SELECCIONAR TODO " style="float:right" />
+                        <p:selectBooleanCheckbox id="ingresar" value="#{accesosBean.ingresar}">
+                            <p:ajax event="change" listener="#{accesosBean.seleccionarIngresar()}"  update="accesosList" />
+                        </p:selectBooleanCheckbox>
+                        <p:selectBooleanCheckbox  value="#{accesosBean.modificar}">
+                            <p:ajax event="change" listener="#{accesosBean.seleccionarModificar()}"  update="accesosList" />
+                        </p:selectBooleanCheckbox>
+
+                        <p:selectBooleanCheckbox value="#{accesosBean.agregar}">
+                            <p:ajax event="change" listener="#{accesosBean.seleccionarAgregar()}"  update="accesosList" />
+                        </p:selectBooleanCheckbox>
+                        <p:selectBooleanCheckbox value="#{accesosBean.eliminar}">
+                            <p:ajax event="change" listener="#{accesosBean.seleccionarEliminar()}"  update="accesosList" />
+                        </p:selectBooleanCheckbox>
+
+
+                    </p:panelGrid>
+
+                    <p:dataTable  rendered="#{accesosBean.model.size()>0}" style="width:600px;" rowsPerPageTemplate="5,10,15,20,25,50,100" paginator="true" rows="50"   var="obj" value="#{accesosBean.model}">  
+                        <p:columnGroup  type="header">  
+                            <p:row>  
+                                <p:column headerText="TABLA" />  
+                                <p:column headerText="VARIABLE" />  
+                                <p:column >
+                                    <f:facet name="header">
+                                        INGRESAR  
+                                    </f:facet>
+
+                                </p:column>
+                                <p:column >
+                                    <f:facet name="header">
+                                        MODIFICAR
+                                    </f:facet>
+                                </p:column>
+
+                                <p:column >
+                                    <f:facet name="header">
+                                        AGREGAR 
+                                    </f:facet>
+
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        ELIMINAR
+
+                                    </f:facet>
+                                </p:column>
+                            </p:row>  
+                        </p:columnGroup>  
+
+                        <p:column   style="width:80%">  
+                            <h:outputText value="#{obj.modulo}" />  
+                        </p:column>      
+                        <p:column style="width:80%">  
+                            <h:outputText value="#{obj.variable}" />  
+                        </p:column>  
+                        <p:column  style="width:80%">  
+                            <p:selectBooleanCheckbox   value="#{obj.ingresar}"  />
+                        </p:column>  
+
+                        <p:column style="width:80%">  
+                            <p:selectBooleanCheckbox value="#{obj.modificar}" />  
+                        </p:column>  
+
+                        <p:column style="width:80%">  
+                            <p:selectBooleanCheckbox value="#{obj.agregar}" />  
+                        </p:column>  
+                        <p:column style="width:80%">  
+                            <p:selectBooleanCheckbox value="#{obj.eliminar}" />  
+                        </p:column>  
+
+
+                    </p:dataTable>  
                 </p:panelGrid>
-                <p:commandButton  value="Guardar"  id="guardar" update="accesosList"   action="#{accesosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="50"  id="accesosList" var="obj" value="#{accesosBean.model}">  
-                    <p:columnGroup  type="header">  
-                        <p:row>  
-                            <p:column headerText="TABLA" />  
-                            <p:column headerText="VARIABLE" />  
-                            <p:column >
-                                <f:facet name="header">
-                                    INGRESAR  
-                                </f:facet>
 
-                            </p:column>
-                            <p:column >
-                                <f:facet name="header">
-                                    MODIFICAR
-                                </f:facet>
-                            </p:column>
-
-                            <p:column >
-                                <f:facet name="header">
-                                    AGREGAR 
-                                </f:facet>
-
-                            </p:column>
-
-                            <p:column>
-                                <f:facet name="header">
-                                    ELIMINAR
-                                                         
-                                </f:facet>
-                            </p:column>
-                        </p:row>  
-                    </p:columnGroup>  
-
-                    <p:column   style="width:80%">  
-                        <h:outputText value="#{obj.modulo}" />  
-                    </p:column>      
-                    <p:column style="width:80%">  
-                        <h:outputText value="#{obj.variable}" />  
-                    </p:column>  
-                    <p:column  style="width:80%">  
-                        <p:selectBooleanCheckbox   value="#{obj.ingresar}"  />
-                    </p:column>  
-
-                    <p:column style="width:80%">  
-                        <p:selectBooleanCheckbox value="#{obj.modificar}" />  
-                    </p:column>  
-
-                    <p:column style="width:80%">  
-                        <p:selectBooleanCheckbox value="#{obj.agregar}" />  
-                    </p:column>  
-                    <p:column style="width:80%">  
-                        <p:selectBooleanCheckbox value="#{obj.eliminar}" />  
-                    </p:column>  
-
-
-                </p:dataTable>  
             </h:form>
 
 
