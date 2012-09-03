@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head> </h:head>
+        <h:body>
+            <h:form>
+            <p:idleMonitor onactive="sessionTimeOutDialog.show();" timeout="600000" />
+            <p:dialog header="Sesión Expirada" widgetVar="sessionTimeOutDialog"
+                      modal="true" closable="false" width="400" visible="false">
+                <h:outputText value="Su sesión a excedido el tiempo de 5 minutos sin actividad, presione el botón para volver a ingresar" />
+                
+                <input id="confirmBackToLogin" type="button"  value="Pulse aquí para volver a ingresar"
+                       onclick="window.location='#{facesContext.externalContext.requestContextPath}/login.jspx';" />
+            </p:dialog>
+            </h:form>
+        </h:body>
+        
+
+    </f:view>
+</html>

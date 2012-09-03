@@ -4,7 +4,6 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-
     <f:view contentType="text/html">
         <h:head>
             <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
@@ -15,7 +14,6 @@
                     border: 0px;
                 }
                 .ui-panelgrid td{
-
                     border: none;
                 }
                   .cabe{
@@ -30,13 +28,11 @@
                      margin: 0px 0px 0px 0px;
                 }
             </style>
-
         </h:head>
         <h:body >
             <div    >
                 <h:form prependId="false"  id="login" enctype="multipart/form-data">
                     <p:panel style="border: none; width: 100%;height:600px">
-
                         <!--p:growl id="growl" showDetail="true" sticky="true" /--> 
                         <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                         <p:panel id="mipanel" style="background-color: transparent ;width: 100%;border: 0px;border-color: transparent">
@@ -47,12 +43,9 @@
                                 <h:panelGrid  style="margin: 0px 55px 0px 60px;" columns="1">
                                     <p:separator style="border:none; background-color: transparent; width:0;height:120px" />
                                     <p:graphicImage id="logoSubido2" width="300" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />
-
                                     <p:separator style="width:0;height:0px" />
                                     <h:outputText style="font-size: 12px;color: #D20005" value=" Cuenta de Usuario" />
                                     <h:panelGrid style="font-size: 12px;border: 0px;border-color: transparent" columns="3">
-
-
                                         <p:inputText style="height: 30px;font-size: 11px" size="50" required="true"  id="usuario" value="#{loginBean.usuario}" />
                                         <p:message  for="usuario"  display="icon" /> 
                                         <p:watermark for="usuario" value="Diqite aquí su Usuario" />  
@@ -61,14 +54,9 @@
                                         <p:watermark for="clave" value="Diqite aquí su Contraseña" />  
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
                                     </h:panelGrid>
-
-                                    <p:commandLink  style="margin-right:20px;font-size: 12px;color: #D20005"  immediate="true" id="ajax"  
-                                                    onclick="recuperarClave.show();" >  
+                                    <p:commandLink  style="margin-right:20px;font-size: 12px;color: #D20005"  immediate="true" id="ajax"  onclick="recuperarClave.show();" >  
                                         <h:outputText value="¿No puedes acceder a tu Cuenta?" />  
                                     </p:commandLink> 
-                                   
-
-
                                 </h:panelGrid>
                             </h:panelGrid>
                             <h:form>
@@ -83,7 +71,6 @@
                                               <h:graphicImage value="images/procesando.gif" />
                                               Procesando...
                                         </f:facet>  
-
                                         <f:facet name="complete">  
                                             <h:outputText value="" />  
                                         </f:facet>  
@@ -105,7 +92,6 @@
                         <br />
                         <br />
                         <hr style="width: 90%"/>
-
                         <div style=" margin:0px 50px 0px 60px; float: left;">
                             ©2012 JCINFORM
                         </div>
@@ -114,14 +100,8 @@
                             <h:outputLink target="_blank" styleClass="texto12"
                                           value="http://www.jcinform.com/">
                                 <f:verbatim>JC INFORM</f:verbatim>
-
                             </h:outputLink>
                         </div>
-
-
-
-
-
                     </p:panel>
                 </h:form>
             </div>
