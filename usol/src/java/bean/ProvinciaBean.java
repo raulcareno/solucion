@@ -41,7 +41,7 @@ public class ProvinciaBean {
 Auditar  aud = new Auditar();
     public ProvinciaBean() {
         //super();
-        FacesContext context = FacesContext.getCurrentInstance();
+//        FacesContext context = FacesContext.getCurrentInstance();
 //        String s = context.getExternalContext().getRequestParameterMap().get("skp");
 //        if (s != null) {
 //            System.out.println(s);
@@ -54,8 +54,8 @@ Auditar  aud = new Auditar();
         }
         if (!permisos.verificarPermisoReporte("Provincia", "ingresar_provincia", "ingresar", true, "PARAMETROS")) {
             try {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
             } //selectedProvincia = new Provincia();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(ProvinciaBean.class.getName()).log(Level.SEVERE, null, ex);
