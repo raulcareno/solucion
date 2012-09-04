@@ -24,7 +24,8 @@ public class ConvPeriodos  implements Converter {
            Periodos cat = new Periodos(Integer.parseInt(value));
             return cat;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+//            java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
+            //return null;
         }
         return null;
     }

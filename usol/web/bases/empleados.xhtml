@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+
+                <p:panel id="registro"  style="width: 600px;" header="Empleados">
+                    <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                        <h:outputText value="PERFIL " /> 
+
+                        <p:selectOneMenu   id="perfil" label="perfil"  value="#{empleadosBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
+                            <f:selectItems value="#{empleadosBean.selectedItemPerfiles}" var="ob"  itemValue="#{ob}"/>  
+                        </p:selectOneMenu>  
+
+                        <h:outputText value="PROVINCIA: " /> 
+                        <p:selectOneMenu immediate="true" id="provincia" label="provincia"  value="#{empleadosBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
+                            <f:selectItems value="#{empleadosBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
+                        </p:selectOneMenu>  
+
+                        <h:outputText value="NOMBRE: " />  
+                        <p:inputText value="#{empleadosBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="LOGO REPORTES" rendered="#{not empty empleadosBean.foto1}"  />  
+                        <p:graphicImage id="logoSubido" width="100" rendered="#{not empty empleadosBean.foto1}" value="#{pageContext.contextPath}/fotos/#{empleadosBean.foto1}"
+                                        cache="false" />
+                        <p:commandLink update="fileSubir"  actionListener="#{empleadosBean.setEsLogo(true)}" oncomplete="modalSubir.show()" id="versubirLogo">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Logo
+                        </p:commandLink>
+                        <p:inputText  value="#{empleadosBean.object.idEmpleados}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+
+                    </h:panelGrid>  
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:empleados"   action="#{empleadosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{empleadosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        </p:commandButton> 
+                    </h:panelGrid>
+                    <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
+                              fixedCenter="true" width="400" visible="false" resizable="false">
+                        <p:fileUpload  label="Seleccionar Imagen (click aquí)"
+                                       style="width:100%; font-size: 150% !important;"
+                                       fileUploadListener="#{empleadosBean.handleFileUpload}"  
+                                       mode="advanced"  id="fileSubir"
+                                       update="logoSubido logoSubido2"  
+                                       auto="true"  oncomplete="modalSubir.hide();" 
+                                       sizeLimit="1000000"   
+                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+                        <br />
+                        <p:commandButton type="button" value="CANCELAR">
+                            <p:ajax oncomplete="modalSubir.hide();" />
+                        </p:commandButton>
+                    </p:dialog>
+                </p:panel>
+                <p:panel  style="width: 600px;">
+                    <h:panelGrid  columns="4">
+
+                        <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
+                        <p:inputText id="textoBuscar" value="#{empleadosBean.textoBuscar}" style="font-weight:bold"/>  
+                        <p:commandButton id="buscar" value="Buscar" update="empleados" actionListener="#{empleadosBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="empleados" var="obj" value="#{empleadosBean.model}">  
+
+                    <p:column sortBy="#{obj.idProvincia.idPais.nombre}" headerText="PAIS" style="width:80%">  
+                        <h:outputText value="#{obj.idProvincia.idPais.nombre}" />  
+                    </p:column>  
+                    <p:column  sortBy="#{obj.idProvincia.nombre}" headerText="PROVINCIA" style="width:80%">  
+                        <h:outputText value="#{obj.idProvincia.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="NOMBRE" style="width:80%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{empleadosBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+
+                            </p:commandButton>  
+                            <p:commandButton id="eliminarButton" actionListener="#{empleadosBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+
+                            </p:commandButton>  
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

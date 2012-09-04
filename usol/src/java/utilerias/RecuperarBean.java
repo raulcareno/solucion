@@ -49,9 +49,9 @@ public class RecuperarBean {
      * Creates a new instance of RecuperarBean
      */
     public RecuperarBean() {
-         mensaje = "";
-        correos = "";
-         adm = new Administrador(); 
+            mensaje = "";
+            correos = "";
+            adm = new Administrador(); 
          try {
                 List<Institucion> user = adm.query("Select o from Institucion as o ");    
                 institucion = user.get(0);
@@ -129,10 +129,16 @@ public class RecuperarBean {
     }
     
     public String recuperarClave(String cedula) {
-        claves val = new claves();
-        
+            claves val = new claves();
+                   FacesContext context = FacesContext.getCurrentInstance();
+         Empleados emp;
+         try {
+         emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.idEmpleados = '" + cedula + "' ");   
+        } catch (Exception e) {
+            emp = null;
+        }
          
-        Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.identificacion = '" + cedula + "' ");
+        
         if (emp != null) {
              mensaje = "<html><p> <b> Su usuario es: </b>" + emp.getUsuario() + "<p> "
                     + "<b> Su password es:</b> " + val.desencriptar(emp.getClave()) + " <p> "
@@ -140,29 +146,50 @@ public class RecuperarBean {
                     + "<p>."
                     + "<p>"
                     + "<p>"
-                    + "<p>."
+                    + "<br/>"
                     + "LA ADMINISTRACION "
                     + "<p>"
-                    + "<p>."
+                    + "<br/>" 
                     + "<p>"
-                    + "<p>."
+                    + "<br/>"
                     + "<p>"
-                    + "<p>."
-                    + "<hr>."
-                    + "Desarrollado por JCINFORM fono: 080162 211 "
+                    + "<br/>"
+                    + "<hr>"
+                    + "Desarrollado por <a href=http://www.jcinform.com> JC INFORM </a> "
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
+             try {
+            System.out.println(""+emp.getEmail().trim()+ mensaje+
+                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre()+ 
+                    institucion.getEmail()+ 
+                    institucion.getClave()+ 
+                    institucion.getSmtp()+ 
+                    institucion.getPuerto()+
+                    institucion.getAutorizacion()+
+                    institucion.getStar());                  
+            } catch (Exception e) {
+                 System.out.println("error: "+e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ud. no tiene registrado un email en su cuenta...!","Ud. no tiene registrado un email en su cuenta...!"));
+                return "no";
+            }
+            
             Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
                     "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(),institucion.getAutorizacion(),institucion.getStar());
+ 
+ 
             if (estado) {
+                
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso","Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso"));
                 return "[OK] " + emp.getEmail();
             } else {
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha enviado el email...!","No se ha enviado el email...!"));
                 return "no";
 
             }
 
         } else {
+                                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha encontrado el estudiante con la cédula ingresada...!","No se ha encontrado el estudiante con la cédula ingresada...!"));
             return "no";
         }
     }

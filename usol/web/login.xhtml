@@ -41,7 +41,7 @@
                                 <p:graphicImage   style="margin: 50px 50px 0px 60px;" id="logoSubido" width="500" height="400" value="#{pageContext.contextPath}/fotos/imagen.png" cache="true" />    
                                 <p:separator style="width:0;height:0px" />
                                 <h:panelGrid  style="margin: 0px 55px 0px 60px;" columns="1">
-                                    <p:separator style="border:none; background-color: transparent; width:0;height:120px" />
+                                    <p:separator style="border:none; background-color: transparent; width:0;height:100px" />
                                     <p:graphicImage id="logoSubido2" width="300" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />
                                     <p:separator style="width:0;height:0px" />
                                     <h:outputText style="font-size: 12px;color: #D20005" value=" Cuenta de Usuario" />
@@ -52,6 +52,12 @@
                                         <p:password style="height: 30px;font-size: 11px" size="50"   id="clave" required="true" value="#{loginBean.clave}"/>  
                                         <p:message for="clave"  display="icon" /> 
                                         <p:watermark for="clave" value="Diqite aquí su Contraseña" />  
+                                          
+                                        <p:selectOneMenu required="true" id="periodo" label="periodo"  value="#{loginBean.periodoSeleccionado}" effect="fade" converter="ConvPeriodos">  
+                                            <f:selectItem itemLabel="SELECCIONE UN PERIODO" itemValue="" />  
+                                             <f:selectItems value="#{loginBean.selectedItemPeriodos}" var="ob"  itemValue="#{ob}"/>  
+                                         </p:selectOneMenu>  
+                                        <f:verbatim/><f:verbatim/>
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
                                     </h:panelGrid>
                                     <p:commandLink  style="margin-right:20px;font-size: 12px;color: #D20005"  immediate="true" id="ajax"  onclick="recuperarClave.show();" >  
@@ -59,11 +65,11 @@
                                     </p:commandLink> 
                                 </h:panelGrid>
                             </h:panelGrid>
-                            <h:form>
+                             
                             <p:dialog header="Recuperar Clave" widgetVar="recuperarClave" modal="true" width="450" visible="false" resizable="false">
                                 <p:panelGrid columns="2" >
                                     <h:outputText value="Tu Cédula o Passaporte: " />
-                                <p:inputText id="cedula" value="#{recuperarBean.cedula}" >
+                                    <p:inputText id="cedula" value="#{loginBean.cedula}" >
                                     <p:ajax event="blur" update="cedula" />
                                 </p:inputText>
                                     <p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">  
@@ -75,7 +81,7 @@
                                             <h:outputText value="" />  
                                         </f:facet>  
                                     </p:ajaxStatus> 
-                                <p:commandButton update="cedula"   action="#{recuperarBean.recuperarClave()}" immediate="true"
+                                <p:commandButton update="cedula"   action="#{loginBean.recuperarClave()}" immediate="true"
                                                  oncomplete="recuperarClave.hide();" value="Recuperar" >
                                 </p:commandButton>
                                 </p:panelGrid>
@@ -83,7 +89,7 @@
                                 
                                 
                             </p:dialog>
-</h:form>
+ 
 
 
                         </p:panel>
