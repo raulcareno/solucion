@@ -181,7 +181,8 @@ Auditar  aud = new Auditar();
             adm.eliminarObjeto(CarrerasMaterias.class, obj.getIdCarrerasMaterias());
             aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdCarrerasMaterias()+"");
             inicializar();
-            cargarDataModel();
+            carreraSeleccionada = obj.getIdCarreras();
+            buscar();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
