@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+
+                <p:panel id="registro"  style="width: 600px;" header="Malla(Materias por Carrera)">
+                    <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:outputText value="SELECCIONE UNA CARRERA: " /> 
+                    <h:selectOneMenu id="carreras" label="carreras" converter="ConvCarreras" value="#{carrerasMateriasBean.carreraSeleccionada}" rendered="true">
+                            <f:selectItems value="#{carrerasMateriasBean.selectedItemCarreras}"></f:selectItems>
+                            <p:ajax event="change" listener="#{carrerasMateriasBean.buscar()}" update="carreraver carrerasList"/>
+                        </h:selectOneMenu>
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">
+                        
+                        <h:outputText value="CARRERA: " /> 
+                        <h:outputText id="carreraver"  value="#{carrerasMateriasBean.carreraSeleccionada.idCarreras} #{carrerasMateriasBean.carreraSeleccionada.nombre}"/>
+                        <h:outputText value="NIVEL: " /> 
+                        <h:selectOneMenu id="nivel" label="nivel" converter="ConvNiveles" value="#{carrerasMateriasBean.nivelesSeleccionada}" rendered="true">
+                            <f:selectItems value="#{carrerasMateriasBean.selectedItemNiveles}"></f:selectItems>
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="MATERIA: " /> 
+                        <h:selectOneMenu id="materia" label="materia" converter="ConvMaterias" value="#{carrerasMateriasBean.materiasSeleccionada}" rendered="true">
+                            <f:selectItems value="#{carrerasMateriasBean.selectedItemMaterias}"></f:selectItems>
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="EJE: " /> 
+                        <h:selectOneMenu id="ejes" label="ejes" converter="ConvEjes" value="#{carrerasMateriasBean.ejesSeleccionada}" rendered="true">
+                            <f:selectItems value="#{carrerasMateriasBean.selectedItemEjes}"></f:selectItems>
+                        </h:selectOneMenu>
+                        
+                        <h:outputText value="# HORAS" />  
+                        <p:inputText value="#{carrerasMateriasBean.object.numeroHoras}" id="NoHoras"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        
+                        <h:outputText value="# CRÉDITOS" />  
+                        <p:inputText value="#{carrerasMateriasBean.object.numeroCreditos}" id="NoCreditos"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        
+                        <p:inputText  value="#{carrerasMateriasBean.object.idCarrerasMaterias}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+
+                    </h:panelGrid>  
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display carrerasList"   action="#{carrerasMateriasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{carrerasMateriasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        </p:commandButton> 
+                        
+                    </h:panelGrid>
+                </p:panel>
+ 
+                
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="carrerasList" var="obj" value="#{carrerasMateriasBean.model}">  
+                     
+                    <p:column headerText="NIVEL" style="width:20%">  
+                        <h:outputText value="#{obj.idNiveles.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="MATERIA" style="width:30%">  
+                        <h:outputText value="#{obj.idMaterias.nombre}" />  
+                    </p:column>  
+                    <p:column headerText="EJE" style="width:20%">  
+                        <h:outputText value="#{obj.idEjes.nombre}" />  
+                    </p:column> 
+                    <p:column headerText="# HORAS" style="width:10%">  
+                        <h:outputText value="#{obj.numeroHoras}" />  
+                    </p:column> 
+                    <p:column headerText="# CREDITOS" style="width:10%">  
+                        <h:outputText value="#{obj.numeroCreditos}" />  
+                    </p:column> 
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+
+                            <p:commandButton  id="editarButton" update=":form:display :form:carreras"  actionListener="#{carrerasMateriasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+
+                            </p:commandButton>  
+                            <p:commandButton id="eliminarButton" actionListener="#{carrerasMateriasBean.eliminar(obj)}"  update=":form"   icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+
+                            </p:commandButton>  
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>
