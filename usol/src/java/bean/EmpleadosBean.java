@@ -4,14 +4,17 @@
  */
 package bean;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,19 +22,19 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Empleados;
-import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Pais;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Provincia;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
+import miniaturas.ProcesadorImagenes;
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.StreamedContent;
 
 import utilerias.Permisos;
 
@@ -62,8 +65,10 @@ public class EmpleadosBean {
     public Pais paisSeleccionado = new Pais();
     public Provincia provinciaSeleccionado = new Provincia();
     public Canton cantonSeleccionado = new Canton();
+    public Pais paisSeleccionado3 = new Pais();
+    public Pais paisSeleccionado4 = new Pais();
     Auditar aud = new Auditar();
-
+    ProcesadorImagenes p = new ProcesadorImagenes();
     public EmpleadosBean() {
         //super();
         if (adm == null) {
@@ -86,39 +91,19 @@ public class EmpleadosBean {
         //selectedEmpleados = new Empleados();
 
     }
-    StreamedContent barcode;
 
-    public StreamedContent getImagen() {
-        return barcode;
-    }
 
     public String editarAction(Empleados obj) {
         inicializar();
         object = obj;
-      obj.setClave(cl.desencriptar(obj.getClave()));
-    foto1 = object.getIdEmpleados() + "";
-//        Institucion insti = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
-//        final String fileFoto = insti.getFotos() + File.separator + foto1 + ".jpg";
-//        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-//        try {
-//            File file = (new File(fileFoto));
-//            byte[] bytes = new byte[(int) file.length()];
-//            // Read in the bytes
-//            int offset = 0;
-//            int numRead = 0;
-//            InputStream is = new FileInputStream(file);
-//            try {
-//                while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-//                    offset += numRead;
-//                }
-//            } finally {
-//                is.close();
-//            }
-//            generarImagen(foto1+".jpg", bytes); 
-//        } catch (Exception e) {
-//        }
-////        barcode = new DefaultStreamedContent(is, "image/jpeg","image.jpeg");
-
+        obj.setClave(cl.desencriptar(obj.getClave()));
+        clave2 = obj.getClave();
+        foto1 = object.getIdEmpleados() + ".jpg";
+        try {
+            generarImagenTmp(foto1, object.getFoto());
+        } catch (Exception e) {
+            System.out.println("AUN NO SE HA CARGADO LA IMAGEN...");
+        }
         paisSeleccionado = object.getIdCanton().getIdProvincia().getIdPais();
         buscarProvincia();
         provinciaSeleccionado = object.getIdCanton().getIdProvincia();
@@ -126,18 +111,22 @@ public class EmpleadosBean {
         cantonSeleccionado = object.getIdCanton();
         perfilesSeleccioando = object.getIdPerfiles();
         titulosSeleccionado = object.getIdTitulos();
+        
+        paisSeleccionado3 = object.getIdPais();
+        paisSeleccionado4 = object.getPaiIdPais();
         //generarImagen("logo.png", object.getFoto());
 
         //foto1 = "logo.png";
         System.out.println("" + object.getIdEmpleados());
         return null;
     }
-
+    
     protected void inicializar() {
         object = new Empleados(0);
         object.setSexo("M");
         object.setTipoIdentificacion("C");
-
+        foto1 = null;
+        clave2 = "";
         cargarDataModel();
     }
 
@@ -175,6 +164,17 @@ public class EmpleadosBean {
         object.setIdCanton(cantonSeleccionado);
         object.setIdPerfiles(perfilesSeleccioando);
         object.setIdTitulos(titulosSeleccionado);
+        if(paisSeleccionado3.getIdPais().equals(new Integer(0))){
+            object.setPaiIdPais(null);
+        }else{
+            object.setIdPais(paisSeleccionado3);
+        }
+        if(paisSeleccionado4.getIdPais().equals(new Integer(0))){
+            object.setPaiIdPais(null);
+        }else{
+            object.setPaiIdPais(paisSeleccionado4);
+        }
+        
         if (object.getIdEmpleados().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Empleados", "agregar_empleados", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -206,9 +206,9 @@ public class EmpleadosBean {
                 java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
-
+            
         }
-
+        
         return null;
     }
 
@@ -260,15 +260,16 @@ public class EmpleadosBean {
         try {
             model = (adm.listar("Empleados"));
             setModel(model);
-
+            
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
-
+    
     public void limpiar() {
-        object = new Empleados(0);
+        //object = new Empleados(0);
+        inicializar();
     }
 
     /**
@@ -279,18 +280,20 @@ public class EmpleadosBean {
             //setModel(adm.listar("Empleados"));
             model = (adm.query("Select o from Empleados as o where o.nombre like '%" + textoBuscar + "%' order by o.nombre "));
             setModel(model);
-
+            
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
-
-    public void generarImagen(String nombre, byte[] datos) {
-
-//        final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        Institucion insti = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
-        final String fileFoto = insti.getFotos() + File.separator + nombre;
+    
+  
+    
+    public void generarImagenTmp(String nombre, byte[] datos) {
+        
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        
+        String fileFoto = servletContext.getRealPath("") + File.separator + "fotosEmpleados" + File.separator + nombre;
         FileImageOutputStream outputStream = null;
         try {
             outputStream = new FileImageOutputStream(new File(fileFoto));
@@ -304,19 +307,54 @@ public class EmpleadosBean {
             }
         }
         datos = null;
-
+        
     }
-
+    
     public void handleFileUpload(FileUploadEvent event) {
-        //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
-        byte[] datos = event.getFile().getContents();
-        object.setFoto(event.getFile().getFileName());
-        foto1 = object.getIdEmpleados() + ".jpg";
-        generarImagen("" + object.getIdEmpleados() + ".jpg", datos);
-        datos = null;
+        try {
+            //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+            //FacesContext.getCurrentInstance().addMessage(null, msg);
+            //        byte[] datos = event.getFile().getContents();
+            object.setFoto(event.getFile().getContents());
+            String nombreTemporal = event.getFile().getFileName().substring(0, event.getFile().getFileName().lastIndexOf("."));
+            String formato = event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1);
+            java.io.File f = java.io.File.createTempFile(nombreTemporal, "."+formato);
+            
+            
+//            byte[] archivo = tuByte[];
+            FileOutputStream archivoNuevo = new FileOutputStream(f);
+            archivoNuevo.write(event.getFile().getContents());
+            
+            
+            //File.createTempFile("miArchivo", ".gif");
+//            ImageIO.write(imageBuffer, "jpg", f);
+            FileInputStream fin = null;
+            fin = new FileInputStream(f);
+            byte[] buffer = new byte[(int) f.length()];
+            fin.read(buffer);
+            fin.close();
+            
+      
+            BufferedImage bf = p.escalarATamanyo(f, 230, 170, formato);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bf, "jpg", baos);
+            baos.flush();
+            byte[] imageInByte = baos.toByteArray();
+            baos.close();
+            f = null;
+            bf = null;
+            p = null;
+            object.setFoto(imageInByte);
+            buffer = null;
+            imageInByte = null;
+            fin = null;
+            archivoNuevo = null;
+            
+        } catch (Exception ex) {
+            Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
+    
     public List<SelectItem> getSelectedItemTitulos() {
         try {
             List<Titulos> divisionPoliticas = new ArrayList<Titulos>();
@@ -331,17 +369,17 @@ public class EmpleadosBean {
                     }
                 } else {
                     Titulos obj = new Titulos(0);
-                    items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
+                    items.add(new SelectItem(obj, "NO EXISTEN TITULOS "));
                 }
             }
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
-
+            
         }
         return null;
     }
-
+    
     public List<SelectItem> getSelectedItemPerfiles() {
         try {
             List<Perfiles> divisionPoliticas = new ArrayList<Perfiles>();
@@ -362,7 +400,7 @@ public class EmpleadosBean {
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
-
+            
         }
         return null;
     }
@@ -376,7 +414,7 @@ public class EmpleadosBean {
         try {
             List<Canton> divisionPoliticas = new ArrayList<Canton>();
             cantonesEncontradas = new ArrayList<SelectItem>();
-
+            
             if (object == null) {
                 object = new Empleados(0);
                 object.setIdCanton(new Canton());
@@ -420,7 +458,7 @@ public class EmpleadosBean {
         try {
             List<Provincia> divisionPoliticas = new ArrayList<Provincia>();
             provinciasEncontradas = new ArrayList<SelectItem>();
-
+            
             if (object == null) {
                 object = new Empleados(0);
                 object.setIdCanton(new Canton());
@@ -471,7 +509,7 @@ public class EmpleadosBean {
                 object.getIdCanton().getIdProvincia().setIdPais(new Pais());
             }
             if (object != null) {
-
+                
                 divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
                 if (divisionPoliticas.size() > 0) {
                     Pais objSel = new Pais(0);
@@ -483,7 +521,7 @@ public class EmpleadosBean {
                     Pais obj = new Pais(0);
                     items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
                 }
-
+                
             }
             return items;
         } catch (Exception e) {
@@ -503,7 +541,7 @@ public class EmpleadosBean {
         }
         return model;
     }
-
+    
     public void setModel(List<Empleados> model) {
         this.model = model;
     }
@@ -528,96 +566,113 @@ public class EmpleadosBean {
         }
         return null;
     }
-
+    
     public String getTextoBuscar() {
         return textoBuscar;
     }
-
+    
     public void setTextoBuscar(String textoBuscar) {
         this.textoBuscar = textoBuscar;
     }
     private static final long serialVersionUID = 1L;
-
+    
     public Empleados getObject() {
         if (object == null) {
             object = new Empleados(0);
         }
         return object;
     }
-
+    
     public void setObject(Empleados object) {
         this.object = object;
     }
-
+    
     public Titulos getTitulosSeleccionado() {
         return titulosSeleccionado;
     }
-
+    
     public void setTitulosSeleccionado(Titulos titulosSeleccionado) {
         this.titulosSeleccionado = titulosSeleccionado;
     }
-
+    
     public Perfiles getPerfilesSeleccioando() {
         return perfilesSeleccioando;
     }
-
+    
     public void setPerfilesSeleccioando(Perfiles perfilesSeleccioando) {
         this.perfilesSeleccioando = perfilesSeleccioando;
     }
-
+    
     public String getFoto1() {
         return foto1;
     }
-
+    
     public void setFoto1(String foto1) {
         this.foto1 = foto1;
     }
-
+    
     public String getClave2() {
         return clave2;
     }
-
+    
     public void setClave2(String clave2) {
         this.clave2 = clave2;
     }
-
+    
     public List<SelectItem> getProvinciasEncontradas() {
         return provinciasEncontradas;
     }
-
+    
     public void setProvinciasEncontradas(List<SelectItem> provinciasEncontradas) {
         this.provinciasEncontradas = provinciasEncontradas;
     }
-
+    
     public List<SelectItem> getCantonesEncontradas() {
         return cantonesEncontradas;
     }
-
+    
     public void setCantonesEncontradas(List<SelectItem> cantonesEncontradas) {
         this.cantonesEncontradas = cantonesEncontradas;
     }
-
+    
     public Pais getPaisSeleccionado() {
         return paisSeleccionado;
     }
-
+    
     public void setPaisSeleccionado(Pais paisSeleccionado) {
         this.paisSeleccionado = paisSeleccionado;
     }
-
+    
     public Provincia getProvinciaSeleccionado() {
         return provinciaSeleccionado;
     }
-
+    
     public void setProvinciaSeleccionado(Provincia provinciaSeleccionado) {
         this.provinciaSeleccionado = provinciaSeleccionado;
     }
-
+    
     public Canton getCantonSeleccionado() {
         return cantonSeleccionado;
     }
-
+    
     public void setCantonSeleccionado(Canton cantonSeleccionado) {
         this.cantonSeleccionado = cantonSeleccionado;
     }
+
+    public Pais getPaisSeleccionado3() {
+        return paisSeleccionado3;
+    }
+
+    public void setPaisSeleccionado3(Pais paisSeleccionado3) {
+        this.paisSeleccionado3 = paisSeleccionado3;
+    }
+
+    public Pais getPaisSeleccionado4() {
+        return paisSeleccionado4;
+    }
+
+    public void setPaisSeleccionado4(Pais paisSeleccionado4) {
+        this.paisSeleccionado4 = paisSeleccionado4;
+    }
+    
 }

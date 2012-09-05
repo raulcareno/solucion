@@ -1,0 +1,40 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package miniaturas;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
+/**
+ *
+ * @author Ismael Jadan
+ */
+public class CrearMiniaturas {
+
+    public void CrearMiniaturas() {
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public void reducir(String nombre, String formato) throws IOException {
+        // TODO code application logic here
+        ProcesadorImagenes p = new ProcesadorImagenes();
+        File f = new File(nombre + "." + formato);
+        BufferedImage bf = p.escalarATamanyo(f, 230, 170, formato);
+        try {
+            ImageIO.write(bf, formato, new File(nombre + "." + formato));
+        } catch (IOException e) {
+            System.out.println("Error de escritura");
+        }
+        f= null;
+        bf = null;
+        p = null;
+
+
+    }
+}
