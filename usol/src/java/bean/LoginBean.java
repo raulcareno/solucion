@@ -13,19 +13,15 @@ import java.util.logging.Level;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Periodos;
-import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import utilerias.RecuperarBean;
 
@@ -34,30 +30,34 @@ import utilerias.RecuperarBean;
  * @author Geovanny
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class LoginBean {
 
     public String usuario;
     public String clave;
     Administrador adm;
-
+FacesContext context = FacesContext.getCurrentInstance();
     /**
      * Creates a new instance of LoginBean
      */
     public LoginBean() {
+        super();
         usuario = "";
         clave = "";
         adm = new Administrador();
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO,"",""));
+         context = FacesContext.getCurrentInstance();
+//        context.addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "", ""));
+         
         try {
+            List<Institucion> user = adm.query("Select o from Institucion as o ");
             ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-            String fileFoto = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + "logo.png";
-            String fileFoto2 = servletContext.getRealPath("") + File.separator + "fotos" + File.separator + "imagen.png";
-
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("institucion");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("institucion", user.get(0));
+                                 
+            String fileFoto = servletContext.getRealPath("") + File.separator +"logo.png";
+            String fileFoto2 = servletContext.getRealPath("") +  File.separator +"imagen.png";
             if (!new File(fileFoto).exists() || !new File(fileFoto2).exists()) {
                 System.out.println("ENTRO A SELECCIONAR LA IMAGEN...");
-                List<Institucion> user = adm.query("Select o from Institucion as o ");
                 generarImagen("logo.png", user.get(0).getLogo());
                 generarImagen("imagen.png", user.get(0).getImagen());
             }
@@ -69,36 +69,36 @@ public class LoginBean {
             //FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getSessionMap().remove("accesos");
             context.getExternalContext().getSessionMap().remove("user");
-              context.getExternalContext().getSessionMap().remove("periodo");
+            context.getExternalContext().getSessionMap().remove("periodo");
         } catch (Exception e) {
         }
-        
-              
+
+
     }
     public Periodos periodoSeleccionado;
-    
-  public List<SelectItem> getSelectedItemPeriodos() {
+
+    public List<SelectItem> getSelectedItemPeriodos() {
         try {
             List<Periodos> divisionPoliticas = new ArrayList<Periodos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
-             
-                    divisionPoliticas = adm.query("Select o from Periodos as o order by o.fechaInicio ");
-                    if (divisionPoliticas.size() > 0) {
+
+            divisionPoliticas = adm.query("Select o from Periodos as o order by o.fechaInicio ");
+            if (divisionPoliticas.size() > 0) {
 //                        Periodos objSel = new Periodos(0);
 //                        items.add(new SelectItem(objSel, "SELECCIONE UN PERIODO"));
-                        java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("MMM/yyyy");
-                        
-                        for (Periodos obj : divisionPoliticas) {
-                            String fechaI = sdf.format(obj.getFechaInicio());
-                            String fechaF = sdf.format(obj.getFechaFin());
-                            items.add(new SelectItem(obj, fechaI +"-"+fechaF));
-                        }
-                        divisionPoliticas = null;
-                    } else {
-                        Periodos obj = new Periodos(0);
-                        items.add(new SelectItem(obj, "NO PUEDE INGRESAR NO EXISTEN PERIODOS"));
-                    }
-             
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+
+                for (Periodos obj : divisionPoliticas) {
+                    String fechaI = sdf.format(obj.getFechaInicio());
+                    String fechaF = sdf.format(obj.getFechaFin());
+                    items.add(new SelectItem(obj, fechaI + "-" + fechaF));
+                }
+                divisionPoliticas = null;
+            } else {
+                Periodos obj = new Periodos(0);
+                items.add(new SelectItem(obj, "NO PUEDE INGRESAR NO EXISTEN PERIODOS"));
+            }
+
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
@@ -106,28 +106,14 @@ public class LoginBean {
         }
         return null;
     }
-   
-    public String getClave() {
-        return clave;
-    }
 
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
 
-    public String getUsuario() {
-        return usuario;
+    public String cambiarPeriodo() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("periodo");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
+        return null;
     }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-public String cambiarPeriodo(){
-    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("periodo");
-  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
-  return null;
-}
-public String cedula;
+    public String cedula;
 
     public String getCedula() {
         return cedula;
@@ -137,36 +123,32 @@ public String cedula;
         this.cedula = cedula;
     }
 
-public String recuperarClave(){
-    RecuperarBean rec = new RecuperarBean();
-    return rec.recuperarClave(cedula);
-}
+    public String recuperarClave() {
+        RecuperarBean rec = new RecuperarBean();
+        return rec.recuperarClave(cedula);
+    }
+
     public String loginAction() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        
         try {
             Empleados user = (Empleados) adm.ingresoSistema(usuario, clave);
 
             if (user == null) {
                 //FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage("El nombre de Usuario o Contraseña están incorrectas...!"));
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "El nombre de Usuario o Contraseña están incorrectas...!", "El nombre de Usuario o Contraseña están incorrectas...!"));
+                context.addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "El nombre de Usuario o Contraseña están incorrectas...!", "El nombre de Usuario o Contraseña están incorrectas...!"));
                 return null;
             } else {
-                
+
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
-                try {
-                    List<Institucion> insti = adm.query("Select o from Institucion as o ");
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("institucion", insti.get(0));
-                } catch (Exception e) {
-                    System.out.println("no se ha seteado la institucion");
-                }
+                
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("menu");
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.jspx");
-                
-                
-                Auditar  aud = new Auditar();
-                aud.auditar(adm,"", "IngresarSistema", "", "");
+
+
+                Auditar aud = new Auditar();
+                aud.auditar(adm, "", "IngresarSistema", "", "");
             }
 
 
@@ -239,4 +221,19 @@ public String recuperarClave(){
     }
     
     
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 }

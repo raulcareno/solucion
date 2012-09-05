@@ -121,7 +121,7 @@ public class AuditoriaBean {
             List<Empleados> datos = adm.query("Select o from Empleados as o");
             List<SelectItem> items = new ArrayList<SelectItem>();
             
-            Empleados empTodos = new Empleados("-1");
+            Empleados empTodos = new Empleados(-1);
             empTodos.setApellidoPaterno("Todos");
             empTodos.setNombre("");
             
@@ -168,7 +168,7 @@ public class AuditoriaBean {
         try {
             //setModel(adm.listar("Auditoria"));
             String complemento = " and o.idEmpleados.idEmpleados = '"+empleado.getIdEmpleados()+"' ";
-            if(empleado.getIdEmpleados().equals("-1")){
+            if(empleado.getIdEmpleados().equals(new Integer("-1"))){
                 complemento = "";
             }
             String fechaI = (desde.getYear()+1900)+"-"+(desde.getMonth()+1)+"-"+desde.getDate() +" 00:00:01";

@@ -21,7 +21,7 @@ public class ConvEmpleados  implements Converter {
             return null;
         }
         try {
-           Empleados cat = new Empleados(value);
+           Empleados cat = new Empleados(Integer.parseInt(value));
             return cat;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, e);
@@ -54,7 +54,7 @@ public class ConvEmpleados  implements Converter {
             return null;
         }
         
-            return (((Empleados)value).getIdEmpleados());  
+            return Integer.toString(((Empleados)value).getIdEmpleados());  
         }else{
             return null;
         }

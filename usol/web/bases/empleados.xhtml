@@ -19,40 +19,89 @@
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
-                        <h:outputText value="PERFIL " /> 
+                        <p:selectOneRadio id="TipoIdentificacion" value="#{empleadosBean.object.tipoIdentificacion}">  
+                            <f:selectItem itemLabel="CEDULA"  itemValue="C" />  
+                            <f:selectItem itemLabel="RUC" itemValue="R" />  
+                            <f:selectItem itemLabel="PASSAPORTE" itemValue="P" />  
+                        </p:selectOneRadio>  
+                        <p:inputText value="#{empleadosBean.object.identificacion}" id="Identificacion"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
-                        <p:selectOneMenu   id="perfil" label="perfil"  value="#{empleadosBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
-                            <f:selectItems value="#{empleadosBean.selectedItemPerfiles}" var="ob"  itemValue="#{ob}"/>  
-                        </p:selectOneMenu>  
+                        <h:outputText value="APELLIDO PATERNO: " />  
+                        <p:inputText value="#{empleadosBean.object.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
-                        <h:outputText value="PROVINCIA: " /> 
-                        <p:selectOneMenu immediate="true" id="provincia" label="provincia"  value="#{empleadosBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
-                            <f:selectItems value="#{empleadosBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
-                        </p:selectOneMenu>  
+                        <h:outputText value="APELLDIO MATERNO: " />  
+                        <p:inputText value="#{empleadosBean.object.apellidoMaterno}" id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                         <h:outputText value="NOMBRE: " />  
                         <p:inputText value="#{empleadosBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                        <h:outputText value="LOGO REPORTES" rendered="#{not empty empleadosBean.foto1}"  />  
-                        <p:graphicImage id="logoSubido" width="100" rendered="#{not empty empleadosBean.foto1}" value="#{pageContext.contextPath}/fotos/#{empleadosBean.foto1}"
-                                        cache="false" />
-                        <p:commandLink update="fileSubir"  actionListener="#{empleadosBean.setEsLogo(true)}" oncomplete="modalSubir.show()" id="versubirLogo">
-                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Logo
-                        </p:commandLink>
-                        <p:inputText  value="#{empleadosBean.object.idEmpleados}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 
+                        <h:outputText value="TELEFONO: " />  
+                        <p:inputText value="#{empleadosBean.object.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                        <h:outputText value="SEXO: " />  
+                        <p:selectOneRadio id="sexo" value="#{empleadosBean.object.sexo}">  
+                            <f:selectItem itemLabel="MASCULINO"  itemValue="M" />  
+                            <f:selectItem itemLabel="FEMENINO" itemValue="F" />  
+                        </p:selectOneRadio>  
+
+                        <h:outputText value="EMAIL: " />  
+                        <p:inputText value="#{empleadosBean.object.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                        <h:outputText value="USUARIO: " />  
+                        <p:inputText value="#{empleadosBean.object.usuario}" id="Usuario"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                        <h:outputText value="CLAVE: " />  
+                        <p:password  value="#{empleadosBean.object.clave}" redisplay="true"  feedback="true" id="Clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                        <h:outputText value="FECHA NACIMIENTO: " />  
+                        <p:calendar locale="es" pattern="dd/MM/yyyy" value="#{empleadosBean.object.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="PAIS: " /> 
+                        <p:selectOneMenu   id="pais" label="pais"  value="#{empleadosBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
+                            <f:selectItems value="#{empleadosBean.selectedItemPais}" var="ob"  itemValue="#{ob}"/>  
+                            <p:ajax event="change" listener="#{empleadosBean.buscarProvincia()}"  update="provincia" />  
+                        </p:selectOneMenu>  
+                        <h:outputText value="PROVINCIA: " /> 
+                        <p:selectOneMenu  id="provincia" label="provincia"  value="#{empleadosBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
+                            <f:selectItems value="#{empleadosBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
+                            <p:ajax event="change" listener="#{empleadosBean.buscarCanton()}"  update="canton" />  
+                        </p:selectOneMenu>  
+                        <h:outputText value="CANTON: " /> 
+                        <p:selectOneMenu immediate="true" id="canton" label="canton"  value="#{empleadosBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
+                            <f:selectItems value="#{empleadosBean.cantonesEncontradas}" var="ob3"  itemValue="#{ob3}"/>  
+                        </p:selectOneMenu> 
+
+                        <h:outputText value="PERFIL:" /> 
+                        <p:selectOneMenu   id="perfil" label="perfil"  value="#{empleadosBean.perfilesSeleccioando}" effect="fade" converter="ConvPerfiles">  
+                            <f:selectItems value="#{empleadosBean.selectedItemPerfiles}" var="ob7"  itemValue="#{ob7}"/>  
+                        </p:selectOneMenu>  
+
+                        <h:outputText value="TITULO:" /> 
+                        <p:selectOneMenu id="titulos" label="titulos"  value="#{empleadosBean.titulosSeleccionado}" effect="fade" converter="ConvTitulos">  
+                            <f:selectItems value="#{empleadosBean.selectedItemTitulos}" var="ob8"  itemValue="#{ob8}"/>  
+                        </p:selectOneMenu>  
+
+                        <h:outputText value="FOTO" rendered="#{not empty empleadosBean.foto1}"  />  
+                        <p:graphicImage id="fotoSubido" width="100" rendered="#{not empty empleadosBean.foto1}" value="#{institucion.fotos}/#{empleadosBean.foto1}"
+                                        cache="false" />
+                        <p:commandLink update="fileSubir"  onclick="modalSubir.show()" id="versubirLogo">
+                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />SUBIR FOTO
+                        </p:commandLink>
+
+                        <p:inputText  value="#{empleadosBean.object.idEmpleados}"  converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                     </h:panelGrid>  
                     <h:panelGrid columns="4">
                         <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:empleados"   action="#{empleadosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
                         <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{empleadosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
                         </p:commandButton> 
                     </h:panelGrid>
+
                     <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
-                              fixedCenter="true" width="400" visible="false" resizable="false">
+                              width="400" visible="false" resizable="false">
                         <p:fileUpload  label="Seleccionar Imagen (click aquí)"
                                        style="width:100%; font-size: 150% !important;"
                                        fileUploadListener="#{empleadosBean.handleFileUpload}"  
                                        mode="advanced"  id="fileSubir"
-                                       update="logoSubido logoSubido2"  
+                                       update="fotoSubido"  
                                        auto="true"  oncomplete="modalSubir.hide();" 
                                        sizeLimit="1000000"   
                                        allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
@@ -74,12 +123,6 @@
 
                 <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="empleados" var="obj" value="#{empleadosBean.model}">  
 
-                    <p:column sortBy="#{obj.idProvincia.idPais.nombre}" headerText="PAIS" style="width:80%">  
-                        <h:outputText value="#{obj.idProvincia.idPais.nombre}" />  
-                    </p:column>  
-                    <p:column  sortBy="#{obj.idProvincia.nombre}" headerText="PROVINCIA" style="width:80%">  
-                        <h:outputText value="#{obj.idProvincia.nombre}" />  
-                    </p:column>  
                     <p:column headerText="NOMBRE" style="width:80%">  
                         <h:outputText value="#{obj.nombre}" />  
                     </p:column>  
@@ -96,7 +139,8 @@
 
                     </p:column>  
 
-                </p:dataTable>  
+                </p:dataTable>                   
+
             </h:form>
 
 

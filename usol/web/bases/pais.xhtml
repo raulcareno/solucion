@@ -21,6 +21,9 @@
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="NOMBRE" />  
                         <p:inputText value="#{paisBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="NACIONALIDAD" />  
+                        <p:inputText value="#{paisBean.object.nacionalidad}" id="nacionalidad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        
                         <p:inputText  value="#{paisBean.object.idPais}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 
                     </h:panelGrid>  
