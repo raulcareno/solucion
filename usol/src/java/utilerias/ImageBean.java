@@ -22,15 +22,15 @@ public class ImageBean
  
  public static final int MAX_IMAGE_COUNT = 15;
 // private static final Logger logger = LoggerFactory.getLogger(ImageBean.class);
- private List<photo> images;
+ private List<Photo> images;
  
  public ImageBean()
  {
-  images = new ArrayList<photo>();
+  images = new ArrayList<Photo>();
    
   for (int ctr = 0; ctr < MAX_IMAGE_COUNT; ctr++)
   {
-   photo photo = new photo();
+   Photo photo = new Photo();
    photo.setId(ctr);
    photo.setTitle("Mock Title #" + ctr);
    String description = "This photo is used to represent item #" + ctr + " in a selection of images."; 
@@ -40,12 +40,12 @@ public class ImageBean
   }
  }
  
- public List<photo> getImages()
+ public List<Photo> getImages()
  {
   return images;
  }
  
- public void setImages(List<photo> images)
+ public void setImages(List<Photo> images)
  {
   this.images = images;
  }

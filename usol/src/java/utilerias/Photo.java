@@ -8,14 +8,14 @@ package utilerias;
  *
  * @author inform
  */
-public class photo {
+public class Photo {
     
  
  private Integer id;
  private String title;
  private String description;
  
- public photo(){ }
+ public Photo(){ }
  
  public Integer getId()
  {
