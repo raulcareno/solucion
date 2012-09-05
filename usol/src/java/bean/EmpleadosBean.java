@@ -27,6 +27,8 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.EmpleadosMaterias;
+import jcinform.persistencia.Materias;
 import jcinform.persistencia.Pais;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Provincia;
@@ -35,6 +37,7 @@ import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
 import miniaturas.ProcesadorImagenes;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DualListModel;
 
 import utilerias.Permisos;
 
@@ -53,6 +56,7 @@ public class EmpleadosBean {
     Empleados object;
     Administrador adm;
     protected List<Empleados> model;
+    protected List<EmpleadosMaterias> modelMaterias;
     public String textoBuscar;
     Permisos permisos;
     protected Titulos titulosSeleccionado = new Titulos();
@@ -69,6 +73,12 @@ public class EmpleadosBean {
     public Pais paisSeleccionado4 = new Pais();
     Auditar aud = new Auditar();
     ProcesadorImagenes p = new ProcesadorImagenes();
+    
+     private DualListModel<Materias> materias;  
+     List<Materias> origen = new ArrayList<Materias>();  
+        List<Materias> destino = new ArrayList<Materias>();  
+     
+     
     public EmpleadosBean() {
         //super();
         if (adm == null) {
@@ -91,7 +101,17 @@ public class EmpleadosBean {
         //selectedEmpleados = new Empleados();
 
     }
-
+    public void buscarMateriasNoAsignadas(){
+        origen =  adm.query(" Select o from Materias as o "
+                + "where o not in (Select m.idMaterias from EmpleadosMaterias as m where m.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"') order by o.nombre ");
+        if(origen.size()<=0){
+            origen = new ArrayList<Materias>();
+            destino = new ArrayList<Materias>();
+            materias = new DualListModel<Materias>(origen, destino);
+        }else{
+            materias = new DualListModel<Materias>(origen, destino);
+        } 
+    }
 
     public String editarAction(Empleados obj) {
         inicializar();
@@ -115,7 +135,7 @@ public class EmpleadosBean {
         paisSeleccionado3 = object.getIdPais();
         paisSeleccionado4 = object.getPaiIdPais();
         //generarImagen("logo.png", object.getFoto());
-
+ buscarMateriasNoAsignadas();
         //foto1 = "logo.png";
         System.out.println("" + object.getIdEmpleados());
         return null;
@@ -127,6 +147,8 @@ public class EmpleadosBean {
         object.setTipoIdentificacion("C");
         foto1 = null;
         clave2 = "";
+        origen =  adm.query(" Select o from Materias as o order by o.nombre ");
+                    materias = new DualListModel<Materias>(origen, destino); 
         cargarDataModel();
     }
 
@@ -183,6 +205,18 @@ public class EmpleadosBean {
                 if (adm.existe("Empleados", "nombre", object.getNombre()).size() <= 0) {
                     //object.setIdEmpleados(adm.getNuevaClave("Empleados", "idEmpleados"));
                     adm.guardar(object);
+                    
+                   adm.ejecutaSql("Delete from EmpleadosMaterias where o.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");
+                    for (Iterator<Materias> it = destino.iterator(); it.hasNext();) {
+                        Materias matGuardar = it.next();
+                        EmpleadosMaterias empMat = new EmpleadosMaterias(adm.getNuevaClave("EmpleadosMaterias", "idEmpleadosMaterias"));
+                        empMat.setIdMaterias(matGuardar);
+                        empMat.setIdEmpleados(object); 
+                        adm.guardar(empMat);
+                        
+                    }
+                    
+                    
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdEmpleados() + "");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
@@ -198,6 +232,15 @@ public class EmpleadosBean {
             }
             try {
                 adm.actualizar(object);
+                 adm.ejecutaSql("Delete from EmpleadosMaterias where o.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");
+                    for (Iterator<Materias> it = destino.iterator(); it.hasNext();) {
+                        Materias matGuardar = it.next();
+                        EmpleadosMaterias empMat = new EmpleadosMaterias(adm.getNuevaClave("EmpleadosMaterias", "idEmpleadosMaterias"));
+                        empMat.setIdMaterias(matGuardar);
+                        empMat.setIdEmpleados(object); 
+                        adm.guardar(empMat);
+                        
+                    }
                 aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdEmpleados() + "");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
@@ -674,5 +717,30 @@ public class EmpleadosBean {
     public void setPaisSeleccionado4(Pais paisSeleccionado4) {
         this.paisSeleccionado4 = paisSeleccionado4;
     }
+
+    public DualListModel<Materias> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(DualListModel<Materias> materias) {
+        this.materias = materias;
+    }
+
+    public List<Materias> getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(List<Materias> origen) {
+        this.origen = origen;
+    }
+
+    public List<Materias> getDestino() {
+        return destino;
+    }
+
+    public void setDestino(List<Materias> destino) {
+        this.destino = destino;
+    }
+    
     
 }
