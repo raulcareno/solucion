@@ -54,7 +54,7 @@
                         <p:password  value="#{empleadosBean.object.clave}" redisplay="true"  feedback="true" id="Clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                         <h:outputText value="FECHA NACIMIENTO: " />  
-                        <p:calendar locale="es" pattern="dd/MM/yyyy" value="#{empleadosBean.object.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{empleadosBean.object.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="PAIS: " /> 
                         <p:selectOneMenu   id="pais" label="pais"  value="#{empleadosBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
                             <f:selectItems value="#{empleadosBean.selectedItemPais}" var="ob"  itemValue="#{ob}"/>  
@@ -80,13 +80,6 @@
                             <f:selectItems value="#{empleadosBean.selectedItemTitulos}" var="ob8"  itemValue="#{ob8}"/>  
                         </p:selectOneMenu>  
 
-                        <h:outputText value="FOTO" rendered="#{not empty empleadosBean.foto1}"  />  
-                        <p:graphicImage id="fotoSubido" width="100" rendered="#{not empty empleadosBean.foto1}" value="#{institucion.fotos}/#{empleadosBean.foto1}"
-                                        cache="false" />
-                        <p:commandLink update="fileSubir"  onclick="modalSubir.show()" id="versubirLogo">
-                            <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />SUBIR FOTO
-                        </p:commandLink>
-
                         <p:inputText  value="#{empleadosBean.object.idEmpleados}"  converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                     </h:panelGrid>  
                     <h:panelGrid columns="4">
@@ -94,22 +87,6 @@
                         <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{empleadosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
                         </p:commandButton> 
                     </h:panelGrid>
-
-                    <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
-                              width="400" visible="false" resizable="false">
-                        <p:fileUpload  label="Seleccionar Imagen (click aquí)"
-                                       style="width:100%; font-size: 150% !important;"
-                                       fileUploadListener="#{empleadosBean.handleFileUpload}"  
-                                       mode="advanced"  id="fileSubir"
-                                       update="fotoSubido"  
-                                       auto="true"  oncomplete="modalSubir.hide();" 
-                                       sizeLimit="1000000"   
-                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
-                        <br />
-                        <p:commandButton type="button" value="CANCELAR">
-                            <p:ajax oncomplete="modalSubir.hide();" />
-                        </p:commandButton>
-                    </p:dialog>
                 </p:panel>
                 <p:panel  style="width: 600px;">
                     <h:panelGrid  columns="4">

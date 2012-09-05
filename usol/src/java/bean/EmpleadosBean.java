@@ -5,7 +5,9 @@
 package bean;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +29,9 @@ import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Provincia;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
+import jcinform.procesos.claves;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.StreamedContent;
 
 import utilerias.Permisos;
 
@@ -37,6 +41,7 @@ import utilerias.Permisos;
  */
 @ManagedBean
 @ViewScoped
+//@RequestScoped
 public class EmpleadosBean {
 
     /**
@@ -51,13 +56,14 @@ public class EmpleadosBean {
     protected Perfiles perfilesSeleccioando = new Perfiles();
     public String foto1;
     protected String clave2;
-     List<SelectItem> provinciasEncontradas;
+    claves cl = new claves();
+    List<SelectItem> provinciasEncontradas;
     List<SelectItem> cantonesEncontradas;
     public Pais paisSeleccionado = new Pais();
     public Provincia provinciaSeleccionado = new Provincia();
     public Canton cantonSeleccionado = new Canton();
-    
-Auditar  aud = new Auditar();
+    Auditar aud = new Auditar();
+
     public EmpleadosBean() {
         //super();
         if (adm == null) {
@@ -80,17 +86,48 @@ Auditar  aud = new Auditar();
         //selectedEmpleados = new Empleados();
 
     }
+    StreamedContent barcode;
+
+    public StreamedContent getImagen() {
+        return barcode;
+    }
 
     public String editarAction(Empleados obj) {
         inicializar();
         object = obj;
-                paisSeleccionado = object.getIdCanton().getIdProvincia().getIdPais();
+      obj.setClave(cl.desencriptar(obj.getClave()));
+    foto1 = object.getIdEmpleados() + "";
+//        Institucion insti = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
+//        final String fileFoto = insti.getFotos() + File.separator + foto1 + ".jpg";
+//        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//        try {
+//            File file = (new File(fileFoto));
+//            byte[] bytes = new byte[(int) file.length()];
+//            // Read in the bytes
+//            int offset = 0;
+//            int numRead = 0;
+//            InputStream is = new FileInputStream(file);
+//            try {
+//                while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+//                    offset += numRead;
+//                }
+//            } finally {
+//                is.close();
+//            }
+//            generarImagen(foto1+".jpg", bytes); 
+//        } catch (Exception e) {
+//        }
+////        barcode = new DefaultStreamedContent(is, "image/jpeg","image.jpeg");
+
+        paisSeleccionado = object.getIdCanton().getIdProvincia().getIdPais();
         buscarProvincia();
         provinciaSeleccionado = object.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = object.getIdCanton();
+        perfilesSeleccioando = object.getIdPerfiles();
+        titulosSeleccionado = object.getIdTitulos();
         //generarImagen("logo.png", object.getFoto());
-  
+
         //foto1 = "logo.png";
         System.out.println("" + object.getIdEmpleados());
         return null;
@@ -100,7 +137,7 @@ Auditar  aud = new Auditar();
         object = new Empleados(0);
         object.setSexo("M");
         object.setTipoIdentificacion("C");
-         
+
         cargarDataModel();
     }
 
@@ -113,7 +150,28 @@ Auditar  aud = new Auditar();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
             return null;
         }
+        if (paisSeleccionado.getIdPais().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Lugar de Nacimiento, Pais", ""));
+            return null;
+        }
+        if (provinciaSeleccionado.getIdProvincia().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Lugar de Nacimiento, Provincia", ""));
+            return null;
+        }
+        if (cantonSeleccionado.getIdCanton().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Lugar de Nacimiento, Canton", ""));
+            return null;
+        }
+        if (perfilesSeleccioando.getIdPerfiles().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Perfil", ""));
+            return null;
+        }
+        if (titulosSeleccionado.getIdTitulos().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Titulo", ""));
+            return null;
+        }
         
+        object.setClave(cl.encriptar(object.getClave()));
         object.setIdCanton(cantonSeleccionado);
         object.setIdPerfiles(perfilesSeleccioando);
         object.setIdTitulos(titulosSeleccionado);
@@ -125,11 +183,11 @@ Auditar  aud = new Auditar();
                 if (adm.existe("Empleados", "nombre", object.getNombre()).size() <= 0) {
                     //object.setIdEmpleados(adm.getNuevaClave("Empleados", "idEmpleados"));
                     adm.guardar(object);
-                    aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdEmpleados()+"");
+                    aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdEmpleados() + "");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Nombre ya existe...!","Nombre ya existe...!"));
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre ya existe...!", "Nombre ya existe...!"));
                 }
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -140,7 +198,7 @@ Auditar  aud = new Auditar();
             }
             try {
                 adm.actualizar(object);
-                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdEmpleados()+"");
+                aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdEmpleados() + "");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -164,7 +222,7 @@ Auditar  aud = new Auditar();
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Empleados.class, obj.getIdEmpleados());
-            aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdEmpleados()+"");
+            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdEmpleados() + "");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
@@ -227,8 +285,8 @@ Auditar  aud = new Auditar();
             System.out.println("" + e);
         }
     }
-    
-      public void generarImagen(String nombre, byte[] datos) {
+
+    public void generarImagen(String nombre, byte[] datos) {
 
 //        final ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         Institucion insti = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
@@ -246,34 +304,35 @@ Auditar  aud = new Auditar();
             }
         }
         datos = null;
-        
+
     }
-public void handleFileUpload(FileUploadEvent event) {
+
+    public void handleFileUpload(FileUploadEvent event) {
         //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
         //FacesContext.getCurrentInstance().addMessage(null, msg);
         byte[] datos = event.getFile().getContents();
-            object.setFoto(event.getFile().getFileName());
-            foto1 = object.getIdEmpleados()+".jpg";
-            generarImagen(""+object.getIdEmpleados()+".jpg", datos);
-            datos = null;
-}
+        object.setFoto(event.getFile().getFileName());
+        foto1 = object.getIdEmpleados() + ".jpg";
+        generarImagen("" + object.getIdEmpleados() + ".jpg", datos);
+        datos = null;
+    }
 
     public List<SelectItem> getSelectedItemTitulos() {
         try {
             List<Titulos> divisionPoliticas = new ArrayList<Titulos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
-                    divisionPoliticas = adm.query("Select o from Titulos as o order by o.nombre ");
-                    if (divisionPoliticas.size() > 0) {
-                        Titulos objSel = new Titulos(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
-                        for (Titulos obj : divisionPoliticas) {
-                            items.add(new SelectItem(obj, obj.getNombre()));
-                        }
-                    } else {
-                        Titulos obj = new Titulos(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
+                divisionPoliticas = adm.query("Select o from Titulos as o order by o.nombre ");
+                if (divisionPoliticas.size() > 0) {
+                    Titulos objSel = new Titulos(0);
+                    items.add(new SelectItem(objSel, "Seleccione..."));
+                    for (Titulos obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
+                } else {
+                    Titulos obj = new Titulos(0);
+                    items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
+                }
             }
             return items;
         } catch (Exception e) {
@@ -282,22 +341,23 @@ public void handleFileUpload(FileUploadEvent event) {
         }
         return null;
     }
+
     public List<SelectItem> getSelectedItemPerfiles() {
         try {
             List<Perfiles> divisionPoliticas = new ArrayList<Perfiles>();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
-                    divisionPoliticas = adm.query("Select o from Perfiles as o order by o.nombre ");
-                    if (divisionPoliticas.size() > 0) {
-                        Perfiles objSel = new Perfiles(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
-                        for (Perfiles obj : divisionPoliticas) {
-                            items.add(new SelectItem(obj, obj.getNombre()));
-                        }
-                    } else {
-                        Perfiles obj = new Perfiles(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN PERFILES"));
+                divisionPoliticas = adm.query("Select o from Perfiles as o order by o.nombre ");
+                if (divisionPoliticas.size() > 0) {
+                    Perfiles objSel = new Perfiles(0);
+                    items.add(new SelectItem(objSel, "Seleccione..."));
+                    for (Perfiles obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
+                } else {
+                    Perfiles obj = new Perfiles(0);
+                    items.add(new SelectItem(obj, "NO EXISTEN PERFILES"));
+                }
             }
             return items;
         } catch (Exception e) {
@@ -306,8 +366,8 @@ public void handleFileUpload(FileUploadEvent event) {
         }
         return null;
     }
-    
-       /**
+
+    /**
      * Obtiene el el listado de provincias
      *
      * @return
@@ -431,8 +491,6 @@ public void handleFileUpload(FileUploadEvent event) {
         }
         return null;
     }
-
- 
 
     /**
      * propiedades
@@ -562,6 +620,4 @@ public void handleFileUpload(FileUploadEvent event) {
     public void setCantonSeleccionado(Canton cantonSeleccionado) {
         this.cantonSeleccionado = cantonSeleccionado;
     }
-
-
 }
