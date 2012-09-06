@@ -115,10 +115,29 @@
                         </p:fieldset>
                         <p:fieldset legend="DATOS DEL MATRICULA">
                             <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">
+                                <h:outputText value="NUMERO MATRICULA: " />  
+                                <p:inputText value="#{matriculasBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
+                                <h:outputText value="FECHA MATRICULA: " />  
+                                <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{matriculasBean.object.fecha}" id="FechaMatricula" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
+                                
                                 <h:outputText value="CATEGORÍA: " />  
                               <p:selectOneRadio id="CategoriasSociales" label="CategoriasSociales"  value="#{matriculasBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales">  
-                                 <f:selectItems value="#{matriculasBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
+                                   <f:selectItems value="#{matriculasBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
                             </p:selectOneRadio>
+                                <h:outputText value="ESTADO: " />  
+                                <p:selectOneRadio id="EstadoMatricula" label="EstadoMatricula"  value="#{matriculasBean.object.estadoMat}">  
+                                        <f:selectItem itemLabel="INSCRITO"  itemValue="I" />      
+                                        <f:selectItem itemLabel="MATRICULADO"  itemValue="M" />  
+                                        <f:selectItem itemLabel="RETIRADO" itemValue="R" />  
+
+                                </p:selectOneRadio>  
+                                <h:outputText value="CONFIRMADA: " />  
+                                <p:selectBooleanCheckbox value="#{matriculasBean.object.confirmada}" id="Confirmada"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                 
+                                
+                                                                   
+                                        
+                                        
                             </h:panelGrid>
 
                             
