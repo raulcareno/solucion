@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,9 +37,11 @@ import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
 import miniaturas.ProcesadorImagenes;
+import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DualListModel;
-
+import utilerias.Car;
+//import org.primefaces.event.TransferEvent;
 import utilerias.Permisos;
 
 /**
@@ -48,7 +51,7 @@ import utilerias.Permisos;
 @ManagedBean
 @ViewScoped
 //@RequestScoped
-public class EmpleadosBean {
+public class EmpleadosBean{
 
     /**
      * Creates a new instance of EmpleadosBean
@@ -97,20 +100,17 @@ public class EmpleadosBean {
 //                Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+       
         inicializar();
         //selectedEmpleados = new Empleados();
 
     }
     public void buscarMateriasNoAsignadas(){
-        origen =  adm.query(" Select o from Materias as o "
-                + "where o not in (Select m.idMaterias from EmpleadosMaterias as m where m.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"') order by o.nombre ");
-        if(origen.size()<=0){
-            origen = new ArrayList<Materias>();
-            destino = new ArrayList<Materias>();
-            materias = new DualListModel<Materias>(origen, destino);
-        }else{
-            materias = new DualListModel<Materias>(origen, destino);
-        } 
+        origen =  adm.queryNativo(" Select o.* from Materias as o "
+                + "where o.id_materias not in (Select m.id_Materias from Empleados_Materias as m where m.id_Empleados = '"+object.getIdEmpleados()+"') "
+                + " order by o.nombre ",Materias.class);
+        destino =  adm.query("Select m.idMaterias from EmpleadosMaterias as m where m.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' "
+                + " order by m.idMaterias.nombre ");
     }
 
     public String editarAction(Empleados obj) {
@@ -148,10 +148,22 @@ public class EmpleadosBean {
         foto1 = null;
         clave2 = "";
         origen =  adm.query(" Select o from Materias as o order by o.nombre ");
-                    materias = new DualListModel<Materias>(origen, destino); 
+        destino = new ArrayList<Materias>();
+        //materias = new DualListModel<Materias>(origen, destino); 
         cargarDataModel();
     }
 
+     public String anadir(Materias obj) {  
+        destino.add(obj);  
+        origen.remove(obj);  
+        return null;
+    }
+     public String quitar(Materias obj) {  
+        origen.add(obj);  
+        destino.remove(obj);  
+        return null;
+    }
+    
     /**
      * Graba el registro asociado al objeto que
      */
@@ -206,7 +218,7 @@ public class EmpleadosBean {
                     //object.setIdEmpleados(adm.getNuevaClave("Empleados", "idEmpleados"));
                     adm.guardar(object);
                     
-                   adm.ejecutaSql("Delete from EmpleadosMaterias where o.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");
+                   adm.ejecutaSql("Delete from EmpleadosMaterias where idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");
                     for (Iterator<Materias> it = destino.iterator(); it.hasNext();) {
                         Materias matGuardar = it.next();
                         EmpleadosMaterias empMat = new EmpleadosMaterias(adm.getNuevaClave("EmpleadosMaterias", "idEmpleadosMaterias"));
@@ -232,7 +244,7 @@ public class EmpleadosBean {
             }
             try {
                 adm.actualizar(object);
-                 adm.ejecutaSql("Delete from EmpleadosMaterias where o.idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");
+                 adm.ejecutaSql("Delete from EmpleadosMaterias where idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");
                     for (Iterator<Materias> it = destino.iterator(); it.hasNext();) {
                         Materias matGuardar = it.next();
                         EmpleadosMaterias empMat = new EmpleadosMaterias(adm.getNuevaClave("EmpleadosMaterias", "idEmpleadosMaterias"));
@@ -589,6 +601,20 @@ public class EmpleadosBean {
         this.model = model;
     }
 
+// public void onTransfer(TransferEvent event) {  
+//        StringBuilder builder = new StringBuilder();  
+////        for(Object item : event.getItems()) {  
+////            builder.append(((Player) item).getName()).append("<br />");  
+////        }  
+//          
+//        FacesMessage msg = new FacesMessage();  
+//        msg.setSeverity(FacesMessage.SEVERITY_INFO);  
+//        msg.setSummary("Items Transferred");  
+//        msg.setDetail(builder.toString());  
+//          
+//        FacesContext.getCurrentInstance().addMessage(null, msg);  
+//    }
+    
     /**
      * busca un componente dentro del form.jspx para enviar mensajes
      *

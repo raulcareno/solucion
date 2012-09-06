@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+ 
+
+        <h:head>
+             <script type="text/javascript">
+                        function handleDrop(event, ui) {
+                var droppedCar = ui.draggable;
+
+                droppedCar.fadeOut('fast');
+                        }
+                </script>
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <title>Prueba PhotoCam</title>
+        </h:head>
+
+        <h:body>
+            <h:form enctype="multipart/form-data">
+  
+                <p:fieldset legend="Available Cars">  
+                    <p:dataTable id="availableCars" var="car" value="#{tableBean.materiasSmall}">  
+                        <p:column style="width:20px">  
+                            <h:outputText id="dragIcon"  
+                                          styleClass="ui-icon ui-icon-arrow-4" />  
+                            <p:draggable for="dragIcon" revert="true" />  
+                        </p:column>  
+                        <p:column headerText="Model">  
+                            <h:outputText value="#{car.nombre}" />  
+                        </p:column>  
+ 
+                    </p:dataTable>  
+                </p:fieldset>  
+
+                <p:fieldset id="selectedCars" legend="Selected Cars" style="margin-top:20px">  
+                    <p:outputPanel id="dropArea">  
+                        <h:outputText value="!!!Coloque Aquí!!!"  
+                                         
+                                      style="font-size:24px;" />  
+
+                        <p:dataTable var="car" value="#{tableBean.droppedMaterias}"   
+                                      >  
+
+                            <p:column headerText="Model">  
+                                <h:outputText value="#{car.nombre}" />  
+                            </p:column>  
+  
+                            
+                        </p:dataTable>  
+                    </p:outputPanel>  
+                </p:fieldset>  
+
+                <p:droppable for="selectedCars" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                    <p:ajax listener="#{tableBean.onMateriasDrop}" update="dropArea availableCars" />  
+                </p:droppable>  
+
+               
+
+
+ 
+           
+            </h:form>
+        </h:body>
+ 
+</html>
+
+
+
+
+
