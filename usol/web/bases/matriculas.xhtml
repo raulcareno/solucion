@@ -114,11 +114,14 @@
                             
                         </p:fieldset>
                         <p:fieldset legend="DATOS DEL MATRICULA">
-                            <h:outputText value="CATEGORÍA: " />  
-                            <p:selectOneMenu   id="CategoriasSociales" label="CategoriasSociales"  style="width:160px"  value="#{matriculasBean.paisSeleccionado}" effect="fade" converter="ConvCategoriasSociales">  
-                                <f:selectItems value="#{matriculasBean.selectedItemPais}" var="ob"  itemValue="#{ob}"/>  
-                                <p:ajax event="change" listener="#{matriculasBean.buscarProvincia()}"  update="provincia" />  
-                            </p:selectOneMenu>  
+                            <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">
+                                <h:outputText value="CATEGORÍA: " />  
+                              <p:selectOneRadio id="CategoriasSociales" label="CategoriasSociales"  value="#{matriculasBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales">  
+                                 <f:selectItems value="#{matriculasBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
+                            </p:selectOneRadio>
+                            </h:panelGrid>
+
+                            
                         </p:fieldset>
                     </p:tab>
                     <p:tab id="registro02" title="DATOS ADICIONALES">

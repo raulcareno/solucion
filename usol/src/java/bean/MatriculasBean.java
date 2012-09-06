@@ -303,14 +303,13 @@ public class MatriculasBean{
             List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
             List<SelectItem> items = new ArrayList<SelectItem>();
             if(datos.size()>0){
-                CategoriasSociales sel = new CategoriasSociales(0);
-                items.add(new SelectItem(sel,"Seleccione... "));
+                 
                 for (CategoriasSociales obj : datos) {
                     items.add(new SelectItem(obj, obj.getNombre()));
                 }
             }else {
                 CategoriasSociales sel = new CategoriasSociales(0);
-                items.add(new SelectItem(sel,"No existen Datos"));
+                items.add(new SelectItem(sel,"NO SE HAN CREADO CATEGORIAS..."));
             }
             return items;
         } catch (Exception e) {
