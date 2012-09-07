@@ -760,7 +760,7 @@ String estadoComp = " and o.estado = '" + estado + "' ";
                     pendi.setCliente(contra.getClientes());
                     pendi.setFactura("0000000000000000");
                     pendi.setFecha(contra.getFechainstalacion());
-                    pendi.setTotal(null);
+                    pendi.setTotal(new BigDecimal(contra.getPlan().getValor()));
                     pendi.setSaldo(null);
                     pendi.setPlan(contra.getPlan()+"");
 //                    pendi.setValorabonotot(contra.getPlan().getValor());

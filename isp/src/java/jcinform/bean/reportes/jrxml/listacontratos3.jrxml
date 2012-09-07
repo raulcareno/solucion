@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="20"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="empresa" class="java.lang.String"/>
 	<parameter name="direccion" class="java.lang.String"/>
@@ -36,6 +36,9 @@
 	</variable>
 	<variable name="descuento_1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{descuento}]]></variableExpression>
+	</variable>
+	<variable name="contrato_2" class="java.lang.Integer" resetType="Group" resetGroup="radio" calculation="Count">
+		<variableExpression><![CDATA[$F{contrato}]]></variableExpression>
 	</variable>
 	<group name="nodos">
 		<groupExpression><![CDATA[$F{nodo}]]></groupExpression>
@@ -191,10 +194,51 @@
 					</textElement>
 					<text><![CDATA[Plan]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="42" y="15" width="48" height="17"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Estado]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band/>
+			<band height="17">
+				<textField>
+					<reportElement x="137" y="0" width="58" height="17"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{contrato_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="90" y="0" width="47" height="17"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[TOTAL:]]></text>
+				</staticText>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
@@ -348,6 +392,20 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{plan}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="48" height="14"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -357,16 +415,30 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="22" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="1" y="2" width="138" height="20"/>
+				<reportElement x="0" y="0" width="137" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TOTAL CONTRATOS: ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="139" y="2" width="88" height="20"/>
+				<reportElement x="137" y="0" width="179" height="20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{contrato_1}]]></textFieldExpression>
 			</textField>
