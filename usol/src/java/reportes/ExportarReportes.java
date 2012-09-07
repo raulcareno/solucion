@@ -42,14 +42,16 @@ public class ExportarReportes {
     String path="";
     Map parametros = null;
     Institucion inst;
+    String nombreReporte;
     public ExportarReportes() {
         inst = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
     }
-
     public ExportarReportes(List datos, String reporte,Map parametros) {
+        inst = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         //ubicacionReportes = ctx.getRealPath("/WEB-INF/reporte/" + reporte + ".jasper");
         ubicacionReportes = (inst.getReportes() + reporte + ".jasper");
+        nombreReporte = reporte;
         path= ctx.getRealPath(inst.getReportes());
         this.datosReporte = datos;
         parametros.put("subReporte",path);
@@ -64,7 +66,7 @@ public class ExportarReportes {
     public void PDF() throws JRException, IOException {
         init();
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reporte.pdf");
+        httpServletResponse.addHeader("Content-disposition", "inline; filename="+nombreReporte+".pdf");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
 
@@ -74,7 +76,7 @@ public class ExportarReportes {
     public void DOCX() throws JRException, IOException {
         init();
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reporte.docx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename="+nombreReporte+".docx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRDocxExporter docxExporter = new JRDocxExporter();
         docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -86,7 +88,7 @@ public class ExportarReportes {
     public void XLSX() throws JRException, IOException {
         init();
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reporte.xlsx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename="+nombreReporte+".xlsx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRXlsxExporter docxExporter = new JRXlsxExporter();
         docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -97,7 +99,7 @@ public class ExportarReportes {
     public void ODT(ActionEvent actionEvent) throws JRException, IOException {
         init();
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reporte.odt");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename="+nombreReporte+".odt");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JROdtExporter docxExporter = new JROdtExporter();
         docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
@@ -108,7 +110,7 @@ public class ExportarReportes {
     public void PPT(ActionEvent actionEvent) throws JRException, IOException {
         init();
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "attachment; filename=reporte.pptx");
+        httpServletResponse.addHeader("Content-disposition", "attachment; filename="+nombreReporte+".pptx");
         ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
         JRPptxExporter docxExporter = new JRPptxExporter();
         docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
