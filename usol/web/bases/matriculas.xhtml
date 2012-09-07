@@ -25,6 +25,32 @@
                 <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                 <!--p:message for="form" /-->
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                <p:panel style="background-color: navajowhite" >  
+                    <h:panelGrid columns="6" cellpadding="-5">  
+                        <h:outputLabel value="Apellido Paterno: " />  
+                        <p:autoComplete size="40" style="width: 200px" id="acSimpleautoCompleteApellidos" value="#{matriculasBean.estudiante}" 
+                                        completeMethod="#{matriculasBean.buscarApellido}" 
+                                        var="p" itemLabel="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" itemValue="#{p}"
+                                        converter="ConvEstudiantes" forceSelection="true">  
+                            <p:ajax event="itemSelect" listener="#{matriculasBean.handleSelect}" update=":form:RegistroInformacion" />  
+                        </p:autoComplete>  
+                        
+                         <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  
+                        <p:autoComplete size="40" style="width: 200px" id="autoCompleteCedula" value="#{matriculasBean.estudiante}" 
+                                        completeMethod="#{matriculasBean.buscarCedula}" 
+                                        var="p" itemLabel="#{p.idEstudiantes}" itemValue="#{p}"
+                                        converter="ConvEstudiantes" forceSelection="true">  
+                            <p:ajax event="itemSelect" listener="#{matriculasBean.handleSelect}" update=":form:RegistroInformacion" />  
+                                        <f:facet name="itemtip">  
+                                                <h:panelGrid  columns="2" cellpadding="5">  
+                                                    <h:outputText id="modelNo" value="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" />  
+                                                 </h:panelGrid>  
+                                            </f:facet>  
+                        </p:autoComplete>  
+ 
+                    </h:panelGrid>  
+                </p:panel>  
+ 
                 <p:tabView  id="RegistroInformacion" >  
 
                     <p:tab id="registro01" title="INFORMACIÓN GENERAL">
@@ -33,7 +59,7 @@
                             <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
 
                                 <h:outputText value="CEDULA IDENTIDAD: " />  
-                                <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}" id="CedulaIdentidad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}"  id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="APELLIDO PATERNO: " />  
                                 <p:inputText value="#{matriculasBean.estudiante.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
@@ -203,7 +229,7 @@
                                 <p:inputText value="#{matriculasBean.pariente2.telefonoTrabajo}" id="TelefonoTrabajoPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="TELÉFONO DE CASA: " />  
                                 <p:inputText value="#{matriculasBean.pariente2.telefonoCasa}" id="TelefonoCasaPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                                                                <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente2"   style="font-weight:bold; width: 15px;visibility: hidden"/>
+                                <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente2"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                             </h:panelGrid>
                         </p:fieldset>
                         <p:fieldset legend="DATOS MADRE">
@@ -222,53 +248,22 @@
                                 <p:inputText value="#{matriculasBean.pariente3.telefonoTrabajo}" id="TelefonoTrabajoMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="TELÉFONO DE CASA: " />  
                                 <p:inputText value="#{matriculasBean.pariente3.telefonoCasa}" id="TelefonoCasaMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                                                                <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente3"   style="font-weight:bold; width: 15px;visibility: hidden"/>
+                                <p:inputText  value="#{matriculasBean.pariente3.idParientes}"  converter="JsfConvInteger" id="idPariente3"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                             </h:panelGrid>
                         </p:fieldset>
                     </p:tab>
-                    <p:tab id="registro03" title="BUSQUEDAS">
-                        <h:panelGrid columns="1" cellpadding="4" style="margin:0 auto;">  
-
-                            <p:panel  style="width:780px">
-                                <h:panelGrid  columns="4">
-
-                                    <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
-                                    <p:inputText id="textoBuscar" value="#{matriculasBean.textoBuscar}" style="font-weight:bold"/>  
-                                    <p:commandButton id="buscar" value="Buscar" update=":form:RegistroInformacion:empleados" actionListener="#{matriculasBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
-
-                                </h:panelGrid>
-                            </p:panel>
-
-                            <p:dataTable style="width:780px;" id="empleados" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  var="obj" value="#{matriculasBean.model}">  
-
-                                <p:column headerText="NOMBRE" style="width:80%">  
-                                    <h:outputText value="#{obj.nombre}" />  
-                                </p:column>  
-                                <p:column style="width:10%">  
-                                    <h:panelGrid style="border-color: transparent;" columns="2">
-
-                                        <p:commandButton  id="editarButton" update=":form:RegistroInformacion"  actionListener="#{matriculasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
-
-                                        </p:commandButton>  
-                                        <p:commandButton id="eliminarButton" actionListener="#{matriculasBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
-
-                                        </p:commandButton>  
-                                    </h:panelGrid>
-
-                                </p:column>  
-
-                            </p:dataTable>  
-
-                        </h:panelGrid>  
-                    </p:tab>
+              
                 </p:tabView>
 
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form:RegistroInformacion :form:RegistroInformacion:empleados"   action="#{matriculasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                    <p:commandButton value="Limpiar"  id="limpiar" update=":form:RegistroInformacion" actionListener="#{matriculasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
-                    </p:commandButton> 
+                    <p:commandButton  value="Guardar"  id="guardar"  update=":form:RegistroInformacion"   action="#{matriculasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                    <p:commandButton value="Limpiar"  id="limpiar" update=":form:RegistroInformacion" actionListener="#{matriculasBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
+                    <p:splitButton value="PDF" ajax="false" actionListener="#{matriculasBean.fichaMatricula('PDF')}"  icon="ui-icon-print">  
+                        <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean.fichaMatricula('XLS')}" icon="ui-icon-print"/>  
+                        <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean.fichaMatricula('DOC')}"  icon="ui-icon-print"/>  
+                </p:splitButton>  
                 </h:panelGrid>
-
+ 
 
 
 

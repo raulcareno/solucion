@@ -11,8 +11,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
@@ -28,20 +30,24 @@ import javax.servlet.ServletContext;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.CategoriasSociales;
 import jcinform.persistencia.Estudiantes;
-import jcinform.persistencia.Matriculas;
-import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Materias;
+import jcinform.persistencia.MateriasMatricula;
+import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Pais;
 import jcinform.persistencia.Parientes;
 import jcinform.persistencia.Perfiles;
+import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Provincia;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
 import miniaturas.ProcesadorImagenes;
+import net.sf.jasperreports.engine.JRException;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DualListModel;
-//import org.primefaces.event.TransferEvent;
+import reportes.ExportarReportes;
+import reportes.FichaMatricula;
 import utilerias.Permisos;
 
 /**
@@ -86,7 +92,8 @@ public class MatriculasBean {
     private DualListModel<Materias> materias;
     List<Materias> origen = new ArrayList<Materias>();
     List<Materias> destino = new ArrayList<Materias>();
-
+    List<Estudiantes> estudiantesListado = new ArrayList<Estudiantes>();
+Periodos per;;
     public MatriculasBean() {
         //super();
         if (adm == null) {
@@ -107,6 +114,7 @@ public class MatriculasBean {
         }
 
         inicializar();
+        per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
         //selectedMatriculas = new Matriculas();
 
     }
@@ -148,15 +156,18 @@ public class MatriculasBean {
     protected void inicializar() {
         object = new Matriculas(0);
         estudiante = new Estudiantes("");
+        pariente1 = new Parientes();
+        pariente2 = new Parientes();
+        pariente3 = new Parientes();
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
         foto1 = null;
         clave2 = "";
-        origen = adm.query(" Select o from Materias as o order by o.nombre ");
-        destino = new ArrayList<Materias>();
+//        origen = adm.query(" Select o from Materias as o order by o.nombre ");
+//        destino = new ArrayList<Materias>();
         //materias = new DualListModel<Materias>(origen, destino); 
-        cargarDataModel();
+     //   cargarDataModel();
     }
 
     public String anadir(Materias obj) {
@@ -206,14 +217,16 @@ public class MatriculasBean {
 
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
             if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
-                adm.guardar(object);
+                    adm.guardar(estudiante);
             } else {
-                adm.actualizar(object);
+                adm.actualizar(estudiante);
             }
             object.setIdEstudiantes(estudiante);
             pariente1.setIdEstudiantes(object.getIdEstudiantes());
-
-        //PARIENTES EMPIEZO A GUARDAR
+            pariente1.setTipoRepresentante("F");
+            pariente2.setTipoRepresentante("P");
+            pariente3.setTipoRepresentante("M");
+        //1.- PARIENTES EMPIEZO A GUARDAR
         if (pariente1.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion());
             if (pariList.size() > 0) {
@@ -226,7 +239,37 @@ public class MatriculasBean {
         } else {
             adm.actualizar(pariente1);
         }
-
+        
+        //2.- PARIENTES EMPIEZO A GUARDAR
+        if (pariente2.getIdParientes().equals(new Integer(0))) {
+            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion());
+            if (pariList.size() > 0) {
+                pariente2.setIdParientes(pariList.get(0).getIdParientes());
+                adm.actualizar(pariente2);
+            } else {
+                pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                adm.guardar(pariente2);
+            }
+        } else {
+            adm.actualizar(pariente2);
+        }
+        
+        //3.- PARIENTES EMPIEZO A GUARDAR
+        if (pariente3.getIdParientes().equals(new Integer(0))) {
+            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion());
+            if (pariList.size() > 0) {
+                pariente3.setIdParientes(pariList.get(0).getIdParientes());
+                adm.actualizar(pariente3);
+            } else {
+                pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                adm.guardar(pariente3);
+            }
+        } else {
+            adm.actualizar(pariente3);
+        }
+        
+        object.setIdPeriodos(per); 
+        object.setIdCategoriasSociales(categoriaSeleccionado);
         if (object.getIdMatriculas().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -278,7 +321,7 @@ public class MatriculasBean {
             adm.eliminarObjeto(Matriculas.class, obj.getIdMatriculas());
             aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdMatriculas() + "");
             inicializar();
-            cargarDataModel();
+            //cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
@@ -365,6 +408,73 @@ public class MatriculasBean {
             System.out.println("" + e);
         }
     }
+    
+    public List<Estudiantes> buscarApellido(String apellido) {
+        try {
+            apellido = apellido.trim();
+             estudiantesListado = adm.query("Select o from Estudiantes as o "
+                    + " where o.apellidoPaterno like '%" + apellido + "%' "
+                    + " order by o.apellidoPaterno ",0,10);
+            return  estudiantesListado;
+ 
+
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("" + e);
+        }
+        return null;
+    }
+    
+    public List<Estudiantes> buscarCedula(String cedula) {
+        try {
+            cedula = cedula.trim();
+             estudiantesListado = adm.query("Select o from Estudiantes as o "
+                    + " where o.idEstudiantes like '%" + cedula + "%' "
+                    + " order by o.idEstudiantes ",0,10);
+            return  estudiantesListado;
+ 
+
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("" + e);
+        }
+        return null;
+    }
+    protected void buscarMatricula(Estudiantes estudiante){
+        List<Matriculas> matriculasListado =  adm.query("Select o from Matriculas as o "
+                + " where o.idEstudiantes.idEstudiantes = '"+estudiante.getIdEstudiantes()+"' "
+                + " and o.idPeriodos.idPeriodos = '"+per.getIdPeriodos()+"'");
+        if(matriculasListado.size()>0){
+            object = matriculasListado.get(0); 
+        } 
+    }
+ public void handleSelect(SelectEvent event) {
+     estudiante = (Estudiantes) adm.buscarClave(((Estudiantes)event.getObject()).getIdEstudiantes(),Estudiantes.class);
+     
+     
+     List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '"+estudiante.getIdEstudiantes()+"'  ");
+     for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
+         Parientes parientes = it.next();
+         if(parientes.getTipoRepresentante().equals("F")){
+             pariente1 = parientes;
+         }else if(parientes.getTipoRepresentante().equals("P")){
+             pariente2 = parientes;
+         }else if(parientes.getTipoRepresentante().equals("M")){
+             pariente3 = parientes;
+         }
+         
+     }
+     paisSeleccionado = estudiante.getIdCanton().getIdProvincia().getIdPais();
+     buscarProvincia();
+     provinciaSeleccionado  = estudiante.getIdCanton().getIdProvincia();
+     buscarCanton();
+     cantonSeleccionado = estudiante.getIdCanton();
+     estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+     clave2 = estudiante.getClave(); 
+     buscarMatricula(estudiante); 
+     estudiantesListado = null;
+ 
+}
 
     public void generarImagenTmp(String nombre, byte[] datos) {
 
@@ -609,6 +719,26 @@ public class MatriculasBean {
 //        return null;
     }
 
+     public void fichaMatricula(String tipo) throws JRException{
+        try {
+            Map map = new HashMap();
+            map.put("tituloReporte", "FICHA DE MATRICULA");
+            map.put("titulo1", "USUARIO");
+            map.put("titulo2", "# DE INFORMES");
+            List<Estudiantes> estu = new ArrayList<Estudiantes>();
+            estu.add(estudiante); 
+            ExportarReportes ex = new ExportarReportes(estu, "fichaMatricula",map);
+            if(tipo.equals("PDF")){
+                ex.PDF();
+            }else if(tipo.equals("DOCX")){
+                ex.DOCX();
+            }else if(tipo.equals("XLS")){
+                ex.XLSX();
+            }
+        } catch (Exception ex1) {
+            java.util.logging.Logger.getLogger(FichaMatricula.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+   }
     /**
      * Obtiene el el listado de paises
      *
@@ -653,7 +783,7 @@ public class MatriculasBean {
      */
     public List<Matriculas> getModel() {
         if (model == null) {
-            cargarDataModel();
+            //cargarDataModel();
         }
         return model;
     }
@@ -859,4 +989,24 @@ public class MatriculasBean {
     public void setPariente3(Parientes pariente3) {
         this.pariente3 = pariente3;
     }
+
+    public Estudiantes getEstudiante() {
+        if (estudiante == null) {
+            estudiante = new Estudiantes("");
+        }
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiantes estudiante) {
+        this.estudiante = estudiante;
+    }
+
+    public List<Estudiantes> getEstudiantesListado() {
+        return estudiantesListado;
+    }
+
+    public void setEstudiantesListado(List<Estudiantes> estudiantesListado) {
+        this.estudiantesListado = estudiantesListado;
+    }
+    
 }

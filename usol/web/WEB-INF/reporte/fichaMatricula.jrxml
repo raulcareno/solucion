@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichaMatricula" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="idEstudiantes" class="java.lang.String">
+		<fieldDescription><![CDATA[idEstudiantes]]></fieldDescription>
+	</field>
+	<field name="clave" class="java.lang.String">
+		<fieldDescription><![CDATA[clave]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<fieldDescription><![CDATA[direccion]]></fieldDescription>
+	</field>
+	<field name="anioGraduado" class="java.lang.Integer">
+		<fieldDescription><![CDATA[anioGraduado]]></fieldDescription>
+	</field>
+	<field name="ciudadGraduado" class="java.lang.String">
+		<fieldDescription><![CDATA[ciudadGraduado]]></fieldDescription>
+	</field>
+	<field name="horarioEmpresa" class="java.lang.String">
+		<fieldDescription><![CDATA[horarioEmpresa]]></fieldDescription>
+	</field>
+	<field name="trabaja" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[trabaja]]></fieldDescription>
+	</field>
+	<field name="telefonoEmpresa" class="java.lang.String">
+		<fieldDescription><![CDATA[telefonoEmpresa]]></fieldDescription>
+	</field>
+	<field name="apellidoMaterno" class="java.lang.String">
+		<fieldDescription><![CDATA[apellidoMaterno]]></fieldDescription>
+	</field>
+	<field name="observacionEmpresa" class="java.lang.String">
+		<fieldDescription><![CDATA[observacionEmpresa]]></fieldDescription>
+	</field>
+	<field name="sexo" class="java.lang.String">
+		<fieldDescription><![CDATA[sexo]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
+	</field>
+	<field name="fotografia" class="java.lang.String">
+		<fieldDescription><![CDATA[fotografia]]></fieldDescription>
+	</field>
+	<field name="direccionEmpresa" class="java.lang.String">
+		<fieldDescription><![CDATA[direccionEmpresa]]></fieldDescription>
+	</field>
+	<field name="ultimoIngreso" class="java.util.Date">
+		<fieldDescription><![CDATA[ultimoIngreso]]></fieldDescription>
+	</field>
+	<field name="apellidoPaterno" class="java.lang.String">
+		<fieldDescription><![CDATA[apellidoPaterno]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String">
+		<fieldDescription><![CDATA[usuario]]></fieldDescription>
+	</field>
+	<field name="empresa" class="java.lang.String">
+		<fieldDescription><![CDATA[empresa]]></fieldDescription>
+	</field>
+	<field name="colegioGraduado" class="java.lang.String">
+		<fieldDescription><![CDATA[colegioGraduado]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="titulosSuperiores" class="java.lang.String">
+		<fieldDescription><![CDATA[titulosSuperiores]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[telefono]]></fieldDescription>
+	</field>
+	<field name="paisGraduado" class="java.lang.String">
+		<fieldDescription><![CDATA[paisGraduado]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="105" height="82"/>
+				<imageExpression class="java.lang.String"><![CDATA["coffee.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="94" y="0" width="461" height="62"/>
+				<textElement verticalAlignment="Middle">
+					<font size="40" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[FICHA DE MATRICULA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[apellidoPaterno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[apellidoMaterno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[nombre]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="5" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apellidoPaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="6" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{apellidoMaterno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="8" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
