@@ -101,7 +101,7 @@ Auditar  aud = new Auditar();
         }
         if (object.getIdCarreras() == 0) {
             if (!permisos.verificarPermisoReporte("Carreras", "agregar_carreras", "agregar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
                 if (adm.existe("Carreras", "nombre", object.getNombre()).size() <= 0) {
@@ -118,7 +118,7 @@ Auditar  aud = new Auditar();
             }
         } else {
             if (!permisos.verificarPermisoReporte("Carreras", "actualizar_carreras", "agregar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
                 adm.actualizar(object);
@@ -143,7 +143,7 @@ Auditar  aud = new Auditar();
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             if (!permisos.verificarPermisoReporte("Carreras", "eliminar_carreras", "eliminar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Carreras.class, obj.getIdCarreras());
             aud.auditar(adm,"Carreras", "eliminar", "", obj.getIdCarreras()+"");

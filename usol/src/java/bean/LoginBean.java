@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
+import jcinform.persistencia.Accesos;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Periodos;
@@ -52,6 +53,7 @@ FacesContext context = FacesContext.getCurrentInstance();
             List<Institucion> user = adm.query("Select o from Institucion as o ");
             ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("institucion");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("institucion", user.get(0));
                                  
             String fileFoto = servletContext.getRealPath("") + File.separator +"logo.png";
@@ -140,6 +142,10 @@ FacesContext context = FacesContext.getCurrentInstance();
             } else {
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
+                List<Accesos> accesos = adm.query("Select o from Accesos as o  "
+                        + " where o.idPerfiles.idPerfiles = '"+user.getIdPerfiles().getIdPerfiles()+"' ");
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accesos", accesos); 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
                 

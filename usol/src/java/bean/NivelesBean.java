@@ -93,7 +93,7 @@ public class NivelesBean {
         }
         if (object.getIdNiveles() == 0) {
             if (!permisos.verificarPermisoReporte("Niveles", "agregar_niveles", "agregar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
                 if (adm.existe("Niveles", "nombre", object.getNombre(),"secuencia",new Integer(object.getSecuencia())," ").size() <= 0) {
@@ -135,7 +135,7 @@ public class NivelesBean {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             if (!permisos.verificarPermisoReporte("Niveles", "eliminar_niveles", "eliminar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Niveles.class, obj.getIdNiveles());
             aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "eliminar", "", obj.getIdNiveles()+"");

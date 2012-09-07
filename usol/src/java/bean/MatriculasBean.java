@@ -51,17 +51,17 @@ import utilerias.Permisos;
 @ManagedBean
 @ViewScoped
 //@RequestScoped
-public class MatriculasBean{
+public class MatriculasBean {
 
     /**
      * Creates a new instance of MatriculasBean
      */
     Matriculas object;
+    Estudiantes estudiante;
     Administrador adm;
     protected List<Matriculas> model;
     protected List<MateriasMatricula> modelMaterias;
     protected List<Parientes> modelParientes;
-    
     public String textoBuscar;
     Permisos permisos;
     public String foto1;
@@ -69,8 +69,6 @@ public class MatriculasBean{
     claves cl = new claves();
     List<SelectItem> provinciasEncontradas;
     List<SelectItem> cantonesEncontradas;
-    
-    
     List<SelectItem> provinciasEncontradas1;
     List<SelectItem> cantonesEncontradas1;
     protected Parientes pariente1;
@@ -79,22 +77,16 @@ public class MatriculasBean{
     public Pais paisSeleccionado = new Pais();
     public Provincia provinciaSeleccionado = new Provincia();
     public Canton cantonSeleccionado = new Canton();
-    
     public Pais paisSeleccionado1 = new Pais();
     public Provincia provinciaSeleccionado1 = new Provincia();
     public Canton cantonSeleccionado1 = new Canton();
-    
     public CategoriasSociales categoriaSeleccionado = new CategoriasSociales();
-     
-    
     Auditar aud = new Auditar();
     ProcesadorImagenes p = new ProcesadorImagenes();
-    
-     private DualListModel<Materias> materias;  
-     List<Materias> origen = new ArrayList<Materias>();  
-        List<Materias> destino = new ArrayList<Materias>();  
-     
-     
+    private DualListModel<Materias> materias;
+    List<Materias> origen = new ArrayList<Materias>();
+    List<Materias> destino = new ArrayList<Materias>();
+
     public MatriculasBean() {
         //super();
         if (adm == null) {
@@ -113,16 +105,17 @@ public class MatriculasBean{
 //                Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-       
+
         inicializar();
         //selectedMatriculas = new Matriculas();
 
     }
-    public void buscarMateriasNoAsignadas(){
-        origen =  adm.queryNativo(" Select o.* from Materias as o "
-                + "where o.id_materias not in (Select m.id_Materias from Matriculas_Materias as m where m.id_Matriculas = '"+object.getIdMatriculas()+"') "
-                + " order by o.nombre ",Materias.class);
-        destino =  adm.query("Select m.idMaterias from MateriasMatricula as m where m.idMatriculas.idMatriculas = '"+object.getIdMatriculas()+"' "
+
+    public void buscarMateriasNoAsignadas() {
+        origen = adm.queryNativo(" Select o.* from Materias as o "
+                + "where o.id_materias not in (Select m.id_Materias from Matriculas_Materias as m where m.id_Matriculas = '" + object.getIdMatriculas() + "') "
+                + " order by o.nombre ", Materias.class);
+        destino = adm.query("Select m.idMaterias from MateriasMatricula as m where m.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "' "
                 + " order by m.idMaterias.nombre ");
     }
 
@@ -133,58 +126,66 @@ public class MatriculasBean{
         clave2 = obj.getIdEstudiantes().getClave();
         foto1 = object.getIdMatriculas() + ".jpg";
         try {
-            generarImagenTmp(foto1, object.getIdEstudiantes().getFoto());
+            generarImagenTmp(foto1, estudiante.getFoto());
         } catch (Exception e) {
             System.out.println("AUN NO SE HA CARGADO LA IMAGEN...");
         }
-        paisSeleccionado = object.getIdEstudiantes().getIdCanton().getIdProvincia().getIdPais();
+        paisSeleccionado = estudiante.getIdCanton().getIdProvincia().getIdPais();
         buscarProvincia();
-        provinciaSeleccionado = object.getIdEstudiantes().getIdCanton().getIdProvincia();
+        provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
-        cantonSeleccionado = object.getIdEstudiantes().getIdCanton();
+        cantonSeleccionado = estudiante.getIdCanton();
 //         
-//        paisSeleccionado3 = object.getIdEstudiantes().getIdPais();
-//        paisSeleccionado4 = object.getIdEstudiantes().getPaiIdPais();
+//        paisSeleccionado3 = estudiante.getIdPais();
+//        paisSeleccionado4 = estudiante.getPaiIdPais();
         //generarImagen("logo.png", object.getFoto());
- buscarMateriasNoAsignadas();
+        buscarMateriasNoAsignadas();
         //foto1 = "logo.png";
         System.out.println("" + object.getIdMatriculas());
         return null;
     }
-    
+
     protected void inicializar() {
         object = new Matriculas(0);
-        object.setIdEstudiantes(new Estudiantes());
-        object.getIdEstudiantes().setSexo("M");
-        //object.getIdEstudiantes().setTipoIdentificacion("C");
+        estudiante = new Estudiantes("");
+        object.setIdEstudiantes(estudiante);
+        estudiante.setSexo("M");
+        //estudiante.setTipoIdentificacion("C");
         foto1 = null;
         clave2 = "";
-        origen =  adm.query(" Select o from Materias as o order by o.nombre ");
+        origen = adm.query(" Select o from Materias as o order by o.nombre ");
         destino = new ArrayList<Materias>();
         //materias = new DualListModel<Materias>(origen, destino); 
         cargarDataModel();
     }
 
-     public String anadir(Materias obj) {  
-        destino.add(obj);  
-        origen.remove(obj);  
+    public String anadir(Materias obj) {
+        destino.add(obj);
+        origen.remove(obj);
         return null;
     }
-     public String quitar(Materias obj) {  
-        origen.add(obj);  
-        destino.remove(obj);  
+
+    public String quitar(Materias obj) {
+        origen.add(obj);
+        destino.remove(obj);
         return null;
     }
-     
-   
-    
+
     /**
      * Graba el registro asociado al objeto que
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (object.getIdEstudiantes().getNombre().isEmpty()) {
+        if (estudiante.getIdEstudiantes().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la IDENTIFICACIÓN del Estudiante", ""));
+            return null;
+        }
+        if (estudiante.getNombre().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
+            return null;
+        }
+        if (estudiante.getApellidoPaterno().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el APELLLIDO PATERNO del Estudiante", ""));
             return null;
         }
         if (paisSeleccionado.getIdPais().equals(new Integer(0))) {
@@ -199,30 +200,42 @@ public class MatriculasBean{
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Lugar de Nacimiento, Canton", ""));
             return null;
         }
-         
-        object.getIdEstudiantes().setClave(cl.encriptar(object.getIdEstudiantes().getClave()));
-        object.getIdEstudiantes().setIdCanton(cantonSeleccionado);
-         
+
+        estudiante.setClave(cl.encriptar(estudiante.getClave()));
+        estudiante.setIdCanton(cantonSeleccionado);
+
+        //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
+            if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
+                adm.guardar(object);
+            } else {
+                adm.actualizar(object);
+            }
+            object.setIdEstudiantes(estudiante);
+            pariente1.setIdEstudiantes(object.getIdEstudiantes());
+
+        //PARIENTES EMPIEZO A GUARDAR
+        if (pariente1.getIdParientes().equals(new Integer(0))) {
+            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion());
+            if (pariList.size() > 0) {
+                pariente1.setIdParientes(pariList.get(0).getIdParientes());
+                adm.actualizar(pariente1);
+            } else {
+                pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                adm.guardar(pariente1);
+            }
+        } else {
+            adm.actualizar(pariente1);
+        }
+
         if (object.getIdMatriculas().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                return null;
             }
             try {
-                if (adm.existe("Matriculas", "nombre", object.getIdEstudiantes().getNombre()).size() <= 0) {
-                    //object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
+                if (adm.existe("Matriculas", "idEstudiantes", object.getIdEstudiantes(), "idPeriodos", object.getIdPeriodos(), "").size() <= 0) {
+                    object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
                     adm.guardar(object);
-                    
-                   adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas = '"+object.getIdMatriculas()+"' ");
-                    for (Iterator<Materias> it = destino.iterator(); it.hasNext();) {
-                        Materias matGuardar = it.next();
-                        MateriasMatricula empMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
-                        empMat.setIdMaterias(matGuardar);
-                        empMat.setIdMatriculas(object); 
-                        adm.guardar(empMat);
-                        
-                    }
-                    
-                    
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
@@ -235,18 +248,10 @@ public class MatriculasBean{
         } else {
             if (!permisos.verificarPermisoReporte("Matriculas", "actualizar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                return null;
             }
             try {
                 adm.actualizar(object);
-                 adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas = '"+object.getIdMatriculas()+"' ");
-                    for (Iterator<Materias> it = destino.iterator(); it.hasNext();) {
-                        Materias matGuardar = it.next();
-                        MateriasMatricula empMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
-                        empMat.setIdMaterias(matGuardar);
-                        empMat.setIdMatriculas(object); 
-                        adm.guardar(empMat);
-                        
-                    }
                 aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdMatriculas() + "");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
@@ -255,9 +260,9 @@ public class MatriculasBean{
                 java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
-            
+
         }
-        
+
         return null;
     }
 
@@ -302,7 +307,7 @@ public class MatriculasBean{
         return null;
     }
 
-       /**
+    /**
      *
      * Obtiene el registro seleccionado
      */
@@ -310,14 +315,14 @@ public class MatriculasBean{
         try {
             List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
             List<SelectItem> items = new ArrayList<SelectItem>();
-            if(datos.size()>0){
-                 
+            if (datos.size() > 0) {
+
                 for (CategoriasSociales obj : datos) {
                     items.add(new SelectItem(obj, obj.getNombre()));
                 }
-            }else {
+            } else {
                 CategoriasSociales sel = new CategoriasSociales(0);
-                items.add(new SelectItem(sel,"NO SE HAN CREADO CATEGORIAS..."));
+                items.add(new SelectItem(sel, "NO SE HAN CREADO CATEGORIAS..."));
             }
             return items;
         } catch (Exception e) {
@@ -327,8 +332,6 @@ public class MatriculasBean{
         return null;
     }
 
-    
- 
     /**
      * llena el listado con datos
      */
@@ -336,13 +339,13 @@ public class MatriculasBean{
         try {
             model = (adm.listar("Matriculas"));
             setModel(model);
-            
+
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
-    
+
     public void limpiar() {
         //object = new Matriculas(0);
         inicializar();
@@ -356,19 +359,17 @@ public class MatriculasBean{
             //setModel(adm.listar("Matriculas"));
             model = (adm.query("Select o from Matriculas as o where o.nombre like '%" + textoBuscar + "%' order by o.nombre "));
             setModel(model);
-            
+
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
-    
-  
-    
+
     public void generarImagenTmp(String nombre, byte[] datos) {
-        
+
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        
+
         String fileFoto = servletContext.getRealPath("") + File.separator + "fotosMatriculas" + File.separator + nombre;
         FileImageOutputStream outputStream = null;
         try {
@@ -383,25 +384,25 @@ public class MatriculasBean{
             }
         }
         datos = null;
-        
+
     }
-    
+
     public void handleFileUpload(FileUploadEvent event) {
         try {
             //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
             //FacesContext.getCurrentInstance().addMessage(null, msg);
             //        byte[] datos = event.getFile().getContents();
-            object.getIdEstudiantes().setFoto(event.getFile().getContents());
+            estudiante.setFoto(event.getFile().getContents());
             String nombreTemporal = event.getFile().getFileName().substring(0, event.getFile().getFileName().lastIndexOf("."));
             String formato = event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1);
-            java.io.File f = java.io.File.createTempFile(nombreTemporal, "."+formato);
-            
-            
+            java.io.File f = java.io.File.createTempFile(nombreTemporal, "." + formato);
+
+
 //            byte[] archivo = tuByte[];
             FileOutputStream archivoNuevo = new FileOutputStream(f);
             archivoNuevo.write(event.getFile().getContents());
-            
-            
+
+
             //File.createTempFile("miArchivo", ".gif");
 //            ImageIO.write(imageBuffer, "jpg", f);
             FileInputStream fin = null;
@@ -409,8 +410,8 @@ public class MatriculasBean{
             byte[] buffer = new byte[(int) f.length()];
             fin.read(buffer);
             fin.close();
-            
-      
+
+
             BufferedImage bf = p.escalarATamanyo(f, 230, 170, formato);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(bf, "jpg", baos);
@@ -420,17 +421,17 @@ public class MatriculasBean{
             f = null;
             bf = null;
             p = null;
-            object.getIdEstudiantes().setFoto(imageInByte);
+            estudiante.setFoto(imageInByte);
             buffer = null;
             imageInByte = null;
             fin = null;
             archivoNuevo = null;
-            
+
         } catch (Exception ex) {
             Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public List<SelectItem> getSelectedItemTitulos() {
         try {
             List<Titulos> divisionPoliticas = new ArrayList<Titulos>();
@@ -451,11 +452,11 @@ public class MatriculasBean{
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
-            
+
         }
         return null;
     }
-    
+
     public List<SelectItem> getSelectedItemPerfiles() {
         try {
             List<Perfiles> divisionPoliticas = new ArrayList<Perfiles>();
@@ -476,7 +477,7 @@ public class MatriculasBean{
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
-            
+
         }
         return null;
     }
@@ -490,12 +491,12 @@ public class MatriculasBean{
         try {
             List<Canton> divisionPoliticas = new ArrayList<Canton>();
             cantonesEncontradas = new ArrayList<SelectItem>();
-            
+
             if (object == null) {
                 object = new Matriculas(0);
-                object.getIdEstudiantes().setIdCanton(new Canton());
-                object.getIdEstudiantes().getIdCanton().setIdProvincia(new Provincia());
-                object.getIdEstudiantes().getIdCanton().getIdProvincia().setIdPais(new Pais());
+                estudiante.setIdCanton(new Canton());
+                estudiante.getIdCanton().setIdProvincia(new Provincia());
+                estudiante.getIdCanton().getIdProvincia().setIdPais(new Pais());
             }
             if (object != null) {
 //                if (!object.getIdCanton().equals("")) {
@@ -534,12 +535,12 @@ public class MatriculasBean{
         try {
             List<Provincia> divisionPoliticas = new ArrayList<Provincia>();
             provinciasEncontradas = new ArrayList<SelectItem>();
-            
+
             if (object == null) {
                 object = new Matriculas(0);
-                object.getIdEstudiantes().setIdCanton(new Canton());
-                object.getIdEstudiantes().getIdCanton().setIdProvincia(new Provincia());
-                object.getIdEstudiantes().getIdCanton().getIdProvincia().setIdPais(new Pais());
+                estudiante.setIdCanton(new Canton());
+                estudiante.getIdCanton().setIdProvincia(new Provincia());
+                estudiante.getIdCanton().getIdProvincia().setIdPais(new Pais());
             }
             if (object != null) {
 //                if (!object.getIdCanton().equals("")) {
@@ -569,16 +570,16 @@ public class MatriculasBean{
 //        return null;
     }
 
-      public void buscarProvincia1() {
+    public void buscarProvincia1() {
         try {
             List<Provincia> divisionPoliticas = new ArrayList<Provincia>();
             provinciasEncontradas1 = new ArrayList<SelectItem>();
-            
+
             if (object == null) {
                 object = new Matriculas(0);
-                object.getIdEstudiantes().setIdCanton(new Canton());
-                object.getIdEstudiantes().getIdCanton().setIdProvincia(new Provincia());
-                object.getIdEstudiantes().getIdCanton().getIdProvincia().setIdPais(new Pais());
+                estudiante.setIdCanton(new Canton());
+                estudiante.getIdCanton().setIdProvincia(new Provincia());
+                estudiante.getIdCanton().getIdProvincia().setIdPais(new Pais());
             }
             if (object != null) {
 //                if (!object.getIdCanton().equals("")) {
@@ -619,12 +620,12 @@ public class MatriculasBean{
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object == null) {
                 //object = new Institucion();
-                object.getIdEstudiantes().setIdCanton(new Canton());
-                object.getIdEstudiantes().getIdCanton().setIdProvincia(new Provincia());
-                object.getIdEstudiantes().getIdCanton().getIdProvincia().setIdPais(new Pais());
+                estudiante.setIdCanton(new Canton());
+                estudiante.getIdCanton().setIdProvincia(new Provincia());
+                estudiante.getIdCanton().getIdProvincia().setIdPais(new Pais());
             }
             if (object != null) {
-                
+
                 divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
                 if (divisionPoliticas.size() > 0) {
                     Pais objSel = new Pais(0);
@@ -636,7 +637,7 @@ public class MatriculasBean{
                     Pais obj = new Pais(0);
                     items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
                 }
-                
+
             }
             return items;
         } catch (Exception e) {
@@ -656,7 +657,7 @@ public class MatriculasBean{
         }
         return model;
     }
-    
+
     public void setModel(List<Matriculas> model) {
         this.model = model;
     }
@@ -674,7 +675,6 @@ public class MatriculasBean{
 //          
 //        FacesContext.getCurrentInstance().addMessage(null, msg);  
 //    }
-    
     /**
      * busca un componente dentro del form.jspx para enviar mensajes
      *
@@ -695,80 +695,79 @@ public class MatriculasBean{
         }
         return null;
     }
-    
+
     public String getTextoBuscar() {
         return textoBuscar;
     }
-    
+
     public void setTextoBuscar(String textoBuscar) {
         this.textoBuscar = textoBuscar;
     }
     private static final long serialVersionUID = 1L;
-    
+
     public Matriculas getObject() {
         if (object == null) {
             object = new Matriculas(0);
         }
         return object;
     }
-    
+
     public void setObject(Matriculas object) {
         this.object = object;
     }
-    
-     
+
     public String getFoto1() {
         return foto1;
     }
-    
+
     public void setFoto1(String foto1) {
         this.foto1 = foto1;
     }
-    
+
     public String getClave2() {
         return clave2;
     }
-    
+
     public void setClave2(String clave2) {
         this.clave2 = clave2;
     }
-    
+
     public List<SelectItem> getProvinciasEncontradas() {
         return provinciasEncontradas;
     }
-    
+
     public void setProvinciasEncontradas(List<SelectItem> provinciasEncontradas) {
         this.provinciasEncontradas = provinciasEncontradas;
     }
-    
+
     public List<SelectItem> getCantonesEncontradas() {
         return cantonesEncontradas;
     }
-    
+
     public void setCantonesEncontradas(List<SelectItem> cantonesEncontradas) {
         this.cantonesEncontradas = cantonesEncontradas;
     }
-    
+
     public Pais getPaisSeleccionado() {
         return paisSeleccionado;
     }
-    
+
     public void setPaisSeleccionado(Pais paisSeleccionado) {
         this.paisSeleccionado = paisSeleccionado;
     }
-    
+
     public Provincia getProvinciaSeleccionado() {
         return provinciaSeleccionado;
     }
-    
+
     public void setProvinciaSeleccionado(Provincia provinciaSeleccionado) {
         this.provinciaSeleccionado = provinciaSeleccionado;
     }
-    
+
     public Canton getCantonSeleccionado() {
         return cantonSeleccionado;
     }
-    
+
     public void setCantonSeleccionado(Canton cantonSeleccionado) {
         this.cantonSeleccionado = cantonSeleccionado;
     }
@@ -860,6 +859,4 @@ public class MatriculasBean{
     public void setPariente3(Parientes pariente3) {
         this.pariente3 = pariente3;
     }
-    
-    
 }
