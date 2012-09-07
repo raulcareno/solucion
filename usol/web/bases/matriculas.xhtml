@@ -33,41 +33,41 @@
                             <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
 
                                 <h:outputText value="CEDULA IDENTIDAD: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.idEstudiantes}" id="CedulaIdentidad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}" id="CedulaIdentidad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="APELLIDO PATERNO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="APELLIDO MATERNO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.apellidoMaterno}" id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.apellidoMaterno}" id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="NOMBRE: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="SEXO: " />  
-                                <p:selectOneRadio id="sexo" value="#{matriculasBean.object.idEstudiantes.sexo}">  
+                                <p:selectOneRadio id="sexo" value="#{matriculasBean.estudiante.sexo}">  
                                     <f:selectItem itemLabel="MASCULINO"  itemValue="M" />  
                                     <f:selectItem itemLabel="FEMENINO" itemValue="F" />  
                                 </p:selectOneRadio>  
 
                                 <h:outputText value="TELEFONO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="DIRECCIÓN: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.direccion}" id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.direccion}" id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
 
 
                                 <h:outputText value="EMAIL: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="USUARIO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.usuario}" id="Usuario"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.usuario}" id="Usuario"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="CLAVE: " />  
-                                <p:password  value="#{matriculasBean.object.idEstudiantes.clave}"  requiredMessage="No coincidena las contraseñas" match="Clave2" redisplay="true"  feedback="true" id="Clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:password  value="#{matriculasBean.estudiante.clave}"  requiredMessage="No coincidena las contraseñas" match="Clave2" redisplay="true"  feedback="true" promptLabel="Por favor ingrese una clave" goodLabel="Buena" strongLabel="Fuerte" weakLabel="Débil" id="Clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                                 <h:outputText value="FECHA NACIMIENTO: " />  
-                                <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{matriculasBean.object.idEstudiantes.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
+                                <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{matriculasBean.estudiante.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
                                 <h:outputText value="CONFIRMAR CLAVE: " />  
                                 <p:password  value="#{matriculasBean.clave2}" redisplay="true"  id="Clave2"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
@@ -147,28 +147,28 @@
                         <p:fieldset legend="DATOS ACADÉMICOS">
                             <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">  
                                 <h:outputText value="ANIO GRADUACIÓN: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="COLEGIO GRADUADO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.colegioGraduado}" id="ColegioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.colegioGraduado}" id="ColegioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="TITULOS SUPERIORES: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.titulosSuperiores}" id="TitulosSuperiores"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.titulosSuperiores}" id="TitulosSuperiores"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             </h:panelGrid>  
                         </p:fieldset>
                         <p:fieldset legend="DATOS LABORALES">
                             <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
                                 <h:outputText value="TRABAJA: " />  
-                                <p:selectBooleanCheckbox id="Trabaja" value="#{matriculasBean.object.idEstudiantes.trabaja}"/>  
+                                <p:selectBooleanCheckbox id="Trabaja" value="#{matriculasBean.estudiante.trabaja}"/>  
                                 <h:outputText value="EMPRESA: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.empresa}" id="Empresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.empresa}" id="Empresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="DIRECCION: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.direccionEmpresa}" id="DireccionEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.direccionEmpresa}" id="DireccionEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="TELEFONO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.telefono}" id="Telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.telefono}" id="Telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="HORARIO: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.horarioEmpresa}" id="HorarioEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.horarioEmpresa}" id="HorarioEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="OBSERVACION: " />  
-                                <p:inputText value="#{matriculasBean.object.idEstudiantes.observacionEmpresa}" id="ObservacionEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                                <p:inputText value="#{matriculasBean.estudiante.observacionEmpresa}" id="ObservacionEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             </h:panelGrid>  
                         </p:fieldset>
                     </p:tab>
@@ -222,7 +222,7 @@
                                 <p:inputText value="#{matriculasBean.pariente3.telefonoTrabajo}" id="TelefonoTrabajoMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                                 <h:outputText value="TELÉFONO DE CASA: " />  
                                 <p:inputText value="#{matriculasBean.pariente3.telefonoCasa}" id="TelefonoCasaMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                                                                <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente2"   style="font-weight:bold; width: 15px;visibility: hidden"/>
+                                                                <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente3"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                             </h:panelGrid>
                         </p:fieldset>
                     </p:tab>
