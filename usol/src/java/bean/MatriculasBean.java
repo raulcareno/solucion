@@ -32,6 +32,7 @@ import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.Pais;
+import jcinform.persistencia.Parientes;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Provincia;
 import jcinform.persistencia.Titulos;
@@ -59,6 +60,8 @@ public class MatriculasBean{
     Administrador adm;
     protected List<Matriculas> model;
     protected List<MateriasMatricula> modelMaterias;
+    protected List<Parientes> modelParientes;
+    
     public String textoBuscar;
     Permisos permisos;
     public String foto1;
@@ -67,9 +70,12 @@ public class MatriculasBean{
     List<SelectItem> provinciasEncontradas;
     List<SelectItem> cantonesEncontradas;
     
+    
     List<SelectItem> provinciasEncontradas1;
     List<SelectItem> cantonesEncontradas1;
-    
+    protected Parientes pariente1;
+    protected Parientes pariente2;
+    protected Parientes pariente3;
     public Pais paisSeleccionado = new Pais();
     public Provincia provinciaSeleccionado = new Provincia();
     public Canton cantonSeleccionado = new Canton();
@@ -123,11 +129,11 @@ public class MatriculasBean{
     public String editarAction(Matriculas obj) {
         inicializar();
         object = obj;
-        obj.getEstIdEstudiantes().setClave(cl.desencriptar(obj.getEstIdEstudiantes().getClave()));
-        clave2 = obj.getEstIdEstudiantes().getClave();
+        obj.getIdEstudiantes().setClave(cl.desencriptar(obj.getIdEstudiantes().getClave()));
+        clave2 = obj.getIdEstudiantes().getClave();
         foto1 = object.getIdMatriculas() + ".jpg";
         try {
-            generarImagenTmp(foto1, object.getEstIdEstudiantes().getFoto());
+            generarImagenTmp(foto1, object.getIdEstudiantes().getFoto());
         } catch (Exception e) {
             System.out.println("AUN NO SE HA CARGADO LA IMAGEN...");
         }
@@ -169,6 +175,8 @@ public class MatriculasBean{
         destino.remove(obj);  
         return null;
     }
+     
+   
     
     /**
      * Graba el registro asociado al objeto que
@@ -819,6 +827,38 @@ public class MatriculasBean{
 
     public void setCategoriaSeleccionado(CategoriasSociales categoriaSeleccionado) {
         this.categoriaSeleccionado = categoriaSeleccionado;
+    }
+
+    public List<Parientes> getModelParientes() {
+        return modelParientes;
+    }
+
+    public void setModelParientes(List<Parientes> modelParientes) {
+        this.modelParientes = modelParientes;
+    }
+
+    public Parientes getPariente1() {
+        return pariente1;
+    }
+
+    public void setPariente1(Parientes pariente1) {
+        this.pariente1 = pariente1;
+    }
+
+    public Parientes getPariente2() {
+        return pariente2;
+    }
+
+    public void setPariente2(Parientes pariente2) {
+        this.pariente2 = pariente2;
+    }
+
+    public Parientes getPariente3() {
+        return pariente3;
+    }
+
+    public void setPariente3(Parientes pariente3) {
+        this.pariente3 = pariente3;
     }
     
     

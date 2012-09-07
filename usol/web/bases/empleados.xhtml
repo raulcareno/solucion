@@ -28,7 +28,7 @@
                 <p:tabView  id="RegistroInformacion" >  
 
                     <p:tab id="registro01" title="INFORMACIÓN GENERAL">
-                        <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">  
+                        <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
                             <p:selectOneRadio id="TipoIdentificacion" value="#{empleadosBean.object.tipoIdentificacion}">  
                                 <f:selectItem itemLabel="CEDULA"  itemValue="C" />  
                                 <f:selectItem itemLabel="RUC" itemValue="R" />  
@@ -118,7 +118,7 @@
                         </h:panelGrid>  
                     </p:tab>
                     <p:tab id="registro02" title="INFORMACIÓN CES">
-                        <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">  
+                        <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
                             <h:outputText value="FECHA INGRESO: " />  
                             <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{empleadosBean.object.fechaIngreso}" id="FechaIngreso" showOn="button"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="FECHA AFILIACIÓN: " />  
@@ -221,7 +221,7 @@
 </p:panelGrid>
                     </p:tab>
                     <p:tab id="registro03" title="BUSQUEDAS">
-                        <h:panelGrid columns="1" cellpadding="4" style="margin:0 auto;">  
+                        <h:panelGrid columns="1" cellpadding="1" style="margin:0 auto;">  
 
                             <p:panel  style="width:780px">
                                 <h:panelGrid  columns="4">
