@@ -34,23 +34,24 @@
                                         converter="ConvEstudiantes" forceSelection="true">  
                             <p:ajax event="itemSelect" listener="#{matriculasBean.handleSelect}" update=":form:RegistroInformacion" />  
                         </p:autoComplete>  
-                        
-                         <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  
+
+                        <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  
                         <p:autoComplete size="40" style="width: 200px" id="autoCompleteCedula" value="#{matriculasBean.estudiante}" 
                                         completeMethod="#{matriculasBean.buscarCedula}" 
                                         var="p" itemLabel="#{p.idEstudiantes}" itemValue="#{p}"
                                         converter="ConvEstudiantes" forceSelection="true">  
                             <p:ajax event="itemSelect" listener="#{matriculasBean.handleSelect}" update=":form:RegistroInformacion" />  
-                                        <f:facet name="itemtip">  
-                                                <h:panelGrid  columns="2" cellpadding="5">  
-                                                    <h:outputText id="modelNo" value="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" />  
-                                                 </h:panelGrid>  
-                                            </f:facet>  
+                            <f:facet name="itemtip">  
+                                <h:panelGrid  columns="2" cellpadding="5">  
+                                    <h:outputText id="modelNo" value="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" />  
+                                </h:panelGrid>  
+                            </f:facet>  
                         </p:autoComplete>  
- 
+                       
+
                     </h:panelGrid>  
                 </p:panel>  
- 
+
                 <p:tabView  id="RegistroInformacion" >  
 
                     <p:tab id="registro01" title="INFORMACIÓN GENERAL">
@@ -252,24 +253,22 @@
                             </h:panelGrid>
                         </p:fieldset>
                     </p:tab>
-              
+
                 </p:tabView>
 
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form:RegistroInformacion"   action="#{matriculasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
                     <p:commandButton value="Limpiar"  id="limpiar" update=":form:RegistroInformacion" actionListener="#{matriculasBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
-                    <p:splitButton value="PDF" ajax="false" actionListener="#{matriculasBean.fichaMatricula('PDF')}"  icon="ui-icon-print">  
-                        <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean.fichaMatricula('XLS')}" icon="ui-icon-print"/>  
-                        <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean.fichaMatricula('DOC')}"  icon="ui-icon-print"/>  
-                </p:splitButton>  
+                    <p:splitButton  value="PDF" ajax="false"  actionListener="#{matriculasBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
+                        <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
+                        <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
+                    </p:splitButton>  
+
+
+                  
+
                 </h:panelGrid>
- 
-
-
-
-
             </h:form>
-
 
         </h:panelGrid>
     </ui:define>

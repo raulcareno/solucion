@@ -62,7 +62,15 @@
                 </p:toolbarGroup>
                
             </p:toolbar>
-           
+              <p:ajaxStatus style="width:24px;height:24px;position:fixed;right:80px;bottom:100px">  
+                        <f:facet name="start">  
+                            <p:graphicImage width="110" value="/images/procesando.gif" />  
+                        </f:facet>  
+
+                        <f:facet name="complete">  
+                            <h:outputText value="" />  
+                        </f:facet>  
+                    </p:ajaxStatus> 
 
         </h:form>
     </h:panelGroup>

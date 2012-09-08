@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+
+        <h:head>
+            <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+            <title>Prueba PhotoCam</title>
+            <style type="text/css">
+                table td {
+                    vertical-align: top;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <h:form id="forma" >
+                 
+                <p:media value="http://www.jcinform.com/ec/images/manualsolucion.pdf" width="100%" height="300px">  
+                    Your browser can't display pdf, <h:outputLink value="http://www.jcinform.com/ec/images/manualsolucion.pdf">click</h:outputLink> to download pdf instead.  
+                </p:media>  
+             
+                <p:media value="http://www.youtube.com/v/KZnUr8lcqjo" width="420" height="315" player="flash"/>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+
+

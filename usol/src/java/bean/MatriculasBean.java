@@ -191,12 +191,13 @@ Periodos per;;
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la IDENTIFICACIÓN del Estudiante", ""));
             return null;
         }
-        if (estudiante.getNombre().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
-            return null;
-        }
+
         if (estudiante.getApellidoPaterno().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el APELLLIDO PATERNO del Estudiante", ""));
+            return null;
+        }
+        if (estudiante.getNombre().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
             return null;
         }
         if (paisSeleccionado.getIdPais().equals(new Integer(0))) {
@@ -211,7 +212,10 @@ Periodos per;;
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Lugar de Nacimiento, Canton", ""));
             return null;
         }
-
+            if (object.getEstadoMat().equals("")){
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No ha seleccionado el estado de la matricula"));
+                return null;
+            }
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
 
@@ -719,8 +723,17 @@ Periodos per;;
 //        return null;
     }
 
-     public void fichaMatricula(String tipo) throws JRException{
+     public String fichaMatricula(String tipo) throws JRException{
         try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            if (object.getIdMatriculas().equals(new Integer(0))){
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Primero guarde la matricula para proceder a imprimir"));
+                return null;
+            }
+            if (object.getEstadoMat().equals("")){
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No ha seleccionado el estado de la matricula"));
+                return null;
+            }
             Map map = new HashMap();
             map.put("tituloReporte", "FICHA DE MATRICULA");
             map.put("titulo1", "USUARIO");
@@ -734,10 +747,13 @@ Periodos per;;
                 ex.DOCX();
             }else if(tipo.equals("XLS")){
                 ex.XLSX();
+            }else if(tipo.equals("PRINT")){
+                ex.PRINT();
             }
         } catch (Exception ex1) {
             java.util.logging.Logger.getLogger(FichaMatricula.class.getName()).log(Level.SEVERE, null, ex1);
         }
+        return null;
    }
     /**
      * Obtiene el el listado de paises

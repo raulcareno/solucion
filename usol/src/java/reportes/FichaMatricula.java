@@ -6,67 +6,101 @@
  *
  */
 package reportes;
-  
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.model.SelectItem;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import jcinform.persistencia.Estudiantes;
 import net.sf.jasperreports.engine.JRException;
-import org.apache.log4j.spi.LoggerFactory;
- 
-import sun.java2d.loops.DrawGlyphListAA.General;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.primefaces.model.StreamedContent;
 
 /**
-  * @author geovanny
+ * @author geovanny
  */
 @ManagedBean
 @ViewScoped
 public class FichaMatricula {
- 
+
     Date desde;
     Date hasta;
-    List<General> resultadosTotales;
-    List<General> resultadosIndividual;
-Integer totalZona;
-Integer totalIndividual;
+    Integer totalZona;
+    Integer totalIndividual;
+
     public FichaMatricula() {
         super();
     }
-     
- 
-   public void individual(String tipo) throws JRException{
-        try {
-            Map map = new HashMap();
-            map.put("tituloReporte", "FICHA DE MATRICULA");
-            map.put("titulo1", "USUARIO");
-            map.put("titulo2", "# DE INFORMES");
-            ExportarReportes ex = new ExportarReportes(resultadosIndividual, "reporte",map);
-            if(tipo.equals("PDF")){
-                ex.PDF();
-            }else if(tipo.equals("DOCX")){
-                ex.DOCX();
-            }else if(tipo.equals("XLS")){
-                ex.XLSX();
-            }
-        } catch (Exception ex1) {
-            java.util.logging.Logger.getLogger(FichaMatricula.class.getName()).log(Level.SEVERE, null, ex1);
+
+    public String getArchivoPDF() throws JRException {
+         List datosReporte = new ArrayList();
+        Estudiantes est = new Estudiantes();
+        for (int i = 0; i < 10; i++) {
+            est.setApellidoPaterno("jadan" + i);
+            est.setApellidoMaterno("ortega " + i);
+            est.setNombre("geovanny " + i);
+            datosReporte.add(est);
         }
-   }
 
-     
 
+        Map parameters = new HashMap();
+        parameters.put("ALGUN_PARAMETRO", "");
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(datosReporte);
+
+        InputStream inputStream = null;
+        try {
+            ByteArrayOutputStream Teste = new ByteArrayOutputStream();
+//            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getClassLoader().getResourceAsStream(path.trim()));
+            JasperPrint print = JasperFillManager.fillReport("c:/reportes/fichaMatricula.jasper", parameters, beanCollectionDataSource);
+            JRExporter exporter = new net.sf.jasperreports.engine.export.JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, Teste);
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            exporter.exportReport();
+            inputStream = new ByteArrayInputStream(Teste.toByteArray());
+
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+
+            String fileFoto = servletContext.getRealPath("") + File.separator + "fotosMatriculas" + File.separator + "miArchivo.pdf";
+            try {
+                File f = new File(fileFoto);
+                OutputStream out = new FileOutputStream(f);
+                byte buf[] = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                inputStream.close();
+                System.out.println("\nFile is created...................................");
+            } catch (IOException e) {
+            }
+        }catch(Exception ab){
+            System.out.println(""+ab);
+        }
+        return  "miArchivo.pdf";
+    }
+
+    //return new DefaultStreamedContent(inputStream,"application/pdf");
+ 
     public String devolverFecha(Date fecha, Boolean tipo) {//SI ES TRUE AÑO MES DIA, CASO CONTRARIO DIA MES AÑO
         String fecha2 = (fecha.getYear() + 1900) + "";
-        String m = (1+fecha.getMonth()) + "";
+        String m = (1 + fecha.getMonth()) + "";
         while (m.length() < 2) {
             m = "0" + m;
         }
@@ -83,7 +117,4 @@ Integer totalIndividual;
         }
 
     }
-
-    
-    
 }

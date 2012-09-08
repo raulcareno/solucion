@@ -4,14 +4,24 @@
  */
 package reportes;
 
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.print.DocFlavor;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Sides;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +31,7 @@ import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
@@ -43,6 +54,7 @@ public class ExportarReportes {
     Map parametros = null;
     Institucion inst;
     String nombreReporte;
+    JasperPrint masterPrint;
     public ExportarReportes() {
         inst = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
     }
@@ -60,17 +72,28 @@ public class ExportarReportes {
 
     public void init() throws JRException {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(datosReporte);
-        jasperPrint = JasperFillManager.fillReport(ubicacionReportes, parametros, beanCollectionDataSource);
+        jasperPrint = JasperFillManager.fillReport(ubicacionReportes, parametros, beanCollectionDataSource);       
     }
 
+    public void PRINT() throws JRException, IOException {
+             init();
+            //HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            //httpServletResponse.addHeader("Content-disposition", "attachment; filename="+nombreReporte+".pdf");
+            //ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            //JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            JasperPrintManager.printPage(jasperPrint, 0, true);    
+    }
+    
     public void PDF() throws JRException, IOException {
-        init();
-        HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        httpServletResponse.addHeader("Content-disposition", "inline; filename="+nombreReporte+".pdf");
-        ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-
-
+             init();
+            HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            httpServletResponse.addHeader("Content-disposition", "inline; filename="+nombreReporte+".pdf");
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+            //httpServletResponse.addHeader("Content-disposition", "inline; filename="+nombreReporte+".pdf");
+            httpServletResponse.setContentType("application/pdf");
+//            servletOutputStream.print("<script language=\"javascript\"> window.print();</script>");
+            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            
     }
 
     public void DOCX() throws JRException, IOException {
