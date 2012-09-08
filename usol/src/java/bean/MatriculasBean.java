@@ -213,7 +213,7 @@ Periodos per;;
             return null;
         }
             if (object.getEstadoMat().equals("")){
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No ha seleccionado el estado de la matricula"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
                 return null;
             }
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
@@ -727,11 +727,11 @@ Periodos per;;
         try {
             FacesContext context = FacesContext.getCurrentInstance();
             if (object.getIdMatriculas().equals(new Integer(0))){
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Primero guarde la matricula para proceder a imprimir"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Primero guarde la matricula para proceder a imprimir", "Primero guarde la matricula para proceder a imprimir"));
                 return null;
             }
             if (object.getEstadoMat().equals("")){
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No ha seleccionado el estado de la matricula"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
                 return null;
             }
             Map map = new HashMap();
