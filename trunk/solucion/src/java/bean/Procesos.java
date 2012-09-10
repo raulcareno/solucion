@@ -193,7 +193,7 @@ public class Procesos {
                     String que = "select " + no.getNota() + "  from notas " +
                             "where matricula = '" + matriculas1.getCodigomat() + "' " +
                             "and materia = '"+materia.getCodigo()+"' and disciplina = false ";
-                    //System.out.println(que);
+                    System.out.println(que);
                     List val = adm.queryNativo(que);
                     Double  promedio = 0.0;
                     try{
@@ -220,7 +220,7 @@ public class Procesos {
                             actualizaR.setQuintob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(6))
                             actualizaR.setSextob(promedio);
-                        else if(matriculas1.getCurso().getSecuencia().equals(6))
+                        else if(matriculas1.getCurso().getSecuencia().equals(7))
                             actualizaR.setSeptimob(promedio);
                         else if(matriculas1.getCurso().getSecuencia().equals(8))
                             actualizaR.setPrimero(promedio);
