@@ -4,7 +4,9 @@
  */
 package bean;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +48,9 @@ import miniaturas.ProcesadorImagenes;
 import net.sf.jasperreports.engine.JRException;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DualListModel;
+import org.primefaces.model.StreamedContent;
 import reportes.ExportarReportes;
 import reportes.FichaMatricula;
 import utilerias.Permisos;
@@ -72,6 +76,7 @@ public class MatriculasBean {
     public String textoBuscar;
     Permisos permisos;
     public String foto1;
+    public byte[] imagen;
     protected String clave2;
     claves cl = new claves();
     List<SelectItem> provinciasEncontradas;
@@ -158,10 +163,20 @@ public class MatriculasBean {
 
     protected void inicializar() {
         object = new Matriculas(0);
-        estudiante = new Estudiantes("");
-        pariente1 = new Parientes();
-        pariente2 = new Parientes();
-        pariente3 = new Parientes();
+        if(estudiante == null){
+            estudiante = new Estudiantes("");    
+        }
+        if(pariente1 == null){
+            pariente1 = new Parientes();
+        }
+        if(pariente2 == null){
+             pariente2 = new Parientes();
+        }
+        if(pariente3 == null){
+            pariente3 = new Parientes();
+        }
+       
+        
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
@@ -185,6 +200,26 @@ public class MatriculasBean {
         return null;
     }
 
+     public StreamedContent getImageAsStream() {
+        try {
+            //         try {
+            //             ByteArrayInputStream stream = new ByteArrayInputStream(imagen);
+            //            StreamedContent imageAsStream = new DefaultStreamedContent(stream);
+            //            return imageAsStream;
+            //         } catch (Exception e) {
+            //             System.out.println(""+e);         }
+                     BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);  
+                        Graphics2D g2 = bufferedImg.createGraphics();  
+                        g2.drawString("This is a text", 0, 10);  
+                        ByteArrayOutputStream os = new ByteArrayOutputStream();  
+                        ImageIO.write(bufferedImg, "png", os);  
+                      return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
+                        
+        } catch (IOException ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return null;
+}
     /**
      * Graba el registro asociado al objeto que
      */
@@ -221,7 +256,7 @@ public class MatriculasBean {
         }
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
-
+        estudiante.setFoto(imagen); 
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
             adm.guardar(estudiante);
@@ -290,7 +325,7 @@ public class MatriculasBean {
 //                    inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre ya existe...!", "Nombre ya existe...!"));
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre y Cedula ya MATRICULADOS, búsquelos primero si desea editarlos...!", "Nombre y Cedula ya MATRICULADOS, busquelos primero si desea editarlos...!"));
                 }
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -435,6 +470,9 @@ public class MatriculasBean {
     public List<Estudiantes> buscarCedula(String cedula) {
         try {
             cedula = cedula.trim();
+            if (cedula.isEmpty()) {
+                cedula = estudiante.getIdEstudiantes();
+            }
             estudiantesListado = adm.query("Select o from Estudiantes as o "
                     + " where o.idEstudiantes like '%" + cedula + "%' "
                     + " order by o.idEstudiantes ", 0, 10);
@@ -446,6 +484,41 @@ public class MatriculasBean {
             System.out.println("" + e);
         }
         return null;
+    }
+
+    public void buscarCedula() {
+
+        String cedula = estudiante.getIdEstudiantes();
+        estudiante = (Estudiantes) adm.buscarClave(cedula, Estudiantes.class);
+
+        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
+        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
+            Parientes parientes = it.next();
+            if (parientes.getTipoRepresentante().equals("F")) {
+                pariente1 = parientes;
+            } else if (parientes.getTipoRepresentante().equals("P")) {
+                pariente2 = parientes;
+            } else if (parientes.getTipoRepresentante().equals("M")) {
+                pariente3 = parientes;
+            }
+
+        }
+        paisSeleccionado = estudiante.getIdCanton().getIdProvincia().getIdPais();
+        buscarProvincia();
+        provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
+        buscarCanton();
+        cantonSeleccionado = estudiante.getIdCanton();
+        estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+        clave2 = estudiante.getClave();
+        buscarMatricula(estudiante);
+        foto1 = estudiante.getIdEstudiantes() + ".jpg";
+        try {
+            generarImagenTmp(foto1, estudiante.getFoto());
+        } catch (Exception e) {
+            System.out.println("AUN NO SE HA CARGADO LA IMAGEN..." + e);
+        }
+
+        estudiantesListado = null;
     }
 
     protected void buscarMatricula(Estudiantes estudiante) {
@@ -460,7 +533,7 @@ public class MatriculasBean {
     public void handleSelect(SelectEvent event) {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
 
-
+        imagen = estudiante.getFoto();
         List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
             Parientes parientes = it.next();
@@ -533,6 +606,7 @@ public class MatriculasBean {
             fin.close();
             foto1 = event.getFile().getFileName().substring(0, event.getFile().getFileName().lastIndexOf(".")) + "." + formato;
             estudiante.setFoto(buffer);
+            imagen = buffer;
             System.out.println("" + foto1);
             try {
                 BufferedImage bf = p.escalarATamanyo(f, 230, 170, formato);
@@ -540,11 +614,13 @@ public class MatriculasBean {
                 ImageIO.write(bf, "jpg", baos);
                 baos.flush();
                 byte[] imageInByte = baos.toByteArray();
+                estudiante.setFoto(imageInByte);
+                imagen = buffer;
                 baos.close();
                 f = null;
                 bf = null;
                 p = null;
-                estudiante.setFoto(imageInByte);
+                
                 buffer = null;
                 imageInByte = null;
                 fin = null;
@@ -1044,4 +1120,14 @@ public class MatriculasBean {
     public void setEstudiantesListado(List<Estudiantes> estudiantesListado) {
         this.estudiantesListado = estudiantesListado;
     }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+    
+    
 }

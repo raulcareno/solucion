@@ -59,8 +59,10 @@
                             <h:panelGrid columns="2">  
                                 <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
 
-                                    <h:outputText value="CEDULA IDENTIDAD: " />  
-                                    <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}"  id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;"/>  
+                                    <h:outputText value="CEDULA IDENTIDAD.: " />  
+                                    <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;">
+                                        <p:ajax event="blur" listener="#{matriculasBean.buscarCedula}"  update=":form:RegistroInformacion"  />
+                                    </p:inputText>  
 
                                     <h:outputText value="APELLIDO PATERNO: " />  
                                     <p:inputText value="#{matriculasBean.estudiante.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
@@ -126,6 +128,10 @@
                                     <p:graphicImage id="logoSubido32" style="border:2px;border-color: #919396"  width="100"
                                                     height="130" rendered="#{empty matriculasBean.foto1}"
                                                     value="#{pageContext.contextPath}/fotos/vacio.gif"
+                                                    cache="true" />
+                                    <p:graphicImage id="logoSubido555" style="border:2px;border-color: #919396"  width="100"
+                                                    height="130" 
+                                                    value="#{matriculasBean.imageAsStream}"
                                                     cache="true" />
                                     <h:outputText style="color:blue; font-color:blue" id="logoNombre" value="#{matriculasBean.foto1}"   />
                                     <p:commandLink update="fileSubir" onclick="modalSubir.show()"  id="versubirImagen">
