@@ -433,7 +433,16 @@ public class MatriculasBean {
 
     public void limpiar() {
         //object = new Matriculas(0);
-        inicializar();
+        object = new Matriculas(0);
+            estudiante = new Estudiantes("");    
+              pariente1 = new Parientes();
+             pariente2 = new Parientes();
+            pariente3 = new Parientes();
+        object.setIdEstudiantes(estudiante);
+        estudiante.setSexo("M");
+        //estudiante.setTipoIdentificacion("C");
+        foto1 = null;
+        clave2 = "";
     }
 
     /**

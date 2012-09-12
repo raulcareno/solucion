@@ -129,10 +129,6 @@
                                                     height="130" rendered="#{empty matriculasBean.foto1}"
                                                     value="#{pageContext.contextPath}/fotos/vacio.gif"
                                                     cache="true" />
-                                    <p:graphicImage id="logoSubido555" style="border:2px;border-color: #919396"  width="100"
-                                                    height="130" 
-                                                    value="#{matriculasBean.imageAsStream}"
-                                                    cache="true" />
                                     <h:outputText style="color:blue; font-color:blue" id="logoNombre" value="#{matriculasBean.foto1}"   />
                                     <p:commandLink update="fileSubir" onclick="modalSubir.show()"  id="versubirImagen">
                                         <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Imagen
@@ -276,8 +272,8 @@
                 </p:tabView>
 
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form:RegistroInformacion"   action="#{matriculasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                    <p:commandButton value="Limpiar"  id="limpiar" update=":form:RegistroInformacion" actionListener="#{matriculasBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
+                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                    <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
                     <p:splitButton  value="PDF" ajax="false"  actionListener="#{matriculasBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
                         <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
                         <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
