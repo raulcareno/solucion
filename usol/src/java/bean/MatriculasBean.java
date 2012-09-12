@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import jcinform.persistencia.Canton;
+import jcinform.persistencia.Carreras;
 import jcinform.persistencia.CategoriasSociales;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Materias;
@@ -87,6 +88,7 @@ public class MatriculasBean {
     protected Parientes pariente2;
     protected Parientes pariente3;
     public Pais paisSeleccionado = new Pais();
+    public Carreras carreraSeleccionado = new Carreras();
     public Provincia provinciaSeleccionado = new Provincia();
     public Canton cantonSeleccionado = new Canton();
     public Pais paisSeleccionado1 = new Pais();
@@ -250,10 +252,20 @@ public class MatriculasBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione el Lugar de Nacimiento, Canton", ""));
             return null;
         }
+        if (carreraSeleccionado.getIdCarreras().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado la CARRERA", "No ha seleccionado la CARRERA"));
+            return null;
+        }
+        if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
+            return null;
+        }
         if (object.getEstadoMat().equals("")) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
             return null;
         }
+        
+        
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
         estudiante.setFoto(imagen); 
@@ -312,6 +324,7 @@ public class MatriculasBean {
 
         object.setIdPeriodos(per);
         object.setIdCategoriasSociales(categoriaSeleccionado);
+        object.setIdCarreras(carreraSeleccionado); 
         if (object.getIdMatriculas().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -494,7 +507,20 @@ public class MatriculasBean {
         }
         return null;
     }
-
+        public void generarClaveyUsuario(){
+            try {
+                if(estudiante.getUsuario() == null){
+                    estudiante.setUsuario(estudiante.getNombre().substring(0,1).toLowerCase()+""+estudiante.getApellidoPaterno().toLowerCase());
+                    estudiante.setClave(estudiante.getUsuario().toLowerCase());
+                    clave2 = estudiante.getClave();
+                    
+                }
+                
+            } catch (Exception e) {
+                
+            }
+            
+        }
     public void buscarCedula() {
 
         String cedula = estudiante.getIdEstudiantes();
@@ -536,6 +562,8 @@ public class MatriculasBean {
                 + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
         if (matriculasListado.size() > 0) {
             object = matriculasListado.get(0);
+            carreraSeleccionado = object.getIdCarreras();
+            categoriaSeleccionado = object.getIdCategoriasSociales();
         }
     }
 
@@ -672,8 +700,7 @@ public class MatriculasBean {
         }
         return null;
     }
-
-    public List<SelectItem> getSelectedItemPerfiles() {
+   public List<SelectItem> getSelectedItemPerfiles() {
         try {
             List<Perfiles> divisionPoliticas = new ArrayList<Perfiles>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -688,6 +715,34 @@ public class MatriculasBean {
                 } else {
                     Perfiles obj = new Perfiles(0);
                     items.add(new SelectItem(obj, "NO EXISTEN PERFILES"));
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+/**
+ *  Obtiene el listado de carreras para llenar combos
+ */
+    public List<SelectItem> getSelectedItemCarreras() {
+        try {
+            List<Carreras> divisionPoliticas = new ArrayList<Carreras>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                divisionPoliticas = adm.query("Select o from Carreras as o "
+                        + " WHERE o.estado = 'A' order by o.nombre ");
+                if (divisionPoliticas.size() > 0) {
+                    Carreras objSel = new Carreras(0);
+                    items.add(new SelectItem(objSel, "Seleccione..."));
+                    for (Carreras obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj, obj.getNombre()));
+                    }
+                } else {
+                    Carreras obj = new Carreras(0);
+                    items.add(new SelectItem(obj, "NO EXISTEN CARRERAS"));
                 }
             }
             return items;
@@ -1136,6 +1191,14 @@ public class MatriculasBean {
 
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
+    }
+
+    public Carreras getCarreraSeleccionado() {
+        return carreraSeleccionado;
+    }
+
+    public void setCarreraSeleccionado(Carreras carreraSeleccionado) {
+        this.carreraSeleccionado = carreraSeleccionado;
     }
     
     
