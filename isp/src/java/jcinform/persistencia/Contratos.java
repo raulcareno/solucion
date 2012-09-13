@@ -94,6 +94,8 @@ public class Contratos implements Serializable {
     private String serie2;
     @Column(name = "serie3")
     private String serie3;
+      @Column(name = "tipoplan")
+    private String tipoplan;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -457,6 +459,14 @@ public class Contratos implements Serializable {
 
     public void setValorPago(BigDecimal valorPago) {
         this.valorPago = valorPago;
+    }
+
+    public String getTipoplan() {
+        return tipoplan;
+    }
+
+    public void setTipoplan(String tipoplan) {
+        this.tipoplan = tipoplan;
     }
     
     

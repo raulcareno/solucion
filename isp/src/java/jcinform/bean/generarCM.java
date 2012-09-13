@@ -236,34 +236,126 @@ public class generarCM {
                     }//bolivariano
 
                     writer.write("BZDET" // cobro
-                            + "\t" + contadorString //SECUENCIAL
-                            + "\t" + fac.getFactura().getContratos().getContrato() //NUMERO CONTRATO 
-                            + "\t" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // C, R, P
-                            + "\t" + cedula// cedula, ruc, pasaporte
-                            + "\t" + fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres() // nombres cliente
-                            + "\tCUE"// estatico
-                            + "\t001"// estatico
-                            + "\t34"// estatico
-                            + "\t" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "04" : "03")
-                            + "\t" + nocuenta
-                            + "\t1"// estatico moneda 1
-                            + "\t" + valor // valor adeudado
-                            + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) // descripcion nuestra
-                            + "\t" + fac.getFactura().getNumero().replace("FAC", "")
-                            + "\t" + base //base del iva
-                            + "\t" + espacios35// en blanco
-                            + "\t" + "          "// en blanco 10 espacios
-                            + "\t" + espacios50
-                            + "\t" + espacios50
-                            + "\t" + "                    "// en blanco 20 espacios
-                            + "\tREC"
-                            + "\t" + espacios31
-                            + "\t" + banco.getEmpresa()
-                            + "\t" + valor
-                            + "\t001"); //tipo de comprobante 001 igual a factura
+                            + "" + contadorString //SECUENCIAL
+                            + "" + fac.getFactura().getContratos().getContrato() //NUMERO CONTRATO 
+                            + "" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // C, R, P
+                            + "" + cedula// cedula, ruc, pasaporte
+                            + "" + fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres() // nombres cliente
+                            + "CUE"// estatico
+                            + "001"// estatico
+                            + "34"// estatico
+                            + "" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "04" : "03")
+                            + "" + nocuenta
+                            + "1"// estatico moneda 1
+                            + "" + valor // valor adeudado
+                            + "MENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) // descripcion nuestra
+                            + "" + fac.getFactura().getNumero().replace("FAC", "")
+                            + "" + base //base del iva
+                            + "" + espacios35// en blanco
+                            + "" + "          "// en blanco 10 espacios
+                            + "" + espacios50
+                            + "" + espacios50
+                            + "" + "                    "// en blanco 20 espacios
+                            + "REC"
+                            + "" + espacios31
+                            + "" + banco.getEmpresa()
+                            + "" + valor
+                            + "001"); //tipo de comprobante 001 igual a factura
 
                     writer.newLine(); // Esto es un salto de linea
                 }
+            }else if (banco.getNombre().toLowerCase().contains("pacifico")) {
+
+                for (Iterator it = datos.iterator(); it.hasNext();) {
+                    Row object = (Row) it.next();
+                    //Facturasenviadas fac = (Facturasenviadas) adm.buscarClave(new Integer(((Facturasenviadas)object.getValue()).getCodigo(), Facturasenviadas.class);
+                    Facturasenviadas fac = (Facturasenviadas) object.getValue();
+                    String factura = fac.getFactura().getNumero().replace("FAC", "-");
+                    factura = factura.substring(0, 3) + "-" + factura.substring(3, 6) + "-00" + factura.substring(7, factura.length());
+                    String valor = fac.getSaldo() + "";
+                    String base = (fac.getSaldo().divide(new BigDecimal(1.12), 2, RoundingMode.HALF_UP)) + "";//BASE IVA TOCARÍA SACAR LA BASE IVA DE LO QUE SE ENVIARÍA
+                    String noContrato = fac.getFactura().getContratos().getContrato()+"";
+                    String noEmpresa = sucursalEmp.getSucursal().getEmpresa().getRazonsocial()+"";
+                    String noCliente = fac.getFactura().getContratos().getClientes().getApellidos()+" "+fac.getFactura().getContratos().getClientes().getNombres()+"";
+                    if(noCliente.length()>30){
+                         noCliente = noCliente.substring(0,30);
+                    }else{
+                        noCliente = noCliente.replace(",", "").replace(".", "");
+                        while (noCliente.length() < 30) {
+                            noCliente = "." + noCliente;
+                        }
+                    }
+                    
+                    if(noEmpresa.length()>10){
+                         noEmpresa = noEmpresa.substring(0,10);
+                    }else{
+                        noEmpresa = noEmpresa.replace(",", "").replace(".", "");
+                        while (noEmpresa.length() < 10) {
+                            noEmpresa = "." + noEmpresa;
+                        }
+                    }
+                      try {
+
+                        noContrato = valor.replace(",", "").replace(".", "");
+                        while (noContrato.length() < 15) {
+                            noContrato = "0" + noContrato;
+                        }
+                    } catch (Exception e) {
+                    }
+                    try {
+
+                        valor = valor.replace(",", "").replace(".", "");
+                        while (valor.length() < 13) {
+                            valor = "0" + valor;
+                        }
+                    } catch (Exception e) {
+                    }
+                    try {
+
+                        base = base.replace(",", "").replace(".", "");
+                        while (base.length() < 10) {
+                            base = "0" + base;
+                        }
+                    } catch (Exception e) {
+                    }
+                    
+                    String identificacion = fac.getFactura().getContratos().getClientes().getIdentificacion().replace("-", "") ;
+                      try {
+
+                        identificacion = identificacion.replace(",", "").replace(".", "");
+                        while (identificacion.length() < 14) {
+                            identificacion = " " + identificacion;
+                        }
+                    } catch (Exception e) {
+                    }
+                    String telefono = fac.getFactura().getContratos().getClientes().getTelefono() ;
+                      try {
+                        telefono = telefono.replace(",", "").replace(".", "");
+                        while (telefono.length() < 10) {
+                            telefono = "0" + telefono;
+                        }
+                    } catch (Exception e) {
+                    }
+                    writer.write("5" // cobro
+                            + "OCP" 
+                            + "OC" 
+                            + "CTA" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "10" : "00") // tipo de cuenta aho, cTE
+                            + "" + fac.getFactura().getContratos().getNocuenta() // cuenta del banco
+                            + "" + valor // valor adeudado
+                            + noContrato // no de contrato/o numero de cliente
+                            + noEmpresa+ base 
+                            + "CU" // CU: DEBITO A CUENTAS RE: RECAUDADCIONES X CANALES ELECTRONICOS
+                            + "USD" // moneda
+                            + noCliente
+                            + "  "//dos espacios en blanco /no aplica
+                            + "  "//dos espacios en blanco /no aplica
+                            + fac.getFactura().getContratos().getClientes().getTipoidentificacion() //C R P
+                            + identificacion
+                            + telefono);
+
+                    writer.newLine(); // Esto es un salto de linea
+                }
+
             }
 //                writer.write("CO\tNoCONTRATO"+i+"\tUSD\tvalorcancelar01234567890"
 //                    + "\tCTA\tAHOCTE" //                    + "\tNO.CUENTA"

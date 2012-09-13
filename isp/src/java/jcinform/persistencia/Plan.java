@@ -53,6 +53,12 @@ public class Plan implements Serializable {
     private Integer dias;
     @Column(name = "bien")
     private Boolean bien;
+     @Column(name = "tipocliente")
+    private String tipocliente;
+      @Column(name = "nivelcomparticion")
+    private String nivelcomparticion;
+    
+            
     @OneToMany(mappedBy = "plan")
     private Collection<Comisiones> comisionesCollection;
     @OneToMany(mappedBy = "plan")
@@ -182,6 +188,23 @@ public class Plan implements Serializable {
     public void setContratosCollection(Collection<Contratos> contratosCollection) {
         this.contratosCollection = contratosCollection;
     }
+
+    public String getNivelcomparticion() {
+        return nivelcomparticion;
+    }
+
+    public void setNivelcomparticion(String nivelcomparticion) {
+        this.nivelcomparticion = nivelcomparticion;
+    }
+
+    public String getTipocliente() {
+        return tipocliente;
+    }
+
+    public void setTipocliente(String tipocliente) {
+        this.tipocliente = tipocliente;
+    }
+    
 
     @Override
     public int hashCode() {

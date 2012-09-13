@@ -119,6 +119,7 @@ void llenar(Contratos  equi2){
     descuento.value = equi.getDescuento();
     telefonoi.value = equi.getTelefono();
     telefono.value = equi.getTelefonof();
+    tipoplan.value = equi.getTipoplan();
     try{
         if(equi.getDiapago() == null){
             diapago.value  = "1";
@@ -275,6 +276,7 @@ void estado(Boolean estado,Boolean modificar){
     buscarE3.disabled = estado;
     buscarE.disabled = estado;
     fecha.disabled = estado;
+    tipoplan.disabled = estado;
     nocuenta.readonly = estado;
     tipocuenta.disabled = estado;
     diapago.disabled = estado;
@@ -434,6 +436,7 @@ Boolean validar(){
     equi.setTelefonof(telefono.value);
     equi.setClientes(new Clientes(new Integer(codigocli.value)));
     equi.setFecha(fecha.value);
+    equi.setTipoplan(tipoplan.value);
     equi.setFechainstalacion(fechainstalacion.value);
     equi.setAutorizado(autorizado.isChecked());
     equi.setUsuario(usuario.value);
@@ -2744,6 +2747,16 @@ void llamar(){
                                                       
                                                        
                                                        
+                                        </row>
+                                        <row visible="true">
+                                            <span style="float:right">   Tipo Plan(*):</span>
+                                         <combobox id="tipoplan" value="Medio Inalambrico">
+                                            <comboitem label="Cobre" value="Cobre" />
+                                            <comboitem label="Cable Coaxial" value="Cable Coaxial" />
+                                            <comboitem label="Fibra Óptica" value="Fibra Óptica" />
+                                            <comboitem label="Medio Inalambrico" value="Medio Inalambrico" />
+                                         </combobox>
+                                                           
                                         </row>
                                         <row visible="false">
                                             <span style="float:right">   IP(*):</span>

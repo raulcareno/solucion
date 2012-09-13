@@ -27,6 +27,8 @@ void llenar(Plan equi2){
     pvp4.value = equi.getPvp4();
     tipo.value = equi.getTipo(); //home, corporativo
     dias.value = equi.getDias();
+    nivelcomparticion.value = equi.getNivelcomparticion();//8:1 1:1
+    
 }
 void estado(Boolean estado,Boolean modificar){
     if(modificar){
@@ -37,6 +39,8 @@ void estado(Boolean estado,Boolean modificar){
     pvp4.readonly = estado;
     tipo.disabled = estado;
     dias.readonly = estado;
+ 
+    nivelcomparticion.readonly = estado;
  
 
 }
@@ -53,6 +57,8 @@ void estado(Boolean estado,Boolean modificar){
         equi.setDias(dias.value);
         equi.setPvp4(pvp4.value);
         equi.setSucursal(sucursalEmp.getSucursal());
+ 
+        equi.setNivelcomparticion(nivelcomparticion.value);
         
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
@@ -159,6 +165,10 @@ equi.setPerfil(g);
                     <doublebox id="pvp4"  maxlength="100" cols="40" readonly="true"   />
                 </row>
                 <row>
+                    <span style="float:right"> Nivel de Compartición:(*):</span>
+                         <textbox id="nivelcomparticion"  maxlength="100" cols="40" readonly="true"   />
+                </row>
+                <row>
                     <span style="float:right"> Tipo(*):</span>
                     <!--textbox id="tipo"  maxlength="100" cols="40" readonly="true"   /-->
                     <span>
@@ -167,6 +177,7 @@ equi.setPerfil(g);
                             <comboitem label="BASICO" />
                             <comboitem label="CORPORATIVO" />
                             <comboitem label="PREMIUM" />
+                            <comboitem label="CIBERCAFE" />
                         </combobox>
 
                         <span > No.Dias Plan(*):</span>
@@ -188,12 +199,12 @@ equi.setPerfil(g);
         </vbox>
 
     </groupbox>
-    <groupbox width="100%" mold="3d" >
+    <groupbox width="810px" mold="3d" >
 
         <caption label="Busquedas" />
         <vbox>
    
-            <hbox width="100%">
+            <hbox width="800px">
                 <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos"  rows="10" mold="paging" pageSize="15"   width="100%">
                     <listhead>
                         <listheader label="Código"/>
