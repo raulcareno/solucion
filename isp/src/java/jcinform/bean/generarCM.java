@@ -273,16 +273,28 @@ public class generarCM {
                     String factura = fac.getFactura().getNumero().replace("FAC", "-");
                     factura = factura.substring(0, 3) + "-" + factura.substring(3, 6) + "-00" + factura.substring(7, factura.length());
                     String valor = fac.getSaldo() + "";
+                    BigDecimal iva = fac.getSaldo().subtract((fac.getSaldo().divide(new BigDecimal(1.12), 2, RoundingMode.HALF_UP)));
                     String base = (fac.getSaldo().divide(new BigDecimal(1.12), 2, RoundingMode.HALF_UP)) + "";//BASE IVA TOCARÍA SACAR LA BASE IVA DE LO QUE SE ENVIARÍA
                     String noContrato = fac.getFactura().getContratos().getContrato()+"";
                     String noEmpresa = sucursalEmp.getSucursal().getEmpresa().getRazonsocial()+"";
                     String noCliente = fac.getFactura().getContratos().getClientes().getApellidos()+" "+fac.getFactura().getContratos().getClientes().getNombres()+"";
+                    String noCuenta = fac.getFactura().getContratos().getNocuenta();
+                    
                     if(noCliente.length()>30){
                          noCliente = noCliente.substring(0,30);
                     }else{
                         noCliente = noCliente.replace(",", "").replace(".", "");
                         while (noCliente.length() < 30) {
                             noCliente = "." + noCliente;
+                        }
+                    }
+                    
+                    if(noCuenta.length()>8){
+                         noCuenta = noCuenta.substring(0,8);
+                    }else{
+                        noCuenta = noCuenta.replace(",", "").replace(".", "").replace("-", "");
+                        while (noCuenta.length() < 8) {
+                            noCuenta = "0" + noCuenta;
                         }
                     }
                     
@@ -296,7 +308,7 @@ public class generarCM {
                     }
                       try {
 
-                        noContrato = valor.replace(",", "").replace(".", "");
+                        noContrato = noContrato.replace(",", "").replace(".", "");
                         while (noContrato.length() < 15) {
                             noContrato = "0" + noContrato;
                         }
@@ -305,7 +317,7 @@ public class generarCM {
                     try {
 
                         valor = valor.replace(",", "").replace(".", "");
-                        while (valor.length() < 13) {
+                        while (valor.length() < 15) {
                             valor = "0" + valor;
                         }
                     } catch (Exception e) {
@@ -315,6 +327,14 @@ public class generarCM {
                         base = base.replace(",", "").replace(".", "");
                         while (base.length() < 10) {
                             base = "0" + base;
+                        }
+                    } catch (Exception e) {
+                    }
+                    String iva1 = iva+"";
+                    try {
+                        iva1 = iva1.replace(",", "").replace(".", "");
+                        while (iva1.length() < 10) {
+                            iva1 = "0" + iva1;
                         }
                     } catch (Exception e) {
                     }
@@ -328,22 +348,24 @@ public class generarCM {
                         }
                     } catch (Exception e) {
                     }
-                    String telefono = fac.getFactura().getContratos().getClientes().getTelefono() ;
-                      try {
-                        telefono = telefono.replace(",", "").replace(".", "");
+                    String telefono = fac.getFactura().getContratos().getClientes().getTelefono().replace(",", " ").replace(".", " ").replace("/", " "); ;
+                      if(telefono.length()>10){
+                         telefono = telefono.substring(0,10);
+                    }else{
+                       telefono = telefono.replace(",", "").replace(".", "");
                         while (telefono.length() < 10) {
                             telefono = "0" + telefono;
                         }
-                    } catch (Exception e) {
                     }
+                       
                     writer.write("5" // cobro
                             + "OCP" 
                             + "OC" 
-                            + "CTA" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "10" : "00") // tipo de cuenta aho, cTE
-                            + "" + fac.getFactura().getContratos().getNocuenta() // cuenta del banco
+                            + "" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "10" : "00") // tipo de cuenta aho, cTE
+                            + "" + noCuenta // cuenta del banco
                             + "" + valor // valor adeudado
                             + noContrato // no de contrato/o numero de cliente
-                            + noEmpresa+ base 
+                            + noEmpresa+ iva1 
                             + "CU" // CU: DEBITO A CUENTAS RE: RECAUDADCIONES X CANALES ELECTRONICOS
                             + "USD" // moneda
                             + noCliente
