@@ -1,9 +1,5 @@
-
-<window   title="Control de Empleados Año Lectivo"   border="normal"
-    >
+<window   title="Control de Empleados Año Lectivo"   border="normal">
         <zscript><![CDATA[
-
-
   import jcinform.persistencia.Global;
   import bean.EventDAO; 
   import java.util.ArrayList; 
@@ -21,6 +17,12 @@
  List periodos = adm.query("Select o from Periodo as o");
   Periodo per = new Periodo(-1);
   per.setDescripcion("[Seleccione]");
+  Institucion inst = new Institucion();
+  Global g = new Global();
+  g.setDescripcion("");
+  
+  per.setSeccion(g);
+  per.setInstitucion(inst);
   periodos.add(0,per);
 
 //FUNCIONES
