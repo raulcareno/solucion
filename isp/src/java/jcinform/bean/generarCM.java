@@ -160,10 +160,12 @@ public class generarCM {
                 }
 
             } else if (banco.getNombre().toLowerCase().contains("bolivariano")) {
-                int contador = 1;
+                int contador = 0;
                 String contadorString = "";
                 for (Iterator it = datos.iterator(); it.hasNext();) {
+                    
                     Row object = (Row) it.next();
+                    contador++;
                     //Facturasenviadas fac = (Facturasenviadas) adm.buscarClave(new Integer(((Facturasenviadas)object.getValue()).getCodigo(), Facturasenviadas.class);
                     Facturasenviadas fac = (Facturasenviadas) object.getValue();
                     String valor = fac.getSaldo() + "";
@@ -179,15 +181,16 @@ public class generarCM {
                     try {
 
                         base = base.replace(",", "").replace(".", "");
-                        while (base.length() < 11) {
+                        while (base.length() < 15) {
                             base = "0" + base;
                         }
                     } catch (Exception e) {
+                        System.out.println(""+e);
                     }//bolivariano
                     try {
                         contadorString = contador + "";
-                        while (contadorString.length() < 2) {
-                            contadorString = "0" + contador;
+                        while (contadorString.length() < 6) {
+                            contadorString = "0" + contadorString;
                         }
                     } catch (Exception e) {
                     }
@@ -196,7 +199,7 @@ public class generarCM {
                     try {
 
                         while (cedula.length() < 14) {
-                            cedula = "0" + cedula;
+                            cedula = cedula+" ";
                         }
                     } catch (Exception e) {
                     }
@@ -205,7 +208,7 @@ public class generarCM {
                     try {
 
                         while (nocuenta.length() < 20) {
-                            nocuenta = "0" + nocuenta;
+                            nocuenta = nocuenta+" ";
                         }
                     } catch (Exception e) {
                     }//bolivariano
@@ -234,23 +237,58 @@ public class generarCM {
                         }
                     } catch (Exception e) {
                     }//bolivariano
+                    
+                     String noContrato = fac.getFactura().getContratos().getContrato()+"";
+                    try {
+
+                        while (noContrato.length() < 18) {
+                            noContrato = "0" + noContrato;
+                        }
+                    } catch (Exception e) {
+                    }//nocontrato
+                    
+                   String nombreCliente = fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres();
+                      try {
+                        if(nombreCliente.length()>60){
+                                nombreCliente = nombreCliente.substring(0,60);
+                        }else{
+                                while (nombreCliente.length() < 60) {
+                                    nombreCliente = nombreCliente+" ";
+                                }
+                        }
+    
+                    } catch (Exception e) {
+                    }//nocontrato
+                      
+                      String mensualidad = "MENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) ;
+                       try {
+                        if(mensualidad.length()>60){
+                                mensualidad = mensualidad.substring(0,60);
+                        }else{
+                                while (mensualidad.length() < 60) {
+                                    mensualidad =mensualidad+" ";
+                                }
+                        }
+    
+                    } catch (Exception e) {
+                    }//nocontrato
 
                     writer.write("BZDET" // cobro
                             + "" + contadorString //SECUENCIAL
-                            + "" + fac.getFactura().getContratos().getContrato() //NUMERO CONTRATO 
+                            + "" + noContrato //NUMERO CONTRATO 
                             + "" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // C, R, P
                             + "" + cedula// cedula, ruc, pasaporte
-                            + "" + fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres() // nombres cliente
+                            + "" + nombreCliente // nombres cliente
                             + "CUE"// estatico
                             + "001"// estatico
                             + "34"// estatico
                             + "" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "04" : "03")
                             + "" + nocuenta
                             + "1"// estatico moneda 1
-                            + "" + valor // valor adeudado
-                            + "MENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) // descripcion nuestra
-                            + "" + fac.getFactura().getNumero().replace("FAC", "")
-                            + "" + base //base del iva
+                            + "" + valor // valor adeudado /15
+                            + mensualidad // descripcion nuestra /60
+                            + "" + fac.getFactura().getNumero().replace("FAC", "") //15
+                            + "" + base //base del iva  /15
                             + "" + espacios35// en blanco
                             + "" + "          "// en blanco 10 espacios
                             + "" + espacios50
