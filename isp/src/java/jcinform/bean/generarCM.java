@@ -216,7 +216,7 @@ public class generarCM {
                     String espacios35 = " ";
                     try {
 
-                        while (espacios35.length() < 15) {
+                        while (espacios35.length() < 35) {
                             espacios35 = " " + espacios35;
                         }
                     } catch (Exception e) {
@@ -226,6 +226,22 @@ public class generarCM {
 
                         while (espacios50.length() < 50) {
                             espacios50 = " " + espacios50;
+                        }
+                    } catch (Exception e) {
+                    }//bolivariano
+                    String espacios20 = " ";
+                    try {
+
+                        while (espacios20.length() < 20) {
+                            espacios20 = " " + espacios20;
+                        }
+                    } catch (Exception e) {
+                    }//bolivariano
+                        String espacios10 = " ";
+                    try {
+
+                        while (espacios10.length() < 10) {
+                            espacios10 = " " + espacios10;
                         }
                     } catch (Exception e) {
                     }//bolivariano
@@ -272,7 +288,12 @@ public class generarCM {
     
                     } catch (Exception e) {
                     }//nocontrato
-
+                    
+                    String completoFactura = fac.getFactura().getNumero().substring(0,3)+"-"+
+                                                fac.getFactura().getNumero().substring(3,6)+"-"+
+                                                fac.getFactura().getNumero().substring(6).replace("FAC", "")+"";
+                    System.out.println("FACTURA: "+fac.getFactura().getNumero().replace("FAC", ""));
+                    System.out.println("FACTURA: "+completoFactura);
                     writer.write("BZDET" // cobro
                             + "" + contadorString //SECUENCIAL
                             + "" + noContrato //NUMERO CONTRATO 
@@ -287,13 +308,13 @@ public class generarCM {
                             + "1"// estatico moneda 1
                             + "" + valor // valor adeudado /15
                             + mensualidad // descripcion nuestra /60
-                            + "" + fac.getFactura().getNumero().replace("FAC", "") //15
+                            + "" + completoFactura//15
                             + "" + base //base del iva  /15
                             + "" + espacios35// en blanco
-                            + "" + "          "// en blanco 10 espacios
+                            + "" + espacios10// en blanco 10 espacios
                             + "" + espacios50
                             + "" + espacios50
-                            + "" + "                    "// en blanco 20 espacios
+                            + "" + espacios20// en blanco 20 espacios
                             + "REC"
                             + "" + espacios31
                             + "" + banco.getEmpresa()
