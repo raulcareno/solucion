@@ -1520,6 +1520,7 @@ void verificarCedula(String valor){
                              Date d = vec.getFecha();
                              row.appendChild(new Label(d1.format(d)+""));
                              row.appendChild(new Label(vec.getEstado()+""));
+                             row.appendChild(new Label(vec.getEmpleados()+""));
                              filasCortes.appendChild(row);
                             
                   }
@@ -3110,6 +3111,7 @@ void llamar(){
                         <columns>
                             <column  label="Fecha"/>
                             <column   label="Acción Realizada"/>
+                            <column   label="Usuario"/>
                         </columns>
                         <rows id="filasCortes">
                             
