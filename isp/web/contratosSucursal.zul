@@ -374,6 +374,7 @@ Boolean validar(){
             empa.setTelefono(telefono.value);
             empa.setEmail(email.value);
             empa.setSucursal(sucursalEmp.getSucursal());
+            empa.setTipoidentificacion(tipoIdentificacion.selectedItem.value);
             adm.guardar(empa);
             codigocli.value = empa.getCodigo()+"";
      }else{
@@ -386,6 +387,7 @@ Boolean validar(){
             empa.setTelefono(telefono.value);
             empa.setEmail(email.value);
             empa.setSucursal(sucursalEmp.getSucursal());
+              empa.setTipoidentificacion(tipoIdentificacion.selectedItem.value);
             adm.actualizar(empa);
             
      }
@@ -447,6 +449,13 @@ Boolean validar(){
             equi.setEmpleados(new Empleados(new Integer(registradoU.value)));//REGISTRADOR
              adm.actualizar(equi);
                 permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
+                 Historialcortes historia = new Historialcortes();
+                historia.setCodigo(adm.getNuevaClave("Historialcortes","codigo"));
+                historia.setFecha(adm.Date());
+                historia.setEstado(estadoContrato.selectedItem.value);
+                historia.setContratos(equi);
+                historia.setEmpleados(usuarioActual);
+                adm.guardar(historia);
          }else{
           //EN CASO DE Q VAYA A ACTUALIAR
              if(validarContrato(numerocontrato.value)){
@@ -460,6 +469,8 @@ Boolean validar(){
                 adm.guardar(equi);
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
+         
+         
              
           Messagebox.show("Contrato Registrado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
@@ -1430,6 +1441,11 @@ void llamar(){
                                             <span>
                                                 <textbox id="identificacion2" onBlur="buscarCedula(self.value)" readonly="true"   cols="13" />
                                                 <textbox id="codigocli" style="background:white;border:0px;font-size:10px" cols="1" disabled="true" />
+                                                 <radiogroup id="tipoIdentificacion" >
+                                                    <radio disabled="true" id="cedula" value="C" label="Ced." style="font-weight:bold2" />
+                                                    <radio disabled="true"  id="ruc"  value="R"  label="RUC" style="font-weight:bold2" />
+                                                    <radio disabled="true"  id="pasaporte"  value="P"  label="Pass." style="font-weight:bold2" />
+                                                </radiogroup>
                                                             <!--button label="Nuevo Cliente" image="/images/clientes.png" onClick='identificacion.value= ""; direccion.value = "";  identificacion2.value = ""; telefono.value = ""; email.value ="";codigocli.value = "0"; combo.value = ""; apellidos.value = ""; nombres.value = ""; bcliente.visible =false; identificacion.readonly = false; direccion.readonly = false;  identificacion2.readonly = false; telefono.readonly = false; email.readonly = false;codigocli.value = "0"; apellidos.readonly = false; nombres.readonly = false;'/-->
                                             </span>
                                                         
@@ -1674,7 +1690,7 @@ void llamar(){
                                                     <radio disabled="true" id="cbr" value="3" onCheck="bd22.disabled=true; tipocuenta.disabled= true;nocuenta.disabled = true; diapago.disabled = true;" label="Domicilio"/>
                                                     <radio disabled="true" id="deb"   value="2" onCheck="bd22.disabled=false;tipocuenta.disabled= false;nocuenta.disabled = false;diapago.disabled = false;  " label="Débito"/>
                                                 </radiogroup>
-                                                <span>
+                                                          <span>
                                                     <label style="font-weight:bold2" value="Banco:" />
                                                 </span>
                                                 <bandbox disabled="true" readonly="true" width="100px"  id="bd22">

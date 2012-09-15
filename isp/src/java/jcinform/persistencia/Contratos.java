@@ -54,7 +54,7 @@ public class Contratos implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecha = new Date();
     @Column(name = "formapago")
-    private Integer formapago;
+    private Integer formapago=1;
     @Column(name = "nocuenta")
     private String nocuenta;
     @Column(name = "tipocuenta")

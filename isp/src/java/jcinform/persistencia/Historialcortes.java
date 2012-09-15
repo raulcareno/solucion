@@ -30,6 +30,10 @@ public class Historialcortes implements Serializable {
     @JoinColumn(name = "contratos", referencedColumnName = "codigo")
     @ManyToOne
     private Contratos contratos;
+    
+     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
+    @ManyToOne
+    private Empleados empleados;
     public Historialcortes() {
     }
 
@@ -67,6 +71,14 @@ public class Historialcortes implements Serializable {
 
     public void setContratos(Contratos contratos) {
         this.contratos = contratos;
+    }
+
+    public Empleados getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Empleados empleados) {
+        this.empleados = empleados;
     }
 
     

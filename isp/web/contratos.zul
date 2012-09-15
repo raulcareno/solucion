@@ -54,7 +54,7 @@ void llenarCliente(Clientes cli){
            codigocli.value = cli.getCodigo()+"";
             email.value = cli.getEmail()+"";
             apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
-            String tipoIde = cli.getTipoidentificacion();
+            String tipoIde = cli.getTipoidentificacion()+"";
        if(tipoIde.equals("C")){
             cedula.selected = true;
         }else if(tipoIde.equals("R")){
@@ -104,7 +104,7 @@ void llenar(Contratos  equi2){
         }
        }
     }catch(Exception ecliente){
-        
+        System.out.println("error en llenar cliente: "+ecliente);
     }
     fecha.value = equi.getFecha();
     fechainstalacion.value = equi.getFechainstalacion();
@@ -130,7 +130,7 @@ void llenar(Contratos  equi2){
          diapago.value  = equi.getDiapago()+"";
     }
     
-        
+
         clave.value = equi.getClave();
        if(equi.getEstado().equals("Activo")){
             eactivo.selected = true;
@@ -150,7 +150,7 @@ void llenar(Contratos  equi2){
         codigoemp.value = "";
         combov.value ="";
     }
-    
+            
     numerocontrato.value = equi.getContrato();
        if(equi.getPlan() != null){
              try{
@@ -171,7 +171,7 @@ void llenar(Contratos  equi2){
                bdRadio.value = "";
                 radio.setSelectedItem(null);
     }
- 
+
  if(equi.getSector() != null){   
         try{
                               for (int i = 0; i <= cantones.getItems().size(); i++) {
@@ -203,7 +203,7 @@ void llenar(Contratos  equi2){
                             }
                             
                              }catch(Exception err){System.out.println("ERROR no tiene Radios asignados COMBO radio "+err);}
-                    }       
+                    }    
     if(equi.getRadios() != null){
     try{
                       buscarNodos(equi.getRadios().getNodos().getSector().getCanton().getCodigo());
@@ -237,7 +237,7 @@ void llenar(Contratos  equi2){
        bdRadio.value = "";
         radio.setSelectedItem(null);
     }
-    
+ 
        if(equi.getBancos() != null){
  
         try{
@@ -265,8 +265,8 @@ void llenar(Contratos  equi2){
      registrado.value = usuarioActual.getApellidos()+" "+usuarioActual.getNombres();
      registradoU.value = usuarioActual.getCodigo()+"";
      }  
-     buscarSeries(equi);
-    
+      buscarSeries(equi);
+
 }
 void estado(Boolean estado,Boolean modificar){
     
@@ -496,6 +496,7 @@ Boolean validar(){
                 historia.setFecha(adm.Date());
                 historia.setEstado(estadoContrato.selectedItem.value);
                 historia.setContratos(equi);
+                historia.setEmpleados(usuarioActual);
                 adm.guardar(historia);
          }else{
           //EN CASO DE Q VAYA A ACTUALIAR
@@ -1376,8 +1377,8 @@ void verificarCedula(String valor){
                                        row.setValue(dos);
                                         row.appendChild(new Label(dos+""));
                                     }else if(dos instanceof Date){
-                                        SimpleDateFormat d1 = new SimpleDateFormat("MMMM-yyyy");
-                                        SimpleDateFormat d2 = new SimpleDateFormat("dd-MMMM-yyyy");
+                                        SimpleDateFormat d1 = new SimpleDateFormat("MMM-yyyy");
+                                        SimpleDateFormat d2 = new SimpleDateFormat("dd-MMM-yyyy");
                                         Date d = (Date)dos;
                                         if(j>2)
                                             row.appendChild(new Label(d2.format(d)+""));
@@ -1387,6 +1388,14 @@ void verificarCedula(String valor){
                                         row.appendChild(new Label(dos+""));
                                     }
                             }
+                           List dsctos =  adm.query("Select o from Descuentos as o " + 
+                           " where o.factura.codigo = '"+vec.get(0)+"' and o.aplicado = false ");
+                           if(dsctos.size()>0){
+                                row.appendChild(new Label(dsctos.get(0).getValor()+""));
+                           }else{
+                                row.appendChild(new Label("-"));
+                           }
+                           
                             Span s = new Span();
                             Button aButton = null;
                             aButton = new Button("");//"Cobrar"
@@ -3018,6 +3027,7 @@ void llamar(){
                             <column   label="Ref."/>
                             <column   label="No.Factura"/>
                             <column   label="Emitida"/>
+                            <column   width="50px"  label="Dsctos"/>
                             <column  width="150px"  label="Acciones"/>
                         </columns>
                         <rows id="filasFac">
