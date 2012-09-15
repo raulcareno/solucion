@@ -33,7 +33,7 @@
             }
 
 void ingresar(Menuitem item,String pantalla ){
-                if(!verificar("Ingresar",pantalla) && !pantalla.equals("Respaldar")){
+                if(!verificar("Ingresar",pantalla) && (!pantalla.equals("Respaldar")  || !pantalla.equals("Cambiar Clave"))){
                         Messagebox.show("No tiene permisos para ingresar a ésta pantalla...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                         return;
                 }
@@ -61,7 +61,32 @@ void ingresar(Menuitem item,String pantalla ){
 
                         }
 }
+void ingresar22(Menuitem item,String pantalla ){
+               
+            try{
 
+
+                        if(buscar("c" + (String)item.getId())){
+                                   Tab newtb= new Tab(""+item.label);
+                                    newtb.setSelected(true);
+                                    newtb.setClosable(true);
+                                    newtb.setId("c"+item.id);
+                                    newtb.setImage(""+item.image);
+                                    newtb.setParent(tbs);
+
+                                    Tabpanel newtpl = new Tabpanel();
+                                    Iframe f = new Iframe(item.value);
+                                    f.setWidth("100%");
+                                    f.setHeight("100%");
+                                    newtpl.appendChild(f);
+                                    newtpl.setParent(tps);
+                        }
+                        }catch(Exception e){
+                        alert(""+e);
+                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                        }
+}
                public Boolean buscar(String id){
                     List tabes = tbs.getChildren();
                     for (Iterator it = tabes.iterator(); it.hasNext();) {
@@ -149,7 +174,7 @@ void ingresar(Menuitem item,String pantalla ){
                                     <menuitem image="/images/soporte.png" value="/soporte.zul"  label="Soporte" onClick='ingresar(self,"Soporte")' />
                                      
                                     <menuseparator />
-                                     
+                                    <menuitem value="/cambioClave.zul"   image="/images/key.png"  label="Cambiar Clave"  onClick='ingresar22(self,"CambiarClave")' />
                                     <menuitem value="/reporteCobrosSector.zul"  image="/images/reportes.png" label="Reportes" onClick='ingresar(self,"Reportes")' />
                                     <menuitem label="Salir" image="/images/exit.gif"  onClick="salir()" />
  
