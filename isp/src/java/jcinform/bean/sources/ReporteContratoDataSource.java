@@ -53,6 +53,16 @@ public class ReporteContratoDataSource implements JRDataSource {
                 valor = nodo.getClientes().getIdentificacion();
             } else if ("tipoidentificacion".equals(fieldName)) {
                 valor = nodo.getClientes().getTipoidentificacion();
+            } else if ("tipoenlace".equals(fieldName)) {
+                valor = nodo.getTipoplan();
+            } else if ("tipoplan".equals(fieldName)) {
+                valor = nodo.getPlan().getTipo();
+            } else if ("upload".equals(fieldName)) {
+                valor = nodo.getPlan().getPvp4()+"";
+            } else if ("download".equals(fieldName)) {
+                valor = nodo.getPlan().getPvp4()+"";
+            } else if ("nivelcomparticion".equals(fieldName)) {
+                valor =nodo.getPlan().getNivelcomparticion()+"";
             } else if ("direccion".equals(fieldName)) {
                 valor = nodo.getClientes().getDireccion();
             } else if ("telefono".equals(fieldName)) {

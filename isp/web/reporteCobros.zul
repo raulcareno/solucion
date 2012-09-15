@@ -300,14 +300,23 @@ List nodos = adm.query("Select o from Nodos as o " +
                    datasource = reportes.facturasComisiones1(listEmpleados,desde.value, hasta.value);
                     report.setSrc(directorioReportes+"listacontratosComision.jasper");
             }else  if(tipo.equals("COMISIONES2")){
-            Set items2 = planList.getSelectedItems();
-                    List listPlanes = new ArrayList(items2);
-                    if(listPlanes.size()<=0){
-                    alert("Seleccione al menos un plan");
-                    return;
-                    }
-                 datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value,listPlanes);
-                 report.setSrc(directorioReportes+"listacontratosComision2.jasper");
+                Set items2 = planList.getSelectedItems();
+                        List listPlanes = new ArrayList(items2);
+                        if(listPlanes.size()<=0){
+                        alert("Seleccione al menos un plan");
+                        return;
+                        }
+                    datasource = reportes.facturasComision(empleadosList.selectedItem.value, desde.value, hasta.value, estadoContrato.selectedItem.value,listPlanes);
+                    report.setSrc(directorioReportes+"listacontratosComision2.jasper");
+            }else  if(tipo.equals("SUPERTEL")){
+                Set items2 = planList.getSelectedItems();
+                        List listPlanes = new ArrayList(items2);
+                        if(listPlanes.size()<=0){
+                        alert("Seleccione al menos un plan");
+                        return;
+                        }
+                    datasource = reportes.supertel(desde.value, hasta.value, estadoContrato.selectedItem.value,listPlanes);
+                    report.setSrc(directorioReportes+"listasupertel.jasper");
             }else if(tipo.equals("-1")){
                    alert("No ha seleccionado ningún reporte...!");
                     return;
@@ -458,6 +467,14 @@ void campos(String valor){
             titulo.value= "Contratos por Empleado";
             filafechas.visible=true;
             filaempleados.visible=true;
+            desde.value = adm.Date();
+            hasta.value = adm.Date();
+            filaestado.visible=true;
+            filaplan.visible=true;
+        }else if(valor.equals("SUPERTEL")){
+            titulo.value= "SUPERTEL";
+            filafechas.visible=true;
+            //filaempleados.visible=true;
             desde.value = adm.Date();
             hasta.value = adm.Date();
             filaestado.visible=true;
@@ -621,6 +638,7 @@ void campos(String valor){
                                     <listitem  disabled="true" id="linea99" label="========EMPLEADOS=================" value="linea2" />
                                     <listitem id="COMISIONES1" label="Contratos vendidos por empleado" value="COMISIONES1" />
                                     <listitem id="COMISIONES2" label="Contratos vendidos por empleado - estados " value="COMISIONES2" />
+                                    <listitem id="SUPERTEL" label="Contratos SUPERTEL" value="SUPERTEL" />
                                     <listitem  disabled="true" id="linea299" label="========SOPORTE TÉCNICO=================" value="linea299" />
                                     <listitem id="HISTORIA" label="Historia Técnica x Cliente" value="HISTORIA" />
                                     <listitem id="HISTORIA2" label="Historia Técnica x Usuario" value="HISTORIA2" />
