@@ -303,23 +303,55 @@
                             <f:selectItem itemLabel="INFORMAL" itemValue="INFORMAL" />  
                         </h:selectOneMenu>  
                         <h:outputText value="MONTO DE INGRESOS: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.montoIngresos}" id="MontoIngresos"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:selectOneMenu value="#{matriculasBean.estudiante.montoIngresos}" id="MontoIngresos">  
+                            <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
+                        </h:selectOneMenu>  
                         <h:outputText value="OTROS INGRESOS: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.otrosIngresos}" id="OtrosIngresos"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                          <h:selectOneMenu value="#{matriculasBean.estudiante.otrosIngresos}" id="OtrosIngresos">  
+                            <f:selectItem itemLabel="NO TIENE" itemValue="" />  
+                            <f:selectItem itemLabel="ARRIENDOS" itemValue="ARRIENDOS" />  
+                            <f:selectItem itemLabel="PENSIONES JUBILARES" itemValue="PENSIONES JUBILARES" />   
+                            <f:selectItem itemLabel="REMESAS DEL EXTERIOR" itemValue="REMESAS DEL EXTERIOR" />  
+                            <f:selectItem itemLabel="OTROS INGRESOS" itemValue="OTROS INGRESOS" />  
+                            <f:selectItem itemLabel="PENSIONES JUDICIALES" itemValue="PENSIONES JUDICIALES" />  
+                        </h:selectOneMenu> 
                         <h:outputText value="MONTO OTROS INGRESOS: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.montoOtrosIngresos}" id="MontoOtrosIngresos"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:selectOneMenu value="#{matriculasBean.estudiante.montoOtrosIngresos}" id="MontoOtrosIngresos">  
+                            <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
+                        </h:selectOneMenu> 
                         <h:outputText value="MONTO DE EGRESOS: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.montoEgresos}" id="MontoEgresos"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:selectOneMenu value="#{matriculasBean.estudiante.montoEgresos}" id="MontoEgresos">  
+                            <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
+                        </h:selectOneMenu> 
                         <h:outputText value="PRESTAMOS: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.prestamos}" id="Prestamos"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                        <h:outputText value="TARJETAS DE CRÉDITO: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.tarjetasCredito}" id="TarjetaCredito"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:selectOneMenu  value="#{matriculasBean.estudiante.prestamos}" id="Prestamos"  >  
+                            <f:selectItem itemLabel="NO TIENE" itemValue="" />  
+                            <f:selectItem itemLabel="HIPOTECARIOS" itemValue="HIPOTECARIOS" />  
+                            <f:selectItem itemLabel="PRENDARIOS" itemValue="PRENDARIOS" />  
+                            <f:selectItem itemLabel="IECE" itemValue="IECE" />   
+                            <f:selectItem itemLabel="T/C" itemValue="T/C" />  
+                            <f:selectItem itemLabel="OTROS" itemValue="OTROS" />  
+                        </h:selectOneMenu> 
+                        <h:outputText value="POSEE TARJETAS DE CRÉDITO: " />  
+                        <p:selectBooleanCheckbox value="#{matriculasBean.estudiante.tarjetasCredito}" id="TarjetaCredito"    style="font-weight:bold;"/>  
                         <h:outputText value="POSEE VEHÍCULO: " />  
                         <p:selectBooleanCheckbox value="#{matriculasBean.estudiante.vehiculo}" id="PoseeVehiculo"  style="font-weight:bold;"/>  
                         <h:outputText value="COMO PAGA: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.formaPago}" id="ComoPaga"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                         <h:selectOneMenu  value="#{matriculasBean.estudiante.formaPago}" id="ComoPaga"   >  
+                            <f:selectItem itemLabel="NO TIENE" itemValue="" />  
+                            <f:selectItem itemLabel="EFECTIVO-CHEQUE" itemValue="EFECTIVO-CHEQUE" />  
+                            <f:selectItem itemLabel="FINANCIAMIENTO UCT" itemValue="FINANCIAMIENTO UCT" />  
+                            <f:selectItem itemLabel="IECE" itemValue="IECE" />   
+                            <f:selectItem itemLabel="T/C" itemValue="T/C" />  
+                        </h:selectOneMenu> 
                         <h:outputText value="FINANCIAMIENTO: " />  
-                        <p:inputText value="#{matriculasBean.estudiante.quienFinancia}" id="Financiamiento"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:selectOneMenu  value="#{matriculasBean.estudiante.quienFinancia}" id="Financiamiento"   >  
+                            <f:selectItem itemLabel="SIN INFORMACION" itemValue="" />  
+                            <f:selectItem itemLabel="PADRES" itemValue="PADRES" />  
+                            <f:selectItem itemLabel="HERMANOS" itemValue="HERMANOS" />  
+                            <f:selectItem itemLabel="FAMILIARES CERCANOS" itemValue="FAMILIARES CERCANOS" />   
+                            <f:selectItem itemLabel="MISMA PERSONA" itemValue="MISMA PERSONA" />  
+                        </h:selectOneMenu> 
 
                     </h:panelGrid>
                 </p:fieldset>

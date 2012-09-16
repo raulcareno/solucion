@@ -42,6 +42,7 @@ import jcinform.persistencia.Parientes;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Provincia;
+import jcinform.persistencia.RangosIngresos;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
@@ -743,6 +744,31 @@ public class MatriculasBean {
                 } else {
                     Carreras obj = new Carreras(0);
                     items.add(new SelectItem(obj, "NO EXISTEN CARRERAS"));
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+    public List<SelectItem> getSelectedItemIngresos() {
+        try {
+            List<RangosIngresos> divisionPoliticas = new ArrayList<RangosIngresos>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                divisionPoliticas = adm.query("Select o from RangosIngresos as o "
+                        + "  order by o.rangoInicial ");
+                if (divisionPoliticas.size() > 0) {
+                    //RangosIngresos objSel = new RangosIngresos(0);
+                    items.add(new SelectItem("-", "Seleccione..."));
+                    for (RangosIngresos obj : divisionPoliticas) {
+                        items.add(new SelectItem( obj.getRangoInicial()+"-"+obj.getRangoFinal(), obj.getRangoInicial()+"-"+obj.getRangoFinal()));
+                    }
+                } else {
+                    //RangosIngresos obj = new RangosIngresos(0);
+                    items.add(new SelectItem("-", "NO EXISTEN CARRERAS"));
                 }
             }
             return items;
