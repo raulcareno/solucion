@@ -580,6 +580,16 @@ void recalcular(){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"cuadrofinal1.jasper");
             }else if(tipo.equals("CNF3")){
+            
+                    List optativasList = adm.query("Select o from MateriaProfesor as o " + 
+                                                   " where o.curso.codigocur = '"+curs.getSelectedItem().getValue().getCodigocur()+"' " + 
+                                                   " and o.cuantitativa = false and o.ministerio =  true and o.opcional = true ");
+                            for(Iterator it = optativasList.iterator(); it.hasNext();) {
+                                    MateriaProfesor object = (MateriaProfesor)it.next();
+                                    parametros.put("optativa1",object.getMateria().getDescripcion()+"");             
+                                    parametros.put("profesorOptativa1",object.getEmpleado()+"");             
+                            }
+                    parametros.put("profesorDisciplina", curs.getSelectedItem().getValue().getInspector());
                     datasource = noti.cuadrofinal3(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"cuadrofinal2.jasper");
             }else if(tipo.equals("CNF4")){
