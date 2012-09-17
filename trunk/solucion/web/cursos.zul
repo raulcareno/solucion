@@ -345,7 +345,7 @@ void cargarPar(Global g){
                                     <listbox id="curs" width="420px"
                                              onSelect="inspector.value=self.selectedItem.label;inspector.closeDropdown();">
                                         <listitem forEach="${empleados}" value="${each}">
-                                            <listcell label="${each.tratamiento} ${each.nombres} ${each.apellidos}" />
+                                            <listcell label="${each.apellidos} ${each.nombres} " />
                                         </listitem>
                                     </listbox>
                                 </vbox>

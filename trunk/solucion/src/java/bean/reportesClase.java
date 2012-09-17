@@ -2170,11 +2170,11 @@ public class reportesClase {
         String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
-                + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
+                + "and notas.promedia = true and notas.disciplina = false  and materia_profesor.cuantitativa = true  and materia_profesor.seimprime = true  "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
-        System.out.println("cuadro final: " + q);
+//        System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
         int cont = 0;
@@ -2210,7 +2210,8 @@ public class reportesClase {
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     if (mprofesor.getCuantitativa() == false) {
-                        nota.setNota(equivalencia(dos, equivalencias));
+//                        nota.setNota(equivalencia(dos, equivalencias));
+//                        nota.setNota("APROBADO");
                     } else {
                         nota.setNota(val.toString());
                         if (val == 0.0) {
@@ -2263,7 +2264,7 @@ public class reportesClase {
                                     + "where o." + notanotas.getNota() + " <=0  "
                                     + "and o.matricula.codigomat = '" + nota.getMatricula().getCodigomat() + "' "
                                     + "and o.materia.codigo = '" + nota.getMateria().getCodigo() + "' "
-                                    + "and o.promedia = true and o.disciplina = false  "
+                                    + "and o.promedia = true and o.disciplina = false"
                                     + " ");
                             if (notaBus.size() > 0) {
                                 nota.setNota("SN");
@@ -2302,7 +2303,7 @@ public class reportesClase {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
                     try {
-                        System.out.println("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+//                        System.out.println("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                         valor = adm.queryNativo("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                         if (valor.size() > 0) {
                             sumatoria = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
