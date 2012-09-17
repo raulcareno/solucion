@@ -2210,7 +2210,7 @@ public class reportesClase {
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     if (mprofesor.getCuantitativa() == false) {
-//                        nota.setNota(equivalencia(dos, equivalencias));
+                        nota.setNota(equivalencia(dos, equivalencias));
 //                        nota.setNota("APROBADO");
                     } else {
                         nota.setNota(val.toString());
