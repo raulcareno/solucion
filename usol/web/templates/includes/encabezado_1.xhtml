@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <style>
+        .cabe{
+            background-attachment: scroll;
+            background-clip: border-box;
+            padding: 0px;
+            /* background-color: transparent; */
+            background-image: url('images/cabefondo.png');
+            background-origin: padding-box;
+            background-position: 0 0;
+            /* background-repeat: no-repeat; */
+            background-size: auto auto;
+            height: 50px;
+            width: 100%;
+            margin: 0px 0px 0px 0px;
+        }
+    </style>
+
+    <h:panelGrid styleClass="cabe tablaFull transparencia95" columnClasses="alignTop">
+        <h:panelGrid columns="2" rendered="#{not empty user}" 
+                     styleClass="logo22_titulo tablaFull">
+            <h:panelGrid  columns="3" columnClasses="alignLeft,alignLeft">
+                    <h:outputText style="color:white;font-weight: bold;font-size: 11px"  value=""/>
+                    <h:outputText style="color:white;font-weight: bold;font-size: 13px"  value="#{institucion.nombre}"/>
+                    <h:outputText style="color:white;font-weight: bold;font-size: 11px"  value="#{periodo.fechaInicio.toLocaleString()}"/>
+                    <h:outputText style="color:white;font-weight: bold;font-size: 11px"  value=""/>
+                    <h:outputText style="color:white;font-weight: bold;font-size: 10px"  value="Bienvenido: "/>
+                    <h:outputLabel style="color:white;font-size: 10px" value="#{user.apellidoPaterno} #{user.nombre}"/>
+            </h:panelGrid>
+
+
+        </h:panelGrid>
+    </h:panelGrid>
+</ui:composition>

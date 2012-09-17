@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich"
+                template="/templatesE/main.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:define name="contenido">
+        <h:panelGroup>
+            <p:panel  >  
+                <ui:insert name="datos">
+                    <p:toolbar> 
+                        <h:outputText value="sección de datos"/>
+                    </p:toolbar>
+
+                </ui:insert>   
+            </p:panel> 
+
+
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>
