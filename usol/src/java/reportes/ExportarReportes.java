@@ -6,6 +6,7 @@ package reportes;
 
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class ExportarReportes {
         inst = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         //ubicacionReportes = ctx.getRealPath("/WEB-INF/reporte/" + reporte + ".jasper");
-        ubicacionReportes = (inst.getReportes() + reporte + ".jasper");
+        ubicacionReportes = (inst.getReportes() +File.separator +reporte + ".jasper");
         nombreReporte = reporte;
         path= ctx.getRealPath(inst.getReportes());
         this.datosReporte = datos;

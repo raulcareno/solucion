@@ -105,6 +105,9 @@ if(object.getFechaInicio().getTime() >= object.getFechaFin().getTime()){
                 if (adm.existe("Periodos", "fechaInicio", object.getFechaInicio(), "fechaInicio", object.getFechaFin(),"").size() <= 0) {
                     object.setIdPeriodos(adm.getNuevaClave("Periodos", "idPeriodos"));
                     adm.guardar(object);
+                    if(object.getActivo()){
+                        estadoPeriodos(object.getIdPeriodos()); 
+                    }
                     aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdPeriodos()+"");
                     inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
@@ -121,6 +124,9 @@ if(object.getFechaInicio().getTime() >= object.getFechaFin().getTime()){
             try {
                 adm.actualizar(object);
                 aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdPeriodos()+"");
+                if(object.getActivo()){
+                        estadoPeriodos(object.getIdPeriodos()); 
+                    }
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
             } catch (Exception e) {
@@ -133,7 +139,15 @@ if(object.getFechaInicio().getTime() >= object.getFechaFin().getTime()){
 
         return null;
     }
-
+public void estadoPeriodos(Integer periodoActivo){
+    try {
+    adm.ejecutaSql("Update Periodos set activo = 0 where idPeriodos != '"+periodoActivo+"' ");    
+    } catch (Exception e) {
+        java.util.logging.Logger.getLogger(PeriodosBean.class.getName()).log(Level.SEVERE, null, e);
+    }
+    
+    
+}
     /**
      * Elimina un registro asociado a la página
      */

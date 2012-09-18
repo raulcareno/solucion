@@ -20,13 +20,17 @@
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="FECHA INICIO: " />  
-                        <p:calendar value="#{periodosBean.object.fechaInicio}" pattern="dd/mm/yyyy" locale="es"  id="fechaInicio"   showOn="button" style="font-weight:bold;"/>  
+                        <p:calendar value="#{periodosBean.object.fechaInicio}" pattern="dd/MM/yyyy" locale="es"  id="fechaInicio"   showOn="button" style="font-weight:bold;"/>  
                         <h:outputText value="FECHA FIN: " />  
-                        <p:calendar value="#{periodosBean.object.fechaFin}" pattern="dd/mm/yyyy"  locale="es"  id="fechaFin"   showOn="button" style="font-weight:bold;"/>  
-                        <h:outputText value="PERIODO ACTIVO: " />  
+                        <p:calendar value="#{periodosBean.object.fechaFin}" pattern="dd/MM/yyyy"  locale="es"  id="fechaFin"   showOn="button" style="font-weight:bold;"/>  
+                        <h:outputText value="ES EL PERIODO ACTIVO: " />  
                         <p:selectBooleanCheckbox value="#{periodosBean.object.activo}"  id="Activo"   style="font-weight:bold;"/>  
                         <h:outputText value="ORDEN: " />  
-                        <p:inputText value="#{periodosBean.object.orden}"  id="Orden"   style="font-weight:bold;"/>  
+                        <p:spinner value="#{periodosBean.object.orden}"  id="Orden"   style="font-weight:bold;"/>  
+                        <h:outputText value="INICIO DE MATRICULAS: " />  
+                        <p:calendar value="#{periodosBean.object.fechaIniMat}" pattern="dd/MM/yyyy" locale="es"  id="fechaInicioMat"   showOn="button" style="font-weight:bold;"/>  
+                        <h:outputText value="FINAL DE MATRICULAS: " />  
+                        <p:calendar value="#{periodosBean.object.fechaFinMat}" pattern="dd/MM/yyyy"  locale="es"  id="fechaFinMat"   showOn="button" style="font-weight:bold;"/>  
                         
                         
                         <p:inputText  value="#{periodosBean.object.idPeriodos}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
@@ -62,8 +66,8 @@
                         </h:outputText> 
                     </p:column>  
                     <p:column headerText="ESTADO" style="width:20%">  
-                        <h:outputText value="ACTIVO" rendered="#{obj.activo==true}" />  
-                        <h:outputText value="INACTIVO" rendered="#{obj.activo==false}" />  
+                        <h:outputText value="ACTIVO" style="color:green; font-weight: bold" rendered="#{obj.activo==true}" />  
+                        <h:outputText value="INACTIVO" style="color:red; font-weight: bold" rendered="#{obj.activo==false}" />  
                     </p:column>  
                     <p:column headerText="ORDEN" style="width:20%">  
                         <h:outputText value="#{obj.orden}" />  

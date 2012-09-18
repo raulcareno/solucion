@@ -84,7 +84,7 @@ FacesContext context = FacesContext.getCurrentInstance();
             List<Periodos> divisionPoliticas = new ArrayList<Periodos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
 
-            divisionPoliticas = adm.query("Select o from Periodos as o order by o.fechaInicio ");
+            divisionPoliticas = adm.query("Select o from Periodos as o order by o.orden, o.fechaInicio ");
             if (divisionPoliticas.size() > 0) {
 //                        Periodos objSel = new Periodos(0);
 //                        items.add(new SelectItem(objSel, "SELECCIONE UN PERIODO"));
@@ -93,7 +93,7 @@ FacesContext context = FacesContext.getCurrentInstance();
                 for (Periodos obj : divisionPoliticas) {
                     String fechaI = sdf.format(obj.getFechaInicio());
                     String fechaF = sdf.format(obj.getFechaFin());
-                    items.add(new SelectItem(obj, fechaI + "-" + fechaF));
+                    items.add(new SelectItem(obj, " | "+fechaI + "-" + fechaF+" | "+(obj.getActivo()?"Activo":"Inactivo")) );
                 }
                 divisionPoliticas = null;
             } else {
