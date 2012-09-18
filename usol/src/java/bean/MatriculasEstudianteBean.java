@@ -71,6 +71,7 @@ public class MatriculasEstudianteBean {
     /**
      * Creates a new instance of MatriculasBean
      */
+    Boolean habilitadoMatriculas = false;
     Matriculas object;
     Estudiantes estudiante;
     Administrador adm;
@@ -116,22 +117,19 @@ public class MatriculasEstudianteBean {
             permisos = new Permisos();
         }
         p = new ProcesadorImagenes();
-//        if (!permisos.verificarPermisoReporte("Matriculas", "ingresar_matriculas", "ingresar", true, "PARAMETROS")) {
-//            try {
-//                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
-//            }  
-//            catch (IOException ex) {
-//                java.util.logging.Logger.getLogger(MatriculasEstudianteBean.class.getName()).log(Level.SEVERE, null, ex);
-// 
-//            }
-//        }
-        
- 
-        per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
-        
-        estudiante = (Estudiantes) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-         buscarCedula();
- 
+        Date fechaActual = adm.Date();
+        String fechaI = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+fechaActual.getDate()+" "+fechaActual.getHours()+":"+fechaActual.getMinutes()+":"+fechaActual.getSeconds();
+        System.out.println("FECHA ACTUAL:"+fechaI);
+        List<Periodos> periodosList = adm.query("Select o from Periodos as o "
+                            + " where o.activo = true and '"+fechaI+"' between o.fechaIniMat and o.fechaFinMat  ");
+        if (periodosList.size() > 0) {
+            per = periodosList.get(0);
+            habilitadoMatriculas = true;
+            estudiante = (Estudiantes) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            buscarCedula();
+        } else {
+            habilitadoMatriculas = false;
+        }
     }
 
     public void buscarMateriasNoAsignadas() {
@@ -170,20 +168,20 @@ public class MatriculasEstudianteBean {
 
     protected void inicializar() {
         object = new Matriculas(0);
-        if(estudiante == null){
-            estudiante = new Estudiantes("");    
+        if (estudiante == null) {
+            estudiante = new Estudiantes("");
         }
-        if(pariente1 == null){
+        if (pariente1 == null) {
             pariente1 = new Parientes();
         }
-        if(pariente2 == null){
-             pariente2 = new Parientes();
+        if (pariente2 == null) {
+            pariente2 = new Parientes();
         }
-        if(pariente3 == null){
+        if (pariente3 == null) {
             pariente3 = new Parientes();
         }
-       
-        
+
+
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
@@ -207,7 +205,7 @@ public class MatriculasEstudianteBean {
         return null;
     }
 
-     public StreamedContent getImageAsStream() {
+    public StreamedContent getImageAsStream() {
         try {
             //         try {
             //             ByteArrayInputStream stream = new ByteArrayInputStream(imagen);
@@ -215,18 +213,19 @@ public class MatriculasEstudianteBean {
             //            return imageAsStream;
             //         } catch (Exception e) {
             //             System.out.println(""+e);         }
-                     BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);  
-                        Graphics2D g2 = bufferedImg.createGraphics();  
-                        g2.drawString("This is a text", 0, 10);  
-                        ByteArrayOutputStream os = new ByteArrayOutputStream();  
-                        ImageIO.write(bufferedImg, "png", os);  
-                      return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
-                        
+            BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = bufferedImg.createGraphics();
+            g2.drawString("This is a text", 0, 10);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImg, "png", os);
+            return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
+
         } catch (IOException ex) {
             Logger.getLogger(MatriculasEstudianteBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return null;
-}
+        return null;
+    }
+
     /**
      * Graba el registro asociado al objeto que
      */
@@ -269,11 +268,11 @@ public class MatriculasEstudianteBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
             return null;
         }
-        
-        
+
+
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
-        estudiante.setFoto(imagen); 
+        estudiante.setFoto(imagen);
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
             adm.guardar(estudiante);
@@ -329,8 +328,8 @@ public class MatriculasEstudianteBean {
 
         object.setIdPeriodos(per);
         object.setIdCategoriasSociales(categoriaSeleccionado);
-        object.setIdCarreras(carreraSeleccionado); 
-       
+        object.setIdCarreras(carreraSeleccionado);
+
         if (object.getIdMatriculas().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -339,7 +338,7 @@ public class MatriculasEstudianteBean {
             try {
                 if (adm.existe("Matriculas", "idEstudiantes", object.getIdEstudiantes(), "idPeriodos", object.getIdPeriodos(), "").size() <= 0) {
                     object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
-                     object.setNumero(nuevaMatricula());
+                    object.setNumero(nuevaMatricula());
                     adm.guardar(object);
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
 //                    inicializar();
@@ -454,10 +453,10 @@ public class MatriculasEstudianteBean {
     public void limpiar() {
         //object = new Matriculas(0);
         object = new Matriculas(0);
-            estudiante = new Estudiantes("");    
-              pariente1 = new Parientes();
-             pariente2 = new Parientes();
-            pariente3 = new Parientes();
+        estudiante = new Estudiantes("");
+        pariente1 = new Parientes();
+        pariente2 = new Parientes();
+        pariente3 = new Parientes();
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
@@ -514,20 +513,21 @@ public class MatriculasEstudianteBean {
         }
         return null;
     }
-        public void generarClaveyUsuario(){
-            try {
-                if(estudiante.getUsuario() == null){
-                    estudiante.setUsuario(estudiante.getNombre().substring(0,1).toLowerCase()+""+estudiante.getApellidoPaterno().toLowerCase());
-                    estudiante.setClave(estudiante.getUsuario().toLowerCase());
-                    clave2 = estudiante.getClave();
-                    
-                }
-                
-            } catch (Exception e) {
-                
+
+    public void generarClaveyUsuario() {
+        try {
+            if (estudiante.getUsuario() == null) {
+                estudiante.setUsuario(estudiante.getNombre().substring(0, 1).toLowerCase() + "" + estudiante.getApellidoPaterno().toLowerCase());
+                estudiante.setClave(estudiante.getUsuario().toLowerCase());
+                clave2 = estudiante.getClave();
+
             }
-            
+
+        } catch (Exception e) {
         }
+
+    }
+
     public void buscarCedula() {
 
         String cedula = estudiante.getIdEstudiantes();
@@ -562,13 +562,14 @@ public class MatriculasEstudianteBean {
 
         estudiantesListado = null;
     }
- protected Integer nuevaMatricula() {
-       Administrador adm = new Administrador();
 
-        List NoActualMatricula = adm.query("Select o from Parametros as o " +
-                "where o.variable = 'MATRICULA' ");
+    protected Integer nuevaMatricula() {
+        Administrador adm = new Administrador();
+
+        List NoActualMatricula = adm.query("Select o from Parametros as o "
+                + "where o.variable = 'MATRICULA' ");
         Parametros parametros = new Parametros();
-        if(NoActualMatricula.size()<=0){
+        if (NoActualMatricula.size() <= 0) {
             System.out.println("FALTA PARAMETRO matricula EN PARAMETROS ");
 //            alert("Falta copiar los parámetros a este Año Lectivo");
         }
@@ -578,10 +579,10 @@ public class MatriculasEstudianteBean {
         Long val = java.lang.Math.round(decs);
         noMatri = Integer.valueOf(val.toString());
         noMatri += 1;
-        List  numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "'");
+        List numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "'");
         if (numeroYa.size() > 0) {
-            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
-                    " "  );
+            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o "
+                    + " ");
             parametros.setVNumerico(new BigDecimal(nClave + 1));
             adm.actualizar(parametros);
             return nClave + 1;
@@ -591,6 +592,7 @@ public class MatriculasEstudianteBean {
             return noMatri;
         }
     }
+
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
@@ -692,7 +694,7 @@ public class MatriculasEstudianteBean {
                 f = null;
                 bf = null;
                 p = null;
-                
+
                 buffer = null;
                 imageInByte = null;
                 fin = null;
@@ -735,7 +737,8 @@ public class MatriculasEstudianteBean {
         }
         return null;
     }
-   public List<SelectItem> getSelectedItemPerfiles() {
+
+    public List<SelectItem> getSelectedItemPerfiles() {
         try {
             List<Perfiles> divisionPoliticas = new ArrayList<Perfiles>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -759,9 +762,10 @@ public class MatriculasEstudianteBean {
         }
         return null;
     }
-/**
- *  Obtiene el listado de carreras para llenar combos
- */
+
+    /**
+     * Obtiene el listado de carreras para llenar combos
+     */
     public List<SelectItem> getSelectedItemCarreras() {
         try {
             List<Carreras> divisionPoliticas = new ArrayList<Carreras>();
@@ -787,6 +791,7 @@ public class MatriculasEstudianteBean {
         }
         return null;
     }
+
     public List<SelectItem> getSelectedItemIngresos() {
         try {
             List<RangosIngresos> divisionPoliticas = new ArrayList<RangosIngresos>();
@@ -798,7 +803,7 @@ public class MatriculasEstudianteBean {
                     //RangosIngresos objSel = new RangosIngresos(0);
                     items.add(new SelectItem("-", "Seleccione..."));
                     for (RangosIngresos obj : divisionPoliticas) {
-                        items.add(new SelectItem( obj.getRangoInicial()+"-"+obj.getRangoFinal(), obj.getRangoInicial()+"-"+obj.getRangoFinal()));
+                        items.add(new SelectItem(obj.getRangoInicial() + "-" + obj.getRangoFinal(), obj.getRangoInicial() + "-" + obj.getRangoFinal()));
                     }
                 } else {
                     //RangosIngresos obj = new RangosIngresos(0);
@@ -1260,6 +1265,12 @@ public class MatriculasEstudianteBean {
     public void setCarreraSeleccionado(Carreras carreraSeleccionado) {
         this.carreraSeleccionado = carreraSeleccionado;
     }
-    
-    
+
+    public Boolean getHabilitadoMatriculas() {
+        return habilitadoMatriculas;
+    }
+
+    public void setHabilitadoMatriculas(Boolean habilitadoMatriculas) {
+        this.habilitadoMatriculas = habilitadoMatriculas;
+    }
 }
