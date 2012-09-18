@@ -965,13 +965,14 @@ public class reportesClase {
 
     }
     List<ParametrosGlobales> parametrosGlobales = null;
+    public List<MateriaProfesor> materiasReprobadas = new ArrayList<MateriaProfesor>();
 
     public List<Matriculas> cuadroverificar(Cursos curso, Sistemacalificacion sistema) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-
+        materiasReprobadas = new ArrayList<MateriaProfesor>();
 
 
         Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
@@ -1072,15 +1073,23 @@ public class reportesClase {
                         if (val < sumaPierde) {
                             obs = "Pierde";
                             System.out.println("pierde SM (1):" + matricula + " mat:" + materia + " not:" + val);
+                            MateriaProfesor matR = new MateriaProfesor();
+                            matR.setCodigomap(matriculaNo.getCodigomat());
+                            matR.setOrden(materia.getCodigo());
+                            materiasReprobadas.add(matR);
                             obs1++;
                         } else {
                             obs = "";
                         }
                         sumatoria = val;
                     } else if (nota.getSistema().getPromediofinal().equals("PG")) {
-                        if (val < sumaPierde) {
+                        if (val < sumaPierde && validaConPromedioGeneral) {
                             obs = "Pierde";
                             System.out.println("pierde PG (1):" + matricula + " mat:" + materia + " not:" + val);
+                            MateriaProfesor matR = new MateriaProfesor();
+                            matR.setCodigomap(matriculaNo.getCodigomat());
+                            matR.setOrden(materia.getCodigo());
+                            materiasReprobadas.add(matR);
                             obs1++;
                         } else {
                             obs = "";
@@ -1093,6 +1102,10 @@ public class reportesClase {
                                 if (val < valor) {
                                     obs = "Pierde";
                                     System.out.println("pierde PG:" + matricula + " mat:" + materia + " not:" + val);
+                                    MateriaProfesor matR = new MateriaProfesor();
+                                    matR.setCodigomap(matriculaNo.getCodigomat());
+                                    matR.setOrden(materia.getCodigo());
+                                    materiasReprobadas.add(matR);
                                     obs1++;
                                 } else {
                                     obs = "";
@@ -1108,6 +1121,10 @@ public class reportesClase {
                                     if (val < valor) {
                                         obs = "Pierde";
                                         System.out.println("pierde SU:" + matricula + " mat:" + materia + " not:" + val);
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        materiasReprobadas.add(matR);
                                         obs1++;
                                     } else {
                                         obs = "";
@@ -2889,6 +2906,22 @@ public class reportesClase {
 //                    parametros.put("periodo", insts.getDireccion());
     }
 
+    public boolean buscarSiPierde(Integer matricula, Integer materia) {
+        try {
+            for (Iterator<MateriaProfesor> it = materiasReprobadas.iterator(); it.hasNext();) {
+                MateriaProfesor reprobada = it.next();
+                if (matricula.equals(reprobada.getCodigomap()) && materia.equals(reprobada.getOrden())) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return false;
+
+
+    }
+
     public JRDataSource promocion(Cursos curso, Matriculas matri) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
@@ -3065,16 +3098,22 @@ public class reportesClase {
 
                         not.setAprovechamiento(redondear(aprovechamiento, noDecimales));
                         not.setDisciplina(disciplina);
-                        if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
-                            not.setEstadoMateria("APROBADO");
-                        } else {
+//                        if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
+                        
+//                        } else {
+//                            not.setEstadoMateria("REPROBADO");
+//                            estadoEstudiante = false;
+//                        }
+                        if (buscarSiPierde(matriculas1.getCodigomat(), mate.getCodigo())) {
                             not.setEstadoMateria("REPROBADO");
                             estadoEstudiante = false;
+                        }else{
+                            not.setEstadoMateria("APROBADO");
                         }
                         not.setEstado(estadoEstudiante);
-                        if (perdidos.contains(matriculas1.getCodigomat())) {
-                            not.setEstadoMateria("REPROBADO");
-                        }
+//                        if (perdidos.contains(matriculas1.getCodigomat())) {
+//                            not.setEstadoMateria("REPROBADO");
+//                        }
                         if (cuantitativa == false) {
                             not.setNota(equivalencia(dos, equivalencias));
                         }
@@ -4600,41 +4639,42 @@ public class reportesClase {
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }
-/**
- *  if (secuencia == 1) {
-            complementoPromedio = "  CAST((o.primerob) AS DECIMAL(5,3))  AS 2do10mo, ";
-            complementoDisciplina = " CAST((o.primerobd )  AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 2) {
-            complementoPromedio = "  CAST((o.segundob) AS DECIMAL(5,3))  AS 2do10mo, ";
-            complementoDisciplina = " CAST((o.segundobd) AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 3) {
-            complementoPromedio = "  CAST((o.segundob + o.tercerob ) / 2  AS DECIMAL(5,3))  AS 2do10mo, ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd ) / 2 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 4) {
-            complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob) / 3  AS DECIMAL(5,3))  AS 2do10mo,  ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd ) / 3 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 5) {
-            complementoPromedio = "  CAST((o.segundob + o.tercerob + o.cuartob + o.quintob ) / 4  AS DECIMAL(5,3))  AS 2do10mo,  ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd ) / 4 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 6) {
-            complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob) / 5  AS DECIMAL(5,3))  AS 2do10mo,  ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd ) / 5 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 7) {
-            complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob) / 6  AS DECIMAL(5,3))  AS 2do10mo,  ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd ) / 6 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 8) {
-            complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero) / 7  AS DECIMAL(5,3))  AS 2do10mo, ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod ) / 7 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 9) {
-            complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo) / 8  AS DECIMAL(5,3))  AS 2do10mo,  ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod ) / 8 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        } else if (secuencia == 10) {
-            complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo+ o.tercero) / 9  AS DECIMAL(5,3))  AS 2do10mo,  ";
-            complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod+ o.tercerd) / 9 AS DECIMAL(5,3)) AS 2do10moDISC ";
-        }
- * @param cursoLlega
- * @return 
- */
+
+    /**
+     *  if (secuencia == 1) {
+    complementoPromedio = "  CAST((o.primerob) AS DECIMAL(5,3))  AS 2do10mo, ";
+    complementoDisciplina = " CAST((o.primerobd )  AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 2) {
+    complementoPromedio = "  CAST((o.segundob) AS DECIMAL(5,3))  AS 2do10mo, ";
+    complementoDisciplina = " CAST((o.segundobd) AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 3) {
+    complementoPromedio = "  CAST((o.segundob + o.tercerob ) / 2  AS DECIMAL(5,3))  AS 2do10mo, ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd ) / 2 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 4) {
+    complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob) / 3  AS DECIMAL(5,3))  AS 2do10mo,  ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd ) / 3 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 5) {
+    complementoPromedio = "  CAST((o.segundob + o.tercerob + o.cuartob + o.quintob ) / 4  AS DECIMAL(5,3))  AS 2do10mo,  ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd ) / 4 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 6) {
+    complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob) / 5  AS DECIMAL(5,3))  AS 2do10mo,  ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd ) / 5 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 7) {
+    complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob) / 6  AS DECIMAL(5,3))  AS 2do10mo,  ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd ) / 6 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 8) {
+    complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero) / 7  AS DECIMAL(5,3))  AS 2do10mo, ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod ) / 7 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 9) {
+    complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo) / 8  AS DECIMAL(5,3))  AS 2do10mo,  ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod ) / 8 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    } else if (secuencia == 10) {
+    complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo+ o.tercero) / 9  AS DECIMAL(5,3))  AS 2do10mo,  ";
+    complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod+ o.tercerd) / 9 AS DECIMAL(5,3)) AS 2do10moDISC ";
+    }
+     * @param cursoLlega
+     * @return 
+     */
     public JRDataSource recordporcursoMejorCurso(Cursos cursoLlega) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();
@@ -4642,7 +4682,7 @@ public class reportesClase {
         ArrayList listaResultados = new ArrayList();
         int secuencia = cursoLlega.getSecuencia();
         String complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo+ o.tercero) / 9  AS DECIMAL(5,3))  ";
-         String   complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod+ o.tercerd) / 9 AS DECIMAL(5,3)) ";
+        String complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod+ o.tercerd) / 9 AS DECIMAL(5,3)) ";
         String complementoPromedioBac = "";
         String complementoDisciplinaBac = "";
         if (secuencia == 11) {
@@ -4662,7 +4702,7 @@ public class reportesClase {
                 + "   + " + complementoPromedioBac + ") /2 AS DECIMAL(5,3)) AS PROM_APROV  "
                 + " from Notasrecord as o where o.estudiante  "
                 + "  in (Select m.estudiante from Matriculas as m, Cursos as cu "
-                + "where cu.codigocur = m.curso and cu.secuencia = '"+cursoLlega.getSecuencia()+"'  and cu.periodo = '"+cursoLlega.getPeriodo().getCodigoper()+"' ) "
+                + "where cu.codigocur = m.curso and cu.secuencia = '" + cursoLlega.getSecuencia() + "'  and cu.periodo = '" + cursoLlega.getPeriodo().getCodigoper() + "' ) "
                 + " order by  6 DESC ");
 //        System.out.println(" Select " + complementoPromedio + ", " + complementoDisciplina + " "
 //                + ", " + complementoPromedioBac + ", " + complementoDisciplinaBac + ", "
@@ -4684,8 +4724,8 @@ public class reportesClase {
             n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(4), Estudiantes.class));
             try {
                 List<Cursos> matri = adm.query("Select o.curso from Matriculas as o  "
-                    + "where o.estudiante.codigoest = '"+n1.getEstudiante().getCodigoest()+"' "
-                    + "and o.curso.periodo.codigoper = '"+cursoLlega.getPeriodo().getCodigoper()+"' ");
+                        + "where o.estudiante.codigoest = '" + n1.getEstudiante().getCodigoest() + "' "
+                        + "and o.curso.periodo.codigoper = '" + cursoLlega.getPeriodo().getCodigoper() + "' ");
                 n1.setCurso(matri.get(0));
             } catch (Exception e) {
             }

@@ -326,11 +326,11 @@ void cargarPar(Global g){
                             </html>
                         </popup>
                         <separator orient="vertical" bar="true"  />
-                        Aprueba con:
-                        <decimalbox id="aprobacion" maxlength="5" cols="3"  readonly="true"    /> pts.
+                       <!-- Aprueba con: -->
+                        <decimalbox visible="false" id="aprobacion" maxlength="5" cols="3"  readonly="true"    /> pts.
                         <separator orient="vertical" bar="true"  />
-                        Pierde con:
-                        <decimalbox id="minima" maxlength="5" cols="3"  readonly="true"  /> pts.
+                       <!-- Pierde con: -->
+                        <decimalbox visible="false"  id="minima" maxlength="5" cols="3"  readonly="true"  /> pts.
                     </span>
                 </row>
 
