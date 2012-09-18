@@ -36,7 +36,10 @@
                           <h:outputText value="TITULO" />  
                           <p:inputText value="#{carrerasBean.object.titulo}" id="titulo"  maxlength="200" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="ESTADO" />  
-                        <p:inputText value="#{carrerasBean.object.estado}" id="estado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <p:selectOneMenu   id="estado" label="Estado"  style="font-weight:bold;"  value="#{carrerasBean.object.estado}"  effect="fade">  
+                             <f:selectItem itemLabel="ACTIVO"  itemValue="A" />  
+                             <f:selectItem itemLabel="CERRADO" itemValue="I" />  
+                        </p:selectOneMenu> 
                         <h:outputText value="AÑO" />  
                         <p:inputText value="#{carrerasBean.object.anio}" id="anio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="SEDE" />  
@@ -44,7 +47,7 @@
                         <h:outputText value="CENTRO DE APOYO" />  
                         <p:inputText value="#{carrerasBean.object.centroApoyo}" id="centroApoyo"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="CIUDAD" />  
-                        <p:inputText value="#{carrerasBean.object.estado}" id="ciudad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <p:inputText value="#{carrerasBean.object.ciudad}" id="ciudad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="CON CONVENIO" />  
                         <p:selectBooleanCheckbox value="#{carrerasBean.object.conConvenio}" id="conConvenio"  style="font-weight:bold;"/>  
                         <h:outputText value="INST_CONVENIO" />  

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Pais;
+import jcinform.persistencia.Parametros;
 import jcinform.persistencia.Parientes;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Periodos;
@@ -326,6 +328,7 @@ public class MatriculasBean {
         object.setIdPeriodos(per);
         object.setIdCategoriasSociales(categoriaSeleccionado);
         object.setIdCarreras(carreraSeleccionado); 
+       
         if (object.getIdMatriculas().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -334,6 +337,7 @@ public class MatriculasBean {
             try {
                 if (adm.existe("Matriculas", "idEstudiantes", object.getIdEstudiantes(), "idPeriodos", object.getIdPeriodos(), "").size() <= 0) {
                     object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
+                     object.setNumero(nuevaMatricula());
                     adm.guardar(object);
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
 //                    inicializar();
@@ -556,7 +560,35 @@ public class MatriculasBean {
 
         estudiantesListado = null;
     }
+ protected Integer nuevaMatricula() {
+       Administrador adm = new Administrador();
 
+        List NoActualMatricula = adm.query("Select o from Parametros as o " +
+                "where o.variable = 'MATRICULA' ");
+        Parametros parametros = new Parametros();
+        if(NoActualMatricula.size()<=0){
+            System.out.println("FALTA PARAMETRO matricula EN PARAMETROS ");
+//            alert("Falta copiar los parámetros a este Año Lectivo");
+        }
+        parametros = (Parametros) NoActualMatricula.get(0);
+        int noMatri = 0;
+        Double decs = parametros.getVNumerico().doubleValue();
+        Long val = java.lang.Math.round(decs);
+        noMatri = Integer.valueOf(val.toString());
+        noMatri += 1;
+        List  numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "'");
+        if (numeroYa.size() > 0) {
+            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
+                    " "  );
+            parametros.setVNumerico(new BigDecimal(nClave + 1));
+            adm.actualizar(parametros);
+            return nClave + 1;
+        } else {
+            parametros.setVNumerico(new BigDecimal(noMatri));
+            adm.actualizar(parametros);
+            return noMatri;
+        }
+    }
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
