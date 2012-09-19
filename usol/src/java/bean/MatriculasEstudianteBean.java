@@ -150,6 +150,7 @@ public class MatriculasEstudianteBean {
                         Matriculas matriculas = it.next();
                         object = matriculas;
                     }
+                    carreraSeleccionado = object.getIdCarreras();
                     object.setIdMatriculas(0);
                 }
             } else {
@@ -397,6 +398,12 @@ public class MatriculasEstudianteBean {
 
         }
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+        try {
+            fichaMatricula("PDF");
+        } catch (JRException ex) {
+            Logger.getLogger(MatriculasEstudianteBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return null;
     }
 

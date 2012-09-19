@@ -48,6 +48,10 @@
                 <!--p:message for="form" /-->
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                 <p:fieldset legend="DATOS DEL ESTUDIANTE">
+                     <h:panelGrid  style="background-color: navajowhite;margin:0 auto;" columns="2" cellpadding="-5" >
+                        <h:outputText style="float: right;" value="CARRERA: " /> 
+                        <h:outputText style="float: right;font-weight: bold" value="#{matriculasEstudianteBean.carreraSeleccionado.nombre}" />  
+                    </h:panelGrid>
                     <h:panelGrid columns="2">  
                         <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
 
@@ -145,15 +149,10 @@
                     </h:panelGrid>
 
                 </p:fieldset>
-                <p:fieldset legend="DATOS DEL MATRICULA">
-                    <h:panelGrid columns="2" cellpadding="-5" style="margin:0 auto;">
-                        <h:outputText style="float: right;" value="CARRERA: " /> 
-                        <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{matriculasEstudianteBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
-                            <f:selectItems value="#{matriculasEstudianteBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
-                        </p:selectOneMenu>  
-                    </h:panelGrid>
+                <p:fieldset   rendered="false" legend="DATOS DEL MATRICULA">
+                   
 
-                    <h:panelGrid columns="4" cellpadding="-5"  style="margin:0 auto;">
+                    <h:panelGrid   columns="4" cellpadding="-5"  style="margin:0 auto;">
 
                         <h:outputText style="float: right;" value="NUMERO MATRICULA: " />  
                         <p:inputText value="#{matriculasEstudianteBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
@@ -351,12 +350,6 @@
 
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasEstudianteBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                    <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasEstudianteBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
-
-
-
-
-
                 </h:panelGrid>
                 </h:panelGrid>
             </h:form>
