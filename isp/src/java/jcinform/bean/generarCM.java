@@ -258,7 +258,7 @@ public class generarCM {
                     try {
 
                         while (noContrato.length() < 18) {
-                            noContrato = "0" + noContrato;
+                            noContrato = " " + noContrato;
                         }
                     } catch (Exception e) {
                     }//nocontrato
