@@ -83,6 +83,7 @@ public class MatriculasEstudianteBean {
     public String foto1;
     public byte[] imagen;
     protected String clave2;
+    protected String mensaje;
     claves cl = new claves();
     List<SelectItem> provinciasEncontradas;
     List<SelectItem> cantonesEncontradas;
@@ -118,16 +119,45 @@ public class MatriculasEstudianteBean {
         }
         p = new ProcesadorImagenes();
         Date fechaActual = adm.Date();
-        String fechaI = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+fechaActual.getDate()+" "+fechaActual.getHours()+":"+fechaActual.getMinutes()+":"+fechaActual.getSeconds();
-        System.out.println("FECHA ACTUAL:"+fechaI);
+        String fechaI = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + fechaActual.getDate() + " " + fechaActual.getHours() + ":" + fechaActual.getMinutes() + ":" + fechaActual.getSeconds();
+        System.out.println("FECHA ACTUAL:" + fechaI);
         List<Periodos> periodosList = adm.query("Select o from Periodos as o "
-                            + " where o.activo = true and '"+fechaI+"' between o.fechaIniMat and o.fechaFinMat  ");
+                + " where o.activo = true and '" + fechaI + "' between o.fechaIniMat and o.fechaFinMat  ");
         if (periodosList.size() > 0) {
             per = periodosList.get(0);
             habilitadoMatriculas = true;
             estudiante = (Estudiantes) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
             buscarCedula();
+            if (object.getIdMatriculas().equals(new Integer(0))) {
+                List<Matriculas> matriAnteriores = adm.query("Select o from Matriculas as o "
+                        + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
+                        + "and  o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'"
+                        + " order by o.idPeriodos.orden ");
+                if (matriAnteriores.size() > 0) {
+                    try {
+                        object = matriAnteriores.get(0);
+                        fichaMatricula("PDF");
+                    } catch (JRException ex) {
+                        Logger.getLogger(MatriculasEstudianteBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    matriAnteriores = adm.query("Select o from Matriculas as o "
+                            + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
+                            + " order by o.idPeriodos.orden ");
+                    object = new Matriculas();
+                    object.setEstadoMat("M");
+                    for (Iterator<Matriculas> it = matriAnteriores.iterator(); it.hasNext();) {
+                        Matriculas matriculas = it.next();
+                        object = matriculas;
+                    }
+                    object.setIdMatriculas(0);
+                }
+            } else {
+                mensaje = "USTED YA SE HA MATRICULADO...!";
+                habilitadoMatriculas = false;
+            }
         } else {
+            mensaje = "NO ESTÁN HABILITADAS LAS MATRICULAS";
             habilitadoMatriculas = false;
         }
     }
@@ -1272,5 +1302,13 @@ public class MatriculasEstudianteBean {
 
     public void setHabilitadoMatriculas(Boolean habilitadoMatriculas) {
         this.habilitadoMatriculas = habilitadoMatriculas;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 }

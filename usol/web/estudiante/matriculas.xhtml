@@ -13,8 +13,9 @@
         <h:form prependId="false" id="form">
                 <h:panelGrid width="100%" id="noexisteHabilitados"  rendered="#{matriculasEstudianteBean.habilitadoMatriculas == false}"  >
                     <p:graphicImage  value="/images/denegado.png" />
-                    <h:outputText style="font-weight: bold;font-size: 14px; color: chocolate " value="NO ESTÁN HABILITADAS LAS MATRICULAS AÚN" />
-                       <br />
+                    <h:outputText style="font-weight: bold;font-size: 14px; color: chocolate " value="#{matriculasEstudianteBean.mensaje}" />
+                    <p:commandButton rendered="#{matriculasEstudianteBean.mensaje eq 'USTED YA SE HA MATRICULADO...!'}" value="Imprimir Ficha de Matricula" ajax="false"  actionListener="#{matriculasEstudianteBean.fichaMatricula('PDF')}"   icon="ui-icon-print"/>  
+                <br />
                 <br />
                 <br />
                 <br />
@@ -35,20 +36,20 @@
                 <br />
                  
                 </h:panelGrid>
-                <h:panelGrid width="100%" id="formaDatos" rendered="#{matriculasEstudianteBean.habilitadoMatriculas}" >
-                <script type="text/javascript">
+              <script type="text/javascript">
                     function handleDrop(event, ui) {
                         var droppedCar = ui.draggable;
                         droppedCar.fadeOut('fast');
                     }
                 </script>
-                <script src="locales.js" type="text/javascript"/>
+            <script src="locales.js" type="text/javascript"/>
+                <h:panelGrid width="100%" id="formaDatos" rendered="#{matriculasEstudianteBean.habilitadoMatriculas}" >
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                 <!--p:message for="form" /-->
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                 <p:fieldset legend="DATOS DEL ESTUDIANTE">
                     <h:panelGrid columns="2">  
-                        <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                        <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
 
                             <h:outputText style="float: right;"  value="CEDULA IDENTIDAD.: " />  
                             <p:inputText value="#{matriculasEstudianteBean.estudiante.idEstudiantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;"/>
@@ -145,14 +146,14 @@
 
                 </p:fieldset>
                 <p:fieldset legend="DATOS DEL MATRICULA">
-                    <h:panelGrid columns="2" cellpadding="1" style="margin:0 auto;">
+                    <h:panelGrid columns="2" cellpadding="-5" style="margin:0 auto;">
                         <h:outputText style="float: right;" value="CARRERA: " /> 
                         <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{matriculasEstudianteBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
                             <f:selectItems value="#{matriculasEstudianteBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
                         </p:selectOneMenu>  
                     </h:panelGrid>
 
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">
+                    <h:panelGrid columns="4" cellpadding="-5"  style="margin:0 auto;">
 
                         <h:outputText style="float: right;" value="NUMERO MATRICULA: " />  
                         <p:inputText value="#{matriculasEstudianteBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
@@ -187,7 +188,7 @@
 
                 </p:fieldset>
                 <p:fieldset legend="DATOS ACADÉMICOS">
-                    <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">  
+                    <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
                         <h:outputText style="float: right;" value="ANIO GRADUACIÓN: " />  
                         <p:inputText value="#{matriculasEstudianteBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText style="float: right;" value="COLEGIO GRADUADO: " />  
@@ -198,7 +199,7 @@
                     </h:panelGrid>  
                 </p:fieldset>
                 <p:fieldset legend="DATOS LABORALES">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                    <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
                         <h:outputText style="float: right;" value="TRABAJA: " />  
                         <p:selectBooleanCheckbox id="Trabaja" value="#{matriculasEstudianteBean.estudiante.trabaja}"/>  
                         <h:outputText style="float: right;" value="EMPRESA: " />  
@@ -215,7 +216,7 @@
                 </p:fieldset>
 
                 <p:fieldset legend="DATOS PARA FACTURA">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                    <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
                         <h:outputText style="float: right;" value="CED o RUC: " />  
                         <p:inputText value="#{matriculasEstudianteBean.pariente1.identificacion}" id="IdentificacionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText style="float: right;" value="NOMBRES: " />  
@@ -228,7 +229,7 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="DATOS PADRE">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                    <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
                         <h:outputText style="float: right;" value="CED/RUC/PASS: " />  
                         <p:inputText value="#{matriculasEstudianteBean.pariente2.identificacion}" id="IdentificacionPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText style="float: right;" value="APELLIDOS: " />  
@@ -247,7 +248,7 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="DATOS MADRE">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                    <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
                         <h:outputText style="float: right;" value="CED/RUC/PASS: " />  
                         <p:inputText value="#{matriculasEstudianteBean.pariente3.identificacion}" id="IdentificacionMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText style="float: right;" value="APELLIDOS: " />  
@@ -266,7 +267,7 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <p:fieldset legend="DATOS SOCIOECONÓMICOS">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                    <h:panelGrid columns="4" cellpadding="-5" style="margin:0 auto;">  
                         <h:outputText style="float: right;" value="TIPO DE VIVIENDA: " />  
                         <h:selectOneMenu value="#{matriculasEstudianteBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
@@ -323,9 +324,11 @@
                             <f:selectItem itemLabel="OTROS" itemValue="OTROS" />  
                         </h:selectOneMenu> 
                         <h:outputText style="float: right;" value="POSEE TARJETAS DE CRÉDITO: " />  
-                        <p:selectBooleanCheckbox value="#{matriculasEstudianteBean.estudiante.tarjetasCredito}" id="TarjetaCredito"    style="font-weight:bold;"/>  
+                        <p:selectBooleanButton value="#{matriculasEstudianteBean.estudiante.tarjetasCredito}"   id="TarjetaCredito"  onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close"/>  
+ 
+  
                         <h:outputText style="float: right;" value="POSEE VEHÍCULO: " />  
-                        <p:selectBooleanCheckbox value="#{matriculasEstudianteBean.estudiante.vehiculo}" id="PoseeVehiculo"  style="font-weight:bold;"/>  
+                        <p:selectBooleanButton  value="#{matriculasEstudianteBean.estudiante.vehiculo}" id="PoseeVehiculo"   onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close"/>  
                         <h:outputText style="float: right;" value="COMO PAGA: " />  
                          <h:selectOneMenu  value="#{matriculasEstudianteBean.estudiante.formaPago}" id="ComoPaga"   >  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
@@ -349,10 +352,7 @@
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasEstudianteBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
                     <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasEstudianteBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
-                    <p:splitButton  value="PDF" ajax="false"  actionListener="#{matriculasEstudianteBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
-                        <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasEstudianteBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
-                        <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasEstudianteBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
-                    </p:splitButton>  
+
 
 
 

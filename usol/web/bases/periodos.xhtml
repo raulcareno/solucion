@@ -14,7 +14,7 @@
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
   <script src="locales.js" type="text/javascript"/>
-                <p:panel id="registro"  style="width: 600px;" header="Pais">
+                <p:panel id="registro"  style="width: 600px;" header="Periodos">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
@@ -28,9 +28,9 @@
                         <h:outputText value="ORDEN: " />  
                         <p:spinner value="#{periodosBean.object.orden}"  id="Orden"   style="font-weight:bold;"/>  
                         <h:outputText value="INICIO DE MATRICULAS: " />  
-                        <p:calendar value="#{periodosBean.object.fechaIniMat}" pattern="dd/MM/yyyy" locale="es"  id="fechaInicioMat"   showOn="button" style="font-weight:bold;"/>  
+                        <p:calendar value="#{periodosBean.object.fechaIniMat}"  pattern="dd/MM/yyyy HH:mm:ss" locale="es"  id="fechaInicioMat" size="30"    showOn="button" style="width: 90px;font-weight:bold;"/>  
                         <h:outputText value="FINAL DE MATRICULAS: " />  
-                        <p:calendar value="#{periodosBean.object.fechaFinMat}" pattern="dd/MM/yyyy"  locale="es"  id="fechaFinMat"   showOn="button" style="font-weight:bold;"/>  
+                        <p:calendar value="#{periodosBean.object.fechaFinMat}" pattern="dd/MM/yyyy HH:mm:ss"  locale="es"  id="fechaFinMat" size="30"  showOn="button" style="width: 120px;font-weight:bold;"/>  
                         
                         
                         <p:inputText  value="#{periodosBean.object.idPeriodos}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  

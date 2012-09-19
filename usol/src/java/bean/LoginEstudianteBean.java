@@ -52,6 +52,7 @@ FacesContext context = FacesContext.getCurrentInstance();
         try {
             List<Institucion> user = adm.query("Select o from Institucion as o ");
             ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("institucion");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("institucion", user.get(0));
