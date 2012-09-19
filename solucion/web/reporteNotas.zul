@@ -595,6 +595,18 @@ void recalcular(){
             }else if(tipo.equals("CNF4")){
                  //   datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                  //   report.setSrc(directorioReportes+"cuadrofinal1.jasper");
+                                     List optativasList = adm.query("Select o from MateriaProfesor as o " + 
+                                                   " where o.curso.codigocur = '"+curs.getSelectedItem().getValue().getCodigocur()+"' " + 
+                                                   " and o.cuantitativa = false and o.ministerio =  true and o.opcional = true ");
+                            for(Iterator it = optativasList.iterator(); it.hasNext();) {
+                                    MateriaProfesor object = (MateriaProfesor)it.next();
+                                    parametros.put("optativa1",object.getMateria().getDescripcion()+"");             
+                                    parametros.put("profesorOptativa1",object.getEmpleado()+"");             
+                            }
+                    parametros.put("profesorDisciplina", curs.getSelectedItem().getValue().getInspector());
+                    datasource = noti.cuadrofinal3(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc(directorioReportes+"cuadrofinal5.jasper");
+                 
             }else if(tipo.equals("EST")){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"estadistico.jasper");
@@ -905,7 +917,7 @@ void campos(String valor){
             curs.disabled = false;
             titulo.value= "Listado de Actas de Grado";
              filacursos.visible = true;
-        }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") ){
+        }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") || valor.equals("CNF4") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Calificaciones";
@@ -1001,6 +1013,7 @@ void campos(String valor){
                                     <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
                                     <listitem id="CSUP2"  label="Cuadro de Supletorios(Todos)" value="CSUP2" />
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
+                                    <listitem  id="CNF4" label="Cuadro Final(10)" value="CNF4" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="linea0281222" label="============ ESTADISTICOS =============" value="linea2801222" />
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
