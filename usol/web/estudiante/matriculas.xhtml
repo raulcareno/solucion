@@ -12,7 +12,7 @@
     <ui:define name="datos">
         <h:form prependId="false" id="form">
                 <h:panelGrid width="100%" id="noexisteHabilitados"  rendered="#{matriculasEstudianteBean.habilitadoMatriculas == false}"  >
-                    <p:graphicImage  value="/images/denegado.png" />
+                    <p:graphicImage rendered="#{!matriculasEstudianteBean.mensaje eq 'USTED YA SE HA MATRICULADO...!'}"   value="/images/denegado.png" />
                     <h:outputText style="font-weight: bold;font-size: 14px; color: chocolate " value="#{matriculasEstudianteBean.mensaje}" />
                     <p:commandButton rendered="#{matriculasEstudianteBean.mensaje eq 'USTED YA SE HA MATRICULADO...!'}" value="Imprimir Ficha de Matricula" ajax="false"  actionListener="#{matriculasEstudianteBean.fichaMatricula('PDF')}"   icon="ui-icon-print"/>  
                 <br />
@@ -349,7 +349,7 @@
                 </p:fieldset>
 
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasEstudianteBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                    <p:commandButton  value="Guardar" oncomplete="document.getElementById('guardar').disabled= true" id="guardar"  ajax="false"    action="#{matriculasEstudianteBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
                 </h:panelGrid>
                 </h:panelGrid>
             </h:form>

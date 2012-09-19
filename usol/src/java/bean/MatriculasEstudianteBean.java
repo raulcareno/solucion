@@ -117,6 +117,9 @@ public class MatriculasEstudianteBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
+        mensaje = "";
+                habilitadoMatriculas = true;
+        inicializar();
         p = new ProcesadorImagenes();
         Date fechaActual = adm.Date();
         String fechaI = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + fechaActual.getDate() + " " + fechaActual.getHours() + ":" + fechaActual.getMinutes() + ":" + fechaActual.getSeconds();
@@ -151,6 +154,7 @@ public class MatriculasEstudianteBean {
                         object = matriculas;
                     }
                     carreraSeleccionado = object.getIdCarreras();
+                    categoriaSeleccionado = object.getIdCategoriasSociales();
                     object.setIdMatriculas(0);
                 }
             } else {
@@ -362,16 +366,13 @@ public class MatriculasEstudianteBean {
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
-            if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
-                return null;
-            }
+             
             try {
                 if (adm.existe("Matriculas", "idEstudiantes", object.getIdEstudiantes(), "idPeriodos", object.getIdPeriodos(), "").size() <= 0) {
                     object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
                     object.setNumero(nuevaMatricula());
                     adm.guardar(object);
-                    aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
+//                    aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
 //                    inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
@@ -381,13 +382,9 @@ public class MatriculasEstudianteBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Matriculas", "actualizar_matriculas", "agregar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
-                return null;
-            }
             try {
                 adm.actualizar(object);
-                aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdMatriculas() + "");
+//                aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdMatriculas() + "");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
 //                inicializar();
             } catch (Exception e) {
@@ -399,7 +396,10 @@ public class MatriculasEstudianteBean {
         }
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         try {
+             mensaje = "USTED YA SE HA MATRICULADO...!";
+                habilitadoMatriculas = false;
             fichaMatricula("PDF");
+            
         } catch (JRException ex) {
             Logger.getLogger(MatriculasEstudianteBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -616,9 +616,11 @@ public class MatriculasEstudianteBean {
         Long val = java.lang.Math.round(decs);
         noMatri = Integer.valueOf(val.toString());
         noMatri += 1;
-        List numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "'");
+        List numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "' "
+                + "and o.idPeriodos.idPeriodos =  '"+per.getIdPeriodos()+"' ");
         if (numeroYa.size() > 0) {
             Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o "
+                    + " where o.idPeriodos.idPeriodos =  '"+per.getIdPeriodos()+"'  "
                     + " ");
             parametros.setVNumerico(new BigDecimal(nClave + 1));
             adm.actualizar(parametros);

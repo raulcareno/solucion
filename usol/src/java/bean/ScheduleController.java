@@ -35,11 +35,13 @@ public class ScheduleController {
     private String theme;
 
     public ScheduleController() {
+        Date feca = new Date();
+        feca.setDate(20);
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+        eventModel.addEvent(new DefaultScheduleEvent("Mi evento", new Date(), feca));
+        eventModel.addEvent(new DefaultScheduleEvent("Día del Maestro", today1Pm(), today6Pm()));
+        eventModel.addEvent(new DefaultScheduleEvent("Cambios de Autoriadad", nextDay9Am(), nextDay11Am()));
+        eventModel.addEvent(new DefaultScheduleEvent("Planificación de Maestros", theDayAfter3Pm(), fourDaysLater3pm()));
         lazyEventModel = new LazyScheduleModel() {
 //            @Override  
             public void fetchEvents(Date start, Date end) {
@@ -188,4 +190,29 @@ public class ScheduleController {
     public void setEvent(ScheduleEvent event) {
         this.event = event;
     }
+
+    public ScheduleModel getEventModel() {
+        return eventModel;
+    }
+
+    public void setEventModel(ScheduleModel eventModel) {
+        this.eventModel = eventModel;
+    }
+
+    public ScheduleModel getLazyEventModel() {
+        return lazyEventModel;
+    }
+
+    public void setLazyEventModel(ScheduleModel lazyEventModel) {
+        this.lazyEventModel = lazyEventModel;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+    
 }
