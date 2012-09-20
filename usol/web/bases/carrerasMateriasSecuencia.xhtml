@@ -56,6 +56,10 @@
                     .textos2{
                         font-size: 9px;font-weight: bold; margin: -5px; text-align:center;
                     }
+                    .textos3{
+                        font-size: 10px;font-weight: bold;   text-align:center;
+                        color:blue;
+                    }
 
                 </style>
                 <p:panel id="registro"  style="width: 600px;" header="Malla(Materias por Carrera)">
@@ -92,6 +96,18 @@
                     <p:fieldset id="selectedCars" legend="MALLA CURRICULAR" style="margin-top:20px">  
                         <p:outputPanel id="dropArea">  
                             <p:panelGrid columns="10">
+                                <h:outputText styleClass="textos3"  value="CICLO 1" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 2" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 3" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 4" />    
+                                <h:outputText styleClass="textos3"  value="CICLO 5" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 6" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 7" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 8" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 9" />     
+                                <h:outputText styleClass="textos3"  value="CICLO 10" />     
+
+
                                 <p:panel  id="f0c0" styleClass="panelGrande">  
                                     <f:facet name="header">
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][0])}"  >
@@ -115,7 +131,7 @@
                                     </f:facet>
                                     <h:panelGrid columns="1" styleClass="panelito">  
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroCreditos}C" />     
-                                         
+
                                     </h:panelGrid>  
                                 </p:panel>
 
@@ -129,7 +145,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid columns="2" styleClass="panelito">  
-                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
 
@@ -155,7 +171,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid width="100px" columns="2" styleClass="panelito">  
-                                          <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
 
@@ -168,7 +184,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid width="100px" columns="2" styleClass="panelito">  
-                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
                                 <p:panel  id="f0c6" styleClass="panelGrande">  
@@ -180,7 +196,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid width="100px" columns="2" styleClass="panelito">  
-                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
                                 <p:panel  id="f0c7" styleClass="panelGrande">  
@@ -192,7 +208,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid width="100px" columns="2" styleClass="panelito">  
-                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
                                 <p:panel  id="f0c8" styleClass="panelGrande">  
@@ -204,7 +220,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid width="100px" columns="2" styleClass="panelito">  
-                                      <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
                                 <p:panel  id="f0c9" styleClass="panelGrande">  
@@ -216,7 +232,7 @@
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre}
                                     </f:facet>
                                     <h:panelGrid width="100px" columns="2" styleClass="panelito">  
-                                      <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].numeroCreditos}C" />     
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].numeroCreditos}C" />     
                                     </h:panelGrid>  
                                 </p:panel>
                             </p:panelGrid>
@@ -250,7 +266,7 @@
                             <p:droppable for="f0c9" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            
+
                         </p:outputPanel>  
 
                     </p:fieldset>  
