@@ -4764,7 +4764,7 @@ public class reportesClase {
                 + " from Notasrecord as o where o.estudiante  "
                 + "  in (Select m.estudiante from Matriculas as m, Cursos as cu "
                 + "where cu.codigocur = m.curso and cu.secuencia = '" + cursoLlega.getSecuencia() + "'  and cu.periodo = '" + cursoLlega.getPeriodo().getCodigoper() + "' ) "
-                + " order by  6 DESC ";
+                + " order by  3 DESC ";
         List notas = adm.queryNativo(querString);
          System.out.println("Q82: "+querString);     
          
