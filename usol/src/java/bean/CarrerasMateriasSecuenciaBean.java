@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -73,11 +74,19 @@ Auditar  aud = new Auditar();
         //selectedCarrerasMaterias = new CarrerasMaterias();
 
     }
-
-   public void onDrop(DragDropEvent event) {  
+    public void onCarrerasInvDrop(CarrerasMaterias player) {  
+        listaMaterias.add(player); 
+        anadidas.remove(player);
+    }
+   public void onCarrerasDrop(DragDropEvent event) {  
         CarrerasMaterias player = (CarrerasMaterias) event.getData();  
         anadidas.add(player); 
         listaMaterias.remove(player);
+         String filaColumna = event.getDropId();
+         Integer fila = new Integer(filaColumna.substring(filaColumna.indexOf("f")+1, filaColumna.indexOf("c")));
+         Integer columna = new Integer(filaColumna.substring(filaColumna.indexOf("c")+1, filaColumna.length()));
+        anadidasArray[fila][columna] =  player;
+        System.out.println("ID EN LA CUAL SE HA HAÑADIDO"+event.getDropId());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(player.getIdCarreras().getNombre() + " added", "Position:" + event.getDropId()));  
     }   
     /**
@@ -85,12 +94,29 @@ Auditar  aud = new Auditar();
      */
     List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
     List<CarrerasMaterias> anadidas  = new ArrayList<CarrerasMaterias>();
+    //List<CarrerasMaterias> anadidas2[2][2]  = new ArrayList<>();
+   CarrerasMaterias anadidasArray[][] = new CarrerasMaterias[30][12];
+    public void llenarArreglo(){
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 12; j++) {
+                CarrerasMaterias car = new CarrerasMaterias();
+                Materias mat = new Materias();
+                mat.setNombre(""+i+" "+j);
+                car.setIdMaterias(mat);
+                car.setIdNiveles(new Niveles());
+                car.setIdCarreras(new Carreras());
+                anadidasArray[i][j] = car;
+            }
+            
+        }
+        
+    }
     public void buscarMateriasdeCarrera() {
         try {
-            //setModel(adm.listar("CarrerasMaterias"));
+        
               listaMaterias = adm.query("Select o from CarrerasMaterias as o "
                         + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ");
-         
+          llenarArreglo();
 
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
@@ -207,5 +233,31 @@ Auditar  aud = new Auditar();
     public void setMateriasSeleccionada(Materias materiasSeleccionada) {
         this.materiasSeleccionada = materiasSeleccionada;
     }
+
+    public List<CarrerasMaterias> getListaMaterias() {
+        return listaMaterias;
+    }
+
+    public void setListaMaterias(List<CarrerasMaterias> listaMaterias) {
+        this.listaMaterias = listaMaterias;
+    }
+
+    public List<CarrerasMaterias> getAnadidas() {
+        return anadidas;
+    }
+
+    public void setAnadidas(List<CarrerasMaterias> anadidas) {
+        this.anadidas = anadidas;
+    }
+
+    public CarrerasMaterias[][] getAnadidasArray() {
+        return anadidasArray;
+    }
+
+    public void setAnadidasArray(CarrerasMaterias[][] anadidasArray) {
+        this.anadidasArray = anadidasArray;
+    }
+    
+    
     
 }

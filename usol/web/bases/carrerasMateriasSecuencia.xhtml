@@ -41,7 +41,7 @@
                     <h:outputText value="SELECCIONE UNA CARRERA: " /> 
                     <h:selectOneMenu id="carreras" label="carreras" converter="ConvCarreras" value="#{carrerasMateriasSecuenciaBean.carreraSeleccionada}" rendered="true">
                         <f:selectItems value="#{carrerasMateriasSecuenciaBean.selectedItemCarreras}"></f:selectItems>
-                        <p:ajax event="change" listener="#{carrerasMateriasSecuenciaBean.buscarMateriasdeCarrera()}" update="availableCars"/>
+                        <p:ajax event="change" listener="#{carrerasMateriasSecuenciaBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars"/>
                     </h:selectOneMenu>
 
                     <p:dataGrid id="availableCars" var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="3">  
@@ -71,58 +71,49 @@
                             <h:outputText value="!!!Arrastra aquí!!!"  rendered="#{empty carrerasMateriasSecuenciaBean.anadidas}"  style="font-size:24px;" />  
                             <p:panelGrid columns="10">
 
-                                <p:dataGrid  id="primero"  styleClass="slot"   var="car" columns="1" value="#{carrerasMateriasSecuenciaBean.anadidas}"  >  
-                                    <p:column>  
-                                        <p:panel  id="pnl2" style=" width: 150px; text-align:center">  
-                                            <f:facet name="header">
-                                                <p:commandLink   update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(car)}"  >
-                                                    <p:graphicImage value="/images/borrar.png"/>   
-                                                </p:commandLink>
-                                                #{car.idMaterias.nombre}
-                                            </f:facet>
-                                            <h:panelGrid columns="2" style="text-align:justify;width:100%">  
-                                                <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idNiveles.nombre}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{car.idMaterias.idTipoMateria.nombre}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idEjes.nombre}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroHoras}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroCreditos}" />     
-                                            </h:panelGrid>  
-                                        </p:panel>  
-                                    </p:column>  
-                                </p:dataGrid> 
-                                <p:dataGrid id="segundo"  styleClass="slot" var="car" columns="1" value="#{carrerasMateriasSecuenciaBean.anadidas}"  >  
-                                    <p:column>  
-                                        <p:panel  id="pnl2" style=" width: 150px; text-align:center">  
-                                            <f:facet name="header">
-                                                <p:commandLink   update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(car)}"  >
-                                                    <p:graphicImage value="/images/borrar.png"/>   
-                                                </p:commandLink>
-                                                #{car.idMaterias.nombre}
-                                            </f:facet>
-                                            <h:panelGrid columns="2" style="text-align:justify;width:100%">  
-                                                <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idNiveles.nombre}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{car.idMaterias.idTipoMateria.nombre}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idEjes.nombre}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroHoras}" />     
-                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroCreditos}" />     
-                                            </h:panelGrid>  
-                                        </p:panel>  
-                                    </p:column>  
-                                </p:dataGrid> 
-
+                                <p:panel  id="f0c0" style=" width: 150px; text-align:center">  
+                                    <f:facet name="header">
+                                        <p:commandLink   update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][0])}"  >
+                                            <p:graphicImage value="/images/borrar.png"/>   
+                                        </p:commandLink>
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre}
+                                    </f:facet>
+                                    <p:panelGrid columns="2" style="text-align:justify;width:100%">  
+                                        <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idNiveles.nombre}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.idTipoMateria.nombre}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idEjes.nombre}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].numeroHoras}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].numeroCreditos}" />     
+                                    </p:panelGrid>  
+                                </p:panel>  
+                                <p:droppable for="f0c0" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                                    <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                                </p:droppable> 
+                                <p:panel  id="f0c1" style=" width: 150px; text-align:center">  
+                                    <f:facet name="header">
+                                        <p:commandLink   update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][0])}"  >
+                                            <p:graphicImage value="/images/borrar.png"/>   
+                                        </p:commandLink>
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre}
+                                    </f:facet>
+                                    <p:panelGrid columns="2" style="border:0px; text-align:justify;width:100%">  
+                                        <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idNiveles.nombre}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.idTipoMateria.nombre}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idEjes.nombre}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroHoras}" />     
+                                        <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroCreditos}" />     
+                                    </p:panelGrid>  
+                                </p:panel>
+                                <p:droppable for="f0c1" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                                    <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                                </p:droppable> 
+                               
                             </p:panelGrid>
                         </p:outputPanel>  
 
                     </p:fieldset>  
 
-                    <p:droppable for="primero" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                        <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                    </p:droppable>  
-                    <p:droppable for="segundo" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                        <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                    </p:droppable>  
                     <h:panelGrid columns="4">
-                        <p:commandButton  value="Guardar"  id="guardar"   action="#{carrerasMateriasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
 
 
 
