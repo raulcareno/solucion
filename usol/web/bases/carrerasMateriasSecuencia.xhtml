@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+                <script type="text/javascript">
+                    function handleDrop(event, ui) {
+                        var droppedCar = ui.draggable;
+                        droppedCar.fadeOut('fast');
+                    }
+                </script>
+                <style type="text/css">
+                    .slot {
+                        width:150px;
+                        height:150px;
+                        display:block;
+                        background: lightgrey;
+                    }
+
+                    .blueslot {
+                        width:100%;
+                        height:200px;
+                        background: blue;
+                        display:block;
+                    }
+                </style>
+                <p:panel id="registro"  style="width: 600px;" header="Malla(Materias por Carrera)">
+                    <p:growl id="growl" showDetail="true" sticky="true"  /> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:outputText value="SELECCIONE UNA CARRERA: " /> 
+                    <h:selectOneMenu id="carreras" label="carreras" converter="ConvCarreras" value="#{carrerasMateriasSecuenciaBean.carreraSeleccionada}" rendered="true">
+                        <f:selectItems value="#{carrerasMateriasSecuenciaBean.selectedItemCarreras}"></f:selectItems>
+                        <p:ajax event="change" listener="#{carrerasMateriasSecuenciaBean.buscarMateriasdeCarrera()}" update="availableCars"/>
+                    </h:selectOneMenu>
+
+                    <p:dataGrid id="availableCars" var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="3">  
+                        <p:column>  
+                            <p:panel  id="pnl" style=" width: 150px; text-align:center">  
+                                <f:facet name="header">
+                                    <p:graphicImage value="/images/mano.png"/>    
+                                    #{car.idMaterias.nombre}
+                                </f:facet>
+                                <h:panelGrid columns="2" style="text-align:justify;width:100%">  
+                                    <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idNiveles.nombre}" />     
+                                    <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{car.idMaterias.idTipoMateria.nombre}" />     
+                                    <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idEjes.nombre}" />     
+                                    <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroHoras}" />     
+                                    <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroCreditos}" />     
+                                </h:panelGrid>  
+                            </p:panel>  
+                            <p:draggable for="pnl" revert="true"  stack=".ui-panel"/>  
+
+
+                        </p:column>  
+
+                    </p:dataGrid> 
+
+                    <p:fieldset id="selectedCars" legend="Selected Cars" style="margin-top:20px">  
+                        <p:outputPanel id="dropArea">  
+                            <h:outputText value="!!!Arrastra aquí!!!"  rendered="#{empty carrerasMateriasSecuenciaBean.anadidas}"  style="font-size:24px;" />  
+                            <p:panelGrid columns="10">
+
+                                <p:dataGrid  id="primero"  styleClass="slot"   var="car" columns="1" value="#{carrerasMateriasSecuenciaBean.anadidas}"  >  
+                                    <p:column>  
+                                        <p:panel  id="pnl2" style=" width: 150px; text-align:center">  
+                                            <f:facet name="header">
+                                                <p:commandLink   update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(car)}"  >
+                                                    <p:graphicImage value="/images/borrar.png"/>   
+                                                </p:commandLink>
+                                                #{car.idMaterias.nombre}
+                                            </f:facet>
+                                            <h:panelGrid columns="2" style="text-align:justify;width:100%">  
+                                                <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idNiveles.nombre}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{car.idMaterias.idTipoMateria.nombre}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idEjes.nombre}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroHoras}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroCreditos}" />     
+                                            </h:panelGrid>  
+                                        </p:panel>  
+                                    </p:column>  
+                                </p:dataGrid> 
+                                <p:dataGrid id="segundo"  styleClass="slot" var="car" columns="1" value="#{carrerasMateriasSecuenciaBean.anadidas}"  >  
+                                    <p:column>  
+                                        <p:panel  id="pnl2" style=" width: 150px; text-align:center">  
+                                            <f:facet name="header">
+                                                <p:commandLink   update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(car)}"  >
+                                                    <p:graphicImage value="/images/borrar.png"/>   
+                                                </p:commandLink>
+                                                #{car.idMaterias.nombre}
+                                            </f:facet>
+                                            <h:panelGrid columns="2" style="text-align:justify;width:100%">  
+                                                <h:outputText style="font-size: 9px;font-weight: bold" value="NIVEL:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idNiveles.nombre}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="TIPO MATERIA:" />     <h:outputText style="font-size: 9px;font-weight: bold"  value=" #{car.idMaterias.idTipoMateria.nombre}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="EJE: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.idEjes.nombre}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#HORAS: " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroHoras}" />     
+                                                <h:outputText style="font-size: 9px;font-weight: bold"  value="#CRÉDITOS:  " />     <h:outputText style="font-size: 9px;font-weight: bold"  value="#{car.numeroCreditos}" />     
+                                            </h:panelGrid>  
+                                        </p:panel>  
+                                    </p:column>  
+                                </p:dataGrid> 
+
+                            </p:panelGrid>
+                        </p:outputPanel>  
+
+                    </p:fieldset>  
+
+                    <p:droppable for="primero" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                        <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                    </p:droppable>  
+                    <p:droppable for="segundo" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                        <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                    </p:droppable>  
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"   action="#{carrerasMateriasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+
+
+
+
+                    </h:panelGrid>
+                </p:panel>
+
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>
