@@ -21,6 +21,7 @@ import jcinform.persistencia.Ejes;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.Niveles;
 import jcinform.procesos.Administrador;
+import org.primefaces.event.DragDropEvent;
 
 import utilerias.Permisos;
  
@@ -73,21 +74,26 @@ Auditar  aud = new Auditar();
 
     }
 
-     
+   public void onDrop(DragDropEvent event) {  
+        CarrerasMaterias player = (CarrerasMaterias) event.getData();  
+        anadidas.add(player); 
+        listaMaterias.remove(player);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(player.getIdCarreras().getNombre() + " added", "Position:" + event.getDropId()));  
+    }   
     /**
      * busca según criterio textoBuscar
      */
+    List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
+    List<CarrerasMaterias> anadidas  = new ArrayList<CarrerasMaterias>();
     public void buscarMateriasdeCarrera() {
         try {
             //setModel(adm.listar("CarrerasMaterias"));
-            model = (adm.query("Select o from CarrerasMaterias as o "
-                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
-                    + "order by o.idNiveles.secuencia, o.idMaterias.nombre "));
-            setModel(model);
+              listaMaterias = adm.query("Select o from CarrerasMaterias as o "
+                        + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ");
+         
 
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("" + e);
         }
     }
 
@@ -95,8 +101,6 @@ Auditar  aud = new Auditar();
         try {
             List<Carreras> divisionPoliticas = new ArrayList<Carreras>();
             List<SelectItem> items = new ArrayList<SelectItem>();
-            if (object != null) {
-                 
                     divisionPoliticas = adm.query("Select o from Carreras as o order by o.nombre ");
                     if (divisionPoliticas.size() > 0) {
                         Carreras objSel = new Carreras(0);
@@ -108,8 +112,6 @@ Auditar  aud = new Auditar();
                         Carreras obj = new Carreras(0);
                         items.add(new SelectItem(obj, "NO EXISTEN CARRERAS"));
                     }
-                 
-            }
             return items;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
@@ -117,83 +119,7 @@ Auditar  aud = new Auditar();
         }
         return null;
     }
-      public List<SelectItem> getSelectedItemMaterias() {
-        try {
-            List<Materias> divisionPoliticas = new ArrayList<Materias>();
-            List<SelectItem> items = new ArrayList<SelectItem>();
-            if (object != null) {
-                 
-                    divisionPoliticas = adm.query("Select o from Materias as o order by o.nombre ");
-                    if (divisionPoliticas.size() > 0) {
-                        Materias objSel = new Materias(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
-                        for (Materias obj : divisionPoliticas) {
-                            items.add(new SelectItem(obj, obj.getNombre()));
-                        }
-                    } else {
-                        Materias obj = new Materias(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN MATERIAS"));
-                    }
-                 
-            }
-            return items;
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(CarrerasMaterias.class.getName()).log(Level.SEVERE, null, e);
-
-        }
-        return null;
-    }
-      public List<SelectItem> getSelectedItemNiveles() {
-        try {
-            List<Niveles> divisionPoliticas = new ArrayList<Niveles>();
-            List<SelectItem> items = new ArrayList<SelectItem>();
-            if (object != null) {
-                  
-                    divisionPoliticas = adm.query("Select o from Niveles as o order by o.nombre ");
-                    if (divisionPoliticas.size() > 0) {
-                        Niveles objSel = new Niveles(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
-                        for (Niveles obj : divisionPoliticas) {
-                            items.add(new SelectItem(obj, obj.getNombre()));
-                        }
-                    } else {
-                        Materias obj = new Materias(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN NIVELES"));
-                    }
-                 
-            }
-            return items;
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(CarrerasMaterias.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return null;
-    }
-   
-      public List<SelectItem> getSelectedItemEjes() {
-        try {
-            List<Ejes> divisionPoliticas = new ArrayList<Ejes>();
-            List<SelectItem> items = new ArrayList<SelectItem>();
-            if (object != null) {
-                 
-                    divisionPoliticas = adm.query("Select o from Ejes as o order by o.nombre ");
-                    if (divisionPoliticas.size() > 0) {
-                        Niveles objSel = new Niveles(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
-                        for (Ejes obj : divisionPoliticas) {
-                            items.add(new SelectItem(obj, obj.getNombre()));
-                        }
-                    } else {
-                        Ejes obj = new Ejes(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN EJES"));
-                    }
-                 
-            }
-            return items;
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(CarrerasMaterias.class.getName()).log(Level.SEVERE, null, e);
-        }
-        return null;
-    }
+      
 
     /**
      * propiedades
