@@ -101,7 +101,7 @@ Auditar  aud = new Auditar();
             for (int j = 0; j < 12; j++) {
                 CarrerasMaterias car = new CarrerasMaterias();
                 Materias mat = new Materias();
-                mat.setNombre(""+i+" "+j);
+                mat.setNombre("");
                 car.setIdMaterias(mat);
                 car.setIdNiveles(new Niveles());
                 car.setIdCarreras(new Carreras());
