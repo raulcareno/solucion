@@ -86,8 +86,8 @@ Auditar  aud = new Auditar();
          Integer fila = new Integer(filaColumna.substring(filaColumna.indexOf("f")+1, filaColumna.indexOf("c")));
          Integer columna = new Integer(filaColumna.substring(filaColumna.indexOf("c")+1, filaColumna.length()));
         anadidasArray[fila][columna] =  player;
-        System.out.println("ID EN LA CUAL SE HA HAÑADIDO"+event.getDropId());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(player.getIdCarreras().getNombre() + " added", "Position:" + event.getDropId()));  
+        //System.out.println("ID EN LA CUAL SE HA HAÑADIDO"+event.getDropId());
+        //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(player.getIdCarreras().getNombre() + " added", "Position:" + event.getDropId()));  
     }   
     /**
      * busca según criterio textoBuscar
