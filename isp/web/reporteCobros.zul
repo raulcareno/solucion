@@ -791,6 +791,7 @@ void campos(String valor){
                                 <listitem value="BASICO" label="BASICO" />
                                 <listitem value="CORPORATIVO" label="CORPORATIVO" />
                                 <listitem value="PREMIUM" label="PREMIUM" />
+                                 <listitem  value="CIBERCAFE" label="CIBERCAFE" />
                             </listbox>
                               
 

@@ -1,24 +1,24 @@
 <?page id="contratospage2"?>
 <window id="contratosventana" onCreate="cargando()"  border="normal" >
     <style>
-.MyGridRowHeight tr.z-row td.z-row-inner  
-{
-      background: white;
-      border-top: none;
-      border-left: 1px solid white;
-      border-right: 1px solid #CCC;
-      //border-bottom: 1px solid #DDD;
-      border-bottom: none;
+        .MyGridRowHeight tr.z-row td.z-row-inner  
+        {
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        //border-bottom: 1px solid #DDD;
+        border-bottom: none;
  
-}
-/*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
-  background: #F8F8F8;
-} */
-.MyGridRowHeight td.z-row-inner
-{
-    padding: 0px;
-    //overflow: hidden;
-}
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px;
+        //overflow: hidden;
+        }
     </style>
     <zscript>   <![CDATA[
     
@@ -51,7 +51,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
   void facturasPendientes(){
         try{
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),sect.selectedItem.value,sect2.selectedItem.value,formapago.selectedItem.value);
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),sect.selectedItem.value,sect2.selectedItem.value,formapago.selectedItem.value,estadoContrato.selectedItem.value);
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -646,7 +646,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="cant" width="250px"
-                                                     onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                                                                 onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                         
                                                             <listitem forEach="${cantonesList}" value="${each}">
                                                                 <listcell label="${each.nombre}" />
@@ -659,49 +659,49 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                             <span> Forma Pago:</span>
                                                 
                                                      
-                                                                <listbox mold="select" id="formapago" width="250px" >
+                                            <listbox mold="select" id="formapago" width="250px" >
                                  
-                                                                    <listitem value="3"  selected="true">
-                                                                        <listcell label="Domicilio" />
-                                                                    </listitem>
-                                                                    <listitem value="1" >
-                                                                        <listcell label="Oficina" />
-                                                                    </listitem>
-                                                                    <listitem value="2" >
-                                                                        <listcell label="Deposito" />
-                                                                    </listitem>
-                                                                    <listitem value="0" >
-                                                                        <listcell label="Todos" />
-                                                                    </listitem>
-                                                      </listbox>
+                                                <listitem value="3"  selected="true">
+                                                    <listcell label="Domicilio" />
+                                                </listitem>
+                                                <listitem value="1" >
+                                                    <listcell label="Oficina" />
+                                                </listitem>
+                                                <listitem value="2" >
+                                                    <listcell label="Deposito" />
+                                                </listitem>
+                                                <listitem value="0" >
+                                                    <listcell label="Todos" />
+                                                </listitem>
+                                            </listbox>
                                                  
 
                                         </row>
                                         <row visible = "true" id="filasector">
                                             <span> Desde Sector(*):</span>
                                      
-                                                <bandbox readonly="true"  id="bdSector">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox id="sect" width="250px"
-                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                                            <bandbox readonly="true"  id="bdSector">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="sect" width="250px"
+                                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                                  
-                                                                <listitem forEach="${sectiles}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
+                                                            <listitem forEach="${sectiles}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
-                                                <span> Hasta Sector(*):</span>
-                                                       <span>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                            <span> Hasta Sector(*):</span>
+                                            <span>
                                                 <span>
                                                     <bandbox   readonly="true"  id="bdSector2">
                                                         <bandpopup>
                                                             <vbox>
                                                                 <listbox id="sect2" width="250px"
-                                                     onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                                                                         onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                                  
                                                                     <listitem forEach="${sectiles}" value="${each}">
                                                                         <listcell label="${each.nombre}" />
@@ -711,9 +711,21 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                             </vbox>
                                                         </bandpopup>
                                                     </bandbox>
-                                                    <button label="Buscar" onClick="facturasPendientes()"/>
+                                                   
                                                 </span>
                                             </span>
+                                        </row>
+                                        <row>
+                                            <span></span>
+                                             <radiogroup id="estadoContrato" >
+                                                        <radio id="eactivo" selected="true" value="Activo" label="Act." style="font-weight:bold2" />
+                                                        <radio  id="ecortado"  value="Cortado"  label="Cort." style="font-weight:bold2" />
+                                                        <radio id="esuspendido"    value="Suspendido"  label="Susp." style="font-weight:bold2" />
+                                                        <radio id="eterminado"   value="Terminado"  label="Term." style="font-weight:bold2" />
+                                                        <radio id="ependiente"  value="Pendiente"  label="Pend." style="font-weight:bold2" />
+                                                        <radio id="etodos"  value="Todos"  label="Todos" style="font-weight:bold2" />
+                                                    </radiogroup>
+                                                    <button label="Buscar" onClick="facturasPendientes()"/>
                                         </row>
                                         <row spans="4">
                                             <groupbox id="gb" mold="3d" width="100%">
@@ -726,6 +738,8 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date(); " id="vencimiento" />
                                                 <button label="Empezar a Generar #" onClick="numero.getValue(); generarFacturas(); "/>
                                                 <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
+                                          
+
 
                                             </groupbox>
                                            
@@ -750,10 +764,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                     </rows>
                                     <foot style="background:#E1E1E1">
                                         <footer/>
-                                       <footer/>
-                                       <footer/>
-                                       <footer/>
-                                       <footer/>
+                                        <footer/>
+                                        <footer/>
+                                        <footer/>
+                                        <footer/>
                                         <footer width="10px">
                                             
                                             <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
@@ -779,7 +793,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="empleados" width="250px"
-                                                     onSelect="bdEmpleados.value=self.selectedItem.label; bdEmpleados.closeDropdown(); facturasDatosAsignados.getRows().getChildren().clear();">
+                                                                 onSelect="bdEmpleados.value=self.selectedItem.label; bdEmpleados.closeDropdown(); facturasDatosAsignados.getRows().getChildren().clear();">
                         
                                                             <listitem forEach="${empleadosList}" value="${each}">
                                                                 <listcell label="${each.apellidos} ${each.nombres}" />
@@ -865,10 +879,10 @@ List empleadosList = adm.query("Select o from Empleados as o ");
         </panel>
     </div>
     <zscript>
-    cargando(){
-            Session ses = Sessions.getCurrent();
-            Empleadossucursal sucursalEmp2 = ses.getAttribute("sector");    
-            autorizacion.value = sucursalEmp2.getSucursal().getAutorizacion();
-    }
-</zscript>
+        cargando(){
+        Session ses = Sessions.getCurrent();
+        Empleadossucursal sucursalEmp2 = ses.getAttribute("sector");    
+        autorizacion.value = sucursalEmp2.getSucursal().getAutorizacion();
+        }
+    </zscript>
 </window>

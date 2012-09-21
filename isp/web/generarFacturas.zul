@@ -313,6 +313,7 @@
                         <comboitem label="BASICO" />
                         <comboitem label="CORPORATIVO" />
                         <comboitem label="PREMIUM" />
+                         <comboitem label="CIBERCAFE" />
                     </combobox>
                     <button image="/images/auditoria.gif" label="BUSCAR DEUDAS " onClick="facturasPendientes()"/>
                 </groupbox>
