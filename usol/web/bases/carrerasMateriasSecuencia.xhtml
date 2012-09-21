@@ -72,20 +72,20 @@
                         <p:ajax event="change" listener="#{carrerasMateriasSecuenciaBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars"/>
                     </h:selectOneMenu>
 
-                    <p:dataGrid id="availableCars" var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="8">  
+                    <p:dataGrid id="availableCars"  var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="9">  
                         <p:column>  
-                            <p:panel  id="pnl" styleClass="panelGrande2">  
+                            <p:panel  id="pnl" styleClass="panelGrande">  
                                 <f:facet name="header">
                                     <p:graphicImage value="/images/plus.png"/>    
                                     #{car.idMaterias.nombre}
                                 </f:facet>
-                                <h:panelGrid columns="2" style="text-align:justify;width:100%">  
-                                    <h:outputText styleClass="textos2"  value="NIVEL:" />     <h:outputText styleClass="textos2"   value="#{car.idNiveles.nombre}" />     
-                                    <h:outputText styleClass="textos2"   value="EJE: " />     <h:outputText styleClass="textos2"   value="#{car.idEjes.nombre}" />     
+                                <h:panelGrid columns="1" style="text-align:justify;width:100%">  
+                                    <h:outputText styleClass="textos2"   value="#{car.idNiveles.nombre}" />     
+                                    <h:outputText styleClass="textos2"   value="#{car.idEjes.nombre}" />     
                                     <h:outputText styleClass="textos2"   value="#{car.numeroHoras}H / #{car.numeroCreditos}C " />     
                                 </h:panelGrid>  
                             </p:panel>  
-                            <p:draggable  for="pnl" revert="true"  stack=".ui-panel"/>  
+                            <p:draggable  for="pnl" revert="true"  scope="#{car.idNiveles.secuencia}"  stack=".ui-panel"/>  
 
 
                         </p:column>  
@@ -627,132 +627,131 @@
                                     </h:panelGrid>  
                                 </p:panel>
                             </p:panelGrid>
-                            <p:droppable for="f0c0" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c0" tolerance="pointer" activeStyleClass="ui-state-highlight"  scope="1" datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c1" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c2" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c3" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c4" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c5" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c6" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c7" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c8" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f0c9" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                              <p:droppable for="f1c0" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                           
-                             <p:droppable for="f1c0" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c1" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c2" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c3" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c4" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c5" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c6" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c7" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c8" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
-                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
-                            </p:droppable> 
-                            <p:droppable for="f1c9" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f0c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
                             
                             
-                             <p:droppable for="f2c0" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                              <p:droppable for="f1c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                             <p:droppable for="f2c1" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                          
+                            <p:droppable for="f1c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c2" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c3" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c4" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c5" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c6" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c7" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c8" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f2c9" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f1c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            
+                            
+                             <p:droppable for="f2c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                             <p:droppable for="f2c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f2c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
 
                             
-                             <p:droppable for="f3c0" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                             <p:droppable for="f3c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                             <p:droppable for="f3c1" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                             <p:droppable for="f3c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c2" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c3" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c4" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c5" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c6" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c7" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c8" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            <p:droppable for="f3c9" tolerance="pointer" activeStyleClass="ui-state-highlight" datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
                         </p:outputPanel>  
@@ -761,7 +760,11 @@
 
                     <h:panelGrid columns="4">
 
-
+    <h:commandButton value="imprimir" type="button" icon="ui-icon-print">  
+        <p:printer target="selectedCars" />  
+    </h:commandButton>  
+  
+    
 
 
                     </h:panelGrid>

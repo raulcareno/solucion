@@ -75,8 +75,31 @@ Auditar  aud = new Auditar();
 
     }
     public void onCarrerasInvDrop(CarrerasMaterias player) {  
-        listaMaterias.add(player); 
-        anadidas.remove(player);
+        
+//        anadidas.remove(player);
+
+     
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 12; j++) {
+                CarrerasMaterias carA = anadidasArray[i][j];
+                if(player.equals(carA)){
+                  CarrerasMaterias car = new CarrerasMaterias();
+                        Materias mat = new Materias();
+                        mat.setNombre("");
+                        car.setIdMaterias(mat);
+                        car.setIdNiveles(new Niveles());
+                        car.setIdCarreras(new Carreras());   
+                        anadidasArray[i][j] = car;
+                        listaMaterias.add(player); 
+                }
+                
+            }
+            
+        }
+        
+    
+        
+        
     }
    public void onCarrerasDrop(DragDropEvent event) {  
         CarrerasMaterias player = (CarrerasMaterias) event.getData();  
