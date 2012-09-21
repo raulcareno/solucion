@@ -306,14 +306,17 @@ public class MatriculasBean {
         /**
          * GUARDO LOS ARCHIVOS
          */
+        arLibreta.setIdEstudiantes(estudiante);
         arLibreta.setNombre(libretaNombre);
         arLibreta.setTipoArchivo("LIB");
         arLibreta.setArchivo(libreta);
 
+        arTitulo.setIdEstudiantes(estudiante);
         arTitulo.setNombre(tituloNombre);
         arTitulo.setTipoArchivo("TIT");
         arTitulo.setArchivo(titulo);
 
+        arCedula.setIdEstudiantes(estudiante);
         arCedula.setNombre(cedulaNombre);
         arCedula.setTipoArchivo("CED");
         arCedula.setArchivo(cedula);
@@ -326,21 +329,34 @@ public class MatriculasBean {
             adm.actualizar(arLibreta);
         }
         //2.- ARCHIV0 2 EMPIEZO A GUARDAR
-        if (arTitulo.getIdArchivos().equals(new Integer(0))) {
+        if (arTitulo.getIdArchivos() == null) {
             arTitulo.setIdArchivos(adm.getNuevaClave("Archivos", "idArchivos"));
             adm.guardar(arTitulo);
         } else {
             adm.actualizar(arTitulo);
         }
         //3.- ARCHIV0 3 EMPIEZO A GUARDAR
-        if (arCedula.getIdArchivos().equals(new Integer(0))) {
+        if (arCedula.getIdArchivos() == null) {
             arCedula.setIdArchivos(adm.getNuevaClave("Archivos", "idArchivos"));
             adm.guardar(arCedula);
         } else {
             adm.actualizar(arCedula);
         }
 
-
+            if(arLibreta.getNombre().isEmpty())
+                    estudiante.setLibretaMilitar(false);
+             else
+                   estudiante.setLibretaMilitar(true);
+            
+            if(arTitulo.getNombre().isEmpty())
+                    estudiante.setCopiaTitulo(false);
+             else
+                   estudiante.setCopiaTitulo(true);
+            
+            if(arCedula.getNombre().isEmpty())
+                    estudiante.setCopiaCedula(false);
+             else
+                   estudiante.setCopiaCedula(true);
 
         object.setIdEstudiantes(estudiante);
         pariente1.setIdEstudiantes(object.getIdEstudiantes());
@@ -568,8 +584,6 @@ public class MatriculasBean {
                     + " where o.idEstudiantes like '%" + cedula + "%' "
                     + " order by o.idEstudiantes ", 0, 10);
             return estudiantesListado;
-
-
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
@@ -593,8 +607,8 @@ public class MatriculasBean {
 
     public void buscarCedula() {
 
-        String cedula = estudiante.getIdEstudiantes();
-        estudiante = (Estudiantes) adm.buscarClave(cedula, Estudiantes.class);
+        String cedula2 = estudiante.getIdEstudiantes();
+        estudiante = (Estudiantes) adm.buscarClave(cedula2, Estudiantes.class);
 
         List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
@@ -608,17 +622,25 @@ public class MatriculasBean {
             }
 
         }
-
+   arLibreta = new Archivos();
+        arTitulo = new Archivos();
+        arCedula = new Archivos();
         List<Archivos> archi = adm.query("Select o from Archivos as o "
                 + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Archivos> it = archi.iterator(); it.hasNext();) {
             Archivos arcIt = it.next();
             if (arcIt.getTipoArchivo().equals("LIB")) {
                 arLibreta = arcIt;
+                libreta = arcIt.getArchivo();
+                libretaNombre = arcIt.getNombre();
             } else if (arcIt.getTipoArchivo().equals("CED")) {
-                arTitulo = arcIt;
-            } else if (arcIt.getTipoArchivo().equals("TIT")) {
                 arCedula = arcIt;
+                cedula = arcIt.getArchivo();
+                cedulaNombre = arcIt.getNombre();
+            } else if (arcIt.getTipoArchivo().equals("TIT")) {
+                arTitulo = arcIt;
+                titulo = arcIt.getArchivo();
+                tituloNombre = arcIt.getNombre();
             }
 
         }
@@ -685,6 +707,9 @@ public class MatriculasBean {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
 
         imagen = estudiante.getFoto();
+        pariente1 = new Parientes();
+        pariente2 = new Parientes();
+        pariente3 = new Parientes();
         List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
             Parientes parientes = it.next();
@@ -694,6 +719,28 @@ public class MatriculasBean {
                 pariente2 = parientes;
             } else if (parientes.getTipoRepresentante().equals("M")) {
                 pariente3 = parientes;
+            }
+
+        }
+        arLibreta = new Archivos();
+        arTitulo = new Archivos();
+        arCedula = new Archivos();
+         List<Archivos> archi = adm.query("Select o from Archivos as o "
+                + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
+        for (Iterator<Archivos> it = archi.iterator(); it.hasNext();) {
+            Archivos arcIt = it.next();
+            if (arcIt.getTipoArchivo().equals("LIB")) {
+                arLibreta = arcIt;
+                libreta = arcIt.getArchivo();
+                libretaNombre = arcIt.getNombre();
+            } else if (arcIt.getTipoArchivo().equals("CED")) {
+                arCedula = arcIt;
+                cedula = arcIt.getArchivo();
+                cedulaNombre = arcIt.getNombre();
+            } else if (arcIt.getTipoArchivo().equals("TIT")) {
+                arTitulo = arcIt;
+                titulo = arcIt.getArchivo();
+                tituloNombre = arcIt.getNombre();
             }
 
         }
@@ -755,7 +802,7 @@ public class MatriculasBean {
             titulo = event.getFile().getContents();
             tituloFormato = event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1);
             tituloNombre = event.getFile().getFileName();
-        arTitulo.setNombre(tituloNombre);
+            arTitulo.setNombre(tituloNombre);
         } catch (Exception ex) {
             Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1475,6 +1522,7 @@ public class MatriculasBean {
         this.arCedula = arCedula;
     }
     private StreamedContent fileLibreta;
+
     public StreamedContent getFileLibreta() {
         try {
             InputStream input = new ByteArrayInputStream(libreta);
@@ -1485,8 +1533,8 @@ public class MatriculasBean {
         }
         return null;
     }
-    
-      private StreamedContent fileTitulo;
+    private StreamedContent fileTitulo;
+
     public StreamedContent getFileTitulo() {
         try {
             InputStream input = new ByteArrayInputStream(titulo);
@@ -1497,8 +1545,8 @@ public class MatriculasBean {
         }
         return null;
     }
-    
-      private StreamedContent fileCedula;
+    private StreamedContent fileCedula;
+
     public StreamedContent getFileCedula() {
         try {
             InputStream input = new ByteArrayInputStream(cedula);

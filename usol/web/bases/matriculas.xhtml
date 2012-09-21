@@ -191,13 +191,14 @@
                     <h:panelGrid columns="3" cellpadding="-1" style="margin:0 auto;">
 
                         <h:panelGrid id="panelLibreta"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                             <p:commandLink update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
+                            </p:commandLink>
                             <p:commandButton id="downloadLinkLibreta"  rendered="#{not empty matriculasBean.arLibreta.nombre}"  value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
                                 <p:fileDownload value="#{matriculasBean.fileLibreta}" />  
                             </p:commandButton> 
                             <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arLibreta.nombre}"   />
-                            <p:commandLink update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
-                            </p:commandLink>
+                           
                             <p:dialog header="LA LIBRETA" widgetVar="modalSubirLibreta" modal="true"
                                       fixedCenter="true" width="400" visible="false" resizable="false">
                                 <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
@@ -218,13 +219,14 @@
                         </h:panelGrid>
 
                         <h:panelGrid id="panelTitulo"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                            <p:commandLink update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR TITULO(PDF)
+                            </p:commandLink>
                             <p:commandButton id="downloadLinkTitulo" rendered="#{not empty matriculasBean.arTitulo.nombre}"   value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
                                 <p:fileDownload value="#{matriculasBean.fileTitulo}" />  
                             </p:commandButton> 
                             <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arTitulo.nombre}"   />
-                            <p:commandLink update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
-                            </p:commandLink>
+                            
                             <p:dialog header="LA LIBRETA" widgetVar="modalSubirTitulo" modal="true"
                                       fixedCenter="true" width="400" visible="false" resizable="false">
                                 <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
@@ -245,13 +247,14 @@
                         </h:panelGrid>
 
                         <h:panelGrid id="panelCedula"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                             <p:commandLink update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR CEDULA(PDF)
+                            </p:commandLink>
                             <p:commandButton id="downloadLinkCedula" rendered="#{not empty matriculasBean.arCedula.nombre }" value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
                                 <p:fileDownload value="#{matriculasBean.fileCedula}" />  
                             </p:commandButton> 
                             <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arCedula.nombre}"   />
-                            <p:commandLink update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
-                            </p:commandLink>
+                           
                             <p:dialog header="LA LIBRETA" widgetVar="modalSubirCedula" modal="true"
                                       fixedCenter="true" width="400" visible="false" resizable="false">
                                 <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
