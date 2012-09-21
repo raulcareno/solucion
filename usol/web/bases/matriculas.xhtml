@@ -42,7 +42,7 @@
                                         converter="ConvEstudiantes" forceSelection="true">  
                             <p:ajax event="itemSelect" listener="#{matriculasBean.handleSelect}" update=":form" />  
                             <f:facet name="itemtip">  
-                                <h:panelGrid  columns="2" cellpadding="5">  
+                                <h:panelGrid  columns="2" cellpadding="-1">  
                                     <h:outputText id="modelNo" value="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" />  
                                 </h:panelGrid>  
                             </f:facet>  
@@ -54,7 +54,7 @@
 
                 <p:fieldset legend="DATOS DEL ESTUDIANTE">
                     <h:panelGrid columns="2">  
-                        <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                        <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
 
                             <h:outputText value="CEDULA IDENTIDAD.: " />  
                             <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;">
@@ -113,13 +113,8 @@
                             <p:selectOneMenu immediate="true" id="canton"  style="width:160px"  label="canton"  value="#{matriculasBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
                                 <f:selectItems value="#{matriculasBean.cantonesEncontradas}" var="ob3"  itemValue="#{ob3}"/>  
                             </p:selectOneMenu> 
-
-
-
-
-
                         </h:panelGrid>  
-                        <h:panelGrid   cellpadding="5" style="margin:0 auto;" columns="1"> 
+                        <h:panelGrid   cellpadding="-1" style="margin:0 auto;" columns="1"> 
                             <p:graphicImage id="logoSubido2" style="border:2px;border-color: #919396"  width="70"
                                             height="120" rendered="#{not empty matriculasBean.foto1}"
                                             value="#{pageContext.contextPath}/fotosMatriculas/#{matriculasBean.foto1}"
@@ -154,15 +149,15 @@
                     </h:panelGrid>
 
                 </p:fieldset>
-                <p:fieldset legend="DATOS DEL MATRICULA">
-                    <h:panelGrid columns="2" cellpadding="1" style="margin:0 auto;">
+                <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS DEL MATRICULA">
+                    <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">
                         <h:outputText value="CARRERA: " /> 
                         <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{matriculasBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
                             <f:selectItems value="#{matriculasBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
                         </p:selectOneMenu>  
                     </h:panelGrid>
 
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">
 
                         <h:outputText value="NUMERO MATRICULA: " />  
                         <p:inputText value="#{matriculasBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
@@ -193,11 +188,93 @@
                         <p:selectBooleanCheckbox value="#{matriculasBean.estudiante.copiaTitulo}" id="CopiaTitulo"  style="font-weight:bold;"/>  
 
                     </h:panelGrid>
+                    <h:panelGrid columns="3" cellpadding="-1" style="margin:0 auto;">
+
+                        <h:panelGrid id="panelLibreta"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                            <p:commandButton id="downloadLinkLibreta"  rendered="#{not empty matriculasBean.arLibreta.nombre}"  value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
+                                <p:fileDownload value="#{matriculasBean.fileLibreta}" />  
+                            </p:commandButton> 
+                            <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arLibreta.nombre}"   />
+                            <p:commandLink update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
+                            </p:commandLink>
+                            <p:dialog header="LA LIBRETA" widgetVar="modalSubirLibreta" modal="true"
+                                      fixedCenter="true" width="400" visible="false" resizable="false">
+                                <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
+                                               style="width:100%; font-size: 150% !important;"
+                                               fileUploadListener="#{matriculasBean.handleFileUploadLibreta}"  
+                                               mode="advanced"  id="fileSubirLibreta"
+                                               update="panelLibreta"  
+                                               auto="true"  oncomplete="modalSubirLibreta.hide();" 
+                                               sizeLimit="1000000"   
+                                               allowTypes="/(\.|\/)(pdf)$/"/>  
+                                <br />
+                                <p:commandButton type="button" value="CANCELAR">
+                                    <p:ajax oncomplete="modalSubirLibreta.hide();" />
+                                </p:commandButton>
+                            </p:dialog>
 
 
+                        </h:panelGrid>
+
+                        <h:panelGrid id="panelTitulo"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                            <p:commandButton id="downloadLinkTitulo" rendered="#{not empty matriculasBean.arTitulo.nombre}"   value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
+                                <p:fileDownload value="#{matriculasBean.fileTitulo}" />  
+                            </p:commandButton> 
+                            <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arTitulo.nombre}"   />
+                            <p:commandLink update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
+                            </p:commandLink>
+                            <p:dialog header="LA LIBRETA" widgetVar="modalSubirTitulo" modal="true"
+                                      fixedCenter="true" width="400" visible="false" resizable="false">
+                                <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
+                                               style="width:100%; font-size: 150% !important;"
+                                               fileUploadListener="#{matriculasBean.handleFileUploadTitulo}"  
+                                               mode="advanced"  id="fileSubirTitulo"
+                                               update="panelTitulo"  
+                                               auto="true"  oncomplete="modalSubirTitulo.hide();" 
+                                               sizeLimit="1000000"   
+                                               allowTypes="/(\.|\/)(pdf)$/"/>  
+                                <br />
+                                <p:commandButton type="button" value="CANCELAR">
+                                    <p:ajax oncomplete="modalSubirTitulo.hide();" />
+                                </p:commandButton>
+                            </p:dialog>
+
+
+                        </h:panelGrid>
+
+                        <h:panelGrid id="panelCedula"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                            <p:commandButton id="downloadLinkCedula" rendered="#{not empty matriculasBean.arCedula.nombre }" value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
+                                <p:fileDownload value="#{matriculasBean.fileCedula}" />  
+                            </p:commandButton> 
+                            <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arCedula.nombre}"   />
+                            <p:commandLink update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />SUBIR LIBRETA(PDF)
+                            </p:commandLink>
+                            <p:dialog header="LA LIBRETA" widgetVar="modalSubirCedula" modal="true"
+                                      fixedCenter="true" width="400" visible="false" resizable="false">
+                                <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
+                                               style="width:100%; font-size: 150% !important;"
+                                               fileUploadListener="#{matriculasBean.handleFileUploadCedula}"  
+                                               mode="advanced"  id="fileSubirCedula"
+                                               update="panelCedula"  
+                                               auto="true"  oncomplete="modalSubirCedula.hide();" 
+                                               sizeLimit="1000000"   
+                                               allowTypes="/(\.|\/)(pdf)$/"/>  
+                                <br />
+                                <p:commandButton type="button" value="CANCELAR">
+                                    <p:ajax oncomplete="modalSubirCedula.hide();" />
+                                </p:commandButton>
+                            </p:dialog>
+
+
+                        </h:panelGrid>
+
+                    </h:panelGrid>
                 </p:fieldset>
-                <p:fieldset legend="DATOS ACADÉMICOS">
-                    <h:panelGrid columns="4" cellpadding="4" style="margin:0 auto;">  
+                <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS ACADÉMICOS">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
                         <h:outputText value="ANIO GRADUACIÓN: " />  
                         <p:inputText value="#{matriculasBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="COLEGIO GRADUADO: " />  
@@ -207,8 +284,8 @@
 
                     </h:panelGrid>  
                 </p:fieldset>
-                <p:fieldset legend="DATOS LABORALES">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS LABORALES">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
                         <h:outputText value="TRABAJA: " />  
                         <p:selectBooleanCheckbox id="Trabaja" value="#{matriculasBean.estudiante.trabaja}"/>  
                         <h:outputText value="EMPRESA: " />  
@@ -224,8 +301,8 @@
                     </h:panelGrid>  
                 </p:fieldset>
 
-                <p:fieldset legend="DATOS PARA FACTURA">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                <p:fieldset  toggleable="true" toggleSpeed="500" legend="DATOS PARA FACTURA">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
                         <h:outputText value="CED o RUC: " />  
                         <p:inputText value="#{matriculasBean.pariente1.identificacion}" id="IdentificacionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="NOMBRES: " />  
@@ -237,8 +314,8 @@
                         <p:inputText  value="#{matriculasBean.pariente1.idParientes}"  converter="JsfConvInteger" id="idPariente1"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                     </h:panelGrid>
                 </p:fieldset>
-                <p:fieldset legend="DATOS PADRE">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                <p:fieldset  toggleable="true" toggleSpeed="500"  legend="DATOS PADRE">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
                         <h:outputText value="CED/RUC/PASS: " />  
                         <p:inputText value="#{matriculasBean.pariente2.identificacion}" id="IdentificacionPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="APELLIDOS: " />  
@@ -256,8 +333,8 @@
                         <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente2"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                     </h:panelGrid>
                 </p:fieldset>
-                <p:fieldset legend="DATOS MADRE">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                <p:fieldset  toggleable="true" toggleSpeed="500"  legend="DATOS MADRE">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
                         <h:outputText value="CED/RUC/PASS: " />  
                         <p:inputText value="#{matriculasBean.pariente3.identificacion}" id="IdentificacionMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="APELLIDOS: " />  
@@ -275,8 +352,8 @@
                         <p:inputText  value="#{matriculasBean.pariente3.idParientes}"  converter="JsfConvInteger" id="idPariente3"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                     </h:panelGrid>
                 </p:fieldset>
-                <p:fieldset legend="DATOS SOCIOECONÓMICOS">
-                    <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                <p:fieldset   toggleable="true" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
                         <h:outputText value="TIPO DE VIVIENDA: " />  
                         <h:selectOneMenu value="#{matriculasBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
@@ -307,7 +384,7 @@
                             <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </h:selectOneMenu>  
                         <h:outputText value="OTROS INGRESOS: " />  
-                          <h:selectOneMenu value="#{matriculasBean.estudiante.otrosIngresos}" id="OtrosIngresos">  
+                        <h:selectOneMenu value="#{matriculasBean.estudiante.otrosIngresos}" id="OtrosIngresos">  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
                             <f:selectItem itemLabel="ARRIENDOS" itemValue="ARRIENDOS" />  
                             <f:selectItem itemLabel="PENSIONES JUBILARES" itemValue="PENSIONES JUBILARES" />   
@@ -337,7 +414,7 @@
                         <h:outputText value="POSEE VEHÍCULO: " />  
                         <p:selectBooleanCheckbox value="#{matriculasBean.estudiante.vehiculo}" id="PoseeVehiculo"  style="font-weight:bold;"/>  
                         <h:outputText value="COMO PAGA: " />  
-                         <h:selectOneMenu  value="#{matriculasBean.estudiante.formaPago}" id="ComoPaga"   >  
+                        <h:selectOneMenu  value="#{matriculasBean.estudiante.formaPago}" id="ComoPaga"   >  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
                             <f:selectItem itemLabel="EFECTIVO-CHEQUE" itemValue="EFECTIVO-CHEQUE" />  
                             <f:selectItem itemLabel="FINANCIAMIENTO UCT" itemValue="FINANCIAMIENTO UCT" />  

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,7 @@ import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
+import jcinform.persistencia.Archivos;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.CategoriasSociales;
@@ -81,6 +83,15 @@ public class MatriculasBean {
     Permisos permisos;
     public String foto1;
     public byte[] imagen;
+    public byte[] cedula;
+    public String cedulaNombre;
+    public String cedulaFormato;
+    public byte[] libreta;
+    public String libretaNombre;
+    public String libretaFormato;
+    public byte[] titulo;
+    public String tituloNombre;
+    public String tituloFormato;
     protected String clave2;
     claves cl = new claves();
     List<SelectItem> provinciasEncontradas;
@@ -105,6 +116,9 @@ public class MatriculasBean {
     List<Materias> destino = new ArrayList<Materias>();
     List<Estudiantes> estudiantesListado = new ArrayList<Estudiantes>();
     Periodos per;
+    Archivos arLibreta;
+    Archivos arTitulo;
+    Archivos arCedula;
 
     ;
     public MatriculasBean() {
@@ -168,20 +182,29 @@ public class MatriculasBean {
 
     protected void inicializar() {
         object = new Matriculas(0);
-        if(estudiante == null){
-            estudiante = new Estudiantes("");    
+        if (estudiante == null) {
+            estudiante = new Estudiantes("");
         }
-        if(pariente1 == null){
+        if (pariente1 == null) {
             pariente1 = new Parientes();
         }
-        if(pariente2 == null){
-             pariente2 = new Parientes();
+        if (pariente2 == null) {
+            pariente2 = new Parientes();
         }
-        if(pariente3 == null){
+        if (pariente3 == null) {
             pariente3 = new Parientes();
         }
-       
-        
+
+        if (arLibreta == null) {
+            arLibreta = new Archivos();
+        }
+        if (arCedula == null) {
+            arCedula = new Archivos();
+        }
+        if (arTitulo == null) {
+            arTitulo = new Archivos();
+        }
+
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
@@ -205,7 +228,7 @@ public class MatriculasBean {
         return null;
     }
 
-     public StreamedContent getImageAsStream() {
+    public StreamedContent getImageAsStream() {
         try {
             //         try {
             //             ByteArrayInputStream stream = new ByteArrayInputStream(imagen);
@@ -213,18 +236,19 @@ public class MatriculasBean {
             //            return imageAsStream;
             //         } catch (Exception e) {
             //             System.out.println(""+e);         }
-                     BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);  
-                        Graphics2D g2 = bufferedImg.createGraphics();  
-                        g2.drawString("This is a text", 0, 10);  
-                        ByteArrayOutputStream os = new ByteArrayOutputStream();  
-                        ImageIO.write(bufferedImg, "png", os);  
-                      return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
-                        
+            BufferedImage bufferedImg = new BufferedImage(100, 25, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2 = bufferedImg.createGraphics();
+            g2.drawString("This is a text", 0, 10);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImg, "png", os);
+            return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
+
         } catch (IOException ex) {
             Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-            return null;
-}
+        return null;
+    }
+
     /**
      * Graba el registro asociado al objeto que
      */
@@ -267,17 +291,57 @@ public class MatriculasBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
             return null;
         }
-        
-        
+
+
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
-        estudiante.setFoto(imagen); 
+        estudiante.setFoto(imagen);
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
             adm.guardar(estudiante);
         } else {
             adm.actualizar(estudiante);
         }
+
+        /**
+         * GUARDO LOS ARCHIVOS
+         */
+        arLibreta.setNombre(libretaNombre);
+        arLibreta.setTipoArchivo("LIB");
+        arLibreta.setArchivo(libreta);
+
+        arTitulo.setNombre(tituloNombre);
+        arTitulo.setTipoArchivo("TIT");
+        arTitulo.setArchivo(titulo);
+
+        arCedula.setNombre(cedulaNombre);
+        arCedula.setTipoArchivo("CED");
+        arCedula.setArchivo(cedula);
+
+        //1.- ARCHIV0 1 EMPIEZO A GUARDAR
+        if (arLibreta.getIdArchivos() == null) {
+            arLibreta.setIdArchivos(adm.getNuevaClave("Archivos", "idArchivos"));
+            adm.guardar(arLibreta);
+        } else {
+            adm.actualizar(arLibreta);
+        }
+        //2.- ARCHIV0 2 EMPIEZO A GUARDAR
+        if (arTitulo.getIdArchivos().equals(new Integer(0))) {
+            arTitulo.setIdArchivos(adm.getNuevaClave("Archivos", "idArchivos"));
+            adm.guardar(arTitulo);
+        } else {
+            adm.actualizar(arTitulo);
+        }
+        //3.- ARCHIV0 3 EMPIEZO A GUARDAR
+        if (arCedula.getIdArchivos().equals(new Integer(0))) {
+            arCedula.setIdArchivos(adm.getNuevaClave("Archivos", "idArchivos"));
+            adm.guardar(arCedula);
+        } else {
+            adm.actualizar(arCedula);
+        }
+
+
+
         object.setIdEstudiantes(estudiante);
         pariente1.setIdEstudiantes(object.getIdEstudiantes());
         pariente1.setTipoRepresentante("F");
@@ -327,8 +391,8 @@ public class MatriculasBean {
 
         object.setIdPeriodos(per);
         object.setIdCategoriasSociales(categoriaSeleccionado);
-        object.setIdCarreras(carreraSeleccionado); 
-       
+        object.setIdCarreras(carreraSeleccionado);
+
         if (object.getIdMatriculas().equals(new Integer(0))) {
             if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -337,7 +401,7 @@ public class MatriculasBean {
             try {
                 if (adm.existe("Matriculas", "idEstudiantes", object.getIdEstudiantes(), "idPeriodos", object.getIdPeriodos(), "").size() <= 0) {
                     object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
-                     object.setNumero(nuevaMatricula());
+                    object.setNumero(nuevaMatricula());
                     adm.guardar(object);
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
 //                    inicializar();
@@ -452,10 +516,10 @@ public class MatriculasBean {
     public void limpiar() {
         //object = new Matriculas(0);
         object = new Matriculas(0);
-            estudiante = new Estudiantes("");    
-              pariente1 = new Parientes();
-             pariente2 = new Parientes();
-            pariente3 = new Parientes();
+        estudiante = new Estudiantes("");
+        pariente1 = new Parientes();
+        pariente2 = new Parientes();
+        pariente3 = new Parientes();
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
@@ -512,20 +576,21 @@ public class MatriculasBean {
         }
         return null;
     }
-        public void generarClaveyUsuario(){
-            try {
-                if(estudiante.getUsuario() == null){
-                    estudiante.setUsuario(estudiante.getNombre().substring(0,1).toLowerCase()+""+estudiante.getApellidoPaterno().toLowerCase());
-                    estudiante.setClave(estudiante.getUsuario().toLowerCase());
-                    clave2 = estudiante.getClave();
-                    
-                }
-                
-            } catch (Exception e) {
-                
+
+    public void generarClaveyUsuario() {
+        try {
+            if (estudiante.getUsuario() == null) {
+                estudiante.setUsuario(estudiante.getNombre().substring(0, 1).toLowerCase() + "" + estudiante.getApellidoPaterno().toLowerCase());
+                estudiante.setClave(estudiante.getUsuario().toLowerCase());
+                clave2 = estudiante.getClave();
+
             }
-            
+
+        } catch (Exception e) {
         }
+
+    }
+
     public void buscarCedula() {
 
         String cedula = estudiante.getIdEstudiantes();
@@ -540,6 +605,20 @@ public class MatriculasBean {
                 pariente2 = parientes;
             } else if (parientes.getTipoRepresentante().equals("M")) {
                 pariente3 = parientes;
+            }
+
+        }
+
+        List<Archivos> archi = adm.query("Select o from Archivos as o "
+                + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
+        for (Iterator<Archivos> it = archi.iterator(); it.hasNext();) {
+            Archivos arcIt = it.next();
+            if (arcIt.getTipoArchivo().equals("LIB")) {
+                arLibreta = arcIt;
+            } else if (arcIt.getTipoArchivo().equals("CED")) {
+                arTitulo = arcIt;
+            } else if (arcIt.getTipoArchivo().equals("TIT")) {
+                arCedula = arcIt;
             }
 
         }
@@ -560,13 +639,14 @@ public class MatriculasBean {
 
         estudiantesListado = null;
     }
- protected Integer nuevaMatricula() {
-       Administrador adm = new Administrador();
 
-        List NoActualMatricula = adm.query("Select o from Parametros as o " +
-                "where o.variable = 'MATRICULA' ");
+    protected Integer nuevaMatricula() {
+        Administrador adm = new Administrador();
+
+        List NoActualMatricula = adm.query("Select o from Parametros as o "
+                + "where o.variable = 'MATRICULA' ");
         Parametros parametros = new Parametros();
-        if(NoActualMatricula.size()<=0){
+        if (NoActualMatricula.size() <= 0) {
             System.out.println("FALTA PARAMETRO matricula EN PARAMETROS ");
 //            alert("Falta copiar los parámetros a este Año Lectivo");
         }
@@ -576,10 +656,10 @@ public class MatriculasBean {
         Long val = java.lang.Math.round(decs);
         noMatri = Integer.valueOf(val.toString());
         noMatri += 1;
-        List  numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "'");
+        List numeroYa = adm.query("Select o from Matriculas as o  where  o.numero = '" + noMatri + "'");
         if (numeroYa.size() > 0) {
-            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
-                    " "  );
+            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o "
+                    + " ");
             parametros.setVNumerico(new BigDecimal(nClave + 1));
             adm.actualizar(parametros);
             return nClave + 1;
@@ -589,6 +669,7 @@ public class MatriculasBean {
             return noMatri;
         }
     }
+
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
@@ -656,6 +737,42 @@ public class MatriculasBean {
 
     }
 
+    public void handleFileUploadLibreta(FileUploadEvent event) {
+        try {
+
+            libreta = event.getFile().getContents();
+            libretaFormato = event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1);
+            libretaNombre = event.getFile().getFileName();
+            arLibreta.setNombre(libretaNombre);
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void handleFileUploadTitulo(FileUploadEvent event) {
+        try {
+
+            titulo = event.getFile().getContents();
+            tituloFormato = event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1);
+            tituloNombre = event.getFile().getFileName();
+        arTitulo.setNombre(tituloNombre);
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void handleFileUploadCedula(FileUploadEvent event) {
+        try {
+
+            cedula = event.getFile().getContents();
+            cedulaFormato = event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf(".") + 1);
+            cedulaNombre = event.getFile().getFileName();
+            arCedula.setNombre(cedulaNombre);
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void handleFileUpload(FileUploadEvent event) {
         try {
             //FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
@@ -690,7 +807,7 @@ public class MatriculasBean {
                 f = null;
                 bf = null;
                 p = null;
-                
+
                 buffer = null;
                 imageInByte = null;
                 fin = null;
@@ -733,7 +850,8 @@ public class MatriculasBean {
         }
         return null;
     }
-   public List<SelectItem> getSelectedItemPerfiles() {
+
+    public List<SelectItem> getSelectedItemPerfiles() {
         try {
             List<Perfiles> divisionPoliticas = new ArrayList<Perfiles>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -757,9 +875,10 @@ public class MatriculasBean {
         }
         return null;
     }
-/**
- *  Obtiene el listado de carreras para llenar combos
- */
+
+    /**
+     * Obtiene el listado de carreras para llenar combos
+     */
     public List<SelectItem> getSelectedItemCarreras() {
         try {
             List<Carreras> divisionPoliticas = new ArrayList<Carreras>();
@@ -785,6 +904,7 @@ public class MatriculasBean {
         }
         return null;
     }
+
     public List<SelectItem> getSelectedItemIngresos() {
         try {
             List<RangosIngresos> divisionPoliticas = new ArrayList<RangosIngresos>();
@@ -796,7 +916,7 @@ public class MatriculasBean {
                     //RangosIngresos objSel = new RangosIngresos(0);
                     items.add(new SelectItem("-", "Seleccione..."));
                     for (RangosIngresos obj : divisionPoliticas) {
-                        items.add(new SelectItem( obj.getRangoInicial()+"-"+obj.getRangoFinal(), obj.getRangoInicial()+"-"+obj.getRangoFinal()));
+                        items.add(new SelectItem(obj.getRangoInicial() + "-" + obj.getRangoFinal(), obj.getRangoInicial() + "-" + obj.getRangoFinal()));
                     }
                 } else {
                     //RangosIngresos obj = new RangosIngresos(0);
@@ -1258,6 +1378,135 @@ public class MatriculasBean {
     public void setCarreraSeleccionado(Carreras carreraSeleccionado) {
         this.carreraSeleccionado = carreraSeleccionado;
     }
+
+    public byte[] getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(byte[] cedula) {
+        this.cedula = cedula;
+    }
+
+    public byte[] getLibreta() {
+        return libreta;
+    }
+
+    public void setLibreta(byte[] libreta) {
+        this.libreta = libreta;
+    }
+
+    public byte[] getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(byte[] titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getCedulaNombre() {
+        return cedulaNombre;
+    }
+
+    public void setCedulaNombre(String cedulaNombre) {
+        this.cedulaNombre = cedulaNombre;
+    }
+
+    public String getCedulaFormato() {
+        return cedulaFormato;
+    }
+
+    public void setCedulaFormato(String cedulaFormato) {
+        this.cedulaFormato = cedulaFormato;
+    }
+
+    public String getLibretaNombre() {
+        return libretaNombre;
+    }
+
+    public void setLibretaNombre(String libretaNombre) {
+        this.libretaNombre = libretaNombre;
+    }
+
+    public String getLibretaFormato() {
+        return libretaFormato;
+    }
+
+    public void setLibretaFormato(String libretaFormato) {
+        this.libretaFormato = libretaFormato;
+    }
+
+    public String getTituloNombre() {
+        return tituloNombre;
+    }
+
+    public void setTituloNombre(String tituloNombre) {
+        this.tituloNombre = tituloNombre;
+    }
+
+    public String getTituloFormato() {
+        return tituloFormato;
+    }
+
+    public void setTituloFormato(String tituloFormato) {
+        this.tituloFormato = tituloFormato;
+    }
+
+    public Archivos getArLibreta() {
+        return arLibreta;
+    }
+
+    public void setArLibreta(Archivos arLibreta) {
+        this.arLibreta = arLibreta;
+    }
+
+    public Archivos getArTitulo() {
+        return arTitulo;
+    }
+
+    public void setArTitulo(Archivos arTitulo) {
+        this.arTitulo = arTitulo;
+    }
+
+    public Archivos getArCedula() {
+        return arCedula;
+    }
+
+    public void setArCedula(Archivos arCedula) {
+        this.arCedula = arCedula;
+    }
+    private StreamedContent fileLibreta;
+    public StreamedContent getFileLibreta() {
+        try {
+            InputStream input = new ByteArrayInputStream(libreta);
+            fileLibreta = new DefaultStreamedContent(input, "application/pdf", "libretaMilitar.pdf");
+            return fileLibreta;
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
+      private StreamedContent fileTitulo;
+    public StreamedContent getFileTitulo() {
+        try {
+            InputStream input = new ByteArrayInputStream(titulo);
+            fileTitulo = new DefaultStreamedContent(input, "application/pdf", "tituloBachiller.pdf");
+            return fileTitulo;
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     
+      private StreamedContent fileCedula;
+    public StreamedContent getFileCedula() {
+        try {
+            InputStream input = new ByteArrayInputStream(cedula);
+            fileCedula = new DefaultStreamedContent(input, "application/pdf", "cedula.pdf");
+            return fileCedula;
+        } catch (Exception ex) {
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
