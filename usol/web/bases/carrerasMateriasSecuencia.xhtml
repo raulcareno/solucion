@@ -34,13 +34,17 @@
                         display:block;
                     }
                     .panelito{
-                        margin: -5px 0px 0px 0px;
+                        vertical-align: top;
+                        margin: -5px -5px 0px 0px;
                         border:none; 
+                         
                         border-color: transparent; 
                         text-align:center;
 
+
                     }
                     .panelGrande2{
+                        vertical-align: top;
                         width: 150px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
@@ -49,41 +53,46 @@
                         width: 90px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
+                        padding: 0px !important;
                     }
                     .textos{
-                        font-size: 9px;font-weight: bold; margin: -15px; text-align:center;
+                        font-size: 9px;font-weight: bold; margin: -15px -5px -5px -5px; padding: -5px -5px -5px -5px; text-align:center;
                     }
                     .textos2{
                         font-size: 9px;font-weight: bold; margin: -5px; text-align:center;
                     }
                     .textos3{
-                        font-size: 10px;font-weight: bold;   text-align:center;
-                        color:blue;
+                        font-size: 12px;font-weight: bold;   text-align:center; float:center;
+                        color: red ;
                     }
 
                 </style>
-                <p:panel id="registro"  style="width: 95%;" header="Malla(Materias por Carrera)">
+                <p:panel id="registro"  style="width: 100%;" header="Malla(Materias por Carrera)">
                     <p:growl id="growl" showDetail="true" sticky="true"  /> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:outputText value="SELECCIONE UNA CARRERA: " /> 
+                    <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA: " /> 
                     <h:selectOneMenu id="carreras" label="carreras" converter="ConvCarreras" value="#{carrerasMateriasSecuenciaBean.carreraSeleccionada}" rendered="true">
                         <f:selectItems value="#{carrerasMateriasSecuenciaBean.selectedItemCarreras}"></f:selectItems>
                         <p:ajax event="change" listener="#{carrerasMateriasSecuenciaBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars"/>
                     </h:selectOneMenu>
-
-                    <p:dataGrid id="availableCars"  var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="9">  
+                    <p:graphicImage value="/images/plus.png"/>    
+                    Arrastre hacia abajo las materias que desea agregar 
+                    <p:graphicImage value="/images/minus.gif"/>   
+                    Si desea quitar presione el menos
+                    <p:dataGrid emptyMessage="..." id="availableCars"  styleClass="panelito" style="padding: -5px -5px -5px -5px " 
+                                var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="9">  
                         <p:column>  
                             <p:panel  id="pnl" styleClass="panelGrande">  
                                 <f:facet name="header">
                                     <p:graphicImage value="/images/plus.png"/>    
                                     #{car.idMaterias.nombre}
-                                </f:facet>
+                                    </f:facet>
                                 <h:panelGrid columns="1" style="text-align:justify;width:100%">  
                                     <h:outputText styleClass="textos2"   value="#{car.idNiveles.nombre}" />     
                                     <h:outputText styleClass="textos2"   value="#{car.idEjes.nombre}" />     
                                     <h:outputText styleClass="textos2"   value="#{car.numeroHoras}H / #{car.numeroCreditos}C " />     
-                                </h:panelGrid>  
+                                </h:panelGrid>
                             </p:panel>  
                             <p:draggable  for="pnl" revert="true"  scope="#{car.idNiveles.secuencia}"  stack=".ui-panel"/>  
 
@@ -92,9 +101,9 @@
 
                     </p:dataGrid> 
 
-                    <p:fieldset id="selectedCars" legend="MALLA CURRICULAR" style="width: 90%; margin-top:20px">  
+                    <p:fieldset id="selectedCars" legend="MALLA CURRICULAR" style="width: 97; margin-top:20px">  
                         <p:outputPanel id="dropArea">  
-                            <p:panelGrid columns="10">
+                            <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="10">
                                 <h:outputText styleClass="textos3"  value="CICLO 1" />     
                                 <h:outputText styleClass="textos3"  value="CICLO 2" />     
                                 <h:outputText styleClass="textos3"  value="CICLO 3" />     
@@ -108,525 +117,525 @@
 
 
                                 <p:panel  id="f0c0" styleClass="panelGrande">  
-                                    <f:facet name="header">
-                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][0])}"  >
-                                            <p:graphicImage value="/images/minus.gif"/>   
-                                        </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre eq ''}"/>   
-                                        #{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid   columns="2" style="border:none; border-color: transparent;text-align:justify;width:100%">  
+
+                                    <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][0])}"  >
+                                        <p:graphicImage value="/images/minus.gif"/>   
+                                    </p:commandLink>
+                                    <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre eq ''}"/>   
+                                    #{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre}
+
+                                     
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                     
                                 </p:panel>  
 
                                 <p:panel  id="f0c1" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][1])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="1" styleClass="panelito">  
+                                    
+                                    
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroCreditos}C" />     
 
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
 
                                 <p:panel  id="f0c2" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][2])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                     
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][2].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f0c3" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][3])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][3].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][3].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f0c4" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][4])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][4].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f0c5" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][5])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][5].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f0c6" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][6])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][6].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f0c7" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][7])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][7].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f0c8" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][8])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][8].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f0c9" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][9])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][9].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
-                                
-                              
-                                 <p:panel  id="f1c0" styleClass="panelGrande">  
-                                     <!--EMPIEZA LA OTRA FILA -->
-                                    <f:facet name="header">  
+
+
+                                <p:panel  id="f1c0" styleClass="panelGrande">  
+                                    <!--EMPIEZA LA OTRA FILA -->
+                                      
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][0])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][0].idMaterias.nombre eq ''}"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][0].idMaterias.nombre eq ''}"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][0].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid   columns="2" style="border:none; border-color: transparent;text-align:justify;width:100%">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][0].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>  
 
                                 <p:panel  id="f1c1" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][1])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][1].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="1" styleClass="panelito">  
+                                    
+                                    
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][1].numeroCreditos}C" />     
 
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
 
                                 <p:panel  id="f1c2" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][2])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][2].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][2].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f1c3" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][3])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][3].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][3].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f1c4" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][4])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][4].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][4].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f1c5" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][5])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][5].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][5].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f1c6" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][6])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][6].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][6].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f1c7" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][7])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][7].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][7].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f1c8" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][8])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][8].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][8].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f1c9" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[1][9])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[1][9].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[1][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[1][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[1][9].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
-                                
-                                
-                                
-                                 <p:panel  id="f2c0" styleClass="panelGrande">  
-                                     <!--EMPIEZA LA OTRA FILA -->
-                                    <f:facet name="header">  
+
+
+
+                                <p:panel  id="f2c0" styleClass="panelGrande">  
+                                    <!--EMPIEZA LA OTRA FILA -->
+                                      
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][0])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][0].idMaterias.nombre eq ''}"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][0].idMaterias.nombre eq ''}"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][0].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid   columns="2" style="border:none; border-color: transparent;text-align:justify;width:100%">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][0].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>  
 
                                 <p:panel  id="f2c1" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][1])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][1].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="1" styleClass="panelito">  
+                                    
+                                    
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][1].numeroCreditos}C" />     
 
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
 
                                 <p:panel  id="f2c2" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][2])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][2].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][2].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f2c3" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][3])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][3].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][3].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f2c4" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][4])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][4].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][4].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f2c5" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][5])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][5].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][5].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f2c6" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][6])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][6].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][6].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f2c7" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][7])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][7].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][7].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f2c8" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][8])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][8].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][8].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f2c9" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[2][9])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[2][9].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[2][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[2][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[2][9].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
-                                
-                                
-                                
-                                 <p:panel  id="f3c0" styleClass="panelGrande">  
-                                     <!--EMPIEZA LA OTRA FILA -->
-                                    <f:facet name="header">  
+
+
+
+                                <p:panel  id="f3c0" styleClass="panelGrande">  
+                                    <!--EMPIEZA LA OTRA FILA -->
+                                      
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][0])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][0].idMaterias.nombre eq ''}"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][0].idMaterias.nombre eq ''}"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][0].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid   columns="2" style="border:none; border-color: transparent;text-align:justify;width:100%">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][0].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>  
 
                                 <p:panel  id="f3c1" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][1])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][1].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="1" styleClass="panelito">  
+                                    
+                                    
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][1].numeroCreditos}C" />     
 
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
 
                                 <p:panel  id="f3c2" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][2])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][2].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][2].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f3c3" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][3])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][3].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][3].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f3c4" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][4])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][4].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][4].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
 
                                 <p:panel  id="f3c5" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][5])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][5].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][5].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f3c6" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][6])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][6].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][6].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f3c7" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][7])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][7].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][7].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f3c8" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][8])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][8].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][8].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
                                 <p:panel  id="f3c9" styleClass="panelGrande">  
-                                    <f:facet name="header">
+                                    
                                         <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[3][9])}"  >
                                             <p:graphicImage value="/images/minus.gif"/>   
                                         </p:commandLink>
-                                        <p:spacer height="16" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                         #{carrerasMateriasSecuenciaBean.anadidasArray[3][9].idMaterias.nombre}
-                                    </f:facet>
-                                    <h:panelGrid width="100px" columns="2" styleClass="panelito">  
+                                    
+                                      
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].numeroCreditos}C" />     
-                                    </h:panelGrid>  
+                                    
                                 </p:panel>
-                            </p:panelGrid>
+                            </h:panelGrid>
                             <p:droppable for="f0c0" tolerance="pointer" activeStyleClass="ui-state-highlight"  scope="1" datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
@@ -657,12 +666,12 @@
                             <p:droppable for="f0c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            
-                            
-                              <p:droppable for="f1c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+
+
+                            <p:droppable for="f1c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                          
+
                             <p:droppable for="f1c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
@@ -690,12 +699,12 @@
                             <p:droppable for="f1c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                            
-                            
-                             <p:droppable for="f2c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+
+
+                            <p:droppable for="f2c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                             <p:droppable for="f2c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f2c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
                             <p:droppable for="f2c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
@@ -723,11 +732,11 @@
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
 
-                            
-                             <p:droppable for="f3c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+
+                            <p:droppable for="f3c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
-                             <p:droppable for="f3c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                            <p:droppable for="f3c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
                             <p:droppable for="f3c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
@@ -760,13 +769,13 @@
 
                     <h:panelGrid columns="4">
 
-    <h:commandButton value="imprimir" type="button" icon="ui-icon-print">  
-        <p:printer target="selectedCars" />  
-    </h:commandButton>  
-     <p:commandButton  value="Guardar"  id="guardar"  
-                       action="#{carrerasMateriasSecuenciaBean.guardar()}"  
-                       icon="ui-icon-disk" title="Guardar"/>  
-    
+                        <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  
+                            <p:printer target="selectedCars" />  
+                        </p:commandButton>  
+                        <p:commandButton  value="Guardar"  id="guardar"  
+                                          action="#{carrerasMateriasSecuenciaBean.guardar()}"  
+                                          icon="ui-icon-disk" title="Guardar"/>  
+
 
 
                     </h:panelGrid>
