@@ -443,15 +443,19 @@ public class generarFacturas {
     }
 
     //BUSCAR PARA ASIGNAR FACTURA 
-    public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago) {
+    public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago,String estado) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals("0")) {
             complemento = "";
         }
+        String compEstado = " and o.estado = '"+estado+"' ";
+        if(estado.equals("Todos")){
+             compEstado = "";
+        }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
                 + "where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " "
-                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " + complemento + " ");
+                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " + complemento + " " + compEstado);
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();

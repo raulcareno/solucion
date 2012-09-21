@@ -267,8 +267,11 @@ public class ReportesClase {
                     Date d = (Date) vec.get(1);
                     pendi.setFecha(d);
                     Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    pendi.setContratos(c);
                     pendi.setPlan(c.getPlan() + "");
                     pendi.setDireccion(c.getDireccion());
+                    pendi.setContrato(c.getContrato()+"");
+                    pendi.setTelefono(c.getTelefono()+" "+c.getTelefonof());
                     pendi.setTotal((BigDecimal) vec.get(2));
                     pendi.setSaldo((BigDecimal) vec.get(3));
                     detalles.add(pendi);
@@ -486,6 +489,8 @@ public class ReportesClase {
                     pendi.setFecha(d);
                     Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
                     pendi.setPlan(c.getPlan() + "");
+                    pendi.setContrato(c.getContrato()+"");
+                    pendi.setTelefono(c.getTelefono());
                     pendi.setDireccion(c.getDireccion());
                     pendi.setTotal((BigDecimal) vec.get(2));
                     pendi.setSaldo((BigDecimal) vec.get(3));
