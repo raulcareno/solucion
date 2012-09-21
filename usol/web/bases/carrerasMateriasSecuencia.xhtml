@@ -50,10 +50,10 @@
                         margin: 0px 0px 0px 0px;
                     }
                     .panelGrande{
-                        width: 90px; 
+                        width: 93px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
-                        padding: 0px !important;
+                        padding: -2px !important;
                     }
                     .textos{
                         font-size: 9px;font-weight: bold; margin: -15px -5px -5px -5px; padding: -5px -5px -5px -5px; text-align:center;
@@ -635,6 +635,940 @@
                                         <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[3][9].numeroCreditos}C" />     
                                     
                                 </p:panel>
+                                
+                                
+                                
+                                
+                                
+                                <p:panel  id="f4c0" styleClass="panelGrande">  
+                                    <!--EMPIEZA LA OTRA FILA -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f4c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f4c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f4c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f4c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f4c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f4c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f4c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f4c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f4c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[4][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[4][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[4][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[4][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[4][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
+                                
+                                
+                                
+                                    <p:panel  id="f5c0" styleClass="panelGrande">  
+<!-- ************************** EMPIEZA LA OTRA FILA ****************************************************************************** -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f5c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f5c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f5c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f5c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f5c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f5c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f5c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f5c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f5c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[5][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[5][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[5][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[5][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[5][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
+                                
+                                
+                                
+                                <p:panel  id="f6c0" styleClass="panelGrande">  
+<!-- ************************** EMPIEZA LA OTRA FILA ****************************************************************************** -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f6c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f6c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f6c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f6c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f6c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f6c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f6c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f6c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f6c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[6][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[6][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[6][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[6][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[6][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
+                                
+                                <p:panel  id="f7c0" styleClass="panelGrande">  
+<!-- ************************** EMPIEZA LA OTRA FILA ****************************************************************************** -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f7c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f7c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f7c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f7c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f7c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f7c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f7c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f7c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f7c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[7][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[7][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[7][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[7][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[7][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                <p:panel  id="f8c0" styleClass="panelGrande">  
+<!-- ************************** EMPIEZA LA OTRA FILA ****************************************************************************** -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f8c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f8c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f8c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f8c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f8c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f8c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f8c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f8c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f8c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[8][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[8][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[8][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[8][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[8][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
+                                
+                                
+                                
+                                <p:panel  id="f9c0" styleClass="panelGrande">  
+<!-- ************************** EMPIEZA LA OTRA FILA ****************************************************************************** -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f9c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f9c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f9c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f9c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f9c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f9c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f9c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f9c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f9c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[9][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[9][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[9][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[9][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[9][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
+                                
+                                
+                                <p:panel  id="f10c0" styleClass="panelGrande">  
+<!-- ************************** EMPIEZA LA OTRA FILA ****************************************************************************** -->
+                                      
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][0].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][0])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][0].idMaterias.nombre eq ''}"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][0].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][0].numeroCreditos}C" />     
+                                    
+                                </p:panel>  
+
+                                <p:panel  id="f10c1" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][1])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][1].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][1].idMaterias.nombre}
+                                    
+                                    
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][1].numeroCreditos}C" />     
+
+                                    
+                                </p:panel>
+
+
+                                <p:panel  id="f10c2" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][2].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][2])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][2].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][2].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][2].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][2].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][2].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f10c3" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][3].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][3])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][3].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][3].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][3].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][3].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][3].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f10c4" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][4].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][4])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][4].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][4].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][4].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][4].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][4].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+
+                                <p:panel  id="f10c5" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][5].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][5])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][5].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][5].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][5].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][5].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][5].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f10c6" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][6].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][6])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][6].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][6].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][6].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][6].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][6].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f10c7" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][7].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][7])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][7].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][7].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][7].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][7].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][7].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f10c8" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][8].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][8])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][8].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][8].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][8].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][8].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][8].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                <p:panel  id="f10c9" styleClass="panelGrande">  
+                                    
+                                        <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][9].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[10][9])}"  >
+                                            <p:graphicImage value="/images/minus.gif"/>   
+                                        </p:commandLink>
+                                        <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][9].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                        #{carrerasMateriasSecuenciaBean.anadidasArray[10][9].idMaterias.nombre}
+                                    
+                                      
+                                        <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[10][9].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[10][9].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[10][9].numeroCreditos}C" />     
+                                    
+                                </p:panel>
+                                
+                                
                             </h:panelGrid>
                             <p:droppable for="f0c0" tolerance="pointer" activeStyleClass="ui-state-highlight"  scope="1" datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
@@ -763,6 +1697,252 @@
                             <p:droppable for="f3c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
                                 <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                             </p:droppable> 
+                            
+                            
+                            
+                              <p:droppable for="f4c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f4c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            
+                            
+                            
+                            
+                              <p:droppable for="f5c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f5c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable>
+                            
+                            
+                            
+                            
+                            
+                              <p:droppable for="f6c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f6c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable>
+                            
+                            
+                            
+                            
+                            
+                            
+                              <p:droppable for="f7c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f7c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable>
+                            
+                            
+                            
+                            
+                            
+                            
+                              <p:droppable for="f8c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f8c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable>
+                            
+                            
+                            
+                            
+                            
+                              <p:droppable for="f9c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f9c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable>
+                            
+                            
+                            
+                            
+                            
+                            
+                              <p:droppable for="f10c0" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="1"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c1" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="2"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c2" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="3"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c3" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="4"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c4" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="5"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c5" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="6"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c6" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="7"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c7" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="8"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c8" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="9"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable> 
+                            <p:droppable for="f10c9" tolerance="pointer" activeStyleClass="ui-state-highlight" scope="10"  datasource="availableCars" onDrop="handleDrop">  
+                                <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                            </p:droppable>
+                            
                         </p:outputPanel>  
 
                     </p:fieldset>  
