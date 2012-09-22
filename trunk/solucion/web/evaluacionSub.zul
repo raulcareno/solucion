@@ -120,7 +120,7 @@
                                                            sisEva.setSistemacalificacion(sistema);
                                                            sisEva.setSeimprime(true);
                                                            sisEva.setEspromedio(true);
-                                                           sisEva.setAbreviatura(""+(m+2));
+                                                           sisEva.setAbreviatura("Prom");
                                                            sisEva.setNombre("nota"+(k));
                                                            formulaGlobal += sisEva.getNombre()+"(),";
                                                            sisEva.setOrden(k);
