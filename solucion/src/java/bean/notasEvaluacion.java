@@ -107,7 +107,7 @@ public class notasEvaluacion extends Rows {
         Administrador adm = new Administrador();
      
         List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
-                + "where o.sistemacalificacion = '" + sistema.getCodigosis() + "' order by o.orden ");
+                + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
         String query = "";
         for (Sistemaevaluacion notass : notas) {
             query += notass.getNombre() + ",";
@@ -123,10 +123,11 @@ public class notasEvaluacion extends Rows {
         String q = "Select distinct matriculas.codigomat,"
                 + "concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
-                + "left join notasevaluacion on matriculas.codigomat = notas.matricula "
+                + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
                 + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "'  "
-                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
                 + " and notasevaluacion.sistemacalificacion = '"+sistema.getCodigosis()+"' "
+                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                
                 + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  "
                 + "or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                 + "order by estudiantes.apellido";

@@ -9,10 +9,14 @@ import java.util.List;
 import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Detallepregunta;
 import jcinform.persistencia.Pregunta;
-import jcinform.persistencia.Respuestasencuesta;
 import jcinform.procesos.Administrador;
-import net.sf.jasperreports.engine.JRDataSource;
-import sources.ReporteNotasDataSource;
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Rows;
+import org.zkoss.zul.Textbox;
 
 //import org.zkoss.util.media.Media;
 //import org.zkoss.zul.Fileupload;
@@ -28,7 +32,46 @@ public class borrar {
 //Progressmeter p;
 //p.set
     public static void main(String[] args) {
+        
         resumen(new Cursos(134));
+        Grid datos = new Grid();
+        datos.getChildren().clear();
+        Auxhead auh = new Auxhead();
+        Auxheader aud = new Auxheader();
+        Textbox est = new Textbox("");
+         est.setParent(aud);
+         aud.setParent(auh);
+         auh.setParent(datos);
+ 
+         Columns cols = new Columns();
+              datos.removeChild(cols);
+         Column col = new Column("A");
+         cols.appendChild(col);
+         col.setParent(cols);
+         cols.setParent(datos); 
+    String[][] cabes = new String[22][2];
+         for (String[] strings : cabes) {
+             System.out.println(""+strings[0]);
+        }
+         Rows filasR = new notasEvaluacion();
+           filasR.setId("filas");
+           filasR.setParent(datos);
+            
+//        <grid   id="datos" >
+//                <auxhead>
+//                    <auxheader colspan="2">
+//                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+//                    </auxheader>
+//                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+//                </auxhead>
+//                <columns>
+//                    <column width="10px"   label ="Mat."/>
+//                    <column width="300px" label ="Estudiante"/>
+//                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+//                </columns>
+//                <rows id="filas" use="bean.notasEvaluacion">
+//                </rows>
+//            </grid>
 //DecimalFormat formateador = new DecimalFormat("####.00#");
 ////DecimalFormat f = new DecimalFormat().applyPattern("####.00#");
 //// Esto sale en pantalla con cuatro decimales, es decir, 3,4324

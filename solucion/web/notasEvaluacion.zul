@@ -16,6 +16,12 @@ import sources.*;
 import bean.Permisos;
 import net.sf.jasperreports.engine.JRDataSource;
 
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -38,6 +44,41 @@ List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
  Permisos permiso = new Permisos();
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 reportesClase no = new reportesClase();
+
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre(""+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    siste.setNombre(" .  ."+siste.getNombre());
+                    sistemas.add(siste);
+               }
+
+ }
+
+
+
+
+
+
 
 List siseval = new ArrayList();
 List evaluaciones = adm.query("Select o from Evaluacion as o where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigoeva  ");
@@ -71,25 +112,9 @@ k++;
  }
 
 String[][] values = new String[siseval.size()][2];
-
-
-Date fechaActual = new Date();
-  DateMidnight actual = new DateMidnight(fechaActual);
-
           for (int i=0;i<siseval.size();i++) {
              values[i][0]= ((Sistemaevaluacion)siseval.get(i)).getAbreviatura();
-                DateMidnight inicial = new DateMidnight(((Sistemaevaluacion)siseval.get(i)).getFechainicial());
-                DateMidnight finale = new DateMidnight(((Sistemaevaluacion)siseval.get(i)).getFechafinal());
-            if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
-                values[i][1]= "number";
-
-            }else{
-               values[i][1]= "number";
-                //values[i][1]= "readonly";
-
-            }
-           System.out.println("** "+((Sistemaevaluacion)siseval.get(i)).getAbreviatura());
-           // values[i]="number";
+             values[i][1]= "number";
           }
 
 void recalculo(){
@@ -166,7 +191,7 @@ void buscar2(Cursos cur){
         " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
         //bd2.getItems().clear();
 mates.getChildren().clear();
-datos.getRows().getChildren().clear();
+try{ datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(""+ab);}
 bd2.value = "";
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       MateriaProfesor estudent = (MateriaProfesor) it.next();
@@ -177,13 +202,13 @@ bd2.value = "";
              }
     }
 
-void doAdd(Cursos curso, MateriaProfesor materia){
+void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
             if(!verificar("Agregar")){
                 guardar1.disabled=true;
                 guardar2.disabled=true;
             }
 
-                filas.addRow(curso,materia);
+                filas.addRow(curso,materia,sistCali);
                    if(periodo.getCerrado()){
                         guardar1.disabled = true;
                         guardar2.disabled = true;
@@ -245,7 +270,89 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         return ds;
 
 }
+void generar(){
+try{datos.getChildren().clear();}catch(Exception ab){System.out.println(ab+"");}
+try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(ab+"");}
+        datos = new Grid();
+        // ************************************************************************************************************** 
+            siseval = new ArrayList();
+            evaluaciones = adm.query("Select o from Evaluacion as o where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigoeva  ");
+            String[][] cabes = new String[evaluaciones.size()][2];
+            int k=0;
+             for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
+                          Evaluacion trime = (Evaluacion) it.next();
+                          List siseval0 = adm.query("Select o from Sistemaevaluacion as o " +
+                          " where o.evaluacion.codigoeva = '"+ trime.getCodigoeva() +"' and o.sistemacalificacion.codigosis = '"+((Sistemacalificacion)sisevalCombo.selectedItem.value).getCodigosis()+"'   order by o.orden");
+                          int orden = 0;
+                          int codigo=0;
 
+                          if(siseval0.size() >0 ){
+                              orden = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getOrden();
+                              codigo = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getCodigosis();
+                              cabes[k][0]= trime.getDescripcion();
+                               cabes[k][1]= siseval0.size()+"";
+                          }else{
+                               cabes[k][1]= 1+"";
+                          }
+
+
+
+                          for (Iterator it2 = siseval0.iterator(); it2.hasNext();){
+                                Sistemaevaluacion siste = (Sistemaevaluacion) it2.next();
+                                siseval.add(siste);
+                           }
+            k++;
+             }
+
+            String[][] values = new String[siseval.size()][2];
+                      for (int i=0;i<siseval.size();i++) {
+                         values[i][0]= ((Sistemaevaluacion)siseval.get(i)).getAbreviatura();
+                         values[i][1]= "number";
+                      }
+
+        
+        
+        // ****************************************************************************************************************
+        
+        
+        
+        Auxhead auh = new Auxhead();
+        Auxheader aud = new Auxheader();
+        Textbox est = new Textbox("abc");
+        est.setCols(50);
+        est.setStyle("background: transparent;border:0px");
+        est.setReadonly(true);
+        est.setParent(aud);
+        aud.setColspan(2);
+        aud.setParent(auh);
+        for (String[] strings : cabes) {
+                    aud = new Auxheader(strings[0]);
+                    aud.setColspan(new Integer(strings[1]));
+                    aud.setParent(auh);
+        }
+        aud = new Auxheader("PROM");
+        aud.setParent(auh);
+        auh.setParent(datos);
+         Columns cols = new Columns();
+         datos.appendChild(cols);
+         Column matCol = new Column("Matriculas");
+         datos.getColumns().appendChild(matCol);
+         Column  estCol = new Column("Estudiante");
+         datos.getColumns().appendChild(estCol);
+         for (String[] strings : values ){
+                    matCol = new Column(strings[0]);
+                    matCol.setAlign("right");
+                    datos.getColumns().appendChild(matCol);
+              
+        }
+         estCol = new Column("PF");
+         datos.getColumns().appendChild(estCol);
+           Rows filasR = new bean.notasEvaluacion();
+           filasR.setId("filas");
+           filasR.setParent(datos);
+          
+          
+}
 
 
 
@@ -290,12 +397,23 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 </bandpopup>
                             </bandbox>
                             
-                            <span style="float:right"> Aporte: </span>
-                            <listbox id="sisevalCombo" width="450px"  mold="select" onSelect = "doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),((Sistemacalificacio)self.selectedItem.value));" >
-                                <listitem  forEach="${siseval}" value="${each}">
-                                    <listcell label="${each.nombre}" />
-                                </listitem>
-                            </listbox>
+                            <span> Aporte: </span>
+                            
+                            <bandbox  width="200px" readonly="true"  id="bd5">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="sisevalCombo" width="450px" 
+                                        onSelect = "bd5.value=self.selectedItem.label;bd5.closeDropdown();generar();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),((Sistemacalificacion)self.selectedItem.value));" >
+                                            <listitem  forEach="${sistemas}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+                                            </listitem>
+                                        </listbox>
+                                        
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                            
+                            
 
                             <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                             <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
@@ -311,15 +429,20 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                         <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
                     </auxheader>
                     <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                    <auxheader>
+                        Prom.
+                    </auxheader>
                 </auxhead>
                 <columns>
                     <column width="10px"   label ="Mat."/>
                     <column width="300px" label ="Estudiante"/>
                     <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                    <column width="300px" label ="PF"/>
                 </columns>
                 <rows id="filas" use="bean.notasEvaluacion">
                 </rows>
             </grid>
+            <button label="generarFilas" onClick="generar()"/>
             <span>
                 <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
                 <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
