@@ -306,8 +306,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 </rows>
             </grid>
             <grid   id="datos" >
-
-                <auxhead >
+                <auxhead>
                     <auxheader colspan="2">
                         <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
                     </auxheader>
