@@ -1,0 +1,165 @@
+
+<window onCreate="buscar()" id="crearSubEvaluaciones" height="400px"  width="500px" >
+
+    <zscript>
+<![CDATA[
+  import jcinform.persistencia.*;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+    Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    static Evaluacion empa = new Evaluacion();
+    Permisos permiso = new Permisos();
+    Object media = null;
+   Sistemacalificacion sistema;
+   
+
+  void buscar(){
+   Integer idSis = (Integer)crearSubEvaluaciones.getAttribute("codigo");
+   sistema =  adm.buscarClave(idSis, Sistemacalificacion.class);
+  
+        try{
+            List evaluacionesEncontradas = adm.query("Select o from Evaluacion as o " + 
+                    " where  o.periodo.codigoper  = '"+periodo.getCodigoper()+"' order by o.codigoeva ");
+            evaluacionesDatos.getRows().getChildren().clear();
+            ArrayList contratosAnadidos = new ArrayList();
+            int i =0;
+            BigDecimal total = new BigDecimal(0);
+                for (Iterator itna = evaluacionesEncontradas.iterator(); itna.hasNext();) {
+                            Evaluacion vec = (Evaluacion) itna.next();
+                          
+                           Row row = new Row();
+                           row.setValue(vec);
+                                   if(row == null){
+                                        row = new Row();
+                                   }
+                                Checkbox ch = new Checkbox("");   
+                                ch.setChecked(true);
+                                row.appendChild(ch);
+                              row.appendChild(new Label(vec.getDescripcion()));        
+                              Decimalbox valor = new Decimalbox(new BigDecimal("4"));
+                              if(vec.getDescripcion().toUpperCase().contains("DISCI")){
+                                    valor = new Decimalbox(new BigDecimal("1"));
+                              }
+                              if(vec.getDescripcion().toUpperCase().contains("EVALUA")){
+                                    valor = new Decimalbox(new BigDecimal("1"));
+                              }
+                              valor.setCols(3);
+                              
+                              
+                              row.appendChild(valor);        
+                              Checkbox chCualitativa = new Checkbox("");   
+                                row.appendChild(chCualitativa);
+                                
+                                Checkbox chDisciplina = new Checkbox("");   
+                                row.appendChild(chDisciplina);
+                              
+                            evaluacionesFilas.appendChild(row);
+                }
+           }catch(Exception e){
+                    System.out.println("ERROR: "+e);
+           }
+                
+ }
+    
+   void guardar(){
+alert(""+sistema);
+                       List col = evaluacionesDatos.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       int k = 1;
+                       for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                            try{
+                                                   int aportes = (((Decimalbox) labels.get(2)).getValue()).intValue();
+                                                   String formula = "";
+                                                   String formulaGlobal = "";
+                                                   for (int m = 0; m < aportes; m++) {
+                                                    System.out.println(((Evaluacion)object.getValue()).getDescripcion());
+                                                       Sistemaevaluacion sisEva = new Sistemaevaluacion(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
+                                                       sisEva.setEvaluacion(((Evaluacion)object.getValue()));
+                                                       sisEva.setSistemacalificacion(sistema);
+                                                       sisEva.setNombre("nota"+(k));
+                                                       sisEva.setFormula("");
+                                                       if(((Checkbox) labels.get(4)).isChecked()){
+                                                         sisEva.setPromediofinal("DI"); //ES LA DISCIPLINA
+                                                       }
+                                                       if(((Checkbox) labels.get(3)).isChecked()){
+                                                         sisEva.setEsequivalencia(true); //ES CUALITATIVA INGRESAN CON MB, B, E,
+                                                       }
+                                                       sisEva.setOrden(k);
+                                                       sisEva.setSeimprime(true);
+                                                       formula += sisEva.getNombre()+"(),";
+                                                       sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
+                                                       adm.guardar(sisEva);
+                                                       k++;
+                                                       if(m==(aportes-1) && aportes > 1){
+                                                       formula = formula.substring(0,formula.length()-1);
+                                                           sisEva = new Sistemaevaluacion(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
+                                                           sisEva.setEvaluacion(((Evaluacion)object.getValue()));
+                                                           sisEva.setSistemacalificacion(sistema);
+                                                           sisEva.setSeimprime(true);
+                                                           sisEva.setEspromedio(true);
+                                                           sisEva.setNombre("nota"+(k));
+                                                           formulaGlobal += sisEva.getNombre()+"(),";
+                                                           sisEva.setOrden(k);
+                                                           sisEva.setFormula("redondear(promedio("+formula+"),"+decimalesPromedio.value+")");
+                                                           sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
+                                                           adm.guardar(sisEva);
+                                                           k++;
+                                                       }
+                                                       
+                                                   }
+                                                     
+                                                       Sistemaevaluacion sisEva = new Sistemaevaluacion(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
+                                                       sisEva.setEvaluacion(((Evaluacion)object.getValue()));
+                                                       sisEva.setSistemacalificacion(sistema);
+                                                       sisEva.setNombre("nota"+(k));
+                                                       sisEva.setFormula(formulaGlobal);
+                                                       sisEva.setOrden(k);
+                                                       sisEva.setSeimprime(true);
+                                                       siseva.setPromediofinal("PF");
+                                                       sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
+                                                       adm.guardar(sisEva);
+                                                   
+                                                   
+                                                  
+                                              }catch(Exception ax){
+                                                System.out.println(""+ax);
+                                            }
+                                              
+                                        }
+                       }
+                               
+ }
+     ]]>
+
+    </zscript>
+    <grid height="250px"     fixedLayout="true"  id="evaluacionesDatos" >
+        <columns>
+            <column  width="15px" >
+                 Incluir
+            </column>
+            <column  width="65px"  label="Descripción"/>
+            <column  width="45px" label="No.Aportes"/>
+            <column  width="45px" label="Es Cualitativa"/>
+            <column  width="45px" label="Es Disciplina"/>
+        </columns>
+        <rows id="evaluacionesFilas">
+        </rows>
+        
+    </grid>
+    # DEC.NOTAS PARCIALES
+    <decimalbox id="decimalesParciales"  cols="3" value="2" />
+    # DEC.PROMEDIO
+    <decimalbox id="decimalesPromedio" cols="3"  value="2"  />
+    <button image="/images/guardar.gif" id="guardarSub" label="Guardar"  
+    disabled="false"  onClick="guardar();"/>
+   
+ 
+</window>
