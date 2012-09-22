@@ -97,49 +97,42 @@ public class notasEvaluacion extends Rows {
         return false;
     }
 
-    public void addRow(Cursos curso, MateriaProfesor materia) {
+    public void addRow(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistema) {
         System.out.println("TOP INI; " + new Date());
-        int tamanio = 0;
+//        int tamanio = 0;
         Session ses = Sessions.getCurrent();
         Empleados empleado = (Empleados) ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     if(listad==null){
         Administrador adm = new Administrador();
-        List sistemas = adm.query("Select o from Sistemacalificacion as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.orden");
-        List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
+     
+        List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
+                + "where o.sistemacalificacion = '" + sistema.getCodigosis() + "' order by o.orden ");
         String query = "";
-        for (Notanotas notass : notas) {
-            query += notass.getNota() + ",";
+        for (Sistemaevaluacion notass : notas) {
+            query += notass.getNombre() + ",";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
-        String[] values = new String[sistemas.size()];
-
-        for (int i = 0; i < sistemas.size(); i++) {
-            values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
-        }
-        tamanio = sistemas.size();
+          
+//        tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         getChildren().clear();
         Decimalbox notaTexto = null;
         Label label3 = null;
 
-        String q = "Select distinct matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
+        String q = "Select distinct matriculas.codigomat,"
+                + "concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
-                + "left join notas on matriculas.codigomat = notas.matricula "
-                + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  "
-                + "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
+                + "left join notasevaluacion on matriculas.codigomat = notas.matricula "
+                + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "'  "
+                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                + " and notasevaluacion.sistemacalificacion = '"+sistema.getCodigosis()+"' "
+                + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  "
+                + "or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                 + "order by estudiantes.apellido";
         System.out.println("" + q);
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
-        if (para.getCvalor().equals("P")) {
-            q = "Select matriculas.codigomat,(estudiantes.apellido,' ',estudiantes.nombre,'(',matriculas.estado,')'), " + query + "  from matriculas "
-                    + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
-                    + "left join notas on matriculas.codigomat = notas.matricula "
-                    + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false  "
-                    + "where matriculas.curso = '" + curso.getCodigocur() + "'  and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase' or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' )"
-                    + "order by estudiantes.apellido";
-        }
+         
 
         List<Equivalencias> equ = null;
 //        System.out.println("" + q);
@@ -217,14 +210,14 @@ public class notasEvaluacion extends Rows {
                             Date fechaActual = new Date();
                             DateMidnight actual = new DateMidnight(fechaActual);
                             int dat = j - 2;
-                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                            DateMidnight inicial = new DateMidnight(sistema.getFechainicial());
+                            DateMidnight finale = new DateMidnight(sistema.getFechafinal());
                             if (empleado.getTipo().equals("Interna")) {
-                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+                                inicial = new DateMidnight(sistema.getFechainti());
+                                finale = new DateMidnight(sistema.getFechaintf());
 
                             }
-                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
+                            final double limite = sistema.getNotalimite();
                             notaTexto.addEventListener("onBlur", new EventListener() {
 
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
@@ -254,9 +247,9 @@ public class notasEvaluacion extends Rows {
                             }
 
                             try {
-                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                                Date fecha = sistema.getFechainicial();
                                 if (empleado.getTipo().equals("Interna")) {
-                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+                                    fecha = sistema.getFechainti();
 
 
                                 }
@@ -366,14 +359,14 @@ public class notasEvaluacion extends Rows {
                             Date fechaActual = new Date();
                             DateMidnight actual = new DateMidnight(fechaActual);
                             int dat = j - 2;
-                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                            DateMidnight inicial = new DateMidnight(sistema.getFechainicial());
+                            DateMidnight finale = new DateMidnight(sistema.getFechafinal());
                             if (empleado.getTipo().equals("Interna")) {
-                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+                                inicial = new DateMidnight(sistema.getFechainti());
+                                finale = new DateMidnight(sistema.getFechaintf());
 
                             }
-                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
+                            final double limite = sistema.getNotalimite();
 
                             if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
                                 combo.setDisabled(false);
@@ -385,9 +378,9 @@ public class notasEvaluacion extends Rows {
                             }
 
                             try {
-                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                                Date fecha = sistema.getFechainicial();
                                 if (empleado.getTipo().equals("Interna")) {
-                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+                                    fecha = sistema.getFechainti();
 
 
                                 }
@@ -868,110 +861,6 @@ public class notasEvaluacion extends Rows {
         return false;
     }
 
-    public void generarNumeros(String tipo, Date fecha, Boolean empezar) {
-        Administrador adm = new Administrador();
-        Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<Global> especial = adm.query("Select o from Global as o where o.grupo = 'ESP' ");
-        for (Iterator<Global> it = especial.iterator(); it.hasNext();) {
-            Global especialidad = it.next();
-            List<Cursos> curs = adm.query("Select o from Cursos as o where o.secuencia  = 13  "
-                    + "and o.titulo.codigo = '" + especialidad.getCodigo() + "' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-            String codigosCursos = "(";
-            for (Iterator<Cursos> itCursos = curs.iterator(); itCursos.hasNext();) {
-                Cursos cursos = itCursos.next();
-                codigosCursos += cursos.getCodigocur() + ",";
-            }
-            if (codigosCursos.length() > 1) {
-                codigosCursos = codigosCursos.substring(0, codigosCursos.length() - 1);
-            }
-            if (tipo.contains("all")) {
-
-                try {
-                    if (codigosCursos.length() > 1) {
-                        
-                        List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                                + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
-                                + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
-                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
-                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                        System.out.println("GENERADOS CURSOS: " + especialidad+" NO GRADUADOS:"+matriculas.size());
-                        int i = 1;
-                        System.out.println("__________________________________________________ ESPECIALIDAD: " + especialidad);
-                        for (Notasacta acta : matriculas) {
-                            System.out.println("" + acta.getMatricula().getEstudiante() + " : " + i);
-                            acta.setFecha(fecha);
-                            acta.setNumeroacta(i);
-                            i++;
-                            adm.actualizar(acta);
-                        }
-                    } else {
-                        System.out.println("NO HAY CODIGOSCURSOS: "+especialidad);
-
-                    }
-                } catch (Exception e) {
-                    System.out.println("NO EXISTEN CURSOS CON CODIGOS: " + codigosCursos);
-                }
-
-            } else {
-                try {
-                    if (codigosCursos.length() > 1) {
-                          
-
-//                        String q = "Select o from Notasacta as o "
-//                                + "where o.matricula.curso.secuencia = 13 and o.matricula.suspenso = true "
-//                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  "
-//                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ";
-//                        System.out.println("" + q);
-//                        List<Notasacta> matriculas = adm.query(q);
-                         List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
-                                + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
-                                + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = true "
-                                + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
-                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                        System.out.println("GENERADOS CURSOS: " + especialidad+" # SUSPENDIDOS:"+matriculas.size());
-                        if (matriculas.size() > 0) {
-                            Integer ultimo = 0;
-                            if(empezar){
-                                ultimo = 0;
-                            }else{
-                                List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
-                                    + "where o.matricula.suspenso = false  "
-                                    + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  ");
-                                ultimo = (Integer) numeroFinal.get(0);
-                            
-                            }
-                            
-                            int i = ultimo + 1;
-                            for (Notasacta acta : matriculas) {
-                                acta.setFecha(fecha);
-                                acta.setNumeroacta(i);
-                                i++;
-                                adm.actualizar(acta);
-                            }
-
-                        }
-
-                    } else {
-                      System.out.println("NO HAY CODIGOSCURSOS: "+especialidad);
-
-                    }
-                } catch (Exception e) {
-                    System.out.println("NO EXISTEN CURSOS CON CODIGOS: " + codigosCursos);
-                }
-
-            }
-
-
-        }
-
-
-
-
-
-
-    }
-
     public void calcularDisciplina(Cursos curso0) {
         String tipo = "INGRESADA";
         Administrador adm = new Administrador();
@@ -1012,7 +901,7 @@ public class notasEvaluacion extends Rows {
             Cursos ActualCurso = ita.next();
             List<DisciplinaModificada> existeModificaciones = adm.query("Select o from DisciplinaModificada as o "
                     + "where o.matricula.curso.codigocur = '" + ActualCurso.getCodigocur() + "' ");
-            
+
             List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o "
                     + "where o.curso.codigocur = '" + ActualCurso.getCodigocur() + "' "
                     + "and o.materia.codigo > 1 and o.ministerio = true and o.opcional = true ");
@@ -1179,18 +1068,18 @@ public class notasEvaluacion extends Rows {
                                 Double object1 = (Double) vecDato.get(j);
                                 String toda = notas.get(j - 1).getNota() + "";
                                 Sistemacalificacion sisPregunta = notas.get(j - 1).getSistema();
-                                
+
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
-                                
+
                                 inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), decimales.intValue()) + ");");
-                                if(existeModificaciones.size()>0){
-                                    DisciplinaModificada disBuscada = buscarModificada(existeModificaciones, sisPregunta, new Integer(((Integer) vecDato.get(0))));
-                                    if(disBuscada != null){
-                                        Double valor = disBuscada.getNota();
-                                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");    
-                                    }
-                                    
+                                if (existeModificaciones.size() > 0) {
+                                    //DisciplinaModificada disBuscada = buscarModificada(existeModificaciones, sisPregunta, new Integer(((Integer) vecDato.get(0))));
+//                                    if (disBuscada != null) {
+//                                        Double valor = disBuscada.getNota();
+//                                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");
+//                                    }
+
                                 }
                             }
                             nota = (Notas) inter.get("nota");
@@ -1222,17 +1111,7 @@ public class notasEvaluacion extends Rows {
             }
         }
     }
-public DisciplinaModificada buscarModificada( List<DisciplinaModificada> lista, Sistemacalificacion sis, Integer matricula){ 
-    
-    for (Iterator<DisciplinaModificada> itMd = lista.iterator(); itMd.hasNext();) {
-        DisciplinaModificada dM = itMd.next();
-        if(dM.getMatricula().getCodigomat().equals(matricula) && dM.getSistema().getCodigosis().equals(sis.getCodigosis())){
-            return dM;
-        }
-    }
-    return null;
 
-}
     public void nuevaClave() {
         try {
             Administrador adm = new Administrador();
