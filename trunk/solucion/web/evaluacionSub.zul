@@ -53,9 +53,15 @@
                               
                               row.appendChild(valor);        
                               Checkbox chCualitativa = new Checkbox("");   
-                                row.appendChild(chCualitativa);
+                              if(vec.getDescripcion().toUpperCase().contains("DISCI")){
+                                    chCualitativa.setChecked(true);
+                              }
+                              row.appendChild(chCualitativa);
                                 
                                 Checkbox chDisciplina = new Checkbox("");   
+                                if(vec.getDescripcion().toUpperCase().contains("DISCI")){
+                                    chDisciplina.setChecked(true);
+                              }
                                 row.appendChild(chDisciplina);
                               
                             evaluacionesFilas.appendChild(row);
@@ -67,10 +73,12 @@
  }
     
    void guardar(){
-alert(""+sistema);
+ 
                        List col = evaluacionesDatos.getRows().getChildren();
                        ArrayList arr  = new ArrayList();
                        int k = 1;
+                       String formulaGlobal = "";
+                       adm.ejecutaSql("Delete from Sistemaevaluacion where  sistemacalificacion.codigosis = '"+sistema.getCodigosis()+"' ");
                        for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
@@ -78,9 +86,9 @@ alert(""+sistema);
                                             try{
                                                    int aportes = (((Decimalbox) labels.get(2)).getValue()).intValue();
                                                    String formula = "";
-                                                   String formulaGlobal = "";
+                                                   
                                                    for (int m = 0; m < aportes; m++) {
-                                                    System.out.println(((Evaluacion)object.getValue()).getDescripcion());
+                                                  //  System.out.println(((Evaluacion)object.getValue()).getDescripcion());
                                                        Sistemaevaluacion sisEva = new Sistemaevaluacion(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
                                                        sisEva.setEvaluacion(((Evaluacion)object.getValue()));
                                                        sisEva.setSistemacalificacion(sistema);
@@ -92,10 +100,16 @@ alert(""+sistema);
                                                        if(((Checkbox) labels.get(3)).isChecked()){
                                                          sisEva.setEsequivalencia(true); //ES CUALITATIVA INGRESAN CON MB, B, E,
                                                        }
+                                                      
                                                        sisEva.setOrden(k);
                                                        sisEva.setSeimprime(true);
                                                        formula += sisEva.getNombre()+"(),";
                                                        sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
+                                                       if(aportes == 1){
+                                                           if(!((Checkbox) labels.get(4)).isChecked() && !((Checkbox) labels.get(3)).isChecked()){
+                                                               formulaGlobal += sisEva.getNombre()+"(),";
+                                                           }
+                                                       }
                                                        adm.guardar(sisEva);
                                                        k++;
                                                        if(m==(aportes-1) && aportes > 1){
@@ -108,7 +122,7 @@ alert(""+sistema);
                                                            sisEva.setNombre("nota"+(k));
                                                            formulaGlobal += sisEva.getNombre()+"(),";
                                                            sisEva.setOrden(k);
-                                                           sisEva.setFormula("redondear(promedio("+formula+"),"+decimalesPromedio.value+")");
+                                                           sisEva.setFormula("redondear(promedio("+formula+"),"+decimalesParciales.value+")");
                                                            sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
                                                            adm.guardar(sisEva);
                                                            k++;
@@ -116,17 +130,7 @@ alert(""+sistema);
                                                        
                                                    }
                                                      
-                                                       Sistemaevaluacion sisEva = new Sistemaevaluacion(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
-                                                       sisEva.setEvaluacion(((Evaluacion)object.getValue()));
-                                                       sisEva.setSistemacalificacion(sistema);
-                                                       sisEva.setNombre("nota"+(k));
-                                                       sisEva.setFormula(formulaGlobal);
-                                                       sisEva.setOrden(k);
-                                                       sisEva.setSeimprime(true);
-                                                       siseva.setPromediofinal("PF");
-                                                       sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
-                                                       adm.guardar(sisEva);
-                                                   
+                                                    
                                                    
                                                   
                                               }catch(Exception ax){
@@ -135,7 +139,20 @@ alert(""+sistema);
                                               
                                         }
                        }
-                               
+                       
+                          Sistemaevaluacion sisEva = new Sistemaevaluacion(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
+                               sisEva.setEvaluacion(null);
+                               sisEva.setSistemacalificacion(sistema);
+                               sisEva.setNombre("nota"+(k));
+                               formulaGlobal = formulaGlobal.substring(0,formulaGlobal.length()-1);
+                               sisEva.setFormula("redondear(promedio("+formulaGlobal+"),"+decimalesPromedio.value+")");
+                               sisEva.setOrden(k);
+                               sisEva.setSeimprime(true);
+                               sisEva.setPromediofinal("PF");
+                               sisEva.setEsequivalencia(false);
+                               adm.guardar(sisEva);
+                                                   
+                               crearSubEvaluaciones.detach();
  }
      ]]>
 

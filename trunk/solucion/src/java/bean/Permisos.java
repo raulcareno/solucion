@@ -56,7 +56,7 @@ public class Permisos {
 
     public Boolean verificarSistema() {
         //VERIFICAR PERMISOS DE USO DEL SISTEMA
-        Administrador adm = new Administrador();
+        Administrador adm = new Administrador(); 
         List dat = adm.queryNativo("Select o.dl from mysql.plugin as o where o.name = 'status' ");
         try {
 
