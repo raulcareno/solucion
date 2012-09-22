@@ -318,7 +318,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
         
         Auxhead auh = new Auxhead();
         Auxheader aud = new Auxheader();
-        Textbox est = new Textbox("abc");
+        Textbox est = new Textbox(" ");
         est.setCols(50);
         est.setStyle("background: transparent;border:0px");
         est.setReadonly(true);
