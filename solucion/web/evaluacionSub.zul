@@ -93,6 +93,7 @@
                                                        sisEva.setEvaluacion(((Evaluacion)object.getValue()));
                                                        sisEva.setSistemacalificacion(sistema);
                                                        sisEva.setNombre("nota"+(k));
+                                                       sisEva.setAbreviatura(""+(m+1));
                                                        sisEva.setFormula("");
                                                        if(((Checkbox) labels.get(4)).isChecked()){
                                                          sisEva.setPromediofinal("DI"); //ES LA DISCIPLINA
@@ -119,6 +120,7 @@
                                                            sisEva.setSistemacalificacion(sistema);
                                                            sisEva.setSeimprime(true);
                                                            sisEva.setEspromedio(true);
+                                                           sisEva.setAbreviatura(""+(m+2));
                                                            sisEva.setNombre("nota"+(k));
                                                            formulaGlobal += sisEva.getNombre()+"(),";
                                                            sisEva.setOrden(k);
@@ -148,6 +150,7 @@
                                sisEva.setFormula("redondear(promedio("+formulaGlobal+"),"+decimalesPromedio.value+")");
                                sisEva.setOrden(k);
                                sisEva.setSeimprime(true);
+                               sisEva.setAbreviatura("P");
                                sisEva.setPromediofinal("PF");
                                sisEva.setEsequivalencia(false);
                                adm.guardar(sisEva);

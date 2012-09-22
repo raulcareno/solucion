@@ -305,6 +305,7 @@
                                             <menuseparator ></menuseparator>
                                              <menuitem label="Tipos de Evaluacion"  onClick="ingresar(self)" id="Evaluacion"  image="/images/distributivo.png" value="/evaluacion.zul" />
                                              <menuitem label="Sistema de Evaluacion"  onClick="ingresar(self)" id="AportesEvaluacion"    image="/images/distributivo.png" value="/aportesEvaluacion.zul" />
+                                             <menuitem onClick="ingresar(self)" id="Registro_de_Notas_Evaluacion" label="Registro de Notas Evaluaciones"  image="/images/notas.png" value="/notasEvaluacion.zul" />
                                              <menuseparator ></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Distributivo" label="Distributivo"  image="/images/distributivo.png" value="/distributivo.zul" />
                                             <menuitem onClick="ingresar(self)" id="Registro_de_Notas" label="Registro de Notas"  image="/images/notas.png" value="/notas.zul" />
@@ -457,7 +458,7 @@
             Textos.visible = per.verificarPermisoReporte("Textos","Textos", "Ingresar",true,"ADMINISTRACION");
             Evaluacion.visible = per.verificarPermisoReporte("Evaluacion","Evaluacion", "Ingresar",true,"ADMINISTRACION");
             AportesEvaluacion.visible = per.verificarPermisoReporte("AportesEvaluacion","AportesEvaluacion", "Ingresar",true,"ADMINISTRACION");
-
+Registro_de_Notas_Evaluacion.visible = per.verificarPermisoReporte("Registro_de_Notas_Evaluacion","Registro_de_Notas_Evaluacion", "Ingresar",true,"ADMINISTRACION");
  
 
             }

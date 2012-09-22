@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page id="main-page"?>
+
+<window id="principal">
+    <zscript>
+        <![CDATA[
+import bean.reportesClase;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import sources.*;
+import bean.Permisos;
+import net.sf.jasperreports.engine.JRDataSource;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+reportesClase noti = new reportesClase();
+Boolean guardando = false;
+Empleados user =  (Empleados)ses.getAttribute("user");
+List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+      " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+
+
+   if(cursos.size()<=0){
+             cursos = adm.query("Select o from Cursos as o "
+            + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.secuencia, o.paralelo.descripcion  ");
+            System.out.println("ENTRO VACIO");
+   }
+
+
+
+ Permisos permiso = new Permisos();
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+reportesClase no = new reportesClase();
+
+List siseval = new ArrayList();
+List evaluaciones = adm.query("Select o from Evaluacion as o where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigoeva  ");
+String[][] cabes = new String[evaluaciones.size()][2];
+
+int k=0;
+
+ for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
+              Evaluacion trime = (Evaluacion) it.next();
+              List siseval0 = adm.query("Select o from Sistemaevaluacion as o " +
+              " where o.evaluacion.codigoeva = '"+ trime.getCodigoeva() +"' and o.sistemacalificacion.codigosis = 40   order by o.orden");
+              int orden = 0;
+              int codigo=0;
+
+              if(siseval0.size() >0 ){
+                  orden = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getOrden();
+                  codigo = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getCodigosis();
+                  cabes[k][0]= trime.getDescripcion();
+                   cabes[k][1]= siseval0.size()+"";
+              }else{
+                   cabes[k][1]= 1+"";
+              }
+
+
+
+              for (Iterator it2 = siseval0.iterator(); it2.hasNext();){
+                    Sistemaevaluacion siste = (Sistemaevaluacion) it2.next();
+                    siseval.add(siste);
+               }
+k++;
+ }
+
+String[][] values = new String[siseval.size()][2];
+
+
+Date fechaActual = new Date();
+  DateMidnight actual = new DateMidnight(fechaActual);
+
+          for (int i=0;i<siseval.size();i++) {
+             values[i][0]= ((Sistemaevaluacion)siseval.get(i)).getAbreviatura();
+                DateMidnight inicial = new DateMidnight(((Sistemaevaluacion)siseval.get(i)).getFechainicial());
+                DateMidnight finale = new DateMidnight(((Sistemaevaluacion)siseval.get(i)).getFechafinal());
+            if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
+                values[i][1]= "number";
+
+            }else{
+               values[i][1]= "number";
+                //values[i][1]= "readonly";
+
+            }
+           System.out.println("** "+((Sistemaevaluacion)siseval.get(i)).getAbreviatura());
+           // values[i]="number";
+          }
+
+void recalculo(){
+notas nso = new notas();
+nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
+
+}
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Notas",accion);
+
+    }
+
+guardar(){
+if(guardando)
+    return;
+
+guardando = true;
+  guardar1.disabled=false;
+  guardar2.disabled=false;
+    notas nso = new notas();
+    notas r = (notas) datos.getRows();
+     Cursos curso = ((Cursos)curs.selectedItem.value);
+     MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
+      
+                           Boolean seguir=true;
+                            int mm = 1;
+                            do{
+                                System.out.println("******** Ingreso n: "+mm);
+                                String ocupado = "Select o from Cursoocupado as o where o.curso = '" + curso.getCodigocur() + "' "
+                                                    + "and o.materia = '" + materia.getMateria().getCodigo() + "'  and o.tipo = 0  ";
+                                List ocupando = adm.query(ocupado);
+                                if (ocupando.size() > 0) {
+                                        System.out.println("Esperando.... ");
+                                        seguir = true;
+                                        Thread.sleep(2000);
+                                }else{
+                                    seguir = false;
+                                }
+                                mm++;
+                            }while(seguir==true);  
+      
+                            Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+                            cO.setCurso(curso.getCodigocur());
+                            cO.setMateria(materia.getMateria().getCodigo());
+                            cO.setTipo(0);
+                            cO.setFecha(adm.Date());
+                            adm.guardar(cO);
+
+
+        String resultado = "";
+            if(((MateriaProfesor)mates.selectedItem.value).getCuantitativa()){
+                resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            }else{
+                resultado = nso.guardarCualitativas(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            }
+ //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
+ adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
+ 
+        if(resultado.equals("ok")){
+            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            permiso.auditar("Notas Internas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+         }
+   guardar1.disabled=false;
+   guardar2.disabled=false;
+   guardando = false;
+
+}
+
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+        //bd2.getItems().clear();
+mates.getChildren().clear();
+datos.getRows().getChildren().clear();
+bd2.value = "";
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        mates.appendChild(item);
+             }
+    }
+
+void doAdd(Cursos curso, MateriaProfesor materia){
+            if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
+
+                filas.addRow(curso,materia);
+                   if(periodo.getCerrado()){
+                        guardar1.disabled = true;
+                        guardar2.disabled = true;
+                    }
+
+}
+
+        void showReport(String tipo) {
+            //Preparing parameters
+            reportes.visible = true;
+
+            Institucion insts = periodo.getInstitucion();
+
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+ String directorioReportes = insts.getReportes();
+               ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sisevalCombo.getSelectedItem().getValue());
+                    datasource = (ReporteNotasDataSource) arreglo.get(0);
+                     parametros = (HashMap) arreglo.get(1);
+                     parametros.put("perseleccionado",((Sistemaevaluacion)sisevalCombo.getSelectedItem().getValue()).getNombre());
+
+                    MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+                    parametros.put("materia", mate.getMateria().getDescripcion());
+                    parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                    parametros.put("titulo", "Notas Registradas");
+                    report.setSrc(directorioReportes+"notaspor.jasper");
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+        }
+
+        //PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+        if(tipo.equals("CM")){
+             ds = new ReporteCertificadoDataSource(detalle);
+        }else{
+              ds = new ReporteActaDataSource(detalle);
+        }
+        return ds;
+
+}
+
+
+
+
+
+]]>
+    </zscript>
+    <panel  id="notasEvaluacioningreso" >
+        <panelchildren>
+
+            <grid>
+                <rows>
+                    <row>
+                        <span style="float:right"> Curso(*):</span>
+                        <bandbox  width="200px"  readonly="true"  id="bd1">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs" height="300px" width="420px"
+                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
+                        <span style="float:right"> Materias(*):</span>
+                        <span>
+                            <bandbox  width="200px" readonly="true"  id="bd2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="mates" height="300px"  width="420px"
+                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                            
+                            <span style="float:right"> Aporte: </span>
+                            <listbox id="sisevalCombo" width="450px"  mold="select" onSelect = "doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),((Sistemacalificacio)self.selectedItem.value));" >
+                                <listitem  forEach="${siseval}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+
+                            <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
+                            <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+
+                        </span>
+                    </row>
+
+                </rows>
+            </grid>
+            <grid   id="datos" >
+
+                <auxhead >
+                    <auxheader colspan="2">
+                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                    </auxheader>
+                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                </auxhead>
+                <columns>
+                    <column width="10px"   label ="Mat."/>
+                    <column width="300px" label ="Estudiante"/>
+                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                </columns>
+                <rows id="filas" use="bean.notasEvaluacion">
+                </rows>
+            </grid>
+            <span>
+                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
+                <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+            </span>
+            
+        </panelchildren>
+    </panel>
+
+    <panel id="reportes" width="98%" height="98%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
+
+      
+
+        <panelchildren>
+            <toolbar  align="end">
+                <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
+            </toolbar>
+            <grid width="75%">
+                <rows>
+                    <row  spans="3">
+                        <span style="color:red;font-size:14px;">
+                            Nota: imprima una vez que haya guardado las notasEvaluacion, sino estas no se reflejarán en el reporte
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Aporte que desea imprimir: </span>
+
+                        <listbox id="sisevalCombo2" width="300px"  mold="select" >
+                            <listitem selected="true"  forEach="${siseval}" value="${each}">
+                                <listcell label="${each.evaluacion} - ${each.nombre}" />
+                            </listitem>
+                        </listbox>
+                        <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                    </row>
+
+                </rows>
+            </grid>
+
+
+            <jasperreport id="report" />
+
+        </panelchildren>
+    </panel>
+    <!--button label="Recalcular"   onClick="recalculo();"/-->
+
+</window>
+
