@@ -760,7 +760,21 @@ if(formula1.equals("")){
                                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                                 <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                                 <button  image="/images/run.gif"  id="recalcular"  label="RECALCULAR" disabled="false"  onClick="recalcular();"/>
-                                 
+                              
+                                <button label="Añadir SubAportes" disabled="false" id="anadirSubAportes" image="/images/editar.gif" >
+                                    <attribute name="onClick">{
+                                final Window win = (Window) Executions.createComponents("evaluacionSub.zul", null, null);
+                                win.setMaximizable(true);
+                                win.setClosable(true);
+                                win.setAttribute("codigo", codigo.value);
+                                win.setTitle("AÑADIR SUB REPORTES");
+                                win.doModal();
+                            }                            
+                                    </attribute>
+                                </button>
+                              
+                                
+                              
                             </span>
                         </row>
 
