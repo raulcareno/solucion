@@ -602,7 +602,8 @@ int kk=0;
 
            
             guardarActualizar(fil.getChildren(), curso, materia);
-            
+           listadoEnviar = null;
+           fil = null;
  
              
             return "ok";
