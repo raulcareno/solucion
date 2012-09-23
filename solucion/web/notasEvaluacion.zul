@@ -6,7 +6,7 @@
         <![CDATA[
 import bean.reportesClase;
 import java.math.BigDecimal;
-import bean.notas;
+import bean.notasEvaluacion;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import java.util.Date;
@@ -134,47 +134,22 @@ if(guardando)
 guardando = true;
   guardar1.disabled=false;
   guardar2.disabled=false;
-    notas nso = new notas();
-    notas r = (notas) datos.getRows();
+    notasEvaluacion nso = new notasEvaluacion();
+    notasEvaluacion r = (notasEvaluacion) datos.getRows();
      Cursos curso = ((Cursos)curs.selectedItem.value);
      MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
+     Sistemacalificacion sistemaCalificacion = ((Sistemacalificacion)sisevalCombo.selectedItem.value);
       
-                           Boolean seguir=true;
-                            int mm = 1;
-                            do{
-                                System.out.println("******** Ingreso n: "+mm);
-                                String ocupado = "Select o from Cursoocupado as o where o.curso = '" + curso.getCodigocur() + "' "
-                                                    + "and o.materia = '" + materia.getMateria().getCodigo() + "'  and o.tipo = 0  ";
-                                List ocupando = adm.query(ocupado);
-                                if (ocupando.size() > 0) {
-                                        System.out.println("Esperando.... ");
-                                        seguir = true;
-                                        Thread.sleep(2000);
-                                }else{
-                                    seguir = false;
-                                }
-                                mm++;
-                            }while(seguir==true);  
-      
-                            Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
-                            cO.setCurso(curso.getCodigocur());
-                            cO.setMateria(materia.getMateria().getCodigo());
-                            cO.setTipo(0);
-                            cO.setFecha(adm.Date());
-                            adm.guardar(cO);
-
-
+       Boolean seguir=true;
+       int mm = 1;
         String resultado = "";
             if(((MateriaProfesor)mates.selectedItem.value).getCuantitativa()){
-                resultado = nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+                resultado = nso.guardar(r.getChildren(),curso,materia,sistemaCalificacion);
             }else{
-                resultado = nso.guardarCualitativas(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+                resultado = nso.guardarCualitativas(r.getChildren(),cursomateria,sistemaCalificacion);
             }
- //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
- adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
- 
         if(resultado.equals("ok")){
-            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),sisevalCombo.getSelectedItem().getValue());
             Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
             permiso.auditar("Notas Internas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
          }else{
@@ -219,26 +194,31 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
         void showReport(String tipo) {
             //Preparing parameters
             reportes.visible = true;
-
             Institucion insts = periodo.getInstitucion();
-
             Map parametros = new HashMap();
             parametros.put("denominacion", insts.getDenominacion());
             parametros.put("nombre", insts.getNombre());
             parametros.put("periodo", periodo.getDescripcion());
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
- String directorioReportes = insts.getReportes();
-               ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sisevalCombo.getSelectedItem().getValue());
+            String directorioReportes = insts.getReportes();
+               ArrayList arreglo = noti.notasdAportes(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sisevalCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
                      parametros = (HashMap) arreglo.get(1);
-                     parametros.put("perseleccionado",((Sistemaevaluacion)sisevalCombo.getSelectedItem().getValue()).getNombre());
+                     
 
                     MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+                    try{
+                    
                     parametros.put("materia", mate.getMateria().getDescripcion());
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     parametros.put("titulo", "Notas Registradas");
-                    report.setSrc(directorioReportes+"notaspor.jasper");
+                    parametros.put("aporte",((Sistemacalificacion)sisevalCombo.selectedItem.value).getNombre());
+                    }catch(Exception ab){
+                        System.out.println("erro "+ab);
+                    }
+                    
+                    report.setSrc(directorioReportes+"notasporAportes.jasper");
 
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
@@ -459,28 +439,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
             <toolbar  align="end">
                 <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
             </toolbar>
-            <grid width="75%">
-                <rows>
-                    <row  spans="3">
-                        <span style="color:red;font-size:14px;">
-                            Nota: imprima una vez que haya guardado las notasEvaluacion, sino estas no se reflejarán en el reporte
-                        </span>
-                    </row>
-                    <row>
-                        <span style="float:right"> Aporte que desea imprimir: </span>
-
-                        <listbox id="sisevalCombo2" width="300px"  mold="select" >
-                            <listitem selected="true"  forEach="${siseval}" value="${each}">
-                                <listcell label="${each.evaluacion} - ${each.nombre}" />
-                            </listitem>
-                        </listbox>
-                        <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
-                    </row>
-
-                </rows>
-            </grid>
-
-
+ 
             <jasperreport id="report" />
 
         </panelchildren>

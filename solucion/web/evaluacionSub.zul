@@ -94,9 +94,11 @@
                                                        sisEva.setSistemacalificacion(sistema);
                                                        sisEva.setNombre("nota"+(k));
                                                        sisEva.setAbreviatura(""+(m+1));
+                                                       sisEva.setEsdisciplina(false);
                                                        sisEva.setFormula("");
                                                        if(((Checkbox) labels.get(4)).isChecked()){
                                                          sisEva.setPromediofinal("DI"); //ES LA DISCIPLINA
+                                                         sisEva.setEsdisciplina(true);
                                                        }
                                                        if(((Checkbox) labels.get(3)).isChecked()){
                                                          sisEva.setEsequivalencia(true); //ES CUALITATIVA INGRESAN CON MB, B, E,
@@ -121,6 +123,7 @@
                                                            sisEva.setSeimprime(true);
                                                            sisEva.setEspromedio(true);
                                                            sisEva.setAbreviatura("Prom");
+                                                           sisEva.setEsdisciplina(false);
                                                            sisEva.setNombre("nota"+(k));
                                                            formulaGlobal += sisEva.getNombre()+"(),";
                                                            sisEva.setOrden(k);
@@ -151,6 +154,7 @@
                                sisEva.setOrden(k);
                                sisEva.setSeimprime(true);
                                sisEva.setAbreviatura("P");
+                               sisEva.setEsdisciplina(false);
                                sisEva.setPromediofinal("PF");
                                sisEva.setEsequivalencia(false);
                                adm.guardar(sisEva);

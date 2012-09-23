@@ -97,7 +97,7 @@ public class notasEvaluacion extends Rows {
         return false;
     }
 
-    public void addRow(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistema) {
+    public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
         System.out.println("TOP INI; " + new Date());
 //        int tamanio = 0;
         Session ses = Sessions.getCurrent();
@@ -105,7 +105,7 @@ public class notasEvaluacion extends Rows {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     if(listad==null){
         Administrador adm = new Administrador();
-     
+
         List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
                 + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
         String query = "";
@@ -113,36 +113,36 @@ public class notasEvaluacion extends Rows {
             query += notass.getNombre() + ",";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
-          
+
 //        tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         getChildren().clear();
         Decimalbox notaTexto = null;
         Label label3 = null;
+        Listbox combo = new Listbox();
 
         String q = "Select distinct matriculas.codigomat,"
                 + "concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
                 + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "'  "
-                + " and notasevaluacion.sistemacalificacion = '"+sistema.getCodigosis()+"' "
+                + " and notasevaluacion.sistemacalificacion = '" + sistema.getCodigosis() + "' "
                 + "where matriculas.curso = '" + curso.getCodigocur() + "' "
-                
                 + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  "
                 + "or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                 + "order by estudiantes.apellido";
         System.out.println("" + q);
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
-         
+
 
         List<Equivalencias> equ = null;
 //        System.out.println("" + q);
-        if (materia.getCuantitativa() == false) {
+         
 
             equ = adm.query("Select o from Equivalencias as o"
                     + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
                     + "and o.grupo = 'AP' ");
-        }
+         
 
         List nativo = adm.queryNativo(q);
         Row row = new Row();
@@ -154,7 +154,7 @@ public class notasEvaluacion extends Rows {
             row = new Row();
             Boolean deshabilitado = false;
             String color = "black";
-
+int kk=0;
             if (materia.getCuantitativa()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
@@ -172,11 +172,48 @@ public class notasEvaluacion extends Rows {
                     }
                     if (j >= 2) {
                         Double valor = (Double) dos;
+                        if (notas.get(kk).getEsdisciplina()) {
+
+
+                            Listitem item = new Listitem("");
+                            notaTexto = new Decimalbox();
+                            combo.setTabindex(j);
+                            label3 = new Label();
+
+
+                            if (dos == null) {
+                                dos = equ.get(0);
+                            }
+  
+ 
+                            combo = new Listbox();
+                            combo.setMold("select");
+                            combo.setWidth("70px");
+                             
+                            combo.setRows(1);
+                            combo.setStyle("font-size:9px;width:40px");
+                            for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
+                                Equivalencias equivalencias = it2.next();
+                                item = new Listitem("" + equivalencias.getAbreviatura());
+                                item.setValue(equivalencias);
+                                combo.appendChild(item);
+
+                            }
+                            if (dos instanceof Double) {
+                                dos = devolverNombre(equ, (((Double) dos).intValue()));
+                            }
+                            item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
+                            item.setValue(dos);
+                            combo.appendChild(item);
+                            combo.setSelectedItem(item);
+                        }else{
                         if (valor.equals(0.0)) {
                             notaTexto.setValue(new BigDecimal(0));
                         } else {
                             notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
                         }
+                        }
+                        
 
                     } else {
                         String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
@@ -270,7 +307,13 @@ public class notasEvaluacion extends Rows {
 
                         }
 
-                        row.appendChild(notaTexto);
+                        if (notas.get(kk).getEsdisciplina()) {
+                        row.appendChild(combo);    
+                        }else{
+                        row.appendChild(notaTexto);    
+                        }
+                        kk++;
+                        
 
                     }
 
@@ -280,7 +323,7 @@ public class notasEvaluacion extends Rows {
             } else { // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
                 Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
                 Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
-                Listbox combo = new Listbox();
+                combo = new Listbox();
                 Listitem item = new Listitem("");
 
                 for (int j = 0; j < vec.size(); j++) {
@@ -462,7 +505,7 @@ public class notasEvaluacion extends Rows {
     }
 
     @SuppressWarnings("static-access")
-    public String guardar(List col, Cursos curso, MateriaProfesor materia) {
+    public String guardar(List col, Cursos curso, MateriaProfesor materia,Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         try {
@@ -472,49 +515,49 @@ public class notasEvaluacion extends Rows {
             inter.eval(prom1);
             inter.eval(equival);
             Administrador adm = new Administrador();
-            List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
-            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
-                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
-                    + "  order by o.orden ");
-            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
-                Sistemacalificacion siCal = it.next();
-                if (verificar(siCal.getFormula(), notas)) {
-                    return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
-                }
-            }
-            String valida = validar(col, notas);
-            if (!valida.isEmpty()) {
-                return valida;
-            }
+        List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
+                + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
+//            String valida = validar(col, notas);
+//            if (!valida.isEmpty()) {
+//                return valida;
+//            }
 
 
             secuencial sec = new secuencial();
 
-            String del = "Delete from Notas where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " + "and materia.codigo = '" + materia.getMateria().getCodigo() + "'  and notas.disciplina = false ";
+            String del = "Delete from Notasevaluacion where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " +  
+                    " and materia.codigo = '" + materia.getMateria().getCodigo() + "'  " + 
+                    " and sistemacalificacion.codigosis = '"+sistema.getCodigosis()+"' ";
             adm.ejecutaSql(del);
             for (int i = 0; i < col.size(); i++) {
                 try {
                     Row object = (Row) col.get(i);
-                    Notas nota = new Notas();
+                    Notasevaluacion nota = new Notasevaluacion();
                     nota.setCodigonot(sec.generarClave());
                     List labels = object.getChildren();
                     nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                     nota.setMateria(materia.getMateria());
                     nota.setFecha(new Date());
+                    nota.setSistemacalificacion(sistema); 
                     nota.setOrden(materia.getOrden());
                     nota.setCuantitativa(materia.getCuantitativa());
-                    nota.setPromedia(materia.getMinisterio());
                     nota.setSeimprime(materia.getSeimprime());
-                    nota.setDisciplina(false);
                     inter.set("nota", nota);
                     for (int j = 2; j < labels.size(); j++) {
-                        Decimalbox object1 = (Decimalbox) labels.get(j);
-                        String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
+                        //Decimalbox object1
+                        BigDecimal object1 = new BigDecimal("0"); 
+                        if(labels.get(j) instanceof Decimalbox){
+                            object1 = ((Decimalbox) labels.get(j)).getValue();
+                        }else if(labels.get(j) instanceof Listbox){
+                            object1 = new BigDecimal(((Equivalencias)((Listbox) labels.get(j)).getSelectedItem().getValue()).getNota());
+                        }
+                        //Decimalbox object1 = (Decimalbox) labels.get(j);
+                        String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
-                        String toda = notas.get(j - 2).getNota() + "";
+                        String toda = notas.get(j - 2).getNombre() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());
-                        String vaNota = object1.getValue().toString();
+                        String vaNota = object1.toString();
                         Double aCargar = 0.0;
                         if (vaNota.equals("")) {
                             aCargar = 0.0;
@@ -526,14 +569,14 @@ public class notasEvaluacion extends Rows {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }
                     }
-                    nota = (Notas) inter.get("nota");
+                    nota = (Notasevaluacion) inter.get("nota");
                     adm.guardar(nota);
 
                 } catch (EvalError ex) {
                     Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            recalculoNotas(materia, curso);
+            //recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
             return "ok";
         } catch (EvalError ex) {
@@ -1080,7 +1123,6 @@ public class notasEvaluacion extends Rows {
 //                                        Double valor = disBuscada.getNota();
 //                                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");
 //                                    }
-
                                 }
                             }
                             nota = (Notas) inter.get("nota");
