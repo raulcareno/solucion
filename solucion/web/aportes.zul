@@ -389,6 +389,7 @@ mostrarTodos();
                     agregar.disabled=false;
                     estado(true,false);
                     llenar(new Sistemacalificacion(0));
+                    anadirSubAportes.disabled = true;
 
 
     }
@@ -415,7 +416,9 @@ mostrarTodos();
 void modificar(){
   if(verificar("Modificar")){
        guardar.disabled=false; estado(false,true);
+       anadirSubAportes.disabled = false;
     }else{
+    anadirSubAportes.disabled = true;
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
 }
@@ -761,7 +764,7 @@ if(formula1.equals("")){
                                 <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
                                 <button  image="/images/run.gif"  id="recalcular"  label="RECALCULAR" disabled="false"  onClick="recalcular();"/>
                               
-                                <button label="Añadir SubAportes" disabled="false" id="anadirSubAportes" image="/images/editar.gif" >
+                                <button label="Añadir SubAportes" disabled="true" id="anadirSubAportes" image="/images/editar.gif" >
                                     <attribute name="onClick">{
                                 final Window win = (Window) Executions.createComponents("evaluacionSub.zul", null, null);
                                 win.setMaximizable(true);

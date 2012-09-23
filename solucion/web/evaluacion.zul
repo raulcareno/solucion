@@ -1,5 +1,5 @@
 
-<window  width="500px" >
+<window onCreate='buscar("")'  width="500px" >
 
     <zscript>
                     <![CDATA[
