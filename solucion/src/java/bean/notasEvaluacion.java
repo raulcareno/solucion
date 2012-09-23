@@ -476,32 +476,32 @@ int kk=0;
     }
 
     public String validar(List col, List<Notanotas> notas) {
-        Administrador adm = new Administrador();
-        for (int i = 0; i < col.size(); i++) {
-            Row object = (Row) col.get(i);
-            List labels = object.getChildren();
-            Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
-            //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
-            for (int j = 2; j < labels.size(); j++) {
-                Decimalbox object1 = (Decimalbox) labels.get(j);
-                String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
-                formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
-                String toda = notas.get(j - 2).getNota() + "";
-
-                toda = toda.substring(1, toda.length());
-                String vaNota = object1.getValue().toString();
-                Double aCargar = 0.0;
-                if (vaNota.equals("")) {
-                    aCargar = 0.0;
-                } else {
-                    aCargar = new Double(vaNota);
-                }
-                if ((aCargar > notas.get(j - 2).getSistema().getNotalimite() || aCargar < 0) && formula.isEmpty()) {
-                    return "NOTA FUERA DE RANGO EN PERIODO: " + notas.get(j - 2).getSistema().getAbreviatura() + "  NOTA: " + aCargar + " "
-                            + " ESTUDIANTE: " + ma.getEstudiante().getApellido() + " " + ma.getEstudiante().getNombre() + "  ";
-                }
-            }
-        }
+//        Administrador adm = new Administrador();
+//        for (int i = 0; i < col.size(); i++) {
+//            Row object = (Row) col.get(i);
+//            List labels = object.getChildren();
+//            Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
+//            //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
+//            for (int j = 2; j < labels.size(); j++) {
+//                Decimalbox object1 = (Decimalbox) labels.get(j);
+//                String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
+//                formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
+//                String toda = notas.get(j - 2).getNota() + "";
+//
+//                toda = toda.substring(1, toda.length());
+//                String vaNota = object1.getValue().toString();
+//                Double aCargar = 0.0;
+//                if (vaNota.equals("")) {
+//                    aCargar = 0.0;
+//                } else {
+//                    aCargar = new Double(vaNota);
+//                }
+//                if ((aCargar > notas.get(j - 2).getSistema().getNotalimite() || aCargar < 0) && formula.isEmpty()) {
+//                    return "NOTA FUERA DE RANGO EN PERIODO: " + notas.get(j - 2).getSistema().getAbreviatura() + "  NOTA: " + aCargar + " "
+//                            + " ESTUDIANTE: " + ma.getEstudiante().getApellido() + " " + ma.getEstudiante().getNombre() + "  ";
+//                }
+//            }
+//        }
         return "";
     }
 
@@ -696,7 +696,7 @@ int kk=0;
             Boolean deshabilitado = false;
             String color = "black";
 
-            if (materia.getCuantitativa()) {
+            //if (materia.getCuantitativa()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
@@ -748,131 +748,7 @@ int kk=0;
                     //row.appendChild(label);
 //                                 System.out.print(","+dos);
                 }
-            } else { // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
-                Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
-                Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
-                Listbox combo = new Listbox();
-                Listitem item = new Listitem("");
-
-                for (int j = 0; j < vec.size(); j++) {
-                    Object dos = vec.get(j);
-                    notaTexto = new Decimalbox();
-                    combo.setTabindex(j);
-                    label3 = new Label();
-//                 label.setAttribute("onBlur", "alert(this)");
-                    try {
-                        if (dos.equals(null)) {
-                            dos = new Double(0.0);
-                        }
-                    } catch (Exception e) {
-                        dos = new Double(0.0);
-                    }
-                    if (j >= 2) {
-
-                        if (dos == null) {
-                            dos = equ.get(0);
-                        }
-                        combo = new Listbox();
-                        combo.setMold("select");
-                        combo.setWidth("50px");
-                        combo.setRows(1);
-                        combo.setStyle("font-size:9px;width:30px");
-                        for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
-                            Equivalencias equivalencias = it2.next();
-                            item = new Listitem("" + equivalencias.getAbreviatura());
-                            item.setValue(equivalencias);
-                            combo.appendChild(item);
-
-                        }
-                        if (dos instanceof Double) {
-                            dos = devolverNombre(equ, (((Double) dos).intValue()));
-                        }
-                        item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
-                        item.setValue(dos);
-                        combo.appendChild(item);
-                        combo.setSelectedItem(item);
-                    } else {
-                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
-                        valor = valor.replace("[Emitir Pase]", "(PE)");
-                        valor = valor.replace("[Retirado]", "(R)");
-                        valor = valor.replace("[Recibir Pase]", "(PR)");
-                        valor = valor.replace("[Matriculado]", "");
-                        label3.setValue("" + valor);
-                    }
-//                                 label.setAttribute(q, dos);
-
-                    if (j == 0) {
-                        label3.setStyle(" ");
-//                    label3.setReadonly(true);
-                        row.appendChild(label3);
-                    } else if (j == 1) {
-                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
-//                    label3.setReadonly(true);
-                        if (label3.getValue().contains("(PE)")) {
-                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
-                            color = "red";
-                            deshabilitado = true;
-                        } else if (label3.getValue().contains("(R)")) {
-                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
-                            color = "blue";
-                            deshabilitado = true;
-                        }
-
-                        row.appendChild(label3);
-                    } else {
-                        if (!deshabilitado) {
-                            Date fechaActual = new Date();
-                            DateMidnight actual = new DateMidnight(fechaActual);
-                            int dat = j - 2;
-                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
-                            if (empleado.getTipo().equals("Interna")) {
-                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
-
-                            }
-                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
-
-                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                                combo.setDisabled(false);
-                                combo.setStyle(Shabilitado);
-                            } else {
-                                combo.setDisabled(true);
-                                combo.setStyle(Sdeshabilitado);
-
-                            }
-
-                            try {
-                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
-                                if (empleado.getTipo().equals("Interna")) {
-                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
-
-
-                                }
-//                            System.out.println("FECHA INICIAL: "+fecha);
-                                if (fecha.getDate() == 0) {
-                                    combo.setDisabled(true);
-                                    combo.setStyle(Sdeshabilitado);
-                                }
-                            } catch (Exception z) {
-                                combo.setDisabled(true);
-                                combo.setStyle(Sdeshabilitado);
-                            }
-
-                        } else {
-                            combo.setDisabled(true);
-                            combo.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
-
-                        }
-
-                        row.appendChild(combo);
-
-                    }
- 
-                }
-
-
-            }
+             
 
             row.setParent(filas);
         }

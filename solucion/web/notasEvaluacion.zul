@@ -146,7 +146,8 @@ guardando = true;
             if(((MateriaProfesor)mates.selectedItem.value).getCuantitativa()){
                 resultado = nso.guardar(r.getChildren(),curso,materia,sistemaCalificacion);
             }else{
-                resultado = nso.guardarCualitativas(r.getChildren(),cursomateria,sistemaCalificacion);
+                resultado = nso.guardar(r.getChildren(),curso,materia,sistemaCalificacion);
+                //resultado = nso.guardarCualitativas(r.getChildren(),cursomateria,sistemaCalificacion);
             }
         if(resultado.equals("ok")){
             doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),sisevalCombo.getSelectedItem().getValue());
