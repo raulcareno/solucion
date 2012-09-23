@@ -22,6 +22,8 @@ private Global materia;
 private MateriaProfesor mprofesor;
 private Sistemacalificacion sistema;
 private Object nota;
+private String tipoSi;
+private String sistemaSi;
 
 private Object optativa;
 
@@ -385,6 +387,22 @@ private BigDecimal disciplina2;
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+
+    public String getSistemaSi() {
+        return sistemaSi;
+    }
+
+    public void setSistemaSi(String sistemaSi) {
+        this.sistemaSi = sistemaSi;
+    }
+
+    public String getTipoSi() {
+        return tipoSi;
+    }
+
+    public void setTipoSi(String tipoSi) {
+        this.tipoSi = tipoSi;
     }
  
     

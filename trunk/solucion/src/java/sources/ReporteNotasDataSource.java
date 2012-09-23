@@ -61,6 +61,10 @@ public class ReporteNotasDataSource implements JRDataSource {
                 valor = nodo.getSistema().getAbreviatura();
             } else if ("tipo".equals(fieldName)) {
                 valor = nodo.getSistema().getTrimestre().getDescripcion();
+            } else if ("tipoSi".equals(fieldName)) {
+                valor = nodo.getTipoSi();
+            } else if ("sistemaSi".equals(fieldName)) {
+                valor = nodo.getSistemaSi();
             } else if ("contador".equals(fieldName)) {
                 valor = nodo.getContador();
             } else if ("nota".equals(fieldName)) {
