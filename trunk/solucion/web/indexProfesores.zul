@@ -235,19 +235,11 @@
                         <tabbox onSelect="a1.clearSelection(); a2.clearSelection(); a3.clearSelection(); a4.clearSelection(); a5.clearSelection();"  id="tb" width="100%" height="460px" mold="accordion-lite">
                             <tabs>
                                 <tab image="/images/matricular.gif" label="Opciones" />
-                                 
                             </tabs>
                             <tabpanels>
-                                <tabpanel  height="220px">
-                                    <listbox id="a1" onSelect ="ingresar(self.selectedItem)" >
-                                        <!--listitem  id="Cursos" label="Cursos" image="/images/cursos.png" value="/cursos.zul"/><listitem/>
-                                        <listitem id="Matricular" label="Matricular" image="/images/pensum.png"  value="/matriculas.zul" /><listitem/>
-                                        <listitem id="Matricular2" label="Asignar Cursos" image="/images/asignar.png"  value="/asignarmatriculas.zul" /><listitem/>
-                                        <listitem id="Actualizacion" label="Actualizar" image="/images/actualizar.png"  value="/actualizacion.zul" /><listitem/>
-                                        <listitem id="Pendientes" label="Pendientes" image="/images/dinero.gif"   value="/pendientes.zul" /><listitem/>
-                                        <listitem id="Bloquear" label="Bloquear" image="/images/bloquear.gif"   value="/actualizacion_1.zul" /><listitem/>
-                                        <listitem id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" /-->
-                                        
+                                <tabpanel  height="290px">
+                                    <listbox height="250px" id="a1" onSelect ="ingresar(self.selectedItem)" >
+                                        <listitem  id="Registro de Notas Evaluacion"  image="/images/notas.png"  label="Registro Notas Evaluaciones" value="/notasEvaluacion.zul"/>
                                         <listitem id="Registro de Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
                                         <listitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
                                         <listitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltasFuera.zul" />

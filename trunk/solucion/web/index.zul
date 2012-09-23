@@ -457,7 +457,7 @@
             Textos.visible = per.verificarPermisoReporte("Textos","Textos", "Ingresar",true,"ADMINISTRACION");
             Evaluacion.visible = per.verificarPermisoReporte("Evaluacion","Evaluacion", "Ingresar",true,"ADMINISTRACION");
             AportesEvaluacion.visible = per.verificarPermisoReporte("AportesEvaluacion","AportesEvaluacion", "Ingresar",true,"ADMINISTRACION");
-Registro_de_Notas_Evaluacion.visible = per.verificarPermisoReporte("Registro_de_Notas_Evaluacion","Registro_de_Notas_Evaluacion", "Ingresar",true,"ADMINISTRACION");
+            Registro_de_Notas_Evaluacion.visible = per.verificarPermisoReporte("Registro_de_Notas_Evaluacion","Registro_de_Notas_Evaluacion", "Ingresar",true,"NOTAS");
  
 
             }

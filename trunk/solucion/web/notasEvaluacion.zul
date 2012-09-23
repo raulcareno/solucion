@@ -28,17 +28,15 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
 reportesClase noti = new reportesClase();
 Boolean guardando = false;
 Empleados user =  (Empleados)ses.getAttribute("user");
-List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
-      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"'  " + 
-      " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
-
-
-   if(cursos.size()<=0){
-             cursos = adm.query("Select o from Cursos as o "
-            + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.secuencia, o.paralelo.descripcion  ");
-            System.out.println("ENTRO VACIO");
-   }
-
+List cursos = null;
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select o.curso from MateriaProfesor as o " +
+          " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+          " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }
 
 
  Permisos permiso = new Permisos();
@@ -123,7 +121,7 @@ nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
 
 }
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Registro de Notas",accion);
+        return permiso.verificarPermiso("Registro de Notas Evaluacion",accion);
 
     }
 
@@ -165,10 +163,19 @@ guardando = true;
 void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
         " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
-        //bd2.getItems().clear();
-mates.getChildren().clear();
-try{ datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(""+ab);}
-bd2.value = "";
+          if(user.getTipo().equals("Interna")){
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+            }else{
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
+                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+            }
+        mates.getChildren().clear();
+        try{ 
+        
+             datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(""+ab);}
+             bd2.value = "";
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       MateriaProfesor estudent = (MateriaProfesor) it.next();
                         Listitem item = new Listitem();
@@ -347,7 +354,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                 <rows>
                     <row>
                         <span style="float:right"> Curso(*):</span>
-                        <bandbox  width="200px"  readonly="true"  id="bd1">
+                        <bandbox  width="150px"  readonly="true"  id="bd1">
                             <bandpopup>
                                 <vbox>
                                     <listbox id="curs" height="300px" width="420px"
@@ -363,7 +370,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                         </bandbox>
                         <span style="float:right"> Materias(*):</span>
                         <span>
-                            <bandbox  width="200px" readonly="true"  id="bd2">
+                            <bandbox  width="150px" readonly="true"  id="bd2">
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" height="300px"  width="420px"
@@ -380,7 +387,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                             
                             <span> Aporte: </span>
                             
-                            <bandbox  width="200px" readonly="true"  id="bd5">
+                            <bandbox  width="150px" readonly="true"  id="bd5">
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="sisevalCombo" width="450px" 
