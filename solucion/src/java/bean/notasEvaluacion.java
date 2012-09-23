@@ -4,6 +4,7 @@ import bsh.EvalError;
 import bsh.Interpreter;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -508,6 +509,7 @@ int kk=0;
     public String guardar(List col, Cursos curso, MateriaProfesor materia,Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<general> listadoEnviar = new ArrayList();
         try {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
@@ -543,6 +545,8 @@ int kk=0;
                     nota.setCuantitativa(materia.getCuantitativa());
                     nota.setSeimprime(materia.getSeimprime());
                     inter.set("nota", nota);
+                    BigDecimal notaFinal = new BigDecimal("0");
+                    String ultimaNota = "";
                     for (int j = 2; j < labels.size(); j++) {
                         //Decimalbox object1
                         BigDecimal object1 = new BigDecimal("0"); 
@@ -568,7 +572,20 @@ int kk=0;
                         if (!formula.isEmpty()) {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }
+                       ultimaNota =  (uno+toda) + "";   
                     }
+                    
+                        try{
+                            notaFinal = new BigDecimal((Double)inter.eval("nota.get"+ultimaNota+"()"));
+                            general gen = new general();
+                            gen.setMatricula(nota.getMatricula());
+                            gen.setSistema(sistema);
+                            gen.setNota(notaFinal); 
+                            listadoEnviar.add(gen); 
+                        }catch(Exception nn){
+                            System.out.println("error en nn: "+nn);
+                            Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, nn);
+                        }
                     nota = (Notasevaluacion) inter.get("nota");
                     adm.guardar(nota);
 
@@ -580,9 +597,10 @@ int kk=0;
             System.out.println("FINALIZO EN: " + new Date());
             
             System.out.println("GUARDO EN NOTAS ");
-            Rows fil = buscarFilas(curso, materia);
-            //TENGO QUE SETEAR LAS NOTAS ANTES DE GUARDAR
-            
+                        //TENGO QUE SETEAR LAS NOTAS ANTES DE GUARDAR
+            Rows fil = buscarFilas(curso, materia, sistema, listadoEnviar);
+
+           
             guardarActualizar(fil.getChildren(), curso, materia);
             
  
@@ -595,13 +613,21 @@ int kk=0;
 
        
     }
-    
+ public BigDecimal buscarCoincidencia(List<general> general, Matriculas mat, Sistemacalificacion sis)   {
+     for (Iterator<general> it = general.iterator(); it.hasNext();) {
+         general object = it.next();
+         if(object.getMatricula().getCodigomat().equals(mat.getCodigomat()) && object.getSistema().getCodigosis().equals(sis.getCodigosis())){
+            return object.getNota();
+         } 
+     }
+        return null;
+ }
     /**
      * BUSCO LAS NOTAS PARA VOLVERLAS A GUARDAR
      * @param curso
      * @param materia 
      */
-     public Rows buscarFilas(Cursos curso, MateriaProfesor materia) {
+     public Rows buscarFilas(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistemaLlega,List<general> notasLlega) {
         System.out.println("TOP INI; " + new Date());
         int tamanio = 0;
         
@@ -662,6 +688,7 @@ int kk=0;
         String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
         String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+        String codigomat = "";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
@@ -703,86 +730,16 @@ int kk=0;
 
                     if (j == 0) {
                         label3.setStyle(" ");
-//                    label3.setReadonly(true);
+                        codigomat = label3.getValue();
                         row.appendChild(label3);
                     } else if (j == 1) {
-                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
-//                    label3.setReadonly(true);
-                        if (label3.getValue().contains("(PE)")) {
-                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
-                            color = "red";
-                            deshabilitado = true;
-                        } else if (label3.getValue().contains("(R)")) {
-                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
-                            color = "blue";
-                            deshabilitado = true;
-                        }
-
                         row.appendChild(label3);
                     } else {
-                        if (!deshabilitado) {
-                            Date fechaActual = new Date();
-                            DateMidnight actual = new DateMidnight(fechaActual);
                             int dat = j - 2;
-                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
-                            if (empleado.getTipo().equals("Interna")) {
-                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
-
-                            }
-                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
-                            notaTexto.addEventListener("onBlur", new EventListener() {
-
-                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
-                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-                                    try {
-                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
-                                        if (valor > limite) {
-
-                                            ((Decimalbox) event.getTarget()).setFocus(true);
-                                            ((Decimalbox) event.getTarget()).focus();
-                                            ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
-                                        }
-                                    } catch (Exception e) {
-                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                    }
-
-                                }
-                            });
-                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                                notaTexto.setDisabled(false);
-                                notaTexto.setStyle(Shabilitado);
-                            } else {
-                                notaTexto.setDisabled(true);
-                                notaTexto.setStyle(Sdeshabilitado);
-
-                            }
-
-                            try {
-                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
-                                if (empleado.getTipo().equals("Interna")) {
-                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
-
-
-                                }
-//                            System.out.println("FECHA INICIAL: "+fecha);
-                                if (fecha.getDate() == 0) {
-                                    notaTexto.setDisabled(true);
-                                    notaTexto.setStyle(Sdeshabilitado);
-                                }
-                            } catch (Exception z) {
-                                notaTexto.setDisabled(true);
-                                notaTexto.setStyle(Sdeshabilitado);
-                            }
-
-                        } else {
-                            notaTexto.setDisabled(true);
-                            notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
-
-                        }
-
+                          BigDecimal notaNueva = buscarCoincidencia(notasLlega, new Matriculas(new Integer(codigomat)), ((Sistemacalificacion) sistemas.get(dat)));
+                          if(notaNueva != null){
+                              notaTexto.setValue(notaNueva); 
+                          }
                         row.appendChild(notaTexto);
 
                     }
