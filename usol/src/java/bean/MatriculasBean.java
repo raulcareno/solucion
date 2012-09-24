@@ -283,7 +283,12 @@ public class MatriculasBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado la CARRERA", "No ha seleccionado la CARRERA"));
             return null;
         }
+        try {
         if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
+            return null;
+        }
+        } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
             return null;
         }
@@ -951,6 +956,32 @@ public class MatriculasBean {
         }
         return null;
     }
+    
+    
+    
+ public String copiarPadre(){
+            pariente1.setNombres(pariente2.getApellidos()+" "+ pariente2.getNombres());
+            pariente1.setDireccion(pariente2.getDireccion());
+            pariente1.setTelefonoTrabajo(pariente2.getTelefonoTrabajo());
+            pariente1.setIdentificacion(pariente2.getIdentificacion());
+            return "";
+    }
+    public String copiarMadre(){
+            pariente1.setNombres(pariente3.getApellidos()+" "+ pariente3.getNombres());
+            pariente1.setDireccion(pariente3.getDireccion());
+            pariente1.setTelefonoTrabajo(pariente3.getTelefonoTrabajo());
+            pariente1.setIdentificacion(pariente3.getIdentificacion());
+            return "";
+    }
+    public String copiarEstudiante(){
+                pariente1.setNombres(estudiante.getApellidoPaterno()+" "+estudiante.getApellidoMaterno()+" "+ estudiante.getNombre());
+            pariente1.setDireccion(estudiante.getDireccion());
+            pariente1.setIdentificacion(estudiante.getIdEstudiantes());
+            pariente1.setTelefonoTrabajo(estudiante.getTelefono());
+            return "";
+    }
+            
+            
 
     public List<SelectItem> getSelectedItemIngresos() {
         try {
