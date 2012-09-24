@@ -364,17 +364,17 @@ public class MatriculasBean {
          * GUARDO LOS ARCHIVOS
          */
         arLibreta.setIdEstudiantes(estudiante);
-        arLibreta.setNombre(libretaNombre);
+        arLibreta.setNombre(estudiante.getIdEstudiantes()+"."+libretaFormato);
         arLibreta.setTipoArchivo("LIB");
         arLibreta.setArchivo(libreta);
 
         arTitulo.setIdEstudiantes(estudiante);
-        arTitulo.setNombre(tituloNombre);
+        arTitulo.setNombre(estudiante.getIdEstudiantes()+"."+tituloFormato);
         arTitulo.setTipoArchivo("TIT");
         arTitulo.setArchivo(titulo);
 
         arCedula.setIdEstudiantes(estudiante);
-        arCedula.setNombre(cedulaNombre);
+        arCedula.setNombre(estudiante.getIdEstudiantes()+"."+cedulaFormato);
         arCedula.setTipoArchivo("CED");
         arCedula.setArchivo(cedula);
 
@@ -660,18 +660,7 @@ public class MatriculasBean {
         } else {
             pariente3 = new Parientes();
         }
-//        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
-//        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
-//            Parientes parientes = it.next();
-//            if (parientes.getTipoRepresentante().equals("F")) {
-//                pariente1 = parientes;
-//            } else if (parientes.getTipoRepresentante().equals("P")) {
-//                pariente2 = parientes;
-//            } else if (parientes.getTipoRepresentante().equals("M")) {
-//                pariente3 = parientes;
-//            }
-//
-//        }
+
         arLibreta = new Archivos();
         arTitulo = new Archivos();
         arCedula = new Archivos();
@@ -679,18 +668,21 @@ public class MatriculasBean {
                 + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Archivos> it = archi.iterator(); it.hasNext();) {
             Archivos arcIt = it.next();
-            if (arcIt.getTipoArchivo().equals("LIB")) {
+           if (arcIt.getTipoArchivo().equals("LIB")) {
                 arLibreta = arcIt;
                 libreta = arcIt.getArchivo();
                 libretaNombre = arcIt.getNombre();
+                libretaFormato = libretaFormato = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             } else if (arcIt.getTipoArchivo().equals("CED")) {
                 arCedula = arcIt;
                 cedula = arcIt.getArchivo();
                 cedulaNombre = arcIt.getNombre();
+                cedulaFormato  = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             } else if (arcIt.getTipoArchivo().equals("TIT")) {
                 arTitulo = arcIt;
                 titulo = arcIt.getArchivo();
                 tituloNombre = arcIt.getNombre();
+                tituloFormato = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             }
 
         }
@@ -704,7 +696,11 @@ public class MatriculasBean {
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
-            generarImagenTmp(foto1, estudiante.getFoto());
+            if(estudiante.getFoto()!=null){
+                generarImagenTmp(foto1, estudiante.getFoto());
+            }else{
+                foto1 =         "";
+            }
         } catch (Exception e) {
             System.out.println("AUN NO SE HA CARGADO LA IMAGEN..." + e);
         }
@@ -800,14 +796,17 @@ public class MatriculasBean {
                 arLibreta = arcIt;
                 libreta = arcIt.getArchivo();
                 libretaNombre = arcIt.getNombre();
+                libretaFormato = libretaFormato = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             } else if (arcIt.getTipoArchivo().equals("CED")) {
                 arCedula = arcIt;
                 cedula = arcIt.getArchivo();
                 cedulaNombre = arcIt.getNombre();
+                cedulaFormato  = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             } else if (arcIt.getTipoArchivo().equals("TIT")) {
                 arTitulo = arcIt;
                 titulo = arcIt.getArchivo();
                 tituloNombre = arcIt.getNombre();
+                tituloFormato = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             }
 
         }
@@ -821,7 +820,11 @@ public class MatriculasBean {
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
-            generarImagenTmp(foto1, estudiante.getFoto());
+            if(estudiante.getFoto() !=null){
+                generarImagenTmp(foto1, estudiante.getFoto());
+            }else{
+                foto1 = "";        
+            }
         } catch (Exception e) {
             System.out.println("AUN NO SE HA CARGADO LA IMAGEN..." + e);
         }

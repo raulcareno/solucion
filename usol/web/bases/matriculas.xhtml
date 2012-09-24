@@ -52,21 +52,22 @@
                     </h:panelGrid>  
                 </p:panel>  
 
-                <p:fieldset legend="DATOS DEL ESTUDIANTE">
+                <p:fieldset >
                     <h:panelGrid columns="2">  
-                        <h:panelGrid columns="4" cellpadding="-1" style="margin:0 auto;">  
+                        <h:panelGrid columns="5" cellpadding="-1" style="margin:0 auto;">  
 
                             <h:outputText value="CEDULA IDENTIDAD.: " />  
                             <p:inputText value="#{matriculasBean.estudiante.idEstudiantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;">
                                 <p:ajax event="blur" listener="#{matriculasBean.buscarCedula}"  update=":form"  />
                             </p:inputText>  
+                            <p:spacer width="10"/>
 
                             <h:outputText value="APELLIDO PATERNO: " />  
                             <p:inputText value="#{matriculasBean.estudiante.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="APELLIDO MATERNO: " />  
                             <p:inputText value="#{matriculasBean.estudiante.apellidoMaterno}" id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-
+                            <p:spacer width="10"/>
                             <h:outputText value="NOMBRE: " />  
                             <p:inputText value="#{matriculasBean.estudiante.nombre}"   id="nombre"  maxlength="100" size="35"  style="font-weight:bold;">
                                 <p:ajax event="blur" listener="#{matriculasBean.generarClaveyUsuario}"  process="@this ApellidoPaterno ApellidoMaterno CedulaIdentidad" update=":form"  />
@@ -77,53 +78,55 @@
                                 <f:selectItem itemLabel="MASCULINO"  itemValue="M" />  
                                 <f:selectItem itemLabel="FEMENINO" itemValue="F" />  
                             </p:selectOneRadio>  
-
+                            <p:spacer width="10"/>
                             <h:outputText value="TELEFONO: " />  
                             <p:inputText value="#{matriculasBean.estudiante.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="DIRECCIÓN: " />  
                             <p:inputText value="#{matriculasBean.estudiante.direccion}" id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
-
+                            <p:spacer width="10"/>
 
                             <h:outputText value="EMAIL: " />  
                             <p:inputText value="#{matriculasBean.estudiante.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="USUARIO: " />  
                             <p:inputText value="#{matriculasBean.estudiante.usuario}"  autocomplete="false"  id="UsuarioE"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-
+                            <p:spacer width="10"/>
                             <h:outputText value="CLAVE: " />  
                             <p:password  value="#{matriculasBean.estudiante.clave}" autocomplete="false"  requiredMessage="No coincidena las contraseñas" match="Clave2E" redisplay="true"  feedback="true" promptLabel="Por favor ingrese una clave" goodLabel="Buena" strongLabel="Fuerte" weakLabel="Débil" id="ClaveE"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="FECHA NACIMIENTO: " />  
                             <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{matriculasBean.estudiante.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
+                            <p:spacer width="10"/>
                             <h:outputText value="CONFIRMAR CLAVE: " />  
                             <p:password  value="#{matriculasBean.clave2}" redisplay="true"  autocomplete="false"  id="Clave2E"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="PAIS NACIMIENTO: " /> 
-                            <p:selectOneMenu   id="pais" label="pais"  style="width:160px"  value="#{matriculasBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
+                            <p:selectOneMenu   id="pais" label="pais"  style="width:170px"  value="#{matriculasBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
                                 <f:selectItems value="#{matriculasBean.selectedItemPais}" var="ob"  itemValue="#{ob}"/>  
                                 <p:ajax event="change" listener="#{matriculasBean.buscarProvincia()}"  update="provincia" />  
                             </p:selectOneMenu>  
+                            <p:spacer width="10"/>
                             <p:commandLink update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> CARGAR LIBRETA(PDF)
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> Subir copia de Lib.Militar
                             </p:commandLink>
                             <h:panelGrid id="panelLibreta"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
 
                                 <p:commandButton id="downloadLinkLibreta"  rendered="#{not empty matriculasBean.arLibreta.nombre}"  value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
                                     <p:fileDownload value="#{matriculasBean.fileLibreta}" />  
                                 </p:commandButton> 
-                                <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arLibreta.nombre}"   />
+                                <h:outputText style="color:orange; font-color:orange" value="#{matriculasBean.arLibreta.nombre}"   />
 
-                                <p:dialog header="LA LIBRETA" widgetVar="modalSubirLibreta" modal="true"
+                                <p:dialog header="SUBIR COPIA DE LA LIBRETA MILITAR" widgetVar="modalSubirLibreta" modal="true"
                                           fixedCenter="true" width="400" visible="false" resizable="false">
-                                    <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
-                                                   style="width:100%; font-size: 150% !important;"
-                                                   fileUploadListener="#{matriculasBean.handleFileUploadLibreta}"  
-                                                   mode="advanced"  id="fileSubirLibreta"
-                                                   update="panelLibreta"  
-                                                   auto="true"  oncomplete="modalSubirLibreta.hide();" 
-                                                   sizeLimit="1000000"   
-                                                   allowTypes="/(\.|\/)(pdf)$/"/>  
+                                    <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)"     label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
+                                                  style="width:100%; font-size: 150% !important;"
+                                                  fileUploadListener="#{matriculasBean.handleFileUploadLibreta}"  
+                                                  mode="advanced"  id="fileSubirLibreta"
+                                                  update="panelLibreta"  
+                                                  auto="true"  oncomplete="modalSubirLibreta.hide();" 
+                                                  sizeLimit="1000000"   
+                                                  allowTypes="/(\.|\/)(pdf)$/"/>  
                                     <br />
                                     <p:commandButton type="button" value="CANCELAR">
                                         <p:ajax oncomplete="modalSubirLibreta.hide();" />
@@ -135,30 +138,31 @@
 
 
                             <h:outputText value="PROVINCIA  NACIMIENTO: " /> 
-                            <p:selectOneMenu  id="provincia" label="provincia" style="width:160px"   value="#{matriculasBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
+                            <p:selectOneMenu  id="provincia" label="provincia" style="width:170px"   value="#{matriculasBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
                                 <f:selectItems value="#{matriculasBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
                                 <p:ajax event="change" listener="#{matriculasBean.buscarCanton()}"  update="canton" />  
                             </p:selectOneMenu>  
+                            <p:spacer width="10"/>
                             <p:commandLink update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> CARGAR TITULO(PDF)
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> Subir copia del Título 
                             </p:commandLink>
                             <h:panelGrid id="panelTitulo"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
 
                                 <p:commandButton id="downloadLinkTitulo" rendered="#{not empty matriculasBean.arTitulo.nombre}"   value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
                                     <p:fileDownload value="#{matriculasBean.fileTitulo}" />  
                                 </p:commandButton> 
-                                <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arTitulo.nombre}"   />
+                                <h:outputText style="color:orange; font-color:orange" value="#{matriculasBean.arTitulo.nombre}"   />
 
-                                <p:dialog header="LA LIBRETA" widgetVar="modalSubirTitulo" modal="true"
+                                <p:dialog header="SUBIR COPIA DEL TÍTULO DE GRADO" widgetVar="modalSubirTitulo" modal="true"
                                           fixedCenter="true" width="400" visible="false" resizable="false">
-                                    <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
-                                                   style="width:100%; font-size: 150% !important;"
-                                                   fileUploadListener="#{matriculasBean.handleFileUploadTitulo}"  
-                                                   mode="advanced"  id="fileSubirTitulo"
-                                                   update="panelTitulo"  
-                                                   auto="true"  oncomplete="modalSubirTitulo.hide();" 
-                                                   sizeLimit="1000000"   
-                                                   allowTypes="/(\.|\/)(pdf)$/"/>  
+                                    <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)" label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
+                                                  style="width:100%; font-size: 150% !important;"
+                                                  fileUploadListener="#{matriculasBean.handleFileUploadTitulo}"  
+                                                  mode="advanced"  id="fileSubirTitulo"
+                                                  update="panelTitulo"  
+                                                  auto="true"  oncomplete="modalSubirTitulo.hide();" 
+                                                  sizeLimit="1000000"   
+                                                  allowTypes="/(\.|\/)(pdf)$/"/>  
                                     <br />
                                     <p:commandButton type="button" value="CANCELAR">
                                         <p:ajax oncomplete="modalSubirTitulo.hide();" />
@@ -169,29 +173,30 @@
                             </h:panelGrid>
 
                             <h:outputText value="CANTON NACIMIENTO: " /> 
-                            <p:selectOneMenu immediate="true" id="canton"  style="width:160px"  label="canton"  value="#{matriculasBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
+                            <p:selectOneMenu immediate="true" id="canton"  style="width:170px"  label="canton"  value="#{matriculasBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
                                 <f:selectItems value="#{matriculasBean.cantonesEncontradas}" var="ob3"  itemValue="#{ob3}"/>  
                             </p:selectOneMenu> 
+                            <p:spacer width="10"/>
                             <p:commandLink update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> CARGAR LIBRETA(PDF)
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> Subir copia de Cédula
                             </p:commandLink>
                             <h:panelGrid id="panelCedula"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
 
                                 <p:commandButton id="downloadLinkCedula" rendered="#{not empty matriculasBean.arCedula.nombre }" value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
                                     <p:fileDownload value="#{matriculasBean.fileCedula}" />  
                                 </p:commandButton> 
-                                <h:outputText style="color:blue; font-color:blue" value="#{matriculasBean.arCedula.nombre}"   />
+                                <h:outputText style="color:orange; font-color:orange" value="#{matriculasBean.arCedula.nombre}"   />
 
-                                <p:dialog header="LA LIBRETA" widgetVar="modalSubirCedula" modal="true"
+                                <p:dialog header="SUBIR LA COPIA DE LA CÉDULA" widgetVar="modalSubirCedula" modal="true"
                                           fixedCenter="true" width="400" visible="false" resizable="false">
-                                    <p:fileUpload  label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
-                                                   style="width:100%; font-size: 150% !important;"
-                                                   fileUploadListener="#{matriculasBean.handleFileUploadCedula}"  
-                                                   mode="advanced"  id="fileSubirCedula"
-                                                   update="panelCedula"  
-                                                   auto="true"  oncomplete="modalSubirCedula.hide();" 
-                                                   sizeLimit="1000000"   
-                                                   allowTypes="/(\.|\/)(pdf)$/"/>  
+                                    <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)"   label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
+                                                  style="width:100%; font-size: 150% !important;"
+                                                  fileUploadListener="#{matriculasBean.handleFileUploadCedula}"  
+                                                  mode="advanced"  id="fileSubirCedula"
+                                                  update="panelCedula"  
+                                                  auto="true"  oncomplete="modalSubirCedula.hide();" 
+                                                  sizeLimit="1000000"   
+                                                  allowTypes="/(\.|\/)(pdf)$/"/>  
                                     <br />
                                     <p:commandButton type="button" value="CANCELAR">
                                         <p:ajax oncomplete="modalSubirCedula.hide();" />
@@ -210,20 +215,20 @@
                                             height="130" rendered="#{empty matriculasBean.foto1}"
                                             value="#{pageContext.contextPath}/fotos/vacio.gif"
                                             cache="true" />
-                            <h:outputText style="color:blue; font-color:blue" id="logoNombre" value="#{matriculasBean.foto1}"   />
+                            <h:outputText style="color:orange; font-color:orange" id="logoNombre" value="#{matriculasBean.foto1}"   />
                             <p:commandLink update="fileSubir" onclick="modalSubir.show()"  id="versubirImagen">
                                 <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Imagen
                             </p:commandLink>
                             <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
                                       fixedCenter="true" width="400" visible="false" resizable="false">
-                                <p:fileUpload  label="Seleccionar Imagen (click aquí)"
-                                               style="width:100%; font-size: 150% !important;"
-                                               fileUploadListener="#{matriculasBean.handleFileUpload}"  
-                                               mode="advanced"  id="fileSubir"
-                                               update="logoNombre logoSubido2 logoSubido32"  
-                                               auto="true"  oncomplete="modalSubir.hide();" 
-                                               sizeLimit="1000000"   
-                                               allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+                                <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (gif,jpeg,png)"   label="Seleccionar Imagen (click aquí)"
+                                              style="width:100%; font-size: 150% !important;"
+                                              fileUploadListener="#{matriculasBean.handleFileUpload}"  
+                                              mode="advanced"  id="fileSubir"
+                                              update="logoNombre logoSubido2 logoSubido32"  
+                                              auto="true"  oncomplete="modalSubir.hide();" 
+                                              sizeLimit="1000000"   
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
                                 <br />
                                 <p:commandButton type="button" value="CANCELAR">
                                     <p:ajax oncomplete="modalSubir.hide();" />
@@ -237,32 +242,41 @@
 
                 </p:fieldset>
                 <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS DEL MATRICULA">
+
+
                     <h:panelGrid columns="4" cellpadding="-1" style="margin:0 ;">
-                        <h:outputText value="CARRERA: " /> 
+
+                        <h:outputText value="CARRERA: " />     
+
                         <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{matriculasBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
                             <f:selectItems value="#{matriculasBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
-                        </p:selectOneMenu>          
-
+                        </p:selectOneMenu>    
                         <h:outputText value="No. MATRICULA: " />  
                         <p:inputText value="#{matriculasBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
+                    </h:panelGrid> 
+                    <h:panelGrid columns="5" cellpadding="-1" style="margin:0 ;">
+
                         <h:outputText value="FECHA MATRICULA: " />  
                         <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{matriculasBean.object.fecha}" id="FechaMatricula" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
-
+                        <p:spacer width="10"/>
                         <h:outputText value="CATEGORÍA: " />  
                         <p:selectOneRadio id="CategoriasSociales" label="CategoriasSociales"  value="#{matriculasBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales">  
                             <f:selectItems value="#{matriculasBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
                         </p:selectOneRadio>
+
                         <h:outputText value="ESTADO: " />  
                         <p:selectOneRadio id="EstadoMatricula" label="EstadoMatricula"  value="#{matriculasBean.object.estadoMat}">  
                             <f:selectItem itemLabel="INSCRITO"  itemValue="I" />      
                             <f:selectItem itemLabel="MATRICULADO"  itemValue="M" />  
                             <f:selectItem itemLabel="RETIRADO" itemValue="R" />  
 
-                        </p:selectOneRadio>  
+                        </p:selectOneRadio> 
+                        <p:spacer width="10"/>
                         <h:outputText value="CONFIRMADA: " />  
                         <p:selectBooleanCheckbox value="#{matriculasBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  
                         <h:outputText value="ANIO GRADUACIÓN: " />  
                         <p:inputText value="#{matriculasBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <p:spacer width="10"/>
                         <h:outputText value="COLEGIO GRADUADO: " />  
                         <p:inputText value="#{matriculasBean.estudiante.colegioGraduado}" id="ColegioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="TITULOS SUPERIORES: " />  
@@ -273,14 +287,14 @@
 
                 </p:fieldset>
                 <h:panelGrid columns="2"> 
-                    
+
                     <p:fieldset  toggleable="true" toggleSpeed="500"  legend="DATOS PADRE">
                         <h:panelGrid columns="2" id="panelPadre" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="CED/RUC/PASS: " />  
                             <p:inputText value="#{matriculasBean.pariente2.identificacion}" id="IdentificacionPadre"  maxlength="100" size="35"   style="font-weight:bold;">
                                 <p:ajax event="blur"  listener="#{matriculasBean.buscarCedulaPadre}"  update="panelPadre" />
                             </p:inputText>  
-                            
+
                             <h:outputText value="APELLIDOS: " />  
                             <p:inputText value="#{matriculasBean.pariente2.apellidos}" id="ApellidosPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NOMBRES: " />  
@@ -299,7 +313,7 @@
                     <p:fieldset  toggleable="true" toggleSpeed="500"  legend="DATOS MADRE">
                         <h:panelGrid columns="2" id="panelMadre" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="CED/RUC/PASS: " />  
-                              <p:inputText value="#{matriculasBean.pariente3.identificacion}" id="IdentificacionMadre"  maxlength="100" size="35"  style="font-weight:bold;">
+                            <p:inputText value="#{matriculasBean.pariente3.identificacion}" id="IdentificacionMadre"  maxlength="100" size="35"  style="font-weight:bold;">
                                 <p:ajax event="blur" listener="#{matriculasBean.buscarCedulaMadre}"  update="panelMadre"  />
                             </p:inputText>  
                             <h:outputText value="APELLIDOS: " />  
@@ -317,13 +331,13 @@
                             <p:inputText  value="#{matriculasBean.pariente3.idParientes}"  converter="JsfConvInteger" id="idPariente3"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                         </h:panelGrid>
                     </p:fieldset>
-                  <p:fieldset  toggleable="true" toggleSpeed="500" legend="DATOS PARA FACTURA">
+                    <p:fieldset  toggleable="true" toggleSpeed="500" legend="DATOS PARA FACTURA">
                         <h:panelGrid columns="2" id="datosFactura" cellpadding="-1" style="margin:0 auto;">  
                             <p:commandButton update="datosFactura" action="#{matriculasBean.copiarPadre()}" value="TRAER PADRE" />
-                        <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">       
-                            <p:commandButton update="datosFactura"  action="#{matriculasBean.copiarMadre()}"  value="TRAER MADRE" />
-                            <p:commandButton  update="datosFactura" action="#{matriculasBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
-                        </h:panelGrid>     
+                            <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">       
+                                <p:commandButton update="datosFactura"  action="#{matriculasBean.copiarMadre()}"  value="TRAER MADRE" />
+                                <p:commandButton  update="datosFactura" action="#{matriculasBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
+                            </h:panelGrid>     
                             <h:outputText value="CED o RUC: " />  
                             <p:inputText value="#{matriculasBean.pariente1.identificacion}" id="IdentificacionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NOMBRES: " />  
@@ -338,7 +352,8 @@
                     <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS LABORALES">
                         <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="TRABAJA: " />  
-                            <p:selectBooleanCheckbox id="Trabaja" value="#{matriculasBean.estudiante.trabaja}"/>  
+                            <p:selectBooleanButton id="Trabaja" value="#{matriculasBean.estudiante.trabaja}" onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close" />  
+                             
                             <h:outputText value="EMPRESA: " />  
                             <p:inputText value="#{matriculasBean.estudiante.empresa}" id="Empresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="DIRECCION: " />  
@@ -353,85 +368,91 @@
                     </p:fieldset>
 
 
-                    
+
                 </h:panelGrid>
                 <p:fieldset   toggleable="true" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
-                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0">  
+                    <h:panelGrid columns="5" cellpadding="-1" style="margin:0">  
                         <h:outputText value="TIPO DE VIVIENDA: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
+                        <p:selectOneMenu   style="width:170px"   value="#{matriculasBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
                             <f:selectItem itemLabel="ARRENDADA" itemValue="ARRENDADA" />  
                             <f:selectItem itemLabel="ANTICRESIS" itemValue="ANTICRESIS" />   
                             <f:selectItem itemLabel="CEDIDA" itemValue="CEDIDA" />  
                             <f:selectItem itemLabel="PROPIA" itemValue="PROPIA" />  
                             <f:selectItem itemLabel="RENTADA" itemValue="RENTADA" />  
-                        </h:selectOneMenu>  
+                        </p:selectOneMenu>  
+                        <p:spacer width="10"/>
                         <h:outputText value="TIPO DE COLEGIO: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.tipoColegio}" id="TipoColegio"  >
+                        <p:selectOneMenu  style="width:170px"   value="#{matriculasBean.estudiante.tipoColegio}" id="TipoColegio"  >
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
                             <f:selectItem itemLabel="FISCAL" itemValue="FISCAL" />  
                             <f:selectItem itemLabel="FISCOMISIONAL" itemValue="FISCOMISIONAL" />   
                             <f:selectItem itemLabel="PARTICULAR" itemValue="PARTICULAR" />  
                             <f:selectItem itemLabel="MUNICIPAL" itemValue="MUNICIPAL" />  
-                        </h:selectOneMenu>  
+                        </p:selectOneMenu>  
                         <h:outputText value="FUENTE DE INGRESOS: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.fuenteIngresos}" id="FuenteIngresos">  
+                        <p:selectOneMenu  style="width:170px"   value="#{matriculasBean.estudiante.fuenteIngresos}" id="FuenteIngresos">  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
                             <f:selectItem itemLabel="SUELDO" itemValue="SUELDO" />  
                             <f:selectItem itemLabel="FACTURA" itemValue="FACTURA" />   
                             <f:selectItem itemLabel="COMERCIANTE" itemValue="COMERCIANTE" />  
                             <f:selectItem itemLabel="INFORMAL" itemValue="INFORMAL" />  
-                        </h:selectOneMenu>  
+                        </p:selectOneMenu>  
+                        <p:spacer width="10"/>
                         <h:outputText value="MONTO DE INGRESOS: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.montoIngresos}" id="MontoIngresos">  
+                        <p:selectOneMenu   style="width:170px"  value="#{matriculasBean.estudiante.montoIngresos}" id="MontoIngresos">  
                             <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
-                        </h:selectOneMenu>  
+                        </p:selectOneMenu>  
                         <h:outputText value="OTROS INGRESOS: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.otrosIngresos}" id="OtrosIngresos">  
+                        <p:selectOneMenu  style="width:170px"   value="#{matriculasBean.estudiante.otrosIngresos}" id="OtrosIngresos">  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
                             <f:selectItem itemLabel="ARRIENDOS" itemValue="ARRIENDOS" />  
                             <f:selectItem itemLabel="PENSIONES JUBILARES" itemValue="PENSIONES JUBILARES" />   
                             <f:selectItem itemLabel="REMESAS DEL EXTERIOR" itemValue="REMESAS DEL EXTERIOR" />  
                             <f:selectItem itemLabel="OTROS INGRESOS" itemValue="OTROS INGRESOS" />  
                             <f:selectItem itemLabel="PENSIONES JUDICIALES" itemValue="PENSIONES JUDICIALES" />  
-                        </h:selectOneMenu> 
+                        </p:selectOneMenu> 
+                        <p:spacer width="10"/>
                         <h:outputText value="MONTO OTROS INGRESOS: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.montoOtrosIngresos}" id="MontoOtrosIngresos">  
+                        <p:selectOneMenu  style="width:170px"   value="#{matriculasBean.estudiante.montoOtrosIngresos}" id="MontoOtrosIngresos">  
                             <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
-                        </h:selectOneMenu> 
+                        </p:selectOneMenu> 
                         <h:outputText value="MONTO DE EGRESOS: " />  
-                        <h:selectOneMenu value="#{matriculasBean.estudiante.montoEgresos}" id="MontoEgresos">  
+                        <p:selectOneMenu  style="width:170px"   value="#{matriculasBean.estudiante.montoEgresos}" id="MontoEgresos">  
                             <f:selectItems value="#{matriculasBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
-                        </h:selectOneMenu> 
+                        </p:selectOneMenu> 
+                        <p:spacer width="10"/>
                         <h:outputText value="PRESTAMOS: " />  
-                        <h:selectOneMenu  value="#{matriculasBean.estudiante.prestamos}" id="Prestamos"  >  
+                        <p:selectOneMenu   style="width:170px"   value="#{matriculasBean.estudiante.prestamos}" id="Prestamos"  >  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
                             <f:selectItem itemLabel="HIPOTECARIOS" itemValue="HIPOTECARIOS" />  
                             <f:selectItem itemLabel="PRENDARIOS" itemValue="PRENDARIOS" />  
                             <f:selectItem itemLabel="IECE" itemValue="IECE" />   
                             <f:selectItem itemLabel="T/C" itemValue="T/C" />  
                             <f:selectItem itemLabel="OTROS" itemValue="OTROS" />  
-                        </h:selectOneMenu> 
+                        </p:selectOneMenu> 
                         <h:outputText value="POSEE TARJETAS DE CRÉDITO: " />  
-                        <p:selectBooleanCheckbox value="#{matriculasBean.estudiante.tarjetasCredito}" id="TarjetaCredito"    style="font-weight:bold;"/>  
+                        <p:selectBooleanButton value="#{matriculasBean.estudiante.tarjetasCredito}"   id="TarjetaCredito"  onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close"/>  
+                        <p:spacer width="10"/>
                         <h:outputText value="POSEE VEHÍCULO: " />  
-                        <p:selectBooleanCheckbox value="#{matriculasBean.estudiante.vehiculo}" id="PoseeVehiculo"  style="font-weight:bold;"/>  
+                        <p:selectBooleanButton  value="#{matriculasBean.estudiante.vehiculo}" id="PoseeVehiculo"   onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close"/>  
                         <h:outputText value="COMO PAGA: " />  
-                        <h:selectOneMenu  value="#{matriculasBean.estudiante.formaPago}" id="ComoPaga"   >  
+                        <p:selectOneMenu   style="width:170px"   value="#{matriculasBean.estudiante.formaPago}" id="ComoPaga"   >  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
                             <f:selectItem itemLabel="EFECTIVO-CHEQUE" itemValue="EFECTIVO-CHEQUE" />  
                             <f:selectItem itemLabel="FINANCIAMIENTO UCT" itemValue="FINANCIAMIENTO UCT" />  
                             <f:selectItem itemLabel="IECE" itemValue="IECE" />   
                             <f:selectItem itemLabel="T/C" itemValue="T/C" />  
-                        </h:selectOneMenu> 
+                        </p:selectOneMenu> 
+                        <p:spacer width="10"/>
                         <h:outputText value="FINANCIAMIENTO: " />  
-                        <h:selectOneMenu  value="#{matriculasBean.estudiante.quienFinancia}" id="Financiamiento"   >  
+                        <p:selectOneMenu   style="width:170px"   value="#{matriculasBean.estudiante.quienFinancia}" id="Financiamiento"   >  
                             <f:selectItem itemLabel="SIN INFORMACION" itemValue="" />  
                             <f:selectItem itemLabel="PADRES" itemValue="PADRES" />  
                             <f:selectItem itemLabel="HERMANOS" itemValue="HERMANOS" />  
                             <f:selectItem itemLabel="FAMILIARES CERCANOS" itemValue="FAMILIARES CERCANOS" />   
                             <f:selectItem itemLabel="MISMA PERSONA" itemValue="MISMA PERSONA" />  
-                        </h:selectOneMenu> 
+                        </p:selectOneMenu> 
 
                     </h:panelGrid>
                 </p:fieldset>
