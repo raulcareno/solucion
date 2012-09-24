@@ -315,7 +315,7 @@ public class MatriculasEstudianteBean {
             adm.actualizar(estudiante);
         }
         object.setIdEstudiantes(estudiante);
-        pariente1.setIdEstudiantes(object.getIdEstudiantes());
+//        pariente1.setIdEstudiantes(object.getIdEstudiantes());
         pariente1.setTipoRepresentante("F");
         pariente2.setTipoRepresentante("P");
         pariente3.setTipoRepresentante("M");

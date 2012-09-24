@@ -284,10 +284,10 @@ public class MatriculasBean {
             return null;
         }
         try {
-        if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
-            return null;
-        }
+            if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
+                return null;
+            }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
             return null;
@@ -301,6 +301,58 @@ public class MatriculasBean {
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
         estudiante.setFoto(imagen);
+        /**
+         * GUARDAR PARIENTES ANTES DE GUARDAR A ESTUDIANTES
+         */
+        pariente1.setTipoRepresentante("F");
+        pariente2.setTipoRepresentante("P");
+        pariente3.setTipoRepresentante("M");
+        //1.- PARIENTES EMPIEZO A GUARDAR
+        if (pariente1.getIdParientes().equals(new Integer(0))) {
+            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion(), "tipoRepresentante", "F", "");
+            if (pariList.size() > 0) {
+                pariente1.setIdParientes(pariList.get(0).getIdParientes());
+                adm.actualizar(pariente1);
+            } else {
+                pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                adm.guardar(pariente1);
+            }
+        } else {
+            adm.actualizar(pariente1);
+        }
+
+        //2.- PARIENTES EMPIEZO A GUARDAR
+        if (pariente2.getIdParientes().equals(new Integer(0))) {
+            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion(), "tipoRepresentante", "P", "");
+            if (pariList.size() > 0) {
+                pariente2.setIdParientes(pariList.get(0).getIdParientes());
+                adm.actualizar(pariente2);
+            } else {
+                pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                adm.guardar(pariente2);
+            }
+        } else {
+            adm.actualizar(pariente2);
+        }
+
+        //3.- PARIENTES EMPIEZO A GUARDAR
+        if (pariente3.getIdParientes().equals(new Integer(0))) {
+            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion(), "tipoRepresentante", "M", "");
+            if (pariList.size() > 0) {
+                pariente3.setIdParientes(pariList.get(0).getIdParientes());
+                adm.actualizar(pariente3);
+            } else {
+                pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                adm.guardar(pariente3);
+            }
+        } else {
+            adm.actualizar(pariente3);
+        }
+        estudiante.setIdParientes(pariente1);
+        estudiante.setParIdParientes(pariente2);
+        estudiante.setParIdParientes2(pariente3);
+
+
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
             adm.guardar(estudiante);
@@ -348,68 +400,25 @@ public class MatriculasBean {
             adm.actualizar(arCedula);
         }
 
-            if(arLibreta.getNombre().isEmpty())
-                    estudiante.setLibretaMilitar(false);
-             else
-                   estudiante.setLibretaMilitar(true);
-            
-            if(arTitulo.getNombre().isEmpty())
-                    estudiante.setCopiaTitulo(false);
-             else
-                   estudiante.setCopiaTitulo(true);
-            
-            if(arCedula.getNombre().isEmpty())
-                    estudiante.setCopiaCedula(false);
-             else
-                   estudiante.setCopiaCedula(true);
+        if (arLibreta.getNombre().isEmpty()) {
+            estudiante.setLibretaMilitar(false);
+        } else {
+            estudiante.setLibretaMilitar(true);
+        }
+
+        if (arTitulo.getNombre().isEmpty()) {
+            estudiante.setCopiaTitulo(false);
+        } else {
+            estudiante.setCopiaTitulo(true);
+        }
+
+        if (arCedula.getNombre().isEmpty()) {
+            estudiante.setCopiaCedula(false);
+        } else {
+            estudiante.setCopiaCedula(true);
+        }
 
         object.setIdEstudiantes(estudiante);
-        pariente1.setIdEstudiantes(object.getIdEstudiantes());
-        pariente1.setTipoRepresentante("F");
-        pariente2.setTipoRepresentante("P");
-        pariente3.setTipoRepresentante("M");
-        //1.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente1.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion());
-            if (pariList.size() > 0) {
-                pariente1.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente1);
-            } else {
-                pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente1);
-            }
-        } else {
-            adm.actualizar(pariente1);
-        }
-
-        //2.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente2.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion());
-            if (pariList.size() > 0) {
-                pariente2.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente2);
-            } else {
-                pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente2);
-            }
-        } else {
-            adm.actualizar(pariente2);
-        }
-
-        //3.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente3.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion());
-            if (pariList.size() > 0) {
-                pariente3.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente3);
-            } else {
-                pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente3);
-            }
-        } else {
-            adm.actualizar(pariente3);
-        }
-
         object.setIdPeriodos(per);
         object.setIdCategoriasSociales(categoriaSeleccionado);
         object.setIdCarreras(carreraSeleccionado);
@@ -610,24 +619,60 @@ public class MatriculasBean {
 
     }
 
+    public void buscarCedulaPadre() {
+        List<Parientes> parientesEncontrados = adm.query("Select o from Parientes as o "
+                + "where o.identificacion = '" + pariente2.getIdentificacion() + "' "
+                + " and o.tipoRepresentante = 'P'  ");
+        for (Iterator<Parientes> it = parientesEncontrados.iterator(); it.hasNext();) {
+            Parientes parientes = it.next();
+            pariente2 = parientes;
+        }
+
+    }
+     public void buscarCedulaMadre() {
+        List<Parientes> parientesEncontrados = adm.query("Select o from Parientes as o "
+                + "where o.identificacion = '" + pariente3.getIdentificacion() + "' "
+                + " and o.tipoRepresentante = 'M'  ");
+        for (Iterator<Parientes> it = parientesEncontrados.iterator(); it.hasNext();) {
+            Parientes parientes = it.next();
+            pariente3 = parientes;
+        }
+
+    }
+
     public void buscarCedula() {
 
         String cedula2 = estudiante.getIdEstudiantes();
         estudiante = (Estudiantes) adm.buscarClave(cedula2, Estudiantes.class);
-
-        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
-        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
-            Parientes parientes = it.next();
-            if (parientes.getTipoRepresentante().equals("F")) {
-                pariente1 = parientes;
-            } else if (parientes.getTipoRepresentante().equals("P")) {
-                pariente2 = parientes;
-            } else if (parientes.getTipoRepresentante().equals("M")) {
-                pariente3 = parientes;
-            }
-
+        if (estudiante.getIdParientes() != null) {
+            pariente1 = estudiante.getIdParientes();
+        } else {
+            pariente1 = new Parientes();
         }
-   arLibreta = new Archivos();
+        if (estudiante.getParIdParientes() != null) {
+            pariente2 = estudiante.getParIdParientes();
+        } else {
+            pariente2 = new Parientes();
+        }
+
+        if (estudiante.getParIdParientes2() != null) {
+            pariente3 = estudiante.getParIdParientes2();
+        } else {
+            pariente3 = new Parientes();
+        }
+//        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
+//        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
+//            Parientes parientes = it.next();
+//            if (parientes.getTipoRepresentante().equals("F")) {
+//                pariente1 = parientes;
+//            } else if (parientes.getTipoRepresentante().equals("P")) {
+//                pariente2 = parientes;
+//            } else if (parientes.getTipoRepresentante().equals("M")) {
+//                pariente3 = parientes;
+//            }
+//
+//        }
+        arLibreta = new Archivos();
         arTitulo = new Archivos();
         arCedula = new Archivos();
         List<Archivos> archi = adm.query("Select o from Archivos as o "
@@ -715,22 +760,39 @@ public class MatriculasBean {
         pariente1 = new Parientes();
         pariente2 = new Parientes();
         pariente3 = new Parientes();
-        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
-        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
-            Parientes parientes = it.next();
-            if (parientes.getTipoRepresentante().equals("F")) {
-                pariente1 = parientes;
-            } else if (parientes.getTipoRepresentante().equals("P")) {
-                pariente2 = parientes;
-            } else if (parientes.getTipoRepresentante().equals("M")) {
-                pariente3 = parientes;
-            }
-
+        if (estudiante.getIdParientes() != null) {
+            pariente1 = estudiante.getIdParientes();
+        } else {
+            pariente1 = new Parientes();
         }
+        if (estudiante.getParIdParientes() != null) {
+            pariente2 = estudiante.getParIdParientes();
+        } else {
+            pariente2 = new Parientes();
+        }
+
+        if (estudiante.getParIdParientes2() != null) {
+            pariente3 = estudiante.getParIdParientes2();
+        } else {
+            pariente3 = new Parientes();
+        }
+
+//        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
+//        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
+//            Parientes parientes = it.next();
+//            if (parientes.getTipoRepresentante().equals("F")) {
+//                pariente1 = parientes;
+//            } else if (parientes.getTipoRepresentante().equals("P")) {
+//                pariente2 = parientes;
+//            } else if (parientes.getTipoRepresentante().equals("M")) {
+//                pariente3 = parientes;
+//            }
+//
+//        }
         arLibreta = new Archivos();
         arTitulo = new Archivos();
         arCedula = new Archivos();
-         List<Archivos> archi = adm.query("Select o from Archivos as o "
+        List<Archivos> archi = adm.query("Select o from Archivos as o "
                 + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Archivos> it = archi.iterator(); it.hasNext();) {
             Archivos arcIt = it.next();
@@ -956,32 +1018,30 @@ public class MatriculasBean {
         }
         return null;
     }
-    
-    
-    
- public String copiarPadre(){
-            pariente1.setNombres(pariente2.getApellidos()+" "+ pariente2.getNombres());
-            pariente1.setDireccion(pariente2.getDireccion());
-            pariente1.setTelefonoTrabajo(pariente2.getTelefonoTrabajo());
-            pariente1.setIdentificacion(pariente2.getIdentificacion());
-            return "";
+
+    public String copiarPadre() {
+        pariente1.setNombres(pariente2.getApellidos() + " " + pariente2.getNombres());
+        pariente1.setDireccion(pariente2.getDireccion());
+        pariente1.setTelefonoTrabajo(pariente2.getTelefonoTrabajo());
+        pariente1.setIdentificacion(pariente2.getIdentificacion());
+        return "";
     }
-    public String copiarMadre(){
-            pariente1.setNombres(pariente3.getApellidos()+" "+ pariente3.getNombres());
-            pariente1.setDireccion(pariente3.getDireccion());
-            pariente1.setTelefonoTrabajo(pariente3.getTelefonoTrabajo());
-            pariente1.setIdentificacion(pariente3.getIdentificacion());
-            return "";
+
+    public String copiarMadre() {
+        pariente1.setNombres(pariente3.getApellidos() + " " + pariente3.getNombres());
+        pariente1.setDireccion(pariente3.getDireccion());
+        pariente1.setTelefonoTrabajo(pariente3.getTelefonoTrabajo());
+        pariente1.setIdentificacion(pariente3.getIdentificacion());
+        return "";
     }
-    public String copiarEstudiante(){
-                pariente1.setNombres(estudiante.getApellidoPaterno()+" "+estudiante.getApellidoMaterno()+" "+ estudiante.getNombre());
-            pariente1.setDireccion(estudiante.getDireccion());
-            pariente1.setIdentificacion(estudiante.getIdEstudiantes());
-            pariente1.setTelefonoTrabajo(estudiante.getTelefono());
-            return "";
+
+    public String copiarEstudiante() {
+        pariente1.setNombres(estudiante.getApellidoPaterno() + " " + estudiante.getApellidoMaterno() + " " + estudiante.getNombre());
+        pariente1.setDireccion(estudiante.getDireccion());
+        pariente1.setIdentificacion(estudiante.getIdEstudiantes());
+        pariente1.setTelefonoTrabajo(estudiante.getTelefono());
+        return "";
     }
-            
-            
 
     public List<SelectItem> getSelectedItemIngresos() {
         try {
