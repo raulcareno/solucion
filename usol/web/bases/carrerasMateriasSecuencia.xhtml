@@ -84,6 +84,8 @@
                     Arrastre hacia abajo las materias que desea agregar 
                     <p:graphicImage value="/images/minus.gif"/>   
                     Si desea quitar presione el menos
+                    <p:graphicImage value="/images/anadir.gif"/>   
+                    Añadir otro pre-requisito adicional.
                     <p:dataGrid emptyMessage="..." id="availableCars"  styleClass="panelito" style="padding: -5px -5px -5px -5px " 
                                 var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="9">  
                         <p:column>  
@@ -114,10 +116,10 @@
                                     <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">
                                         <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales}" />
                                     </h:selectOneMenu>
-                                    <f:facet name="footer">  
+                                     <p:inputText style="visibility: hidden" value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
                                         <p:commandButton value="AÑADIR MATERIA SELECCIONADA" update="pais" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
-                                        <p:inputText style="visibility: hidden" value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
-                                    </f:facet>  
+                                        
+                                     
                                 </p:panelGrid>
                                 <p:dataTable style="width:400px;" paginator="true" rows="5"  id="pais" var="obj" value="#{carrerasMateriasSecuenciaBean.adicionalesTmp}">  
 
@@ -138,35 +140,27 @@
                                 </p:commandButton>
                             </p:dialog>
                             <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="10">
-                                <h:outputText styleClass="textos3"  value="CICLO 1" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 2" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 3" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 4" />    
-                                <h:outputText styleClass="textos3"  value="CICLO 5" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 6" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 7" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 8" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 9" />     
-                                <h:outputText styleClass="textos3"  value="CICLO 10" />     
+                                <c:forEach var="p" begin="1" end="10" step="1" varStatus ="statusP">
+                                    <h:outputText styleClass="textos3"  value="CICLO #{p}" />         
+                                </c:forEach>
+                                 
 
 
-                                <c:forEach var="i" begin="0" end="22" step="1" varStatus ="status">
+                                <c:forEach var="i" begin="0" end="29" step="1" varStatus ="status">
                                     <c:forEach var="j" begin="0" end="9" step="1" varStatus ="status2">
                                         <p:panel  id="f#{i}c#{j}" styleClass="panelGrande">  
-
-                                            <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[i][j])}"  >
+                                            <p:commandLink title="Quitar Elemento" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[i][j])}"  >
                                                 <p:graphicImage value="/images/minus.gif"/>   
                                             </p:commandLink>
-                                            <h:outputText  value="#{i} #{j}" />  
-                                            <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
-                                            #{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre}
-                                            <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].numeroCreditos}C" />     
-                                            <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  
-                                                           actionListener="#{carrerasMateriasSecuenciaBean.seleccionado(i,j)}" 
-                                                           oncomplete="modalSubirLibreta.show()"
-                                                           update=":form"  >
-                                                <p:graphicImage value="/images/plus.png"/>   
+                                            <p:commandLink title="Añadir Otro Prerequisito" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  actionListener="#{carrerasMateriasSecuenciaBean.seleccionado(i,j)}"  oncomplete="modalSubirLibreta.show()" update=":form"  >
+                                                <p:spacer width="15"/>   
+                                                <p:graphicImage value="/images/anadir.gif"/>   
                                             </p:commandLink>
+                                            <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                            <h:outputText style="color: #045491" value="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre}"  />
+                                            <p:spacer width="7"/>   
+                                            <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].numeroCreditos}C" />     
+                                            
                                         </p:panel>
 
                                     </c:forEach>
@@ -174,12 +168,11 @@
                                 </c:forEach>
                             </h:panelGrid>
 
-                            <c:forEach var="k" begin="0" end="22" step="1" varStatus ="status4">
+                            <c:forEach var="k" begin="0" end="29" step="1" varStatus ="status4">
                                 <c:forEach var="m" begin="0" end="9" step="1" varStatus ="status5">
                                     <p:droppable for="f#{k}c#{m}" tolerance="pointer"  activeStyleClass="ui-state-highlight"  scope="#{m+1}" datasource="availableCars" onDrop="handleDrop">  
                                             <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
                                      </p:droppable> 
-                                    <h:outputText  value="f#{k}c#{m} |" />  
                                 </c:forEach>
                             </c:forEach>
 
