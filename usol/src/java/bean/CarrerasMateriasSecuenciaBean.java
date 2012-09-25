@@ -160,8 +160,8 @@ public class CarrerasMateriasSecuenciaBean {
      */
     public String idSeleccionado = "";
 
-    public String seleccionado(String sel) {
-        idSeleccionado = sel;
+    public String seleccionado(int i, int j) {
+        idSeleccionado = "f"+i+"c"+j;
 
         adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
         for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
