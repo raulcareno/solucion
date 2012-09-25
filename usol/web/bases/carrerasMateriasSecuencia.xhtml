@@ -108,14 +108,15 @@
                     <p:fieldset id="selectedCars" legend="MALLA CURRICULAR" style="width: 97; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
                                 <p:dialog header="AÑADIR OTRO PRE-REQUISITO COPIA DE LA LIBRETA MILITAR" id="hola" widgetVar="modalSubirLibreta" modal="true"
-                                          fixedCenter="true" width="400" visible="false" resizable="false">
+                                          fixedCenter="true" width="440" visible="false" resizable="false">
                                     <p:panelGrid columns="2">  
-                                        <p:inputText value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
+                                        <h:outputText value="MATERIA: " />
                                         <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">
                                             <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales}" />
                                         </h:selectOneMenu>
                                         <f:facet name="footer">  
-                                            <p:commandButton value="Añadir" update="pais" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
+                                            <p:commandButton value="AÑADIR MATERIA SELECCIONADA" update="pais" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
+                                            <p:inputText style="visibility: hidden" value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
                                         </f:facet>  
                                     </p:panelGrid>
                                     <p:dataTable style="width:400px;" paginator="true" rows="5"  id="pais" var="obj" value="#{carrerasMateriasSecuenciaBean.adicionalesTmp}">  

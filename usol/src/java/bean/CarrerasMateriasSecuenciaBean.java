@@ -79,6 +79,8 @@ public class CarrerasMateriasSecuenciaBean {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
 //            }
         try {
+            //borro primero los prerequisitos
+            adm.ejecutaSql("Delete from SecuenciaDeMateriasAdicionales where idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ");
             //borro primero las anteriores
             adm.ejecutaSql("Delete from SecuenciaDeMaterias where idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ");
             for (int i = 0; i < 30; i++) {
@@ -92,6 +94,21 @@ public class CarrerasMateriasSecuenciaBean {
                     sec.setSecuenciaDeMateriasAdicionalesList(carreraMateria.getSecuenciaDeMateriasAdicionalesList());
                     if (carreraMateria.getIdCarreras().getIdCarreras() != null) {
                         adm.guardar(sec);
+                         
+                          /**
+                           * busco la coincidencia
+                           */  
+                        String filaColumna = "f"+i+"c"+j;
+                                for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
+                                    SecuenciaDeMateriasAdicionales secM = it.next();
+                                    if (secM.getFilacolumna().equals(filaColumna)) {
+                                        secM.setIdSecuenciaDeMateriasAdicionales(adm.getNuevaClave("SecuenciaDeMateriasAdicionales", "idSecuenciaDeMateriasAdicionales"));
+                                        secM.setIdSecuenciaDeMaterias(sec);
+                                        adm.guardar(secM); 
+                                        
+                                    }
+
+                                }
                     }
 
                 }
@@ -144,7 +161,7 @@ public class CarrerasMateriasSecuenciaBean {
     public String idSeleccionado = "";
 
     public String seleccionado(String sel) {
-          idSeleccionado = sel;
+        idSeleccionado = sel;
 
         adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
         for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
@@ -154,7 +171,7 @@ public class CarrerasMateriasSecuenciaBean {
             }
 
         }
-        
+
         return "";
     }
 
@@ -172,19 +189,19 @@ public class CarrerasMateriasSecuenciaBean {
     public void eliminar(SecuenciaDeMateriasAdicionales sec) {
         try {
             for (int i = 0; i < adicionalesTmp.size(); i++) {
-                SecuenciaDeMateriasAdicionales secM = adicionales.get(i); 
+                SecuenciaDeMateriasAdicionales secM = adicionales.get(i);
                 if (sec.getFilacolumna().equals(secM.getFilacolumna()) && sec.getIdCarrerasMaterias().equals(secM.getIdCarrerasMaterias())) {
                     adicionalesTmp.remove(i);
                     break;
                 }
             }
-             
+
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
         }
         try {
             for (int i = 0; i < adicionales.size(); i++) {
-                SecuenciaDeMateriasAdicionales secM = adicionales.get(i); 
+                SecuenciaDeMateriasAdicionales secM = adicionales.get(i);
                 if (sec.getFilacolumna().equals(secM.getFilacolumna()) && sec.getIdCarrerasMaterias().getIdCarrerasMaterias().equals(secM.getIdCarrerasMaterias().getIdCarrerasMaterias())) {
                     adicionales.remove(i);
                     break;
@@ -211,7 +228,7 @@ public class CarrerasMateriasSecuenciaBean {
         Integer columna = new Integer(filaColumna.substring(filaColumna.indexOf("c") + 1, filaColumna.length()));
         anadidasArray[fila][columna] = player;
     }
-     List<SecuenciaDeMateriasAdicionales> adicionales = new ArrayList<SecuenciaDeMateriasAdicionales>();
+    List<SecuenciaDeMateriasAdicionales> adicionales = new ArrayList<SecuenciaDeMateriasAdicionales>();
     List<SecuenciaDeMateriasAdicionales> adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
 
     /**
@@ -225,15 +242,29 @@ public class CarrerasMateriasSecuenciaBean {
         carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
         sec.setIdCarrerasMaterias(carreraMateriaSeleccionada);
         sec.setFilacolumna(idSeleccionado);
-        adicionales.add(sec);
-        adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
+        if (validarSiExiste(sec) == false) {
+            adicionales.add(sec);
+            adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
+            for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
+                SecuenciaDeMateriasAdicionales secM = it.next();
+                if (secM.getFilacolumna().equals(idSeleccionado)) {
+                    adicionalesTmp.add(secM);
+                }
+
+            }
+        }
+
+    }
+
+    public boolean validarSiExiste(SecuenciaDeMateriasAdicionales sec) {
         for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
             SecuenciaDeMateriasAdicionales secM = it.next();
-            if (secM.getFilacolumna().equals(idSeleccionado)) {
-                adicionalesTmp.add(secM);
+            if (secM.getFilacolumna().equals(idSeleccionado) && sec.getIdCarrerasMaterias().equals(secM.getIdCarrerasMaterias())) {
+                return true;
             }
 
         }
+        return false;
     }
     /**
      * busca según criterio textoBuscar
@@ -274,12 +305,12 @@ public class CarrerasMateriasSecuenciaBean {
             listaMateriasAdicionales = new ArrayList<SelectItem>();
             for (Iterator<CarrerasMaterias> it = adicionalesEncontradas.iterator(); it.hasNext();) {
                 CarrerasMaterias carrerasMaterias = it.next();
-                listaMateriasAdicionales.add(new SelectItem(carrerasMaterias, carrerasMaterias.getIdMaterias().getNombre()));
+                listaMateriasAdicionales.add(new SelectItem(carrerasMaterias, carrerasMaterias.getIdNiveles().getNombre() + " - " + carrerasMaterias.getIdMaterias().getNombre()));
 
             }
-              adicionales =  adm.query("SELECT o FROM SecuenciaDeMateriasAdicionales AS o "
-                + " WHERE o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  ");
- 
+            adicionales = adm.query("SELECT o FROM SecuenciaDeMateriasAdicionales AS o "
+                    + " WHERE o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  ");
+
 
             List<SecuenciaDeMaterias> materiasSecuenciales = adm.query("Select o from SecuenciaDeMaterias as o "
                     + "where o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
