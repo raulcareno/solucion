@@ -106,7 +106,36 @@
                     </p:dataGrid> 
 
                     <p:fieldset id="selectedCars" legend="MALLA CURRICULAR" style="width: 97; margin-top:20px">  
-                        <p:outputPanel id="dropArea">  
+                        <p:outputPanel id="dropArea"> 
+                                <p:dialog header="AÑADIR OTRO PRE-REQUISITO COPIA DE LA LIBRETA MILITAR" id="hola" widgetVar="modalSubirLibreta" modal="true"
+                                          fixedCenter="true" width="400" visible="false" resizable="false">
+                                    <p:panelGrid columns="2">  
+                                        <p:inputText value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
+                                        <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">
+                                            <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales}" />
+                                        </h:selectOneMenu>
+                                        <f:facet name="footer">  
+                                            <p:commandButton value="Añadir" update="pais" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
+                                        </f:facet>  
+                                    </p:panelGrid>
+                                    <p:dataTable style="width:400px;" paginator="true" rows="5"  id="pais" var="obj" value="#{carrerasMateriasSecuenciaBean.adicionalesTmp}">  
+ 
+                                        <p:column headerText="MATERIA REQUISITO" style="width:30%">  
+                                            <h:outputText value="#{obj.idCarrerasMaterias.idMaterias.nombre}" />  
+                                        </p:column>  
+                                        <p:column style="width:10%">  
+                                                <p:commandButton id="eliminarButton" actionListener="#{carrerasMateriasSecuenciaBean.eliminar(obj)}"  
+                                                                 update=":form"   icon="ui-icon-trash"  
+                                                                 onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" 
+                                                                 title="Eliminar"/>  
+                                        </p:column>  
+
+                                    </p:dataTable>  
+                                    <br />
+                                    <p:commandButton type="button" value="SALIR">
+                                        <p:ajax oncomplete="modalSubirLibreta.hide();" />
+                                    </p:commandButton>
+                                </p:dialog>
                             <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="10">
                                 <h:outputText styleClass="textos3"  value="CICLO 1" />     
                                 <h:outputText styleClass="textos3"  value="CICLO 2" />     
@@ -127,60 +156,14 @@
                                     <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre eq ''}"/>   
                                     #{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre}
                                     <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].numeroCreditos}C" />     
-                                    <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  update=":form" 
-                                                   actionListener="#{carrerasMateriasSecuenciaBean.seleccionado("f0c0")}" oncomplete="modalSubirLibreta.show()"  >
+                                     <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  
+                                                    actionListener="#{carrerasMateriasSecuenciaBean.seleccionado('f0c0')}" 
+                                                    oncomplete="modalSubirLibreta.show()"
+                                                      update=":form"  >
                                         <p:graphicImage value="/images/plus.png"/>   
                                     </p:commandLink>
                                 </p:panel>  
-                                <p:dialog header="AÑADIR OTRO PRE-REQUISITO COPIA DE LA LIBRETA MILITAR" widgetVar="modalSubirLibreta" modal="true"
-                                          fixedCenter="true" width="400" visible="false" resizable="false">
-                                    <p:panelGrid columns="2">  
-                                        <f:facet name="header">  
-                                            Añadir una materia-prerequisito para coger ésta()
-                                        </f:facet>  
 
-                                        <h:outputLabel for="firstname" value="Firstname: *" />  
-                                        <p:inputText id="firstname" value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" label="Firstname" />  
-
-                                        <h:outputLabel for="surname" value="Materias: *" />  
-                                        <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">
-                                            <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales}"></f:selectItems>
-                                        </h:selectOneMenu>
-
-                                        <f:facet name="footer">  
-                                            <p:commandButton value="Añadir" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
-                                        </f:facet>  
-                                    </p:panelGrid>
-                                    <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="pais" var="obj" value="#{horasBean.model}">  
-
-                                        <p:column headerText="NOMBRE" style="width:30%">  
-                                            <h:outputText value="#{obj.nombre}" />  
-                                        </p:column>  
-                                        <p:column headerText="TERMINA" style="width:30%">  
-                                            <h:outputText value="#{obj.hastaHor}">  
-                                               
-                                            </h:outputText> 
-                                        </p:column>  
-
-                                        <p:column style="width:10%">  
-                                            <h:panelGrid style="border-color: transparent;" columns="2">
-
-                                                <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{horasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
-
-                                                </p:commandButton>  
-                                                <p:commandButton id="eliminarButton" actionListener="#{horasBean.eliminar(obj)}"  update=":form"   icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
-
-                                                </p:commandButton>  
-                                            </h:panelGrid>
-
-                                        </p:column>  
-
-                                    </p:dataTable>  
-                                    <br />
-                                    <p:commandButton type="button" value="CANCELAR">
-                                        <p:ajax oncomplete="modalSubirLibreta.hide();" />
-                                    </p:commandButton>
-                                </p:dialog>
                                 <p:panel  id="f0c1" styleClass="panelGrande">  
 
                                     <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[0][1])}"  >
@@ -191,6 +174,12 @@
 
 
                                     <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[0][1].numeroCreditos}C" />     
+                                    <p:commandLink rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[0][0].idMaterias.nombre != ''}"  
+                                                    actionListener="#{carrerasMateriasSecuenciaBean.seleccionado('f0c1')}" 
+                                                    oncomplete="modalSubirLibreta.show()"
+                                                      update=":form"  >
+                                        <p:graphicImage value="/images/plus.png"/>   
+                                    </p:commandLink>
 
 
                                 </p:panel>

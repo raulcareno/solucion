@@ -143,8 +143,19 @@ public class CarrerasMateriasSecuenciaBean {
      */
     public String idSeleccionado = "";
 
-    public void seleccionado(String sel) {
-        idSeleccionado = sel;
+    public String seleccionado(String sel) {
+          idSeleccionado = sel;
+
+        adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
+        for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
+            SecuenciaDeMateriasAdicionales secM = it.next();
+            if (secM.getFilacolumna().equals(idSeleccionado)) {
+                adicionalesTmp.add(secM);
+            }
+
+        }
+        
+        return "";
     }
 
     public String getIdSeleccionado() {
@@ -153,6 +164,37 @@ public class CarrerasMateriasSecuenciaBean {
 
     public void setIdSeleccionado(String idSeleccionado) {
         this.idSeleccionado = idSeleccionado;
+    }
+
+    /**
+     * elimino una secuancia de materias adicionales
+     */
+    public void eliminar(SecuenciaDeMateriasAdicionales sec) {
+        try {
+            for (int i = 0; i < adicionalesTmp.size(); i++) {
+                SecuenciaDeMateriasAdicionales secM = adicionales.get(i); 
+                if (sec.getFilacolumna().equals(secM.getFilacolumna()) && sec.getIdCarrerasMaterias().equals(secM.getIdCarrerasMaterias())) {
+                    adicionalesTmp.remove(i);
+                    break;
+                }
+            }
+             
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+        try {
+            for (int i = 0; i < adicionales.size(); i++) {
+                SecuenciaDeMateriasAdicionales secM = adicionales.get(i); 
+                if (sec.getFilacolumna().equals(secM.getFilacolumna()) && sec.getIdCarrerasMaterias().getIdCarrerasMaterias().equals(secM.getIdCarrerasMaterias().getIdCarrerasMaterias())) {
+                    adicionales.remove(i);
+                    break;
+                }
+
+            }
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
     }
 
     /**
@@ -169,21 +211,35 @@ public class CarrerasMateriasSecuenciaBean {
         Integer columna = new Integer(filaColumna.substring(filaColumna.indexOf("c") + 1, filaColumna.length()));
         anadidasArray[fila][columna] = player;
     }
+     List<SecuenciaDeMateriasAdicionales> adicionales = new ArrayList<SecuenciaDeMateriasAdicionales>();
+    List<SecuenciaDeMateriasAdicionales> adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
+
     /**
      * AÑADO LAS ADICIONALES
-     * @param event 
+     *
+     * @param event
      */
     public void anadirAdicional() {
-        String filaColumna = idSeleccionado;
-        Integer fila = new Integer(filaColumna.substring(filaColumna.indexOf("f") + 1, filaColumna.indexOf("c")));
-        Integer columna = new Integer(filaColumna.substring(filaColumna.indexOf("c") + 1, filaColumna.length()));
-        anadidasArray[fila][columna].getIdCarreras().getCarrerasMateriasList().add(carreraMateriaSeleccionada);
+        SecuenciaDeMateriasAdicionales sec = new SecuenciaDeMateriasAdicionales();
+
+        carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
+        sec.setIdCarrerasMaterias(carreraMateriaSeleccionada);
+        sec.setFilacolumna(idSeleccionado);
+        adicionales.add(sec);
+        adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
+        for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
+            SecuenciaDeMateriasAdicionales secM = it.next();
+            if (secM.getFilacolumna().equals(idSeleccionado)) {
+                adicionalesTmp.add(secM);
+            }
+
+        }
     }
     /**
      * busca según criterio textoBuscar
      */
     List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
-    List<CarrerasMaterias> listaMateriasAdicionales = new ArrayList<CarrerasMaterias>();
+    List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
     List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
     //List<CarrerasMaterias> anadidas2[2][2]  = new ArrayList<>();
     CarrerasMaterias anadidasArray[][] = new CarrerasMaterias[30][12];
@@ -200,9 +256,7 @@ public class CarrerasMateriasSecuenciaBean {
                 car.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
                 anadidasArray[i][j] = car;
             }
-
         }
-
     }
 
     public void buscarMateriasdeCarrera() {
@@ -214,10 +268,19 @@ public class CarrerasMateriasSecuenciaBean {
                     + "from SecuenciaDeMaterias as c "
                     + " WHERE c.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ) "
                     + " order by o.idNiveles.secuencia ");
-            listaMateriasAdicionales = adm.query("Select o from CarrerasMaterias as o "
+            List<CarrerasMaterias> adicionalesEncontradas = adm.query("Select o from CarrerasMaterias as o "
                     + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
-                    + "and o.idCarrerasMaterias  "
-                    + " order by o.idNiveles.secuencia ");
+                    + "   order by o.idNiveles.secuencia ");
+            listaMateriasAdicionales = new ArrayList<SelectItem>();
+            for (Iterator<CarrerasMaterias> it = adicionalesEncontradas.iterator(); it.hasNext();) {
+                CarrerasMaterias carrerasMaterias = it.next();
+                listaMateriasAdicionales.add(new SelectItem(carrerasMaterias, carrerasMaterias.getIdMaterias().getNombre()));
+
+            }
+              adicionales =  adm.query("SELECT o FROM SecuenciaDeMateriasAdicionales AS o "
+                + " WHERE o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  ");
+ 
+
             List<SecuenciaDeMaterias> materiasSecuenciales = adm.query("Select o from SecuenciaDeMaterias as o "
                     + "where o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
                     + "order by o.fila, o.orden ");
@@ -225,7 +288,6 @@ public class CarrerasMateriasSecuenciaBean {
                 for (Iterator<SecuenciaDeMaterias> it = materiasSecuenciales.iterator(); it.hasNext();) {
                     SecuenciaDeMaterias cM = it.next();
                     cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-
                     anadidasArray[cM.getFila()][cM.getOrden()] = cM.getIdCarrerasMaterias();
                 }
                 //LLENO LOS VACIOS
@@ -252,6 +314,7 @@ public class CarrerasMateriasSecuenciaBean {
                             car.setIdMaterias(mat);
                             car.setIdNiveles(new Niveles());
                             car.setIdCarreras(new Carreras());
+                            car.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
                             anadidasArray[i][j] = car;
                         }
 
@@ -270,7 +333,6 @@ public class CarrerasMateriasSecuenciaBean {
             java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
 
     public List<SelectItem> getSelectedItemCarreras() {
         try {
@@ -301,7 +363,6 @@ public class CarrerasMateriasSecuenciaBean {
      * @return
      */
     public List<CarrerasMaterias> getModel() {
-
         return model;
     }
 
@@ -406,11 +467,11 @@ public class CarrerasMateriasSecuenciaBean {
         this.anadidasArray = anadidasArray;
     }
 
-    public List<CarrerasMaterias> getListaMateriasAdicionales() {
+    public List<SelectItem> getListaMateriasAdicionales() {
         return listaMateriasAdicionales;
     }
 
-    public void setListaMateriasAdicionales(List<CarrerasMaterias> listaMateriasAdicionales) {
+    public void setListaMateriasAdicionales(List<SelectItem> listaMateriasAdicionales) {
         this.listaMateriasAdicionales = listaMateriasAdicionales;
     }
 
@@ -421,6 +482,20 @@ public class CarrerasMateriasSecuenciaBean {
     public void setCarreraMateriaSeleccionada(CarrerasMaterias carreraMateriaSeleccionada) {
         this.carreraMateriaSeleccionada = carreraMateriaSeleccionada;
     }
-    
-    
+
+    public List<SecuenciaDeMateriasAdicionales> getAdicionales() {
+        return adicionales;
+    }
+
+    public void setAdicionales(ArrayList<SecuenciaDeMateriasAdicionales> adicionales) {
+        this.adicionales = adicionales;
+    }
+
+    public List<SecuenciaDeMateriasAdicionales> getAdicionalesTmp() {
+        return adicionalesTmp;
+    }
+
+    public void setAdicionalesTmp(ArrayList<SecuenciaDeMateriasAdicionales> adicionalesTmp) {
+        this.adicionalesTmp = adicionalesTmp;
+    }
 }
