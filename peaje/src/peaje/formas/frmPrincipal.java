@@ -544,7 +544,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         placa = new javax.swing.JFormattedTextField();
         camaraVista = new javax.swing.JLabel();
         camaraVista1 = new javax.swing.JLabel();
-        webTeka = new javax.swing.JLabel();
         logoTeka = new javax.swing.JLabel();
         miBotonImagen = new javax.swing.JLabel();
         ultimoIngreso = new javax.swing.JLabel();
@@ -2519,14 +2518,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(camaraVista1);
             camaraVista1.setBounds(10, 270, 350, 270);
 
-            webTeka.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            webTeka.setText("www.tekatronic.com.ec");
-            panelIngreso.add(webTeka);
-            webTeka.setBounds(620, 520, 140, 14);
-
             logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.png"))); // NOI18N
             panelIngreso.add(logoTeka);
-            logoTeka.setBounds(600, 460, 160, 70);
+            logoTeka.setBounds(600, 450, 190, 90);
 
             miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
             miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
@@ -2547,7 +2541,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jButton11);
             jButton11.setBounds(750, 150, 10, 23);
 
-            panelIngreso.setBounds(0, 30, 770, 590);
+            panelIngreso.setBounds(0, 30, 790, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -7106,7 +7100,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox viernes;
     private javax.swing.JCheckBox viernes1;
     private javax.swing.JCheckBox viernes2;
-    private javax.swing.JLabel webTeka;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
     public static Accesos permisos;
