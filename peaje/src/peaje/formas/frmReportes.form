@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
@@ -46,7 +46,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" pref="110" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelReportes" pref="337" max="32767" attributes="0"/>
+              <Component id="panelReportes" pref="341" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -134,7 +134,7 @@
           <Properties>
             <Property name="maximumRowCount" type="int" value="12"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="16">
+              <StringArray count="17">
                 <StringItem index="0" value="Tickets por cobrar  (101)"/>
                 <StringItem index="1" value="Tickets cobrados (102)"/>
                 <StringItem index="2" value="Tickets Anulados (103)"/>
@@ -144,13 +144,14 @@
                 <StringItem index="6" value="Facturas Tickest y Tarjetas (200)"/>
                 <StringItem index="7" value="Facturas de Tickets (201)"/>
                 <StringItem index="8" value="Facturas de Tarjetas (202)"/>
-                <StringItem index="9" value="Consolidado por Mes (300)"/>
-                <StringItem index="10" value="Consolidado x fechas (301)"/>
-                <StringItem index="11" value="Clientes mas frecuentes (302)"/>
-                <StringItem index="12" value="Listado clientes (303)"/>
-                <StringItem index="13" value="No. de Ingresos x Cliente (304)"/>
-                <StringItem index="14" value="Puestos ocupados (305) "/>
-                <StringItem index="15" value="Tarjetas Ocupadas(Dentro del Parqu.) (304) "/>
+                <StringItem index="9" value="Facturas con Descuentos(203)"/>
+                <StringItem index="10" value="Consolidado por Mes (300)"/>
+                <StringItem index="11" value="Consolidado x fechas (301)"/>
+                <StringItem index="12" value="Clientes mas frecuentes (302)"/>
+                <StringItem index="13" value="Listado clientes (303)"/>
+                <StringItem index="14" value="No. de Ingresos x Cliente (304)"/>
+                <StringItem index="15" value="Puestos ocupados (305) "/>
+                <StringItem index="16" value="Tarjetas Ocupadas(Dentro del Parqu.) (304) "/>
               </StringArray>
             </Property>
           </Properties>

@@ -117,6 +117,8 @@ public class FacturaSource implements JRDataSource {
                 valor = nodo.getTiempo();
             } else if ("total".equals(fieldName)) {
                 valor = nodo.getTotal();
+            } else if ("descuento".equals(fieldName)) {
+                valor = nodo.getDescuento();
             } else if ("placa".equals(fieldName)) {
                 valor = nodo.getPlaca();
             }else if ("subtotal".equals(fieldName)) {

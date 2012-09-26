@@ -185,13 +185,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Reportes ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Seleccione un reporte y presione ver ..::..");
         jPanel3.add(jLabel10);
@@ -207,7 +207,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel1.setBounds(190, 60, 60, 14);
 
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Facturas con Descuentos(203)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -350,7 +350,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -918,6 +918,26 @@ public class frmReportes extends javax.swing.JInternalFrame {
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastarjetas.jasper";
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(203)")) { 
+        //}  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS         Facturas de Tickets (201) 4
+            query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin is not null and o.descuento > 0 "
+                    + "and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                   + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+            System.out.println("SOLO TICKETS: "+query);
+            if(cmbUsuarios.getSelectedIndex()>0){
+                 query = "Select o from Factura as o" +
+                    " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.descuento > 0  "
+                    + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                    + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+               }
+            
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariasdescuentos.jasper";
+            titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
+
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(300)")) {     //Consolidado por Mes (300) 6
         //}else if (cmbTipoReporte.getSelectedIndex() == 6) {//CONSOLIDADO POR MES CLIENTES
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
@@ -1008,8 +1028,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
     //106 CIERRE CAJA
      if(cmbTipoReporte.getSelectedItem().toString().contains("103") || cmbTipoReporte.getSelectedItem().toString().contains("104") || 
                 cmbTipoReporte.getSelectedItem().toString().contains("105") ||  cmbTipoReporte.getSelectedItem().toString().contains("102") ||
-                cmbTipoReporte.getSelectedItem().toString().contains("200") ||                 cmbTipoReporte.getSelectedItem().toString().contains("201") ||
-                cmbTipoReporte.getSelectedItem().toString().contains("202")){
+                cmbTipoReporte.getSelectedItem().toString().contains("200") || cmbTipoReporte.getSelectedItem().toString().contains("201") ||
+                cmbTipoReporte.getSelectedItem().toString().contains("202")  || cmbTipoReporte.getSelectedItem().toString().contains("203") ){
                  cmbUsuarios.setEnabled(true);    
 //               if(principal.getUsuario().getGlobal().getNombre().contains("Administrador")){
 //                     cmbUsuarios.setEnabled(true);    
