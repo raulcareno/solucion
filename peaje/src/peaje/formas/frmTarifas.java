@@ -34,6 +34,8 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
     public boolean modificar1 = false;
     public boolean grabar2 = false;
     public boolean modificar2 = false;
+    public boolean grabar3 = false;
+    public boolean modificar3 = false;
     public List lista = null;
     public int posicion = 0;
     public int tamano = 0;
@@ -102,6 +104,7 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
 
        llenarProductos();
               llenarProductos1();
+              llenarProductos2();
 
     }
 void llenarProductos(){
@@ -139,6 +142,26 @@ void llenarProductos1(){
             }
 
             tbTarifas1.setModel(dtm);
+        } catch (Exception ex) {
+            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+
+void llenarProductos2(){
+      try {
+
+            List<Descuento> tar = adm.query("Select o from Descuento as o ");
+            DefaultTableModel dtm = (DefaultTableModel) tbTarifas2.getModel();
+            dtm.getDataVector().removeAllElements();
+            for (Descuento tarifas : tar) {
+                Object[] obj = new Object[5];
+                obj[0] = tarifas.getCodigo();
+                obj[1] = tarifas.getNombre();
+                obj[2] = tarifas.getValor();
+                obj[3] = tarifas.getTipo().equals("1")?"%":"USD";
+                dtm.addRow(obj);
+            }
+            tbTarifas2.setModel(dtm);
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -184,6 +207,15 @@ void llenarProductos1(){
      
 
     }
+    public void habilitar3(Boolean estado) {
+        
+    }
+    public void habilitar2(Boolean estado) {
+////        txtCodigo2.setEditable(estado);
+////        txtNombre2.setEditable(estado);
+////        txtValor2.setEditable(estado);
+
+    }
 
     public void limpiar() {
         String estado = "";
@@ -197,6 +229,13 @@ void llenarProductos1(){
         txtCodigo1.setText("");
         txtNombre1.setText("");
         txtValor1.setText("");
+    }
+    public void limpiar3() {
+        String estado = "";
+        txtCodigo2.setText("");
+        txtNombre2.setText("");
+        txtValor2.setText("");
+        esPorcentaje.setSelected(false);
     }
 
     // </editor-fold >
@@ -258,6 +297,21 @@ void llenarProductos1(){
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbTarifas2 = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        txtCodigo2 = new javax.swing.JTextField();
+        txtNombre2 = new javax.swing.JTextField();
+        txtValor2 = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        btnAgregar3 = new javax.swing.JButton();
+        btnModificar3 = new javax.swing.JButton();
+        btnEliminar3 = new javax.swing.JButton();
+        btnSalir3 = new javax.swing.JButton();
+        esPorcentaje = new javax.swing.JCheckBox();
 
         setTitle("Tarifario");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
@@ -267,13 +321,13 @@ void llenarProductos1(){
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Tarifas ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Tarifario en minutos de cobros ..::..");
         jPanel3.add(jLabel10);
@@ -814,6 +868,169 @@ void llenarProductos1(){
         jLabel12.setBounds(30, 60, 40, 14);
 
         jTabbedPane1.addTab("Tarifa x Día", jPanel8);
+
+        jPanel10.setLayout(null);
+
+        tbTarifas2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Cod", "Nombre", "Valor", "Tipo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbTarifas2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbTarifas2MouseClicked(evt);
+            }
+        });
+        tbTarifas2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tbTarifas2KeyPressed(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbTarifas2);
+        tbTarifas2.getColumnModel().getColumn(0).setPreferredWidth(5);
+        tbTarifas2.getColumnModel().getColumn(0).setMaxWidth(10);
+
+        jPanel10.add(jScrollPane4);
+        jScrollPane4.setBounds(20, 90, 330, 170);
+
+        jLabel13.setText("Codigo:");
+        jPanel10.add(jLabel13);
+        jLabel13.setBounds(30, 20, 50, 14);
+
+        jLabel14.setText("Nombre:");
+        jPanel10.add(jLabel14);
+        jLabel14.setBounds(30, 40, 50, 14);
+
+        jLabel15.setText("Valor:");
+        jPanel10.add(jLabel15);
+        jLabel15.setBounds(30, 60, 40, 14);
+
+        txtCodigo2.setEditable(false);
+        txtCodigo2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigo2ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(txtCodigo2);
+        txtCodigo2.setBounds(80, 20, 100, 20);
+
+        txtNombre2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNombre2KeyPressed(evt);
+            }
+        });
+        jPanel10.add(txtNombre2);
+        txtNombre2.setBounds(80, 40, 230, 20);
+
+        txtValor2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValor2KeyPressed(evt);
+            }
+        });
+        jPanel10.add(txtValor2);
+        txtValor2.setBounds(80, 60, 60, 20);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel11.setLayout(null);
+
+        btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
+        btnAgregar3.setMnemonic('N');
+        btnAgregar3.setText("Nuevo");
+        btnAgregar3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar3.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar3ActionPerformed(evt);
+            }
+        });
+        btnAgregar3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar3KeyPressed(evt);
+            }
+        });
+        jPanel11.add(btnAgregar3);
+        btnAgregar3.setBounds(80, 10, 60, 50);
+
+        btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        btnModificar3.setMnemonic('M');
+        btnModificar3.setText("Modificar");
+        btnModificar3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificar3.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnModificar3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar3ActionPerformed(evt);
+            }
+        });
+        btnModificar3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificar3KeyPressed(evt);
+            }
+        });
+        jPanel11.add(btnModificar3);
+        btnModificar3.setBounds(140, 10, 60, 50);
+
+        btnEliminar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar3.setMnemonic('E');
+        btnEliminar3.setText("Eliminar");
+        btnEliminar3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar3.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar3ActionPerformed(evt);
+            }
+        });
+        btnEliminar3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminar3KeyPressed(evt);
+            }
+        });
+        jPanel11.add(btnEliminar3);
+        btnEliminar3.setBounds(200, 10, 60, 50);
+
+        btnSalir3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir3.setMnemonic('S');
+        btnSalir3.setText("Salir");
+        btnSalir3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir3.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir3ActionPerformed(evt);
+            }
+        });
+        btnSalir3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalir3KeyPressed(evt);
+            }
+        });
+        jPanel11.add(btnSalir3);
+        btnSalir3.setBounds(260, 10, 60, 50);
+
+        jPanel10.add(jPanel11);
+        jPanel11.setBounds(20, 280, 330, 70);
+
+        esPorcentaje.setText("Es porcentaje %");
+        jPanel10.add(esPorcentaje);
+        esPorcentaje.setBounds(140, 60, 140, 23);
+
+        jTabbedPane1.addTab("Descuentos", jPanel10);
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(10, 50, 400, 400);
@@ -1393,25 +1610,210 @@ void llenarProductos1(){
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSalir2KeyPressed
 
+private void tbTarifas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifas2MouseClicked
+// TODO add your handling code here:
+      int fila = tbTarifas2.getSelectedRow();
+        txtCodigo2.setText((Integer) tbTarifas2.getValueAt(fila,0)+"");
+        txtNombre2.setText((String) tbTarifas2.getValueAt(fila,1));
+        txtValor2.setText((BigDecimal) tbTarifas2.getValueAt(fila,2)+"");
+        esPorcentaje.setSelected(((String)tbTarifas2.getValueAt(fila,2)).equals("%")?true:false);
+}//GEN-LAST:event_tbTarifas2MouseClicked
+
+private void tbTarifas2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifas2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_tbTarifas2KeyPressed
+
+private void txtCodigo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigo2ActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_txtCodigo2ActionPerformed
+
+private void txtNombre2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombre2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_txtNombre2KeyPressed
+
+private void txtValor2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValor2KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_txtValor2KeyPressed
+
+private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
+// TODO add your handling code here:
+            // TODO add your handling code here:
+          // TODO add your handling code here:
+        if (principal.permisos.getAgregar()) {
+            if (grabar3 == false) {
+                
+                this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar3.setLabel("Guardar");
+                this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar3.setLabel("Cancelar");
+                grabar3 = true;
+                modificar3 = false;
+                limpiar3();
+                
+                txtNombre2.requestFocusInWindow();
+                btnAgregar3.setMnemonic('G');
+                btnModificar3.setMnemonic('C');
+                
+
+            } else if (grabar3 == true) {
+                if (txtNombre2.getText().trim().isEmpty() || txtValor2.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
+                } else {
+                    Descuento usuarioObj = new Descuento();
+
+                     usuarioObj.setNombre(txtNombre2.getText());
+                     usuarioObj.setValor(new BigDecimal(txtValor2.getText()));
+                     usuarioObj.setTipo((esPorcentaje.isSelected()?"1":"0"));
+                    if (modificar3) {
+                        try {
+                            usuarioObj.setCodigo(Integer.parseInt(txtCodigo2.getText()));
+                            adm.actualizar(usuarioObj);
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    } else {
+                        try {
+                            usuarioObj.setCodigo(null);
+                            adm.guardar(usuarioObj);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    }
+                    this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+                    this.btnAgregar3.setLabel("Nuevo");
+                    this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+                    this.btnModificar3.setLabel("Modificar");
+                    btnAgregar3.setMnemonic('N');
+                    btnModificar3.setMnemonic('M');
+                    grabar3 = false;
+                    modificar3 = false;
+                    habilitar3(false);
+                    llenarProductos2();
+                    
+
+                }
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+}//GEN-LAST:event_btnAgregar3ActionPerformed
+
+private void btnAgregar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar3KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_btnAgregar3KeyPressed
+
+private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
+// TODO add your handling code here:
+    
+      if (grabar3 == false) {
+            if(principal.permisos.getModificar()){
+
+                this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar3.setLabel("Guardar");
+                btnAgregar3.setEnabled(true);
+                this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar3.setLabel("Cancelar");
+                btnAgregar3.setMnemonic('G');
+                btnModificar3.setMnemonic('C');
+                modificar3 = true;
+                grabar3 = true;
+
+                habilitar3(true);
+                //            btnBuscar.setEnabled(false);
+
+            }else{
+                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+            }
+        } else {
+
+            grabar3 = false;
+            modificar3 = false;
+            this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+            this.btnAgregar3.setLabel("Nuevo");
+            this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+            this.btnModificar3.setLabel("Modificar");
+            btnAgregar3.setMnemonic('N');
+            btnModificar3.setMnemonic('M');
+            btnAgregar3.setEnabled(false);
+
+            habilitar3(false);
+            //            btnBuscar.setEnabled(true);
+
+        }
+}//GEN-LAST:event_btnModificar3ActionPerformed
+
+private void btnModificar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificar3KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_btnModificar3KeyPressed
+
+private void btnEliminar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar3ActionPerformed
+// TODO add your handling code here:
+      // TODO add your handling code here:
+          if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+            try {
+                adm.eliminarObjeto(Descuento.class, new Integer(txtCodigo2.getText()));
+                this.limpiar3();
+                llenarProductos2();
+
+            } catch (Exception ex) {
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+}//GEN-LAST:event_btnEliminar3ActionPerformed
+
+private void btnEliminar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar3KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_btnEliminar3KeyPressed
+
+private void btnSalir3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir3ActionPerformed
+// TODO add your handling code here:
+     this.setVisible(false);
+        this.dispose();
+        principal = null;
+        empresaObj = null;
+        System.gc();
+}//GEN-LAST:event_btnSalir3ActionPerformed
+
+private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir3KeyPressed
+// TODO add your handling code here:
+}//GEN-LAST:event_btnSalir3KeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAgregar2;
+    private javax.swing.JButton btnAgregar3;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnEliminar2;
+    private javax.swing.JButton btnEliminar3;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JButton btnModificar2;
+    private javax.swing.JButton btnModificar3;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir1;
     private javax.swing.JButton btnSalir2;
+    private javax.swing.JButton btnSalir3;
+    private javax.swing.JCheckBox esPorcentaje;
     private javax.swing.JTextField horas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1421,6 +1823,8 @@ void llenarProductos1(){
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1432,17 +1836,22 @@ void llenarProductos1(){
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField minutos;
     private javax.swing.JTable tarifario;
     private javax.swing.JTable tbTarifas;
     private javax.swing.JTable tbTarifas1;
+    private javax.swing.JTable tbTarifas2;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtCodigo1;
+    private javax.swing.JTextField txtCodigo2;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombre1;
+    private javax.swing.JTextField txtNombre2;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField txtValor1;
+    private javax.swing.JTextField txtValor2;
     // End of variables declaration//GEN-END:variables
 
 }

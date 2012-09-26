@@ -4746,7 +4746,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 return;
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
-            usu.setSize(669, 507);
+            usu.setSize(716, 507);
+             
             usu.setLocation(0, 0);
             contenedor.add(usu);
 

@@ -80,6 +80,8 @@ public class FacturaDetalleSource implements JRDataSource {
                 valor = nodo.getFactura().getTotal();
             } else if ("subtotal".equals(fieldName)) {
                 valor = nodo.getFactura().getSubtotal();
+            } else if ("descuento".equals(fieldName)) {
+                valor = nodo.getFactura().getDescuento();
             } else if ("iva".equals(fieldName)) {
                 valor = nodo.getFactura().getIva();
             } else if ("placa".equals(fieldName)) {

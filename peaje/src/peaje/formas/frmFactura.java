@@ -40,6 +40,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -264,12 +265,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         observacion1 = new javax.swing.JTextArea();
         btnAgregar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
-        jLabel2 = new javax.swing.JLabel();
         btnMulta = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnAgregar2 = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        descuento = new javax.swing.JFormattedTextField();
+        jLabel33 = new javax.swing.JLabel();
+        btnAplicarDscto = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -396,20 +399,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Facturación de Tickets ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona GUARDAR..::..");
         jPanel3.add(jLabel10);
         jLabel10.setBounds(10, 20, 290, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 640, 40);
+        jPanel3.setBounds(0, 0, 690, 40);
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -452,7 +455,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(ingreso);
         ingreso.setBounds(70, 50, 210, 20);
 
@@ -462,7 +465,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel7);
         jLabel7.setBounds(10, 10, 60, 14);
 
-        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        noTicket.setFont(new java.awt.Font("Tahoma", 1, 12));
         noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
@@ -474,7 +477,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(noTicket);
         noTicket.setBounds(70, 10, 90, 21);
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tiempo: ");
@@ -483,18 +486,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         salida.setBackground(new java.awt.Color(255, 255, 255));
         salida.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        salida.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(salida);
         salida.setBounds(70, 70, 210, 20);
 
-        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
         jLabel17.setBounds(10, 50, 60, 20);
 
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11));
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Salida: ");
@@ -503,7 +506,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
         tiempo.setDateFormatString("HH:mm");
-        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        tiempo.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel1.add(tiempo);
         tiempo.setBounds(70, 90, 110, 20);
 
@@ -526,24 +529,24 @@ public class frmFactura extends javax.swing.JInternalFrame {
         codigo.setBorder(null);
         codigo.setEditable(false);
         codigo.setEnabled(false);
-        codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 3));
         jPanel1.add(codigo);
         codigo.setBounds(10, 30, 20, 20);
 
-        dias.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
         dias.setBounds(130, 110, 60, 20);
 
-        dias1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        dias1.setFont(new java.awt.Font("Tahoma", 1, 13));
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
         dias1.setBounds(80, 110, 40, 20);
 
-        dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        dias2.setFont(new java.awt.Font("Tahoma", 1, 11));
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");
@@ -609,10 +612,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(encontrados);
 
         panelencontrados.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 10, 170, 90);
+        jScrollPane2.setBounds(10, 10, 230, 90);
 
         jPanel2.add(panelencontrados);
-        panelencontrados.setBounds(80, 50, 190, 110);
+        panelencontrados.setBounds(80, 50, 250, 110);
 
         telefono.setEditable(false);
         telefono.setText("9999999999999");
@@ -650,7 +653,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(nombres);
-        nombres.setBounds(80, 30, 190, 20);
+        nombres.setBounds(80, 30, 250, 20);
 
         direccion.setEditable(false);
         direccion.setText("S/D");
@@ -661,7 +664,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente.setEditable(false);
         cliente.setText("1");
         cliente.setEnabled(false);
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 12));
         jPanel2.add(cliente);
         cliente.setBounds(190, 10, 20, 20);
 
@@ -687,7 +690,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jButton3.setBounds(210, 10, 30, 23);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(310, 10, 290, 160);
+        jPanel2.setBounds(310, 10, 350, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -780,7 +783,72 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(160, 130, 70, 50);
+        btnAgregar.setBounds(210, 130, 70, 50);
+
+        total.setBorder(null);
+        total.setEditable(false);
+        total.setForeground(new java.awt.Color(51, 153, 0));
+        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        total.setText("0.0");
+        total.setCaretColor(new java.awt.Color(0, 204, 0));
+        total.setFont(new java.awt.Font("Tahoma", 1, 36));
+        jPanel4.add(total);
+        total.setBounds(140, 70, 200, 50);
+
+        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
+        btnMulta.setMnemonic('G');
+        btnMulta.setText("Multa");
+        btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnMulta.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnMulta.setOpaque(false);
+        btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMultaActionPerformed(evt);
+            }
+        });
+        btnMulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnMultaKeyPressed(evt);
+            }
+        });
+        jPanel4.add(btnMulta);
+        btnMulta.setBounds(70, 130, 60, 50);
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
+        btnEliminar.setText("Anular Tick.");
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnEliminar.setOpaque(false);
+        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnEliminar);
+        btnEliminar.setBounds(10, 130, 63, 50);
+
+        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnAgregar2.setMnemonic('G');
+        btnAgregar2.setText("Tarifa 0");
+        btnAgregar2.setActionCommand("Tarifa 0.0");
+        btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAgregar2.setOpaque(false);
+        btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar2ActionPerformed(evt);
+            }
+        });
+        btnAgregar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar2KeyPressed(evt);
+            }
+        });
+        jPanel4.add(btnAgregar2);
+        btnAgregar2.setBounds(130, 130, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -800,81 +868,39 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(230, 130, 70, 50);
+        btnSalir.setBounds(280, 130, 70, 50);
 
-        total.setBorder(null);
-        total.setEditable(false);
-        total.setForeground(new java.awt.Color(51, 153, 0));
-        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        total.setText("0.0");
-        total.setCaretColor(new java.awt.Color(0, 204, 0));
-        total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jPanel4.add(total);
-        total.setBounds(90, 60, 200, 50);
+        descuento.setBorder(null);
+        descuento.setEditable(false);
+        descuento.setForeground(new java.awt.Color(0, 0, 153));
+        descuento.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        descuento.setText("0.0");
+        descuento.setCaretColor(new java.awt.Color(0, 204, 0));
+        descuento.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jPanel4.add(descuento);
+        descuento.setBounds(230, 10, 110, 50);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setLabelFor(total);
-        jLabel2.setText("A PAGAR:");
-        jPanel4.add(jLabel2);
-        jLabel2.setBounds(20, 10, 120, 30);
+        jLabel33.setFont(new java.awt.Font("Tahoma", 1, 24));
+        jLabel33.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel33.setLabelFor(total);
+        jLabel33.setText("A PAGAR:");
+        jPanel4.add(jLabel33);
+        jLabel33.setBounds(20, 80, 120, 30);
 
-        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
-        btnMulta.setMnemonic('G');
-        btnMulta.setText("Aplicar Multa");
-        btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMulta.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnMulta.setOpaque(false);
-        btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnMulta.addActionListener(new java.awt.event.ActionListener() {
+        btnAplicarDscto.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        btnAplicarDscto.setForeground(new java.awt.Color(102, 102, 102));
+        btnAplicarDscto.setText("Aplicar Dscto.:");
+        btnAplicarDscto.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAplicarDscto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMultaActionPerformed(evt);
+                btnAplicarDsctoActionPerformed(evt);
             }
         });
-        btnMulta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnMultaKeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnMulta);
-        btnMulta.setBounds(80, 130, 80, 50);
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
-        btnEliminar.setText("Anular Ticket");
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnEliminar.setOpaque(false);
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnEliminar);
-        btnEliminar.setBounds(0, 130, 80, 50);
-
-        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        btnAgregar2.setMnemonic('G');
-        btnAgregar2.setText("TARIFA 0.0");
-        btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar2.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAgregar2.setOpaque(false);
-        btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar2ActionPerformed(evt);
-            }
-        });
-        btnAgregar2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAgregar2KeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnAgregar2);
-        btnAgregar2.setBounds(0, 70, 80, 60);
+        jPanel4.add(btnAplicarDscto);
+        btnAplicarDscto.setBounds(10, 10, 160, 40);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(310, 170, 300, 190);
+        jPanel4.setBounds(310, 170, 350, 190);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
@@ -1008,7 +1034,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente1.setEditable(false);
         cliente1.setText("1");
         cliente1.setEnabled(false);
-        cliente1.setFont(new java.awt.Font("Tahoma", 0, 8)); // NOI18N
+        cliente1.setFont(new java.awt.Font("Tahoma", 0, 8));
         jPanel7.add(cliente1);
         cliente1.setBounds(190, 10, 20, 10);
 
@@ -1113,11 +1139,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         txtTotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtTotal1.setText("0.0");
         txtTotal1.setCaretColor(new java.awt.Color(0, 204, 0));
-        txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36));
         jPanel8.add(txtTotal1);
         txtTotal1.setBounds(140, 60, 140, 40);
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24));
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setLabelFor(total);
         jLabel6.setText("A PAGAR:");
@@ -1155,13 +1181,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         hastaF.setBackground(new java.awt.Color(255, 255, 255));
         hastaF.setDate(new Date());
-        hastaF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        hastaF.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel8.add(hastaF);
         hastaF.setBounds(420, 50, 150, 20);
 
         desdeF.setBackground(new java.awt.Color(255, 255, 255));
         desdeF.setDate(new Date());
-        desdeF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        desdeF.setFont(new java.awt.Font("Tahoma", 1, 14));
         jPanel8.add(desdeF);
         desdeF.setBounds(420, 30, 150, 20);
 
@@ -1204,7 +1230,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("1");
-        txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        txtCantidad.setFont(new java.awt.Font("Tahoma", 1, 11));
         txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtCantidadKeyPressed(evt);
@@ -1229,7 +1255,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
 
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 42, 620, 420);
+        jTabbedPane1.setBounds(10, 42, 680, 420);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1290,11 +1316,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     fecSalida.setMinutes(salida.getDate().getMinutes());
                     fecSalida.setSeconds(salida.getDate().getSeconds());
                     facActual.setFechafin(fecSalida);
-
+                    Double descuentoV = Double.parseDouble(descuento.getText());
                     Double ivav = ((empresaObj.getIva() + 100) / 100);
                     Double totalv = Double.parseDouble(total.getText());
                     Double subtotalv = totalv / ivav;
                     Double ivav1 = subtotalv * (empresaObj.getIva() / 100);
+                    facActual.setDescuento(new BigDecimal(descuentoV));
                     facActual.setTotal(new BigDecimal(totalv));
                     facActual.setSubtotal(new BigDecimal(subtotalv));
                     facActual.setIva(new BigDecimal(ivav1));
@@ -1913,6 +1940,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
+        descuento.setText("0.0");         
         System.out.println("" + evt.getKeyChar());
 
         if (evt.getKeyCode() == evt.VK_ENTER) {
@@ -1924,6 +1952,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + new Integer(noTicket.getText()) + "' ");
                 if (fac != null) {
+                    btnAplicarDscto.setEnabled(true);
                     llenarFactura(fac);
                     try {
                         cargarFoto(fac.getCodigo());
@@ -2089,6 +2118,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
             this.panelencontrados1.setVisible(false);
             Factura fac = (Factura) this.encontrados1.getSelectedValue();
+            descuento.setText("0.0"); 
+            btnAplicarDscto.setEnabled(true);
             llenarFactura(fac);
             noTicket.setText(fac.getTicket());
         }
@@ -2096,9 +2127,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     private void encontrados1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados1KeyPressed
         // TODO add your handling code here:
+        
         if (evt.getKeyCode() == evt.VK_ENTER) {
             this.panelencontrados1.setVisible(false);
             Factura fac = (Factura) this.encontrados1.getSelectedValue();
+            
+            descuento.setText("0.0"); 
+            btnAplicarDscto.setEnabled(true);
             llenarFactura(fac);
             try {
                 cargarFoto(fac.getCodigo());
@@ -2939,11 +2974,49 @@ public class frmFactura extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_identificacionKeyPressed
 
+private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarDsctoActionPerformed
+        try {
+            // TODO add your handling code here:
+                if(identificacion.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(this, "Ingrese el nombre del Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if(identificacion.getText().contains("9999999")){
+                        JOptionPane.showMessageDialog(this, "Cambie primero el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                        return;
+                }
+                btnAplicarDscto.setEnabled(false);
+                List<Descuento> des = adm.query("Select o from Descuento as o");
+                for (Iterator<Descuento> it = des.iterator(); it.hasNext();) {
+                    Descuento descuento1 = it.next();
+                    if(descuento1.getTipo().equals("1")){
+                        BigDecimal tot = new BigDecimal(total.getText());
+                        descuento.setText(redondear(descuento1.getValor().doubleValue(),2)+"");
+                        BigDecimal porcentaje = tot.multiply(descuento1.getValor()).divide(new BigDecimal(100));
+                        descuento.setText(redondear(porcentaje.doubleValue(),2)+"");
+                        BigDecimal nuevoTotal = tot.subtract(porcentaje);
+                        total.setText(redondear(nuevoTotal.doubleValue(),2)+"");
+                    }else{
+                        descuento.setText(redondear(descuento1.getValor().doubleValue(),2)+"");
+                        BigDecimal tot = new BigDecimal(total.getText());
+                        BigDecimal nuevoTotal = tot.subtract(descuento1.getValor());
+                        total.setText(redondear(nuevoTotal.doubleValue(),2)+"");
+                    
+                    }
+                }
+        } catch (Exception ex) {
+            btnAplicarDscto.setEnabled(true);
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+}//GEN-LAST:event_btnAplicarDsctoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAgregar2;
     private javax.swing.JButton btnAnadirProducto;
+    private javax.swing.JButton btnAplicarDscto;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnMulta;
     private javax.swing.JButton btnNuevoCliente;
@@ -2956,6 +3029,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox cmbProductos;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
+    private javax.swing.JFormattedTextField descuento;
     private com.toedter.calendar.JDateChooser desdeF;
     private javax.swing.JLabel dias;
     private javax.swing.JLabel dias1;
@@ -2988,7 +3062,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -3003,6 +3076,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
