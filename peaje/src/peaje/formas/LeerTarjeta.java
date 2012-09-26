@@ -237,7 +237,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                      }
                     abrirPuerta(princip.empresaObj.getEntra1());
                     System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
-
+                    try {
+                            princip.noDisponibles();    
+                    } catch (Exception e) {
+                        System.out.println("error en recontar");
+                    }
+                    
                     return;
                 } catch (InterruptedException ex) {
                     Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -403,6 +408,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             Thread.sleep(20);
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
+            noDisponibles();
         } catch (InterruptedException ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -542,6 +548,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
 
             }
+            noDisponibles();
             princip.cargarFoto(fac.getCodigo());
             } catch (Exception e) {
                 System.out.println("NO SE FOTOGRAFÍO "+e); 
