@@ -4912,20 +4912,37 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
         tarjeta = new Tarjetas();
         tarjeta.setHabilitada(true);
-        tarjeta.setLunes(false);
-        tarjeta.setMartes(false);
-        tarjeta.setMiercoles(false);
-        tarjeta.setJueves(false);
-        tarjeta.setViernes(false);
-        tarjeta.setSabado(false);
-        tarjeta.setDomingo(false);
-        tarjeta.setHorainicio(new Date());
-        tarjeta.setHorafin(new Date());
+        tarjeta.setLunes(true);
+        tarjeta.setMartes(true);
+        tarjeta.setMiercoles(true);
+        tarjeta.setJueves(true);
+        tarjeta.setViernes(true);
+        tarjeta.setSabado(true);
+        tarjeta.setDomingo(true);
+        
+        todos.setSelected(true);
+        tarjeta.setIngresos(20);
+        ingresos.setValue(new Integer(20)); 
+        todos.setSelected(true);
+        Date horaInicio = new Date();
+        horaInicio.setHours(6);
+        horaInicio.setMinutes(0);
+        horaInicio.setSeconds(0);
+        tarjeta.setHorainicio(horaInicio);
+        
+        Date horaFin = new Date();
+        horaFin.setHours(23);
+        horaFin.setMinutes(59);
+        horaFin.setSeconds(59);
+        tarjeta.setHorafin(horaFin);
+        
         tarjeta.setDesde(new Date());
-        tarjeta.setHasta(new Date());
+        Date fechaFin = new Date();
+        fechaFin.setYear(fechaFin.getYear()+1); 
+        tarjeta.setHasta(fechaFin);
         tarjeta.setFacturar(false);
         tarjeta.setGracia(0);
-        tarjeta.setIngresos(1);
+        tarjeta.setIngresos(20);
         tarjeta.setSalida(false);
         tarjeta.setNocontar(false);
         llenarTarjeta();
@@ -5025,13 +5042,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             tarjeta = new Tarjetas();
                             tarjeta.setHabilitada(true);
                             tarjeta.setFacturar(false);
-                            tarjeta.setLunes(false);
-                            tarjeta.setMartes(false);
-                            tarjeta.setMiercoles(false);
-                            tarjeta.setJueves(false);
-                            tarjeta.setViernes(false);
-                            tarjeta.setSabado(false);
-                            tarjeta.setDomingo(false);
+                            tarjeta.setLunes(true);
+                            tarjeta.setMartes(true);
+                            tarjeta.setMiercoles(true);
+                            tarjeta.setJueves(true);
+                            tarjeta.setViernes(true);
+                            tarjeta.setSabado(true);
+                            tarjeta.setDomingo(true);
                             tarjeta.setHorainicio(new Date());
                             tarjeta.setHorafin(new Date());
                             tarjeta.setDesde(new Date());
@@ -5040,6 +5057,24 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             tarjeta.setGracia(0);
                             tarjeta.setSalida(false);
                             tarjeta.setNocontar(false);
+                            Date horaInicio = new Date();
+                            horaInicio.setHours(6);
+                            horaInicio.setMinutes(0);
+                            horaInicio.setSeconds(0);
+                            tarjeta.setHorainicio(horaInicio);
+
+                            Date horaFin = new Date();
+                            horaFin.setHours(23);
+                            horaFin.setMinutes(59);
+                            horaFin.setSeconds(59);
+                            tarjeta.setHorafin(horaFin);
+
+                            tarjeta.setDesde(new Date());
+                            Date fechaFin = new Date();
+                            fechaFin.setYear(fechaFin.getYear()+1); 
+                            tarjeta.setHasta(fechaFin);
+                            tarjeta.setIngresos(20);
+                            
                             llenarTarjeta();
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {

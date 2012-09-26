@@ -2543,7 +2543,40 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
                         Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                         Factura facActual = new Factura();
-                        Clientes nuevoCl = (Clientes) adm.buscarClave(new Integer(1), Clientes.class);
+                         
+                    /**
+                        * ASIGNO EL CLIENTE AL QUE SE LE APLICA LA MULTA
+                     */ 
+                        Clientes nuevoCl = new Clientes();
+                      if (cliente.getText().equals("0")) {
+                        
+                        Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                        nuevoCl.setCodigo(codigoC);
+                        nuevoCl.setDireccion(direccion.getText());
+                        nuevoCl.setIdentificacion(identificacion.getText());
+                        nuevoCl.setTelefono(telefono.getText());
+                        nuevoCl.setNombres(nombres.getText());
+                        adm.guardar(nuevoCl);
+                        
+                        //cliente.setText(""+nuevoCl.getCodigo());
+                        identificacion.setText("9999999999999");
+                        nombres.setText("CONSUMIDOR FINAL");
+                        direccion.setText("S/D");
+                        telefono.setText("9999999999999");
+                        cliente.setText("1");
+                        facActual.setClientes(nuevoCl);
+                    } else {
+                        facActual.setClientes(new Clientes(new Integer(cliente.getText())));
+                        nuevoCl.setCodigo(new Integer(cliente.getText()));
+                        nuevoCl.setDireccion(direccion.getText());
+                        nuevoCl.setIdentificacion(identificacion.getText());
+                        nuevoCl.setTelefono(telefono.getText());
+                        nuevoCl.setNombres(nombres.getText());
+                        adm.actualizar(nuevoCl);
+                    }
+
+
+                        
                         facActual.setClientes(nuevoCl);
                         Date fecSalida = new Date();
                         facActual.setFechaini(fecSalida);
