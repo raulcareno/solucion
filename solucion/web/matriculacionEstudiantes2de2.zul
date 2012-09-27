@@ -811,6 +811,8 @@ void validar(){
         estudent.setInternet(internet.checked);
         estudent.setCodigo(codigoclave.value);
         estudent.setMatriculado(true);
+        estudent.setAseguradora(aseguradora.value);
+        estudent.setAsegurado(asegurado.checked);
 
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
