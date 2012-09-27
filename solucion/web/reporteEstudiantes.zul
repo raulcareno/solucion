@@ -659,6 +659,19 @@ public JRDataSource transporte(ArrayList listadodeCursos,String tipo){
                             Matriculas elem = (Matriculas) it.next();
                             detalle.add(elem);
                         }
+                    }else if(tipo.equals("LSEG")){
+                        String query =   "Select o from Matriculas as o " +
+                                    "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                    "and o.curso.codigocur in (" + curso + ") and  " +
+                                    "o.estudiante.asegurado = true  " +
+                                    "order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+                    
+
+                        List hoy = adm.query(query);
+                        for (Iterator it = hoy.iterator(); it.hasNext();) {
+                            Matriculas elem = (Matriculas) it.next();
+                            detalle.add(elem);
+                        }
                     }else if(tipo.equals("LCART")){
                         String   query = "Select o from Matriculas as o " +
                                         "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
@@ -875,6 +888,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = transporte(listadoCursos,"LTRAN");
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"transporte.jasper");
+            }else if(tipo.equals("LSEG")){
+                    datasource = transporte(listadoCursos,"LSEG");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"asegurado.jasper");
             }else if(tipo.equals("LCART")){
                     datasource = transporte(listadoCursos,"LCART");
                     parametros.put("titulo", titulo.getValue());
@@ -1235,6 +1252,7 @@ void campos(String valor){
                                 <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="LNUEV" label="Estudiantes Nuevos" value="LNUEV"/>
                                 <listitem  id="LTRAN" label="Estudiantes que Toman transporte" value="LTRAN"/>
+                                <listitem  id="LSEG" label="Estudiantes Asegurados" value="LSEG"/>
                                 <listitem  id="LINT"  label="Estudiantes Internos" value="LINT"/>
                                 <listitem  id="LREL"  label="Estudiantes por Religión" value="LREL"/>
                                 <listitem  id="LREL2" label="Totalizado por Religión" value="LREL2" />
@@ -1419,6 +1437,7 @@ void campos(String valor){
             LPAS.visible = per.verificarPermisoReporte("LPAS", "Ingresar");
             LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
             LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
+            LSEG.visible = per.verificarPermisoReporte("LSEG", "Ingresar");
             LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
