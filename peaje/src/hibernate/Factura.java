@@ -86,6 +86,8 @@ public class Factura implements Serializable {
     private Usuarios usuarioc;
     @Column(name = "nocontar")
     private Boolean nocontar;
+    @Column(name = "sellado")
+    private Boolean sellado;
 //    @OneToMany(mappedBy = "factura")
 //    private Collection<Detalle> detalleCollection;
 
@@ -262,6 +264,14 @@ public class Factura implements Serializable {
 
     public void setNocontar(Boolean nocontar) {
         this.nocontar = nocontar;
+    }
+
+    public Boolean getSellado() {
+        return sellado;
+    }
+
+    public void setSellado(Boolean sellado) {
+        this.sellado = sellado;
     }
 
     

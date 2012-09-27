@@ -31,19 +31,17 @@ public class Cxcobrar implements Serializable {
     @Basic(optional = false)
     @Column(name = "codigo")
     private Integer codigo;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "debe")
-    private BigDecimal debe;
-    @Column(name = "haber")
-    private BigDecimal haber;
-    @Column(name = "total")
-    private BigDecimal total;
-    @JoinColumn(name = "cliente", referencedColumnName = "codigo")
+    @JoinColumn(name = "clientes", referencedColumnName = "codigo")
     @ManyToOne
     private Clientes clientes;
     @JoinColumn(name = "usuario", referencedColumnName = "codigo")
     @ManyToOne
     private Usuarios usuario;
+       @JoinColumn(name = "factura", referencedColumnName = "codigo")
+    @ManyToOne
+    private Factura factura;
+    @Column(name = "pagada")
+    private Boolean pagada;
 
     public Cxcobrar() {
     }
@@ -60,30 +58,25 @@ public class Cxcobrar implements Serializable {
         this.codigo = codigo;
     }
 
-    public BigDecimal getDebe() {
-        return debe;
+
+    public Factura getFactura() {
+        return factura;
     }
 
-    public void setDebe(BigDecimal debe) {
-        this.debe = debe;
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
-    public BigDecimal getHaber() {
-        return haber;
+    public Boolean getPagada() {
+        return pagada;
     }
 
-    public void setHaber(BigDecimal haber) {
-        this.haber = haber;
+    public void setPagada(Boolean pagada) {
+        this.pagada = pagada;
     }
 
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

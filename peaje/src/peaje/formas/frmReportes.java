@@ -790,13 +790,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                    + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)";
+                    + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) AND o.sellado = false ";
             if(cmbUsuarios.getSelectedIndex()>0){
                     query = "Select o from Factura as o" +
                             " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                             + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
                             + " and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                            + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)";
+                            + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) and o.sellado = false ";
             }
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
@@ -919,7 +919,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             titulo = "Facturas ";
             tickets(dirreporte, query, titulo);
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(203)")) { 
-        //}  else if (cmbTipoReporte.getSelectedIndex() == 4) {//FACTURADO SOLO TICKETS         Facturas de Tickets (201) 4
+         
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.descuento > 0 "
@@ -932,6 +932,26 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+               }
+            
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariasdescuentos.jasper";
+            titulo = "Facturas ";
+            tickets(dirreporte, query, titulo);
+
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(204)")) { 
+            //DEUDAS PENDIENTES POR COBRAR
+            query = "Select o from Cxcobrar as o" +
+                    " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin.fechafin is not null and o.sellado = true "
+                   + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + " AND ";
+            System.out.println("SOLO TICKETS: "+query);
+            if(cmbClientes.getSelectedIndex()>0){
+                 query = "Select o from Cxcobrar as o" +
+                    " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and o.fechafin.fechafin is not null and o.sellado = true "
+                   + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + " AND o.clientes.codigo = '"+((Clientes)cmbClientes.getSelectedItem()).getCodigo()+"'";
                }
             
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariasdescuentos.jasper";
