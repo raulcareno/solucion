@@ -1460,7 +1460,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel14.add(btnAgregar4);
-        btnAgregar4.setBounds(440, 70, 60, 50);
+        btnAgregar4.setBounds(500, 120, 60, 50);
 
         btnSalir2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir2.setMnemonic('S');
@@ -1479,7 +1479,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel14.add(btnSalir2);
-        btnSalir2.setBounds(510, 70, 60, 50);
+        btnSalir2.setBounds(580, 120, 60, 50);
 
         txtTotal2.setEditable(false);
         txtTotal2.setBorder(null);
@@ -1489,36 +1489,36 @@ public class frmFactura extends javax.swing.JInternalFrame {
         txtTotal2.setCaretColor(new java.awt.Color(0, 204, 0));
         txtTotal2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel14.add(txtTotal2);
-        txtTotal2.setBounds(440, 10, 140, 40);
+        txtTotal2.setBounds(490, 70, 140, 40);
 
         jLabel38.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(255, 0, 0));
         jLabel38.setLabelFor(total);
         jLabel38.setText("A PAGAR:");
         jPanel14.add(jLabel38);
-        jLabel38.setBounds(320, 10, 130, 30);
+        jLabel38.setBounds(370, 80, 130, 30);
 
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel39.setText("IVA:");
         jPanel14.add(jLabel39);
-        jLabel39.setBounds(60, 40, 90, 14);
+        jLabel39.setBounds(380, 40, 90, 14);
 
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel40.setText("SUBTOTAL:");
         jPanel14.add(jLabel40);
-        jLabel40.setBounds(70, 10, 80, 14);
+        jLabel40.setBounds(390, 10, 80, 14);
 
         txtSubtotal1.setEditable(false);
         txtSubtotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSubtotal1.setText("0.0");
         jPanel14.add(txtSubtotal1);
-        txtSubtotal1.setBounds(160, 10, 110, 20);
+        txtSubtotal1.setBounds(510, 10, 110, 20);
 
         txtIva1.setEditable(false);
         txtIva1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtIva1.setText("0.0");
         jPanel14.add(txtIva1);
-        txtIva1.setBounds(160, 30, 110, 20);
+        txtIva1.setBounds(510, 40, 110, 20);
 
         observacionF1.setColumns(20);
         observacionF1.setRows(5);
@@ -1528,21 +1528,21 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane10.setBounds(20, 70, 340, 60);
 
         jPanel11.add(jPanel14);
-        jPanel14.setBounds(20, 180, 610, 190);
+        jPanel14.setBounds(20, 180, 660, 190);
 
         ticketsPendientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Fecha Ingreso", "Fecha Salida", "Valor"
+                "...", "Fecha Ingreso", "Fecha Salida", "Valor"
             }
         ) {
             Class[] types = new Class [] {
-                java.util.Date.class, java.util.Date.class, java.lang.Object.class
+                java.lang.Object.class, java.util.Date.class, java.util.Date.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1559,9 +1559,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane11.setViewportView(ticketsPendientes);
+        ticketsPendientes.getColumnModel().getColumn(0).setResizable(false);
+        ticketsPendientes.getColumnModel().getColumn(0).setPreferredWidth(1);
 
         jPanel11.add(jScrollPane11);
-        jScrollPane11.setBounds(310, 40, 320, 120);
+        jScrollPane11.setBounds(310, 40, 370, 120);
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("LISTA DE TICKETS SELLADOS");
@@ -2325,7 +2327,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         direccion1.setText(nCliente.getDireccion());
         telefono1.setText(nCliente.getTelefono());
     }
-    
+
     public void llenarCliente3(Clientes nCliente) {
         cliente2.setText("" + nCliente.getCodigo());
         identificacion2.setText(nCliente.getIdentificacion());
@@ -2552,9 +2554,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         sumar();
 
     }
-    
+
     public void cargarGrid1(Productos pro, BigDecimal valor) {
-         
 //        DefaultTableModel dtm = (DefaultTableModel) this.ticketsPendientes.getModel();
 //        Object[] obj = new Object[10];
 //        obj[0] = asigRub.getCodigo();
@@ -2564,7 +2565,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //        dtm.addRow(obj);
 //        ticketsPendientes.setModel(dtm);
 //        sumar();
-
     }
     private void identificacion1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion1FocusLost
         // TODO add your handling code here:
@@ -3529,8 +3529,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void encontrados3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados3MouseClicked
         // TODO add your handling code here:
-        
-         if (evt.getClickCount() == 2) {
+
+        if (evt.getClickCount() == 2) {
             this.panelencontrados3.setVisible(false);
             Clientes est = (Clientes) this.encontrados3.getSelectedValue();
             llenarCliente3(est);
@@ -3542,7 +3542,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void encontrados3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados3KeyPressed
         // TODO add your handling code here:
-       if (evt.getKeyCode() == evt.VK_ENTER) {
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             this.panelencontrados3.setVisible(false);
             Clientes est = (Clientes) this.encontrados3.getSelectedValue();
             llenarCliente3(est);
@@ -3555,44 +3555,45 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             this.panelencontrados3.setVisible(false);
 
         }
-        
+
     }//GEN-LAST:event_encontrados3KeyPressed
-public void llenarTickest(Clientes cli){
+    public void llenarTickest(Clientes cli) {
         try {
             List<Cxcobrar> pendientes = adm.query("Select o from Cxcobrar as o  "
-                    + "where o.clientes.codigo = '"+cli.getCodigo()+"'  "
+                    + "where o.clientes.codigo = '" + cli.getCodigo() + "'  "
                     + " and o.pagada = false ");
             DefaultTableModel dtm = (DefaultTableModel) this.ticketsPendientes.getModel();
             dtm.getDataVector().removeAllElements();
             BigDecimal suma = new BigDecimal("0");
             for (Iterator<Cxcobrar> it = pendientes.iterator(); it.hasNext();) {
                 Cxcobrar cxcobrar = it.next();
-                    Object[] obj = new Object[10];
-                    obj[0] = cxcobrar.getFactura().getFechaini();
-                    obj[1] = cxcobrar.getFactura().getFechafin();
-                    obj[2] = cxcobrar.getFactura().getTotal();
-                    dtm.addRow(obj);
-                      suma = suma.add(cxcobrar.getFactura().getTotal());
+                Object[] obj = new Object[10];
+                obj[0] = cxcobrar;
+                obj[1] = cxcobrar.getFactura().getFechaini();
+                obj[2] = cxcobrar.getFactura().getFechafin();
+                obj[3] = cxcobrar.getFactura().getTotal();
+                dtm.addRow(obj);
+                suma = suma.add(cxcobrar.getFactura().getTotal());
             }
             ticketsPendientes.setModel(dtm);
             //txtTotal2.setText(redondear(suma.doubleValue(), 2)+"");
-            
-             Double totalv01 = suma.doubleValue();
-        Double iva01 = ((empresaObj.getIva() + 100) / 100);
-        Double subtotalv01 = totalv01 / iva01;
-        Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
 
-        BigDecimal subtotalv = new BigDecimal(subtotalv01);
-        BigDecimal ivav = new BigDecimal(iva02);
-        BigDecimal totalv = new BigDecimal(totalv01);
-        txtSubtotal1.setText(subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
-        txtIva1.setText(ivav.setScale(2, RoundingMode.HALF_UP) + "");
-        txtTotal2.setText(totalv.setScale(2, RoundingMode.HALF_UP) + "");
+            Double totalv01 = suma.doubleValue();
+            Double iva01 = ((empresaObj.getIva() + 100) / 100);
+            Double subtotalv01 = totalv01 / iva01;
+            Double iva02 = subtotalv01 * ((empresaObj.getIva()) / 100);
+
+            BigDecimal subtotalv = new BigDecimal(subtotalv01);
+            BigDecimal ivav = new BigDecimal(iva02);
+            BigDecimal totalv = new BigDecimal(totalv01);
+            txtSubtotal1.setText(subtotalv.setScale(2, RoundingMode.HALF_UP) + "");
+            txtIva1.setText(ivav.setScale(2, RoundingMode.HALF_UP) + "");
+            txtTotal2.setText(totalv.setScale(2, RoundingMode.HALF_UP) + "");
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-}
+
+    }
     private void telefono2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telefono2KeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_telefono2KeyPressed
@@ -3611,7 +3612,7 @@ public void llenarTickest(Clientes cli){
 
     private void nombres2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres2KeyPressed
         // TODO add your handling code here:
-          if (evt.getKeyCode() == evt.VK_DOWN) {
+        if (evt.getKeyCode() == evt.VK_DOWN) {
             encontrados3.setSelectedIndex(0);
             encontrados3.requestFocusInWindow();
         }
@@ -3619,7 +3620,7 @@ public void llenarTickest(Clientes cli){
             panelencontrados3.setVisible(false);
         }
         principal.tecla(evt.getKeyCode());
-                                   
+
 
     }//GEN-LAST:event_nombres2KeyPressed
 
@@ -3660,7 +3661,7 @@ public void llenarTickest(Clientes cli){
 
     private void btnNuevoCliente2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCliente2ActionPerformed
         // TODO add your handling code here:
-            // TODO add your handling code here:
+        // TODO add your handling code here:
         identificacion2.setEditable(true);
         nombres2.setEditable(true);
         direccion2.setEditable(true);
@@ -3675,7 +3676,95 @@ public void llenarTickest(Clientes cli){
     }//GEN-LAST:event_btnNuevoCliente2KeyPressed
 
     private void btnAgregar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar4ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            int filas = ticketsPendientes.getRowCount();
+            for (int i = 0; i < filas; i++) {
+                try {
+                    Cxcobrar cx = (Cxcobrar) ticketsPendientes.getValueAt(i, 0);
+                    cx.setPagada(true);
+                    adm.actualizar(cx);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+            Factura facActual = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            Clientes cli = new Clientes();
+            if (cliente2.getText().equals("0")) {
+                Clientes nuevoCl = new Clientes();
+                Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
+                nuevoCl.setCodigo(codigoC);
+                nuevoCl.setDireccion(direccion2.getText());
+                nuevoCl.setIdentificacion(identificacion2.getText());
+                nuevoCl.setTelefono(telefono2.getText());
+                nuevoCl.setNombres(nombres2.getText());
+                cli = nuevoCl;
+                adm.guardar(nuevoCl);
+                identificacion2.setText("9999999999999");
+                nombres2.setText("CONSUMIDOR FINAL");
+                direccion2.setText("S/D");
+                telefono2.setText("9999999999999");
+                cliente2.setText("1");
+                facActual.setClientes(nuevoCl);
+            } else {
+                facActual.setClientes(new Clientes(new Integer(cliente2.getText())));
+                cli.setCodigo(new Integer(cliente2.getText()));
+                cli.setDireccion(direccion2.getText());
+                cli.setIdentificacion(identificacion2.getText());
+                cli.setTelefono(telefono2.getText());
+                cli.setNombres(nombres2.getText());
+                adm.actualizar(cli);
+            }
+
+
+            facActual.setClientes(cli);
+            facActual.setDescuento(new BigDecimal("0"));
+            facActual.setTotal(new BigDecimal(txtTotal2.getText()));
+            facActual.setSubtotal(new BigDecimal(txtSubtotal1.getText()));
+            facActual.setIva(new BigDecimal(txtIva1.getText()));
+
+            Date fecTiempo = new Date();
+            facActual.setTiempo(fecTiempo);
+            facActual.setFecha(fecTiempo);
+            facActual.setFechaini(fecTiempo);
+            facActual.setFechafin(fecTiempo);
+            facActual.setUsuarioc(principal.usuarioActual);
+            adm.actualizar(facActual);
+            //                    Integer numero = new Integer(emp.getDocumentofac());
+            //                    emp.setDocumentofac((numero + 1) + "");
+            int dia = 0;
+            try {
+                dia = new Integer(dias1.getText());
+            } catch (Exception e) {
+                dia = 0;
+            }
+
+            //adm.actualizar(emp);
+
+            Boolean pasar = true;
+            Integer numero = new Integer(emp.getDocumentofac()) + 1;
+            while (pasar) {
+                List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
+                if (sihay.size() <= 0) {
+                    pasar = false;
+                    facActual.setNumero("" + numero);
+                    emp.setDocumentofac((numero) + "");
+                    adm.actualizar(emp);//GUARDO EMPRESA
+                    adm.actualizar(facActual); // GUARDO FACTURA
+                } else {
+                    numero++;
+                }
+
+            }
+            imprimir(facActual.getCodigo(), emp, dia, false, cli);
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_btnAgregar4ActionPerformed
 
     private void btnAgregar4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar4KeyPressed
@@ -3684,7 +3773,7 @@ public void llenarTickest(Clientes cli){
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
-           principal.contenedor.requestFocus();
+        principal.contenedor.requestFocus();
         this.setVisible(false);
         principal = null;
         empresaObj = null;
@@ -3698,7 +3787,6 @@ public void llenarTickest(Clientes cli){
     private void ticketsPendientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ticketsPendientesKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_ticketsPendientesKeyPressed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;

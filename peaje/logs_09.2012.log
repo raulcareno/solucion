@@ -56,3 +56,5 @@ INFO peaje.formas.frmPrincipal,line 41,26.09.2012/21:13:09,java.lang.NullPointer
 INFO peaje.formas.frmPrincipal,line 41,26.09.2012/21:17:45,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.09.2012/21:17:56,OK
 INFO peaje.formas.frmPrincipal,line 41,26.09.2012/21:18:17,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,26.09.2012/21:25:46,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.09.2012/21:26:19,OK
