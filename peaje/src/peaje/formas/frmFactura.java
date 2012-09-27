@@ -3455,6 +3455,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             Cxcobrar cx = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cx.setFactura(facActual);
             cx.setClientes(cli);
+            cx.setPagada(false); 
             cx.setUsuario(principal.usuarioActual);
             adm.guardar(cx);
 
@@ -3677,6 +3678,15 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void btnAgregar4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar4ActionPerformed
         try {
+            if (cliente2.getText().equals("0") && nombres2.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Falta el ingresar o seleccionar el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                identificacion2.requestFocusInWindow();
+                return;
+            }
+            if (txtTotal2.getText().contains("0.0") || txtTotal2.getText().contains("0.00")) {
+                JOptionPane.showMessageDialog(this, "Valor en 0, no se puede facturar...!", "", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             // TODO add your handling code here:
             int filas = ticketsPendientes.getRowCount();
             for (int i = 0; i < filas; i++) {
@@ -3760,6 +3770,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
             }
             imprimir(facActual.getCodigo(), emp, dia, false, cli);
+            llenarTickest(cli); 
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
