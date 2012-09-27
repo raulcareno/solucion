@@ -34,6 +34,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import sources.ClientesSource;
 import sources.ConsolidadoSource;
+import sources.CxcobrarSource;
 import sources.FacturaSource;
 import sources.General;
 //import org.eclipse.persistence.internal.history.HistoricalDatabaseTable;
@@ -185,13 +186,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Reportes ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Seleccione un reporte y presione ver ..::..");
         jPanel3.add(jLabel10);
@@ -206,8 +207,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(190, 60, 60, 14);
 
+        cmbTipoReporte.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Facturas con Descuentos(203)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Facturas con Descuentos(203)", "Facturas Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -219,7 +221,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(cmbTipoReporte);
-        cmbTipoReporte.setBounds(80, 10, 300, 20);
+        cmbTipoReporte.setBounds(80, 10, 300, 22);
 
         desde.setDate(new Date());
         desde.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -350,7 +352,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -442,6 +444,48 @@ public class frmReportes extends javax.swing.JInternalFrame {
             parametros.put("desde",desde.getDate());
             parametros.put("hasta",hasta.getDate());
 
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    public void cobros(String dirreporte, String query, String titulo) {
+        try {
+            
+            System.out.println("QUERY: "+query);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+
+            List<Cxcobrar> fac = adm.query(query);
+            ArrayList detalle = new ArrayList();
+            for (Iterator<Cxcobrar> it = fac.iterator(); it.hasNext();) {
+                Cxcobrar factura = it.next();
+                 detalle.add(factura);
+            }
+            CxcobrarSource ds = new CxcobrarSource(detalle);
+            Map parametros = new HashMap();
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+            WorkingDirectory w = new WorkingDirectory();
+              String ubicacionDirectorio = w.get()+separador;
+                if(ubicacionDirectorio.contains("build"))
+                    ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
+            dirreporte = ubicacionDirectorio+separador+"fotos"+ separador;
+            parametros.put("ubicacion", dirreporte);
+            parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
             panelReportes.removeAll();
@@ -954,6 +998,25 @@ public class frmReportes extends javax.swing.JInternalFrame {
             tickets(dirreporte, query, titulo);
 
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(204)")) { 
+         
+            query = "Select o from Cxcobrar as o" +
+                    " where  o.pagada = false "
+                    //" where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.pagada = false "
+                    + " order by o.clientes.nombres ";
+            System.out.println("SOLO TICKETS: "+query);
+            if(cmbClientes.getSelectedIndex()>0){
+                 query = "Select o from Cxcobrar as o" +
+                    " where  "
+                         //" where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
+                    + "  o.clientes.codigo  = '"+((Clientes)cmbClientes.getSelectedItem()).getCodigo()+"'  "
+                    + " AND o.pagada = false order by o.clientes.nombres ";
+               }
+            
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasPendientes.jasper";
+            titulo = "Facturas ";
+            cobros(dirreporte, query, titulo);
+
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(204)")) { 
             //DEUDAS PENDIENTES POR COBRAR
             query = "Select o from Cxcobrar as o" +
                     " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
@@ -1075,7 +1138,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 //               if(principal.getUsuario().getGlobal().getNombre().contains("Administrador")){
 //                     cmbUsuarios.setEnabled(true);    
 //                }
-    }else if(cmbTipoReporte.getSelectedItem().toString().contains("304")){
+    }else if(cmbTipoReporte.getSelectedItem().toString().contains("304") || cmbTipoReporte.getSelectedItem().toString().contains("204") ){
             try {
                 cmbClientes.setEnabled(true);
                 //cmbUsuarios.setEnabled(true);   
