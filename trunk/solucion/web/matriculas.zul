@@ -684,6 +684,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setTransporte(transporte.checked);
         estudent.setNobus(nobus.value);
         estudent.setAseguradora(aseguradora.value);
+        estudent.setAsegurado(asegurado.checked);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero(genero.selectedItem.value);
