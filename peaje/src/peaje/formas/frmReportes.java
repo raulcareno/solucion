@@ -424,6 +424,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 Object[] faci = (Object[])it.next();
                 General gen = new General();
                 gen.setDato1(faci[0]+"");  
+                if(gen.getDato1().contains("null")){
+                    gen.setDato1("OTRO");
+                }
                 gen.setNumero1(new Integer(faci[2].toString()));  
                 gen.setValor1(new BigDecimal(faci[1].toString()));  
                 gen.setValor2(new BigDecimal(faci[3].toString()));  
@@ -975,7 +978,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select date(o.fechafin),sum(o.total) from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
-                    + " and o.fechafin is not null  and (o.nocontar = false or o.nocontar is null ) group by month(o.fechafin)  ";
+                    + " and o.fechafin is not null  "
+                    + " and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + " and (o.sellado = false OR o.sellado IS NULL)  "
+                    + " and (o.nocontar = false or o.nocontar is null ) group by month(o.fechafin)  ";
             System.out.println(""+query);
             dirreporte = ubicacionDirectorio+"reportes"+separador+"consolidado.jasper";
             titulo = " ";
@@ -1037,8 +1043,11 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(301)")) {      //Consolidado x fechas (301) 14
         //} else if (cmbTipoReporte.getSelectedIndex() == 14) {//CONSOLIDADO
                 query = "SELECT placa, total, COUNT(*), SUM(total) FROM factura  "
-                        + "WHERE fechafin BETWEEN '"+desde2+"' "
-                        + "AND  '"+hasta2+"' GROUP BY placa "; 
+                        + "WHERE fechafin BETWEEN '"+desde2+"' AND  '"+hasta2+"'  "
+                        + "AND (anulado IS NULL  OR anulado = FALSE) "
+                        + "and (tarifa0 = false OR tarifa0 IS NULL) "
+                        + "and (sellado = false OR sellado IS NULL)  "
+                        + " GROUP BY placa "; 
                 System.out.println(""+query);
                 dirreporte = ubicacionDirectorio+"reportes"+separador+"consolidadoxfecha.jasper";
                 titulo = "Consolidado";
