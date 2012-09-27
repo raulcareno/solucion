@@ -790,13 +790,15 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                    + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) AND o.sellado = false ";
+                    + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + " AND (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + " and (o.sellado = false OR o.sellado IS NULL) ";
             if(cmbUsuarios.getSelectedIndex()>0){
                     query = "Select o from Factura as o" +
                             " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                             + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
                             + " and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                            + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) and o.sellado = false ";
+                            + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) and (o.sellado = false OR o.sellado IS NULL)  ";
             }
             dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
@@ -849,13 +851,17 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
-                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + "and (o.sellado = false OR o.sellado IS NULL)  ";
               if(cmbUsuarios.getSelectedIndex()>0){
                   query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + " and o.fechafin is not null and o.numero is not null  "
                     + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
-                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                          + "and (o.tarifa0 = false OR o.tarifa0 IS NULL)  "
+                          + "and (o.sellado = false OR o.sellado IS NULL)  ";
                }
             
             
@@ -876,13 +882,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
-                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL)   ";
               if(cmbUsuarios.getSelectedIndex()>0){
                   query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + " and o.fechafin is not null and o.numero is not null  "
                     + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
-                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL)   ";
                }
             
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiarias.jasper";
@@ -894,14 +900,18 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null "
                     + "and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                   + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                   + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + "and (o.sellado = false OR o.sellado IS NULL)  ";
             System.out.println("SOLO TICKETS: "+query);
             if(cmbUsuarios.getSelectedIndex()>0){
                  query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + " and o.usuarioc.codigo  = '"+((Usuarios)cmbUsuarios.getSelectedItem()).getCodigo()+"'  "
-                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + "and (o.sellado = false OR o.sellado IS NULL)  ";
                }
             
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastickets.jasper";
@@ -913,7 +923,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select o from Factura as o" +
                     " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null "
-                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + " AND (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + " and (o.sellado = false OR o.sellado IS NULL) ";
             System.out.println("SOLO TARJETAS: "+query);
             dirreporte = ubicacionDirectorio+"reportes"+separador+"facturasdiariastarjetas.jasper";
             titulo = "Facturas ";

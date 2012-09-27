@@ -726,6 +726,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.setLayout(null);
 
         frmEliminar.setTitle("Anular tickets");
+        frmEliminar.setVisible(false);
         frmEliminar.getContentPane().setLayout(null);
 
         jLabel28.setText("Desea Anular el presente Ticket?, Porqué?");
@@ -1650,7 +1651,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     fecTiempo.setSeconds(tiempo.getDate().getSeconds());
                     facActual.setTiempo(fecTiempo);
                     facActual.setUsuarioc(principal.usuarioActual);
-
+                    facActual.setSellado(false);
                     adm.actualizar(facActual);
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
@@ -2679,6 +2680,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             facActual.setFecha(new Date());
             facActual.setFechafin(new Date());
             facActual.setUsuario(principal.usuarioActual);
+            facActual.setSellado(false);
             facActual.setUsuarioc(principal.usuarioActual);
             facActual.setNumero(emp.getDocumentofac());
             facActual.setObservacion(" Desde:" + desdeF.getDate().toLocaleString().substring(0, 11) + " Hasta:" + hastaF.getDate().toLocaleString().substring(0, 11) + " " + observacionF.getText());
@@ -2932,6 +2934,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facActual.setTicket("000000000");
                         facActual.setUsuario(principal.usuarioActual);
                         facActual.setUsuarioc(principal.usuarioActual);
+                        facActual.setSellado(false);
 
                         //adm.guardar(facActual);
 
@@ -3059,6 +3062,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 facActual.setUsuarioc(principal.usuarioActual);
                 facActual.setSubtotal(BigDecimal.ZERO);
                 facActual.setIva(BigDecimal.ZERO);
+                facActual.setSellado(false);
                 facActual.setTotal(BigDecimal.ZERO);
                 total.setText("0.0");
                 codigo.setText("");
@@ -3246,6 +3250,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facActual.setUsuarioc(principal.usuarioActual);
                         facActual.setTarifa0(true);
                         facActual.setObservacion(observacion1.getText());
+                        facActual.setSellado(false);
                         adm.actualizar(facActual);
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
@@ -3741,6 +3746,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             facActual.setFecha(fecTiempo);
             facActual.setFechaini(fecTiempo);
             facActual.setFechafin(fecTiempo);
+            facActual.setSellado(false);
             facActual.setUsuarioc(principal.usuarioActual);
             adm.actualizar(facActual);
             //                    Integer numero = new Integer(emp.getDocumentofac());
