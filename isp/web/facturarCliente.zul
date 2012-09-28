@@ -286,6 +286,47 @@ void ultimoRecibo(){
     Integer valor = suc.getSecrecibos()+1;
     nofactura.value = valor;
 }
+void validarNoCuenta(){
+    String nocuenta2 = nocuenta.value;
+    String cliente2 = "";
+    String valor2 = "";
+    if(nocuenta2.length()>0){
+    List cobros = adm.query("Select o from Cxcobrar as o where o.nocuenta = '"+nocuenta2+"' ");
+            if(cobros.size()>0){
+                    int m = 1;
+                    for (Iterator itAbono = cobros.iterator(); itAbono.hasNext();) {
+                        Cxcobrar det = itAbono.next();
+                         cliente2 += " \n "+m + " .- "+ det.getFactura().getClientes()
+                         +" \n Fecha: "+det.getFecha().toLocaleString() 
+                         +" \n Valor: "+det.getDeposito() +"\n";
+
+                         m++;
+                    }
+                    Messagebox.show(""+cliente2, "COMPROBANTE YA USADO EN: ", Messagebox.OK, Messagebox.ERROR);
+         }
+ }
+}
+
+void validarNoTransferencia(){
+    String nocuenta2 = notransferencia.value;
+    String cliente2 = "";
+    String valor2 = "";
+    if(nocuenta2.length()>0){
+        List cobros = adm.query("Select o from Cxcobrar as o where o.notransferencia = '"+nocuenta2+"' ");
+            if(cobros.size()>0){
+                    int m = 1;
+                    for (Iterator itAbono = cobros.iterator(); itAbono.hasNext();) {
+                        Cxcobrar det = itAbono.next();
+                         cliente2 += " \n "+m + " .- "+ det.getFactura().getClientes()
+                         +" \n Fecha: "+det.getFecha().toLocaleString() 
+                         +" \n Valor: "+det.getTransferencia() +"\n";
+
+                         m++;
+                    }
+                    Messagebox.show(""+cliente2, "COMPROBANTE YA USADO EN: ", Messagebox.OK, Messagebox.ERROR);
+            }
+    }
+}
 
 ]]>
         </zscript>
@@ -392,11 +433,11 @@ void ultimoRecibo(){
                                         <row>
                                             <label  style="font-weight:bold;">NÚMERO:</label>
                                             <span> - </span>
-                                            <textbox id="nocuenta" cols="7"   onOK="cheque.focus()"  />
-                                            <textbox id="nocheque"  cols="7"  onOK="tarjeta.focus()"  />
+                                            <textbox id="nocuenta" onBlur='validarNoCuenta();' cols="7"   onOK="cheque.focus()"  />
+                                            <textbox id="nocheque" cols="7"  onOK="tarjeta.focus()"  />
                                             <textbox id="notarjeta"  cols="7"  onOK="transferencia.focus()"  />
-                                            <textbox id="notransferencia"  cols="7"  onOK="btnguardar.focus()"  />
-                                            <textbox id="nodeposito"  cols="7"  onOK="btnguardar.focus()"  />
+                                            <textbox id="notransferencia" onBlur="validarNoTransferencia();"  cols="7"  onOK="btnguardar.focus()"  />
+                                            <textbox id="nodeposito"   cols="7"  onOK="btnguardar.focus()"  />
                                             
                                         </row>
                                         <row>

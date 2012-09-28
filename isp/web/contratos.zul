@@ -84,6 +84,19 @@ void llenar(Contratos  equi2){
      System.out.println("error en forma de pago null: "+err);
      efe.checked = true;
      }
+     
+     try{
+     String tipoIde = equi2.getSerie3()+"";
+       if(tipoIde.equals("SI")){
+            si.selected = true;
+        }else if(tipoIde.equals("NO")){
+            no.selected = true;
+        }else{
+            si.selected = true;
+        }  
+     }catch(Exception er){
+            si.selected = true;
+     }
     
     registro.setSelected(true);
     try{
@@ -465,7 +478,7 @@ Boolean validar(){
     equi.setTipocuenta(tipocuenta.value); //varchar 
     equi.setDiapago(new Integer(diapago.value));//integer
   
-   
+    equi.setSerie3(facturar.selectedItem.value);   
     
    
     try{
@@ -2766,6 +2779,11 @@ void llamar(){
                                             <comboitem label="Fibra Óptica" value="Fibra Óptica" />
                                             <comboitem label="Medio Inalambrico" value="Medio Inalambrico" />
                                          </combobox>
+                                          <span style="float:right">   Facturar:</span>
+                                           <radiogroup id="facturar" >
+                                            <radio disabled="true" id="si" value="SI" label="SI" style="font-weight:bold2" />
+                                            <radio disabled="true"  id="no"  value="NO"  label="NO" style="font-weight:bold2" />
+                                          </radiogroup>
                                                            
                                         </row>
                                         <row visible="false">
