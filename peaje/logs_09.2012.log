@@ -67,3 +67,7 @@ INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.09.2012/22:26:33,OK
 INFO peaje.formas.frmPrincipal,line 41,26.09.2012/22:26:54,java.lang.NullPointerException
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.09.2012/22:58:02,OK
 INFO peaje.formas.frmPrincipal,line 41,26.09.2012/22:58:23,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.09.2012/16:49:41,OK
+INFO peaje.formas.frmPrincipal,line 41,27.09.2012/16:49:41,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.09.2012/16:53:18,OK
+INFO peaje.formas.frmPrincipal,line 41,27.09.2012/16:53:18,java.lang.NullPointerException

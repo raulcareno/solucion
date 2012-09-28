@@ -1852,6 +1852,90 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //            ex.printStackTrace();
 //        }
     }
+    
+    public void imprimir2(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
+
+//                    viewer.show();
+        try {
+
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+            JasperReport masterReport = null;
+            masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura3.jasper");
+            JRDataSource ds = null;
+            ArrayList detalle = new ArrayList();
+            Map parametros = new HashMap();
+            String observacion = "";
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+                observacion = fac.getObservacion();
+                Clientes cli1 = (Clientes) fac.getClientes();
+                cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
+                System.out.println("" + cli1.getCodigo());
+                fac.setClientes(cli1);
+                detalle.add(fac);
+                cli = cli1;
+                ds = new FacturaSource(detalle);
+
+ 
+            parametros.put("ruc", cli.getIdentificacion());
+            parametros.put("cliente", cli.getNombres());
+            parametros.put("direccion", cli.getDireccion());
+            parametros.put("telefono", cli.getTelefono());
+            parametros.put("placa", placa.getText());
+            parametros.put("observacion", observacion);
+            parametros.put("notickets", ticketsPendientes.getRowCount()+"");
+            parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            PrinterJob job = PrinterJob.getPrinterJob();
+            /*
+             * Create an array of PrintServices
+             */
+            PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+            int selectedService = 0;
+            /*
+             * Scan found services to see if anyone suits our needs
+             */
+            for (int i = 0; i < services.length; i++) {
+                String nombre = services[i].getName();
+                if (nombre.contains(emp.getImpfactura())) {
+                    selectedService = i;
+                }
+            }
+            job.setPrintService(services[selectedService]);
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            MediaSizeName mediaSizeName = MediaSize.findMedia(7, 7, MediaPrintableArea.INCH);
+            printRequestAttributeSet.add(mediaSizeName);
+            printRequestAttributeSet.add(new Copies(1));
+            JRPrintServiceExporter exporter;
+            exporter = new JRPrintServiceExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, masterPrint);
+            /*
+             * We set the selected service and pass it as a paramenter
+             */
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, services[selectedService]);
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, services[selectedService].getAttributes());
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+            exporter.exportReport();
+
+//            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+//            viewer.show();
+//            try {
+//                JasperPrintManager.printPage(masterPrint, 0, false);//LE ENVIO A IMPRIMIR false NO MUESTRA EL CUADRO DE DIALOGO
+//            } catch (JRException ex) {
+//                ex.printStackTrace();
+//            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        } catch (JRException ex) {
+//            ex.printStackTrace();
+//        }
+    }
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
@@ -3775,7 +3859,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 }
 
             }
-            imprimir(facActual.getCodigo(), emp, dia, false, cli);
+            imprimir2(facActual.getCodigo(), emp, dia, false, cli);
             llenarTickest(cli); 
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
