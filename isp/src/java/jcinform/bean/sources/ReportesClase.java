@@ -120,16 +120,22 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource clientesxestado(String estado) {
+    public JRDataSource clientesxestado(String estado,Integer formapago) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
+        
+         String formaPago = " and o.formapago = '" + formapago + "' ";
+        if (formapago.equals(0)) {
+            formaPago = " and o.formapago in (0,1,2,3) ";
+        }
+        
         List<Contratos> contra = adm.query("Select o from Contratos as o "
                 + " where o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + estadoComp
+                + estadoComp  + " " + formaPago
                 + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();

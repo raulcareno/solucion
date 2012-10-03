@@ -182,7 +182,7 @@ List nodos = adm.query("Select o from Nodos as o " +
                    
                    
             }else if(tipo.equals("PORESTADO")){
-                  datasource = reportes.clientesxestado(estadoContrato.selectedItem.value);
+                  datasource = reportes.clientesxestado(estadoContrato.selectedItem.value,new Integer(formapago.selectedItem.value));
                   report.setSrc(directorioReportes+"listacontratosestado.jasper");
             }else if(tipo.equals("PORESTADOPLAN")){
                     Set items2 = planList.getSelectedItems();
@@ -493,7 +493,7 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;
             filaestado.visible = true;
-        }else if(valor.equals("PORNODOSCLI")){
+        } else if(valor.equals("PORNODOSCLI")){
             titulo.value= "X Nodos";
             eterminado.visible = false;
             ependiente.visible = false;
@@ -503,12 +503,10 @@ void campos(String valor){
             titulo.value= "Inventario por Empleado";
             filaempleados.visible = true;
             filafechas.visible = true;
-        }
-        
-        else if(valor.equals("PORESTADO")){
+        }else if(valor.equals("PORESTADO")){
             titulo.value ="X Estado";
             filaestado.visible = true;
-        
+            filaformapago.visible = true;
         }else if(valor.equals("PORESTADOPLAN")){
             titulo.value ="X Estado";
             filaestado.visible = true;
