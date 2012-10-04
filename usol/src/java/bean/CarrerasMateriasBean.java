@@ -130,7 +130,7 @@ Auditar  aud = new Auditar();
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
-                if (adm.existe("CarrerasMaterias", "idMaterias", object.getIdMaterias(),"idCarreras",object.getIdCarreras(),"idNiveles",object.getIdNiveles(),"idEjes",object.getIdEjes()).size() <= 0) {
+                if (adm.existe("CarrerasMaterias", "idMaterias", object.getIdMaterias(),"idCarreras",object.getIdCarreras(),"").size() <= 0) {
                     object.setIdCarrerasMaterias(adm.getNuevaClave("CarrerasMaterias", "idCarrerasMaterias"));
                     
                     adm.guardar(object);
@@ -141,7 +141,7 @@ Auditar  aud = new Auditar();
                     buscar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Nombre ya existe...!","Ya existe una materia con ésos parametros...!"));
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ya existe una materia con ésos parametros...!","Ya existe una materia con ésos parametros...!"));
                 }
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));

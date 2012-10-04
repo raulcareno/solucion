@@ -747,7 +747,8 @@ public class MatriculasBean {
 
     protected void buscarMateriasMatricula(Matriculas mat) {
         destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
-                + " WHERE c.id_Materias in (Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
+                + " WHERE c.id_Materias in "
+                + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
                 + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
                 + " ", CarrerasMaterias.class);
 
@@ -785,9 +786,9 @@ public class MatriculasBean {
                 SecuenciaDeMaterias secuenciaDeMaterias = it.next();
                  //System.out.println("REQUERIDA: "+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre());
                         Notas not = new Notas();
-                         
-                    not.getIdMateriasMatricula().getIdMaterias();
-                    not.getIdMateriasMatricula().getIdMatriculas().getIdEstudiantes().getIdEstudiantes();
+//                         
+//                    not.getIdMateriasMatricula().getIdMaterias();
+//                    not.getIdMateriasMatricula().getIdMatriculas().getIdEstudiantes().getIdEstudiantes();
                     List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
                         + " where o.idMateriasMatricula.idMaterias.idMaterias = '"+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getIdMaterias()+"' "
                         + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '"+object.getIdEstudiantes().getIdEstudiantes()+"' ");
