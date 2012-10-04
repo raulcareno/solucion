@@ -35,6 +35,7 @@ import javax.servlet.ServletContext;
 import jcinform.persistencia.Archivos;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Carreras;
+import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.CategoriasSociales;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Materias;
@@ -112,8 +113,8 @@ public class MatriculasBean {
     Auditar aud = new Auditar();
     ProcesadorImagenes p = new ProcesadorImagenes();
     private DualListModel<Materias> materias;
-    List<Materias> origen = new ArrayList<Materias>();
-    List<Materias> destino = new ArrayList<Materias>();
+    List<CarrerasMaterias> origen = new ArrayList<CarrerasMaterias>();
+    List<CarrerasMaterias> destino = new ArrayList<CarrerasMaterias>();
     List<Estudiantes> estudiantesListado = new ArrayList<Estudiantes>();
     Periodos per;
     Archivos arLibreta;
@@ -174,7 +175,7 @@ public class MatriculasBean {
 //        paisSeleccionado3 = estudiante.getIdPais();
 //        paisSeleccionado4 = estudiante.getPaiIdPais();
         //generarImagen("logo.png", object.getFoto());
-        buscarMateriasNoAsignadas();
+       
         //foto1 = "logo.png";
         System.out.println("" + object.getIdMatriculas());
         return null;
@@ -216,13 +217,13 @@ public class MatriculasBean {
         //   cargarDataModel();
     }
 
-    public String anadir(Materias obj) {
+    public String anadir(CarrerasMaterias obj) {
         destino.add(obj);
         origen.remove(obj);
         return null;
     }
 
-    public String quitar(Materias obj) {
+    public String quitar(CarrerasMaterias obj) {
         origen.add(obj);
         destino.remove(obj);
         return null;
@@ -555,6 +556,9 @@ public class MatriculasBean {
         //estudiante.setTipoIdentificacion("C");
         foto1 = null;
         clave2 = "";
+        arLibreta = new Archivos();
+        arCedula = new Archivos();
+        arTitulo = new Archivos();
     }
 
     /**
@@ -738,10 +742,12 @@ public class MatriculasBean {
         }
     }
 protected void buscarMateriasMatricula(Matriculas mat){
-           materiasMatricula = adm.query("Select o from MateriasMatriculas as o "
-                + " where o.idMatriculas.idMatriculas = '" + mat.getIdMatriculas()+ "' "
-                + " order by o.idMaterias.nombre ");
- 
+        destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
+                + " WHERE c.id_Materias in (Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
+                + " and c.id_Carreras = '"+object.getIdCarreras().getIdCarreras()+"' "
+                + " ",CarrerasMaterias.class);
+
+         origen = adm.query("Select m from CarrerasMaterias as m  order by m.idNiveles.secuencia");
     
 }
     protected void buscarMatricula(Estudiantes estudiante) {
@@ -1413,19 +1419,19 @@ protected void buscarMateriasMatricula(Matriculas mat){
         this.materias = materias;
     }
 
-    public List<Materias> getOrigen() {
+    public List<CarrerasMaterias> getOrigen() {
         return origen;
     }
 
-    public void setOrigen(List<Materias> origen) {
+    public void setOrigen(List<CarrerasMaterias> origen) {
         this.origen = origen;
     }
 
-    public List<Materias> getDestino() {
+    public List<CarrerasMaterias> getDestino() {
         return destino;
     }
 
-    public void setDestino(List<Materias> destino) {
+    public void setDestino(List<CarrerasMaterias> destino) {
         this.destino = destino;
     }
 

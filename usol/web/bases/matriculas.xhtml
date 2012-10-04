@@ -108,15 +108,15 @@
                             </p:selectOneMenu>  
                             <p:spacer width="10"/>
                             <p:commandLink update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> Subir copia de Lib.Militar
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />Subir Lib.Militar
                             </p:commandLink>
                             <h:panelGrid id="panelLibreta"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
-
-                                <p:commandButton id="downloadLinkLibreta"  rendered="#{not empty matriculasBean.arLibreta.nombre}"  value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
-                                    <p:fileDownload value="#{matriculasBean.fileLibreta}" />  
-                                </p:commandButton> 
-                                <h:outputText style="color:orange; font-color:orange" value="#{matriculasBean.arLibreta.nombre}"   />
-
+                                <h:panelGrid columns="2">
+                                    <p:commandButton id="downloadLinkLibreta"  rendered="#{not empty matriculasBean.arLibreta.nombre}"  value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
+                                        <p:fileDownload value="#{matriculasBean.fileLibreta}" />  
+                                    </p:commandButton> 
+                                    <h:outputText style="color:orange; font-color:orange;font-size: 9px" value="#{matriculasBean.arLibreta.nombre}"   />
+                                </h:panelGrid>
                                 <p:dialog header="SUBIR COPIA DE LA LIBRETA MILITAR" widgetVar="modalSubirLibreta" modal="true"
                                           fixedCenter="true" width="400" visible="false" resizable="false">
                                     <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)"     label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
@@ -144,15 +144,15 @@
                             </p:selectOneMenu>  
                             <p:spacer width="10"/>
                             <p:commandLink update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> Subir copia del Título 
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />Subir Título 
                             </p:commandLink>
                             <h:panelGrid id="panelTitulo"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
-
-                                <p:commandButton id="downloadLinkTitulo" rendered="#{not empty matriculasBean.arTitulo.nombre}"   value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
-                                    <p:fileDownload value="#{matriculasBean.fileTitulo}" />  
-                                </p:commandButton> 
-                                <h:outputText style="color:orange; font-color:orange" value="#{matriculasBean.arTitulo.nombre}"   />
-
+                                <h:panelGrid columns="2">
+                                    <p:commandButton id="downloadLinkTitulo" rendered="#{not empty matriculasBean.arTitulo.nombre}"   value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
+                                        <p:fileDownload value="#{matriculasBean.fileTitulo}" />  
+                                    </p:commandButton> 
+                                    <h:outputText style="color:orange; font-color:orange;font-size: 9px" value="#{matriculasBean.arTitulo.nombre}"   />
+                                </h:panelGrid>
                                 <p:dialog header="SUBIR COPIA DEL TÍTULO DE GRADO" widgetVar="modalSubirTitulo" modal="true"
                                           fixedCenter="true" width="400" visible="false" resizable="false">
                                     <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)" label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
@@ -178,15 +178,15 @@
                             </p:selectOneMenu> 
                             <p:spacer width="10"/>
                             <p:commandLink update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
-                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" /> Subir copia de Cédula
+                                <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />Subir Cédula
                             </p:commandLink>
                             <h:panelGrid id="panelCedula"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
-
-                                <p:commandButton id="downloadLinkCedula" rendered="#{not empty matriculasBean.arCedula.nombre }" value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
-                                    <p:fileDownload value="#{matriculasBean.fileCedula}" />  
-                                </p:commandButton> 
-                                <h:outputText style="color:orange; font-color:orange" value="#{matriculasBean.arCedula.nombre}"   />
-
+                                <h:panelGrid columns="2">
+                                    <p:commandButton id="downloadLinkCedula" rendered="#{not empty matriculasBean.arCedula.nombre }" value="Descargar" ajax="false" icon="ui-icon-arrowthichk-s">  
+                                        <p:fileDownload value="#{matriculasBean.fileCedula}" />  
+                                    </p:commandButton> 
+                                    <h:outputText style="color:orange; font-color:orange;font-size: 9px" value="#{matriculasBean.arCedula.nombre}"   />
+                                </h:panelGrid>
                                 <p:dialog header="SUBIR LA COPIA DE LA CÉDULA" widgetVar="modalSubirCedula" modal="true"
                                           fixedCenter="true" width="400" visible="false" resizable="false">
                                     <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)"   label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
@@ -241,7 +241,7 @@
                     </h:panelGrid>
 
                 </p:fieldset>
-                <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS DEL MATRICULA">
+                <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS DE MATRICULA">
 
 
                     <h:panelGrid columns="4" cellpadding="-1" style="margin:0 ;">
@@ -284,11 +284,48 @@
 
 
                     </h:panelGrid>
-
+                    <p:panelGrid id="panelMaterias" columns="2">
+                        <p:dataTable  scrollable="true" scrollHeight="150"   id="asignadas" var="materia" value="#{matriculasBean.destino}">  
+                            <p:column width="200" headerText="MATRICULADO EN">  
+                                <h:outputText value="#{materia.idMaterias.nombre}" />  
+                            </p:column>  
+                            <p:column width="50" headerText="TIPO">  
+                             <h:outputText value="#{materia.idMaterias.idTipoMateria.nombre}" />  
+                            </p:column>  
+                             <p:column width="50"  headerText="NIVEL">  
+                                <h:outputText value="#{materia.idNiveles.nombre}" />  
+                            </p:column>  
+                            <p:column style="width:20px"  headerText="&gt;">  
+                                <p:commandButton   actionListener="#{matriculasBean.quitar(materia)}" update=":form" icon="ui-icon-seek-next">  
+                                </p:commandButton>  
+                            </p:column>  
+                            <f:facet name="footer">  
+                                # de Créditos asignados: 
+                            </f:facet>  
+                        </p:dataTable>  
+                        <p:dataTable  scrollable="true" scrollHeight="150"  var="car" id="disponibles" value="#{matriculasBean.origen}" >  
+                            <p:column headerText="&lt;">  
+                                <p:commandButton   actionListener="#{matriculasBean.anadir(car)}" update=":form" icon="ui-icon-seek-prev">  
+                                </p:commandButton>  
+                            </p:column> 
+                            <p:column  width="200"  headerText="MATERIAS DISPONIBLES">  
+                                <h:outputText value="#{car.idMaterias.nombre}" />  
+                            </p:column>  
+                              <p:column width="50"  headerText="TIPO">  
+                                <h:outputText value="#{car.idMaterias.idTipoMateria.nombre}" />  
+                            </p:column>  
+                            <p:column width="50"  headerText="NIVEL">  
+                                <h:outputText value="#{car.idNiveles.nombre}" />  
+                            </p:column>  
+                            <f:facet name="footer">  
+                                .
+                            </f:facet>  
+                        </p:dataTable>  
+                    </p:panelGrid>
                 </p:fieldset>
                 <h:panelGrid columns="2"> 
 
-                    <p:fieldset  toggleable="true" toggleSpeed="500"  legend="DATOS PADRE">
+                    <p:fieldset  toggleable="false" toggleSpeed="500"  legend="DATOS PADRE">
                         <h:panelGrid columns="2" id="panelPadre" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="CED/RUC/PASS: " />  
                             <p:inputText value="#{matriculasBean.pariente2.identificacion}" id="IdentificacionPadre"  maxlength="100" size="35"   style="font-weight:bold;">
@@ -310,7 +347,7 @@
                             <p:inputText  value="#{matriculasBean.pariente2.idParientes}"  converter="JsfConvInteger" id="idPariente2"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                         </h:panelGrid>
                     </p:fieldset>
-                    <p:fieldset  toggleable="true" toggleSpeed="500"  legend="DATOS MADRE">
+                    <p:fieldset  toggleable="false" toggleSpeed="500"  legend="DATOS MADRE">
                         <h:panelGrid columns="2" id="panelMadre" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="CED/RUC/PASS: " />  
                             <p:inputText value="#{matriculasBean.pariente3.identificacion}" id="IdentificacionMadre"  maxlength="100" size="35"  style="font-weight:bold;">
@@ -331,7 +368,7 @@
                             <p:inputText  value="#{matriculasBean.pariente3.idParientes}"  converter="JsfConvInteger" id="idPariente3"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                         </h:panelGrid>
                     </p:fieldset>
-                    <p:fieldset  toggleable="true" toggleSpeed="500" legend="DATOS PARA FACTURA">
+                    <p:fieldset  toggleable="false" toggleSpeed="500" legend="DATOS PARA FACTURA">
                         <h:panelGrid columns="2" id="datosFactura" cellpadding="-1" style="margin:0 auto;">  
                             <p:commandButton update="datosFactura" action="#{matriculasBean.copiarPadre()}" value="TRAER PADRE" />
                             <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">       
@@ -349,11 +386,11 @@
                             <p:inputText  value="#{matriculasBean.pariente1.idParientes}"  converter="JsfConvInteger" id="idPariente1"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                         </h:panelGrid>
                     </p:fieldset>
-                    <p:fieldset   toggleable="true" toggleSpeed="500" legend="DATOS LABORALES">
+                    <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS LABORALES">
                         <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="TRABAJA: " />  
                             <p:selectBooleanButton id="Trabaja" value="#{matriculasBean.estudiante.trabaja}" onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close" />  
-                             
+
                             <h:outputText value="EMPRESA: " />  
                             <p:inputText value="#{matriculasBean.estudiante.empresa}" id="Empresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="DIRECCION: " />  
@@ -370,7 +407,7 @@
 
 
                 </h:panelGrid>
-                <p:fieldset   toggleable="true" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
+                <p:fieldset   toggleable="false" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
                     <h:panelGrid columns="5" cellpadding="-1" style="margin:0">  
                         <h:outputText value="TIPO DE VIVIENDA: " />  
                         <p:selectOneMenu   style="width:170px"   value="#{matriculasBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
@@ -464,10 +501,6 @@
                         <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
                         <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
                     </p:splitButton>  
-
-
-
-
                 </h:panelGrid>
             </h:form>
 
