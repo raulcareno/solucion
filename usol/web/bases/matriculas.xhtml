@@ -286,36 +286,43 @@
                     </h:panelGrid>
                     <p:panelGrid id="panelMaterias" columns="2">
                         <p:dataTable  scrollable="true" scrollHeight="150"   id="asignadas" var="materia" value="#{matriculasBean.destino}">  
-                            <p:column width="200" headerText="MATRICULADO EN">  
+                            <p:column width="150" headerText="MATRICULADO EN">  
                                 <h:outputText value="#{materia.idMaterias.nombre}" />  
                             </p:column>  
-                            <p:column width="50" headerText="TIPO">  
+                            <p:column width="70" headerText="TIPO">  
                              <h:outputText value="#{materia.idMaterias.idTipoMateria.nombre}" />  
                             </p:column>  
-                             <p:column width="50"  headerText="NIVEL">  
+                             <p:column width="50"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
                                 <h:outputText value="#{materia.idNiveles.nombre}" />  
                             </p:column>  
-                            <p:column style="width:20px"  headerText="&gt;">  
+                              <p:column width="18"   headerText="#Cred.">  
+                                  <h:outputText value="#{materia.numeroCreditos}" />  
+                            </p:column>  
+                            <p:column  width="18"  headerText="&gt;">  
                                 <p:commandButton   actionListener="#{matriculasBean.quitar(materia)}" update=":form" icon="ui-icon-seek-next">  
                                 </p:commandButton>  
                             </p:column>  
                             <f:facet name="footer">  
-                                # de Créditos asignados: 
+                                 
+                                <h:outputText style="font-size: 11px" value="# de Créditos asignados:  #{matriculasBean.noCreditos}" />  
                             </f:facet>  
                         </p:dataTable>  
-                        <p:dataTable  scrollable="true" scrollHeight="150"  var="car" id="disponibles" value="#{matriculasBean.origen}" >  
-                            <p:column headerText="&lt;">  
+                        <p:dataTable  scrollable="true"   scrollRows="20"  scrollHeight="150"  var="car" id="disponibles" value="#{matriculasBean.origen}" >  
+                            <p:column  width="18"  headerText="&lt;">  
                                 <p:commandButton   actionListener="#{matriculasBean.anadir(car)}" update=":form" icon="ui-icon-seek-prev">  
                                 </p:commandButton>  
                             </p:column> 
-                            <p:column  width="200"  headerText="MATERIAS DISPONIBLES">  
+                            <p:column  width="150"  headerText="MATERIAS DISPONIBLES">  
                                 <h:outputText value="#{car.idMaterias.nombre}" />  
                             </p:column>  
-                              <p:column width="50"  headerText="TIPO">  
+                              <p:column width="70"  headerText="TIPO">  
                                 <h:outputText value="#{car.idMaterias.idTipoMateria.nombre}" />  
                             </p:column>  
-                            <p:column width="50"  headerText="NIVEL">  
+                            <p:column width="50"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
                                 <h:outputText value="#{car.idNiveles.nombre}" />  
+                            </p:column>  
+                            <p:column width="18"  headerText="#Cred.">  
+                                <h:outputText value="#{car.numeroCreditos}" />  
                             </p:column>  
                             <f:facet name="footer">  
                                 .

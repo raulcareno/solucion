@@ -175,7 +175,7 @@ public class MatriculasBean {
 //        paisSeleccionado3 = estudiante.getIdPais();
 //        paisSeleccionado4 = estudiante.getPaiIdPais();
         //generarImagen("logo.png", object.getFoto());
-       
+
         //foto1 = "logo.png";
         System.out.println("" + object.getIdMatriculas());
         return null;
@@ -220,12 +220,14 @@ public class MatriculasBean {
     public String anadir(CarrerasMaterias obj) {
         destino.add(obj);
         origen.remove(obj);
+        sumarCreditos();
         return null;
     }
 
     public String quitar(CarrerasMaterias obj) {
         origen.add(obj);
         destino.remove(obj);
+        sumarCreditos();
         return null;
     }
 
@@ -365,17 +367,17 @@ public class MatriculasBean {
          * GUARDO LOS ARCHIVOS
          */
         arLibreta.setIdEstudiantes(estudiante);
-        arLibreta.setNombre(estudiante.getIdEstudiantes()+"."+libretaFormato);
+        arLibreta.setNombre(estudiante.getIdEstudiantes() + "." + libretaFormato);
         arLibreta.setTipoArchivo("LIB");
         arLibreta.setArchivo(libreta);
 
         arTitulo.setIdEstudiantes(estudiante);
-        arTitulo.setNombre(estudiante.getIdEstudiantes()+"."+tituloFormato);
+        arTitulo.setNombre(estudiante.getIdEstudiantes() + "." + tituloFormato);
         arTitulo.setTipoArchivo("TIT");
         arTitulo.setArchivo(titulo);
 
         arCedula.setIdEstudiantes(estudiante);
-        arCedula.setNombre(estudiante.getIdEstudiantes()+"."+cedulaFormato);
+        arCedula.setNombre(estudiante.getIdEstudiantes() + "." + cedulaFormato);
         arCedula.setTipoArchivo("CED");
         arCedula.setArchivo(cedula);
 
@@ -633,7 +635,8 @@ public class MatriculasBean {
         }
 
     }
-     public void buscarCedulaMadre() {
+
+    public void buscarCedulaMadre() {
         List<Parientes> parientesEncontrados = adm.query("Select o from Parientes as o "
                 + "where o.identificacion = '" + pariente3.getIdentificacion() + "' "
                 + " and o.tipoRepresentante = 'M'  ");
@@ -672,7 +675,7 @@ public class MatriculasBean {
                 + "where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
         for (Iterator<Archivos> it = archi.iterator(); it.hasNext();) {
             Archivos arcIt = it.next();
-           if (arcIt.getTipoArchivo().equals("LIB")) {
+            if (arcIt.getTipoArchivo().equals("LIB")) {
                 arLibreta = arcIt;
                 libreta = arcIt.getArchivo();
                 libretaNombre = arcIt.getNombre();
@@ -681,7 +684,7 @@ public class MatriculasBean {
                 arCedula = arcIt;
                 cedula = arcIt.getArchivo();
                 cedulaNombre = arcIt.getNombre();
-                cedulaFormato  = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
+                cedulaFormato = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             } else if (arcIt.getTipoArchivo().equals("TIT")) {
                 arTitulo = arcIt;
                 titulo = arcIt.getArchivo();
@@ -700,10 +703,10 @@ public class MatriculasBean {
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
-            if(estudiante.getFoto()!=null){
+            if (estudiante.getFoto() != null) {
                 generarImagenTmp(foto1, estudiante.getFoto());
-            }else{
-                foto1 =         "";
+            } else {
+                foto1 = "";
             }
         } catch (Exception e) {
             System.out.println("AUN NO SE HA CARGADO LA IMAGEN..." + e);
@@ -741,15 +744,27 @@ public class MatriculasBean {
             return noMatri;
         }
     }
-protected void buscarMateriasMatricula(Matriculas mat){
+
+    protected void buscarMateriasMatricula(Matriculas mat) {
         destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
                 + " WHERE c.id_Materias in (Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
-                + " and c.id_Carreras = '"+object.getIdCarreras().getIdCarreras()+"' "
-                + " ",CarrerasMaterias.class);
+                + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
+                + " ", CarrerasMaterias.class);
 
-         origen = adm.query("Select m from CarrerasMaterias as m  order by m.idNiveles.secuencia");
-    
-}
+        origen = adm.query("Select m from CarrerasMaterias as m  order by m.idNiveles.secuencia");
+        sumarCreditos();
+    }
+    public int noCreditos = 0;
+
+    public void sumarCreditos() {
+        noCreditos = 0;
+        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+            CarrerasMaterias carrerasMaterias = it.next();
+            noCreditos += carrerasMaterias.getNumeroCreditos();
+        }
+
+    }
+
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
@@ -758,8 +773,8 @@ protected void buscarMateriasMatricula(Matriculas mat){
             object = matriculasListado.get(0);
             carreraSeleccionado = object.getIdCarreras();
             categoriaSeleccionado = object.getIdCategoriasSociales();
-            buscarMateriasMatricula(object); 
-            
+            buscarMateriasMatricula(object);
+
         }
     }
 
@@ -815,7 +830,7 @@ protected void buscarMateriasMatricula(Matriculas mat){
                 arCedula = arcIt;
                 cedula = arcIt.getArchivo();
                 cedulaNombre = arcIt.getNombre();
-                cedulaFormato  = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
+                cedulaFormato = arcIt.getNombre().substring(arcIt.getNombre().lastIndexOf(".") + 1);;
             } else if (arcIt.getTipoArchivo().equals("TIT")) {
                 arTitulo = arcIt;
                 titulo = arcIt.getArchivo();
@@ -834,10 +849,10 @@ protected void buscarMateriasMatricula(Matriculas mat){
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
-            if(estudiante.getFoto() !=null){
+            if (estudiante.getFoto() != null) {
                 generarImagenTmp(foto1, estudiante.getFoto());
-            }else{
-                foto1 = "";        
+            } else {
+                foto1 = "";
             }
         } catch (Exception e) {
             System.out.println("AUN NO SE HA CARGADO LA IMAGEN..." + e);
@@ -1674,5 +1689,11 @@ protected void buscarMateriasMatricula(Matriculas mat){
         this.materiasMatricula = materiasMatricula;
     }
 
-     
+    public int getNoCreditos() {
+        return noCreditos;
+    }
+
+    public void setNoCreditos(int noCreditos) {
+        this.noCreditos = noCreditos;
+    }
 }
