@@ -32,7 +32,7 @@
                         <h:selectOneMenu value="#{rangosGpaBean.object.resultado}" id="TipoColegio"  >
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
                             <f:selectItem itemLabel="APRUEBA" itemValue="A" />  
-                            <f:selectItem itemLabel="ARRASTRA" itemValue="ARRASTRA" />   
+                            <f:selectItem itemLabel="ARRASTRA" itemValue="R" />   
                         </h:selectOneMenu>  
                         
                         <p:inputText  value="#{rangosGpaBean.object.idRangosGpa}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
@@ -55,7 +55,7 @@
                 </h:panelGrid>
                 </p:panel>
                 
-                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="rangosGpa" var="obj" value="#{rangosGpaBean.model}">  
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="15,20,25" paginator="true" rows="15"  id="rangosGpa" var="obj" value="#{rangosGpaBean.model}">  
                     <p:column headerText="DESDE" style="width:10%">  
                         <h:outputText value="#{obj.desde}" />  
                     </p:column>  

@@ -41,13 +41,16 @@ import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
+import jcinform.persistencia.Notas;
 import jcinform.persistencia.Pais;
 import jcinform.persistencia.Parametros;
 import jcinform.persistencia.Parientes;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Provincia;
+import jcinform.persistencia.RangosGpa;
 import jcinform.persistencia.RangosIngresos;
+import jcinform.persistencia.SecuenciaDeMaterias;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
@@ -120,6 +123,7 @@ public class MatriculasBean {
     Archivos arLibreta;
     Archivos arTitulo;
     Archivos arCedula;
+    List<RangosGpa> rangos;
 
     ;
     public MatriculasBean() {
@@ -195,7 +199,6 @@ public class MatriculasBean {
         if (pariente3 == null) {
             pariente3 = new Parientes();
         }
-
         if (arLibreta == null) {
             arLibreta = new Archivos();
         }
@@ -205,21 +208,18 @@ public class MatriculasBean {
         if (arTitulo == null) {
             arTitulo = new Archivos();
         }
-
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
         foto1 = null;
         clave2 = "";
-//        origen = adm.query(" Select o from Materias as o order by o.nombre ");
-//        destino = new ArrayList<Materias>();
-        //materias = new DualListModel<Materias>(origen, destino); 
-        //   cargarDataModel();
+        rangos = adm.listar("RangosGpa");
     }
 
     public String anadir(CarrerasMaterias obj) {
         destino.add(obj);
         origen.remove(obj);
+        validarSecuencia(obj); 
         sumarCreditos();
         return null;
     }
@@ -763,6 +763,51 @@ public class MatriculasBean {
             noCreditos += carrerasMaterias.getNumeroCreditos();
         }
 
+    }
+    
+    public void validarSecuencia(CarrerasMaterias materiaAanadir){
+        
+        List<SecuenciaDeMaterias> secuencias = adm.query("Select o from SecuenciaDeMaterias as o "
+                + " where o.idCarrerasMaterias.idMaterias.idMaterias = '"+materiaAanadir.getIdMaterias().getIdMaterias()+"' "
+                + " and  o.idCarrerasMaterias.idCarreras.idCarreras =  '"+carreraSeleccionado.getIdCarreras()+"' ");
+        if(secuencias.size()>0){
+            FacesContext context = FacesContext.getCurrentInstance();
+            
+            SecuenciaDeMaterias sec = secuencias.get(0); 
+            System.out.println("ENCONTRADA: "+sec.getIdCarrerasMaterias().getIdMaterias().getNombre());
+            //estas son las materias que tiene que aprobar para tomar la siguiente materia
+             List<SecuenciaDeMaterias> secuenciasPrevias = adm.query("Select o from SecuenciaDeMaterias as o "
+                + " where o.idCarrerasMaterias.idCarreras.idCarreras =  '"+carreraSeleccionado.getIdCarreras()+"' "
+                     + " and o.fila = '"+sec.getFila()+"' "
+                     + " and o.orden < '"+sec.getOrden()+"' ");
+             String requeridas ="";
+             for (Iterator<SecuenciaDeMaterias> it = secuenciasPrevias.iterator(); it.hasNext();) {
+                SecuenciaDeMaterias secuenciaDeMaterias = it.next();
+                 //System.out.println("REQUERIDA: "+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre());
+                        Notas not = new Notas();
+                         
+                    not.getIdMateriasMatricula().getIdMaterias();
+                    not.getIdMateriasMatricula().getIdMatriculas().getIdEstudiantes().getIdEstudiantes();
+                    List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
+                        + " where o.idMateriasMatricula.idMaterias.idMaterias = '"+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getIdMaterias()+"' "
+                        + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '"+object.getIdEstudiantes().getIdEstudiantes()+"' ");
+                    int aprobada = 0;
+                    for (Iterator<Notas> it1 = notasEncontradas.iterator(); it1.hasNext();) {
+                        Notas notas = it1.next();
+                        if(notas.getEstadoNot()){
+                            aprobada++;
+                        }
+                    }
+                    if(aprobada == 0){
+                        requeridas += " || " +secuenciaDeMaterias.getIdCarrerasMaterias().getIdNiveles().getNombre()+": "+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre();
+                    }
+            }
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, requeridas, ""));             
+            
+            
+        }
+         
+        
     }
 
     protected void buscarMatricula(Estudiantes estudiante) {
