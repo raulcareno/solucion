@@ -77,7 +77,7 @@ public class MatriculasBean {
     Estudiantes estudiante;
     Administrador adm;
     protected List<Matriculas> model;
-    protected List<MateriasMatricula> modelMaterias;
+    protected List<MateriasMatricula> materiasMatricula;
     protected List<Parientes> modelParientes;
     public String textoBuscar;
     Permisos permisos;
@@ -737,7 +737,13 @@ public class MatriculasBean {
             return noMatri;
         }
     }
-
+protected void buscarMateriasMatricula(Matriculas mat){
+           materiasMatricula = adm.query("Select o from MateriasMatriculas as o "
+                + " where o.idMatriculas.idMatriculas = '" + mat.getIdMatriculas()+ "' "
+                + " order by o.idMaterias.nombre ");
+ 
+    
+}
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
@@ -746,6 +752,8 @@ public class MatriculasBean {
             object = matriculasListado.get(0);
             carreraSeleccionado = object.getIdCarreras();
             categoriaSeleccionado = object.getIdCategoriasSociales();
+            buscarMateriasMatricula(object); 
+            
         }
     }
 
@@ -1651,4 +1659,14 @@ public class MatriculasBean {
         }
         return null;
     }
+
+    public List<MateriasMatricula> getMateriasMatricula() {
+        return materiasMatricula;
+    }
+
+    public void setMateriasMatricula(List<MateriasMatricula> materiasMatricula) {
+        this.materiasMatricula = materiasMatricula;
+    }
+
+     
 }
