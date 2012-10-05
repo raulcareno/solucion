@@ -51,6 +51,7 @@ import jcinform.persistencia.Provincia;
 import jcinform.persistencia.RangosGpa;
 import jcinform.persistencia.RangosIngresos;
 import jcinform.persistencia.SecuenciaDeMaterias;
+import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
@@ -219,7 +220,7 @@ public class MatriculasBean {
     public String anadir(CarrerasMaterias obj) {
         destino.add(obj);
         origen.remove(obj);
-        validarSecuencia(obj); 
+        validarSecuencia(obj);
         sumarCreditos();
         return null;
     }
@@ -765,50 +766,76 @@ public class MatriculasBean {
         }
 
     }
-    
-    public void validarSecuencia(CarrerasMaterias materiaAanadir){
-        
+
+    public void validarSecuencia(CarrerasMaterias materiaAanadir) {
+
         List<SecuenciaDeMaterias> secuencias = adm.query("Select o from SecuenciaDeMaterias as o "
-                + " where o.idCarrerasMaterias.idMaterias.idMaterias = '"+materiaAanadir.getIdMaterias().getIdMaterias()+"' "
-                + " and  o.idCarrerasMaterias.idCarreras.idCarreras =  '"+carreraSeleccionado.getIdCarreras()+"' ");
-        if(secuencias.size()>0){
+                + " where o.idCarrerasMaterias.idMaterias.idMaterias = '" + materiaAanadir.getIdMaterias().getIdMaterias() + "' "
+                + " and  o.idCarrerasMaterias.idCarreras.idCarreras =  '" + carreraSeleccionado.getIdCarreras() + "' ");
+        if (secuencias.size() > 0) {
             FacesContext context = FacesContext.getCurrentInstance();
-            
-            SecuenciaDeMaterias sec = secuencias.get(0); 
-            System.out.println("ENCONTRADA: "+sec.getIdCarrerasMaterias().getIdMaterias().getNombre());
+
+            SecuenciaDeMaterias sec = secuencias.get(0);
+            System.out.println("ENCONTRADA: " + sec.getIdCarrerasMaterias().getIdMaterias().getNombre());
+
             //estas son las materias que tiene que aprobar para tomar la siguiente materia
-             List<SecuenciaDeMaterias> secuenciasPrevias = adm.query("Select o from SecuenciaDeMaterias as o "
-                + " where o.idCarrerasMaterias.idCarreras.idCarreras =  '"+carreraSeleccionado.getIdCarreras()+"' "
-                     + " and o.fila = '"+sec.getFila()+"' "
-                     + " and o.orden < '"+sec.getOrden()+"' ");
-             String requeridas ="";
-             for (Iterator<SecuenciaDeMaterias> it = secuenciasPrevias.iterator(); it.hasNext();) {
+            List<SecuenciaDeMaterias> secuenciasPrevias = adm.query("Select o from SecuenciaDeMaterias as o "
+                    + " where o.idCarrerasMaterias.idCarreras.idCarreras =  '" + carreraSeleccionado.getIdCarreras() + "' "
+                    + " and o.fila = '" + sec.getFila() + "' "
+                    + " and o.orden < '" + sec.getOrden() + "' ");
+            String requeridas = "";
+            int existenRequeridas = 0;
+            for (Iterator<SecuenciaDeMaterias> it = secuenciasPrevias.iterator(); it.hasNext();) {
                 SecuenciaDeMaterias secuenciaDeMaterias = it.next();
-                 //System.out.println("REQUERIDA: "+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre());
-                        Notas not = new Notas();
-//                         
-//                    not.getIdMateriasMatricula().getIdMaterias();
-//                    not.getIdMateriasMatricula().getIdMatriculas().getIdEstudiantes().getIdEstudiantes();
-                    List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
-                        + " where o.idMateriasMatricula.idMaterias.idMaterias = '"+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getIdMaterias()+"' "
-                        + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '"+object.getIdEstudiantes().getIdEstudiantes()+"' ");
-                    int aprobada = 0;
+                List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
+                        + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getIdMaterias() + "' "
+                        + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
+                int existenReprobadas = 0;
+                if(notasEncontradas.size()>0){
                     for (Iterator<Notas> it1 = notasEncontradas.iterator(); it1.hasNext();) {
                         Notas notas = it1.next();
-                        if(notas.getEstadoNot()){
-                            aprobada++;
+                        if (notas.getEstadoNot()==false) {
+                            existenReprobadas++;
                         }
                     }
-                    if(aprobada == 0){
-                        requeridas += " || " +secuenciaDeMaterias.getIdCarrerasMaterias().getIdNiveles().getNombre()+": "+secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre();
+
+                }else{
+                                requeridas += " || " + secuenciaDeMaterias.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre();                    
+                }
+                   if (existenReprobadas > 0) {
+                        requeridas += " || " + secuenciaDeMaterias.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre();
+                        existenRequeridas++;
                     }
+                List<SecuenciaDeMateriasAdicionales> adicionales = adm.query("Select o from SecuenciaDeMateriasAdicionales as o "
+                        + " where o.idSecuenciaDeMaterias.idSecuenciaDeMaterias = '"+secuenciaDeMaterias.getIdSecuenciaDeMaterias()+"'  ");
+                for (Iterator<SecuenciaDeMateriasAdicionales> it1 = adicionales.iterator(); it1.hasNext();) {
+                    SecuenciaDeMateriasAdicionales secuenciaDeMateriasAdicionales = it1.next();
+                    notasEncontradas = adm.query("Select o from Notas as o "
+                            + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + secuenciaDeMateriasAdicionales.getIdCarrerasMaterias().getIdMaterias().getIdMaterias() + "' "
+                            + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
+                     existenReprobadas = 0;
+                    for (Iterator<Notas> it3 = notasEncontradas.iterator(); it3.hasNext();) {
+                        Notas notas = it3.next();
+                        if (notas.getEstadoNot()==false) {
+                            existenReprobadas++;
+                        }
+                    }
+                    if (existenReprobadas> 0) {
+                        requeridas += " || " + secuenciaDeMaterias.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secuenciaDeMaterias.getIdCarrerasMaterias().getIdMaterias().getNombre();
+                        existenRequeridas++;
+
+                    }
+
+                }
+
             }
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, requeridas, ""));             
-            
-            
+            //estas son las materias,ADICIONALES QUE TIENE QUE APROBAR que tiene que aprobar para tomar la siguiente materia
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, requeridas, ""));
+
+
         }
-         
-        
+
+
     }
 
     protected void buscarMatricula(Estudiantes estudiante) {

@@ -171,6 +171,7 @@ public class CarrerasMateriasSecuenciaBean {
             }
 
         }
+        filtroMaterias(j);
 
         return "";
     }
@@ -271,6 +272,7 @@ public class CarrerasMateriasSecuenciaBean {
      */
     List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
     List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
+    List<SelectItem> listaMateriasAdicionales2 = new ArrayList<SelectItem>();
     List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
     //List<CarrerasMaterias> anadidas2[2][2]  = new ArrayList<>();
     CarrerasMaterias anadidasArray[][] = new CarrerasMaterias[30][12];
@@ -290,6 +292,19 @@ public class CarrerasMateriasSecuenciaBean {
         }
     }
 
+    public void filtroMaterias(int fila){
+        listaMateriasAdicionales2 = new ArrayList<SelectItem>(); 
+        for (Iterator<SelectItem> it = listaMateriasAdicionales.iterator(); it.hasNext();) {
+            SelectItem selectItem = it.next();
+            CarrerasMaterias carrerasMaterias = (CarrerasMaterias) selectItem.getValue();
+            if(carrerasMaterias.getIdNiveles().getSecuencia()<= fila){
+                 listaMateriasAdicionales2.add(selectItem);
+            }
+            
+            
+        }
+        
+    }
     public void buscarMateriasdeCarrera() {
         try {
             llenarArreglo();
@@ -529,4 +544,13 @@ public class CarrerasMateriasSecuenciaBean {
     public void setAdicionalesTmp(ArrayList<SecuenciaDeMateriasAdicionales> adicionalesTmp) {
         this.adicionalesTmp = adicionalesTmp;
     }
+
+    public List<SelectItem> getListaMateriasAdicionales2() {
+        return listaMateriasAdicionales2;
+    }
+
+    public void setListaMateriasAdicionales2(List<SelectItem> listaMateriasAdicionales2) {
+        this.listaMateriasAdicionales2 = listaMateriasAdicionales2;
+    }
+    
 }

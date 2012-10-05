@@ -114,7 +114,7 @@
                                 <p:panelGrid columns="2">  
                                     <h:outputText value="MATERIA: " />
                                     <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">
-                                        <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales}" />
+                                        <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales2}" />
                                     </h:selectOneMenu>
                                      <p:inputText style="visibility: hidden" value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
                                         <p:commandButton value="AÑADIR MATERIA SELECCIONADA" update="pais" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
