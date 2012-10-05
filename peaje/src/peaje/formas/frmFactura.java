@@ -254,7 +254,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         frmEliminar = new javax.swing.JInternalFrame();
         jLabel28 = new javax.swing.JLabel();
-        frmGuardarMulta = new javax.swing.JButton();
+        frmGuardarAnulado = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
@@ -414,6 +414,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         formaBusqueda.getContentPane().add(jPanel10);
         jPanel10.setBounds(10, 60, 510, 180);
 
+        setIconifiable(true);
         setTitle("Cobrar Ticket");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -556,8 +557,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel12);
         jLabel12.setBounds(20, 30, 50, 14);
 
-        codigo.setBorder(null);
         codigo.setEditable(false);
+        codigo.setBorder(null);
         codigo.setEnabled(false);
         codigo.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
         jPanel1.add(codigo);
@@ -690,8 +691,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel2.add(direccion);
         direccion.setBounds(80, 50, 190, 20);
 
-        cliente.setBorder(null);
         cliente.setEditable(false);
+        cliente.setBorder(null);
         cliente.setText("1");
         cliente.setEnabled(false);
         cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -726,21 +727,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.setLayout(null);
 
         frmEliminar.setTitle("Anular tickets");
-        frmEliminar.setVisible(false);
         frmEliminar.getContentPane().setLayout(null);
 
         jLabel28.setText("Desea Anular el presente Ticket?, Porqué?");
         frmEliminar.getContentPane().add(jLabel28);
         jLabel28.setBounds(20, 0, 220, 30);
 
-        frmGuardarMulta.setText("SI");
-        frmGuardarMulta.addActionListener(new java.awt.event.ActionListener() {
+        frmGuardarAnulado.setText("SI");
+        frmGuardarAnulado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                frmGuardarMultaActionPerformed(evt);
+                frmGuardarAnuladoActionPerformed(evt);
             }
         });
-        frmEliminar.getContentPane().add(frmGuardarMulta);
-        frmGuardarMulta.setBounds(50, 80, 60, 23);
+        frmEliminar.getContentPane().add(frmGuardarAnulado);
+        frmGuardarAnulado.setBounds(50, 80, 60, 23);
 
         jButton2.setText("NO");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -1732,13 +1732,22 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     tiempo.setDate(null);
                     noTicket.setText("");
                     codigo.setText("");
+                    cliente.setText("1");
+                    identificacion.setText("9999999999999");
+                    nombres.setText("CONSUMIDOR FINAL");
+                    telefono.setText("9999999999");
                     principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
+                    
+                    descuento.setText("0.0");
+                    total.setText("0.0");
+                    codigo.setText("");
+                    noTicket.setText("");
+                    placa.setText("");
+                    noTicket.requestFocusInWindow();
+                    System.gc();
                     principal.contenedor.requestFocus();
                     this.setVisible(false);
-                    principal = null;
-                    empresaObj = null;
-                    System.gc();
-
+                    principal.contenedor.requestFocus();
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -1940,9 +1949,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
         principal.contenedor.requestFocus();
+//        principal = null;
+  //      empresaObj = null;
         this.setVisible(false);
-        principal = null;
-        empresaObj = null;
         System.gc();
 }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -2342,17 +2351,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
-        descuento.setText("0.0");
-        System.out.println("" + evt.getKeyChar());
+        
 
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
+                descuento.setText("0.0");
+        
                 ingreso.setDate(null);
                 salida.setDate(null);
                 placa.setText(null);
                 tiempo.setDate(null);
 
-                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + new Integer(noTicket.getText()) + "' ");
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + new Integer(noTicket.getText().trim()) + "' ");
                 if (fac != null) {
                     btnAplicarDscto.setEnabled(true);
                     llenarFactura(fac);
@@ -2370,10 +2380,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     tiempo.setDate(null);
                 }
             } catch (Exception e) {
+                Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, e);
                 ingreso.setDate(null);
                 salida.setDate(null);
                 placa.setText(null);
                 tiempo.setDate(null);
+                
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
@@ -3130,7 +3142,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMultaKeyPressed
 
-    private void frmGuardarMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmGuardarMultaActionPerformed
+    private void frmGuardarAnuladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmGuardarAnuladoActionPerformed
         // TODO add your handling code here:
         if (observacion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Ingrese un motivo por el cuál está anulando el ticket...!");
@@ -3163,7 +3175,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         }
 
-    }//GEN-LAST:event_frmGuardarMultaActionPerformed
+    }//GEN-LAST:event_frmGuardarAnuladoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -3489,6 +3501,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             //Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
             Factura facActual = (Factura) adm.buscarClave(new Integer(codigo.getText()), Factura.class);
             Clientes cli = new Clientes();
+            boolean nuevoCLiente = false;
             if (cliente.getText().equals("0")) {
                 Clientes nuevoCl = new Clientes();
                 Integer codigoC = adm.getNuevaClave("Clientes", "codigo");
@@ -3499,12 +3512,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 nuevoCl.setNombres(nombres.getText());
                 cli = nuevoCl;
                 adm.guardar(nuevoCl);
+                 nuevoCLiente = true;
                 identificacion.setText("9999999999999");
                 nombres.setText("CONSUMIDOR FINAL");
                 direccion.setText("S/D");
                 telefono.setText("9999999999999");
                 cliente.setText("1");
                 facActual.setClientes(nuevoCl);
+                
             } else {
                 facActual.setClientes(new Clientes(new Integer(cliente.getText())));
                 cli.setCodigo(new Integer(cliente.getText()));
@@ -3514,7 +3529,22 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 cli.setNombres(nombres.getText());
                 adm.actualizar(cli);
             }
+            Boolean alNuevoClienteCobrarle = false;
+            if(nuevoCLiente){
+                        int seleccion = JOptionPane.showOptionDialog(this, "SE HA CREADO UN NUEVO CLIENTE, \n ¿Desea aplicar la TARIFA 0 en los TICKETS SELLADOS?",
+                            "JCINFORM",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null, // null para icono por defecto.
+                            new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                            "NO");
+                    System.out.println("" + seleccion);
 
+                    if (0 == seleccion) {
+                            alNuevoClienteCobrarle = true;
+                    }
+      
+            } 
             Date fecSalida = new Date();
             fecSalida.setHours(salida.getDate().getHours());
             fecSalida.setMinutes(salida.getDate().getMinutes());
@@ -3537,6 +3567,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             facActual.setTiempo(fecTiempo);
             facActual.setUsuarioc(principal.usuarioActual);
             facActual.setNumero(null);
+            if(!alNuevoClienteCobrarle){
+                facActual.setDescuento(new BigDecimal(descuentoV));
+                facActual.setTotal(new BigDecimal(totalv));
+                facActual.setSubtotal(new BigDecimal(subtotalv));
+                facActual.setIva(new BigDecimal(ivav1));
+                facActual.setSellado(true);
+            }
+            
             adm.actualizar(facActual);
             /**
              * GENERAR CUENTA POR COBRAR PARA LOS VALORES PENDIENTES.
@@ -3905,18 +3943,18 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton btnSalir1;
     private javax.swing.JButton btnSalir2;
     private javax.swing.JTable busquedaTabla;
-    private javax.swing.JFormattedTextField cliente;
+    public javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField cliente1;
     private javax.swing.JFormattedTextField cliente2;
     private javax.swing.JComboBox cmbProductos;
-    private javax.swing.JFormattedTextField codigo;
+    public javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
-    private javax.swing.JFormattedTextField descuento;
+    public javax.swing.JFormattedTextField descuento;
     private com.toedter.calendar.JDateChooser desdeF;
-    private javax.swing.JLabel dias;
-    private javax.swing.JLabel dias1;
+    public javax.swing.JLabel dias;
+    public javax.swing.JLabel dias1;
     private javax.swing.JLabel dias2;
-    private javax.swing.JFormattedTextField direccion;
+    public javax.swing.JFormattedTextField direccion;
     private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JFormattedTextField direccion2;
     private javax.swing.JList encontrados;
@@ -3925,14 +3963,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JList encontrados3;
     private javax.swing.JDialog formaBusqueda;
     private javax.swing.JInternalFrame frmEliminar;
-    private javax.swing.JButton frmGuardarMulta;
+    private javax.swing.JButton frmGuardarAnulado;
     private javax.swing.JInternalFrame frmTarifa0;
     private javax.swing.JButton guardarTarifa0;
     private com.toedter.calendar.JDateChooser hastaF;
-    private javax.swing.JFormattedTextField identificacion;
+    public javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private javax.swing.JFormattedTextField identificacion2;
-    private com.toedter.calendar.JDateChooser ingreso;
+    public com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
@@ -4004,7 +4042,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel miBotonImagen;
     public javax.swing.JFormattedTextField noTicket;
-    private javax.swing.JFormattedTextField nombres;
+    public javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JFormattedTextField nombres2;
     private javax.swing.JTextArea observacion;
@@ -4015,15 +4053,15 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JPanel panelencontrados2;
     private javax.swing.JPanel panelencontrados3;
-    private javax.swing.JFormattedTextField placa;
+    public javax.swing.JFormattedTextField placa;
     private javax.swing.JTable productos;
-    private com.toedter.calendar.JDateChooser salida;
-    private javax.swing.JFormattedTextField telefono;
+    public com.toedter.calendar.JDateChooser salida;
+    public javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JFormattedTextField telefono2;
     private javax.swing.JTable ticketsPendientes;
-    private com.toedter.calendar.JDateChooser tiempo;
-    private javax.swing.JFormattedTextField total;
+    public com.toedter.calendar.JDateChooser tiempo;
+    public javax.swing.JFormattedTextField total;
     private javax.swing.JFormattedTextField txtCantidad;
     private javax.swing.JFormattedTextField txtIva;
     private javax.swing.JFormattedTextField txtIva1;

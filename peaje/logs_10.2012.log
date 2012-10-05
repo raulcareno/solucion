@@ -1,0 +1,122 @@
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,03.10.2012/09:31:43,OK
+INFO peaje.formas.frmPrincipal,line 41,03.10.2012/09:31:43,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/08:42:34,javax.persistence.RollbackException: Exception [EclipseLink-4002] (Eclipse Persistence Services - 2.2.0.v20110202-r8913): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: com.mysql.jdbc.CommunicationsException: Communications link failure due to underlying exception: 
+
+** BEGIN NESTED EXCEPTION ** 
+
+java.io.EOFException
+
+STACKTRACE:
+
+java.io.EOFException
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:1956)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:2368)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:2867)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1616)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:1708)
+	at com.mysql.jdbc.Connection.execSQL(Connection.java:3255)
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1293)
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1428)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeSelect(DatabaseAccessor.java:889)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.basicExecuteCall(DatabaseAccessor.java:598)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeCall(DatabaseAccessor.java:526)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.basicExecuteCall(AbstractSession.java:1729)
+	at org.eclipse.persistence.sessions.server.ServerSession.executeCall(ServerSession.java:566)
+	at org.eclipse.persistence.sessions.server.ClientSession.executeCall(ClientSession.java:207)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:207)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:193)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.selectRowForDoesExist(DatasourceCallQueryMechanism.java:689)
+	at org.eclipse.persistence.queries.DoesExistQuery.executeDatabaseQuery(DoesExistQuery.java:241)
+	at org.eclipse.persistence.queries.DatabaseQuery.execute(DatabaseQuery.java:808)
+	at org.eclipse.persistence.queries.DatabaseQuery.executeInUnitOfWork(DatabaseQuery.java:711)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.internalExecuteQuery(UnitOfWorkImpl.java:2842)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1521)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1503)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1463)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.checkForUnregisteredExistingObject(UnitOfWorkImpl.java:752)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.discoverAndPersistUnregisteredNewObjects(UnitOfWorkImpl.java:4095)
+	at org.eclipse.persistence.mappings.ObjectReferenceMapping.cascadeDiscoverAndPersistUnregisteredNewObjects(ObjectReferenceMapping.java:873)
+	at org.eclipse.persistence.mappings.ObjectReferenceMapping.cascadeDiscoverAndPersistUnregisteredNewObjects(ObjectReferenceMapping.java:851)
+	at org.eclipse.persistence.internal.descriptors.ObjectBuilder.cascadeDiscoverAndPersistUnregisteredNewObjects(ObjectBuilder.java:1788)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.discoverAndPersistUnregisteredNewObjects(UnitOfWorkImpl.java:4107)
+	at org.eclipse.persistence.internal.sessions.RepeatableWriteUnitOfWork.discoverUnregisteredNewObjects(RepeatableWriteUnitOfWork.java:289)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.calculateChanges(UnitOfWorkImpl.java:690)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabaseWithChangeSet(UnitOfWorkImpl.java:1496)
+	at org.eclipse.persistence.internal.sessions.RepeatableWriteUnitOfWork.commitRootUnitOfWork(RepeatableWriteUnitOfWork.java:264)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitAndResume(UnitOfWorkImpl.java:1130)
+	at org.eclipse.persistence.internal.jpa.transaction.EntityTransactionImpl.commitInternal(EntityTransactionImpl.java:84)
+	at org.eclipse.persistence.internal.jpa.transaction.EntityTransactionImpl.commit(EntityTransactionImpl.java:63)
+	at hibernate.cargar.Administrador.guardar(Administrador.java:99)
+	at peaje.formas.frmPrincipal.auditar(frmPrincipal.java:7190)
+	at peaje.formas.frmPrincipal$1.windowClosing(frmPrincipal.java:168)
+	at java.awt.Window.processWindowEvent(Window.java:2045)
+	at javax.swing.JFrame.processWindowEvent(JFrame.java:296)
+	at java.awt.Window.processEvent(Window.java:2003)
+	at java.awt.Component.dispatchEventImpl(Component.java:4860)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Window.dispatchEventImpl(Window.java:2713)
+	at java.awt.Component.dispatchEvent(Component.java:4686)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:707)
+	at java.awt.EventQueue.access$000(EventQueue.java:101)
+	at java.awt.EventQueue$3.run(EventQueue.java:666)
+	at java.awt.EventQueue$3.run(EventQueue.java:664)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:680)
+	at java.awt.EventQueue$4.run(EventQueue.java:678)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:677)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:211)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:128)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:117)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:113)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
+
+** END NESTED EXCEPTION **
+
+
+
+Last packet sent to the server was 15 ms ago.
+Error Code: 0
+Call: SELECT codigo FROM usuarios WHERE (codigo = ?)
+	bind => [1 parameter bound]
+Query: DoesExistQuery(referenceClass=Usuarios sql="SELECT codigo FROM usuarios WHERE (codigo = ?)")
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/20:28:49,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/20:29:11,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/20:34:05,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/20:34:26,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/20:36:14,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/20:36:35,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/20:42:51,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/20:43:12,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/20:50:55,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/20:51:16,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:01:47,java.lang.ArrayIndexOutOfBoundsException: No such child: 1000
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:03:46,java.lang.ArrayIndexOutOfBoundsException: No such child: 1000
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/21:14:11,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:14:32,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/21:27:44,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:28:05,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/21:29:22,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:29:43,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/21:40:54,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:41:16,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/21:55:56,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:56:17,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/21:58:59,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/21:59:20,java.lang.NullPointerException
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/22:01:18,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/22:01:40,java.lang.NullPointerException
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/22:02:33,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/22:02:43,OK
+INFO peaje.formas.frmTicket,line 41,04.10.2012/22:03:00,
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/22:03:04,java.lang.NullPointerException
+INFO peaje.formas.frmTicket,line 41,04.10.2012/22:03:15,
+INFO peaje.formas.frmTicket,line 41,04.10.2012/22:03:24,
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,04.10.2012/22:07:35,OK
+INFO peaje.formas.frmPrincipal,line 41,04.10.2012/22:07:56,java.lang.NullPointerException

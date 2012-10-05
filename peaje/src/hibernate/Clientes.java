@@ -63,6 +63,8 @@ public class Clientes implements Serializable {
     @JoinColumn(name = "producto", referencedColumnName = "codigo")
     @ManyToOne
     private Productos productos;
+        @Column(name = "cobrarSellado")
+    private Boolean cobrarSellado;
 //    @OneToMany(mappedBy = "clientes")
 //    private Collection<Factura> facturaCollection;
 //    @OneToMany(mappedBy = "clientes")
@@ -171,6 +173,15 @@ public class Clientes implements Serializable {
     public void setProductos(Productos productos) {
         this.productos = productos;
     }
+
+    public Boolean getCobrarSellado() {
+        return cobrarSellado;
+    }
+
+    public void setCobrarSellado(Boolean cobrarSellado) {
+        this.cobrarSellado = cobrarSellado;
+    }
+    
 
 //    public Collection<Factura> getFacturaCollection() {
 //        return facturaCollection;

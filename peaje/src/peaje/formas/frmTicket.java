@@ -199,13 +199,13 @@ public class frmTicket extends javax.swing.JInternalFrame {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Registro de Tickets ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona ENTER..::..");
         jPanel3.add(jLabel10);
@@ -271,7 +271,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         jPanel1.add(placa);
         placa.setBounds(90, 50, 70, 20);
 
-        codigo.setFont(new java.awt.Font("Tahoma", 0, 5));
+        codigo.setFont(new java.awt.Font("Tahoma", 0, 5)); // NOI18N
         jPanel1.add(codigo);
         codigo.setBounds(240, 10, 0, 0);
 
@@ -372,7 +372,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     
                     
                     imprimir(fac.getCodigo(), emp);
-if(empresaObj.getSeabretic()){
+                if(empresaObj.getSeabretic()){
                         if (empresaObj.getRetardoEntrada() != null) {
                                 if (empresaObj.getRetardoEntrada().length() > 0) {
                                     Integer retardo = new Integer(empresaObj.getRetardoEntrada());
@@ -398,9 +398,9 @@ if(empresaObj.getSeabretic()){
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     System.out.println("ABRIO PUERTA: " + empresaObj.getPuertatic());
-}else{
+                }else{
                     System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA " );
-}
+                }
                     principal.noDisponibles();
                     //                btnAgregar.setEnabled(true);
                     principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");
@@ -428,11 +428,9 @@ if(empresaObj.getSeabretic()){
                         lger.logger(frmTicket.class.getName(), e.getMessage());   
                     }
                     principal.cargarFoto(fac.getCodigo());
-                    principal = null;
-                    empresaObj = null;
                     System.gc();
-                    this.dispose();
-                     
+                    this.setVisible(false);
+                     guardando = false;
                 } catch (Exception ex) {
                     lger.logger(frmTicket.class.getName(), ex.getMessage());
                     
@@ -441,6 +439,7 @@ if(empresaObj.getSeabretic()){
                      
                     btnAgregar.setEnabled(true);
                     btnSalir.setEnabled(true);
+                    btnAgregar.setVisible(true);
                    guardando = false;
                     return;
                 }
@@ -475,6 +474,9 @@ public void fotografiarIp(String nombre,String direccion){
                 btnSalir.setEnabled(false);
                 //btnAgregar.setVisible(false);
                 guardarTic();
+                btnAgregar.setEnabled(true);
+                btnSalir.setEnabled(true);
+                btnAgregar.setVisible(true);
 
             }
         };
@@ -554,8 +556,6 @@ public void fotografiarIp(String nombre,String direccion){
         // TODO add your handling code here:
         principal.contenedor.requestFocus();
         this.setVisible(false);
-        principal = null;
-        empresaObj = null;
         System.gc();
 }//GEN-LAST:event_btnSalirActionPerformed
 
@@ -620,7 +620,7 @@ public void fotografiarIp(String nombre,String direccion){
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel codigo;
-    private com.toedter.calendar.JDateChooser fecha;
+    public com.toedter.calendar.JDateChooser fecha;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
@@ -630,7 +630,7 @@ public void fotografiarIp(String nombre,String direccion){
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JFormattedTextField noTicket;
+    public javax.swing.JFormattedTextField noTicket;
     public javax.swing.JFormattedTextField placa;
     // End of variables declaration//GEN-END:variables
 }

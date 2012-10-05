@@ -242,6 +242,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             if (comprobar()) {
                 mostrar = true;
                 logear();
+                try {
+                    
+                
+                adm = new Administrador(datosConecta);
+                List<Usuarios> uss = adm.query("Select o from Usuarios as o");
+                for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
+                    Usuarios usuarios = it.next();
+                    usuariot.addItem(usuarios.getUsuario());
+                    
+                }
+                } catch (Exception e) {
+                    System.out.println("error en cargar usuarios: "+e);
+                }
+                
             } else {
 
 
@@ -269,7 +283,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             lger.logger(frmPrincipal.class.getName(), ex + "");
         }
 
-        usuariot.requestFocusInWindow();
+        clave.requestFocusInWindow();
 
     }
 
@@ -314,12 +328,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         contenedor = new javax.swing.JDesktopPane();
         frmIngresarSistema = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
-        usuariot = new javax.swing.JFormattedTextField();
         clave = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         btnIngresar = new javax.swing.JButton();
+        usuariot = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -874,22 +888,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
         jPanel2.setLayout(null);
 
-        usuariot.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
-        usuariot.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        usuariot.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        usuariot.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usuariotActionPerformed(evt);
-            }
-        });
-        usuariot.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                usuariotKeyPressed(evt);
-            }
-        });
-        jPanel2.add(usuariot);
-        usuariot.setBounds(140, 20, 110, 19);
-
         clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clave.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         clave.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(255, 153, 0)));
@@ -904,7 +902,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         jPanel2.add(clave);
-        clave.setBounds(140, 50, 110, 19);
+        clave.setBounds(140, 50, 130, 19);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -943,6 +941,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         jPanel2.add(btnIngresar);
         btnIngresar.setBounds(70, 90, 120, 40);
+
+        usuariot.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "geova", "operador" }));
+        jPanel2.add(usuariot);
+        usuariot.setBounds(140, 20, 130, 20);
 
         frmIngresarSistema.getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 40, 380, 150);
@@ -2399,20 +2401,35 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             errores.setForeground(new java.awt.Color(255, 0, 0));
             errores.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
             errores.setText("ok..!");
+            errores.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    erroresKeyPressed(evt);
+                }
+            });
             panelIngreso.add(errores);
             errores.setBounds(10, 100, 530, 160);
 
-            cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setEditable(false);
+            cliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             cliente.setForeground(new java.awt.Color(51, 51, 255));
             cliente.setText("CLIENTE ACTUAL");
             cliente.setFont(new java.awt.Font("Bernard MT Condensed", 1, 42)); // NOI18N
+            cliente.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    clienteKeyPressed(evt);
+                }
+            });
             panelIngreso.add(cliente);
             cliente.setBounds(20, 20, 520, 80);
 
             imAviso.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
             imAviso.setText(".....");
+            imAviso.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    imAvisoKeyPressed(evt);
+                }
+            });
             panelIngreso.add(imAviso);
             imAviso.setBounds(540, 50, 210, 210);
 
@@ -3275,7 +3292,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             Date fechaAc = new Date();
 //            String hora = fechaAc.getHours() + ":" + fechaAc.getMinutes() + ":" + fechaAc.getSeconds();
-            usu = adm.ingresoSistema(usuariot.getText(), clave.getText());
+            usu = adm.ingresoSistema(usuariot.getSelectedItem().toString(), clave.getText());
 
             if (usu != null) {
                 try {
@@ -3307,12 +3324,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             usuarioActual = usu;
                         } else {
                             clave.setEditable(true);
-                            usuariot.setEditable(true);
-                            usuariot.setText("");
+                            usuariot.setEnabled(true);
+                             
                             clave.setText("");
 
                             JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                            usuariot.requestFocusInWindow();
+                            clave.requestFocusInWindow();;
                             return;
 
                         }
@@ -3320,11 +3337,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                 } catch (Exception e) {
                     clave.setEditable(true);
-                    usuariot.setEditable(true);
-                    usuariot.setText("");
+                    usuariot.setEnabled(true);
+                     
                     clave.setText("");
                     JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                    usuariot.requestFocusInWindow();
+                    clave.requestFocusInWindow();;
                     System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
                     if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
                         //  PASA A LOS SIGUIENTES PROCESOS Y NO TOMA EN CUENTA LAS FECHAS YA QUE SOY ADMINISTRADOR
@@ -3372,8 +3389,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             try {
                 usuario = usu;
                 clave.setEditable(true);
-                usuariot.setEditable(true);
-                usuariot.setText("");
+                usuariot.setEnabled(true);
+                 
                 clave.setText("");
                 frmIngresarSistema.setVisible(false);
                 usuarioActual = usu;
@@ -3501,11 +3518,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         } else {
             clave.setEditable(true);
-            usuariot.setEditable(true);
-            usuariot.setText("");
+            usuariot.setEnabled(true);
+             
             clave.setText("");
+            
             JOptionPane.showMessageDialog(this, "Usuario o Clave incorrecta", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-            usuariot.requestFocusInWindow();
+            clave.requestFocusInWindow();
 
 
         }
@@ -4589,7 +4607,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     + "where o.pantalla = 'Clientes' "
                     + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4618,7 +4636,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             // TODO add your handling code here:
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4641,7 +4659,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Empresa' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4665,7 +4683,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4687,10 +4705,27 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tickets' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+            try {
+                    Component[] componentes = contenedor.getComponents();
+                    for (Component component : componentes) {
+                        System.out.println(""+component.getName());
+                        if((component.getName()+"").equals("formaTicket")){
+                            System.out.println("LO ENCONTRE");
+                            ((frmTicket)component).setVisible(true);
+                            ((frmTicket)component).placa.setText("");
+                            ((frmTicket)component).noTicket.setText("");
+                            ((frmTicket)component).fecha.setDate(new Date());
+                             ((frmTicket)component).placa.requestFocusInWindow();                
+                            return;
+                        }
+                    }
+            } catch (Exception e) {
+                    System.out.println("ERROR EN COMPONENTE"+e);
             }
 //            frmTicket usu = new frmTicket(this, true, this, adm);
 //            usu.setSize(334, 238);
@@ -4700,6 +4735,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmTicket usu = new frmTicket(this, true, this, adm);
             usu.setSize(334, 238);
             usu.setLocation(0, 0);
+            usu.setName("formaTicket");
 //            usu.setMaximizable(true);
             contenedor.add(usu);
             usu.placa.requestFocusInWindow();
@@ -4734,17 +4770,49 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+            try {
+                    Component[] componentes = contenedor.getComponents();
+                    for (Component component : componentes) {
+                        System.out.println(""+component.getName());
+                        if((component.getName()+"").equals("formaFactura")){
+                            System.out.println("LO ENCONTRE");
+                            
+                            ((frmFactura)component).setVisible(true);
+                             ((frmFactura)component).noTicket.requestFocusInWindow();                
+                              ((frmFactura)component).ingreso.setDate(null);
+                            ((frmFactura)component).salida.setDate(null);
+                            ((frmFactura)component).placa.setText(null);
+                            ((frmFactura)component).tiempo.setDate(null);
+                            ((frmFactura)component).noTicket.setText("");
+                            ((frmFactura)component).codigo.setText("");
+                             ((frmFactura)component).total.setText("0.0");
+                            ((frmFactura)component).codigo.setText("");
+                            ((frmFactura)component).noTicket.setText("");
+                            ((frmFactura)component).placa.setText("");
+                            ((frmFactura)component).noTicket.requestFocusInWindow();
+                            ((frmFactura)component).cliente.setText("1");
+                            ((frmFactura)component).identificacion.setText("9999999999999");
+                            ((frmFactura)component).nombres.setText("CONSUMIDOR FINAL");
+                            ((frmFactura)component).telefono.setText("9999999999");
+                            return;
+                        }
+                    }
+            } catch (Exception e) {
+                    System.out.println("ERROR EN COMPONENTE"+e);
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
             usu.setSize(716, 507);
              
             usu.setLocation(0, 0);
+            usu.setName("formaFactura");
             contenedor.add(usu);
-
+            
             usu.show();
             usu.noTicket.requestFocusInWindow();
 
@@ -4762,7 +4830,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4785,7 +4853,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -5369,7 +5437,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.pantalla = 'Accesos' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -5415,7 +5483,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        permisos = new Accesos();
 //        frmIngresarSistema.setVisible(true);
 //        habilitarBotones(false);
-//        usuariot.requestFocusInWindow();
+//        clave.requestFocusInWindow();;
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
@@ -5441,7 +5509,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.pantalla = 'Reconfigurar' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
 
                 int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
                         "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
@@ -5829,17 +5897,6 @@ public LeerTarjeta buscarPuerto(String tipo){
     private void claveFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_claveFocusLost
         // TODO add your handling code here:
 }//GEN-LAST:event_claveFocusLost
-
-    private void usuariotKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuariotKeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            usuariot.nextFocus();
-        }
-}//GEN-LAST:event_usuariotKeyPressed
-
-    private void usuariotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariotActionPerformed
-        // TODO add your handling code here:
-}//GEN-LAST:event_usuariotActionPerformed
     public void tecla(int teclaPresionada) {
         int WIDTH = 1;
 //        sdfasd;
@@ -6048,7 +6105,7 @@ public LeerTarjeta buscarPuerto(String tipo){
             // TODO add your handling code here:
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Auditoria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -6760,7 +6817,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
            try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'FacturaDiaria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);
+                permisos = accesosL.get(0);                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -6779,6 +6836,21 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             lger.logger(frmPrincipal.class.getName(), ex + "");
         }
     }//GEN-LAST:event_btnCobrar1ActionPerformed
+
+    private void clienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_clienteKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_clienteKeyPressed
+
+    private void erroresKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_erroresKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_erroresKeyPressed
+
+    private void imAvisoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_imAvisoKeyPressed
+        // TODO add your handling code here:
+        tecla(evt.getKeyCode());
+    }//GEN-LAST:event_imAvisoKeyPressed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -7131,7 +7203,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JTextField ubicacionArchivo;
     private javax.swing.JLabel ultimoIngreso;
     private javax.swing.JButton usuarioLogeado;
-    private javax.swing.JFormattedTextField usuariot;
+    private javax.swing.JComboBox usuariot;
     private javax.swing.JCheckBox viernes;
     private javax.swing.JCheckBox viernes1;
     private javax.swing.JCheckBox viernes2;
