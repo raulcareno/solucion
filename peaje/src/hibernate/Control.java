@@ -35,8 +35,10 @@ public class Control implements Serializable {
     private Boolean ticket;
     @Column(name = "manual")
     private Boolean manual;
-    @Column(name = "usuario")
-    private Integer usuario;
+    
+    @JoinColumn(name = "usuario", referencedColumnName = "codigo")
+    @ManyToOne
+    private Usuarios usuario;
 
     public Control() {
     }
@@ -101,13 +103,15 @@ public class Control implements Serializable {
         this.manual = manual;
     }
 
-    public Integer getUsuario() {
+    public Usuarios getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Integer usuario) {
+    public void setUsuario(Usuarios usuario) {
         this.usuario = usuario;
     }
+
+    
 
     @Override
     public int hashCode() {

@@ -5620,6 +5620,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
                 barrera5.setEnabled(true);
+                control(5); 
             }
         };
         cargar.start();
@@ -5642,6 +5643,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 barrera4.setEnabled(true);
+                control(4); 
             }
         };
         cargar.start();
@@ -5682,7 +5684,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
                 barrera3.setEnabled(true);
+                control(3); 
             }
+            
         };
         cargar.start();
 }//GEN-LAST:event_barrera3ActionPerformed
@@ -5723,6 +5727,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
                 barrera2.setEnabled(true);
+                control(2); 
             }
         };
         cargar.start();
@@ -5745,6 +5750,19 @@ public LeerTarjeta buscarPuerto(String tipo){
     return null;
     
 }
+    private void control(int puerta){
+        try {
+            Control c = new Control();
+            c.setCodigo(adm.getNuevaClave("Control", "codigo"));
+            c.setUsuario(usuarioActual);
+            c.setFecha(new Date());
+            c.setManual(true);
+            c.setPuerta(puerta); 
+            adm.guardar(c);
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void barrera1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barrera1ActionPerformed
         // TODO add your handling code here:
         barrera1.setEnabled(false);
@@ -5773,6 +5791,7 @@ public LeerTarjeta buscarPuerto(String tipo){
                     } catch (Exception e) {
                     }
                     barrera1.setEnabled(true);
+                    control(1); 
                 } catch (InterruptedException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
