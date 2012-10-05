@@ -218,10 +218,14 @@ public class MatriculasBean {
     }
 
     public String anadir(CarrerasMaterias obj) {
-        destino.add(obj);
-        origen.remove(obj);
-        validarSecuencia(obj);
-        sumarCreditos();
+        
+        
+        if(!validarSecuencia(obj)){
+            destino.add(obj);
+            origen.remove(obj);
+            sumarCreditos();
+        }
+        
         return null;
     }
 
@@ -753,7 +757,12 @@ public class MatriculasBean {
                 + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
                 + " ", CarrerasMaterias.class);
 
-        origen = adm.query("Select m from CarrerasMaterias as m  order by m.idNiveles.secuencia");
+        origen = adm.query("Select m from CarrerasMaterias as m  where m.idCarreras.idCarreras = '"+carreraSeleccionado.getIdCarreras()+"' order by m.idNiveles.secuencia");
+        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+            CarrerasMaterias destItem = it.next();
+            origen.remove(destItem);
+            
+        }
         sumarCreditos();
     }
     public int noCreditos = 0;
@@ -767,13 +776,16 @@ public class MatriculasBean {
 
     }
 
-    public void validarSecuencia(CarrerasMaterias materiaAanadir) {
+    public boolean validarSecuencia(CarrerasMaterias materiaAanadir) {
 
         List<SecuenciaDeMaterias> secuencias = adm.query("Select o from SecuenciaDeMaterias as o "
                 + " where o.idCarrerasMaterias.idMaterias.idMaterias = '" + materiaAanadir.getIdMaterias().getIdMaterias() + "' "
                 + " and  o.idCarrerasMaterias.idCarreras.idCarreras =  '" + carreraSeleccionado.getIdCarreras() + "' ");
+          int existenRequeridas = 0;
+           String requeridas = "";
+                       FacesContext context = FacesContext.getCurrentInstance();
         if (secuencias.size() > 0) {
-            FacesContext context = FacesContext.getCurrentInstance();
+
 
             SecuenciaDeMaterias sec = secuencias.get(0);
             System.out.println("ENCONTRADA: " + sec.getIdCarrerasMaterias().getIdMaterias().getNombre());
@@ -783,8 +795,8 @@ public class MatriculasBean {
                     + " where o.idCarrerasMaterias.idCarreras.idCarreras =  '" + carreraSeleccionado.getIdCarreras() + "' "
                     + " and o.fila = '" + sec.getFila() + "' "
                     + " and o.orden < '" + sec.getOrden() + "' ");
-            String requeridas = "";
-            int existenRequeridas = 0;
+           
+          
             for (Iterator<SecuenciaDeMaterias> it = secuenciasPrevias.iterator(); it.hasNext();) {
                 SecuenciaDeMaterias secuenciaDeMaterias = it.next();
                 List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
@@ -830,9 +842,16 @@ public class MatriculasBean {
 
             }
             //estas son las materias,ADICIONALES QUE TIENE QUE APROBAR que tiene que aprobar para tomar la siguiente materia
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, requeridas, ""));
+             
+            
 
 
+        }
+        if(existenRequeridas >0){
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS" ,requeridas));
+            return true;
+        }else{
+            return false;
         }
 
 
