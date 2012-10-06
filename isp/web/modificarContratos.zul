@@ -1,0 +1,338 @@
+<?page id="contratospage2"?>
+<window id="contratosventana" onCreate="cargando()"  border="normal" >
+    <style>
+        .MyGridRowHeight tr.z-row td.z-row-inner  
+        {
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        //border-bottom: 1px solid #DDD;
+        border-bottom: none;
+ 
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px;
+        //overflow: hidden;
+        }
+    </style>
+    <zscript>   <![CDATA[
+    
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+  import jcinform.bean.generarFacturas;
+    import jcinform.bean.sources.*;
+import jcinform.bean.sources.clasestmp.Pendientes;
+
+  Session ses = Sessions.getCurrent();
+  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+    Administrador adm = new Administrador();
+    static Contratos equi = new Contratos();
+    Permisos permiso = new Permisos();
+    Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+      generarFacturas gen = new generarFacturas();
+         String directorioReportes = empresa.getReportes();
+      
+      
+List cantonesList = adm.query("Select o from Canton as o ");
+List empleadosList = adm.query("Select o from Empleados as o ");
+           
+
+  void facturasPendientes(){
+        try{
+            String formapago = formapago.selectedItem.value;
+            String estado = estadoContrato.selectedItem.value;
+            Sucursal suc= sucursalEmp.getSucursal();
+            Sector uno= sect.selectedItem.value;
+            Sector dos= sect2.selectedItem.value;
+            String complemento = " and o.formapago = '" + formapago + "' ";
+            if (formapago.equals("0")) {
+                complemento = "";
+            }
+            String compEstado = " and o.estado = '"+estado+"' ";
+            if(estado.equals("Todos")){
+                compEstado = "";
+            }
+        List contratos = adm.query("Select o from Contratos as o "
+                + "where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " "
+                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " + complemento + " " + compEstado);
+            
+            facturasDatos.getRows().getChildren().clear();
+            ArrayList contratosAnadidos = new ArrayList();
+            int i =0;
+       
+            for (Iterator  itContratos = contratos.iterator(); itContratos.hasNext();) {
+                         Contratos contratos1 = itContratos.next();
+                                Row row = new Row();
+                                   if(row == null){
+                                        row = new Row();
+                                   }
+                                Checkbox ch = new Checkbox(""); 
+                                try{
+                                    if(contratos1.getSerie3().equals("SI"))
+                                    ch.setChecked(true);
+                                }catch(Exception ab){
+                                    ch.setChecked(false);
+                                }
+                                
+                                row.appendChild(ch);
+                                
+                                row.appendChild(new Label(contratos1.getContrato()+""));
+                                
+                                Label raz = new Label(contratos1.getClientes().getRazonsocial()+" | "+contratos1.getClientes().getApellidos()+" "+contratos1.getClientes().getNombres());
+                                row.appendChild(raz);
+                                
+                                row.appendChild(new Label(contratos1.getDireccion()+""));
+                                row.setValue(contratos1);
+                            try{
+                                    filasFac.appendChild(row);
+                            }catch(Exception exs){
+                                     System.out.println("NO SE AGREGÓ FILA POR ERROR: "+exs);
+                            }   
+            }
+            
+               
+         
+    }catch(Exception e){
+            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            System.out.println("ERROR: "+e);
+
+        }
+                
+ }
+                
+ void buscarSectores(Integer codigo){
+          bd.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o " + 
+        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+ sucursalEmp.getSucursal().getCodigo() +"'  order by o.numero" );
+        sect = new Listbox();
+        int a=0;
+            for (Iterator it = sect.getItems().iterator(); it.hasNext();) {
+                    sect.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+ ".- " + acceIt.getNombre()+" "));
+                      sect.appendChild(li);
+             }
+            a=0;
+            for (Iterator it = sect2.getItems().iterator(); it.hasNext();) {
+                    sect2.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
+                      sect2.appendChild(li);
+             }
+    } 
+    
+    
+    void seleccionarTodos(Checkbox estado,Integer tipo){
+                if(tipo == 0){
+                       List col = facturasDatos.getRows().getChildren();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        ((Checkbox) labels.get(0)).setChecked(estado.isChecked());
+                               }
+                 }else{
+                        List col = facturasDatosAsignados.getRows().getChildren();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        ((Checkbox) labels.get(0)).setChecked(estado.isChecked());
+                               }
+                 
+                 }
+    }
+   
+ 
+    
+    void guardar(){
+    
+   
+                       List col = facturasDatos.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                      Contratos contraActualizar = object.getValue();
+                                        if(((Checkbox) labels.get(0)).isChecked() ){
+                                                  contraActualizar.setSerie3("SI");
+                                        }else{
+                                                contraActualizar.setSerie3("NO");
+                                        }
+                                        adm.actualizar(contraActualizar);
+                     }
+                       
+                               
+ }
+ 
+ 
+ 
+ 
+  ]]>
+    </zscript>
+    <div>
+        <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
+
+        <tabbox width="100%"  >
+            <tabs>
+                <tab label="Contratos a modificar" id="facturas" />
+               
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+       
+                    <groupbox id="panel" mold="3d" width="100%">
+                        <hbox>
+                            <vbox >
+                                <grid>
+                                    <rows>
+                                        <row visible = "true" id="filacanton">
+                                            <span style="float:right"> Cantón(*):</span>
+                                            
+                                            <bandbox  readonly="true"  id="bdCanton">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="cant" width="250px"
+                                                                 onSelect="bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                        
+                                                            <listitem forEach="${cantonesList}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                            <span> Forma Pago:</span>
+                                                
+                                                     
+                                            <listbox mold="select" id="formapago" width="250px" >
+                                 
+                                                <listitem value="3"  selected="true">
+                                                    <listcell label="Domicilio" />
+                                                </listitem>
+                                                <listitem value="1" >
+                                                    <listcell label="Oficina" />
+                                                </listitem>
+                                                <listitem value="2" >
+                                                    <listcell label="Deposito" />
+                                                </listitem>
+                                                <listitem value="0" >
+                                                    <listcell label="Todos" />
+                                                </listitem>
+                                            </listbox>
+                                                 
+
+                                        </row>
+                                        <row visible = "true" id="filasector">
+                                            <span> Desde Sector(*):</span>
+                                     
+                                            <bandbox readonly="true"  id="bdSector">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="sect" width="250px"
+                                                                 onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                                 
+                                                            <listitem forEach="${sectiles}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                            <span> Hasta Sector(*):</span>
+                                            <span>
+                                                <span>
+                                                    <bandbox   readonly="true"  id="bdSector2">
+                                                        <bandpopup>
+                                                            <vbox>
+                                                                <listbox id="sect2" width="250px"
+                                                                         onSelect="bdSector2.value=self.selectedItem.label;bdSector2.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                                 
+                                                                    <listitem forEach="${sectiles}" value="${each}">
+                                                                        <listcell label="${each.nombre}" />
+
+                                                                    </listitem>
+                                                                </listbox>
+                                                            </vbox>
+                                                        </bandpopup>
+                                                    </bandbox>
+                                                   
+                                                </span>
+                                            </span>
+                                        </row>
+                                        <row>
+                                            <span></span>
+                                            <radiogroup id="estadoContrato" >
+                                                <radio id="eactivo" selected="true" value="Activo" label="Act." style="font-weight:bold2" />
+                                                <radio  id="ecortado"  value="Cortado"  label="Cort." style="font-weight:bold2" />
+                                                <radio id="esuspendido"    value="Suspendido"  label="Susp." style="font-weight:bold2" />
+                                                <radio id="eterminado"   value="Terminado"  label="Term." style="font-weight:bold2" />
+                                                <radio id="ependiente"  value="Pendiente"  label="Pend." style="font-weight:bold2" />
+                                                <radio id="etodos"  value="Todos"  label="Todos" style="font-weight:bold2" />
+                                            </radiogroup>
+                                            <button label="Buscar" onClick="facturasPendientes()"/>
+                                            <button image="/images/guardar.gif" id="guardar" label="Guardar"     onClick="guardar();"/>
+                                        </row>
+                                     
+                                    </rows>
+                                </grid>
+                                <grid height="450px"     fixedLayout="true"  id="facturasDatos" >
+                                    <columns>
+                                        <column  width="40px" >
+                                            <checkbox id="todos" label="Facturar" onCheck="seleccionarTodos(self,0)" />
+                                        </column>
+                                        <column sort="auto" width="40px"   label="Contrato"/>
+                                        <column sort="auto" width="120px"   label="Cliente "/>
+                                        <column sort="auto" width="120px"   label="Dirección"/>
+                                    </columns>
+                                    <rows id="filasFac">
+                                    </rows>
+                                </grid>
+                            </vbox>
+ </hbox>
+                 
+                  
+                    </groupbox>
+ 
+
+                </tabpanel>
+           
+                
+            </tabpanels>
+            
+            
+        </tabbox>
+        
+    </div>
+    <zscript>
+        cargando(){
+        Session ses = Sessions.getCurrent();
+        Empleadossucursal sucursalEmp2 = ses.getAttribute("sector");    
+        autorizacion.value = sucursalEmp2.getSucursal().getAutorizacion();
+        }
+    </zscript>
+</window>
