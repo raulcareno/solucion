@@ -752,19 +752,32 @@ public class MatriculasBean {
     }
 
     protected void buscarMateriasMatricula(Matriculas mat) {
-        destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
-                + " WHERE c.id_Materias in "
-                + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
-                + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
-                + " ", CarrerasMaterias.class);
+        if(object.getIdMatriculas()!=null){
+            destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
+                    + " WHERE c.id_Materias in "
+                    + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
+                    + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
+                    + " ", CarrerasMaterias.class);
 
-        origen = adm.query("Select m from CarrerasMaterias as m  where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
-        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-            CarrerasMaterias destItem = it.next();
-            origen.remove(destItem);
+            origen = adm.query("Select m from CarrerasMaterias as m  where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
+            for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+                CarrerasMaterias destItem = it.next();
+                origen.remove(destItem);
 
+            }
+            sumarCreditos();
+        }else{
+                destino = new ArrayList<CarrerasMaterias>();
+                origen = adm.query("Select m from CarrerasMaterias as m  "
+                    + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
+                for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+                    CarrerasMaterias destItem = it.next();
+                    origen.remove(destItem);
+
+                }
+                sumarCreditos();
+        
         }
-        sumarCreditos();
     }
     public int noCreditos = 0;
 
@@ -868,7 +881,16 @@ public class MatriculasBean {
     public boolean validarSecuencia(CarrerasMaterias materiaAanadir) {
 
         //ESTE METODO DEBE INICIALIZARSE CADA VEZ QUE CAMBIO DE ESPECIALDIAD
-        buscarMateriasdeCarrera(carreraSeleccionado);
+                        try {
+                            CarrerasMaterias tmp = anadidasArray[0][0];
+                            if (tmp.getIdCarrerasMaterias().equals(null)) {
+                                buscarMateriasdeCarrera();                     
+                            }
+                        } catch (Exception e) {
+                            buscarMateriasdeCarrera();                
+                        }
+        
+        
 
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -942,16 +964,13 @@ public class MatriculasBean {
             }
 
         }
+        if(requeridas.length()>0){
         FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
-
-        /**
-         * public String seleccionado(int i, int j) { filtroMaterias(j);
-         *
-         * return ""; }
-         *
-         *
-         */
+        return true;
+        }else{
         return false;
+        }
+        
 
     }
     List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
@@ -977,17 +996,18 @@ public class MatriculasBean {
         }
     }
 
-    public void buscarMateriasdeCarrera(Carreras carreraSeleccionada) {
+    public void buscarMateriasdeCarrera() {
         try {
+             buscarMateriasMatricula(object);
             llenarArreglo();
             listaMaterias = adm.query("Select o from CarrerasMaterias as o "
-                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
+                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
                     + "and o.idCarrerasMaterias NOT IN (Select c.idCarrerasMaterias.idCarrerasMaterias "
                     + "from SecuenciaDeMaterias as c "
-                    + " WHERE c.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ) "
+                    + " WHERE c.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' ) "
                     + " order by o.idNiveles.secuencia ");
             List<CarrerasMaterias> adicionalesEncontradas = adm.query("Select o from CarrerasMaterias as o "
-                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
+                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
                     + "   order by o.idNiveles.secuencia ");
 
             listaMateriasAdicionales = new ArrayList<SelectItem>();
@@ -998,11 +1018,11 @@ public class MatriculasBean {
             }
 
             adicionales = adm.query("SELECT o FROM SecuenciaDeMateriasAdicionales AS o "
-                    + " WHERE o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  ");
+                    + " WHERE o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  ");
 
 
             List<SecuenciaDeMaterias> materiasSecuenciales = adm.query("Select o from SecuenciaDeMaterias as o "
-                    + "where o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
+                    + "where o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' "
                     + "order by o.fila, o.orden ");
             if (materiasSecuenciales.size() > 0) {
                 for (Iterator<SecuenciaDeMaterias> it = materiasSecuenciales.iterator(); it.hasNext();) {
