@@ -468,6 +468,19 @@ public class MatriculasBean {
             }
 
         }
+        //GUARDO LAS MATERIAS DE LA MATRICULA
+        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' ");
+        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+            CarrerasMaterias carrerasMaterias = it.next();
+            MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
+            matMat.setIdMaterias(carrerasMaterias.getIdMaterias());
+            matMat.setIdMatriculas(object);
+            //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
+            matMat.setNumeroMatricula(object.getNumero());
+            adm.guardar(matMat); 
+            
+        }
+        
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
     }
@@ -752,7 +765,7 @@ public class MatriculasBean {
     }
 
     protected void buscarMateriasMatricula(Matriculas mat) {
-        if(object.getIdMatriculas()!=null){
+        if(!object.getIdMatriculas().equals(new Integer(0))){
             destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
                     + " WHERE c.id_Materias in "
                     + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
@@ -1084,6 +1097,11 @@ public class MatriculasBean {
             categoriaSeleccionado = object.getIdCategoriasSociales();
             buscarMateriasMatricula(object);
 
+        }else{
+            carreraSeleccionado = new Carreras(0);
+            object = new Matriculas(0); 
+            buscarMateriasMatricula(object);
+        
         }
     }
 
