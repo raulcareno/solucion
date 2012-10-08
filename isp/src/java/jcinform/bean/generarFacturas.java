@@ -124,6 +124,7 @@ public class generarFacturas {
                 cuenta.setNotarjeta("");
                 cuenta.setNocheque("");
                 cuenta.setDescuento(BigDecimal.ZERO);
+                cuenta.setRtotal(BigDecimal.ZERO);
                 cuenta.setTotal(fac.getTotal());
                 adm.guardar(cuenta);
 //                numero++;
@@ -216,6 +217,7 @@ public class generarFacturas {
                 cuenta.setNotarjeta("");
                 cuenta.setNocheque("");
                 cuenta.setTotal(fac.getTotal());
+                cuenta.setRtotal(BigDecimal.ZERO);
                 adm.guardar(cuenta);
 
 
@@ -284,6 +286,7 @@ public class generarFacturas {
             cuenta.setEfectivo(BigDecimal.ZERO);
             cuenta.setDescuento(BigDecimal.ZERO);
             cuenta.setTransferencia(BigDecimal.ZERO);
+            cuenta.setRtotal(BigDecimal.ZERO);
             cuenta.setFactura(fac);
             cuenta.setFecha(fecha2);
             cuenta.setNotarjeta("");
@@ -388,6 +391,7 @@ public class generarFacturas {
             cuenta.setNotarjeta("");
             cuenta.setNocheque("");
             cuenta.setTotal(fac.getTotal());
+            cuenta.setRtotal(BigDecimal.ZERO);
             adm.guardar(cuenta);
 
         } catch (Exception e) {

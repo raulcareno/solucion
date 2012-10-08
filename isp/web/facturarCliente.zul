@@ -60,9 +60,6 @@ String llenarCeros(String numero){
   void guardar(){
   
   if(verificar("Agregar")){
- 
-   
-  
         BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(bancario.getValue()).add(rtotal.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -141,13 +138,13 @@ String llenarCeros(String numero){
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }  
             
-        }
+ }
         void actualFactura(){
         String nn = "";
-                if(esRecibo.checked){
-                       nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"REC"+llenarCeros(""+nofactura.value);        
+                if(esRecibo.checked ){
+                       nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+""+llenarCeros(""+nofactura.value);        
                 }else{
-                      nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
+                      nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+""+llenarCeros(""+nofactura.value);        
               }
                         List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
                         if(siExiste.size()>0){
@@ -174,7 +171,8 @@ String llenarCeros(String numero){
                            impresion.setSelected(true); 
                            registrofactura.visible= false;
                         if(esRecibo.checked){
-                                suc.setSecrecibos(nofactura.value);
+                            System.out.println(nofactura.value.substring(3)+"");
+                                suc.setSecrecibos(new Integer(nofactura.value.substring(3)));
                                 adm.actualizar(suc);
                         }
         }
@@ -283,8 +281,11 @@ String llenarCeros(String numero){
 
 void ultimoRecibo(){
     suc = adm.buscarClave(sucursalEmp.getSucursal().getCodigo(), Sucursal.class);
-    Integer valor = suc.getSecrecibos()+1;
-    nofactura.value = valor;
+    if(!nofactura.value.contains("REC")){
+            Integer valor = suc.getSecrecibos()+1;
+            nofactura.value = valor;
+    }
+    
 }
 void validarNoCuenta(){
     String nocuenta2 = nocuenta.value;
@@ -345,7 +346,7 @@ void validarNoTransferencia(){
                                 <label style="font-weight:bold;color:red" value="No.Factura" /> 
                             </span>
                             <span> 
-                                <intbox onOK="nofactura.getValue();actualFactura();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
+                                <textbox onOK="nofactura.getValue();actualFactura();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
                                 <checkbox id="esRecibo" label="Es Recibo??" style="font-weight:bold" onCheck="ultimoRecibo()" />
                             </span>
                             <button label="Continuar" onClick='nofactura.getValue();actualFactura();'/>
@@ -586,10 +587,18 @@ void validarNoTransferencia(){
                     bancario.value =  BigDecimal.ZERO;
                     noretencion.value =  "";
                     if(facEnc.getNumero() != null){
-                        nofactura.value = new Integer(facEnc.getNumero().substring(9,facEnc.getNumero().length()));
+                        nofactura.value =  facEnc.getNumero().substring(6,facEnc.getNumero().length());
                         nofactura.readonly = true;
                         
+                        try{
+                                if(nofactura.value.contains("REC")){
+                                    esRecibo.checked = true;
+                                    ultimoRecibo();
+                                }
+                         }catch(Exception abc){
+                         }
                     }
+                    
                     List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
                     if(descuentos.size()>0){
                             Descuentos descuentoIt = descuentos.get(0);
