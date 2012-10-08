@@ -37,7 +37,7 @@
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-            Executions.sendRedirect("login.zul");
+                Executions.sendRedirect("login.zul");
             }
             void salir(){
             
