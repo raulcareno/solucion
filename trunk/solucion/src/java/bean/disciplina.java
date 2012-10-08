@@ -79,12 +79,16 @@ public class disciplina extends Rows {
         Empleados empleado = (Empleados) ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
+        List<Equivalencias> equ = null;
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esdisciplina = true order by o.orden");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where o.sistema.esdisciplina = true "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "order by o.sistema.orden ");
+        equ = adm.query("Select o from Equivalencias as o"
+                    + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
+                    + "and o.grupo = 'DR' ");
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";

@@ -57,6 +57,8 @@ void llenar(Equivalencias equi2){
             p = 2;
         }else if(equi.getGrupo().equals("SU")){
             p = 3;
+        }else if(equi.getGrupo().equals("DR")){
+            p = 4;
         }
     }catch(Exception ea){
             try{
@@ -69,6 +71,8 @@ void llenar(Equivalencias equi2){
                             p = 2;
                         }else if(equi.getGrupo().equals("SU")){
                             p = 3;
+                        }else if(equi.getGrupo().equals("DR")){
+                            p = 4;
                         }
             }
             }catch(Exception ea){
@@ -187,6 +191,9 @@ void eliminar(){
         }else if(p.equals("SU")){
             p = "SU";
             indice = 3;
+        }else if(p.equals("DR")){
+            p = "DR";
+            indice = 4;
         }
 List equivaEncontrados = adm.query("Select o from Equivalencias as o where o.grupo = '"+p+"' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 datos = new Listbox();
@@ -265,6 +272,7 @@ void grupo(String tipo){
 						  <listitem  value="AP" label="Aprovechamiento"/>
                         <listitem  value="DI" label="Disciplina"/>
                         <listitem  value="SU" label="Supletorio"/>
+                        <listitem  value="DR" label="Rangos Disciplina"/>
 						
 					</listbox>
                 </row>
