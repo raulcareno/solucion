@@ -47,6 +47,7 @@ void llenar(Empleados empa){
     tratamiento.value = empa.getTratamiento();
     usuario.value = empa.getUsuario();
     clave.value = permiso.decriptar(empa.getClave());
+    clavem.value = permiso.decriptar(empa.getClavem());
     ingreso.value = empa.getFechaingreso();
     servicio.value = empa.getServicio();
     titulo.value = empa.getTitulo();
@@ -113,6 +114,7 @@ void estado(Boolean estado,Boolean modificar){
     tratamiento.readonly = estado;
     usuario.readonly = estado;
     clave.readonly = estado;
+    clavem.readonly = estado;
     tipo.disabled= estado;
     estadoe.disabled= estado;
     perf.disabled = estado;
@@ -159,6 +161,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setUsuario(usuario.value);
         empa.setTipo(tipo.value);
         empa.setClave(permiso.encriptar(clave.value));
+        empa.setClavem(permiso.encriptar(clavem.value));
         empa.setFechaingreso(ingreso.value);
         empa.setAdventista(adventista.checked);
         empa.setDocente(docente.checked);
@@ -376,7 +379,11 @@ empa.setPerfil(g);
                             </row>
                             <row>
                                 <span style="float:right"> e-mail:</span>
+                                <span>
                                 <textbox id="email" maxlength="100" cols="40" readonly="true"  />
+                                clave:
+                                <textbox id="clavem"  type="password"  maxlength="50" cols="10" readonly="true"  />
+                                </span>
                                 <span style="float:right"> Perfil(*):</span>
                                 <bandbox  readonly="true"  id="bd">
                                     <bandpopup>

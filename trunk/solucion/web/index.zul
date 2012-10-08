@@ -337,7 +337,8 @@
                                     </menu>
                                     <menu  image="/images/varios.gif"  label="Varios" ><!--VARIOS-->
                                         <menupopup >
-                                            <menuitem onClick="ingresar(self)"  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoInterno.zul"/>
+                                            <menuitem onClick="ingresar(self)"  id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correoElectronico.zul"/>
+                                            <!--menuitem onClick="ingresar(self)"  id="Correos2" image="/images/bandeja.png"  label="Enviar Correo Electronico" value="/correoInterno.zul"/-->
                                             <menuitem onClick="ingresar(self)"  id="Correo_Interno" image="/images/bandeja2.png"   label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
                                             <menuitem onClick="ingresar(self)" id="Respaldos" image="/images/base.gif"   label="Respaldar Sistema" value="/respaldos.zul"/>
                                             <menuitem onClick="ingresar(self)" id="Calendario" image="/images/calendar.gif"   label="Calendario Académico" value="/calendar.zul"/>

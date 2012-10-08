@@ -17,6 +17,7 @@ Administrador adm = new Administrador();
 
         usuario.value = emp.getUsuario();
         clave.value = permiso.decriptar(emp.getClave());
+        clavem.value = permiso.decriptar(emp.getClavem());
         nombres.value  = emp.getApellidos();
         apellidos.value  = emp.getNombres();
         direccion.value  = emp.getDireccion();
@@ -33,6 +34,7 @@ void guardar(){
           Permisos permiso = new Permisos();
          emp.setUsuario(usuario.value);
          emp.setClave(permiso.encriptar(clave.value));
+         emp.setClavem(permiso.encriptar(clavem.value));
          emp.setDireccion(direccion.value);
          emp.setEmail(email.value);
          emp.setTelefono1(telefono.value);
@@ -57,8 +59,8 @@ void guardar(){
 
                 </row>
                 <row>
-            Clave:
-                    <textbox id="clave" maxlength="20" cols="15"  />
+            Clave Usuario:
+                    <textbox id="clave"  type="password" maxlength="20" cols="15"  />
                 </row>
     
                 <row>
@@ -68,9 +70,12 @@ void guardar(){
                 </row>
                 <row>
             Email:
+            <span>
                     <textbox id="email" maxlength="200" cols="40"  />
-
-                </row>
+Clave de Email:
+                                <textbox id="clavem"  type="password"  maxlength="50" cols="10"  />
+               </span>
+               </row>
                 <row>
                     <span style="float:right"> Años de Servicio:</span>
                     <intbox id="servicio" cols="5" />
