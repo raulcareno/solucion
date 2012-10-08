@@ -50,11 +50,14 @@ public class electronico {
         // Se obtiene la Session
         Properties prop = new Properties();
         Session sesion = Session.getInstance(prop);
+         org.zkoss.zk.ui.Session ses2 = org.zkoss.zk.ui.Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses2.getAttribute("periodo");
         ArrayList ar = new ArrayList();
         Permisos pe = new Permisos();
         try {
+                    //"mail.uejjrousseau.edu.ec"
                 store = sesion.getStore("imap");
-                store.connect("mail.uejjrousseau.edu.ec", emp.getEmail(), pe.decriptar(emp.getClavem()));
+                store.connect(periodo.getInstitucion().getSmtp(), emp.getEmail(), pe.decriptar(emp.getClavem()));
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);
 
@@ -100,7 +103,10 @@ public class electronico {
             // correo.
 //            if (store == null) {
                 store = sesion.getStore("imap");
-                store.connect("mail.uejjrousseau.edu.ec", emp.getEmail(), pe.decriptar(emp.getClavem()));
+                org.zkoss.zk.ui.Session ses2 = org.zkoss.zk.ui.Sessions.getCurrent();
+                Periodo periodo = (Periodo) ses2.getAttribute("periodo");
+                //"mail.uejjrousseau.edu.ec"
+                store.connect(periodo.getInstitucion().getSmtp(), emp.getEmail(), pe.decriptar(emp.getClavem()));
 //            }
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);
@@ -161,7 +167,10 @@ public void BorrarMensaje(Empleados emp, Object obj, String tipo) {
                 store = sesion.getStore("imap");
 //           }
 //            if (store.isConnected() == false) {
-                store.connect("mail.uejjrousseau.edu.ec", emp.getEmail(), pe.decriptar(emp.getClavem()));
+                org.zkoss.zk.ui.Session ses2 = org.zkoss.zk.ui.Sessions.getCurrent();
+                Periodo periodo = (Periodo) ses2.getAttribute("periodo");
+                //"mail.uejjrousseau.edu.ec"
+                store.connect(periodo.getInstitucion().getSmtp(), emp.getEmail(), pe.decriptar(emp.getClavem()));
 //            }
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_WRITE);
@@ -203,18 +212,24 @@ public void BorrarMensaje(Empleados emp, Object obj, String tipo) {
             // Se obtiene el Store y el Folder, para poder leer el
             // correo.
 //            if (store == null) {
+            
                 store = sesion.getStore("imap");
 
 //            }
 //            if (store.isConnected() == false) {
-                store.connect("mail.uejjrousseau.edu.ec", emp.getEmail(), pe.decriptar(emp.getClavem()));
+                org.zkoss.zk.ui.Session ses2 = org.zkoss.zk.ui.Sessions.getCurrent();
+                Periodo periodo = (Periodo) ses2.getAttribute("periodo");
+                //"mail.uejjrousseau.edu.ec"
+                store.connect(periodo.getInstitucion().getSmtp(), emp.getEmail(), pe.decriptar(emp.getClavem()));
 //            }
+              
             Folder folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);
-
+  System.out.println("leer: "+new Date());
+      
             // Se obtienen los mensajes.
             Message[] mensajes = folder.getMessages();
-
+        System.out.println("leer fin: "+new Date());  
             // Se escribe from y subject de cada mensaje
             Correos co = (Correos) obj;
             int a = co.getCodigo();
