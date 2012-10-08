@@ -1,0 +1,536 @@
+
+<window   onCreate="buscar()"   border="normal" >
+
+    <zscript><![CDATA[
+import correos.*;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import bean.*;
+import jcinform.procesos.Administrador;
+   import org.zkoss.util.media.Media;
+  import org.zkoss.util.media.AMedia;
+  import java.io.FileOutputStream;
+  
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+  import bean.Permisos;
+
+
+
+
+
+
+  
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+Empleados user =  (Empleados)ses.getAttribute("user");
+List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+Permisos permiso = new Permisos();
+
+
+byte[] dataAdjunto,data,data1,data2,data3,data4,data5,data6,data7,data8,data9,data10 = null;
+String archivo,archivo1,archivo2,archivo3,archivo4,archivo5,archivo6,archivo7,archivo8,archivo9,archivo10 = null;
+
+void ingresar(String valor){
+                try{
+                Tab newtb= new Tab("Cambio de Clave");
+                newtb.setSelected(true);
+                newtb.setClosable(true);
+                  newtb.setId("cclave");
+                newtb.setImage("/images/candado.gif");
+                newtb.setParent(tbs);
+                Tabpanel newtpl = new Tabpanel();
+                Iframe f = new Iframe(valor);
+                f.setWidth("100%");
+                f.setHeight("100%");
+                newtpl.appendChild(f);
+                newtpl.setParent(tps);
+                  }catch(Exception e){
+
+                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                  }
+            }
+
+public void borrar(){
+     
+
+        electronico em = new electronico();
+        /*Set  selec =  datos2.getSelectedItems();
+        for (Iterator it = selec.iterator(); it.hasNext();) {
+                        Listitem object = (Listitem)it.next();
+                             List children = object.children;
+                              datos2.removeItemAt(object.getIndex());
+                        Correos cor =  object.getValue();
+                    em.BorrarMensaje(user,cor,"borrar");
+        }
+        */
+
+            Set  items =  datos2.getSelectedItems();
+                            List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								Correos cor =  li.getValue();
+                                em.BorrarMensaje(user,cor,"borrar");
+                                li.setSelected(false);
+                                eliminados.appendChild(li);
+								Correos cor =  li.getValue();
+                                em.BorrarMensaje(user,cor,"borrar");
+							}
+
+
+
+}
+public void unborrar(){
+             electronico em = new electronico();
+        Set  selec =  datos2.getSelectedItems();
+        for (Iterator it = selec.iterator(); it.hasNext();) {
+                        Listitem object = (Listitem)it.next();
+                             List children = object.children;
+                              ((Listcell)children.get(0)).image = "/images/leido.png";
+                              ((Listcell)children.get(0)).style = "color:#666666;";
+                              ((Listcell)children.get(1)).style = "color:#666666;";
+                              ((Listcell)children.get(2)).style = "color:#666666;";
+                        Correos cor =   object.getValue();
+                    em.BorrarMensaje(user,cor,"unborrar");
+        }
+}
+public void move(){
+try{
+    int seleccionados = datos2.getSelectedItems().size();
+    if(seleccionados > 0 && seleccionados < 2){
+         int val = Messagebox.show("¿Desea ver el Correo seleccionado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+ if(val == 16){
+        panel.visible=true;
+        electronico em = new electronico();
+        Correos cor = datos2.selectedItem.value;
+        Correos correo = em.LeerMensaje(user,cor);
+          tituloLeer.value = correo.tema;
+          contenidoLeer.value = correo.contenido;
+          remitenten.value = correo.remitenten;
+            List children = datos2.selectedItem.children;
+          ((Listcell)children.get(0)).image = "/images/leido.png";
+          ((Listcell)children.get(0)).style = "color:#666666;";
+          ((Listcell)children.get(1)).style = "color:#666666;";
+          ((Listcell)children.get(2)).style = "color:#666666;";
+
+          descargarb.visible = false;  descargarb1.visible = false;
+          descargarb2.visible = false; descargarb3visible = false;
+          descargarb4.visible = false; descargarb5.visible = false;
+          descargarb6.visible = false; descargarb7.visible = false;
+          descargarb8.visible = false; descargarb9.visible = false;
+          descargarb10.visible = false;
+
+          if(correo.getAdjunto() != null){
+            data = correo.getAdjunto();
+            archivo = correo.getArchivo();
+            descargarb.label = archivo+"";
+            descargarb.visible = true;
+          }
+          if(correo.getAdjunto1() != null){
+            data1 = correo.getAdjunto1();
+            archivo1 = correo.getArchivo1();
+            descargarb1.label = archivo1+"";
+            descargarb1.visible = true;
+          }
+          if(correo.getAdjunto2() != null){
+            data2 = correo.getAdjunto2();
+            archivo2 = correo.getArchivo2();
+            descargarb2.label = archivo2+"";
+            descargarb2.visible = true;
+          }
+          if(correo.getAdjunto3() != null){
+            data3 = correo.getAdjunto3();
+            archivo3 = correo.getArchivo3();
+            descargarb3.label = archivo3+"";
+            descargarb3.visible = true;
+          }
+          if(correo.getAdjunto4() != null){
+            data4 = correo.getAdjunto4();
+            archivo4 = correo.getArchivo4();
+            descargarb4.label = archivo4+"";
+            descargarb4.visible = true;
+          }
+          if(correo.getAdjunto5() != null){
+            data5 = correo.getAdjunto5();
+            archivo5 = correo.getArchivo5();
+            descargarb5.label = archivo5+"";
+            descargarb5.visible = true;
+          }
+          if(correo.getAdjunto6() != null){
+            data6 = correo.getAdjunto6();
+            archivo6 = correo.getArchivo6();
+            descargarb6.label = archivo6+"";
+            descargarb6.visible = true;
+          }
+          if(correo.getAdjunto7() != null){
+            data7 = correo.getAdjunto7();
+            archivo7 = correo.getArchivo7();
+            descargarb7.label = archivo7+"";
+            descargarb7.visible = true;
+          }
+          if(correo.getAdjunto8() != null){
+            data8 = correo.getAdjunto8();
+            archivo8 = correo.getArchivo8();
+            descargarb8.label = archivo8+"";
+            descargarb8.visible = true;
+          }
+          if(correo.getAdjunto9() != null){
+            data9 = correo.getAdjunto9();
+            archivo9 = correo.getArchivo9();
+            descargarb9.label = archivo9+"";
+            descargarb9.visible = true;
+          }
+          if(correo.getAdjunto10() != null){
+            data10 = correo.getAdjunto10();
+            archivo10 = correo.getArchivo10();
+            descargarb10.label = archivo10+"";
+            descargarb10.visible = true;
+          }
+       }
+    }else{
+            return;
+    }
+    
+
+}catch(Exception error){
+
+}
+
+            
+          
+}
+
+public void buscar(){
+        electronico em = new electronico();
+        if(user.getClavem() == null || user.getClavem().isEmpty()){
+                Messagebox.show("Debe actualizar su cuenta de Correo y Clave para poder Leer sus electronicos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+
+
+            return;
+        }
+     List allEvents = em.LeerCorreos(user);
+        datos2 = new Listbox();
+        int a=0;
+            for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
+                    datos2.getItems().remove(a);
+                }
+
+               for (Iterator it = allEvents.iterator(); it.hasNext();) {
+                      Correos acceIt = (Correos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      if(acceIt.getLeido()==false){
+
+                        li.setStyle("color:black;");
+                      }else{
+                        li.setStyle("color:#666666;");
+                       }
+
+                      Listcell celdaimag = new Listcell(acceIt.getTema()+"");
+                      if(acceIt.getLeido()==false)
+                        celdaimag.setImage("/images/pendiente.png");
+                      else
+                        celdaimag.setImage("/images/leido.png");
+                      if(acceIt.getEliminado())
+                        celdaimag.setImage("/images/borrado.png");
+
+                      li.appendChild(celdaimag);
+
+                      Listcell celdaimag001 = new Listcell(" ");
+                      if(acceIt.getAdjunto() == null )
+                        celdaimag001.setImage("/images/adjunto001.gif");
+                        else
+                        celdaimag001.setImage(null);
+
+                     li.appendChild(celdaimag001);                              //IMAGEN ADJUNTO
+                     li.appendChild(new Listcell(acceIt.getRemitenten()+" "));  //REMITENTEN
+                     celdaimag = new Listcell(".");
+                        Date fec = acceIt.getFecha();
+                        if(fec == null){
+                            celdaimag = new Listcell("");
+                             celdaimag001.setImage(null);
+                        }else{
+                            celdaimag = new Listcell("");
+                            celdaimag = new Listcell(acceIt.getFecha().toLocaleString()+"");
+                        }
+                      
+                       
+                      li.appendChild(celdaimag);
+
+                      datos2.appendChild(li);
+             }
+}
+
+
+public void refrescar(){
+electronico em = new electronico();
+    if(user.getClavem() == null || user.getClavem().isEmpty()){
+            Messagebox.show("Debe actualizar su cuenta de Correo y Clave para poder Leer sus Correos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+
+
+        return;
+    }
+     List allEvents = em.RefrescarCorreos(user);
+        datos2 = new Listbox();
+        int a=0;
+            for (Iterator it = datos2.getItems().iterator(); it.hasNext();) {
+                    datos2.getItems().remove(a);
+                }
+
+               for (Iterator it = allEvents.iterator(); it.hasNext();) {
+                      Correos acceIt = (Correos) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      if(acceIt.getLeido()==false){
+
+                        li.setStyle("color:black;");
+                      }else{
+                        li.setStyle("color:#666666;");
+                       }
+
+                      Listcell celdaimag = new Listcell(acceIt.getTema()+"");
+                      if(acceIt.getLeido()==false)
+                        celdaimag.setImage("/images/pendiente.png");
+                      else
+                        celdaimag.setImage("/images/leido.png");
+
+                      li.appendChild(celdaimag);
+
+                      Listcell celdaimag001 = new Listcell(" ");
+                      if(acceIt.getAdjunto() == null )
+                        celdaimag001.setImage("/images/adjunto001.gif");
+                        else
+                        celdaimag001.setImage(null);
+
+                     li.appendChild(celdaimag001);                              //IMAGEN ADJUNTO
+                     li.appendChild(new Listcell(acceIt.getRemitenten()+" "));  //REMITENTEN
+                     celdaimag = new Listcell(".");
+                        Date fec = acceIt.getFecha();
+                        if(fec == null){
+                            celdaimag = new Listcell("");
+                             celdaimag001.setImage(null);
+                        }else{
+                            celdaimag = new Listcell("");
+                            celdaimag = new Listcell(acceIt.getFecha().toLocaleString()+"");
+                        }
+
+
+                      li.appendChild(celdaimag);
+
+                      datos2.appendChild(li);
+             }
+}
+
+
+void enviarCorreo(){
+            electronico em = new electronico();
+            String correos = "";
+                for(Iterator it = right.getItems().iterator(); it.hasNext();) {
+                     Listitem object = (Listitem)it.next();
+                     Estudiantes emp = object.getValue();
+                     //correos += emp.getMail()+";"+emp.getRepresentante().getMailpadre()+";"+emp.getRepresentante().getMailmadre()+";";
+                     correos += (cestudiante.isChecked()== true?emp.getMail():"")+";"+(crepresentante.isChecked()== true?emp.getRepresentante().getEmail():"")+";"+(cpadre.isChecked()== true?emp.getRepresentante().getMailpadre():"")+";"+(cmadre.isChecked()== true?emp.getRepresentante().getMailmadre():"");
+                }
+                em.setCorreos(correos);
+                em.setMensaje(mensaje.getValue());
+                em.setTema(titulo.getValue());
+                em.setAdjuntoArchivo(dataAdjunto);
+                em.setNombreArchivo(nombrearchivo.value);
+                alert(correos+" ");
+                return;
+                em.enviarEmail(periodo,user);
+                permiso.auditar("Correo",""+titulo.getValue(),""+correos);
+            Messagebox.show("Correo Enviado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+}
+  void buscar2(Cursos p){
+       List equivaEncontrados = adm.query("Select d from Matriculas as d " + 
+       " where d.curso.codigocur = '"+p.getCodigocur()+"'  and d.codigomat in " + 
+       "(Select o.matricula.codigomat from Materiaestudiante as o where o.matricula.curso.codigocur = '"+p.getCodigocur()+"' ) ");
+        left = new Listbox();
+        int a=0;
+              for(Iterator it = left.getItems().iterator(); it.hasNext();) {
+                    left.getItems().remove(a);
+                }
+               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+                      Matriculas acceIt = (Matriculas) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt.getEstudiante());
+                      li.appendChild(new Listcell(acceIt.estudiante.getApellido()+" "+ acceIt.estudiante.getNombre()+" "+acceIt.estudiante.getMail()));
+                      left.appendChild(li);
+             }
+    }
+    void anadir(){
+    
+                     Estudiantes acceIt = new Estudiantes(-1);
+                      Listitem li = new Listitem();
+                      acceIt.setMail(para.getValue());
+
+                     Representante repre = new Representante(-1);
+                      repre.setEmail("");
+                      repre.setMailpadre("");
+                      repre.setMailmadre("");
+                      acceIt.setRepresentante(repre);
+                      
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(" "+acceIt.getMail()));
+                     right.appendChild(li);
+                     para.setValue(null);
+    }
+
+]]>
+    </zscript>
+    <tabbox width="100%">
+        <tabs>
+            <tab label="Mensajes Recibidos"/>
+            <tab label="Enviar un Mensaje"/>
+        </tabs>
+        <tabpanels>
+            <tabpanel>
+                <panel>
+                    <panelchildren>
+
+                        <toolbar>
+                            <toolbarbutton  style="color:#346B93;font-weight:bold;" label ="Eliminar." >
+
+                                <attribute name="onClick">
+                        Set items = datos2.getSelectedItems();
+
+						if (items.isEmpty()) {
+                            return;
+						}
+                                int val = Messagebox.show("¿Seguro de eliminar el(los) Correo(s) seleccionado(s)?", "Seguridad", Messagebox.OK | Messagebox.NO, Messagebox.QUESTION);
+                            if(val == 1){
+                              borrar();
+                            }
+
+                                </attribute>
+
+                            </toolbarbutton>
+                             
+
+                            <toolbarbutton  onClick="refrescar()" style="color:#346B93;font-weight:bold;" label ="Refrescar"  />
+
+                        </toolbar>
+
+
+                        <listbox  fixedLayout="true" mold="paging" rows="20" pageSize="1500" onSelect="move();" id="datos2" width="100%" multiple="true" checkmark="true">
+                            <listhead>
+                                <listheader sort="auto" label="Asunto"/>
+                                <listheader width="40px" sort="auto" image="/images/adjunto001.gif" />
+                                <listheader sort="auto" label="Enviado por "/>
+                                <listheader sort="auto" label="Fecha"/>
+                            </listhead>
+                        </listbox>
+                    </panelchildren>
+                </panel>
+                <panel visible ="false" id="panel" framable="true" maximizable="true" width="98%" height="96%" style="position:absolute; top:1%; left:1%">
+                    <panelchildren>
+                        <toolbar  align="end">
+                            <toolbarbutton style="align:right"  label="Cerrar"  image ="/images/close.png" onClick='panel.setVisible(false)' />
+
+                        </toolbar>
+
+                        <grid width="100%" >
+                            <rows>
+
+                                <row>
+                                    <span style="float:right;weight:bold"> Enviado por:</span>
+                                    <label id="remitenten" />
+                                </row>
+                                <row>
+                                    <span style="float:right"> Asunto:</span>
+                                    <span >
+                                        <label id="tituloLeer"  />
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb"  visible="false" label="Descargar1">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data, "file", archivo);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb1" visible="false"  label="Descargar2">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data1, "file", archivo1);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb2"  visible="false" label="Descargar3">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data2, "file", archivo2);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb3" visible="false" label="Descargar4">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data3, "file", archivo3);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb4" visible="false"  label="Descargar5">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data4, "file", archivo4);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb5" visible="false"  label="Descargar6">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data5, "file", archivo5);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb6"  visible="false" label="Descargar7">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data6, "file", archivo6);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb7" visible="false"  label="Descargar8">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data7, "file", archivo7);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb8" visible="false"  label="Descargar9">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data8, "file", archivo8);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb9" visible="false"  label="Descargar10">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data9, "file", archivo9);
+                                            </attribute>
+                                        </toolbarbutton>
+                                        <toolbarbutton image="/images/adjunto001.gif" id="descargarb10" visible="false"  label="Descargar11">
+                                            <attribute name="onClick">
+                                            Filedownload.save(data10, "file", archivo10);
+                                            </attribute>
+                                        </toolbarbutton>
+                                    </span>
+
+                                </row>
+                                <row spans="2">
+
+                                    <fckeditor mold="default" height="350px"  id="contenidoLeer" customConfigurationsPath="/myconfig.js"  toolbarSet="Ninguno"  />
+                        <!--textbox rows="12" width="420px" id="contenido"  maxlength="100" cols="50" readonly="true"   /-->
+                                </row>
+
+                            </rows>
+                        </grid>
+                        <toolbar  align="end">
+                            <toolbarbutton style="align:right"  label="Cerrar"  image ="/images/close.png" onClick='panel.setVisible(false)' />
+
+                        </toolbar>
+                    </panelchildren>
+                </panel>
+
+            </tabpanel>
+
+            <tabpanel>
+              
+             <include src="/correoInterno.zul"/> 
+            </tabpanel>
+           
+        </tabpanels>
+    </tabbox>
+        	<listbox id="eliminados" visible= "false" multiple="true"  height="300px" oddRowSclass="non-odd"  fixedLayout="true" checkmark="true">
+					<listitem>
+						<listcell src="/img/Centigrade-Widget-Icons/Briefcase-16x16.png" label="ZK"/>
+					</listitem>
+
+				</listbox>		
+</window>
