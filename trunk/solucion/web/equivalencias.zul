@@ -229,14 +229,14 @@ void grupo(String tipo){
             rnota.visible = false;
             esfj.visible = false;
             esfi.visible = false;
-        if(tipo.equals("AP")){
+        if(tipo.equals("AP") || tipo.equals("DR")){
             rnombre.visible = true;
             rabreviatura.visible = true;
             rdesde.visible = true;
             rhasta.visible = true;
             rnota.visible = true;
+            //lbldesde.value = "Desde(*)";
             lbldesde.value = "Desde(*)";
-            lbldesde.value = "Hasta(*)";
             lblnombre.value = "Nombre(*)";
             lblabreviatura.value = "Abreviatura(*)";
              
@@ -330,6 +330,7 @@ void grupo(String tipo){
 						  <listitem  value="AP" label="Aprovechamiento"/>
                         <listitem  value="DI" label="Disciplina"/>
                         <listitem  value="SU" label="Supletorio"/>
+                        <listitem  value="DR" label="Rangos Disciplina"/>
 						
 					</listbox>
                 <button id="buscar"  image="/images/actualizar.png" label="Buscar" onClick="buscar(buscarText.selectedItem.getValue());"/> 

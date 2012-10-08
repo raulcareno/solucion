@@ -13,20 +13,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jcinform.persistencia.Cursos;
-import jcinform.persistencia.Disciplina;
-import jcinform.persistencia.Empleados;
-import jcinform.persistencia.Equivalencias;
-import jcinform.persistencia.Global;
-import jcinform.persistencia.MateriaProfesor;
-import jcinform.persistencia.Matriculas;
-import jcinform.persistencia.Notanotas;
-import jcinform.persistencia.Notas;
-import jcinform.persistencia.ParametrosGlobales;
-import jcinform.persistencia.Perfil;
-import jcinform.persistencia.Periodo;
-import jcinform.persistencia.Resultadoperfil;
-import jcinform.persistencia.Sistemacalificacion;
+import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
@@ -90,6 +77,11 @@ public class disciplina extends Rows {
                     + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
                     + "and o.grupo = 'DR' ");
         String query = "";
+          List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Boolean esCualitativa = regresaVariableParametrosLogico("DISCCUALITATIVA", parametrosGlobales);
+        String Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
+        String  Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
         }
@@ -134,7 +126,8 @@ public class disciplina extends Rows {
             int t = vec.size() - 1;
             Boolean deshabilitado = false;
             String color = "black";
-            for (int j = 0; j < vec.size(); j++) {
+            if(!esCualitativa){
+                   for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 label = new Decimalbox();
                 label3 = new Label();
@@ -229,6 +222,142 @@ public class disciplina extends Rows {
                 }
 
             }
+            }else{ // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
+                Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
+                Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
+                Listbox combo = new Listbox();
+                Listitem item = new Listitem("");
+
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+//                    notaTexto = new Decimalbox();
+                    combo.setTabindex(j);
+                    label3 = new Label();
+//                 label.setAttribute("onBlur", "alert(this)");
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new Double(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new Double(0.0);
+                    }
+                    if (j >= 2) {
+
+                        if (dos == null) {
+                            dos = equ.get(0);
+                        }
+                        combo = new Listbox();
+                        combo.setMold("select");
+                        combo.setWidth("50px");
+                        combo.setRows(1);
+                        combo.setStyle("font-size:9px;width:30px");
+                        for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
+                            Equivalencias equivalencias = it2.next();
+                            item = new Listitem("" + equivalencias.getAbreviatura());
+                            item.setValue(equivalencias);
+                            combo.appendChild(item);
+
+                        }
+                        if (dos instanceof Double) {
+                            dos = devolverNombre(equ, (((Double) dos).intValue()));
+                        }
+                        item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
+                        item.setValue(dos);
+                        combo.appendChild(item);
+                        combo.setSelectedItem(item);
+//                        Double valor = (Double) dos;
+//                        if (valor.equals(0.0)) {
+//                            notaTexto.setValue(new BigDecimal(0));
+//                        } else {
+//                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+//                        }
+
+                    } else {
+                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                        valor = valor.replace("[Emitir Pase]", "(PE)");
+                        valor = valor.replace("[Retirado]", "(R)");
+                        valor = valor.replace("[Recibir Pase]", "(PR)");
+                        valor = valor.replace("[Matriculado]", "");
+                        label3.setValue("" + valor);
+                    }
+//                                 label.setAttribute(q, dos);
+
+                    if (j == 0) {
+                        label3.setStyle(" ");
+//                    label3.setReadonly(true);
+                        row.appendChild(label3);
+                    } else if (j == 1) {
+                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                        if (label3.getValue().contains("(PE)")) {
+                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                            color = "red";
+                            deshabilitado = true;
+                        } else if (label3.getValue().contains("(R)")) {
+                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                            color = "blue";
+                            deshabilitado = true;
+                        }
+
+                        row.appendChild(label3);
+                    } else {
+                        if (!deshabilitado) {
+                            Date fechaActual = new Date();
+                            DateMidnight actual = new DateMidnight(fechaActual);
+                            int dat = j - 2;
+                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
+                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                            if (empleado.getTipo().equals("Interna")) {
+                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+
+                            }
+                            final double limite = ((Sistemacalificacion) sistemas.get(dat)).getNotalimite();
+
+                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+                                combo.setDisabled(false);
+                                combo.setStyle(Shabilitado);
+                            } else {
+                                combo.setDisabled(true);
+                                combo.setStyle(Sdeshabilitado);
+
+                            }
+
+                            try {
+                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                                if (empleado.getTipo().equals("Interna")) {
+                                    fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
+
+
+                                }
+//                            System.out.println("FECHA INICIAL: "+fecha);
+                                if (fecha.getDate() == 0) {
+                                    combo.setDisabled(true);
+                                    combo.setStyle(Sdeshabilitado);
+                                }
+                            } catch (Exception z) {
+                                combo.setDisabled(true);
+                                combo.setStyle(Sdeshabilitado);
+                            }
+
+                        } else {
+                            combo.setDisabled(true);
+                            combo.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+
+                        }
+
+                        row.appendChild(combo);
+
+                    }
+
+                    //row.appendChild(label);
+//                                 System.out.print(","+dos);
+                }
+
+
+                
+            }
+         
 
             row.setParent(this);
         }
@@ -268,13 +397,25 @@ public class disciplina extends Rows {
             Matriculas ma = (Matriculas) adm.buscarClave(new Integer(((Label) labels.get(0)).getValue()), Matriculas.class);
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
-                Decimalbox object1 = (Decimalbox) labels.get(j);
+                //Decimalbox object1 = (Decimalbox) labels.get(j);
+                String vaNota = "";//object1.getValue().toString();
+                  Listbox  objectListBox = null;
+                   Decimalbox  objectDecimalBox = null;
+//                   String vaNota="";
+                   if(labels.get(j) instanceof Listbox){
+                       objectListBox = (Listbox) labels.get(j);
+                       vaNota = ((Equivalencias) objectListBox.getSelectedItem().getValue()).getNota().toString();
+                   }else{
+                       objectDecimalBox = (Decimalbox) labels.get(j);
+                       vaNota = objectDecimalBox.getValue().toString();
+                   }
+                
                 String formula = notas.get(j - 2).getSistema().getFormuladisciplina(); // EN CASO DE FORMULA
                 formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                 String toda = notas.get(j - 2).getNota() + "";
 
                 toda = toda.substring(1, toda.length());
-                String vaNota = object1.getValue().toString();
+                
                 Double aCargar = 0.0;
                 if (vaNota.equals("")) {
                     aCargar = 0.0;
@@ -293,10 +434,7 @@ public class disciplina extends Rows {
     public String guardar(List col, Cursos curso, MateriaProfesor materia) {
         System.out.println("INICIO EN: " + new Date());
         Interpreter inter = new Interpreter();
-
         //  String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
-
-
         try {
             inter.eval(redon);
             inter.eval(prom1);
@@ -360,13 +498,25 @@ public class disciplina extends Rows {
                 inter.set("nota", nota);
                 int ta = labels.size() - 1;
                 for (int j = 2; j < labels.size(); j++) {
-                    Decimalbox object1 = (Decimalbox) labels.get(j);
+                    String vaNota ="";
+                    Listbox  objectListBox = null;
+                   Decimalbox  objectDecimalBox = null;
+//                   String vaNota="";
+                   if(labels.get(j) instanceof Listbox){
+                       objectListBox = (Listbox) labels.get(j);
+                       vaNota = ((Equivalencias) objectListBox.getSelectedItem().getValue()).getNota().toString();
+                   }else{
+                       objectDecimalBox = (Decimalbox) labels.get(j);
+                       vaNota = objectDecimalBox.getValue().toString();
+                   }
+                    
+//                    Decimalbox object1 = (Decimalbox) labels.get(j);
                     String formula = notas.get(j - 2).getSistema().getFormuladisciplina();// EN CASO DE FORMULA
                     formula = formula.replace("no", "nota.getNo");//EN CASO DE QUE HAYA FORMULA
                     String toda = notas.get(j - 2).getNota() + "";
                     String uno = toda.substring(0, 1).toUpperCase();
                     toda = toda.substring(1, toda.length());
-                    String vaNota = object1.getValue().toString();
+//                    String vaNota = object1.getValue().toString();
                     Double aCargar = 0.0;
                     if (vaNota.equals("")) {
                         aCargar = 0.0;
@@ -1061,4 +1211,62 @@ System.out.println("EL QUERY DE REALCULO: "+q);
 
         return null;
     }
+    
+    
+        public String regresaVariable(String variable, List<Textos> textos) {
+        String dato = "";
+        for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
+            Textos textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getMensaje();
+            }
+        }
+        return dato;
+    }
+
+    public String regresaVariableParametros(String variable, List<ParametrosGlobales> textos) {
+        String dato = "";
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getCvalor();
+            }
+        }
+        return dato;
+    }
+
+    public Double regresaVariableParametrosDecimal(String variable, List<ParametrosGlobales> textos) {
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getNvalor();
+            }
+        }
+
+        return 0.0;
+    }
+
+    public Boolean regresaVariableParametrosLogico(String variable, List<ParametrosGlobales> textos) {
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getBvalor();
+            }
+        }
+        return false;
+    }
+   public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
+
+        for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
+            Equivalencias equivalencias = it.next();
+            if (equivalencias.getValorminimo() <= codigo && codigo <= equivalencias.getValormaximo()) {
+                return equivalencias;
+            }
+        }
+        return equiva.get(0);
+
+
+    }
+    
+    
 }
