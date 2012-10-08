@@ -132,7 +132,8 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                     cobrar.setDescuento(new BigDecimal(0));
                                                     cobrar.setEfectivo(new BigDecimal(0));
                                                     cobrar.setCheque(new BigDecimal(0));
-                                                    cobrar.setDeposito(empf.getDebito());
+                                                    cobrar.setDeposito(new BigDecimal(0));
+                                                    cobrar.setBancario(empf.getDebito());
                                                     cobrar.setTarjeta(new BigDecimal(0));
                                                     cobrar.setNocheque("");
                                                     cobrar.setEmpleados(usuarioActual);
