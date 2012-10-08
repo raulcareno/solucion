@@ -135,6 +135,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                     cobrar.setDeposito(empf.getDebito());
                                                     cobrar.setTarjeta(new BigDecimal(0));
                                                     cobrar.setNocheque("");
+                                                    cobrar.setEmpleados(usuarioActual);
                                                     cobrar.setNotarjeta("");
                                                     if(cobrar.getHaber().doubleValue()>0){
                                                         adm.guardar(cobrar);
