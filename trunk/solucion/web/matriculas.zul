@@ -305,7 +305,24 @@ List matricula = adm.query("Select o from Matriculas as o where o.estudiante.cod
 //        Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
     }
 }
+void llenarTipoescuela(String tCasa){
+    List l = tipoEscuela.getChildren();
+    Boolean estado = false;
+            for (Iterator it = l.iterator(); it.hasNext();) {
+               Radio object = (Radio)it.next();
+               if(object.getLabel().equals(tCasa)){
+                   object.setSelected(true);
+                   estado = true;
+                   break;
+               }  
 
+           }
+           if(estado == false){
+                Radio object = (Radio)l.get(0);
+                   object.setSelected(true);
+           }
+
+}
 void llenarCasa(String tCasa){
     List l = casa.getChildren();
     Boolean estado = false;
@@ -356,6 +373,15 @@ void llenarMatricula(Matriculas matri){
          numero.value = matri.getNumero();
          folio.value = matri.getFolio();
          institucion.value = matri.getInstitucion();
+         escuela.value = matri.getEscuela();
+         lugarEscuela.value = matri.getLugarescuela();
+        try{
+             String tEsc = matri.getTipoescuela();
+            llenarTipoescuela(tEsc);
+         }catch(Exception abcd){
+         
+         }
+         
             if(matri.getPerdio()!=null){
                 perdio.checked = matri.getPerdio();
             }
@@ -421,6 +447,7 @@ void copiarpr(){
      apellidosre.value = apellidospa.value;
      telefonore.value = telefonopa.value;
      direccionre.value = direccionpa.value;
+     nacionalidadr.value = nacionalidadp.value;
 }
 
 void copiarmr(){
@@ -429,6 +456,7 @@ void copiarmr(){
      apellidosre.value = apellidosma.value;
      telefonore.value = telefonoma.value;
      direccionre.value = direccionma.value;
+     nacionalidadr.value = nacionalidadm.value;
 }
 
 
@@ -437,6 +465,7 @@ void copiarp(){
      nombresfac.value = apellidospa.value + " "+ nombrespa.value ;
      telefonofac.value = telefonopa.value;
      direccionfac.value = direccionpa.value;
+     nacionalidadr.value = nacionalidadp.value;
 }
 
 void copiarm(){
@@ -461,6 +490,9 @@ void llenarRepresentante(Representante repren){
     direccionre.value = repren.getDireccion();
     telefonore.value = repren.getTelefono();
     emailre.value = repren.getEmail();
+    nacionalidadr.value = repren.getNacionalidad();
+    nacionalidadm.value = repren.getNacionalidad();
+    nacionalidadp.value = repren.getNacionalidad();
 
      Listitem item = new Listitem();
      String tip = repren.getTipoidentificacion();
@@ -522,6 +554,12 @@ void estado(Boolean estado,Boolean modificar){
     barrio.readonly = estado;
     telefono.readonly = estado;
     genero.readonly = estado;
+    nacionalidad.readonly = estado;
+    nacionalidadr.readonly = estado;
+    nacionalidadp.readonly = estado;
+    nacionalidadm.readonly = estado;
+    escuela.readonly = estado;
+    lugarEscuela.readonly = estado;
     religion.readonly = estado;
     mail.readonly = estado;
     nacido.readonly = estado;
@@ -627,6 +665,7 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setDireccion(direccionre.value);
         representante0.setTelefono(telefonore.value);
         representante0.setEmail(emailre.value);
+        representante0.setNacionalidad(nacionalidadr.value);
 
         representante0.setTipoidentificacion(tipofac.selectedItem.value);
         representante0.setIdentificacionfactura(cedulafac.value);
@@ -643,6 +682,7 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setParentesco(parentesco.value);
         representante0.setProfesionpadre(profesionpa.value);
         representante0.setOcupacionpadre(ocupacionpa.value);
+        representante0.setNacionalidadp(nacionalidadp.value);
 
         representante0.setIdentificacionmadre(cedulama.value);
         representante0.setApemadre(apellidosma.value);
@@ -655,6 +695,7 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setUsuario(usuarior.value);
         representante0.setClave(permiso.encriptar(claver.value));
         representante0.setEstado(pendientes.checked);
+        representante0.setNacionalidadm(nacionalidadm.value);
  
          Boolean repreNuevo = false;
          Boolean estuNuevo = false;
@@ -911,6 +952,10 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setInstitucion(institucion.value);
         matricula.setPerdio(perdio.checked);
         matricula.setSuspenso(suspenso.checked);
+        matricula.setEscuela(escuela.value);
+        matricula.setLugarescuela(lugarEscuela.value);
+        matricula.setTipoescuela(tipoEscuela.getSelectedItem().getLabel());
+        
 
         try{
             matricula.setBeca((beca.value).doubleValue());
@@ -1617,9 +1662,21 @@ public void quitarFila(String codigoBuscar){
                                                             </combobox>
                                                         </row>
                                                         <row>
-                                                            <span style="float:right"> Fecha Nacimiento:</span>
+                                                            <span style="float:right"> Fec.Nacimiento:</span>
+                                                          <span>
                                                             <datebox id="nacido"  readonly="true"  />
-
+                                                            Sangre:
+                                                            <combobox width="25px" value="O+" id="tiposangre" readonly="true">
+                                                                <comboitem value="O+" label="O+"/>
+                                                                <comboitem value="O-" label="O-"/>
+                                                                <comboitem value="A+" label="A+"/>
+                                                                <comboitem value="A-" label="A-"/>
+                                                                <comboitem value="B+" label="B+"/>
+                                                                <comboitem value="B-" label="B-"/>
+                                                                <comboitem value="AB+" label="AB+"/>
+                                                                <comboitem value="AB-" label="AB-"/>
+                                                            </combobox>
+                                                           </span>
                                                         </row>
                                                         <row>
                                                             <span style="float:right"> Usuario:</span>
@@ -1706,8 +1763,10 @@ public void quitarFila(String codigoBuscar){
                                         <row>
                                             <span style="float:right"> Dirección:</span>
                                             <span>
-                                                <textbox id="direccionpa" maxlength="100" cols="40"  readonly="true"    />
+                                                <textbox id="direccionpa" maxlength="100" cols="30"  readonly="true"    />
                                                 <button label="..." onClick="direccionpa.value = direccion.value" />
+                                                Nacionalidad:
+                                                <textbox cols="10" id="nacionalidadp"  />
                                             </span>
                                         </row>
                                         <row>
@@ -1762,8 +1821,10 @@ public void quitarFila(String codigoBuscar){
                               
                                             <span style="float:right"> Dirección:</span>
                                             <span>
-                                                <textbox id="direccionma" maxlength="100" cols="40"  readonly="true"    />
+                                                <textbox id="direccionma" maxlength="100" cols="30"  readonly="true"    />
                                                 <button label="..." onClick="direccionma.value = direccion.value" />
+                                                 Nacionalidad:
+                                                <textbox cols="10" id="nacionalidadm"  />
                                             </span>
                                         </row>
                                         <row>
@@ -2060,11 +2121,7 @@ public void quitarFila(String codigoBuscar){
                                                             <span>
                                                                 <checkbox id="adventista" disabled="true" /> Es Nuevo?:
                                                                 <checkbox id="nuevo" disabled="true" />
-                                                            </span>
-
-                                                        </row>
-                                                        <row>
-                                                            <span style="float:right"> Religión:</span>
+                                                                  <span > Religión:</span>
                                                             <combobox id="religion" readonly="true">
                                                                 <comboitem  value="Ninguno" label="Ninguno"/>
                                                                 <comboitem value="Adventista" label="Adventista"/>
@@ -2075,6 +2132,28 @@ public void quitarFila(String codigoBuscar){
 
 
                                                             </combobox>
+                                                            </span>
+
+                                                        </row>
+                                                        <row>
+                                                            <span style="float:right"> Escuela Prov:</span>
+                                                            <span>
+                                                              <textbox id="escuela" maxlength="100" cols="18" readonly="true"  />
+                                                               Lugar: 
+                                                              <textbox id="lugarEscuela" maxlength="100" cols="18" readonly="true"  />
+                                                              
+                                                              </span>
+                                                        </row>
+                                                        
+                                                         <row>
+                                                            <span style="float:right">Tipo :</span>
+                                                            
+                                                              <radiogroup Id="tipoEscuela">
+                                                                     <radio selected="true" label="Fiscal"/>
+                                                                     <radio label="Particular"/>
+                                                                     <radio label="Municipal"/>
+                                                              </radiogroup>
+                                                              
                                                         </row>
                                           
                                     </rows>
@@ -2128,15 +2207,18 @@ public void quitarFila(String codigoBuscar){
                                             </span>
                                             <span>
                                                 <textbox id="direccionre" maxlength="100" cols="30"  readonly="true"    />
-                                                <span > Teléfono:</span>
-                                                <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
-                                
+                                                 Nacionalidad:
+                                                <textbox cols="10" id="nacionalidadr"  />
                                             </span>
                                         </row>
                                         
                                         <row>
-                                            <span style="float:right"> Email:</span>
-                                            <textbox id="emailre" maxlength="100" cols="40"  readonly="true"    />
+                                            <span > Teléfono:</span>
+                                            <span> 
+                                            <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
+                                            Email:
+                                            <textbox id="emailre" maxlength="100" cols="35"  readonly="true"    />
+                                            </span>
                                         </row>
                                         <row>
                                             <span  style="float:right">Parentesco</span>
