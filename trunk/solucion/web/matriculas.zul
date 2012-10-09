@@ -1700,7 +1700,36 @@ public void quitarFila(String codigoBuscar){
                                                 Provincia: 
                                             </span>
                                             <span>
-                                                <textbox cols="10" id="provincia"  />
+    
+                                                <combobox  id="provincia" width="65px" value="Azuay"  >
+                                                       <comboitem  label="AZUAY"/>
+                                                        <comboitem  label="BOLÍVAR"/>
+                                                        <comboitem  label="CAÑAR"/>
+                                                        <comboitem  label="CARCHI"/>
+                                                        <comboitem  label="CHIMBORAZO"/>
+                                                        <comboitem  label="COTOPAXI"/>
+                                                        <comboitem  label="EL ORO"/>
+                                                        <comboitem  label="ESMERALDAS"/>
+                                                        <comboitem  label="GUAYAS"/>
+                                                        <comboitem  label="IMBABURA"/>
+                                                        <comboitem  label="GALÁPAGOS"/>
+                                                        <comboitem  label="LOJA"/>
+                                                        <comboitem  label="LOS RÍOS"/>
+                                                        <comboitem  label="MANABÍ"/>
+                                                        <comboitem  label="MORONA-SANTIAGO"/>
+                                                        <comboitem  label="NAPO"/>
+                                                        <comboitem  label="ORELLANA"/>
+                                                        <comboitem  label="PASTAZA"/>
+                                                        <comboitem  label="PICHINCHA"/>
+                                                        <comboitem  label="SANTA ELENA"/>
+                                                        <comboitem  label="Sto. DOMINGO DE LOS TSÁCHILAS"/>
+                                                        <comboitem  label="SUCUMBÍOS"/>
+                                                        <comboitem  label="TUNGURAHUA"/>
+                                                        <comboitem  label="ZAMORA  CHINCHIPE" />
+
+                                                    </combobox>
+
+                                                
                                                 Canton:
                                                 <textbox cols="10"  id="canton"  />
                                             </span>
