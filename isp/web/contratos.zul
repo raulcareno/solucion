@@ -2783,8 +2783,8 @@ void llamar(){
                                          </combobox>
                                           <span style="float:right">   Facturar:</span>
                                            <radiogroup id="facturar" >
-                                            <radio disabled="true" id="si" value="SI" label="SI" style="font-weight:bold2" />
-                                            <radio disabled="true"  id="no"  value="NO"  label="NO" style="font-weight:bold2" />
+                                            <radio   id="si" value="SI" label="SI" style="font-weight:bold2" />
+                                            <radio  id="no"  value="NO"  label="NO" style="font-weight:bold2" />
                                           </radiogroup>
                                                            
                                         </row>
