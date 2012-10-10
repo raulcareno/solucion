@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+                <script type="text/javascript">
+                    function handleDrop(event, ui) {
+                        var droppedCar = ui.draggable;
+                        droppedCar.fadeOut('fast');
+                    }
+                </script>
+                <style type="text/css">
+                    .slot {
+                        width:150px;
+                        height:150px;
+                        display:block;
+                        background: lightgrey;
+                    }
+
+                    .blueslot {
+                        width:100%;
+                        height:200px;
+                        background: blue;
+                        display:block;
+                    }
+                    .panelito{
+                        vertical-align: top;
+                        margin: -5px -5px 0px 0px;
+                        border:none; 
+
+                        border-color: transparent; 
+                        text-align:center;
+
+
+                    }
+                    .panelGrande2{
+                        vertical-align: top;
+                        width: 150px; 
+                        text-align:center;
+                        margin: 0px 0px 0px 0px;
+                    }
+                    .panelGrande{
+
+                        width: 93px; 
+                        text-align:center;
+                        margin: 0px 0px 0px 0px;
+                        padding: -2px !important;
+                        border-width: 1px;
+                        border-color: black;
+                    }
+
+                    .textos{
+                        font-size: 9px;font-weight: bold; margin: -15px -5px -5px -5px; padding: -5px -5px -5px -5px; text-align:center;
+                    }
+                    .textos2{
+                        font-size: 9px;font-weight: bold; margin: -5px; text-align:center;
+                    }
+                    .textos3{
+                        font-size: 12px;font-weight: bold;   text-align:center; float:center;
+                        color: red ;
+                    }
+
+                </style>
+                <p:panel id="registro"  style="width: 100%;" header="Malla(Materias por Carrera)">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA: " /> 
+                    <h:selectOneMenu id="carreras" label="carreras" converter="ConvCarreras" value="#{carrerasMateriasSecuenciaBean.carreraSeleccionada}" rendered="true">
+                        <f:selectItems value="#{carrerasMateriasSecuenciaBean.selectedItemCarreras}"></f:selectItems>
+                        <p:ajax event="change" listener="#{carrerasMateriasSecuenciaBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars"/>
+                    </h:selectOneMenu>
+                    <p:graphicImage value="/images/plus.png"/>    
+                    Arrastre hacia abajo las materias que desea agregar 
+                    <p:graphicImage value="/images/minus.gif"/>   
+                    Si desea quitar presione el menos
+                    <p:graphicImage value="/images/anadir.gif"/>   
+                    Añadir otro pre-requisito adicional.
+                    <p:dataGrid emptyMessage="..." id="availableCars"  styleClass="panelito" style="padding: -5px -5px -5px -5px " 
+                                var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="9">  
+                        <p:column>  
+                            <p:panel  id="pnl" styleClass="panelGrande">  
+                                <f:facet name="header">
+                                    <p:graphicImage value="/images/plus.png"/>    
+                                    #{car.idMaterias.nombre}
+                                </f:facet>
+                                <h:panelGrid columns="1" style="text-align:justify;width:100%">  
+                                    <h:outputText styleClass="textos2"   value="#{car.idNiveles.nombre}" />     
+                                    <h:outputText styleClass="textos2"   value="#{car.idEjes.nombre}" />     
+                                    <h:outputText styleClass="textos2"   value="#{car.numeroHoras}H / #{car.numeroCreditos}C " />     
+                                </h:panelGrid>
+                            </p:panel>  
+                            <p:draggable  for="pnl" revert="true"  scope="#{car.idNiveles.secuencia}"  stack=".ui-panel"/>  
+
+
+                        </p:column>  
+
+                    </p:dataGrid> 
+
+                    <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97; margin-top:20px">  
+                        <p:outputPanel id="dropArea"> 
+                            <p:dialog header="AÑADIR OTRO PRE-REQUISITO COPIA DE LA LIBRETA MILITAR" id="hola" widgetVar="modalSubirLibreta" modal="true"
+                                      fixedCenter="true" width="440" visible="false" resizable="false">
+                                <p:panelGrid columns="2">  
+                                    <h:outputText value="MATERIA: " />
+                                    <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">
+                                        <f:selectItems value="#{carrerasMateriasSecuenciaBean.listaMateriasAdicionales2}" />
+                                    </h:selectOneMenu>
+                                     <p:inputText style="visibility: hidden" value="#{carrerasMateriasSecuenciaBean.idSeleccionado}" />  
+                                        <p:commandButton value="AÑADIR MATERIA SELECCIONADA" update="pais" action="#{carrerasMateriasSecuenciaBean.anadirAdicional}" icon="ui-icon-check" style="margin:0"/>  
+                                        
+                                     
+                                </p:panelGrid>
+                                <p:dataTable style="width:400px;" paginator="true" rows="5"  id="pais" var="obj" value="#{carrerasMateriasSecuenciaBean.adicionalesTmp}">  
+
+                                    <p:column headerText="MATERIA REQUISITO" style="width:30%">  
+                                        <h:outputText value="#{obj.idCarrerasMaterias.idMaterias.nombre}" />  
+                                    </p:column>  
+                                    <p:column style="width:10%">  
+                                        <p:commandButton id="eliminarButton" actionListener="#{carrerasMateriasSecuenciaBean.eliminar(obj)}"  
+                                                         update=":form"   icon="ui-icon-trash"  
+                                                         onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" 
+                                                         title="Eliminar"/>  
+                                    </p:column>  
+
+                                </p:dataTable>  
+                                <br />
+                                <p:commandButton type="button" value="SALIR">
+                                    <p:ajax oncomplete="modalSubirLibreta.hide();" />
+                                </p:commandButton>
+                            </p:dialog>
+                            <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="7">
+                                 
+                                    <h:outputText styleClass="textos3"  value="LUNES " />         
+                                    <h:outputText styleClass="textos3"  value="MARTES " />         
+                                    <h:outputText styleClass="textos3"  value="MIERCOLES" />         
+                                    <h:outputText styleClass="textos3"  value="JUEVES" />         
+                                    <h:outputText styleClass="textos3"  value="VIERNES" />         
+                                    <h:outputText styleClass="textos3"  value="SABADO" />         
+                                    <h:outputText styleClass="textos3"  value="DOMINGO" />         
+                                 
+                                 
+
+
+                                <c:forEach var="i" begin="0" end="20" step="1" varStatus ="status">
+                                    <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
+                                        <p:panel  id="f#{i}c#{j}" styleClass="panelGrande">  
+                                            <p:commandLink title="Quitar Elemento" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[i][j])}"  >
+                                                <p:graphicImage value="/images/minus.gif"/>   
+                                            </p:commandLink>
+                                            <p:commandLink title="Añadir Otro Prerequisito" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  actionListener="#{carrerasMateriasSecuenciaBean.seleccionado(i,j)}"  oncomplete="modalSubirLibreta.show()" update=":form"  >
+                                                <p:spacer width="15"/>   
+                                                <p:graphicImage value="/images/anadir.gif"/>   
+                                            </p:commandLink>
+                                            <p:spacer height="20" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                            <h:outputText style="color: #045491" value="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre}"  />
+                                            <p:spacer width="7"/>   
+                                            <h:outputText styleClass="textos"  rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  value="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].numeroHoras}H/#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].numeroCreditos}C" />     
+                                            
+                                        </p:panel>
+
+                                    </c:forEach>
+
+                                </c:forEach>
+                            </h:panelGrid>
+
+                            <c:forEach var="k" begin="0" end="20" step="1" varStatus ="status4">
+                                <c:forEach var="m" begin="0" end="6" step="1" varStatus ="status5">
+                                    <p:droppable for="f#{k}c#{m}" tolerance="pointer"  activeStyleClass="ui-state-highlight"  scope="#{m+1}" datasource="availableCars" onDrop="handleDrop">  
+                                            <p:ajax listener="#{carrerasMateriasSecuenciaBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                                     </p:droppable> 
+                                </c:forEach>
+                            </c:forEach>
+
+                        </p:outputPanel>  
+
+                    </p:fieldset>  
+
+                    <h:panelGrid columns="4">
+
+                        <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  
+                            <p:printer target="selectedCars" />  
+                        </p:commandButton>  
+                        <p:commandButton  value="Guardar"  id="guardar"  
+                                          action="#{carrerasMateriasSecuenciaBean.guardar()}"  
+                                          icon="ui-icon-disk" title="Guardar"/>  
+
+                    </h:panelGrid>
+                </p:panel>
+
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

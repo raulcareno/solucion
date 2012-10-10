@@ -5,6 +5,7 @@
 package bean;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,8 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import jcinform.persistencia.Notas;
+import jcinform.persistencia.Periodos;
 import jcinform.persistencia.SistemaNotas;
 import jcinform.procesos.Administrador;
  
@@ -37,7 +40,7 @@ public class SistemaNotasBean {
     public String textoBuscar;
     Permisos permisos;
    Auditar  aud = new Auditar();
-
+                Periodos per;
     public SistemaNotasBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
@@ -45,6 +48,7 @@ public class SistemaNotasBean {
 //        if (s != null) {
 //            System.out.println(s);
 //        }
+         per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
         if (adm == null) {
             adm = new Administrador();
         }
@@ -61,6 +65,7 @@ public class SistemaNotasBean {
 //                Logger.getLogger(SistemaNotasBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        inicializar();
         //selectedSistemaNotas = new SistemaNotas();
 
     }
@@ -75,6 +80,7 @@ public class SistemaNotasBean {
 
     protected void inicializar() {
         object = new SistemaNotas(0);
+        object.setNota(disponible());
         cargarDataModel();
     }
 
@@ -87,7 +93,10 @@ public class SistemaNotasBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
             return null;
         }
+
+        object.setIdPeriodos(per);
         if (object.getIdSistemaNotas() == 0) {
+            
             if (!permisos.verificarPermisoReporte("SistemaNotas", "agregar_modalidad", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
@@ -152,7 +161,7 @@ public class SistemaNotasBean {
      */
     public List<SelectItem> getSelectedItem() {
         try {
-            List<SistemaNotas> datos = adm.query("Select o from SistemaNotas as o");
+            List<SistemaNotas> datos = adm.query("Select o from SistemaNotas as o ORDER BY o.idSistemaNotas");
             List<SelectItem> items = new ArrayList<SelectItem>();
             for (SistemaNotas obj : datos) {
                 items.add(new SelectItem(obj, obj.getNombre()));
@@ -170,7 +179,8 @@ public class SistemaNotasBean {
      */
     public void cargarDataModel() {
         try {
-            model = (adm.listar("SistemaNotas"));
+            //model = (adm.listar("SistemaNotas"));
+            model = adm.query("Select o from SistemaNotas as o where o.idPeriodos.idPeriodos = '"+per.getIdPeriodos()+"' ");
             setModel(model);
 
         } catch (Exception e) {
@@ -181,6 +191,36 @@ public class SistemaNotasBean {
 
     public void limpiar() {
         object = new SistemaNotas(0);
+        object.setNota(disponible());
+    }
+public String disponible() {
+        Field[] a = Notas.class.getDeclaredFields();
+        ArrayList arregloTodos = new ArrayList();
+ 
+        for (Field field : a) {
+            if (field.getName().contains("nota") && !field.getName().equals("id_notas")) {
+                arregloTodos.add(field.getName());
+            }
+        }
+       List<SistemaNotas> notassistemas = adm.query("Select o from SistemaNotas as o where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos()  + "'");
+        
+        ArrayList arregloAsignadas = new ArrayList();
+        for (SistemaNotas notanotas : notassistemas) {
+            arregloAsignadas.add(notanotas.getNota());
+        }
+
+        for (Iterator<SistemaNotas> it = notassistemas.iterator(); it.hasNext();) {
+        SistemaNotas sistemaNotas = it.next();
+         String aborrar = sistemaNotas.getNota();
+            int i = arregloTodos.indexOf(aborrar);
+            //alert(i);
+            if (i != -1) {
+                arregloTodos.remove(i);
+            }
+        }
+ 
+        return arregloTodos.get(0).toString();
+
     }
 
     /**
