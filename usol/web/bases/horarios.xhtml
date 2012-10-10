@@ -139,8 +139,10 @@
                                     <p:ajax oncomplete="modalSubirLibreta.hide();" />
                                 </p:commandButton>
                             </p:dialog>
-                            <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="7">
+                            <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="8">
                                  
+                                    
+                                    <h:outputText styleClass="textos3"  value="HORA" />     
                                     <h:outputText styleClass="textos3"  value="LUNES " />         
                                     <h:outputText styleClass="textos3"  value="MARTES " />         
                                     <h:outputText styleClass="textos3"  value="MIERCOLES" />         
@@ -153,7 +155,9 @@
 
 
                                 <c:forEach var="i" begin="0" end="20" step="1" varStatus ="status">
+                                    <h:outputText  value="HORA #{i}" />             
                                     <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
+                                    
                                         <p:panel  id="f#{i}c#{j}" styleClass="panelGrande">  
                                             <p:commandLink title="Quitar Elemento" rendered="#{carrerasMateriasSecuenciaBean.anadidasArray[i][j].idMaterias.nombre != ''}"  update=":form" actionListener="#{carrerasMateriasSecuenciaBean.onCarrerasInvDrop(carrerasMateriasSecuenciaBean.anadidasArray[i][j])}"  >
                                                 <p:graphicImage value="/images/minus.gif"/>   
