@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+                <h:panelGrid width="100%"  columns="3">
+                    <p:dataTable style="position: relative;width:300px;height: 300px"  id="modalidad" var="obj" value="#{sistemaNotasBean.model}">  
+                        <p:column headerText="DESCRIPCION" style="width:10%">  
+                            <p:panelGrid columns="2">
+                                <h:outputText value="#{obj.nombre} #{obj.nota}" />  
+                                <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{sistemaNotasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar"/>  
+                            </p:panelGrid>
+
+                        </p:column>  
+                    </p:dataTable>  
+                    <p:panel id="registro"  style="width: 400px;" header="APORTES QUE SE INGRESAN">
+                        <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
+                        <!--p:message for="form" /-->
+                        <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                        <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                            <h:outputText value="NOMBRE" />  
+                            <p:inputText value="#{sistemaNotasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:outputText value="ABREVIATURA" />  
+                            <p:inputText value="#{sistemaNotasBean.object.nombre}" id="abreviatura"  maxlength="10" size="35"  style="font-weight:bold;"/>  
+                            <h:outputText value="FORMULA" />  
+                            <p:inputText value="#{sistemaNotasBean.object.nombre}" id="formula"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:outputText value="ES ASISTENCIA" />  
+                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esasistencia}" id="esasistencia"   style="font-weight:bold;"/>  
+
+                            <h:outputText value="ES GPA" />  
+                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esgpa}" id="esgpa"   style="font-weight:bold;"/>  
+
+                            <h:outputText value="ES NOTA" />  
+                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esnota}" id="esnota"   style="font-weight:bold;"/>  
+
+                            <h:outputText value="ES EXAMEN" />  
+                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esexamen}" id="esexamen"   style="font-weight:bold;"/>  
+
+                            <h:outputText value="SE IMPRIME" />  
+                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.seimprime}" id="seimprime"   style="font-weight:bold;"/>  
+
+
+
+
+
+
+                            <p:inputText  value="#{sistemaNotasBean.object.idSistemaNotas}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+
+                        </h:panelGrid>  
+                        <h:panelGrid columns="4">
+                            <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:modalidad"   action="#{sistemaNotasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                            <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{sistemaNotasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                            </p:commandButton> 
+
+                        </h:panelGrid>
+                    </p:panel>
+
+                </h:panelGrid>
+
+
+
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>
