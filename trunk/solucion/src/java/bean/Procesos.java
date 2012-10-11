@@ -49,7 +49,7 @@ public class Procesos {
             Cursos cursos = ist.next();
 
             List<Matriculas> matriculas = adm.query("Select o from Matriculas as o " +
-                    "where o.curso.codigocur = '" + cursos.getCodigocur() + "' ");
+                    "where o.curso.codigocur = '" + cursos.getCodigocur() + "' and  o.estado in ('Matriculado','Recibir Pase') ");
             if (notas.size() > 0) {
                 if (matriculas.size() > 0) {
                 Notanotas no = notas.get(0);
@@ -183,7 +183,7 @@ public class Procesos {
             Cursos cursos = ist.next();
 
             List<Matriculas> matriculas = adm.query("Select o from Matriculas as o " +
-                    "where o.curso.codigocur = '" + cursos.getCodigocur() + "' ");
+                    "where o.curso.codigocur = '" + cursos.getCodigocur() + "' and o.estado in ('Matriculado','Recibir Pase')  ");
             if (notas.size() > 0) {
                 if (matriculas.size() > 0) {
                 Notanotas no = notas.get(0);
@@ -302,7 +302,7 @@ public class Procesos {
             Cursos cursos = ist.next();
 
             List<Matriculas> matriculas = adm.query("Select o from Matriculas as o " +
-                    "where o.curso.codigocur = '" + cursos.getCodigocur() + "' ");
+                    "where o.curso.codigocur = '" + cursos.getCodigocur() + "'  and  o.estado in ('Matriculado','Recibir Pase')  ");
             if (notas.size() > 0) {
                 Notanotas no = notas.get(0);
                  System.out.println("CURSO: "+cursos.getDescripcion()+" "+ cursos.getEspecialidad());

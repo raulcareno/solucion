@@ -1223,7 +1223,7 @@ public class reportesClase {
                             obs = "";
                         }
                         sumatoria = val;
-                    } else if (nota.getSistema().getPromediofinal().equals("PG")) {
+                    } else if (nota.getSistema().getPromediofinal().equals("PF")) {
                         if (val < sumaPierde && validaConPromedioGeneral) {
                             obs = "Pierde";
                             System.out.println("pierde PG (1):" + matricula + " mat:" + materia + " not:" + val);
