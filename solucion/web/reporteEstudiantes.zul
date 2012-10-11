@@ -692,6 +692,7 @@ public JRDataSource transporte(ArrayList listadodeCursos,String tipo){
             return ds;
 
 }
+
 public JRDataSource nuevos(ArrayList listadodeCursos, String tipo){
        String curso =  "";
     for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
@@ -710,6 +711,63 @@ public JRDataSource nuevos(ArrayList listadodeCursos, String tipo){
                             "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
                             "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
                             " and mat.curso.codigocur in ("+curso+") and  mat.nuevo = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+public JRDataSource migrantes(ArrayList listadodeCursos, String tipo){
+       String curso =  "";
+        for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+          }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+     Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " and mat.curso.codigocur in ("+curso+") and  mat.migrantes = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+
+public JRDataSource ministerio(ArrayList listadodeCursos, String tipo){
+       String curso =  "";
+        for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+          }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+     Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " and mat.curso.codigocur in ("+curso+") and  mat.ministerio = true  " +
                             " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
                     List hoy = adm.query(query);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -876,6 +934,14 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LINT2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"fechadiscapacidad.jasper");
+            }else if(tipo.equals("LMIG")){
+                    datasource = migrantes(listadoCursos,"LMIG");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"con1casilleros.jasper");
+            }else if(tipo.equals("LMIS")){
+                    datasource = ministerio(listadoCursos,"LMIS");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"con1casilleros.jasper");
             }else if(tipo.equals("LREL")){
                     datasource = certificados(listadoCursos,"LREL",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1170,6 +1236,8 @@ void campos(String valor){
             titulo.value = "Listado de Estudiantes";
       if(valor.equals("LINT2"))
             titulo.value = "Listado de Estudiantes";
+      if(valor.equals("LMIG") || valor.equals("LMIS")  )
+            titulo.value = "Listado de Estudiantes";
 
         if(valor.equals("LMAT3")){
            titulo.value = "CUADRO DE ESTUDIANTES MATRICULADOS";
@@ -1205,17 +1273,6 @@ void campos(String valor){
                                 <listitem  id="CAP" label="Certificado de Años Aprobados" value="CAP" />
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
-                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
-                                <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
-                                <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
-                                <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
-                                <listitem  id="INS5" label="Listado de Pre-aprobados(Escuela)" value="INS5" />
-                                <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
-                                <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
-                                <listitem  id="INS99" label="Listado de Pre-aprobados(Solo Claves)" value="INS99" />
-                                <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
-                                <listitem  id="LCLA33" label="Claves de Inscritos para Matriculación" value="LCLA33"/>
-                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
                                 <listitem  id="LMAT" label="Matriculados" value="LMAT" />
                                 <listitem  id="LMATYR" label="Matriculados con Retirados" value="LMATYR" />
@@ -1257,7 +1314,20 @@ void campos(String valor){
                                 <listitem  id="LREL"  label="Estudiantes por Religión" value="LREL"/>
                                 <listitem  id="LREL2" label="Totalizado por Religión" value="LREL2" />
                                 <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
+                                <listitem  id="LMIG" label="Estudiantes con Padres Migrantes" value="LMIG"/>
+                                <listitem  id="LMIS" label="Estudiantes con Cupo del Ministerio" value="LMIS"/>
                                 <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
+                                <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
+                                <listitem  id="INS4" label="Listado de Pre-aprobados" value="INS4" />
+                                <listitem  id="INS5" label="Listado de Pre-aprobados(Escuela)" value="INS5" />
+                                <listitem  id="INS6" label="Listado de Pre-aprobados(Inf. Verificada)" value="INS6" />
+                                <listitem  id="INS7" label="Listado de Pre-aprobados(Impresión Ficha Individual)" value="INS7" />
+                                <listitem  id="INS99" label="Listado de Pre-aprobados(Solo Claves)" value="INS99" />
+                                <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
+                                <listitem  id="LCLA33" label="Claves de Inscritos para Matriculación" value="LCLA33"/>
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                
                             </listbox>
                         </row>
                          <row  id="filaverificada" visible="false" style="background:transparent;border:0px" >
@@ -1440,6 +1510,8 @@ void campos(String valor){
             LSEG.visible = per.verificarPermisoReporte("LSEG", "Ingresar");
             LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LMIG.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+            LMIS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
             LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LREL2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
             LCLA33.visible = per.verificarPermisoReporte("LCLA33", "Ingresar");

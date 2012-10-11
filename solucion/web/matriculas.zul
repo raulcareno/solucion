@@ -397,6 +397,13 @@ void llenarMatricula(Matriculas matri){
          
             }
 
+            if(matri.getMigrantes()!=null){
+                migrantes.checked = matri.getMigrantes();
+            }
+            if(matri.getMinisterio()!=null){
+                ministerio.checked = matri.getMinisterio();
+            }
+         
          try{
             beca.value = new BigDecimal(matri.getBeca());
             otros.value = new BigDecimal(matri.getOtros());
@@ -955,6 +962,8 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setEscuela(escuela.value);
         matricula.setLugarescuela(lugarEscuela.value);
         matricula.setTipoescuela(tipoEscuela.getSelectedItem().getLabel());
+        matricula.setMigrantes(migrantes.checked);
+        matricula.setMinisterio(ministerio.checked);
         
 
         try{
@@ -1899,8 +1908,7 @@ public void quitarFila(String codigoBuscar){
                                                     </span>
                                                     <span>
                                                         <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
-                                                        Con quién vive (*):
-                                        
+                                                        Vive con(*):
                                                         <combobox value="Padres"  id="vivecon" >
                                                             <comboitem label="Padres"/>
                                                             <comboitem label="Solo Madre"/>
@@ -1909,6 +1917,7 @@ public void quitarFila(String codigoBuscar){
                                                             <comboitem label="Tíos"/>
                                                             <comboitem label="Encargado a Otros"/>
                                                         </combobox>
+                                                        <checkbox id="migrantes" label=" ¿Son Migrantes?" />
                                                     </span>
                                                 </row>
                                                 <row >
@@ -2176,12 +2185,15 @@ public void quitarFila(String codigoBuscar){
                                                         
                                                          <row>
                                                             <span style="float:right">Tipo :</span>
-                                                            
-                                                              <radiogroup Id="tipoEscuela">
+                                                            <span>
+                                                                  <radiogroup Id="tipoEscuela">
                                                                      <radio selected="true" label="Fiscal"/>
                                                                      <radio label="Particular"/>
                                                                      <radio label="Municipal"/>
                                                               </radiogroup>
+                                                                <checkbox id="ministerio" label="¿Es cupo del Ministerio?" />
+                                                            </span>
+                                                            
                                                               
                                                         </row>
                                           
