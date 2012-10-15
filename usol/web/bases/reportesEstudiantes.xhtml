@@ -20,7 +20,7 @@
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="REPORTE DE: " />  
-                        <p:selectOneMenu value="#{reportesBean.tipoReporte}" >  
+                        <p:selectOneMenu value="#{reportesBean.tipoReporte}"   style="width:360px" >  
                             <f:selectItem itemLabel="Seleccione..." itemValue="" />  
                             <f:selectItem itemLabel="Ficha de Matricula" itemValue="FM" />  
                             <f:selectItem itemLabel="Ficha de Inscripcion" itemValue="FI" />  
@@ -28,24 +28,37 @@
                         </p:selectOneMenu> 
                         <h:outputText value="SELECCIONE LA CARRERA: " />  
                         <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{reportesBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
-                            <f:selectItems value="#{matriculasBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
+                            <f:selectItems value="#{reportesBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
                             <p:ajax event="change" listener="#{reportesBean.buscarMatriculas()}"  update="multiMatriculas" />  
                         </p:selectOneMenu>  
 
-                        <h:outputText value="SELECCIONE EL/LOS ESTUDIANTES: " />  
-                        <p:dataTable style="height: 200px" id="multiMatriculas" var="mat" value="#{reportesBean.mediumMatriculasModel}"   rows="10"  
-                                     selection="#{reportesBean.selectedMatricula}">  
-                            <p:column selectionMode="multiple" style="width:18px" />  
-                            <p:column headerText="Estudiante">  
+                        <h:outputText value="SELECCIONE LOS ESTUDIANTES: " />  
+                        
+                        <p:dataTable  style="height: 200px" id="multiMatriculas" var="mat" value="#{reportesBean.mediumMatriculasModel}"   rows="10" >  
+                            <p:column style="align:center">  
+                                <f:facet name="header">  
+                                 <p:selectBooleanCheckbox value="#{reportesBean.todos}" id="todos" itemLabel="TODOS">
+                            <p:ajax update="multiMatriculas"  event="change"   listener="#{reportesBean.seleccionarTodos()}" />  
+                        </p:selectBooleanCheckbox>  
+                                </f:facet>  
+                                <p:selectBooleanCheckbox value="#{mat.confirmada}" />  
+                             </p:column>
+                            
+                             <p:column>  
+                                <f:facet name="header">  
+                                        Estudiantes
+                                </f:facet>  
                                 <h:outputText value="#{mat.idEstudiantes.apellidoPaterno}  #{mat.idEstudiantes.nombre}" />  
-                            </p:column>  
+                            </p:column>
+ 
                         </p:dataTable>  
+                        <h:outputText value="." />  
 
                     </h:panelGrid>  
-                    <h:panelGrid columns="4">
-                        <p:splitButton  value="PDF" ajax="false"  actionListener="#{reportesBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
-                            <p:menuitem value="EXCEL" ajax="false" actionListener="#{reportesBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
-                            <p:menuitem value="WORD" ajax="false" actionListener="#{reportesBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
+                    <h:panelGrid columns="3">
+                        <p:splitButton style="width: 100px"  value="PDF" ajax="false"  actionListener="#{reportesBean.verReporte('PDF')}"   icon="ui-icon-print">  
+                            <p:menuitem value="EXCEL" ajax="false" actionListener="#{reportesBean.verReporte('XLS')}"  icon="ui-icon-print"/>  
+                            <p:menuitem value="WORD" ajax="false" actionListener="#{reportesBean.verReporte('DOCX')}"  icon="ui-icon-print"/>  
                         </p:splitButton>                          
                     </h:panelGrid>
                 </p:panel>

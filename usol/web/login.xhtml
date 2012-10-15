@@ -55,7 +55,7 @@
                                           
                                         <p:selectOneMenu required="true" id="periodo" label="periodo"  value="#{loginBean.periodoSeleccionado}" effect="fade" converter="ConvPeriodos">  
                                             <f:selectItem itemLabel="SELECCIONE UN PERIODO" itemValue="" />  
-                                             <f:selectItems value="#{loginBean.selectedItemPeriodos}" var="ob"  itemValue="#{ob}"/>  
+                                             <f:selectItems value="#{loginBean.selectedItemPeriodos}" var="ob"  itemLabel="#{ob}"   itemValue="#{ob}"/>  
                                          </p:selectOneMenu>  
                                         <f:verbatim/><f:verbatim/>
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="ui-icon-key" ajax="true" />  
