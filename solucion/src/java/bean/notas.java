@@ -507,7 +507,7 @@ public class notas extends Rows {
             if(codigosNotas.size()>0){
                 for (Iterator it = codigosNotas.iterator(); it.hasNext();) {
                     Object object = it.next();
-                    codigosNotasString +=object.toString()+",";
+                    codigosNotasString +="'"+object.toString()+"',";
                 }
                 System.out.println(""+codigosNotasString);
                 codigosNotasString = codigosNotasString.substring(0,codigosNotasString.length()-1);
@@ -558,7 +558,7 @@ public class notas extends Rows {
             }
             if(codigosNotasString.length()>0){
                     String del = "Delete from Notas where codigonot in  ("+codigosNotasString+")  ";
-            adm.ejecutaSql(del);
+                    adm.ejecutaSql(del);
             }
             recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
