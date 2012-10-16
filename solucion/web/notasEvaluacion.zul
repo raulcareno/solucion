@@ -30,8 +30,9 @@ Boolean guardando = false;
 Empleados user =  (Empleados)ses.getAttribute("user");
 List cursos = null;
     if(user.getTipo().equals("Interna")){
-        cursos = adm.query("Select o.curso from MateriaProfesor as o " +
-          " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
+           " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
     }else{
         cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
           " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
