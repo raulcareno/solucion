@@ -54,6 +54,14 @@ void llenarCliente(Clientes cli){
            codigocli.value = cli.getCodigo()+"";
             email.value = cli.getEmail()+"";
             apellidos.value = cli.getApellidos()+" "+cli.getNombres();//cliente
+             String tipoIde = cli.getTipoidentificacion()+"";
+       if(tipoIde.equals("C")){
+            cedula.selected = true;
+        }else if(tipoIde.equals("R")){
+            ruc.selected = true;
+        }else if(tipoIde.equals("P")){
+            pasaporte.selected = true;
+        }  
        
 
 }
@@ -76,7 +84,18 @@ void llenar(Contratos  equi2){
      System.out.println("error en forma de pago null: "+err);
      efe.checked = true;
      }
-    
+     try{
+     String tipoIde = equi2.getSerie3()+"";
+       if(tipoIde.equals("SI")){
+            si.selected = true;
+        }else if(tipoIde.equals("NO")){
+            no.selected = true;
+        }else{
+            si.selected = true;
+        }  
+     }catch(Exception er){
+            si.selected = true;
+     }
     registro.setSelected(true);
     try{
      if(equi.getClientes()!=null){
@@ -580,6 +599,14 @@ llenarCliente(Clientes clienteEn){
      apellidos.value = clienteEn.getApellidos();
      nombres.value = clienteEn.getNombres() ;
      razonsocial.value = clienteEn.getRazonsocial();
+      String tipoIde = clienteEn.getTipoidentificacion()+"";
+       if(tipoIde.equals("C")){
+            cedula.selected = true;
+        }else if(tipoIde.equals("R")){
+            ruc.selected = true;
+        }else if(tipoIde.equals("P")){
+            pasaporte.selected = true;
+        }  
      
 
 }
@@ -1648,6 +1675,21 @@ void llamar(){
                                             <textbox cols="15" readonly="true" id="ip" />
                                             <span style="float:right"> Autorizado a Inst(*):</span>
                                             <checkbox id="autorizado" disabled="true"  />
+                                                           
+                                        </row>
+                                          <row visible="true">
+                                            <span style="float:right">   Tipo Plan(*):</span>
+                                         <combobox id="tipoplan" value="Medio Inalambrico">
+                                            <comboitem label="Cobre" value="Cobre" />
+                                            <comboitem label="Cable Coaxial" value="Cable Coaxial" />
+                                            <comboitem label="Fibra Óptica" value="Fibra Óptica" />
+                                            <comboitem label="Medio Inalambrico" value="Medio Inalambrico" />
+                                         </combobox>
+                                          <span style="float:right">   Facturar:</span>
+                                           <radiogroup id="facturar" >
+                                            <radio   id="si" value="SI" label="SI" style="font-weight:bold2" />
+                                            <radio  id="no"  value="NO"  label="NO" style="font-weight:bold2" />
+                                          </radiogroup>
                                                            
                                         </row>
                                         <row>

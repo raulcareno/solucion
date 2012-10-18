@@ -2,13 +2,13 @@
 <zk  xmlns="http://www.zkoss.org/2005/zul">
     <window  onClose="cerrar()" onCreate="cargar()" width="650px" id="facturarCliente">
            <style>
-.MyGridRowHeight
-tr.z-row td.z-row-inner
-{
-border:1px solid white;
-border-right:1px solid transparent;
-padding:0px;
-} 
+            .MyGridRowHeight
+            tr.z-row td.z-row-inner
+            {
+            border:1px solid white;
+            border-right:1px solid transparent;
+            padding:0px;
+            } 
     </style>
         <zscript>
             <![CDATA[
