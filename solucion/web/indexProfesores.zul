@@ -3,162 +3,162 @@
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <borderlayout  onCreate="verificar();cargando();"   height="100%">
+    <borderlayout  onCreate="verificar();cargando();cargando2();"   height="100%">
         <zscript>
 
             import jcinform.persistencia.*;
-   import jcinform.procesos.Administrador;
+            import jcinform.procesos.Administrador;
             import bean.Permisos;
 
 
-                   Administrador adm = new Administrador();
+            Administrador adm = new Administrador();
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
             Executions.sendRedirect("login.zul");
             }
-     void ingresar(Listitem item ){
+            void ingresar(Listitem item ){
             try{
                        
-                        if(buscar("c" + (String)item.getId())){
-                                   Tab newtb= new Tab(""+item.label);
-                                    newtb.setSelected(true);
-                                    newtb.setClosable(true);
-                                    newtb.setId("c"+item.id);
-                                    newtb.setImage(""+item.image);
-                                    newtb.setParent(tbs);
+            if(buscar("c" + (String)item.getId())){
+            Tab newtb= new Tab(""+item.label);
+            newtb.setSelected(true);
+            newtb.setClosable(true);
+            newtb.setId("c"+item.id);
+            newtb.setImage(""+item.image);
+            newtb.setParent(tbs);
 
-                                    Tabpanel newtpl = new Tabpanel();
-                                    Iframe f = new Iframe(item.value);
-                                    f.setWidth("100%");
-                                    f.setHeight("100%");
-                                    newtpl.appendChild(f);
-                                    newtpl.setParent(tps);
-                        }
-                        }catch(Exception e){
-                        alert(""+e);
-                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            Tabpanel newtpl = new Tabpanel();
+            Iframe f = new Iframe(item.value);
+            f.setWidth("100%");
+            f.setHeight("100%");
+            newtpl.appendChild(f);
+            newtpl.setParent(tps);
+            }
+            }catch(Exception e){
+            alert(""+e);
+            Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
 
-                        }
+            }
             }
 
             public Boolean buscar(String id){
-                    List tabes = tbs.getChildren();
-                    for (Iterator it = tabes.iterator(); it.hasNext();) {
-                        Tab object = (Tab) it.next();
-                        String ide = object.getId();
+            List tabes = tbs.getChildren();
+            for (Iterator it = tabes.iterator(); it.hasNext();) {
+            Tab object = (Tab) it.next();
+            String ide = object.getId();
                         
-                        if(ide.equals(id)){
+            if(ide.equals(id)){
                           
-                            object.setSelected(true);
-                            return false;
-                        }
-                    }
-                return true;
+            object.setSelected(true);
+            return false;
+            }
+            }
+            return true;
             }
 
             void cambio(){
-                    Permisos permisos = new Permisos();
-                    Periodo perio = (Periodo)periodo.selectedItem.value;
-                    a.removeAttribute("periodo");
-                    a.setAttribute("periodo",perio);
-                    Executions.sendRedirect("indexProfesores.zul");
+            Permisos permisos = new Permisos();
+            Periodo perio = (Periodo)periodo.selectedItem.value;
+            a.removeAttribute("periodo");
+            a.setAttribute("periodo",perio);
+            Executions.sendRedirect("indexProfesores.zul");
             }
             void salir(){
-              List curses = adm.query("Select o from Cursos as o where o.ocupador = '"+emp.getCodigoemp()+"' ");
-               for (Iterator it = curses.iterator(); it.hasNext();) {
-                      Cursos cur = (Cursos) it.next();
-                                cur.setOcupado(false);
-                                cur.setOcupador(null);
-                                adm.actualizar(cur);
-                            }
-                Executions.sendRedirect("login.zul");
-                Session a = Sessions.getCurrent();
-                a.removeAttribute("accesos");
-                a.removeAttribute("user");
-                a.invalidate();
+            List curses = adm.query("Select o from Cursos as o where o.ocupador = '"+emp.getCodigoemp()+"' ");
+            for (Iterator it = curses.iterator(); it.hasNext();) {
+            Cursos cur = (Cursos) it.next();
+            cur.setOcupado(false);
+            cur.setOcupador(null);
+            adm.actualizar(cur);
+            }
+            Executions.sendRedirect("login.zul");
+            Session a = Sessions.getCurrent();
+            a.removeAttribute("accesos");
+            a.removeAttribute("user");
+            a.invalidate();
             }
             void cambioC(String valor){
-                try{
-                Tab newtb= new Tab("Cambio de Clave");
-                newtb.setSelected(true);
-                newtb.setClosable(true);
-                  newtb.setId("cclave");
-                newtb.setImage("/images/candado.gif");
-                newtb.setParent(tbs);
-                Tabpanel newtpl = new Tabpanel();
-                Iframe f = new Iframe(valor);
-                f.setWidth("100%");
-                f.setHeight("100%");
-                newtpl.appendChild(f);
-                newtpl.setParent(tps);
-                  }catch(Exception e){
+            try{
+            Tab newtb= new Tab("Cambio de Clave");
+            newtb.setSelected(true);
+            newtb.setClosable(true);
+            newtb.setId("cclave");
+            newtb.setImage("/images/candado.gif");
+            newtb.setParent(tbs);
+            Tabpanel newtpl = new Tabpanel();
+            Iframe f = new Iframe(valor);
+            f.setWidth("100%");
+            f.setHeight("100%");
+            newtpl.appendChild(f);
+            newtpl.setParent(tps);
+            }catch(Exception e){
 
-                                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
 
-                  }
+            }
             }
 
             cargando(){
-                    Session a = Sessions.getCurrent();
-                    Periodo peri =  (Periodo) a.getAttribute("periodo");
-                    byte[] imageData =    peri.getInstitucion().getEscudo();
+            Session a = Sessions.getCurrent();
+            Periodo peri =  (Periodo) a.getAttribute("periodo");
+            byte[] imageData =    peri.getInstitucion().getEscudo();
 
-                    foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
             }
             void verificar(){
-                    Empleados user = a.getAttribute("user");
-                    if(user != null){
-                    //cargo los periodos que tienen
-                    List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
-                    if(user.getCodigoemp().equals(-1)){
-                    equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
-                    }
-                    if(equivaEncontrados.size()>0){
-                    Empleadoperiodo p = new Empleadoperiodo();
-                    Periodo per = new Periodo(-1);
-                    Institucion ins = new Institucion(-1);
-                    ins.setTipo("");
-                    per.setDescripcion("[Seleccione]");
-                    p.setPeriodo(per);
-                    Global g = new Global();
-                    g.setDescripcion("");
+            Empleados user = a.getAttribute("user");
+            if(user != null){
+            //cargo los periodos que tienen
+            List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'");
+            if(user.getCodigoemp().equals(-1)){
+            equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+            }
+            if(equivaEncontrados.size()>0){
+            Empleadoperiodo p = new Empleadoperiodo();
+            Periodo per = new Periodo(-1);
+            Institucion ins = new Institucion(-1);
+            ins.setTipo("");
+            per.setDescripcion("[Seleccione]");
+            p.setPeriodo(per);
+            Global g = new Global();
+            g.setDescripcion("");
 
-                    ins.setDenominacion("");
-                    ins.setNombre("");
-                    per.setInstitucion(ins);
-                    per.setSeccion(g);
-                    equivaEncontrados.add(0,p);
-                    verificar.visible = false;
-                    btnIngresar.visible = true;
-                    clave.disabled = true;
-                    usuario.disabled = true;
-                    rperiodo.visible = true;
+            ins.setDenominacion("");
+            ins.setNombre("");
+            per.setInstitucion(ins);
+            per.setSeccion(g);
+            equivaEncontrados.add(0,p);
+            verificar.visible = false;
+            btnIngresar.visible = true;
+            clave.disabled = true;
+            usuario.disabled = true;
+            rperiodo.visible = true;
 
-                    periodo = new Listbox();
+            periodo = new Listbox();
 
-                    int a=0;
-                    for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
-                    periodo.getItems().remove(a);
-                    }
-                    for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                    Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
-                    Listitem li = new Listitem();
-                    li.setValue(acceIt.getPeriodo());
-                    li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
-                    periodo.appendChild(li);
-                    }
+            int a=0;
+            for(Iterator it =periodo.getItems().iterator(); it.hasNext();) {
+            periodo.getItems().remove(a);
+            }
+            for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+            Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
+            Listitem li = new Listitem();
+            li.setValue(acceIt.getPeriodo());
+            li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" "+ acceIt.getPeriodo().getInstitucion() + " - "+ acceIt.getPeriodo().getInstitucion().getTipo() +" [" +acceIt.getPeriodo().getSeccion()+"]"));
+            periodo.appendChild(li);
+            }
 
-                    }else{
-                    Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                    usuario.focus();
-                    }
+            }else{
+            Messagebox.show("Usuario Correcto no tiene PERIODOS Asignados Consulte con el Administrador...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            usuario.focus();
+            }
 
 
-                    }else{
-                    Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                    usuario.focus();
-                    }
+            }else{
+            Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            usuario.focus();
+            }
 
             }
 
@@ -188,7 +188,8 @@
                                     <label value=" - ${sessionScope.periodo.institucion.tipo}" style="color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
 
                                     <!-- PERIODO -->
-                                    <separator orient="vertical" /> |<separator orient="vertical" />
+                                    <separator orient="vertical" /> |
+                                    <separator orient="vertical" />
                                     <listbox  style="color:white;font-size:10px;background-color:#1B62A4;" onSelect="cambio(); " width="415px"  id="periodo" mold="select">
                                         <listitem forEach="${perfiles}" value="${each}">
                                             <listcell   label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
@@ -204,15 +205,19 @@
                                     <separator orient="vertical" />
                                     <label style="color:white;font-size:9px;font-weight:bold;" value="${sessionScope.user.perfil.descripcion}:" />
                                     <label style="color:white;font-size:9px" value="${sessionScope.user.apellidos} ${sessionScope.user.nombres}" />
-                                    <separator orient="vertical" /> |<separator orient="vertical" />
+                                    <separator orient="vertical" /> |
+                                    <separator orient="vertical" />
                                     <label value=" PERIODO: " style="color:white;font-size:9px;font-weight:bold;font-family: Arial, Helvetica, sans-serif" />
                                     <label  style="color:white;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
-                                    <separator orient="vertical" /> | <separator orient="vertical" />
+                                    <separator orient="vertical" /> | 
+                                    <separator orient="vertical" />
                                     <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
-                                    <separator orient="vertical" /> | <separator orient="vertical" />
+                                    <separator orient="vertical" /> | 
+                                    <separator orient="vertical" />
                                     <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
 
-                                    <separator orient="vertical" /> |<separator orient="vertical" />
+                                    <separator orient="vertical" /> |
+                                    <separator orient="vertical" />
 
 
                                 </hbox>
@@ -240,50 +245,31 @@
                                 <tabpanel  height="290px">
                                     <listbox height="250px" id="a1" onSelect ="ingresar(self.selectedItem)" >
                                         
-                                        <listitem id="Registro de Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
-                                        <listitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
-                                        <listitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltasFuera.zul" />
-                                        <listitem  id="Registro de Evaluaciones"  image="/images/notas.png"  label="Registro Notas Evaluaciones" value="/notasEvaluacion.zul"/>
-                                        <listitem id="Registro de Notas Grado"  image="/images/notas.png"  label="Registro Ex.Grado" value="/cursosIngresonotasGradoFuera.zul" />
+                                        <listitem id="Registro_de_Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
+                                        <listitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
+                                        <listitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltasFuera.zul" />
+                                        <listitem  id="Registro_de_Evaluaciones"  image="/images/notas.png"  label="Registro Notas Evaluaciones" value="/notasEvaluacion.zul"/>
+                                        <listitem id="Notas_de_Grado"  image="/images/notas.png"  label="Registro Ex.Grado" value="/cursosIngresonotasGradoFuera.zul" />
                                         <listitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                                         <listitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
-                                        <listitem  id="Correo Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                                        <listitem id="Registrar" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
-                                        <listitem id="Reportes Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
-                                        <listitem id="Reportes Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                        <listitem  id="Correo_Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
+                                        <listitem id="Chat" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
+                                        <listitem id="Reportes_Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
+                                        <listitem id="Reportes_Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                                         <listitem id="Comentarios" label="Comentarios"  image="/images/comentarios.png" value="/comentarios.zul" />
-                                        <listitem id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" /><listitem/>
-                                        <listitem id="Dobe" image="/images/pensum.png"  label="Dobe" value="/dobe.zul" /><listitem/>
+                                        <listitem id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
+                                        <listitem/>
+                                        <listitem id="Dobe" image="/images/pensum.png"  label="Dobe" value="/dobe.zul" />
+                                        <listitem/>
                                     </listbox>
 
 
                                 </tabpanel>
-                                </tabpanels>
+                            </tabpanels>
 
-                          </tabbox>
+                        </tabbox>
 
-                        <!--tree id="toc" style="border:none;" zclass="z-dottree" fixedLayout="true"
-                              use="bean.LayoutTree" pageSize="-1" vflex="true" height="100%" width="100%">
-                            <treechildren>
-
-
-                                <treeitem id="ss1" label="Notas" value="/blanco.zul">
-                                    <treechildren>
-                                        <treeitem id="Registro de Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
-                                        <treeitem id="Registro de Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
-                                        <treeitem id="Registro de Faltas" image="/images/notas.png"  label="Faltas" value="/faltas.zul" />
-                                        <treeitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
-                                        <treeitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
-                                        <treeitem  id="Correo Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                                        <treeitem id="Registrar" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
-                                        <treeitem id="Reportes Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
-                                        <treeitem id="Reportes Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
-                                        <treeitem id="Dobe" label="Comentarios"  image="/images/resultados.png" value="/comentarios.zul" />
-
-                                    </treechildren>
-                                </treeitem>
-                            </treechildren>
-                        </tree-->
+                      
 
 
 
@@ -301,7 +287,9 @@
                     <tab label="Inicio"  image="/images/inicio.png"  id="blanco" Closable="true" />
                 </tabs>
                 <tabpanels id="tps">
-                    <tabpanel><iframe scrolling="false" width="100%" height="100%"  src="/blanco.zul" /></tabpanel>
+                    <tabpanel>
+                        <iframe scrolling="false" width="100%" height="100%"  src="/blanco.zul" />
+                    </tabpanel>
                 </tabpanels>
             </tabbox>
 
@@ -335,6 +323,23 @@
         newtpl.appendChild(f);
         newtpl.setParent(tps);
 
+        }
+        
+         
+           
+        void cargando2(){
+        Permisos per = new Permisos();
+        Registro_de_Notas.visible = per.verificarPermisoReporte("Registro_de_Notas","Registro_de_Notas", "Ingresar",true,"NOTAS");
+        Registro_de_Disciplina.visible = per.verificarPermisoReporte("Registro_de_Disciplina","Registro_de_Disciplina", "Ingresar",true,"NOTAS");
+        Registro_de_Faltas.visible = per.verificarPermisoReporte("Registro_de_Faltas","Registro_de_Faltas", "Ingresar",true,"NOTAS");
+        Registro_de_Evaluaciones.visible = per.verificarPermisoReporte("Registro_de_Notas","Registro_de_Notas", "Ingresar",true,"NOTAS");
+        Notas_de_Grado.visible = per.verificarPermisoReporte("Notas_de_Grado","Notas_de_Grado", "Ingresar",true,"GRADOS");
+        Correos.visible = per.verificarPermisoReporte("Correos","Correos", "Ingresar",true,"VARIOS");
+        Correo_Interno.visible = per.verificarPermisoReporte("Correo_Interno","Correo_Interno", "Ingresar",true,"VARIOS");
+        Calendario.visible = per.verificarPermisoReporte("Calendario","Calendario", "Ingresar",true,"VARIOS");
+        Dobe.visible = per.verificarPermisoReporte("Dobe", "Dobe", "Ingresar",true,"VARIOS");
+        Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes","Reportes_Estudiantes", "Ingresar",true,"MATRICULAS");
+        Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas","Reportes_Notas", "Ingresar",true,"NOTAS");
         }
 
 
