@@ -94,14 +94,15 @@ cantonTodos.setNombre("- TODOS - ");
                         cclientev = -1; //TODOS LOS CLIENTES
                 }
                 if(cclientev.equals(-1)){
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value);
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
                 }else{
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null);
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
                 }
                 
                 
                 report.setSrc(directorioReportes+"cxcclientes.jasper");
-            }else if(tipo.equals("CXCLIEST")){
+            }
+            else if(tipo.equals("CXCLIEST")){
                 datasource = reportes.facturasPendientesest(sectorList.selectedItem.value,cant.selectedItem.value,estadoContrato.selectedItem.value);
                 report.setSrc(directorioReportes+"cxcclientesest.jasper");
             }else if(tipo.equals("PORSECTOR")){
@@ -248,6 +249,9 @@ void campos(String valor){
       filaestado.visible = false;
       filaplan.visible = false;
             filatipoplan.visible = false;
+            todasfechas.visible = false;
+            
+                filaformapago.visible = false;
       fec.setDate(1);
         if(valor.equals("CXCLI")){
             titulo.value= "Cuentas por Pagar";
@@ -256,6 +260,9 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;      
             desde.value = fec; 
+            todasfechas.visible = true;
+                filaformapago.visible = true;
+                filafechas.visible=true;
         }else if(valor.equals("CXCLIEST")){
             titulo.value= "Cuentas por Pagar";
             filacanton.visible=true;
@@ -478,16 +485,26 @@ void campos(String valor){
                               
                             </span>
                         </row>
-                        
+                         <row id="filaformapago"  visible="false" >
+                             <span>
+                                <label style="font-weight:bold2;float:right" value=" Forma de Pago: " />
+                            </span>
+                            <radiogroup Id="formapago" onCheck="">
+                                <radio id="tod1" selected="true" value="0" label="Todos"/>
+                                <radio id="efe" value="1" label="Oficina"/>
+                                <radio id="cbr" value="3" label="Domicilio"/>
+                                <radio id="deb"   value="2" label="Débito"/>
+                            </radiogroup>
+                        </row>
                         <row   id="filafechas"  visible="false">
                             <span style="float:right"> Fechas: </span>
 
                             <span>
                                 Desde:
-                                <datebox onCreate="self.value = adm.Date()" id="desde"/>
+                                <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date()" id="desde"/>
                                 Hasta: 
-                                <datebox onCreate="self.value = adm.Date()"  id="hasta"/>
-                              
+                                <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date()"  id="hasta"/>
+                              <checkbox id="todasfechas" onCheck="desde.disabled = !desde.disabled; hasta.disabled = !hasta.disabled;" label="Todas las fechas"/>
                             </span>
                         </row>
                         <row visible = "false" id="filacanton">
