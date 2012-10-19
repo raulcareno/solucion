@@ -110,6 +110,14 @@ public class notasEvaluacion extends Rows {
         List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
                 + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
         String query = "";
+        if(notas.size()<=0){
+            try {
+                Messagebox.show( "No ha parametrizado SUB APORTES en la pantalla APORTES...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         for (Sistemaevaluacion notass : notas) {
             query += notass.getNombre() + ",";
         }
