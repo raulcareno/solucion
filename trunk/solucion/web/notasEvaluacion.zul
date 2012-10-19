@@ -359,7 +359,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                             <bandpopup>
                                 <vbox>
                                     <listbox id="curs" height="300px" width="420px"
-                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();datos.getChildren().clear();">
 
                                         <listitem forEach="${cursos}" value="${each}">
                                             <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -375,7 +375,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" height="300px"  width="420px"
-                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();">
+                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();datos.getChildren().clear(); sisevalCombo.selectedIndex = -1;bd5.value = null; ">
 
                                             <listitem forEach="${materias}" value="${each}">
                                                 <listcell label="${each.descripcion}" />
