@@ -9,6 +9,8 @@
   import jcinform.procesos.Administrador;
   import bean.Permisos;
   import java.math.BigDecimal;
+  import java.util.StringTokenizer;
+  
     Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -78,6 +80,7 @@
                        ArrayList arr  = new ArrayList();
                        int k = 1;
                        String formulaGlobal = "";
+                       String formulaGlobalS = "";
                        adm.ejecutaSql("Delete from Sistemaevaluacion where  sistemacalificacion.codigosis = '"+sistema.getCodigosis()+"' ");
                        for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
@@ -111,6 +114,7 @@
                                                        if(aportes == 1){
                                                            if(!((Checkbox) labels.get(4)).isChecked() && !((Checkbox) labels.get(3)).isChecked()){
                                                                formulaGlobal += sisEva.getNombre()+"(),";
+                                                               formulaGlobalS += sisEva.getNombre()+"()+";
                                                            }
                                                        }
                                                        adm.guardar(sisEva);
@@ -126,6 +130,7 @@
                                                            sisEva.setEsdisciplina(false);
                                                            sisEva.setNombre("nota"+(k));
                                                            formulaGlobal += sisEva.getNombre()+"(),";
+                                                           formulaGlobalS += sisEva.getNombre()+"()+";
                                                            sisEva.setOrden(k);
                                                            sisEva.setFormula("redondear(promedio("+formula+"),"+decimalesParciales.value+")");
                                                            sisEva.setEsequivalencia(((Checkbox) labels.get(3)).isChecked());
@@ -150,7 +155,13 @@
                                sisEva.setSistemacalificacion(sistema);
                                sisEva.setNombre("nota"+(k));
                                formulaGlobal = formulaGlobal.substring(0,formulaGlobal.length()-1);
-                               sisEva.setFormula("redondear(promedio("+formulaGlobal+"),"+decimalesPromedio.value+")");
+                               formulaGlobalS = formulaGlobalS.substring(0,formulaGlobalS.length()-1);
+                               if(promedioSumativo.isChecked()){
+                                    StringTokenizer st = new StringTokenizer(formulaGlobal, ",");
+                                    sisEva.setFormula("redondear(("+formulaGlobal+")/"+st.countTokens()+","+decimalesPromedio.value+")");
+                               }else{
+                                    sisEva.setFormula("redondear(promedio("+formulaGlobal+"),"+decimalesPromedio.value+")");
+                               }
                                sisEva.setOrden(k);
                                sisEva.setSeimprime(true);
                                sisEva.setAbreviatura("P");
@@ -182,6 +193,8 @@
     <decimalbox id="decimalesParciales"  cols="3" value="2" />
     # DEC.PROMEDIO
     <decimalbox id="decimalesPromedio" cols="3"  value="2"  />
+    PROMEDIO COMO (N1+N2+N3)/3
+    <checkbox id="promedioSumativo" />
     <button image="/images/guardar.gif" id="guardarSub" label="Guardar"  
     disabled="false"  onClick="guardar();"/>
    

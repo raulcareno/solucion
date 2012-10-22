@@ -332,7 +332,7 @@
         Registro_de_Notas.visible = per.verificarPermisoReporte("Registro_de_Notas","Registro_de_Notas", "Ingresar",true,"NOTAS");
         Registro_de_Disciplina.visible = per.verificarPermisoReporte("Registro_de_Disciplina","Registro_de_Disciplina", "Ingresar",true,"NOTAS");
         Registro_de_Faltas.visible = per.verificarPermisoReporte("Registro_de_Faltas","Registro_de_Faltas", "Ingresar",true,"NOTAS");
-        Registro_de_Evaluaciones.visible = per.verificarPermisoReporte("Registro_de_Notas","Registro_de_Notas", "Ingresar",true,"NOTAS");
+        Registro_de_Evaluaciones.visible = per.verificarPermisoReporte("Registro_de_Evaluaciones","Registro_de_Evaluaciones", "Ingresar",true,"NOTAS");
         Notas_de_Grado.visible = per.verificarPermisoReporte("Notas_de_Grado","Notas_de_Grado", "Ingresar",true,"GRADOS");
         Correos.visible = per.verificarPermisoReporte("Correos","Correos", "Ingresar",true,"VARIOS");
         Correo_Interno.visible = per.verificarPermisoReporte("Correo_Interno","Correo_Interno", "Ingresar",true,"VARIOS");

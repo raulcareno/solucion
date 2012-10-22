@@ -6,17 +6,11 @@ package bean;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Detallepregunta;
 import jcinform.persistencia.Pregunta;
 import jcinform.procesos.Administrador;
-import org.zkoss.zul.Auxhead;
-import org.zkoss.zul.Auxheader;
-import org.zkoss.zul.Column;
-import org.zkoss.zul.Columns;
-import org.zkoss.zul.Grid;
-import org.zkoss.zul.Rows;
-import org.zkoss.zul.Textbox;
 
 //import org.zkoss.util.media.Media;
 //import org.zkoss.zul.Fileupload;
@@ -32,31 +26,45 @@ public class borrar {
 //Progressmeter p;
 //p.set
     public static void main(String[] args) {
-        
-        resumen(new Cursos(134));
-        Grid datos = new Grid();
-        datos.getChildren().clear();
-        Auxhead auh = new Auxhead();
-        Auxheader aud = new Auxheader();
-        Textbox est = new Textbox("");
-         est.setParent(aud);
-         aud.setParent(auh);
-         auh.setParent(datos);
+           StringTokenizer st = new StringTokenizer("nota1(),nota2(),nota3(),nota4(),", ",");
  
-         Columns cols = new Columns();
-              datos.removeChild(cols);
-         Column col = new Column("A");
-         cols.appendChild(col);
-         col.setParent(cols);
-         cols.setParent(datos); 
-    String[][] cabes = new String[22][2];
-         for (String[] strings : cabes) {
-             System.out.println(""+strings[0]);
+        //
+        // get how many tokens inside st object
+        //
+        System.out.println("Tokens count: " + st.countTokens());
+ 
+        //
+        // iterate st object to get more tokens from it
+        //
+        while (st.hasMoreElements()) {
+            String token = st.nextElement().toString();
+            System.out.println("Token = " + token);
         }
-         Rows filasR = new notasEvaluacion();
-           filasR.setId("filas");
-           filasR.setParent(datos);
-            
+  
+//        resumen(new Cursos(134));
+//        Grid datos = new Grid();
+//        datos.getChildren().clear();
+//        Auxhead auh = new Auxhead();
+//        Auxheader aud = new Auxheader();
+//        Textbox est = new Textbox("");
+//         est.setParent(aud);
+//         aud.setParent(auh);
+//         auh.setParent(datos);
+// 
+//         Columns cols = new Columns();
+//              datos.removeChild(cols);
+//         Column col = new Column("A");
+//         cols.appendChild(col);
+//         col.setParent(cols);
+//         cols.setParent(datos); 
+//    String[][] cabes = new String[22][2];
+//         for (String[] strings : cabes) {
+//             System.out.println(""+strings[0]);
+//        }
+//         Rows filasR = new notasEvaluacion();
+//           filasR.setId("filas");
+//           filasR.setParent(datos);
+//            
 //        <grid   id="datos" >
 //                <auxhead>
 //                    <auxheader colspan="2">
@@ -81,39 +89,39 @@ public class borrar {
 
     }
 
-    public static void resumen(Cursos curso) {
-        Administrador adm = new Administrador();
-        //     Session ses = Sessions.getCurrent();
-        //     List<Nota> lisNotas = new ArrayList();
-        List<Pregunta> preg = adm.query("Select o from Pregunta as o ");
-        int i = 1;
-        for (Iterator<Pregunta> it = preg.iterator(); it.hasNext();) {
-            Pregunta pregunta = it.next();
-            System.out.println(i + ") " + pregunta.getPregunta());
-            List<Detallepregunta> detall = adm.query("Select o from Detallepregunta as o where o.pregunta.codigo = '" + pregunta.getCodigo() + "' ");
-            int a = 1;
-            for (Iterator<Detallepregunta> it1 = detall.iterator(); it1.hasNext();) {
-                Detallepregunta detallepregunta = it1.next();
-                
-                Object respuestas = adm.querySimple("Select count(o) from Respuestasencuesta as o "
-                        + "where o.detallepregunta.codigo = '" + detallepregunta.getCodigo() + "' and o.matricula.curso.codigocur  = '" + curso.getCodigocur() + "' ");
-                System.out.println("\t *  " + detallepregunta.getOpcion() + "\t" + respuestas);
-          
-
-//                a++;
-            }
-            System.out.println("");
-            System.out.println("-----------------------------------------------------------------------");
-            i++;
-
-        }
-
-
-//        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
-//        return ds;
-
-
-    }
+//    public static void resumen(Cursos curso) {
+//        Administrador adm = new Administrador();
+//        //     Session ses = Sessions.getCurrent();
+//        //     List<Nota> lisNotas = new ArrayList();
+//        List<Pregunta> preg = adm.query("Select o from Pregunta as o ");
+//        int i = 1;
+//        for (Iterator<Pregunta> it = preg.iterator(); it.hasNext();) {
+//            Pregunta pregunta = it.next();
+//            System.out.println(i + ") " + pregunta.getPregunta());
+//            List<Detallepregunta> detall = adm.query("Select o from Detallepregunta as o where o.pregunta.codigo = '" + pregunta.getCodigo() + "' ");
+//            int a = 1;
+//            for (Iterator<Detallepregunta> it1 = detall.iterator(); it1.hasNext();) {
+//                Detallepregunta detallepregunta = it1.next();
+//                
+//                Object respuestas = adm.querySimple("Select count(o) from Respuestasencuesta as o "
+//                        + "where o.detallepregunta.codigo = '" + detallepregunta.getCodigo() + "' and o.matricula.curso.codigocur  = '" + curso.getCodigocur() + "' ");
+//                System.out.println("\t *  " + detallepregunta.getOpcion() + "\t" + respuestas);
+//          
+//
+////                a++;
+//            }
+//            System.out.println("");
+//            System.out.println("-----------------------------------------------------------------------");
+//            i++;
+//
+//        }
+//
+//
+////        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+////        return ds;
+//
+//
+//    }
     static claves cla = new claves();
     static String ubicacion2 = new String("/home/geovanny/Escritorio/base.dbf");
     /**
