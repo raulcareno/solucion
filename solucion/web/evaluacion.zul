@@ -23,13 +23,14 @@ Session ses = Sessions.getCurrent();
 //FUNCIONES
 void llenar(Evaluacion empa){
     nombres.value = empa.getDescripcion();
-
+    abreviatura.value = empa.getAbreviatura();
 }
 void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Evaluacion)datos.selectedItem.value;
         }else{empa.setCodigoeva(0);}
         nombres.readonly = estado;
+        abreviatura.readonly = estado;
 }
 
 
@@ -40,6 +41,7 @@ void estado(Boolean estado,Boolean modificar){
  }
  
         empa.setDescripcion(nombres.value);
+        empa.setAbreviatura(abreviatura.value);
         empa.setPeriodo(periodo);
         if((!empa.getCodigoeva().equals(0)) ){
              adm.actualizar(empa);
@@ -160,7 +162,10 @@ void cargarPar(Global g){
                 <row>
                     <span style="float:right"> Nombres(*):</span>
                     <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />   
-        
+                    </row>
+                        <row>
+                    <span style="float:right"> Abreviatura(*):</span>
+                    <textbox id="abreviatura"  maxlength="10" cols="10" readonly="true"   />   
                 </row>
   
 
