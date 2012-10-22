@@ -158,7 +158,7 @@
                                formulaGlobalS = formulaGlobalS.substring(0,formulaGlobalS.length()-1);
                                if(promedioSumativo.isChecked()){
                                     StringTokenizer st = new StringTokenizer(formulaGlobal, ",");
-                                    sisEva.setFormula("redondear(("+formulaGlobal+")/"+st.countTokens()+","+decimalesPromedio.value+")");
+                                    sisEva.setFormula("redondear(("+formulaGlobalS+")/"+st.countTokens()+","+decimalesPromedio.value+")");
                                }else{
                                     sisEva.setFormula("redondear(promedio("+formulaGlobal+"),"+decimalesPromedio.value+")");
                                }
