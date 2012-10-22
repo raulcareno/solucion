@@ -8,6 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
+import org.zkoss.zk.ui.Session;
+import org.zkoss.zk.ui.Sessions;
 
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Intbox;
@@ -77,53 +79,53 @@ public class pendientes extends Rows {
         try {
 
 
-        for (Iterator itna = accesosList.iterator(); itna.hasNext();) {
-            Matriculas vec = (Matriculas) itna.next();
-            row = new Row();
+            for (Iterator itna = accesosList.iterator(); itna.hasNext();) {
+                Matriculas vec = (Matriculas) itna.next();
+                row = new Row();
 
-            label3 = new Label();
-            label3.setValue("" + vec.getCodigomat());
-            label3.setParent(row);
+                label3 = new Label();
+                label3.setValue("" + vec.getCodigomat());
+                label3.setParent(row);
 
-            label3 = new Label();
-            label3.setValue("" + vec.getEstudiante().getApellido() + " " + vec.getEstudiante().getNombre());
-            label3.setParent(row);
+                label3 = new Label();
+                label3.setValue("" + vec.getEstudiante().getApellido() + " " + vec.getEstudiante().getNombre());
+                label3.setParent(row);
 
-            cedulaText = new Textbox();
-            cedulaText.setMaxlength(10);
-            cedulaText.setCols(15);
-            try {
+                cedulaText = new Textbox();
+                cedulaText.setMaxlength(10);
+                cedulaText.setCols(15);
+                try {
 
-                cedulaText.setValue(vec.getEstudiante().getCedula());
-            } catch (Exception e) {
-                cedulaText.setValue("");
+                    cedulaText.setValue(vec.getEstudiante().getCedula());
+                } catch (Exception e) {
+                    cedulaText.setValue("");
+                }
+                cedulaText.setParent(row);
+
+                radioPerdio = new Checkbox("Perdio");
+                try {
+
+
+                    radioPerdio.setChecked(vec.getPerdio());
+                } catch (Exception e) {
+                    radioPerdio.setChecked(false);
+                }
+                radioPerdio.setParent(row);
+
+                radioSuspenso = new Checkbox("Suspenso");
+                try {
+                    radioSuspenso.setChecked(vec.getSuspenso());
+                } catch (Exception e) {
+                    radioSuspenso.setChecked(false);
+                }
+
+                radioSuspenso.setParent(row);
+
+                row.setParent(this);
+
             }
-            cedulaText.setParent(row);
-
-            radioPerdio = new Checkbox("Perdio");
-            try {
-                
-            
-            radioPerdio.setChecked(vec.getPerdio());
-            } catch (Exception e) {
-                radioPerdio.setChecked(false);
-            }
-            radioPerdio.setParent(row);
-
-            radioSuspenso = new Checkbox("Suspenso");
-            try {
-            radioSuspenso.setChecked(vec.getSuspenso());    
-            } catch (Exception e) {
-                radioSuspenso.setChecked(false);
-            }
-            
-            radioSuspenso.setParent(row);
-
-            row.setParent(this);
-
-        }
-            } catch (Exception e) {
-                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, e);
+        } catch (Exception e) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, e);
         }
 
 
@@ -191,6 +193,8 @@ public class pendientes extends Rows {
 
     public void buscarPerdidos(Cursos curso) {
         Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + curso.getPeriodo().getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
@@ -202,34 +206,16 @@ public class pendientes extends Rows {
         } catch (InterruptedException ex) {
             Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        List<Matriculas> matriculas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '" + curso.getCodigocur() + "' ");
-        for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
-            Matriculas matriculas1 = it.next();
-            String q = "Select  CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,4) ) from notas "
-                    + " where matricula = '" + matriculas1.getCodigomat() + "' and seimprime = true and promedia = true and disciplina = false "
-                    + " and " + notas.get(0).getNota() + " < " + matriculas1.getCurso().getAprobacion() + ""
-                    + "     ";
-            System.out.println("" + q);
-            List nativo = adm.queryNativo(q);
-            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-                Vector dos = (Vector) itna.next();
-                if (((BigDecimal) dos.get(0)).doubleValue() >= matriculas1.getCurso().getAprobacion()) {
-                    //not.setEstadoMateria("APROBADO");
-                    matriculas1.setPerdio(false);
-                    adm.actualizar(matriculas1);
-                } else {//REPROBO UNA MATERIA
-                    matriculas1.setPerdio(true);
-                    adm.actualizar(matriculas1);
-                    //not.setEstadoMateria("REPROBADO");
-                    //estadoEstudiante = false;
-                }
-            }
 
-
-
+        reportesClase r = new reportesClase();
+        r.parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        adm.ejecutaSql("Update Matriculas set perdio = false where curso.codigocur = '" + curso.getCodigocur() + "' ");
+        List<Matriculas> listaPerdidos = r.cuadroverificar(curso, notas.get(0).getSistema());
+        for (Iterator<Matriculas> it = listaPerdidos.iterator(); it.hasNext();) {
+            Matriculas matriculas = it.next();
+            matriculas.setPerdio(true);
+            adm.actualizar(matriculas);
         }
-
-
-
     }
 }
