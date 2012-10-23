@@ -160,10 +160,8 @@ public class ReportesBean implements Serializable {
                 map.put("titulo1", "USUARIO");
                 map.put("titulo2", "# DE INFORMES");
             }
-
-
-
-
+            carreraSeleccionado = new Carreras(0);
+            tipoReporte = "";
             ExportarReportes ex = new ExportarReportes(estu, "fichaMatricula", map);
             if (tipo.equals("PDF")) {
                 ex.PDF();
@@ -178,6 +176,7 @@ public class ReportesBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, ex1.getMessage(), ex1.getMessage()));
             java.util.logging.Logger.getLogger(FichaMatricula.class.getName()).log(Level.SEVERE, null, ex1);
         }
+        
         return null;
 
     }
