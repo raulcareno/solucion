@@ -1,8 +1,10 @@
 
 <?page id="main-page"?>
-<window
- title="Ingresar Faltas Disciplinarias"
-  id="principal">
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 <zscript>
 <![CDATA[
 import java.math.BigDecimal;
@@ -99,7 +101,7 @@ guardar(){
     nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
     //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
     adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
-    int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.QUESTION);
+    int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.INFORMATION);
     guardando = false; 
 
 }
@@ -134,34 +136,45 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
 }
 ]]>
 </zscript>
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
 <grid>
 <rows>
  <row>
 
         <span style="float:right"> Sistema(*):</span>
   <span>
-                    <listbox id="sisis" mold="select" width="420px"
+                    <listbox id="sisis" mold="select" width="350px"
                     onSelect="curs.setSelectedIndex(0)">
                         <listitem forEach="${sistemas}" value="${each}">
                               <listcell label="${each.nombre}" />
 
                         </listitem>
                     </listbox>
-                    <button label="Guardar"  id="guardar1" image="/images/guardar.gif" onClick="guardar();"/>
+                    
   </span>
-
-</row>
-<row>
+ 
  <span style="float:right"> Curso(*):</span>
 
-                    <listbox id="curs"  mold="select"  width="420px"
-                    onSelect="doAdd(((Cursos)curs.selectedItem.value));">
+                    <listbox id="curs"  mold="select"  width="400px"
+                    onSelect='doAdd(((Cursos)curs.selectedItem.value)); datos.setHeight((alto.value-300)+"px");' >
 
                         <listitem forEach="${cursos}" value="${each}">
                               <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
 
                         </listitem>
                     </listbox>
+                    <button label="Guardar"  id="guardar1" image="/images/guardar.gif" onClick="guardar();"/>
 
 </row>
 
@@ -177,9 +190,7 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
          <rows  id="filas" use="bean.disciplina">
          </rows>
  </grid>
- <button label="Guardar"   id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
+ <button label="Guardar" visible="false"   id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
   
-
-</window>
-
+</zk>
 	
