@@ -1,6 +1,10 @@
     
 <?page id="main-page"?>
-<window  id="principal">
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
     <zscript>
         <![CDATA[
 import java.math.BigDecimal;
@@ -139,6 +143,19 @@ doAdd(Cursos curso, MateriaProfesor materia){
 
         ]]>
     </zscript>
+       
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
     <grid>
         <rows>
             <row>
@@ -157,15 +174,13 @@ doAdd(Cursos curso, MateriaProfesor materia){
                         </vbox>
                     </bandpopup>
                 </bandbox>
-            </row>
-            <row>
                 <span style="float:right"> Materias(*):</span>
                 <span>
                     <bandbox  width="300px" readonly="true"  id="bd2">
                         <bandpopup>
                             <vbox>
                                 <listbox id="mates" height="300px"  width="320px"
-                                         onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+                                         onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
 
                                     <listitem forEach="${materias}" value="${each}">
                                         <listcell label="${each.descripcion}" />
@@ -195,6 +210,6 @@ doAdd(Cursos curso, MateriaProfesor materia){
         <rows id="filas" use="bean.disciplina">
         </rows>
     </grid>
-    <button label="Guardar"   id="guardar2"  image="/images/guardar.gif" onClick="guardar();"/>
-</window>
+    <button label="Guardar" visible="false"   id="guardar2"  image="/images/guardar.gif" onClick="guardar();"/>
+</zk>
 

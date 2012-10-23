@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?page id="main-page"?>
 
-<window id="principal">
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
     <zscript>
         <![CDATA[
 import bean.reportesClase;
@@ -254,6 +257,19 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
 ]]>
     </zscript>
+    
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
     <panel  id="notasingreso" >
         <panelchildren>
 
@@ -281,7 +297,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" height="300px"  width="420px"
-                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value));">
+                                                 onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
 
                                             <listitem forEach="${materias}" value="${each}">
                                                 <listcell label="${each.descripcion}" />
@@ -300,7 +316,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
                 </rows>
             </grid>
-            <grid   id="datos" >
+            <grid height="100px"  id="datos" >
 
                 <auxhead >
                     <auxheader colspan="2">
@@ -316,18 +332,15 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                 <rows id="filas" use="bean.notas">
                 </rows>
             </grid>
-            <span>
-                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
-                <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+            <span >
+                <button visible="false" label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
+                <button visible="false"  label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
             </span>
             
         </panelchildren>
     </panel>
 
-    <panel id="reportes" width="98%" height="98%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
-
-      
-
+    <panel id="reportes" width="98%" height="97%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
         <panelchildren>
             <toolbar  align="end">
                 <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
@@ -339,7 +352,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                             Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
                         </span>
                     </row>
-                    <row>
+                    <row visible="false">
                         <span style="float:right"> Aporte que desea imprimir: </span>
 
                         <listbox id="sistemasCombo" width="300px"  mold="select" >
@@ -359,6 +372,4 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         </panelchildren>
     </panel>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
-
-</window>
-
+ </zk>
