@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?page id="main-page"?>
 
-<window id="principal">
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+ 
+ 
     <zscript>
         <![CDATA[
 import bean.reportesClase;
@@ -41,7 +46,7 @@ List cursos = null;
 
 
  Permisos permiso = new Permisos();
-List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' and o.codigo = -1 ");
 reportesClase no = new reportesClase();
 
 
@@ -132,7 +137,7 @@ if(guardando)
 
 guardando = true;
   guardar1.disabled=false;
-  guardar2.disabled=false;
+  //guardar2.disabled=false;
     notasEvaluacion nso = new notasEvaluacion();
     notasEvaluacion r = (notasEvaluacion) datos.getRows();
      Cursos curso = ((Cursos)curs.selectedItem.value);
@@ -156,7 +161,7 @@ guardando = true;
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
          }
    guardar1.disabled=false;
-   guardar2.disabled=false;
+   //guardar2.disabled=false;
    guardando = false;
 
 }
@@ -189,13 +194,13 @@ void buscar2(Cursos cur){
 void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
             if(!verificar("Agregar")){
                 guardar1.disabled=true;
-                guardar2.disabled=true;
+                //guardar2.disabled=true;
             }
 
                 filas.addRow(curso,materia,sistCali);
                    if(periodo.getCerrado()){
                         guardar1.disabled = true;
-                        guardar2.disabled = true;
+                        //guardar2.disabled = true;
                     }
 
 }
@@ -348,6 +353,20 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
 
 ]]>
     </zscript>
+    
+
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
     <panel  id="notasEvaluacioningreso" >
         <panelchildren>
 
@@ -392,7 +411,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="sisevalCombo" width="450px" 
-                                        onSelect = "bd5.value=self.selectedItem.label;bd5.closeDropdown();generar();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),((Sistemacalificacion)self.selectedItem.value));" >
+                                        onSelect = 'bd5.value=self.selectedItem.label;bd5.closeDropdown();generar();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),((Sistemacalificacion)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");' >
                                             <listitem  forEach="${sistemas}" value="${each}">
                                                 <listcell label="${each.nombre}" />
                                             </listitem>
@@ -405,14 +424,14 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                             
 
                             <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
-                            <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                            <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
 
                         </span>
                     </row>
 
                 </rows>
             </grid>
-            <grid   id="datos" >
+            <grid height="100px"   id="datos" >
                 <auxhead>
                     <auxheader colspan="2">
                         <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
@@ -431,11 +450,6 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                 <rows id="filas" use="bean.notasEvaluacion">
                 </rows>
             </grid>
-            <button label="generarFilas" onClick="generar()"/>
-            <span>
-                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
-                <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
-            </span>
             
         </panelchildren>
     </panel>
@@ -455,5 +469,5 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
     </panel>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
 
-</window>
+</zk>
 

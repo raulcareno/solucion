@@ -1,5 +1,9 @@
 <?page id="main-page"?>
-<window     border="normal" id="principal">
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 <zscript>
 <![CDATA[
 import bean.reportesClase;
@@ -196,6 +200,19 @@ Boolean verificar(String accion){
 
 ]]>
 </zscript>
+    
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
    <panel  id="notasingreso" >
         <panelchildren>
 
@@ -223,7 +240,7 @@ Boolean verificar(String accion){
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" width="420px"
-                                                     onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value))">
+                                                     onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
 
                                             <listitem forEach="${materias}" value="${each}">
                                                 <listcell label="${each.descripcion}" />
@@ -259,8 +276,8 @@ Boolean verificar(String accion){
                 </rows>
             </grid>
             <span>
-                <button label="Guardar"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
-                <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                <button label="Guardar" visible="false"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
+                <button label="Imprimir" visible="false"   image="/images/imprimir.gif" onClick='showReport("AM")'/>
             </span>
 
         </panelchildren>
@@ -281,7 +298,7 @@ Boolean verificar(String accion){
                                 Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
                         </span>
                     </row>
-                    <row>
+                    <row visible="false">
                         <span style="float:right"> Aporte que desea imprimir: </span>
 
                         <listbox id="sistemasCombo" width="300px"  mold="select" >
@@ -300,6 +317,4 @@ Boolean verificar(String accion){
 
         </panelchildren>
     </panel>
-</window>
-
-	
+</zk>
