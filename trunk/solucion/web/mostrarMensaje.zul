@@ -1,0 +1,58 @@
+<window id="listaMensajes" onCreate='buscar("profesor")' width="500px" >
+
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Mensajes;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  
+  Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Mensajes as o order by o.desde");
+    static Mensajes empa = new Mensajes();
+    Permisos permiso = new Permisos();
+ 
+    Object media = null;
+   
+  void buscar(String p){
+  Date fec = adm.Date();
+    String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate()+" "+fec.getHours()+":"+fec.getMinutes()+":00";
+        List empleadosEncontrados = adm.query("Select o from Mensajes as o " + 
+        " where o.tipo like '%profe%' and '"+stFecha+"' between o.desde and o.hasta  order by o.desde");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+              for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Mensajes acceIt = (Mensajes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getMensaje()+" "));
+                      datos.appendChild(li);
+             }
+             if(empleadosEncontrados.size()>0){
+             
+             }else{
+                listaMensajes.detach();
+             }
+
+    }
+ 
+  </zscript>
+ 
+ 
+         <listbox mold="paging" rows="2" id="datos" width="500px">
+			<listhead>
+                <listheader label="COMUNIDADOS"/>
+			</listhead>
+			<listitem  forEach="${allEvents}" value="${each}">
+                     <listcell style="color:blue" label="${each.mensaje}" />
+            </listitem>
+		</listbox>
+        <button onClick="listaMensajes.detach()" style="font-size:17px; color:red"  image="/images/exit.gif"   label="CERRAR COMUNICADOS" />
+ 
+</window>

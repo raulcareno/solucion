@@ -222,8 +222,8 @@ void estado(Boolean estado,Boolean modificar){
     if(verificar("Agregar")){
           
           guardar.disabled=false; llenar(new Empleados(0));estado(false,false);
-          String command = "applyTelefono('"+telefono.getUuid()+"');applyCelular('"+movil.getUuid()+"');";
-          Clients.evalJavaScript(command);
+          //String command = "applyTelefono('"+telefono.getUuid()+"');applyCelular('"+movil.getUuid()+"');";
+          //Clients.evalJavaScript(command);
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
