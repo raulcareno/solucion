@@ -344,6 +344,7 @@
                                             <menuitem onClick="ingresar(self)" id="Calendario" image="/images/calendar.gif"   label="Calendario Académico" value="/calendar.zul"/>
                                             <menuitem onClick="ingresar(self)" id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
                                             <menuitem onClick="ingresar(self)" id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
+                                            <menuitem onClick="ingresar(self)" id="Mensajes" image="/images/chat.png"  label="Comunicados" value="/mensajes.zul"    />
                                         </menupopup>
                                     </menu>
                                     <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
@@ -460,6 +461,7 @@
             AportesEvaluacion.visible = per.verificarPermisoReporte("AportesEvaluacion","AportesEvaluacion", "Ingresar",true,"ADMINISTRACION");
             //Registro_de_Notas_Evaluacion.visible = per.verificarPermisoReporte("Registro_de_Notas_Evaluacion","Registro_de_Notas_Evaluacion", "Ingresar",true,"NOTAS");
             Registro_de_Evaluaciones.visible = per.verificarPermisoReporte("Registro_de_Evaluaciones","Registro_de_Evaluaciones", "Ingresar",true,"NOTAS");
+            Mensajes.visible = per.verificarPermisoReporte("Mensajes","Mensajes", "Ingresar",true,"VARIOS");
  
 
             }

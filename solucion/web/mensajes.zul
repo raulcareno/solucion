@@ -1,0 +1,203 @@
+<window  width="500px" >
+
+ <zscript>
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Mensajes;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Mensajes as o order by o.desde");
+    static Mensajes empa = new Mensajes();
+    Permisos permiso = new Permisos();
+ 
+    Object media = null;
+
+//FUNCIONES
+void llenar(Mensajes empa){
+    nombres.value = empa.getMensaje();
+    desde.value = new Date();
+    hasta.value = new Date();
+    para.value = empa.getTipo();
+
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Mensajes)datos.selectedItem.value;
+        }else{empa.setCodigo(0);}
+        nombres.readonly = estado;
+}
+
+
+ void guardar(){
+  if(nombres.value==""){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+
+        
+        empa.setMensaje(nombres.value);
+        empa.setDesde(desde.value);
+        empa.setHasta(hasta.value);
+        empa.setTipo(para.value);
+       
+        if((!empa.getCodigo().equals(0)) ){
+             adm.actualizar(empa);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = empa.getMensaje()+" ";
+         }else{
+             empa.setCodigo(adm.getNuevaClave("Mensajes","codigo"));
+             adm.guardar(empa);
+         }
+          permiso.auditar("Mensajes","Guardar",""+nombres.value);
+          Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+          guardar.disabled=true;
+          agregar.disabled=false;
+          estado(true,false);
+          llenar(new Mensajes(0));
+
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Mensajes",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+        llenar(new Mensajes(0));
+        estado(false,false);
+//alert(empa.getCodigo());
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Mensajes)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Mensajes)datos.selectedItem.value;
+             adm.eliminarObjeto(Mensajes.class, empa.getCodigo());
+            datos.removeItemAt(datos.getSelectedIndex());
+            permiso.auditar("Mensajes","Eliminar",""+nombres.value);
+            llenar(new Mensajes(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Mensajes as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Mensajes object = (Mensajes)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Mensajes(0);
+            }
+
+        }
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Mensajes as o where o.mensaje like '%"+p+"%'  order by o.desde ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Mensajes acceIt = (Mensajes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getMensaje()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+ 
+  </zscript>
+<groupbox mold="3d" >
+       <caption label="Agregar" />
+
+<grid width="100%">
+<rows>
+
+<row><span style="float:right"> Mensaje(*):</span>
+        <textbox id="nombres"   rows="2" cols="40" readonly="true"   />   
+</row>
+<row><span style="float:right"> Desde(*):</span>
+        <datebox id="desde"     />   
+</row>
+<row><span style="float:right"> Hasta(*):</span>
+        <datebox id="hasta"   />   
+</row>
+<row><span style="float:right"> Para(*):</span>
+   <combobox id="para">
+        <comboitem label="Profesores"/>
+        <comboitem label="Docentes"/>
+    </combobox>      
+</row>
+  
+
+
+
+</rows>
+</grid>
+<vbox>
+<vbox>
+<hbox>
+    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+	<button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+</hbox>
+</vbox>
+
+			</vbox>
+
+ </groupbox>
+<groupbox mold="3d" >
+    <caption label="Busquedas" />
+<vbox>
+    <hbox> Mensajes:  <textbox id="buscarText"  maxlength="60" cols="40" />  <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> </hbox>
+    <hbox>
+         <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="450px">
+			<listhead>
+                                 <listheader label="Nombres"/>
+			</listhead>
+			<listitem  forEach="${allEvents}" value="${each}">
+                           <listcell label="${each.mensaje}" />
+            </listitem>
+		</listbox>
+
+
+    </hbox>
+</vbox>
+</groupbox>
+
+</window>

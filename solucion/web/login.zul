@@ -4,7 +4,8 @@
 <!--window  id="principalImagen">
 <separator bar="true"/-->
 
-<zk>
+<zk xmlns:h="http://www.w3.org/1999/xhtml"
+ xmlns="http://www.zkoss.org/2005/zul">
     <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
     <script type="text/javascript" src="/js/jquery.watermarkinput.js"/>
     <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
@@ -29,7 +30,7 @@
     <div  class="estil" >
 
   <!--image id="foto" src="/images/fondo.gif" style="repeat:true" height="200px"/-->
-        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar()"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JC INFORM" width="499px" sizable="true">
+        <window onLoad="usuario.focus();" mode="overlapped"  onCreate="usuario.focus();cargar();cargando();"   id="loginWin" style="background-color:transparent;position:absolute; top:24%; left:32%;" border="normal" title="JC INFORM" width="499px" sizable="true">
             <zscript>
                 <![CDATA[
   import jcinform.persistencia.Global;
@@ -60,9 +61,10 @@
  List instListado = adm.query("Select o from Institucion as o",0,1);
  Institucion instituto = instListado.get(0);
  
+ 
  System.out.println(inst+"");
 cargar(){
-foto0.setContent(new org.zkoss.image.AImage("logo_jcinform", instituto.getEscudo()));
+    foto0.setContent(new org.zkoss.image.AImage("logo_jcinform", instituto.getEscudo()));
     derechos.value = "Todos los derechos reservados a JC INFORM, derecho de copia @2009-"+ ((new Date()).getYear()+1900) +", web: ";
 }
  
@@ -285,6 +287,17 @@ void verificarSistema(){
 		
         </window>
     </div>
+    <zscript>
+    cargando(){
+            loginWin.setVisible(false);
+            Window win34 = (Window) Executions.createComponents("/mostrarMensaje.zul", null, null);
+            System.out.println("LLEGO");
+            win34.setVisible(true);
+            win34.setAttribute("tipo", "profesor");
+            win34.doModal();
+            loginWin.setVisible(true);
+    }    
+    </zscript>
 </zk>
 	<!--/window-->
     
