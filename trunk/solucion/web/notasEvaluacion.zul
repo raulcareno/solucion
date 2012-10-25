@@ -20,6 +20,7 @@ import org.zkoss.zul.Listbox;
 import sources.*;
 import bean.Permisos;
 import net.sf.jasperreports.engine.JRDataSource;
+import bean.exportarExcel;
 
 import org.zkoss.zul.Auxhead;
 import org.zkoss.zul.Auxheader;
@@ -28,6 +29,8 @@ import org.zkoss.zul.Column;
 import org.zkoss.zul.Columns;
 
 Administrador adm = new Administrador();
+exportarExcel exp = new exportarExcel();
+
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 reportesClase noti = new reportesClase();
@@ -348,6 +351,31 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
           
 }
 
+    public static void export_to_csv(Grid datos) {
+    
+     //Rows filas = datos.getRows().getChildren();
+     //Columns columnas = datos.getColumns();
+      exp.exportarAExcel(datos,((Sistemacalificacion)self.selectedItem.value));
+     /* System.out.println();
+        String s = ";\t";
+        StringBuffer sb = new StringBuffer();
+        for (Object head : listbox.getHeads()) {
+            String h = "";
+            for (Object header : ((Listhead) head).getChildren()) {
+                h += ((Listheader) header).getLabel() + s;
+            }
+            sb.append(h + "\n");
+        }
+            for (Object item : listbox.getItems()) {
+                String i = "";
+                for (Object cell : ((Listitem) item).getChildren()) {
+                    i += ((Listcell) cell).getLabel() + s;
+                }
+                sb.append(i + "\n");
+            }
+        Filedownload.save(sb.toString().getBytes(), "application/vnd.ms-excel", "formato.csv"); 
+        */
+ }
 
 
 
@@ -425,7 +453,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
 
                             <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                             <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
-
+                            <button label="Formato CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/>
                         </span>
                     </row>
 

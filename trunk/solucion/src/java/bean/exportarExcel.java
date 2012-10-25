@@ -1,10 +1,17 @@
 package bean;
- 
-import java.io.FileNotFoundException;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jcinform.persistencia.Sistemacalificacion;
+import jcinform.persistencia.Sistemaevaluacion;
+import jcinform.procesos.Administrador;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.zkoss.zhtml.Filedownload;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
@@ -12,20 +19,159 @@ import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.zkoss.zhtml.Messagebox;
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+import org.zkoss.zul.Decimalbox;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.Row;
 
 /**
  *
  * @author GEOVANNY
  */
-public class exportarExcel   {
-    public void exportarExcel()   {}
+public class exportarExcel {
+
+    public void exportarExcel() {
+    }
 //        response.setContentType("application/xls");
 //        response.setContentType("application/vnd.ms-excel");
 //        response.setHeader("Content-disposition", "attachment;filename=cuadroCalificaciones.xls");
-     public static void export_to_csv(Listbox listbox) {
+
+    public void exportarAExcel(Grid datos,Sistemacalificacion sistema) {
+    
+      Administrador adm = new Administrador();
+      List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
+                + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
+        
+         
+        
+        HSSFWorkbook libro = new HSSFWorkbook();
+        HSSFSheet hoja = libro.createSheet("notas");
+        hoja.addMergedRegion(new CellRangeAddress(0,0,0,1));
+        //hoja.addMergedRegion(new CellRangeAddress(0,0,2,6));
+        String inicial = "";
+        int desde = 2;
+        int hasta = 0;
+        for (Iterator<Sistemaevaluacion> it = notas.iterator(); it.hasNext();) {
+            Sistemaevaluacion sistemaevaluacion = it.next();
+            if(inicial.equals("")){
+                inicial = sistemaevaluacion.getEvaluacion().getDescripcion();   
+            }else if(inicial.equals(sistemaevaluacion.getEvaluacion().getDescripcion())){
+                hasta ++;
+            }else{
+                 hoja.addMergedRegion(new CellRangeAddress(0,0,desde,hasta));
+                 desde = hasta;
+            }
+        }
+        
+        int i = 0;
+        int j = 1;
+        Boolean generadoCabeceeras = false;
+        for (Object filas : datos.getRows().getChildren()) {
+            Row fila2 = (Row) filas;
+            j = 0;
+            if (generadoCabeceeras == false) {
+                for (Object columnas : datos.getHeads()) {
+                    System.out.println("" + columnas);
+                    HSSFRow fila = hoja.createRow(i);
+                    if (columnas instanceof Auxhead) {
+                    j=0;
+                        List filaColumna = ((Auxhead) columnas).getChildren();
+                        for (Iterator it = filaColumna.iterator(); it.hasNext();) {
+                            Object object = it.next();
+                            String valor = "";
+                            HSSFCell celda = fila.createCell((short) j);
+                            HSSFRichTextString textoAnadir = new HSSFRichTextString("" + ((Auxheader) object).getLabel());
+                            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                            //celda.setAsActiveCell();
+                            celda.setCellValue(textoAnadir);
+                            j++;
+                        }
+                        
+                    } else if (columnas instanceof Columns) {
+                    j=0;
+                        List filaColumna = ((Columns) columnas).getChildren();
+                        for (Iterator it = filaColumna.iterator(); it.hasNext();) {
+                            Object object = it.next();
+                            String valor = "";
+                            HSSFCell celda = fila.createCell((short) j);
+                            HSSFRichTextString textoAnadir = new HSSFRichTextString("" + ((Column) object).getLabel());
+                            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                            //celda.setAsActiveCell();
+                            celda.setCellValue(textoAnadir);
+                            j++;
+                        }
+                    }
+                    
+                    i++;
+                }
+
+                generadoCabeceeras = true;
+            }
+            i++;
+            j = 0;
+            HSSFRow fila = hoja.createRow(i);
+            //System.out.println(""+fila);
+            List filaColumna = fila2.getChildren();
+            for (Iterator it = filaColumna.iterator(); it.hasNext();) {
+
+                Object object = it.next();
+                String valor = "";
+                if (object instanceof Label) {
+                    Label val = ((Label) object);
+                    valor = val.getValue();
+                    HSSFCell celda = fila.createCell((short) j);
+                    HSSFRichTextString textoAnadir = new HSSFRichTextString("" + val.getValue());
+                    celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                    //celda.setAsActiveCell();
+                    celda.setCellValue(textoAnadir);
+                } else if (object instanceof Decimalbox) {
+                    Decimalbox val = ((Decimalbox) object);
+                    valor = val.getValue() + "";
+                    HSSFCell celda = fila.createCell((short) j);
+                    celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                    celda.setCellValue(val.getValue().doubleValue());
+                }
+                j++;
+                System.out.println(valor);
+
+            }
+
+
+        }
+
+        try {
+            File f = new File("f://holamundo2.xls");
+            FileOutputStream elFichero = new FileOutputStream(f);
+            libro.write(elFichero);
+            elFichero.close();
+            FileInputStream input;
+            byte[] data = null;
+            try {
+                input = new FileInputStream(f);
+                data = new byte[input.available()];
+                input.read(data);
+                input.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Filedownload.save(libro.getBytes(), "application/ms-excel", "formato.xls");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void export_to_csv(Listbox listbox) {
         String s = ";\t";
         StringBuffer sb = new StringBuffer();
         for (Object head : listbox.getHeads()) {
@@ -35,17 +181,17 @@ public class exportarExcel   {
             }
             sb.append(h + "\n");
         }
-            for (Object item : listbox.getItems()) {
-                String i = "";
-                for (Object cell : ((Listitem) item).getChildren()) {
-                    i += ((Listcell) cell).getLabel() + s;
-                }
-                sb.append(i + "\n");
+        for (Object item : listbox.getItems()) {
+            String i = "";
+            for (Object cell : ((Listitem) item).getChildren()) {
+                i += ((Listcell) cell).getLabel() + s;
             }
-        Filedownload.save(sb.toString().getBytes(), "text/plain", "auditoria.csv");
+            sb.append(i + "\n");
         }
+        Filedownload.save(sb.toString().getBytes(), "text/plain", "auditoria.csv");
+    }
 
-     public void exportar(Listbox listbox){
+    public void exportar(Listbox listbox) {
         FileOutputStream fileOut = null;
         try {
             //         HSSFWorkbook libro = new HSSFWorkbook();
@@ -80,7 +226,7 @@ public class exportarExcel   {
 //            fileOut = new FileOutputStream("workbook.xls");
 //            milibro.write(fileOut);
 //            fileOut.close();
-                        Filedownload.save(milibro.getBytes(), "application/xls", "auditoria.xls");
+            Filedownload.save(milibro.getBytes(), "application/xls", "auditoria.xls");
             //response.setContentType("application/vnd.ms-excel");
             //            ServletOutputStream outputStream = response.getOutputStream();
             //            milibro.write(outputStream);
@@ -88,7 +234,7 @@ public class exportarExcel   {
             //            outputStream.close();
         } catch (Exception ex) {
             Logger.getLogger(exportarExcel.class.getName()).log(Level.SEVERE, null, ex);
-        }  finally {
+        } finally {
             try {
                 fileOut.close();
             } catch (IOException ex) {
@@ -99,5 +245,3 @@ public class exportarExcel   {
 
     }
 }
-
-
