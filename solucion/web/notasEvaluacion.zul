@@ -355,7 +355,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
     
      //Rows filas = datos.getRows().getChildren();
      //Columns columnas = datos.getColumns();
-      exp.exportarAExcel(datos,((Sistemacalificacion)self.selectedItem.value));
+      exp.exportarAExcel(datos,sisevalCombo.selectedItem.value);
      /* System.out.println();
         String s = ";\t";
         StringBuffer sb = new StringBuffer();
