@@ -1679,9 +1679,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         }
 
                     }
-                    imprimir(facActual.getCodigo(), emp, dia, false, cli);
-
-
+                    if(facActual.getTotal().doubleValue()>0){
+                        imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                    }
                     if (empresaObj.getSeabrefac()) {
                         if (empresaObj.getRetardoSalida() != null) {
                             if (empresaObj.getRetardoSalida().length() > 0) {
