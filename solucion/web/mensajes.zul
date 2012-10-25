@@ -1,3 +1,7 @@
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
 <window  width="500px" >
 
  <zscript>
@@ -19,8 +23,8 @@ Session ses = Sessions.getCurrent();
 //FUNCIONES
 void llenar(Mensajes empa){
     nombres.value = empa.getMensaje();
-    desde.value = new Date();
-    hasta.value = new Date();
+    desde.value = empa.getDesde();
+    hasta.value = empa.getHasta();
     para.value = empa.getTipo();
 
 }
@@ -28,7 +32,7 @@ void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Mensajes)datos.selectedItem.value;
         }else{empa.setCodigo(0);}
-        nombres.readonly = estado;
+ 
 }
 
 
@@ -148,18 +152,18 @@ void eliminar(){
 <rows>
 
 <row><span style="float:right"> Mensaje(*):</span>
-        <textbox id="nombres"   rows="2" cols="40" readonly="true"   />   
+        <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Simple"   id="nombres" />
 </row>
 <row><span style="float:right"> Desde(*):</span>
-        <datebox id="desde"     />   
+        <datebox id="desde" cols="35" format="dd/MM/yyyy HH:mm"  />   
 </row>
 <row><span style="float:right"> Hasta(*):</span>
-        <datebox id="hasta"   />   
+        <datebox id="hasta" cols="35"  format="dd/MM/yyyy HH:mm"   />   
 </row>
 <row><span style="float:right"> Para(*):</span>
-   <combobox id="para">
+   <combobox value="Profesores" id="para">
         <comboitem label="Profesores"/>
-        <comboitem label="Docentes"/>
+        <comboitem label="Estudiantes"/>
     </combobox>      
 </row>
   
@@ -201,3 +205,4 @@ void eliminar(){
 </groupbox>
 
 </window>
+</zk>
