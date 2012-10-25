@@ -47,7 +47,9 @@ public class exportarExcel {
 //        response.setHeader("Content-disposition", "attachment;filename=cuadroCalificaciones.xls");
 
     public void exportarAExcel(Grid datos,Sistemacalificacion sistema) {
-    
+        try {
+            
+        
       Administrador adm = new Administrador();
       List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
                 + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
@@ -63,13 +65,18 @@ public class exportarExcel {
         int hasta = 0;
         for (Iterator<Sistemaevaluacion> it = notas.iterator(); it.hasNext();) {
             Sistemaevaluacion sistemaevaluacion = it.next();
+            if(sistemaevaluacion.getEvaluacion()!=null){
             if(inicial.equals("")){
                 inicial = sistemaevaluacion.getEvaluacion().getDescripcion();   
+                hasta ++;
             }else if(inicial.equals(sistemaevaluacion.getEvaluacion().getDescripcion())){
                 hasta ++;
             }else{
                  hoja.addMergedRegion(new CellRangeAddress(0,0,desde,hasta));
-                 desde = hasta;
+                 desde = hasta+1;
+                 hasta++;
+                 inicial = sistemaevaluacion.getEvaluacion().getDescripcion();
+            }
             }
         }
         
@@ -168,6 +175,9 @@ public class exportarExcel {
             Filedownload.save(libro.getBytes(), "application/ms-excel", "formato.xls");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
