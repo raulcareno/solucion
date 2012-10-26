@@ -63,6 +63,7 @@ public class exportarExcel {
         String inicial = "";
         int desde = 2;
         int hasta = 0;
+        HSSFRow filaCabecera = hoja.createRow(0);
         for (Iterator<Sistemaevaluacion> it = notas.iterator(); it.hasNext();) {
             Sistemaevaluacion sistemaevaluacion = it.next();
             if(sistemaevaluacion.getEvaluacion()!=null){
@@ -73,6 +74,11 @@ public class exportarExcel {
                 hasta ++;
             }else{
                  hoja.addMergedRegion(new CellRangeAddress(0,0,desde,hasta));
+                            HSSFCell celda = filaCabecera.createCell((short) hasta);
+                            HSSFRichTextString textoAnadir = new HSSFRichTextString("" +sistemaevaluacion.getEvaluacion().getDescripcion());
+                            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                            //celda.setAsActiveCell();
+                            celda.setCellValue(textoAnadir);
                  desde = hasta+1;
                  hasta++;
                  inicial = sistemaevaluacion.getEvaluacion().getDescripcion();
@@ -80,7 +86,7 @@ public class exportarExcel {
             }
         }
         
-        int i = 0;
+        int i = 1;
         int j = 1;
         Boolean generadoCabeceeras = false;
         for (Object filas : datos.getRows().getChildren()) {
@@ -91,18 +97,18 @@ public class exportarExcel {
                     System.out.println("" + columnas);
                     HSSFRow fila = hoja.createRow(i);
                     if (columnas instanceof Auxhead) {
-                    j=0;
-                        List filaColumna = ((Auxhead) columnas).getChildren();
-                        for (Iterator it = filaColumna.iterator(); it.hasNext();) {
-                            Object object = it.next();
-                            String valor = "";
-                            HSSFCell celda = fila.createCell((short) j);
-                            HSSFRichTextString textoAnadir = new HSSFRichTextString("" + ((Auxheader) object).getLabel());
-                            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
-                            //celda.setAsActiveCell();
-                            celda.setCellValue(textoAnadir);
-                            j++;
-                        }
+//                    j=0;
+//                        List filaColumna = ((Auxhead) columnas).getChildren();
+//                        for (Iterator it = filaColumna.iterator(); it.hasNext();) {
+//                            Object object = it.next();
+//                            String valor = "";
+//                            HSSFCell celda = fila.createCell((short) j);
+//                            HSSFRichTextString textoAnadir = new HSSFRichTextString("" + ((Auxheader) object).getLabel());
+//                            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+//                            //celda.setAsActiveCell();
+//                            celda.setCellValue(textoAnadir);
+//                            j++;
+//                        }
                         
                     } else if (columnas instanceof Columns) {
                     j=0;
@@ -119,7 +125,7 @@ public class exportarExcel {
                         }
                     }
                     
-                    i++;
+                    //i++;
                 }
 
                 generadoCabeceeras = true;

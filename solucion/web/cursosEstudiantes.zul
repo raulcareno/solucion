@@ -161,6 +161,11 @@ void showReport(String tipo) {
         return;
     }
     Matriculas mat = cursosList.selectedItem.value;
+     if(mat.getCurso().getPeriodo().getVernotas()){
+               Messagebox.show("LAS NOTAS DE ÉSTE PERIODO SE ENCUENTRAN BLOQUEADAS POR LA ADMINISTRACIÓN  (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return;
+     }
+    
  //String tipo = reporte.getSelectedItem().getValue();
            if(tipo.equals("")){
                 return;
