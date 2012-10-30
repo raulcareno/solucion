@@ -922,6 +922,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"concedula.jasper");
+            }else if(tipo.equals("LDAT")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"condatos.jasper");
             }else if(tipo.equals("LREP2")){
                     datasource = certificados(listadoCursos,"LREP2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1227,6 +1231,8 @@ void campos(String valor){
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LCED"))
             titulo.value = "Listado de Estudiantes";
+            if(valor.equals("LDAT"))
+            titulo.value = "Listado de Estudiantes";
 
        if(valor.equals("LPAS")){
             titulo.value = "NOMINA DE ESTUDIANTES CON PASES DE OTROS COLEGIOS";
@@ -1305,6 +1311,7 @@ void campos(String valor){
                                 <listitem  id="LGEN" label="Estudiantes por Genero (Masculino:Femenino)" value="LGEN"/>
                                 <listitem  id="LFEC" label="Estudiantes por Fecha y Edad (Años Cumplidos)" value="LFEC"/>
                                 <listitem  id="LCED" label="Estudiantes con Cédula de Identidad" value="LCED"/>
+                                <listitem  id="LDAT" label="Estudiantes con Datos" value="LDAT"/>
                                 
                                 <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="LNUEV" label="Estudiantes Nuevos" value="LNUEV"/>
@@ -1504,6 +1511,7 @@ void campos(String valor){
             LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
             LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
             LCED.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+            LDAT.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
             LPAS.visible = per.verificarPermisoReporte("LPAS", "Ingresar");
             LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
             LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
