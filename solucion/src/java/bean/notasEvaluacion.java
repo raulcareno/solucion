@@ -169,7 +169,7 @@ int kk=0;
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
                     notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
-                    notaTexto.setTabindex(j);
+//                    notaTexto.setTabindex(kk);
                     label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                     try {
@@ -186,7 +186,8 @@ int kk=0;
 
                             Listitem item = new Listitem("");
                             notaTexto = new Decimalbox();
-                            combo.setTabindex(j);
+//                            combo.setTabindex(kk);
+                            System.out.println(""+kk);
                             label3 = new Label();
 
 
@@ -338,7 +339,7 @@ int kk=0;
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
-                    combo.setTabindex(j);
+//                    combo.setTabindex(kk);
                     label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                     try {
@@ -709,7 +710,7 @@ int kk=0;
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
                     notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
-                    notaTexto.setTabindex(j);
+//                    notaTexto.setTabindex(j);
                     label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                     try {

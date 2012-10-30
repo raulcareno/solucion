@@ -453,7 +453,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
 
                             <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                             <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
-                            <button label="Formato CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/>
+                            <!--button label="Formato CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/-->
                         </span>
                     </row>
 
