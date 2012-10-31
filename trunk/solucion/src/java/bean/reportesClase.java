@@ -3116,7 +3116,7 @@ public class reportesClase {
             
             /* aumentadio  */
              
-              String que = "Select g.codigo, " + notaQuery + " from Notasevaluacion as o, Global as g "
+              String que = "Select o.matricula,g.codigo,o.cuantitativa, " + notaQuery + " from Notasevaluacion as o, Global as g "
                             + "where o.materia = g.codigo "
                             + "and o.matricula = '" + matriculas1.getCodigomat() + "' "
                             + " order by g.descripcion ";

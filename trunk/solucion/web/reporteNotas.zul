@@ -663,6 +663,14 @@ void recalcular(){
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
+            }else if(tipo.equals("LIBQ")){
+                   //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
+
+                    datasource = noti.libretasNew(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"libreta.jasper");
+                    parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
+                   
             }else if(tipo.equals("APRO")){
                      datasource = aprobados(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"estudiantesAprobados.jasper");
@@ -783,7 +791,7 @@ void campos(String valor){
             filaaportes.visible = true;
             filamaterias.visible = true;
             
-        }else if(valor.equals("LIBF") || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
+        }else if(valor.equals("LIBF") || valor.equals("LIBQ")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
@@ -1007,6 +1015,7 @@ void campos(String valor){
                                     <listitem  id="LIBF" label="Libreta de Calificaciones(Final Supletorios)" value="LIBF" />
                                     <listitem  id="LIB2" label="Libreta de Calificaciones(Pequeño)" value="LIB2" />
                                     <listitem  id="LIB3" label="Libreta de Calificaciones(Con Aprobación o No)" value="LIB3" />
+                                    <listitem  id="LIBQ" label="Libreta Quimestral" value="LIBQ" />
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
