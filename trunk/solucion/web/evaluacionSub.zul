@@ -115,6 +115,7 @@
                                                            if(!((Checkbox) labels.get(4)).isChecked() && !((Checkbox) labels.get(3)).isChecked()){
                                                                formulaGlobal += sisEva.getNombre()+"(),";
                                                                formulaGlobalS += sisEva.getNombre()+"()+";
+                                                               sisEva.setEspromedio(true);
                                                            }
                                                        }
                                                        adm.guardar(sisEva);
