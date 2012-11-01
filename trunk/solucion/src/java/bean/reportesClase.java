@@ -3686,7 +3686,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
         if (matri.getCodigomat().equals(-2)) {
             matriculas = adm.query("Select o from Matriculas as o "
                     + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
-                    + " and o.estado in  "
+                    + " and o.estado in  ('Matriculado','Recibir Pase')  "
                     + " order by o.estudiante.apellido ");
         } else {
             matriculas.add(matri);
