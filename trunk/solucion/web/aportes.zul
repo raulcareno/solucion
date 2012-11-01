@@ -753,7 +753,7 @@ if(formula1.equals("")){
                                 <textbox readonly="true" id="nota" cols="10" />
                             </span>
                         </row>
-
+                    
 
                         <row spans="2" >
                             <span style="float:center">

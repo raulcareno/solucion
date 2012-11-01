@@ -22,6 +22,52 @@ Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
 Permisos permiso = new Permisos();
 List cursos = adm.query("SELECT distinct o FROM Matriculas as o WHERE o.estudiante.codigoest = '"+user.getCodigoest()+"'");
  reportesClase  noti = new reportesClase();
+ 
+ 
+
+ void buscarSistemas(Cursos cur){
+ 
+    sistemasCombo.getChildren().clear();
+   List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+cur.getPeriodo().getCodigoper()+"' order by o.codigotrim  ");
+   List sistemas = new ArrayList();
+    for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+cur.getPeriodo().getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre(""+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    siste.setNombre(" ....."+siste.getNombre()+"");
+                    sistemas.add(siste);
+               }
+
+ }
+
+            for (Iterator it3 = sistemas.iterator(); it3.hasNext();) {
+                    Sistemacalificacion sistem = (Sistemacalificacion) it3.next();
+                    Listitem item = new Listitem();
+                        item.setValue(sistem);
+                        item.appendChild(new Listcell(""+sistem.getNombre()));
+                       sistemasCombo.appendChild(item);
+              }
+      
+          
+            sistemasCombo.setSelectedIndex(0);
+            
+        
+    }
 void buscar2(Matriculas mat){
 try{
             if(mat.getCurso().getPeriodo().getVernotas()){
@@ -160,6 +206,13 @@ void showReport(String tipo) {
         reporte.clearSelection();
         return;
     }
+    
+    if(tipo.equals("LIBQ") && sistemasCombo.getSelectedItem()==null){
+            aporteNotas.visible = true;
+            buscarSistemas(cursosList.getSelectedItem().getValue().getCurso());
+            return;
+    }
+ 
     Matriculas mat = cursosList.selectedItem.value;
      if(mat.getCurso().getPeriodo().getVernotas()){
                Messagebox.show("LAS NOTAS DE ÉSTE PERIODO SE ENCUENTRAN BLOQUEADAS POR LA ADMINISTRACIÓN  (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -250,7 +303,17 @@ void showReport(String tipo) {
                     report.setSrc(directorioReportes+"libreta.jasper");
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
-                    parametros.put("titulo", "LIBRETA TRIMESTRAL");
+                    parametros.put("titulo", "REPORTE DE CALIFICACIONES-SIN LEGALIZAR");
+                   
+            }else if(tipo.equals("LIBQ")){
+            
+                sistemaUltimo = sistemasCombo.getSelectedItem().getValue();
+             sistemaUltimo.setNombre(sistemaUltimo.getNombre().replace(" .....",""));
+                    datasource = noti.libretasNew(mat.getCurso(),mat,sistemaUltimo);
+                    report.setSrc(directorioReportes+"libretaQ.jasper");
+                    parametros.put("pathSubRel",directorioReportes );//libreta_subQ.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
+                    parametros.put("titulo", "REPORTE DE CALIFICACIONES-SIN LEGALIZAR");
                    
             }else if(tipo.equals("AM")){
                 ArrayList listadoCursos = new ArrayList();
@@ -323,6 +386,8 @@ void showReport(String tipo) {
                 <hbox>
                     <separator orient="vertical" width="50px"/>
                     <listbox style="background:transparent" id="reporte" onSelect="showReport(self.selectedItem.value)" width="500px"  >
+                        <listitem image="/images/medialibreta.png"  id="PCURQ" label="LIBRETA QUIMESTRAL" value="LIBQ"/> 
+                        <listitem/>
                         <listitem image="/images/medialibreta.png"  id="PCUR" label="LIBRETA TRIMESTRAL" value="LIB"/> 
                         <listitem/>
                         <listitem image="/images/libreta.png"   id="FAL" label="PASE DE AÑO" value="CERT"/>
@@ -335,12 +400,32 @@ void showReport(String tipo) {
             
         </rows>
     </grid>
-    
+    <panel  framable="true" width="450px" maximizable="true" minimizable="true" 
+            border="normal"  height="300px" style="position:absolute; top:30px; left:30px" visible="false"  id="aporteNotas">
+        <panelchildren>
+            <grid>
+                <rows>
+                    <row>
+                        <span> SELECCIONE UN APORTE: </span>
+                    </row>
+                    <row>
+                        <listbox id="sistemasCombo"  onSelect='showReport("LIBQ");aporteNotas.visible=false;'  height="200px" >
+                        </listbox>                    
+                    </row>
+                     <row>
+                           <button  image="/images/exit.gif" id="Cerrar2"  label="CERRAR"  
+                    onClick="aporteNotas.visible=false; contenido.visible=true;cursosList.clearSelection();reporte.clearSelection();sistemasCombo.clearSelection();"/>
+                     </row>
+                </rows>
+            </grid>
+          
+        </panelchildren>
+    </panel>
     <panel height="90%" visible="false"  id="contenidoReporte">
         <toolbar align="center">
             <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
                     onClick="contenidoReporte.visible=false; contenido.visible=true;
-                    cursosList.clearSelection();reporte.clearSelection();"/>
+                    cursosList.clearSelection();reporte.clearSelection();sistemasCombo.clearSelection();"/>
         </toolbar>
         <panelchildren>
 

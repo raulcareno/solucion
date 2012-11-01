@@ -583,13 +583,13 @@ public class reportesClase {
                                             if (jj > 0) {
                                                 valProm = ((BigDecimal) dosProm).doubleValue();
                                                 coll.setNota(dosProm);
-                                                if (maprofesor.getCuantitativa() == false || ((Sistemacalificacion) sistemas.get(ksisProm)).getEsequivalencia()) {
-                                                    coll.setNota(equivalencia(((BigDecimal) dosProm).doubleValue(), equivalencias));
-                                                } else {
-                                                    if (valProm == 0.0) {
+//                                                if (maprofesor.getCuantitativa() == false || ((Sistemacalificacion) sistemas.get(ksisProm)).getEsequivalencia()) {
+//                                                    coll.setNota(equivalencia(((BigDecimal) dosProm).doubleValue(), equivalencias));
+//                                                } else {
+                                                    if (valProm.doubleValue() == 0.0) {
                                                         coll.setNota("");
                                                     }
-                                                }
+//                                                }
                                                 promedioFinal = dosProm;
                                                 Global promMate = new Global(1111);
                                                 promMate.setDescripcion("PROMEDIO");
@@ -2555,6 +2555,9 @@ public class reportesClase {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        if(periodo == null){
+            periodo = matri.getCurso().getPeriodo();
+        }
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         String firma1 = regresaVariableParametros("FIR1", parametrosGlobales);
@@ -3028,6 +3031,9 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        if(periodo == null){
+        periodo = matri.getCurso().getPeriodo();
+        }
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         String firma1 = regresaVariableParametros("FIR1", parametrosGlobales);
@@ -3078,7 +3084,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
             }
             notaQuery = notaQuery.substring(0, notaQuery.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         }else{
-             Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+             Messagebox.show("No hay nada que imprimir...! \n Seleccion otro APORTE o BLOQUE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
              return null;
         }
         String query = "";
