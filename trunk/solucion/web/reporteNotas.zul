@@ -224,7 +224,30 @@ public JRDataSource distributivo2(){
 
       return ds;
 }
+public JRDataSource distributivo3(){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      Periodo periodo = (Periodo) ses.getAttribute("periodo");
+      
+      
+      List notas = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.codigosis = '" + (sistemasCombo.selectedItem.value).getCodigosis() + "' ");
+      Notanotas actualNota =  notas.get(0);
+        ArrayList detalle = new ArrayList();
+        List hoy = adm.queryNativo(" SELECT mp.* FROM materia_profesor mp WHERE mp.curso IN (SELECT codigocur FROM cursos WHERE periodo = '" +  periodo.getCodigoper()  + "'  ) " + 
+        " AND mp.materia NOT IN (SELECT materia FROM notas WHERE matricula " +
+        " IN (SELECT codigomat FROM matriculas WHERE curso " + 
+        " IN (SELECT codigocur FROM cursos WHERE periodo  = '" + periodo.getCodigoper()  + "' )) " + 
+        " GROUP BY MATERIA HAVING AVG("+actualNota.getNota()+") > 0 ) ",MateriaProfesor.class);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            MateriaProfesor elem = (MateriaProfesor) it.next();
+            detalle.add(elem);
+        }
+      ReporteProfesorDataSource ds = new ReporteProfesorDataSource(detalle);
 
+
+      return ds;
+}
 
 public JRDataSource profesores(){
       Administrador adm = new Administrador();
@@ -428,6 +451,9 @@ void recalcular(){
             }else if(tipo.equals("DIS2")){
                     datasource = distributivo2();
                     report.setSrc(directorioReportes+"firmascuadrocalificaciones.jasper");
+            }else if(tipo.equals("DIS3")){
+                    datasource = distributivo3();
+                    report.setSrc(directorioReportes+"faltanNotas.jasper");
             }else if(tipo.equals("PROF")){
                     datasource = profesores();
                     report.setSrc(directorioReportes+"profesores.jasper");
@@ -747,6 +773,13 @@ void campos(String valor){
             sistemasCombo.disabled = false;
             titulo.value= "Lista de profesores por Curso";
             filacursos.visible = true;
+            filaaportes.visible = true;
+            
+        }else if(valor.equals("DIS3")){
+            curs.disabled = true;
+            sistemasCombo.disabled = false;
+            titulo.value= "Lista de profesores por Curso";
+            //filacursos.visible = true;
             filaaportes.visible = true;
             
         }else if(valor.equals("PCUR")){
@@ -1082,6 +1115,7 @@ void campos(String valor){
                                     <listitem  id="lineaABC" label="========= DISTRIBUTIVOS ================" value="lineaABC" />
                                     <listitem  id="DIS" label="Distributivo" value="DIS" />
                                     <listitem  id="DIS2" label="Profesores por Curso" value="DIS2" />
+                                    <listitem  id="DIS3" label="Profesores sin Notas Pasadas" value="DIS3" />
                                     <listitem  id="PROF" label="Listado de Profesores" value="PROF" />
                                     <listitem  id="PROFC" label="Listado de Profesores completo" value="PROFC" />
                                     <listitem  id="CERD" label="Certificado de Disciplina" value="CERD"/>
