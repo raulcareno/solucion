@@ -3011,7 +3011,18 @@ public class reportesClase {
         return ds;
 
     }
-
+public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
+    for (Iterator<MateriaProfesor> it = materiaProfesores.iterator(); it.hasNext();) {
+        
+        MateriaProfesor materiaProfesor = it.next();
+        if(materia.getCodigo().equals(materiaProfesor.getMateria().getCodigo())){
+            return materiaProfesor.getOrden();
+        }
+        
+    }
+    return 0;
+    
+}
     public JRDataSource libretasNew(Cursos curso, Matriculas matri, Sistemacalificacion sistema) throws InterruptedException {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
@@ -3034,7 +3045,8 @@ public class reportesClase {
 
 
 //DECIMALESDIS
-
+            List<MateriaProfesor> materiaProfesores = adm.query("Select o from MateriaProfesor as o "
+                + "where o.curso.codigocur = '"+curso.getCodigocur()+"'  ");
 
         List<Equivalencias> equivalenciasFaltas = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'DI' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
@@ -3065,6 +3077,9 @@ public class reportesClase {
                 notaQuery += notass.getNombre()+",";
             }
             notaQuery = notaQuery.substring(0, notaQuery.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        }else{
+             Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+             return null;
         }
         String query = "";
         String query2 = "";
@@ -3134,6 +3149,7 @@ public class reportesClase {
                     Boolean cuantitativa = false;
                     Global mate = new Global();
                     int ksis = 0;
+                    int numerar = -20;
                     
                     for (int j = 0; j < vecti.size(); j++) {
                         Object dos = vecti.get(j);
@@ -3161,15 +3177,16 @@ public class reportesClase {
 //                                    coll2.setNota("");
 //                                }
                             }
-                            coll2.setMateria(mate.getDescripcion());
+                            coll2.setMateria((buscarOrden(materiaProfesores, mate))+"."+mate.getDescripcion());
                             coll2.setMatricula("" + matriculaNo.getCodigomat());
                             coll2.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
-                            coll2.setSistema(((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getEvaluacion().getAbreviatura());
-                            coll2.setTipo(((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getSistemacalificacion().getTrimestre().getDescripcion());
+                            coll2.setSistema("-"+(ksis)+""+((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getEvaluacion().getAbreviatura());
+                            coll2.setTipo(((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getSistemacalificacion().getTrimestre().getDescripcion()+" - " +sistema.getNombre());
                             System.out.println(""+coll2.getNota()+" s:"+coll2.getSistema());
                             lisNotasC.add(coll2);
 
                             ksis++;
+                            numerar++;
                         } else if (j >= 2) {
                             //System.out.println(""+dos);
                             cuantitativa = (Boolean) dos;
@@ -3217,11 +3234,11 @@ public class reportesClase {
                                     coll.setNota("");
                                 }
                             }
-                            coll.setMateria(mate.getDescripcion());
+                            coll.setMateria((buscarOrden(materiaProfesores, mate))+"."+mate.getDescripcion());
                             coll.setMatricula("" + matriculaNo.getCodigomat());
                             coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                             coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-                            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
+                            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion()+" - " +((Sistemacalificacion)sistemas.get(ksis)).getNombre());
                             lisNotasC.add(coll);
 
                             ksis++;
@@ -3264,7 +3281,7 @@ public class reportesClase {
                         Boolean cuantitativa = false;
                         Global mate = new Global();
                         mate.setCodigo(0);
-                        mate.setDescripcion("PROMEDIO");
+                        mate.setDescripcion("98.PROMEDIO");
                         int ksis = 0;
                         for (int j = 0; j < vec.size(); j++) {
                             Object dos = vec.get(j);
@@ -3293,7 +3310,7 @@ public class reportesClase {
                                 coll.setMatricula("" + matriculas1.getCodigomat());
                                 coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                                 coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-                                coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
+                                coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion()+" - " +((Sistemacalificacion)sistemas.get(ksis)).getNombre() );
                                 lisNotasC.add(coll);
                                 ksis++;
                             }
@@ -3320,7 +3337,7 @@ public class reportesClase {
                         Boolean cuantitativa = false;
                         Global mate = new Global();
                         mate = new Global(-2);
-                        mate.setDescripcion("DISCIPLINA");
+                        mate.setDescripcion("99.DISCIPLINA");
                         int ksis = 0;
                         for (int j = 0; j < vec.size(); j++) {
                             Object dos = vec.get(j);
@@ -3349,7 +3366,7 @@ public class reportesClase {
                                 coll.setMatricula("" + matriculas1.getCodigomat());
                                 coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                                 coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-                                coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
+                                coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion()+" - " +((Sistemacalificacion)sistemas.get(ksis)).getNombre());
                                 lisNotasC.add(coll);
                                 ksis++;
                             }

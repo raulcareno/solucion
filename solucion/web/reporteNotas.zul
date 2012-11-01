@@ -667,7 +667,7 @@ void recalcular(){
                    //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
 
                     datasource = noti.libretasNew(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
-                    report.setSrc(directorioReportes+"libreta.jasper");
+                    report.setSrc(directorioReportes+"libretaQ.jasper");
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
