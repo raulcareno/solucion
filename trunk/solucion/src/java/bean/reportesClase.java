@@ -3141,6 +3141,8 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
             String que = "Select o.matricula,g.codigo,o.cuantitativa, " + notaQuery + " from Notasevaluacion as o, Global as g "
                     + "where o.materia = g.codigo and o.sistemacalificacion = '"+sistema.getCodigosis()+"'  "
                     + "and o.matricula = '" + matriculas1.getCodigomat() + "' "
+                    + " and o.materia in (Select x.materia from materia_profesor as x "
+                    + " where x.curso = '"+curso.getCodigocur()+"' and x.seimprime = true ) "
                     + " order by g.descripcion ";
             System.out.println("" + que);
 

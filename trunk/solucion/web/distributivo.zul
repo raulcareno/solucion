@@ -404,7 +404,7 @@ Listbox llenarComboMaterias(Global mat){
                        Global acceIt = (Global) it.next();
                         Listitem li = new Listitem();
                           li.setValue(acceIt);
-                          Listcell celda = new Listcell(acceIt.getDescripcion()+"");
+                          Listcell celda = new Listcell(acceIt.getDescripcion()+" [MA"+acceIt.getCodigo()+"]" );
                       
                           li.appendChild(celda);
                             if(mat.getCodigo().equals(acceIt.getCodigo()))
