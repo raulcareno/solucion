@@ -3646,7 +3646,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
-
+        
         Integer noDecimales = 3;
         try {
             noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
@@ -3655,7 +3655,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
 
         }
 
-
+        
         try {
             if (notas.size() <= 0) {
                 Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -3848,7 +3848,12 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
 
 
         ReportePromocionDataSource ds = new ReportePromocionDataSource(listaMatriculados);
-
+        adm = null; ses = null; periodo = null; textos = null; cabecera = null; aprobado = null; reprobado = null;
+        parametrosGlobales = null; equivalencias = null; notas = null;
+        noDecimales = null; listaMatriculasPerdidos = null; codigosPerdidos =null; listaMatriculados = null;
+        codigosPerdidos = null; perdidos = null; complemento = null;
+        matriculas = null;  listaMatriculados = null;
+        
         return ds;
 
     }
