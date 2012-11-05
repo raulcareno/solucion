@@ -740,6 +740,8 @@ void recalcular(){
                     report.setType((String) format.getSelectedItem().getValue());
                 }
             }
+            datasource = null;
+                parametros = null;
 		}
 
 void campos(String valor){

@@ -469,8 +469,9 @@ int kk=0;
         }
         nativo = null;
         System.out.println("TOP FIN; " + new Date());
-//             adm = null; ses = null; periodo = null; 
-//       notas = null;
+       adm = null; ses = null; periodo = null; 
+       notas = null;
+        equ = null;
        
     }
 
@@ -616,7 +617,10 @@ int kk=0;
             guardarActualizar(fil.getChildren(), curso, materia);
            listadoEnviar = null;
            fil = null;
- 
+                col=null;
+            curso=null; 
+            materia=null; sistema=null;
+            System.gc();
              
             return "ok";
         } catch (EvalError ex) {
