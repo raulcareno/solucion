@@ -469,6 +469,9 @@ int kk=0;
         }
         nativo = null;
         System.out.println("TOP FIN; " + new Date());
+//             adm = null; ses = null; periodo = null; 
+//       notas = null;
+       
     }
 
     public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
