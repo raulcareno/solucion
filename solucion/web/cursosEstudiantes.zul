@@ -421,7 +421,7 @@ void showReport(String tipo) {
           
         </panelchildren>
     </panel>
-    <panel height="90%" visible="false"  id="contenidoReporte">
+    <panel height="800px" visible="false"  id="contenidoReporte">
         <toolbar align="center">
             <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
                     onClick="contenidoReporte.visible=false; contenido.visible=true;

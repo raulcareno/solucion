@@ -48,21 +48,16 @@ public class exportarExcel {
 
     public void exportarAExcel(Grid datos,Sistemacalificacion sistema) {
         try {
-            
-        
       Administrador adm = new Administrador();
       List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
                 + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
-        
-         
-        
         HSSFWorkbook libro = new HSSFWorkbook();
         HSSFSheet hoja = libro.createSheet("notas");
-        hoja.addMergedRegion(new CellRangeAddress(0,0,0,1));
+        hoja.addMergedRegion(new CellRangeAddress(0,0,0,0));
         //hoja.addMergedRegion(new CellRangeAddress(0,0,2,6));
         String inicial = "";
         int desde = 2;
-        int hasta = 0;
+        int hasta = 2;
         HSSFRow filaCabecera = hoja.createRow(0);
         for (Iterator<Sistemaevaluacion> it = notas.iterator(); it.hasNext();) {
             Sistemaevaluacion sistemaevaluacion = it.next();
@@ -74,12 +69,12 @@ public class exportarExcel {
                 hasta ++;
             }else{
                  hoja.addMergedRegion(new CellRangeAddress(0,0,desde,hasta));
-                            HSSFCell celda = filaCabecera.createCell((short) hasta);
-                            HSSFRichTextString textoAnadir = new HSSFRichTextString("" +sistemaevaluacion.getEvaluacion().getDescripcion());
-                            celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                 HSSFCell celda = filaCabecera.createCell((short) hasta);
+                 HSSFRichTextString textoAnadir = new HSSFRichTextString("" +sistemaevaluacion.getEvaluacion().getDescripcion());
+                 celda.setCellType(HSSFCell.CELL_TYPE_STRING);
                             //celda.setAsActiveCell();
-                            celda.setCellValue(textoAnadir);
-                 desde = hasta+1;
+                 celda.setCellValue(textoAnadir);
+                 desde = hasta;
                  hasta++;
                  inicial = sistemaevaluacion.getEvaluacion().getDescripcion();
             }
