@@ -288,6 +288,7 @@
                                             <menuitem onClick="ingresar(self)" id="Matricular2" label="Asignar Cursos(Estudiantes del A al B)" image="/images/asignar.png"  value="/asignarmatriculas.zul" />
                                             <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar(Cedulals,Suspensos,Perdidos)" image="/images/actualizar.png"  value="/actualizacion.zul" />
                                             <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
+                                            <menuitem onClick="ingresar(self)" id="ListaPendientes" label="Estudiantes con Pendientes" image="/images/dinero.gif"   value="/pendientesEstudiantesDobe.zul" />
                                             <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet(Inscribir-Modificar)"     image="/images/inscripciones.gif"   value="/inscripcionesModificar.zul" />
                                             <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"    image="/images/preaprobados.png"  value="/seleccionPreaprobados.zul" />
                                             <menuitem onClick="ingresar(self)" id="SorteoInscritos" label="Sorteo Automático de Inscritos"   image="/images/sorteo.png"      value="/inscripcionesSorteo.zul" />
@@ -424,6 +425,7 @@
             Matricular.visible = per.verificarPermisoReporte("Matricular","Matricular", "Ingresar",true,"MATRICULAS");
             Matricular2.visible = per.verificarPermisoReporte("ReasignarCursos","ReasignarCursos", "Ingresar",true,"MATRICULAS");
             Pendientes.visible = per.verificarPermisoReporte("Pendientes","Pendientes", "Ingresar",true,"MATRICULAS");
+            ListaPendientes.visible = per.verificarPermisoReporte("ListaPendientes","ListaPendientes", "Ingresar",true,"MATRICULAS");
             Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes","Reportes_Estudiantes", "Ingresar",true,"MATRICULAS");
             Trimestres.visible = per.verificarPermisoReporte("Trimestres","Trimestres", "Ingresar",true,"NOTAS");
             Aportes.visible = per.verificarPermisoReporte("Aportes", "Aportes", "Ingresar",true,"NOTAS");
