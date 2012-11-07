@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
+    <script type="text/javascript" src="/js/masks.js"/>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+ 
+    <window>
+
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  import java.text.SimpleDateFormat;
+  import bean.reportesClase;
+  
+  
+  Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+    Object media = null;
+    Session ses = Sessions.getCurrent();
+    Empleados user = (Empleados)ses.getAttribute("user");
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+reportesClase  noti = new reportesClase();
+
+    List cursos = null;
+
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.especialidad.descripcion,o.paralelo.descripcion ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  order by o.curso.secuencia,o.curso.especialidad.descripcion,o.curso.paralelo.descripcion  ");
+        System.out.println("CURSO: +cursos");
+    }
+
+    
+//Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
+    
+    void campos(String valor){
+    //curs.setSelectedIndex(0);
+        estudiantesCombo.disabled = true;
+        filaestudiantes.visible = false;
+    
+    }
+    
+    void buscar2(Cursos cur){
+     
+          ArrayList listadoCursos = new ArrayList();
+                	Set items = curs.getSelectedItems();
+                    if(items.size()>1){
+                            filaestudiantes.visible = false;
+                            estudiantesCombo.disabled = true;
+                                return;
+                    }
+                   
+						if (items.isEmpty()) {
+							alert("SELECCIONE POR LO MENOS UN CURSO...!");
+                            return;
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								Cursos curso = li.value;
+                                listadoCursos.add(curso);
+							}
+						}
+                        
+
+            filaestudiantes.visible = true;
+            estudiantesCombo.disabled = false;
+         if(estudiantesCombo.disabled==false){
+                    List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
+                        int a=0;
+            for (Iterator it = estudiantesCombo.getItems().iterator(); it.hasNext();) {
+                    estudiantesCombo.getItems().remove(a);
+                }
+                    
+                    Matriculas matri = new Matriculas(-1);
+                    Estudiantes es = new Estudiantes(-1);
+                    es.setApellido("[Seleccione]");
+                    es.setNombre("");
+                    matri.setEstudiante(es);
+                    //empleadosEncontrados.add(0,matri);
+                        
+                           for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                                  Matriculas estudent = (Matriculas) it.next();
+                                    Listitem item = new Listitem();
+                                    item.setValue(estudent);
+                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre+ (!estudent.getEstado().equals("Matriculado")? " ["+estudent.getEstado()+"]":"")));
+                                    item.setSelected(false);
+                                    estudiantesCombo.appendChild(item);
+                         }
+                        
+            }
+
+ 
+      
+    }
+    
+//FUNCIONES
+  void buscar(Matriculas matri){
+  
+  Date fechaActual = adm.Date();
+  String fec = (fechaActual.getYear()+1900) + "-" + (fechaActual.getMonth()+1) + "-"+(fechaActual.getDate())+"";
+        List pendientesEncontrados = adm.query("Select o from Asignados  as o " + 
+            " where o.matricula.estudiante.codigoest =  '"+matri.getEstudiante().getCodigoest()+"'  " + 
+            " and o.fechai <= '"+fec+"' and o.estado = true order by o.fechai");
+        datos = new Listbox();
+ 
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+                
+                        
+               for (Iterator it = pendientesEncontrados.iterator(); it.hasNext();) {
+                      Asignados acceIt = (Asignados) it.next();
+                      Listitem li = new Listitem();
+                      SimpleDateFormat d1 = new SimpleDateFormat("MMM-yyyy");
+                      Date d = acceIt.getFechai();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getProducto()+""));
+                      li.appendChild(new Listcell(d1.format(d)+""));
+                      li.appendChild(new Listcell(acceIt.getValor()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+empa.setPerfil(g);
+}
+]]>
+        </zscript>
+         
+        <groupbox  width="100%" mold="3d" >
+            <caption label="Listado" />
+            <vbox>
+            <vbox>
+                <hbox>
+                    <grid id="ver"  width="100%"   height="100%" >
+                        <rows>
+                            <row  id="filacurso" visible="true" style="background:transparent;border:0px" >
+                                <span style="float:right"> Curso:</span>
+                            <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
+                                <listbox id="curs" onSelect="try{buscar2(((Cursos)self.selectedItem.value));}catch(Exception ex){filaestudiantes.visible = false;}" width="450px" height="200px"  multiple="false" checkmark="true">
+                                    <listhead>
+                                        <listheader label="Seleccionar Todos"/> </listhead>
+                                    <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                                </listbox>
+                            </row>
+                            <row    id="filaestudiantes"  visible="true" style="background:transparent;border:0px" >
+                                <span style="float:right"> Estudiantes: </span>
+
+                                <listbox id="estudiantesCombo"  width="450px" height="200px" onSelect="buscar(self.selectedItem.value)"  multiple="false" checkmark="true" >
+                                    <listhead>
+                                        <listheader label="Todos los Estudiantes"/> </listhead>
+                                    <listitem forEach="${estudiantes}" value="${each}">
+                                        <listcell label="${each.apellidos}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </row>
+                            <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
+                                <span style="float:right"> Desde:</span>
+                            <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
+                                <span>
+                                    <datebox format="dd/MM/yyyy" id="desde"/> Hasta:
+                                    <datebox  format="dd/MM/yyyy" id="hasta"/>
+                                </span>
+                            </row>
+                       
+                        </rows>
+                    </grid>
+                    <listbox mold="paging" rows="20" pageSize="20"  
+                                 id="datos" width="400px">
+                        <listhead>
+                            <listheader label="RUBRO"/>
+                            <listheader label="FECHA DE PAGO"/>
+                            <listheader label="VALOR"/>
+                                         
+
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigoemp}" />
+                            <listcell label="${each.apellidos}" />
+                            <listcell label="${each.direccion}" />
+                        </listitem>
+                    </listbox>
+
+        
+                </hbox>    
+            </vbox>
+             
+            </vbox>
+        </groupbox>
+  
+
+    </window>
+</zk>

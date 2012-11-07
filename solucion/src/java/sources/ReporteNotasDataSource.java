@@ -205,16 +205,16 @@ public class ReporteNotasDataSource implements JRDataSource {
             } else if ("observacion".equals(fieldName)) {
                 try {
                     if (nodo.getMatricula().getEstado().equals("Retirado")) {
-                        valor = ("RETIRADO " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)) + " " + nodo.getMatricula().getObservacion();
+                        valor = ("Retirado:" + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)) + " " + nodo.getMatricula().getObservacion();
                     } else if (nodo.getMatricula().getEstado().equals("Emitir Pase")) {
-                        valor = "PASE EMITIDO: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                        valor = "Pase Emitido: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
                     } else if (nodo.getMatricula().getEstado().equals("Recibir Pase")) {
-                        valor = "PASE RECIBIDO: " + nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                        valor = "Pase Recibido: " + nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
                     } else {
                         valor = "";
                     }
                 } catch (Exception e) {
-                    valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado" : "");
+                    valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado:"+nodo.getMatricula().getFecharet() : "");
                 }
                 if (nodo.getMatricula().getEstado().equals("Matriculado")) {
                     try{
