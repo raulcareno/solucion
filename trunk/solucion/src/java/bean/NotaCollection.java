@@ -20,6 +20,7 @@ private String pie1;
 private String pie2;
 private String noActa,titulo;
 private Matriculas matriculas;
+private Integer orden;
 
     public String getEstudiante() {
         return estudiante;
@@ -276,6 +277,14 @@ private String nom1,nom2,nom3,nom4,nom5,nom6,nom7,nom8;
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Integer getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Integer orden) {
+        this.orden = orden;
     }
 
 
