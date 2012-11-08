@@ -39,17 +39,21 @@ public class frmPrincipal extends javax.swing.JFrame {
 //            frmLogin.setSelected(true);
 //            frmLogin.requestFocusInWindow();
         usuario.requestFocusInWindow();
-         general gen = new general(-1, " - SELECCIONE -");
+         
+         general gen = new general(-1, " - CARGANDO -");
          cmbPeriodo.addItem(gen);
-
         Thread cargar = new Thread() {
             public void run() {
                    adm = new Administrador();
                 List<Periodos> periodosLista = adm.query("Select o from Periodos as o where o.activo = true");
-               
+                cmbPeriodo.removeAllItems();
+         general gen = new general(-1, " - SELECCIONE -");
+         cmbPeriodo.addItem(gen);      
+         java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("MMM/yyyy");
+
                 for (Iterator<Periodos> it = periodosLista.iterator(); it.hasNext();) {
                     Periodos periodos = it.next();
-                  general  gen = new general(periodos.getIdPeriodos(), periodos.getFechaInicio().toLocaleString().substring(0,10) + " - " + periodos.getFechaFin().toLocaleString().substring(0,10) );
+                     gen = new general(periodos.getIdPeriodos(), sdf.format(periodos.getFechaInicio()) + " - " + sdf.format(periodos.getFechaFin()) );
                     cmbPeriodo.addItem(gen);
 
                 }
@@ -106,15 +110,17 @@ public class frmPrincipal extends javax.swing.JFrame {
         rubros = new javax.swing.JMenuItem();
         rubrosMatricula = new javax.swing.JMenuItem();
         Cobros = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        Facturar = new javax.swing.JMenuItem();
         usuario1 = new javax.swing.JMenu();
         usuarioActualLabel = new javax.swing.JMenu();
         cambiarClave = new javax.swing.JMenuItem();
         cerrarSesion = new javax.swing.JMenuItem();
+        periodoActualLabel = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Módulo de Cobros");
 
+        frmLogin.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         frmLogin.setLayout(null);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -195,7 +201,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         frmLogin.add(jLabel8);
         jLabel8.setBounds(10, 95, 80, 20);
 
-        frmLogin.setBounds(0, 0, 350, 170);
+        frmLogin.setBounds(20, 20, 350, 170);
         contenedor.add(frmLogin, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmCambiarClave.setLayout(null);
@@ -278,8 +284,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         Cobros.setText("Cobros");
         Cobros.setEnabled(false);
 
-        jMenuItem1.setText("jMenuItem1");
-        Cobros.add(jMenuItem1);
+        Facturar.setText("Facturar");
+        Facturar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FacturarActionPerformed(evt);
+            }
+        });
+        Cobros.add(Facturar);
 
         jMenuBar1.add(Cobros);
 
@@ -308,6 +319,9 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(usuarioActualLabel);
 
+        periodoActualLabel.setText("_");
+        jMenuBar1.add(periodoActualLabel);
+
         setJMenuBar(jMenuBar1);
 
         pack();
@@ -331,7 +345,8 @@ public class frmPrincipal extends javax.swing.JFrame {
                     System.out.println("" + component.getName());
                     if ((component.getName() + "").equals("formaRubros")) {
                         System.out.println("LO ENCONTRE");
-
+                        ((frmRubros) component).setEmpleadoActual(usuarioActual);
+                        ((frmRubros) component).setPeriodoActual(periodoActual);
                         ((frmRubros) component).setVisible(true);
                         return;
                     }
@@ -339,9 +354,10 @@ public class frmPrincipal extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmRubros usu = new frmRubros(contenedor, adm);
+            frmRubros usu = new frmRubros(adm);
             usu.setSize(546, 507);
-
+            usu.setEmpleadoActual(usuarioActual);
+            usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
             usu.setName("formaRubros");
             contenedor.add(usu);
@@ -381,7 +397,8 @@ public class frmPrincipal extends javax.swing.JFrame {
                     System.out.println("" + component.getName());
                     if ((component.getName() + "").equals("formaRubrosMatriculas")) {
                         System.out.println("LO ENCONTRE");
-
+                        ((frmRubrosMatriculas) component).setEmpleadoActual(usuarioActual);
+                        ((frmRubrosMatriculas) component).setPeriodoActual(periodoActual);
                         ((frmRubrosMatriculas) component).setVisible(true);
                         return;
                     }
@@ -390,9 +407,10 @@ public class frmPrincipal extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmRubrosMatriculas usu = new frmRubrosMatriculas(contenedor, adm);
+            frmRubrosMatriculas usu = new frmRubrosMatriculas( adm);
             usu.setSize(546, 507);
-
+ usu.setEmpleadoActual(usuarioActual);
+            usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
             usu.setName("formaRubrosMatriculas");
             contenedor.add(usu);
@@ -443,6 +461,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void cerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarSesionActionPerformed
         // TODO add your handling code here:
         usuarioActual = null;
+        periodoActual = null;
         usuarioActualLabel.setText("...");
         usuarioActualLabel.setEnabled(false);
         Administracion.setEnabled(false);
@@ -512,11 +531,18 @@ public class frmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (cmbPeriodo.getSelectedIndex() > 0) {
             periodoActual = (Periodos) adm.buscarClave(((general) cmbPeriodo.getSelectedItem()).getCodigo(), Periodos.class);
+            periodoActualLabel.setText(((general) cmbPeriodo.getSelectedItem()).getDescripcion());
             usuario.requestFocusInWindow();
 //            frmLogin.setVisible(false); 
 //            cmbPeriodo.setVisible(false);
         }
     }//GEN-LAST:event_cmbPeriodoItemStateChanged
+
+    private void FacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturarActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_FacturarActionPerformed
     private int intento = 0;
 
     public JLabel getIntentos() {
@@ -628,6 +654,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Administracion;
     private javax.swing.JMenu Cobros;
+    private javax.swing.JMenuItem Facturar;
     private javax.swing.JButton btnCambiarClave;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JMenuItem cambiarClave;
@@ -650,10 +677,10 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JLabel mensaje;
     private javax.swing.JPasswordField nuevaClave;
+    private javax.swing.JMenu periodoActualLabel;
     private javax.swing.JMenuItem rubros;
     private javax.swing.JMenuItem rubrosMatricula;
     private javax.swing.JFormattedTextField usuario;

@@ -12,6 +12,8 @@ import javax.swing.table.TableColumn;
 
 import java.awt.Container;
 import java.math.BigDecimal;
+import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Rubros;
 import jcinform.procesos.Administrador;
 
@@ -23,7 +25,8 @@ public class frmRubros extends javax.swing.JInternalFrame {
 
     public boolean grabar = false;
     public boolean modificar = false;
-    private Container desktopContenedor;
+       public Periodos periodoActual;
+    public Empleados empleadoActual;
     Administrador adm;
 
     /**
@@ -35,8 +38,8 @@ public class frmRubros extends javax.swing.JInternalFrame {
        
     }
 
-    public frmRubros(Container desktop, Administrador adm1) {
-        this.desktopContenedor = desktop;
+    public frmRubros(Administrador adm1) {
+    
         adm = adm1;
         this.initComponents();
         listar();
@@ -447,4 +450,22 @@ public class frmRubros extends javax.swing.JInternalFrame {
         }
 
     }
+
+    public Periodos getPeriodoActual() {
+        return periodoActual;
+    }
+
+    public void setPeriodoActual(Periodos periodoActual) {
+        this.periodoActual = periodoActual;
+    }
+
+    public Empleados getEmpleadoActual() {
+        return empleadoActual;
+    }
+
+    public void setEmpleadoActual(Empleados empleadoActual) {
+        this.empleadoActual = empleadoActual;
+    }
+    
+    
 }

@@ -9,10 +9,12 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.table.TableColumn;
 
-import java.awt.Container;
 import java.math.BigDecimal;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jcinform.persistencia.Carreras;
+import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Rubros;
 import jcinform.persistencia.RubrosMatriculaPeriodo;
 import jcinform.procesos.Administrador;
@@ -26,8 +28,9 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
     public boolean grabar = false;
     public boolean modificar = false;
-    private Container desktopContenedor;
     Administrador adm;
+    public Periodos periodoActual;
+    public Empleados empleadoActual;
 
     /**
      * Creates new form frmRubros
@@ -38,8 +41,8 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
     }
 
-    public frmRubrosMatriculas(Container desktop, Administrador adm1) {
-        this.desktopContenedor = desktop;
+    public frmRubrosMatriculas(Administrador adm1) {
+
         adm = adm1;
         this.initComponents();
         listar();
@@ -90,20 +93,20 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
         tableRubros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "V.Nuevo", "V.Antiguo"
+                "Código", "Nombre", "V.Nuevo", "V.Antiguo", ".."
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -116,18 +119,21 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
         });
         tableRubros.setSelectionBackground(new java.awt.Color(236, 246, 255));
         tableRubros.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        tableRubros.setShowHorizontalLines(false);
         tableRubros.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableRubrosMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tableRubros);
+        tableRubros.getColumnModel().getColumn(0).setResizable(false);
         tableRubros.getColumnModel().getColumn(0).setPreferredWidth(10);
-        tableRubros.getColumnModel().getColumn(1).setMinWidth(100);
+        tableRubros.getColumnModel().getColumn(1).setResizable(false);
         tableRubros.getColumnModel().getColumn(1).setPreferredWidth(200);
-        tableRubros.getColumnModel().getColumn(1).setMaxWidth(200);
         tableRubros.getColumnModel().getColumn(2).setResizable(false);
         tableRubros.getColumnModel().getColumn(3).setResizable(false);
+        tableRubros.getColumnModel().getColumn(4).setResizable(false);
+        tableRubros.getColumnModel().getColumn(4).setPreferredWidth(0);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(10, 280, 490, 140);
@@ -142,6 +148,7 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif"))); // NOI18N
         btnNuevo.setText("Nuevo");
+        btnNuevo.setEnabled(false);
         btnNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,6 +160,7 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif"))); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.setEnabled(false);
         btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +183,7 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,19 +312,25 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
             grabar = true;
             modificar = false;
         } else if (grabar == true) {
-            Rubros rub = new Rubros();
-            rub.setNombre(txtNombre.getText());
-            rub.setValor(new BigDecimal(valorNuevos.getText()));
+            if(cmbCarreras.getSelectedIndex()<=0){
+                JOptionPane.showMessageDialog(this, "Seleccione una Carrera...!","JC INFORM",JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            RubrosMatriculaPeriodo rub = new RubrosMatriculaPeriodo();
+            rub.setIdRubros(new Rubros(((general) cmbRubros.getSelectedItem()).getCodigo()));
+            rub.setIdCarreras(new Carreras(((general) cmbCarreras.getSelectedItem()).getCodigo()));
+            rub.setIdPeriodos(periodoActual);
+            rub.setValorAntigua(new BigDecimal(valorAntiguos.getText()));
+            rub.setValorNueva(new BigDecimal(valorNuevos.getText()));
             if (codigoRubro.getText().isEmpty()) {
-                rub.setIdRubros(adm.getNuevaClave("Rubros", "idRubros"));
+                rub.setIdRubrosMatriculaPeriodo(adm.getNuevaClave("RubrosMatriculaPeriodo", "idRubrosMatriculaPeriodo"));
                 adm.guardar(rub);
             } else {
-                rub.setIdRubros(new Integer(codigoRubro.getText()));
+                rub.setIdRubrosMatriculaPeriodo(new Integer(codigoRubro.getText()));
                 adm.actualizar(rub);
             }
 
 
-            listar();
             this.valorNuevos.setEditable(false);
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif")));
             this.btnNuevo.setLabel("Nuevo");
@@ -326,6 +341,8 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 //            this.txtNombre.setEditable(false);
 //            this.cmbCarreras.setEnabled(false);
             this.cmbRubros.setEnabled(false);
+               general g = (general) cmbCarreras.getSelectedItem();
+            buscarRubros(g.getCodigo());
 
         }
 
@@ -334,11 +351,12 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 // TODO add your handling code here:
 
-        Rubros rub = new Rubros();
-
-        rub.setIdRubros(Integer.parseInt(codigoRubro.getText()));
-        adm.eliminarObjeto(Rubros.class, rub.getIdRubros());
-        listar();
+        RubrosMatriculaPeriodo rub = new RubrosMatriculaPeriodo();
+        rub.setIdRubrosMatriculaPeriodo(Integer.parseInt(codigoRubro.getText()));
+        adm.eliminarObjeto(RubrosMatriculaPeriodo.class, rub.getIdRubrosMatriculaPeriodo());
+        general g = (general) cmbCarreras.getSelectedItem();
+        buscarRubros(g.getCodigo());
+        tableRubros.repaint();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -375,7 +393,15 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
         this.codigoRubro.setText(Integer.parseInt(tableRubros.getValueAt(fila, 0).toString()) + "");
         this.txtNombre.setText((String) this.tableRubros.getValueAt(fila, 1));
         this.valorNuevos.setText(((BigDecimal) tableRubros.getValueAt(fila, 2)) + "");
-        boolean val = new Boolean(tableRubros.getValueAt(fila, 3).toString());
+        //boolean val = new Boolean(tableRubros.getValueAt(fila, 3).toString());
+        
+        int items = cmbRubros.getItemCount();
+        for (int i = 0; i < items; i++) {
+            if(((general)cmbRubros.getItemAt(i)).getCodigo().equals(Integer.parseInt(tableRubros.getValueAt(fila, 4).toString()))){
+                cmbRubros.setSelectedIndex(i); 
+                break;
+            }
+        }
 //        this.chkEscredito.setSelected(Boolean.valueOf(val));
 //        this.codigoContable.setText((String) this.tableRubros.getValueAt(fila, 4));
 //        this.unidadContable.setText((String) this.tableRubros.getValueAt(fila, 5));
@@ -399,12 +425,33 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
     private void cmbCarrerasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCarrerasItemStateChanged
         // TODO add your handling code here:
         if (cmbCarreras.getSelectedIndex() > 0) {
+            cmbRubros.setSelectedIndex(0);
+              txtNombre.setText("");
+            valorNuevos.setText("0");
+            valorAntiguos.setText("0");
             general g = (general) cmbCarreras.getSelectedItem();
             buscarRubros(g.getCodigo());
+            tableRubros.repaint();
+            btnEliminar.setEnabled(true);
+            btnModificar.setEnabled(true);
+            btnNuevo.setEnabled(true);
+        }else{
+            try {
+                if(cmbRubros.getItemCount()>0){
+                cmbRubros.setSelectedIndex(0);
+                }
+            btnEliminar.setEnabled(false);
+            btnModificar.setEnabled(false);
+            btnNuevo.setEnabled(false);
+            } catch (Exception e) {
+            }
+             
         }
     }//GEN-LAST:event_cmbCarrerasItemStateChanged
     void buscarRubros(Integer idCarrera) {
-        List<RubrosMatriculaPeriodo> lista = adm.query("Select o from RubrosMatriculaPeriodo as o  where o.idCarreras.idCarreras =  '"+idCarrera+"' ");
+        List<RubrosMatriculaPeriodo> lista = adm.query("Select o from RubrosMatriculaPeriodo as o "
+                + " where o.idCarreras.idCarreras =  '" + idCarrera + "' "
+                + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' ");
         DefaultTableModel dtm = (DefaultTableModel) tableRubros.getModel();
         dtm.getDataVector().removeAllElements();
         for (Iterator<RubrosMatriculaPeriodo> it = lista.iterator(); it.hasNext();) {
@@ -414,6 +461,7 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
             obj[1] = rubrosMatriculaPeriodo.getIdRubros().getNombre();
             obj[2] = rubrosMatriculaPeriodo.getValorNueva();
             obj[3] = rubrosMatriculaPeriodo.getValorAntigua();
+            obj[4] = rubrosMatriculaPeriodo.getIdRubros().getIdRubros();
             dtm.addRow(obj);
         }
 
@@ -432,7 +480,7 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
         listaCarreras = null;
 
-        List<Rubros> listaRubros = adm.query("Select o from Rubros as o ");
+        List<Rubros> listaRubros = adm.query("Select o from Rubros as o where o.eselcredito = false ");
         gen = new general(-1, "- SELECCIONE -");
         cmbRubros.addItem(gen);
         for (Iterator<Rubros> it = listaRubros.iterator(); it.hasNext();) {
@@ -487,5 +535,21 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
 
         }
 
+    }
+
+    public Periodos getPeriodoActual() {
+        return periodoActual;
+    }
+
+    public void setPeriodoActual(Periodos periodoActual) {
+        this.periodoActual = periodoActual;
+    }
+
+    public Empleados getEmpleadoActual() {
+        return empleadoActual;
+    }
+
+    public void setEmpleadoActual(Empleados empleadoActual) {
+        this.empleadoActual = empleadoActual;
     }
 }
