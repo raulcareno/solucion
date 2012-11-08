@@ -3185,7 +3185,8 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
 //                                    coll2.setNota("");
 //                                }
                             }
-                            coll2.setMateria((buscarOrden(materiaProfesores, mate))+"."+mate.getDescripcion());
+                            coll2.setOrden((buscarOrden(materiaProfesores, mate)));
+                            coll2.setMateria(mate.getDescripcion());
                             coll2.setMatricula("" + matriculaNo.getCodigomat());
                             coll2.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                             coll2.setSistema("-"+(ksis)+""+((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getEvaluacion().getAbreviatura());
@@ -3242,7 +3243,8 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
                                     coll.setNota("");
                                 }
                             }
-                            coll.setMateria((buscarOrden(materiaProfesores, mate))+"."+mate.getDescripcion());
+                            coll.setOrden((buscarOrden(materiaProfesores, mate)));
+                            coll.setMateria(mate.getDescripcion());
                             coll.setMatricula("" + matriculaNo.getCodigomat());
                             coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                             coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
@@ -3314,6 +3316,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
                                     }
                                 }
                                 promedioFinal = dos;
+                                coll.setOrden(100);
                                 coll.setMateria(mate.getDescripcion());
                                 coll.setMatricula("" + matriculas1.getCodigomat());
                                 coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
@@ -3370,6 +3373,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
                                     }
                                 }
                                 disciplinaFinal = dos;
+                                coll.setOrden(101);
                                 coll.setMateria(mate.getDescripcion());
                                 coll.setMatricula("" + matriculas1.getCodigomat());
                                 coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
