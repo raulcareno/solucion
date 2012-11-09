@@ -10,10 +10,17 @@ package util;
  */
 public class general {
     Integer codigo;
-    String descripcion;
+    String codigoString="";
+    String descripcion="";
 
     public general() {
     }
+
+    public general(String codigoString, String descripcion) {
+        this.codigoString = codigoString;
+        this.descripcion = descripcion;
+    }
+    
 
     public general(Integer codigo, String descripcion) {
         this.codigo = codigo;
@@ -35,6 +42,15 @@ public class general {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getCodigoString() {
+        return codigoString;
+    }
+
+    public void setCodigoString(String codigoString) {
+        this.codigoString = codigoString;
+    }
+    
 
     @Override
     public String toString() {

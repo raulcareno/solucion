@@ -143,7 +143,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Periodo: ");
         frmLogin.add(jLabel4);
-        jLabel4.setBounds(10, 70, 80, 25);
+        jLabel4.setBounds(10, 120, 80, 25);
 
         usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,7 +156,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         frmLogin.add(usuario);
-        usuario.setBounds(90, 95, 230, 25);
+        usuario.setBounds(90, 67, 230, 25);
 
         contrasena.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -164,16 +164,16 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         frmLogin.add(contrasena);
-        contrasena.setBounds(90, 120, 110, 25);
+        contrasena.setBounds(90, 93, 230, 25);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Contraseña: ");
         frmLogin.add(jLabel3);
-        jLabel3.setBounds(0, 120, 90, 25);
+        jLabel3.setBounds(0, 90, 90, 25);
 
         ingresarSistema.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         ingresarSistema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/encrypted.gif"))); // NOI18N
-        ingresarSistema.setText("Ingresar Sistema");
+        ingresarSistema.setText("Ingresar");
         ingresarSistema.setMargin(new java.awt.Insets(0, 0, 0, 0));
         ingresarSistema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,7 +181,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         frmLogin.add(ingresarSistema);
-        ingresarSistema.setBounds(200, 120, 120, 25);
+        ingresarSistema.setBounds(220, 120, 100, 25);
 
         intentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         intentos.setText("...");
@@ -193,13 +193,18 @@ public class frmPrincipal extends javax.swing.JFrame {
                 cmbPeriodoItemStateChanged(evt);
             }
         });
+        cmbPeriodo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbPeriodoKeyPressed(evt);
+            }
+        });
         frmLogin.add(cmbPeriodo);
-        cmbPeriodo.setBounds(90, 70, 230, 24);
+        cmbPeriodo.setBounds(90, 120, 130, 24);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Usuario: ");
         frmLogin.add(jLabel8);
-        jLabel8.setBounds(10, 95, 80, 20);
+        jLabel8.setBounds(10, 70, 80, 20);
 
         frmLogin.setBounds(20, 20, 350, 170);
         contenedor.add(frmLogin, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -450,11 +455,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void contrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasenaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            if (cmbPeriodo.getSelectedIndex() > 0) {
-                verificarUsuario();
-            } else {
-                mensaje.setText("Seleccione un periodo...!");
-            }
+           cmbPeriodo.requestFocusInWindow();
         }
     }//GEN-LAST:event_contrasenaKeyPressed
 
@@ -532,7 +533,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         if (cmbPeriodo.getSelectedIndex() > 0) {
             periodoActual = (Periodos) adm.buscarClave(((general) cmbPeriodo.getSelectedItem()).getCodigo(), Periodos.class);
             periodoActualLabel.setText(((general) cmbPeriodo.getSelectedItem()).getDescripcion());
-            usuario.requestFocusInWindow();
+            ingresarSistema.requestFocusInWindow();
+//            usuario.requestFocusInWindow();
 //            frmLogin.setVisible(false); 
 //            cmbPeriodo.setVisible(false);
         }
@@ -540,9 +542,43 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void FacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturarActionPerformed
         // TODO add your handling code here:
-        
+          try {
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaFacturas")) {
+                        System.out.println("LO ENCONTRE");
+                        ((frmFacturas) component).setEmpleadoActual(usuarioActual);
+                        ((frmFacturas) component).setPeriodoActual(periodoActual);
+                        ((frmFacturas) component).setVisible(true);
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR EN COMPONENTE" + e);
+            }
+            frmFacturas usu = new frmFacturas(adm);
+            usu.setSize(642, 507);
+            usu.setEmpleadoActual(usuarioActual);
+            usu.setPeriodoActual(periodoActual);
+            usu.setLocation(0, 0);
+            usu.setName("formaFacturas");
+            contenedor.add(usu);
+
+            usu.show();
         
     }//GEN-LAST:event_FacturarActionPerformed
+
+    private void cmbPeriodoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPeriodoKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==evt.VK_ENTER){
+         if (cmbPeriodo.getSelectedIndex() > 0) {
+                verificarUsuario();
+            } else {
+                mensaje.setText("Seleccione un periodo...!");
+            }
+        }
+    }//GEN-LAST:event_cmbPeriodoKeyPressed
     private int intento = 0;
 
     public JLabel getIntentos() {
