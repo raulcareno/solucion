@@ -533,7 +533,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         if (cmbPeriodo.getSelectedIndex() > 0) {
             periodoActual = (Periodos) adm.buscarClave(((general) cmbPeriodo.getSelectedItem()).getCodigo(), Periodos.class);
             periodoActualLabel.setText(((general) cmbPeriodo.getSelectedItem()).getDescripcion());
-            ingresarSistema.requestFocusInWindow();
+//            ingresarSistema.requestFocusInWindow();
 //            usuario.requestFocusInWindow();
 //            frmLogin.setVisible(false); 
 //            cmbPeriodo.setVisible(false);

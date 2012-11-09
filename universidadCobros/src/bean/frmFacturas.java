@@ -107,7 +107,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 246, 255));
-        setTitle("Rubros por matrícula");
+        setTitle("Facturación");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rubros.gif"))); // NOI18N
         getContentPane().setLayout(null);
 
@@ -236,7 +236,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         });
         tFactura.setSelectionBackground(new java.awt.Color(236, 246, 255));
         tFactura.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        tFactura.setShowHorizontalLines(false);
         tFactura.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tFacturaMouseClicked(evt);
@@ -312,7 +311,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Rubros que se cobrarán en Matricula ..::..");
+        jLabel8.setText("Facturar Matricula ..::..");
         getContentPane().add(jLabel8);
         jLabel8.setBounds(20, 0, 270, 15);
 
@@ -395,7 +394,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         codigoPariente.setBounds(20, 160, 60, 20);
 
         total.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        total.setForeground(new java.awt.Color(102, 102, 102));
+        total.setForeground(new java.awt.Color(51, 51, 51));
         total.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total.setText("00.00");
         getContentPane().add(total);
@@ -409,7 +408,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total1.setBounds(290, 380, 150, 30);
 
         total2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        total2.setForeground(new java.awt.Color(102, 102, 102));
+        total2.setForeground(new java.awt.Color(51, 51, 51));
         total2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total2.setText("00.00");
         getContentPane().add(total2);
