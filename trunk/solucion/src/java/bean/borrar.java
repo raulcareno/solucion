@@ -6,10 +6,8 @@ package bean;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
-import jcinform.persistencia.Cursos;
-import jcinform.persistencia.Detallepregunta;
-import jcinform.persistencia.Pregunta;
+import javax.smartcardio.Card;
+import jcinform.persistencia.Estudiantes;
 import jcinform.procesos.Administrador;
 
 //import org.zkoss.util.media.Media;
@@ -17,7 +15,8 @@ import jcinform.procesos.Administrador;
 //import org.zkoss.zul.Listbox;
 //import org.zkoss.zul.Listcell;
 /**
- *t
+ * t
+ *
  * @author geovanny
  */
 public class borrar {
@@ -26,21 +25,41 @@ public class borrar {
 //Progressmeter p;
 //p.set
     public static void main(String[] args) {
-           StringTokenizer st = new StringTokenizer("nota1(),nota2(),nota3(),nota4(),", ",");
- 
-        //
-        // get how many tokens inside st object
-        //
-        System.out.println("Tokens count: " + st.countTokens());
- 
-        //
-        // iterate st object to get more tokens from it
-        //
-        while (st.hasMoreElements()) {
-            String token = st.nextElement().toString();
-            System.out.println("Token = " + token);
+        
+        Administrador adm = new Administrador();
+        List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '1727351353' ");
+        if (estudiantesEncontrados.size() > 0) {
+
+            Estudiantes estActual = (Estudiantes) estudiantesEncontrados.get(0);
+            estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.apellido like '%A%' and o.codigoest not in (" + estActual.getCodigoest() + ") ", 0, 6);
+            estudiantesEncontrados.add(estActual);
+            System.out.println("NORMA:******************");
+            for (Iterator itCan = estudiantesEncontrados.iterator(); itCan.hasNext();) {
+                Estudiantes tCandidato = (Estudiantes) itCan.next();
+                System.out.println("EST" + tCandidato.getCodigoest());
+
+            }
+            //ORDENO
+            for (int i = estudiantesEncontrados.size() - 1; i > 0; i--) {
+                int rand = (int) (Math.random() * (i + 1));
+                Estudiantes temp = (Estudiantes) estudiantesEncontrados.get(i);
+                estudiantesEncontrados.set(i, estudiantesEncontrados.get(rand));
+                estudiantesEncontrados.set(rand, temp);
+            }
+            System.out.println("DESORDENADA");
+            for (Iterator itCan = estudiantesEncontrados.iterator(); itCan.hasNext();) {
+                Estudiantes tCandidato = (Estudiantes) itCan.next();
+                System.out.println("EST" + tCandidato.getCodigoest());
+
+            }
+
+
+            // buscarCedulaPanel.visible = false; 
+            //listadoListass.visible=true;
+            // cargar();
+        } else {
         }
-  
+
 //        resumen(new Cursos(134));
 //        Grid datos = new Grid();
 //        datos.getChildren().clear();
@@ -89,6 +108,7 @@ public class borrar {
 
     }
 
+ 
 //    public static void resumen(Cursos curso) {
 //        Administrador adm = new Administrador();
 //        //     Session ses = Sessions.getCurrent();

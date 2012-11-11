@@ -18,7 +18,7 @@
             Representante peri =  (Representante) a.getAttribute("userRepresentante");
             Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
            
-
+Estudiantes estudianteActual = new Estudiantes();
 
 cargar(){
    //    Encuesta enc = adm.buscarClave(new Integer(1), Encuesta.class);
@@ -203,47 +203,112 @@ error2i.visible = false;
 }
 
 public void verificar(){
-    List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '"+cedula.getValue().replace("-","")+"' ");
+    validacion.getChildren().clear();
+    List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '"+cedula.getValue().trim().replace(" ","").replace("-","")+"' ");
     if(estudiantesEncontrados.size()>0){
-                        Row rw = new Row();
-                        rw.appendChild(tlab);
-                        validacion.appendChild(rw);
-             estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.apellidos like '%"+ +"%' ",0,10);
+                        
+                          estudianteActual = estudiantesEncontrados.get(0);
+                        estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.apellido like '%A%' and o.codigoest not in ("+estudianteActual.getCodigoest()+") ",0,6);
+                        estudiantesEncontrados.add(estudianteActual);
+                          for (int i = estudiantesEncontrados.size() - 1; i > 0; i--) {
+                            int rand = (int) (Math.random() * (i + 1));
+                            Estudiantes temp = (Estudiantes) estudiantesEncontrados.get(i);
+                            estudiantesEncontrados.set(i, estudiantesEncontrados.get(rand));
+                            estudiantesEncontrados.set(rand, temp);
+                        }
+                        
+                        Radiogroup radio= new Radiogroup(); 
+                        radio.setOrient("vertical");
                     for (Iterator itCan = estudiantesEncontrados.iterator(); itCan.hasNext();) {
                         Estudiantes tCandidato = (Estudiantes) itCan.next();
+                        Row rw = new Row();
+                        System.out.println("EST"+tCandidato.getCodigoest());
+                        Radio r = new Radio(""+tCandidato.getApellido()+" "+tCandidato.getNombre());
+                            r.setValue("EST"+tCandidato.getCodigoest());
+                            r.setId("EST"+tCandidato.getCodigoest());
+                            radio.appendChild(r);
+                            rw.appendChild(radio);
+                        validacion.appendChild(rw);
                     }
              
-             
+             vericarEstudiante.visible = true; 
              buscarCedulaPanel.visible = false; 
-            listadoListass.visible=true;
-            cargar();
+            
     }else{
-
+        Messagebox.show("El número de cédula ingresado no existe...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
+}
+public void validarEstudiante(){
+
+  List col = validacion.getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                      if(labels.size()>0){
+                     if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
+                                Radio rad = ((Radiogroup) labels.get(0)).getSelectedItem();
+                                 if(("EST"+estudianteActual.getCodigoest()).equals(""+rad.getId())){
+                                    vericarEstudiante.visible=false;
+                                    listadoListass.visible=true;
+                                    cargar();
+                                    return;
+                                }else{
+                                    Messagebox.show("NO HA SUPERADO LA VALIDACIÓN...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    
+                                    validacion.getChildren().clear();
+                                    
+                                    buscarCedulaPanel.visible=true;
+                                    vericarEstudiante.visible = false;
+                                    cedula.value = "0000000000";
+                                    return;
+                                }
+                     
+                     }else{
+                     Messagebox.show("SELECCIONE UN NOMBRE...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                      return;          
+                     }
+                      
+                     }
+                    
+                   
+                       
+            }
+       
 }
 
   ]]>
         </zscript>
 
         <panel id="buscarCedulaPanel" framable="true"  width="100%" height="100%"
-        border="normal">
+               border="normal">
             <panelchildren>
-                <grid >
+                <grid id="verificaciondeCedula" >
                     <rows>
                         <row>
                             Ingrese su No. de Cédula: 
-                            <textbox id="cedula" constraint="no empty:Número de Cédula es Obligatorio"  />
+                            <textbox id="cedula" maxlength="13" constraint="no empty:Número de Cédula es Obligatorio"  />
                         
                             <button label="Verificar"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="cedula.getValue(); verificar(); "/>
                         </row>
                     </rows>
                 </grid>
-                <grid >
+             
+            </panelchildren>
+           
+        </panel>
+        
+        <panel id="vericarEstudiante" title="VALIDACIÓN DE SEGURIDAD" visible="false" framable="true"  width="100%" height="100%"
+               border="normal">
+            <panelchildren>
+                <separator/>
+                <label value="POR FAVOR SELECCIONE SUS APELLIDOS Y NOMBRES DE LA SIGUIENTE LISTA" />
+                <separator/>
+                <grid height="200px" >
                     <rows id="validacion">
                        
                     </rows>
                 </grid>
-              
+                <button label="SIGUIENTE"  height="30px" width="150px"  image="/images/key.png"  id="validar" onClick="validarEstudiante(); "/>
             </panelchildren>
            
         </panel>
