@@ -2,7 +2,7 @@
 <?page title="Administrador Educativo"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
-    <window   border="normal" >
+    <window width="800px"   style="background-color:transparent;position:absolute; top:1%; left:5%;"   border="normal" >
         <zscript>
 <![CDATA[
 
@@ -14,23 +14,34 @@
   import bean.Permisos;
   import java.math.BigDecimal;
   Administrador adm = new Administrador();
- Boolean guardando = false;
+  Boolean guardando = false;
   Session a = Sessions.getCurrent();
-            Representante peri =  (Representante) a.getAttribute("userRepresentante");
-            Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+  Representante peri =  (Representante) a.getAttribute("userRepresentante");
            
 Estudiantes estudianteActual = new Estudiantes();
+    Date fec = adm.Date();
+    String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate()+" "+fec.getHours()+":"+fec.getMinutes()+":00";
 
+    List eleccionesL = adm.query("Select o from Elecciones as o where o.estado = true  "+ 
+          " and '"+stFecha+"' between o.desde and o.hasta");
+
+       if(eleccionesL.size()>0){
+             
+       }else{
+        Executions.sendRedirect("/");
+            return;
+       }
 cargar(){
-   //    Encuesta enc = adm.buscarClave(new Integer(1), Encuesta.class);
-   List eleccionesL = adm.query("Select o from Elecciones as o where o.estado = true ");
-   if(eleccionesL.size()>0){
-    Elecciones el = eleccionesL.get(0);
-    justificacion1.value = el.getNombre();
-   }
+     eleccionesL = adm.query("Select o from Elecciones as o where o.estado = true  "+ 
+          " and '"+stFecha+"' between o.desde and o.hasta");
+
+       if(eleccionesL.size()>0){
+            Elecciones el = eleccionesL.get(0);
+            listadoListass.title = el.getNombre();
+       }
        Boolean yaAnadi = false;
            List listas = adm.query("Select o from Listas as o where o.eleccion.estado = true order by o.codigo " );
-         //Row rw = new Row();
+  
                    
        int mm=0;
        int cc=0;
@@ -44,11 +55,12 @@ cargar(){
                       //AGREGO EL TIPO DE CANDIDATO
                      
                       
-                      Label tlab= new Label(".-"+tCandidato.getNombre());
+                      Label tlab= new Label(""+tCandidato.getNombre());
                         Row rw = new Row();
-                        tlab.setStyle("color:red;font-size;15px;font-weight:bold");
+                        tlab.setStyle("color:black;font-size:18px;background:transparent");
                         rw.setId("CANDIDATO"+cc);
-                        rw.setSpans("2"); 
+                        rw.setStyle("background:#99CCCC");
+                        rw.setSpans(""+listas.size()); 
                         rw.appendChild(tlab);
                         cc++;
                           filas.appendChild(rw);
@@ -56,18 +68,20 @@ cargar(){
                          rw = new Row();  
                          rw.setId("LISTA"+mm);
                          mm++;
+                         
                                 
                                 for (Iterator it = listas.iterator(); it.hasNext();) {
                                         Listas lista = (Listas) it.next();
                                         //System.out.println(""+lista.getTipopregunta());
                                             Textbox lab= new Textbox(""+lista.getNombre());
-                                            lab.setStyle("color:blue;font-size;13px;font-weight:bold;border:0px");
+                                            lab.setStyle("color:black;font-size;13px;font-weight:bold;border:0px;background:transparent");
                                             lab.setWidth("150px");
                                             lab.setReadonly(true);
-                                            
                                             //rw.setSpans("2");
                                             rw.setWidth("160px");
+                                            rw.setStyle("background:#FFFFCC");
                                             rw.appendChild(lab);
+                                            
                                             //System.out.println(".."+lista.getNombre());
                                     }
                             filas.appendChild(rw);
@@ -90,6 +104,7 @@ cargar(){
                                         r.setValue(""+dcand.getCodigo());
                                         r.setId(""+dcand.getCodigo());
                                         rw.setWidth("160px");
+                                        rw.setStyle("background:#FFFFCC");
                                         rw.appendChild(r);
                                     
                                     }
@@ -154,8 +169,8 @@ Boolean validar(){
             return;
        }
  
-           //guardar.disabled  = true;
-           //guardar.visible = false;
+           guardar.disabled  = true;
+           guardar.visible = false;
            
            secuencial sec = new secuencial();
 List col =  lista.getRows().getChildren();
@@ -186,12 +201,15 @@ Date fec = adm.Date();
                              }
                    
              }
-              //periEst.setAplico(true);
-              //adm.actualizar(periEst);
-              //a.setAttribute("userEstudiante",periEst);
-
-             //Executions.sendRedirect("/indexRepresentantes.zul");
             guardando = false;
+            Messagebox.show("VOTACIÓN REALIZADA CON ÉXITO...!", "JC INFORM Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            buscarCedulaPanel.visible=true;
+            vericarEstudiante.visible = false;
+            listadoListass.visible = false;
+            filaEncuesta.getChildren().clear();
+            cedula.value = "0000000000";
+            validacion.getChildren().clear();
+            
 
 }
 
@@ -272,7 +290,7 @@ public void validarEstudiante(){
   ]]>
         </zscript>
 
-        <panel id="buscarCedulaPanel" framable="true"  width="100%" height="100%"
+        <panel id="buscarCedulaPanel" title="SISTEMA DE VOTACIÓN" framable="true"  width="100%" height="100%"
                border="normal">
             <panelchildren>
                 <grid id="verificaciondeCedula" >
@@ -305,11 +323,11 @@ public void validarEstudiante(){
             </panelchildren>
            
         </panel>
-        <panel id="listadoListass" visible="false" framable="true" width="100%" height="100%"
-               border="normal">
+        <panel id="listadoListass" visible="false" framable="true" border="normal">
             <panelchildren>
                 <vbox>
-                    <label   style="font-size:15px; font-weight:bold;background:white;" id="justificacion1" />
+                    <!--label   style="font-size:18px; font-weight:bold;background:transparent;" id="justificacion1" /-->
+                    <label  value="REALICE SU ELECCIÓN: " style="font-size:18px; font-weight:bold;background:transparent;"  />
                 </vbox>
                 
 
@@ -329,6 +347,24 @@ public void validarEstudiante(){
                 
             </toolbar>
         </panel>
+        <grid>
+    <rows>
+           <row  style="background:white;border:0px" align="center" spans="2">
+                 <span>
+                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009-2012"/>
+                
+                <html>
+                     &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+
+					</html>
+                    <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                </span>
+             </row>
+              
+    </rows>
+
+
+</grid>
 
     </window>
 </zk>
