@@ -21,23 +21,20 @@
 Estudiantes estudianteActual = new Estudiantes();
     Date fec = adm.Date();
     String stFecha = (fec.getYear()+1900)+"-"+(fec.getMonth()+1)+"-"+fec.getDate()+" "+fec.getHours()+":"+fec.getMinutes()+":00";
-
+Elecciones eleccionActual = new Elecciones();
     List eleccionesL = adm.query("Select o from Elecciones as o where o.estado = true  "+ 
           " and '"+stFecha+"' between o.desde and o.hasta");
 
        if(eleccionesL.size()>0){
-             
+             eleccioneActual = eleccionesL.get(0);
        }else{
         Executions.sendRedirect("/");
             return;
        }
 cargar(){
-     eleccionesL = adm.query("Select o from Elecciones as o where o.estado = true  "+ 
-          " and '"+stFecha+"' between o.desde and o.hasta");
-
+      
        if(eleccionesL.size()>0){
-            Elecciones el = eleccionesL.get(0);
-            listadoListass.title = el.getNombre();
+            listadoListass.title = eleccioneActual.getNombre();
        }
        Boolean yaAnadi = false;
            List listas = adm.query("Select o from Listas as o where o.eleccion.estado = true order by o.codigo " );
@@ -217,8 +214,18 @@ public void verificar(){
     validacion.getChildren().clear();
     List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '"+cedula.getValue().trim().replace(" ","").replace("-","")+"' ");
     if(estudiantesEncontrados.size()>0){
+    estudianteActual = estudiantesEncontrados.get(0);
+    List resultadosL = adm.query("Select o from Resultados as o " 
+            + " where o.estudiante.codigoest = '"+estudianteActual.getCodigoest()+"' " 
+            + " and o.candidato.lista.eleccion.codigo = '"+eleccioneActual.getCodigo()+"' ");
+    if(resultadosL.size()>0){
+            resultadosL = null;
+            Messagebox.show("Usted, YA ha realizado la votación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            cedula.value = "000000000";
+            return;
+    }
                         
-                          estudianteActual = estudiantesEncontrados.get(0);
+                          
                         estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.apellido like '%A%' and o.codigoest not in ("+estudianteActual.getCodigoest()+") ",0,6);
                         estudiantesEncontrados.add(estudianteActual);
                           for (int i = estudiantesEncontrados.size() - 1; i > 0; i--) {
