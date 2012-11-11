@@ -45,7 +45,7 @@
                 empa.setDesde(desde.value);
                 empa.setHasta(hasta.value);
                 empa.setEstado(estado.checked);
-
+adm.ejecutaSql("Update Elecciones set estado = false");
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
                     
@@ -53,6 +53,7 @@
                     empa.setCodigo(adm.getNuevaClave("Elecciones","codigo"));
                     adm.guardar(empa);
                 }
+                
                 buscar("");
                 permiso.auditar("Elecciones","Guardar",""+nombres.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
