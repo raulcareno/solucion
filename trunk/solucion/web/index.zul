@@ -348,11 +348,11 @@
                                             <menuitem onClick="ingresar(self)" id="Mensajes" image="/images/chat.png"  label="Comunicados" value="/mensajes.zul"    />
                                             <menu label="Elecciones" image="/images/llave.gif"  >
                                                 <menupopup>
-                                                    <menuitem onClick="ingresar(self)" id="Elecciones"  image="/images/llave.gif"   label="Elecciones" value="/votacion/elecciones.zul"    />
-                                                    <menuitem onClick="ingresar(self)" id="Listas"  image="/images/llave.gif"   label="Listas" value="/votacion/listas.zul"    />
-                                                    <menuitem onClick="ingresar(self)" id="TipoCandidatos"  image="/images/llave.gif"   label="TipoCandidatos" value="/votacion/tipoCandidato.zul"    />
-                                                    <menuitem onClick="ingresar(self)" id="Candidatos"  image="/images/llave.gif"   label="Candidatos" value="/votacion/candidatos.zul"    />
-                                                    <menuitem onClick="ingresar(self)" id="Votar"  image="/images/llave.gif"   label="Votar" value="/votacion/votar.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Elecciones"  image="/images/circulo.png"   label="Elecciones" value="/votacion/elecciones.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Listas"  image="/images/circulo.png"   label="Listas" value="/votacion/listas.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="TipoCandidatos"  image="/images/circulo.png"   label="TipoCandidatos" value="/votacion/tipoCandidato.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Candidatos"  image="/images/pensum.png"   label="Candidatos" value="/votacion/candidatos.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Votar"  image="/images/preaprobados.png"   label="Votar" value="/votacion/votar.zul"    />
                                                 </menupopup>
                                             </menu>
                                         </menupopup>

@@ -224,6 +224,51 @@ void buscar2(Cursos cur){
       return ds;
 }
 
+public JRDataSource resultadosVotacion(){
+ 
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+      String query = " SELECT candidato, COUNT(*) FROM resultados, candidatos, listas, elecciones "+ 
+       " WHERE  candidatos.codigo = resultados.candidato " + 
+       " AND  listas.codigo = candidatos.lista " +
+       " AND  listas.eleccion = elecciones.codigo AND elecciones.codigo = 1  GROUP BY candidato ORDER BY candidatos.tipocandidato ";
+      List hoy = adm.queryNativo(query);
+
+   Integer excelente = 0;  Integer muybueno = 0;
+               Integer bueno = 0;  Integer regular = 0;
+               Integer malo = 0; 
+               ArrayList detalle = new ArrayList();
+               
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+               Vector vec = (Vector) it.next();
+                 Object val1 = vec.get(0);
+                 Object val2 = vec.get(1);
+                General gen = new General();         
+                    if(val1 instanceof Integer){
+                                 Integer dato = val1;
+                                    malo = 1;
+                                    gen.setOrden(1);
+                                    Candidatos can = adm.buscarClave(new Integer(val1),Candidatos.class);
+                                    gen.setValor1(""+can.getNombre());
+                                    gen.setValor2(new Long(val2));
+                                    gen.setValor3(""+can.getTipocandidato().getNombre());
+                    }
+                         detalle.add(gen);
+                        System.out.println(gen.getValor1()+ " =  "+gen.getValor2());
+                 
+                
+      }
+       
+    //System.out.println(gen.getValor1()+ " =  "+gen.getValor2());           
+ //    Collections.sort(detalle);
+     
+     ReporteGeneralDataSource ds = new ReporteGeneralDataSource(detalle);
+      return ds;
+}
+
  public JRDataSource inscritos2(ArrayList listadodeCursos, String tipo){
   String curso =  "";
 
@@ -1032,6 +1077,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = calificacioninscritos();
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"calificacion.jasper");
+            }else if(tipo.equals("RVOT")){
+                    datasource = resultadosVotacion();
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"votacion.jasper");
             }else if(tipo.equals("MAT")){
                     datasource = inscritos(listadoCursos,"Matriculado");
                     parametros.put("titulo", titulo.getValue());
@@ -1150,6 +1199,10 @@ void campos(String valor){
         if(valor.equals("INS3")){
             titulo.value = "Califiación de Inscritos por Internet";
            filacurso.visible = false;
+        }
+        if(valor.equals("RVOT")){
+            titulo.value = "Califiación de Inscritos por Internet";
+        //   filacurso.visible = false;
         }
         if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS99")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
            titulo.value = "Listado";
@@ -1325,6 +1378,7 @@ void campos(String valor){
                                 <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
                                 <listitem  id="LMIG" label="Estudiantes con Padres Migrantes" value="LMIG"/>
                                 <listitem  id="LMIS" label="Estudiantes con Cupo del Ministerio" value="LMIS"/>
+                                <listitem  id="RVOT" label="Resultados de Votación" value="RVOT" />
                                 <listitem  disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="INS2" label="Inscritos por Internet" value="INS2" />
                                 <listitem  id="INS3" label="Calificacion de Inscritos por Internet" value="INS3" />
