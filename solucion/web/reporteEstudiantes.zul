@@ -1202,7 +1202,7 @@ void campos(String valor){
         }
         if(valor.equals("RVOT")){
             titulo.value = "Califiación de Inscritos por Internet";
-        //   filacurso.visible = false;
+           filacurso.visible = false;
         }
         if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS99")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
            titulo.value = "Listado";
