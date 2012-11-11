@@ -215,13 +215,15 @@ public void verificar(){
     List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '"+cedula.getValue().trim().replace(" ","").replace("-","")+"' ");
     if(estudiantesEncontrados.size()>0){
     estudianteActual = estudiantesEncontrados.get(0);
-    List resultadosL = adm.query("Select o from Resultados as o " 
+    List resultadosL = adm.query("Select o.codigo from Resultados as o " 
             + " where o.estudiante.codigoest = '"+estudianteActual.getCodigoest()+"' " 
             + " and o.candidato.lista.eleccion.codigo = '"+eleccioneActual.getCodigo()+"' ");
     if(resultadosL.size()>0){
             resultadosL = null;
             Messagebox.show("Usted, YA ha realizado la votación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             cedula.value = "000000000";
+            estudiantesEncontrados = null;
+            resultadosL = null;
             return;
     }
                         
@@ -255,6 +257,7 @@ public void verificar(){
     }else{
         Messagebox.show("El número de cédula ingresado no existe...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
+    estudiantesEncontrados = null;
 }
 public void validarEstudiante(){
 

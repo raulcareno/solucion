@@ -861,7 +861,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
     String tipo = reporte.getSelectedItem().getValue();
      ArrayList listadoCursos = new ArrayList();
                 	Set items = curs.getSelectedItems();
-						if (items.isEmpty() &&  !tipo.equals("LMAT2") && !tipo.equals("INS2") && !tipo.equals("INS3")  && !tipo.equals("INS3")  && !tipo.equals("INS4")  && !tipo.equals("INS5")  && !tipo.equals("INS6")  && !tipo.equals("INS99") && !tipo.equals("INS7")  && !tipo.equals("INS8")) {
+						if (items.isEmpty() &&  !tipo.equals("LMAT2") && !tipo.equals("INS2") && !tipo.equals("RVOT") && !tipo.equals("INS3")  && !tipo.equals("INS3")  && !tipo.equals("INS4")  && !tipo.equals("INS5")  && !tipo.equals("INS6")  && !tipo.equals("INS99") && !tipo.equals("INS7")  && !tipo.equals("INS8")) {
                             Messagebox.show("SELECCIONE POR LO MENOS UN CURSO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             return;
 						} else {
