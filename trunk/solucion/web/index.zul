@@ -346,7 +346,17 @@
                                             <menuitem onClick="ingresar(self)" id="Dobe" image="/images/pensum.png"   label="Dobe" value="/dobe.zul"/>
                                             <menuitem onClick="ingresar(self)" id="Registrar" image="/images/chat.png"  label="Chat" value="/chat/chat.zul"    />
                                             <menuitem onClick="ingresar(self)" id="Mensajes" image="/images/chat.png"  label="Comunicados" value="/mensajes.zul"    />
+                                            <menu label="Elecciones" image="/images/llave.gif"  >
+                                                <menupopup>
+                                                    <menuitem onClick="ingresar(self)" id="Elecciones"  image="/images/llave.gif"   label="Elecciones" value="/votacion/elecciones.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Listas"  image="/images/llave.gif"   label="Listas" value="/votacion/listas.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="TipoCandidatos"  image="/images/llave.gif"   label="TipoCandidatos" value="/votacion/tipoCandidato.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Candidatos"  image="/images/llave.gif"   label="Candidatos" value="/votacion/candidatos.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Votar"  image="/images/llave.gif"   label="Votar" value="/votacion/votar.zul"    />
+                                                </menupopup>
+                                            </menu>
                                         </menupopup>
+                                        
                                     </menu>
                                     <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
                                     <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
@@ -464,7 +474,11 @@
             //Registro_de_Notas_Evaluacion.visible = per.verificarPermisoReporte("Registro_de_Notas_Evaluacion","Registro_de_Notas_Evaluacion", "Ingresar",true,"NOTAS");
             Registro_de_Evaluaciones.visible = per.verificarPermisoReporte("Registro_de_Evaluaciones","Registro_de_Evaluaciones", "Ingresar",true,"NOTAS");
             Mensajes.visible = per.verificarPermisoReporte("Mensajes","Mensajes", "Ingresar",true,"VARIOS");
- 
+            Elecciones.visible = per.verificarPermisoReporte("Elecciones","Elecciones", "Ingresar",true,"VARIOS");
+            Listas.visible = per.verificarPermisoReporte("Listas","Listas", "Ingresar",true,"VARIOS");
+            TipoCandidatos.visible = per.verificarPermisoReporte("TipoCandidatos","TipoCandidatos", "Ingresar",true,"VARIOS");
+            Candidatos.visible = per.verificarPermisoReporte("Candidatos","Candidatos", "Ingresar",true,"VARIOS");
+   
 
             }
         </zscript>

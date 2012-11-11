@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window   border="normal" >
+        <zscript>
+<![CDATA[
+
+  import bean.EventDAO;
+  import java.util.ArrayList;
+ import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  Administrador adm = new Administrador();
+ Boolean guardando = false;
+  Session a = Sessions.getCurrent();
+            Representante peri =  (Representante) a.getAttribute("userRepresentante");
+            Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+           
+
+
+cargar(){
+   //    Encuesta enc = adm.buscarClave(new Integer(1), Encuesta.class);
+   List eleccionesL = adm.query("Select o from Elecciones as o where o.estado = true ");
+   if(eleccionesL.size()>0){
+    Elecciones el = eleccionesL.get(0);
+    justificacion1.value = el.getNombre();
+   }
+       Boolean yaAnadi = false;
+           List listas = adm.query("Select o from Listas as o where o.eleccion.estado = true order by o.codigo " );
+         //Row rw = new Row();
+                   
+       
+   List cargos = adm.query("Select o from TipoCandidato as o  order by o.codigo " );
+            for (Iterator itCan = cargos.iterator(); itCan.hasNext();) {
+                      TipoCandidato tCandidato = (TipoCandidato) itCan.next();
+                      Grid migrid = new Grid();
+                       migrid.setWidth("800px");
+                      Rows filas = new Rows();
+                      //AGREGO EL TIPO DE CANDIDATO
+                     
+                      
+                      Label tlab= new Label(".-"+tCandidato.getNombre());
+                        Row rw = new Row();
+                        tlab.setStyle("color:red;font-size;15px;font-weight:bold");
+                        rw.setSpans("2"); 
+                        rw.appendChild(tlab);
+                          filas.appendChild(rw);
+                          //filaEncuesta.appendChild(rw);
+                         rw = new Row();  
+                       //if(!yaAnadi){
+                                System.out.println("INGRESO.......");
+                                for (Iterator it = listas.iterator(); it.hasNext();) {
+                                        Listas lista = (Listas) it.next();
+                                        //System.out.println(""+lista.getTipopregunta());
+                                            Textbox lab= new Textbox(""+lista.getNombre());
+                                            lab.setStyle("color:blue;font-size;13px;font-weight:bold;border:0px");
+                                            lab.setWidth("150px");
+                                            lab.setReadonly(true);
+                                            
+                                            //rw.setSpans("2");
+                                            rw.setWidth("160px");
+                                            rw.appendChild(lab);
+                                            System.out.println(".."+lista.getNombre());
+                                    }
+                            filas.appendChild(rw);
+                            yaAnadi = true;
+                      //} 
+            
+                    
+                       Radiogroup radio= new Radiogroup(); 
+                       
+                       
+                       rw = new Row();  
+                          for (Iterator it = listas.iterator(); it.hasNext();) {
+                            Listas lista = (Listas) it.next();
+                                List detalles = adm.query("Select o from Candidatos as o "  + 
+                                        " where o.lista.codigo = '"+lista.getCodigo()+"'  " + 
+                                        " and o.tipocandidato.codigo = '"+tCandidato.getCodigo()+"'  order by o.tipocandidato.codigo ");
+
+                                    for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                        Candidatos dcand = (Candidatos) itp.next();
+                                        Radio r = new Radio(""+dcand.getNombre());
+                                        r.setValue(""+dcand.getCodigo());
+                                        r.setId(""+dcand.getCodigo());
+                                        rw.setWidth("160px");
+                                        rw.appendChild(r);
+                                    
+                                    }
+                              
+                        
+                        }
+
+                        filas.appendChild(rw);
+                          filas.setParent(migrid);
+                       //AÑADO UN GRID A LA FILA
+                        migrid.setParent(radio);
+                        Row rw0 = new Row();
+                        rw0.appendChild(radio);
+                        
+                       filaEncuesta.appendChild(rw0);
+            }
+
+ 
+
+}
+
+Boolean validar(){
+String mensaje ="ERROR: No ha completado todas la listas, revise nuevamente y vuelva a intentarlo...!";
+error2.value = mensaje;
+error2.visible = false;
+error2i.visible = false;
+
+      List col =  lista.getRows().getChildren();
+      String tipoDato = "";
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
+                        tipoDato = object.getId();
+ 
+                    }else{
+                        if(tipoDato.contains("ou") || tipoDato.contains("vf")){
+                            List labels = object.getChildren();
+                            if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
+                                String valor = ((Radiogroup) labels.get(0)).getSelectedItem().getValue();
+                             }else{
+                                //Messagebox.show("SELECCIONE UNA RESPUESTA EN TODAS LA PREGUNTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                error2.visible = true;
+                                error2i.visible = true;
+                                return false;
+                                break;
+                            
+                                }
+                        }else if(tipoDato.equals("om")){
+                            List labels = object.getChildren();
+                        }
+                    }
+             }
+             return true;
+
+}
+ 
+  void guardar(){
+
+   if(guardando)
+    return;
+
+    guardando = true;
+
+      if(!validar()){
+            guardar.disabled  = false;
+            guardando = false;
+            return;
+       }
+           guardar.disabled  = true;
+           guardar.visible = false;
+
+           List matricula = adm.query("Select o from Matriculas as o " +
+           " where o.estudiante.codigoest =  '"+periEst.getCodigoest()+"' order by o.fechamat desc");
+
+      Matriculas matri = ((Matriculas)matricula.get(0)) ;
+      //adm.ejecutaSql("Delete from Respuestasencuesta where detallepregunta.pregunta.pregunta.encuesta =  ");
+      List col =  lista.getRows().getChildren();
+      String tipoDato = "";
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
+                        tipoDato = object.getId();
+
+                    }else{
+                        if(tipoDato.contains("ou") || tipoDato.contains("vf")){
+                            List labels = object.getChildren();
+                            if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
+                                Radio rad = ((Radiogroup) labels.get(0)).getSelectedItem();
+                                Respuestasencuesta respuestap = new Respuestasencuesta();
+                                Candidatos det = new Candidatos(new Integer(rad.getId()));
+                                respuestap.setCandidatos(det);
+                                respuestap.setRespuesta1(rad.getValue());
+                                respuestap.setMatricula(matri);
+                                try{
+                                adm.guardar(respuestap);
+                                }catch(Exception repe){
+                                    System.out.println(repe);
+                                }
+                             }else{//Messagebox.show("SELECCIONE UNA RESPUESTA EN TODAS LA PREGUNTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                error2.visible = true;
+                                error2i.visible = true;
+                                break;
+                             }
+                        }else if(tipoDato.equals("om")){
+                            List labels = object.getChildren();
+                        }
+                    }
+             }
+              periEst.setAplico(true);
+              adm.actualizar(periEst);
+              a.setAttribute("userEstudiante",periEst);
+
+             Executions.sendRedirect("/indexRepresentantes.zul");
+            guardando = false;
+
+}
+
+public void verificar(){
+    List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '"+cedula.getValue().replace("-","")+"' ");
+    if(estudiantesEncontrados.size()>0){
+                        Row rw = new Row();
+                        rw.appendChild(tlab);
+                        validacion.appendChild(rw);
+             estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.apellidos like '%"+ +"%' ",0,10);
+                    for (Iterator itCan = estudiantesEncontrados.iterator(); itCan.hasNext();) {
+                        Estudiantes tCandidato = (Estudiantes) itCan.next();
+                    }
+             
+             
+             buscarCedulaPanel.visible = false; 
+            listadoListass.visible=true;
+            cargar();
+    }else{
+
+    }
+}
+
+  ]]>
+        </zscript>
+
+        <panel id="buscarCedulaPanel" framable="true"  width="100%" height="100%"
+        border="normal">
+            <panelchildren>
+                <grid >
+                    <rows>
+                        <row>
+                            Ingrese su No. de Cédula: 
+                            <textbox id="cedula" constraint="no empty:Número de Cédula es Obligatorio"  />
+                        
+                            <button label="Verificar"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="cedula.getValue(); verificar(); "/>
+                        </row>
+                    </rows>
+                </grid>
+                <grid >
+                    <rows id="validacion">
+                       
+                    </rows>
+                </grid>
+              
+            </panelchildren>
+           
+        </panel>
+        <panel id="listadoListass" visible="false" framable="true" width="100%" height="100%"
+               border="normal">
+            <panelchildren>
+                <vbox>
+                    <label   style="font-size:15px; font-weight:bold;background:white;" id="justificacion1" />
+                </vbox>
+                
+
+                <grid    id="lista">
+                    <rows id="filaEncuesta">
+                    </rows>
+                </grid>
+              
+            </panelchildren>
+            <toolbar>
+                <button image="/images/guardar.gif" id="guardar" height="40px" width="240px" label="GUARDAR Y CONTINUAR"    onClick="guardar.disabled = true; guardar();"/>
+                <image src="/images/bloquear.gif" id="error2i" visible="false"/>
+                
+                <label id="error2" visible ="false" style="color:black;font-size:16px;background:#FFFFBB;border-color:blue" />
+                    
+
+                
+            </toolbar>
+        </panel>
+
+    </window>
+</zk>
