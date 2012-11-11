@@ -7,6 +7,7 @@
 <![CDATA[
 
   import bean.EventDAO;
+    import bean.secuencial;
   import java.util.ArrayList;
  import jcinform.persistencia.*;
   import jcinform.procesos.Administrador;
@@ -31,26 +32,31 @@ cargar(){
            List listas = adm.query("Select o from Listas as o where o.eleccion.estado = true order by o.codigo " );
          //Row rw = new Row();
                    
-       
+       int mm=0;
+       int cc=0;
    List cargos = adm.query("Select o from TipoCandidato as o  order by o.codigo " );
             for (Iterator itCan = cargos.iterator(); itCan.hasNext();) {
                       TipoCandidato tCandidato = (TipoCandidato) itCan.next();
                       Grid migrid = new Grid();
                        migrid.setWidth("800px");
                       Rows filas = new Rows();
+                      
                       //AGREGO EL TIPO DE CANDIDATO
                      
                       
                       Label tlab= new Label(".-"+tCandidato.getNombre());
                         Row rw = new Row();
                         tlab.setStyle("color:red;font-size;15px;font-weight:bold");
+                        rw.setId("CANDIDATO"+cc);
                         rw.setSpans("2"); 
                         rw.appendChild(tlab);
+                        cc++;
                           filas.appendChild(rw);
                           //filaEncuesta.appendChild(rw);
                          rw = new Row();  
-                       //if(!yaAnadi){
-                                System.out.println("INGRESO.......");
+                         rw.setId("LISTA"+mm);
+                         mm++;
+                                
                                 for (Iterator it = listas.iterator(); it.hasNext();) {
                                         Listas lista = (Listas) it.next();
                                         //System.out.println(""+lista.getTipopregunta());
@@ -62,15 +68,14 @@ cargar(){
                                             //rw.setSpans("2");
                                             rw.setWidth("160px");
                                             rw.appendChild(lab);
-                                            System.out.println(".."+lista.getNombre());
+                                            //System.out.println(".."+lista.getNombre());
                                     }
                             filas.appendChild(rw);
                             yaAnadi = true;
-                      //} 
             
                     
                        Radiogroup radio= new Radiogroup(); 
-                       
+                       radio.setId("TC"+tCandidato.getCodigo());
                        
                        rw = new Row();  
                           for (Iterator it = listas.iterator(); it.hasNext();) {
@@ -107,20 +112,17 @@ cargar(){
 }
 
 Boolean validar(){
-String mensaje ="ERROR: No ha completado todas la listas, revise nuevamente y vuelva a intentarlo...!";
-error2.value = mensaje;
-error2.visible = false;
-error2i.visible = false;
+        String mensaje ="ERROR: No ha completado todas la listas, revise nuevamente y vuelva a intentarlo...!";
+        error2.value = mensaje;
+        error2.visible = false;
+        error2i.visible = false;
 
       List col =  lista.getRows().getChildren();
       String tipoDato = "";
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
-                    if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
-                        tipoDato = object.getId();
- 
-                    }else{
-                        if(tipoDato.contains("ou") || tipoDato.contains("vf")){
+                    
+                         
                             List labels = object.getChildren();
                             if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
                                 String valor = ((Radiogroup) labels.get(0)).getSelectedItem().getValue();
@@ -132,10 +134,8 @@ error2i.visible = false;
                                 break;
                             
                                 }
-                        }else if(tipoDato.equals("om")){
-                            List labels = object.getChildren();
-                        }
-                    }
+                         
+                     
              }
              return true;
 
@@ -153,51 +153,44 @@ error2i.visible = false;
             guardando = false;
             return;
        }
-           guardar.disabled  = true;
-           guardar.visible = false;
-
-           List matricula = adm.query("Select o from Matriculas as o " +
-           " where o.estudiante.codigoest =  '"+periEst.getCodigoest()+"' order by o.fechamat desc");
-
-      Matriculas matri = ((Matriculas)matricula.get(0)) ;
-      //adm.ejecutaSql("Delete from Respuestasencuesta where detallepregunta.pregunta.pregunta.encuesta =  ");
-      List col =  lista.getRows().getChildren();
-      String tipoDato = "";
+ 
+           //guardar.disabled  = true;
+           //guardar.visible = false;
+           
+           secuencial sec = new secuencial();
+List col =  lista.getRows().getChildren();
+String tipoDato = "";
+Date fec = adm.Date();
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
-                    if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
-                        tipoDato = object.getId();
-
-                    }else{
-                        if(tipoDato.contains("ou") || tipoDato.contains("vf")){
-                            List labels = object.getChildren();
-                            if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
-                                Radio rad = ((Radiogroup) labels.get(0)).getSelectedItem();
-                                Respuestasencuesta respuestap = new Respuestasencuesta();
-                                Candidatos det = new Candidatos(new Integer(rad.getId()));
-                                respuestap.setCandidatos(det);
-                                respuestap.setRespuesta1(rad.getValue());
-                                respuestap.setMatricula(matri);
-                                try{
-                                adm.guardar(respuestap);
-                                }catch(Exception repe){
-                                    System.out.println(repe);
-                                }
+                    
+                    List labels = object.getChildren();
+                                if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
+                                
+                                   Radio rad = ((Radiogroup) labels.get(0)).getSelectedItem();
+ 
+                                    Resultados respuestap = new Resultados(sec.generarClave());
+                                    Candidatos det = new Candidatos(new Integer(rad.getId()));
+                                    respuestap.setCandidato(det);
+                                    respuestap.setEstudiante(estudianteActual);
+                                    respuestap.setFecha(fec);
+                                    try{
+                                        adm.guardar(respuestap);
+                                    }catch(Exception repe){
+                                        System.out.println(repe);
+                                    }
                              }else{//Messagebox.show("SELECCIONE UNA RESPUESTA EN TODAS LA PREGUNTAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                                 error2.visible = true;
                                 error2i.visible = true;
                                 break;
                              }
-                        }else if(tipoDato.equals("om")){
-                            List labels = object.getChildren();
-                        }
-                    }
+                   
              }
-              periEst.setAplico(true);
-              adm.actualizar(periEst);
-              a.setAttribute("userEstudiante",periEst);
+              //periEst.setAplico(true);
+              //adm.actualizar(periEst);
+              //a.setAttribute("userEstudiante",periEst);
 
-             Executions.sendRedirect("/indexRepresentantes.zul");
+             //Executions.sendRedirect("/indexRepresentantes.zul");
             guardando = false;
 
 }
@@ -327,7 +320,7 @@ public void validarEstudiante(){
               
             </panelchildren>
             <toolbar>
-                <button image="/images/guardar.gif" id="guardar" height="40px" width="240px" label="GUARDAR Y CONTINUAR"    onClick="guardar.disabled = true; guardar();"/>
+                <button image="/images/guardar.gif" id="guardar" height="40px" width="240px" label="GUARDAR Y CONTINUAR"    onClick="guardar();"/>
                 <image src="/images/bloquear.gif" id="error2i" visible="false"/>
                 
                 <label id="error2" visible ="false" style="color:black;font-size:16px;background:#FFFFBB;border-color:blue" />
