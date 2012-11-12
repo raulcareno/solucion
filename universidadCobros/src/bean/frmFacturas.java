@@ -67,6 +67,7 @@ List<Parametros> parametrosList = null;
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         frmActualizar = new javax.swing.JPanel();
         ruc1 = new javax.swing.JFormattedTextField();
         nombre1 = new javax.swing.JFormattedTextField();
@@ -119,6 +120,9 @@ List<Parametros> parametrosList = null;
         descuento = new javax.swing.JLabel();
         total7 = new javax.swing.JLabel();
         total8 = new javax.swing.JLabel();
+        chkNuevo = new javax.swing.JRadioButton();
+        chkAntiguo = new javax.swing.JRadioButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -336,11 +340,11 @@ List<Parametros> parametrosList = null;
 
         jDateChooser1.setDate(new Date());
         getContentPane().add(jDateChooser1);
-        jDateChooser1.setBounds(455, 70, 140, 30);
+        jDateChooser1.setBounds(460, 100, 140, 30);
 
         jLabel1.setText("Fecha: ");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(406, 70, 50, 30);
+        jLabel1.setBounds(410, 100, 50, 30);
 
         jLabel2.setText("Búsqueda: ");
         getContentPane().add(jLabel2);
@@ -484,7 +488,7 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(chkCreditos);
-        chkCreditos.setBounds(530, 40, 80, 23);
+        chkCreditos.setBounds(520, 40, 80, 23);
 
         jLabel15.setText("TELÉFONO:");
         getContentPane().add(jLabel15);
@@ -521,6 +525,31 @@ List<Parametros> parametrosList = null;
         total8.setText("Categoría:");
         getContentPane().add(total8);
         total8.setBounds(20, 320, 80, 20);
+
+        buttonGroup2.add(chkNuevo);
+        chkNuevo.setSelected(true);
+        chkNuevo.setText("Nuevo");
+        chkNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkNuevoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(chkNuevo);
+        chkNuevo.setBounds(450, 70, 70, 23);
+
+        buttonGroup2.add(chkAntiguo);
+        chkAntiguo.setText("Antiguo");
+        chkAntiguo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkAntiguoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(chkAntiguo);
+        chkAntiguo.setBounds(520, 70, 80, 23);
+
+        jLabel3.setText("Estudiante:");
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(380, 70, 70, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -756,7 +785,7 @@ List<Parametros> parametrosList = null;
                         obj[0] = elem.getIdRubros().getIdRubros();
                         obj[1] = elem.getIdRubros().getNombre();
                         obj[2] = 1;
-                        obj[3] = elem.getValorNueva();
+                        obj[3] = (chkNuevo.isSelected()?elem.getValorNueva():elem.getValorAntigua());
                         dtm.addRow(obj);
                     }
                 }
@@ -960,6 +989,18 @@ List<Parametros> parametrosList = null;
          cargarRubros(fac);
     }//GEN-LAST:event_chkCreditosActionPerformed
 
+    private void chkNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNuevoActionPerformed
+        // TODO add your handling code here:
+        general fac = (general) this.encontrados1.getSelectedValue();
+         cargarRubros(fac);
+    }//GEN-LAST:event_chkNuevoActionPerformed
+
+    private void chkAntiguoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAntiguoActionPerformed
+        // TODO add your handling code here:
+        general fac = (general) this.encontrados1.getSelectedValue();
+         cargarRubros(fac);
+    }//GEN-LAST:event_chkAntiguoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardarCerra;
@@ -968,10 +1009,13 @@ List<Parametros> parametrosList = null;
     private javax.swing.JButton btnSalir;
     private javax.swing.JFormattedTextField buscarApellido;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel carrera;
     private javax.swing.JLabel categoriaSocial;
+    private javax.swing.JRadioButton chkAntiguo;
     private javax.swing.JRadioButton chkCreditos;
     private javax.swing.JRadioButton chkMatricula;
+    private javax.swing.JRadioButton chkNuevo;
     private javax.swing.JRadioButton chkTodo;
     private javax.swing.JFormattedTextField codigoPariente;
     private javax.swing.JLabel descuento;
@@ -991,6 +1035,7 @@ List<Parametros> parametrosList = null;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

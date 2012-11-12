@@ -368,6 +368,7 @@ public class frmRubrosMatriculas extends javax.swing.JInternalFrame {
             this.txtNombre.setEditable(true);
             this.txtNombre.requestFocusInWindow();
             this.valorNuevos.setEditable(true);
+            this.valorAntiguos.setEditable(true);
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
             this.btnNuevo.setLabel("Guardar");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
