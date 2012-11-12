@@ -68,6 +68,7 @@ List<Parametros> parametrosList = null;
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        btnGuardarCerra = new javax.swing.JButton();
         frmActualizar = new javax.swing.JPanel();
         ruc1 = new javax.swing.JFormattedTextField();
         nombre1 = new javax.swing.JFormattedTextField();
@@ -77,7 +78,6 @@ List<Parametros> parametrosList = null;
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        btnGuardarCerra = new javax.swing.JButton();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         encontrados1 = new javax.swing.JList();
@@ -123,6 +123,14 @@ List<Parametros> parametrosList = null;
         chkNuevo = new javax.swing.JRadioButton();
         chkAntiguo = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
+
+        btnGuardarCerra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnGuardarCerra.setText("Guardar y Cerrar");
+        btnGuardarCerra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCerraActionPerformed(evt);
+            }
+        });
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -182,16 +190,6 @@ List<Parametros> parametrosList = null;
         jLabel14.setText("TELÉFONO:");
         frmActualizar.add(jLabel14);
         jLabel14.setBounds(10, 70, 80, 14);
-
-        btnGuardarCerra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        btnGuardarCerra.setText("Guardar y Cerrar");
-        btnGuardarCerra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarCerraActionPerformed(evt);
-            }
-        });
-        frmActualizar.add(btnGuardarCerra);
-        btnGuardarCerra.setBounds(80, 90, 170, 23);
 
         getContentPane().add(frmActualizar);
         frmActualizar.setBounds(10, 70, 310, 120);
