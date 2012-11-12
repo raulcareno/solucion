@@ -109,6 +109,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         Administracion = new javax.swing.JMenu();
         rubros = new javax.swing.JMenuItem();
         rubrosMatricula = new javax.swing.JMenuItem();
+        categoriasSociales = new javax.swing.JMenuItem();
         Cobros = new javax.swing.JMenu();
         Facturar = new javax.swing.JMenuItem();
         usuario1 = new javax.swing.JMenu();
@@ -283,6 +284,14 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         Administracion.add(rubrosMatricula);
+
+        categoriasSociales.setText("Categorías Sociales");
+        categoriasSociales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoriasSocialesActionPerformed(evt);
+            }
+        });
+        Administracion.add(categoriasSociales);
 
         jMenuBar1.add(Administracion);
 
@@ -558,7 +567,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
             frmFacturas usu = new frmFacturas(adm);
-            usu.setSize(642, 507);
+            usu.setSize(642, 557);
             usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
@@ -579,6 +588,54 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_cmbPeriodoKeyPressed
+
+    private void categoriasSocialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoriasSocialesActionPerformed
+        // TODO add your handling code here:
+               // TODO add your handling code here:
+        try {
+//            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
+//                    + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
+//            if (accesosL.size() > 0) {
+//                permisos = accesosL.get(0);                
+//                accesosL = null;
+//            } else {
+//                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+            try {
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaCategoriasSociales")) {
+                        System.out.println("LO ENCONTRE");
+                        ((frmCategorias) component).setEmpleadoActual(usuarioActual);
+                        ((frmCategorias) component).setPeriodoActual(periodoActual);
+                        ((frmCategorias) component).setVisible(true);
+                        return;
+                    }
+                }
+                componentes = null;
+            } catch (Exception e) {
+                System.out.println("ERROR EN COMPONENTE" + e);
+            }
+            frmCategorias usu = new frmCategorias( adm);
+            usu.setSize(546, 507);
+ usu.setEmpleadoActual(usuarioActual);
+            usu.setPeriodoActual(periodoActual);
+            usu.setLocation(0, 0);
+            usu.setName("formaCategoriasSociales");
+            contenedor.add(usu);
+
+            usu.show();
+//            usu.noTicket.requestFocusInWindow();
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+    }//GEN-LAST:event_categoriasSocialesActionPerformed
     private int intento = 0;
 
     public JLabel getIntentos() {
@@ -694,6 +751,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnCambiarClave;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JMenuItem cambiarClave;
+    private javax.swing.JMenuItem categoriasSociales;
     private javax.swing.JMenuItem cerrarSesion;
     private javax.swing.JPasswordField claveActual;
     private javax.swing.JComboBox cmbPeriodo;
