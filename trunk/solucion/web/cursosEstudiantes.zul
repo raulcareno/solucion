@@ -386,9 +386,9 @@ void showReport(String tipo) {
                 <hbox>
                     <separator orient="vertical" width="50px"/>
                     <listbox style="background:transparent" id="reporte" onSelect="showReport(self.selectedItem.value)" width="500px"  >
-                        <listitem image="/images/medialibreta.png"  id="PCURQ" label="LIBRETA QUIMESTRAL" value="LIBQ"/> 
+                        <listitem image="/images/medialibreta.png"  id="PCURQ" label="REPORTE DE CALIFICACIONES DETALLADO" value="LIBQ"/> 
                         <listitem/>
-                        <listitem image="/images/medialibreta.png"  id="PCUR" label="LIBRETA TRIMESTRAL" value="LIB"/> 
+                        <listitem image="/images/medialibreta.png"  id="PCUR" label="REPORTE DE CALIFICACIONES" value="LIB"/> 
                         <listitem/>
                         <listitem image="/images/libreta.png"   id="FAL" label="PASE DE AÑO" value="CERT"/>
                         <listitem/>
