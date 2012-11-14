@@ -93,7 +93,7 @@
 			<band height="328">
 				<pie3DChart>
 					<chart evaluationTime="Group" evaluationGroup="tipocandidato">
-						<reportElement x="50" y="41" width="449" height="269"/>
+						<reportElement x="0" y="41" width="534" height="269"/>
 						<chartTitle/>
 						<chartSubtitle/>
 						<chartLegend/>
