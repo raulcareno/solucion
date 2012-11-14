@@ -162,7 +162,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        this.setVisible(true);
 
         this.addWindowListener(new WindowAdapter() {
-
             public void windowClosing(WindowEvent we) {
                 //JOptionPane.showMessageDialog(puertoBase, "mensaje");
                 auditar("", "", "Salir del Sistema");
@@ -191,7 +190,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             PopupMenu men = new PopupMenu("JCINFORMAMENU");
             MenuItem acerca = new MenuItem("Acerca de..");
             acerca.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("In here");
                     //JOptionPane.showMessageDialog(getContentPane(), "JCINFORM ");
@@ -206,7 +204,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             men.add(acerca);
             acerca = new MenuItem("Salir ");
             acerca.addActionListener(new ActionListener() {
-
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("In here");
                     //JOptionPane.showMessageDialog(getContentPane(), "JCINFORM ");
@@ -221,7 +218,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon.setImageAutoSize(true);
                 trayIcon.addActionListener(new ActionListener() {
-
                     public void actionPerformed(ActionEvent e) {
                         //System.out.println("In here");
                         trayIcon.displayMessage("JCINFORM - SOLUCIONES INFORMATICAS \n Sistema de Parking \n ", "www.jcinform.com", TrayIcon.MessageType.INFO);
@@ -243,19 +239,19 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 mostrar = true;
                 logear();
                 try {
-                    
-                
-                adm = new Administrador(datosConecta);
-                List<Usuarios> uss = adm.query("Select o from Usuarios as o");
-                for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
-                    Usuarios usuarios = it.next();
-                    usuariot.addItem(usuarios.getUsuario());
-                    
-                }
+
+
+                    adm = new Administrador(datosConecta);
+                    List<Usuarios> uss = adm.query("Select o from Usuarios as o");
+                    for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
+                        Usuarios usuarios = it.next();
+                        usuariot.addItem(usuarios.getUsuario());
+
+                    }
                 } catch (Exception e) {
-                    System.out.println("error en cargar usuarios: "+e);
+                    System.out.println("error en cargar usuarios: " + e);
                 }
-                
+
             } else {
 
 
@@ -3183,7 +3179,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
             if (empresaObj.getLed() != null && !empresaObj.getLed().equals("") && !empresaObj.getLed().equals("null")) {
                 Thread cargar = new Thread() {
-
                     public void run() {
                         try {
                             String valor = "";
@@ -3325,7 +3320,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         } else {
                             clave.setEditable(true);
                             usuariot.setEnabled(true);
-                             
+
                             clave.setText("");
 
                             JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
@@ -3338,7 +3333,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 } catch (Exception e) {
                     clave.setEditable(true);
                     usuariot.setEnabled(true);
-                     
+
                     clave.setText("");
                     JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                     clave.requestFocusInWindow();;
@@ -3390,7 +3385,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 usuario = usu;
                 clave.setEditable(true);
                 usuariot.setEnabled(true);
-                 
+
                 clave.setText("");
                 frmIngresarSistema.setVisible(false);
                 usuarioActual = usu;
@@ -3519,9 +3514,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } else {
             clave.setEditable(true);
             usuariot.setEnabled(true);
-             
+
             clave.setText("");
-            
+
             JOptionPane.showMessageDialog(this, "Usuario o Clave incorrecta", "JCINFORM", JOptionPane.ERROR_MESSAGE);
             clave.requestFocusInWindow();
 
@@ -3682,13 +3677,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);
                 }
                 try {
- //LE QUITO EL RETARDO YA QUE NO NECESITO EN CASO DE LECTURA DE TARJETA DE PROXIMIDAD
-            //                    if (empresaObj.getRetardoEntrada() != null) {
-            //                            if (empresaObj.getRetardoEntrada().length() > 0) {
-            //                                Integer retardo = new Integer(empresaObj.getRetardoEntrada());
-            //                                Thread.sleep(retardo * 1000);
-            //                            }
-            //                   }
+                    //LE QUITO EL RETARDO YA QUE NO NECESITO EN CASO DE LECTURA DE TARJETA DE PROXIMIDAD
+                    //                    if (empresaObj.getRetardoEntrada() != null) {
+                    //                            if (empresaObj.getRetardoEntrada().length() > 0) {
+                    //                                Integer retardo = new Integer(empresaObj.getRetardoEntrada());
+                    //                                Thread.sleep(retardo * 1000);
+                    //                            }
+                    //                   }
                     abrirPuerta(puertoViene);
                 } catch (Exception e) {
                     System.out.println("PROCESO CORRECTO NO ABRIÓ PUERTA POR PUERTO DESHABILITADO");
@@ -3733,7 +3728,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     errores.setText("<html>ENTRADA OK...!</html>");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                     if (tarje.getFacturar()) {
-                        errores.setText("<html>VALOR: "+fac.getTotal()+"  </html>");
+                        errores.setText("<html>VALOR: " + fac.getTotal() + "  </html>");
                         imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
                     }
                     try {
@@ -3790,14 +3785,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                             }
                             llenarFechayHora(fac, "no");
-                            errores.setText("<html> Valor: "+fac.getTotal()+" </html>");
+                            errores.setText("<html> Valor: " + fac.getTotal() + " </html>");
                             imprimir(fac.getCodigo(), emp, fac.getDias(), false, fac.getClientes());
                             if (empresaObj.getRetardoSalida() != null) {
-                            if (empresaObj.getRetardoSalida().length() > 0) {
-                                Integer retardo = new Integer(empresaObj.getRetardoSalida());
-                                Thread.sleep(retardo * 1000);
+                                if (empresaObj.getRetardoSalida().length() > 0) {
+                                    Integer retardo = new Integer(empresaObj.getRetardoSalida());
+                                    Thread.sleep(retardo * 1000);
+                                }
                             }
-                        }
                         } else {
                             fac = calcularTiempo(fac);
                             adm.actualizar(fac);
@@ -3857,13 +3852,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             adm.guardar(fac);
                         }
 
-                        
-                        if(tarje.getFacturar()){
-                            errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO) VALOR: "+fac.getTotal()+" </html> ");
-                        }else{
+
+                        if (tarje.getFacturar()) {
+                            errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO) VALOR: " + fac.getTotal() + " </html> ");
+                        } else {
                             errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO)  ");
                         }
-                        
+
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
 
                         abrirPuerta(puertoViene);
@@ -4084,7 +4079,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             if (puerta == null) {
                 puerta = "1";
             }
-             LeerTarjeta ta = buscarPuerto("principal");
+            LeerTarjeta ta = buscarPuerto("principal");
             ta.outputSream.write(puerta.getBytes());
             //TEMPORAL
             Thread.sleep(20);
@@ -4522,10 +4517,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     void abrirPuerta(String puertoqueViene) {
         String lapuertaaAbrir = "";
         if (puertoqueViene.equals(empresaObj.getIpBarras1())) {
-               lapuertaaAbrir = empresaObj.getSale();
-        }else if (puertoqueViene.equals(empresaObj.getIpBarras1())) {
-               lapuertaaAbrir = empresaObj.getSale2();
-        }else if (puertoqueViene.equals(empresaObj.getPuerto1())) {
+            lapuertaaAbrir = empresaObj.getSale();
+        } else if (puertoqueViene.equals(empresaObj.getIpBarras1())) {
+            lapuertaaAbrir = empresaObj.getSale2();
+        } else if (puertoqueViene.equals(empresaObj.getPuerto1())) {
             lapuertaaAbrir = empresaObj.getPuerta1();
         } else if (puertoqueViene.equals(empresaObj.getPuerto2())) {
             lapuertaaAbrir = empresaObj.getPuerta2();
@@ -4562,7 +4557,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        AbrirPuerta.abrir(empresaObj.getPuerto(), lapuertaaAbrir);
 
         try {
-             LeerTarjeta ta = buscarPuerto("principal");
+            LeerTarjeta ta = buscarPuerto("principal");
             ta.outputSream.write(lapuertaaAbrir.getBytes());
             //TEMPORAL
             Thread.sleep(20);
@@ -4607,7 +4602,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     + "where o.pantalla = 'Clientes' "
                     + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4636,7 +4632,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             // TODO add your handling code here:
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Operadores' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4659,18 +4656,49 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Empresa' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            frmEmpresa usu = new frmEmpresa(this, true, this, adm);
-            usu.setSize(462, 496);
-            usu.setLocation(0, 0);
-            contenedor.add(usu);
 
-            usu.show();
-            contenedor.requestFocus();
+            
+              try {
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaEmpresa")) {
+                        System.out.println("LO ENCONTRE");
+
+                        ((frmEmpresa) component).setVisible(true);
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR EN COMPONENTE" + e);
+            }
+//            frmFactura usu = new frmFactura(this, true, this, adm);
+//            usu.setSize(716, 507);
+//
+//            usu.setLocation(0, 0);
+//            usu.setName("formaFactura");
+//            contenedor.add(usu);
+//
+//            usu.show();
+//            usu.noTicket.requestFocusInWindow();
+//            
+                    frmEmpresa usu = new frmEmpresa(this, true, this, adm);
+                    usu.setSize(462, 515);
+                    usu.setLocation(0, 0);
+                    usu.setLocation(0, 0);
+                    usu.setName("formaEmpresa");
+                    contenedor.add(usu);
+
+                    usu.show();
+                    contenedor.requestFocus();
+                   
+
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -4683,7 +4711,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tarifas' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4705,27 +4734,28 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Tickets' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             try {
-                    Component[] componentes = contenedor.getComponents();
-                    for (Component component : componentes) {
-                        System.out.println(""+component.getName());
-                        if((component.getName()+"").equals("formaTicket")){
-                            System.out.println("LO ENCONTRE");
-                            ((frmTicket)component).setVisible(true);
-                            ((frmTicket)component).placa.setText("");
-                            ((frmTicket)component).noTicket.setText("");
-                            ((frmTicket)component).fecha.setDate(new Date());
-                             ((frmTicket)component).placa.requestFocusInWindow();                
-                            return;
-                        }
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaTicket")) {
+                        System.out.println("LO ENCONTRE");
+                        ((frmTicket) component).setVisible(true);
+                        ((frmTicket) component).placa.setText("");
+                        ((frmTicket) component).noTicket.setText("");
+                        ((frmTicket) component).fecha.setDate(new Date());
+                        ((frmTicket) component).placa.requestFocusInWindow();
+                        return;
                     }
+                }
             } catch (Exception e) {
-                    System.out.println("ERROR EN COMPONENTE"+e);
+                System.out.println("ERROR EN COMPONENTE" + e);
             }
 //            frmTicket usu = new frmTicket(this, true, this, adm);
 //            usu.setSize(334, 238);
@@ -4770,49 +4800,49 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                
+                permisos = accesosL.get(0);
                 accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             try {
-                    Component[] componentes = contenedor.getComponents();
-                    for (Component component : componentes) {
-                        System.out.println(""+component.getName());
-                        if((component.getName()+"").equals("formaFactura")){
-                            System.out.println("LO ENCONTRE");
-                            
-                            ((frmFactura)component).setVisible(true);
-                             ((frmFactura)component).noTicket.requestFocusInWindow();                
-                              ((frmFactura)component).ingreso.setDate(null);
-                            ((frmFactura)component).salida.setDate(null);
-                            ((frmFactura)component).placa.setText(null);
-                            ((frmFactura)component).tiempo.setDate(null);
-                            ((frmFactura)component).noTicket.setText("");
-                            ((frmFactura)component).codigo.setText("");
-                             ((frmFactura)component).total.setText("0.0");
-                            ((frmFactura)component).codigo.setText("");
-                            ((frmFactura)component).noTicket.setText("");
-                            ((frmFactura)component).placa.setText("");
-                            ((frmFactura)component).noTicket.requestFocusInWindow();
-                            ((frmFactura)component).cliente.setText("1");
-                            ((frmFactura)component).identificacion.setText("9999999999999");
-                            ((frmFactura)component).nombres.setText("CONSUMIDOR FINAL");
-                            ((frmFactura)component).telefono.setText("9999999999");
-                            return;
-                        }
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaFactura")) {
+                        System.out.println("LO ENCONTRE");
+
+                        ((frmFactura) component).setVisible(true);
+                        ((frmFactura) component).noTicket.requestFocusInWindow();
+                        ((frmFactura) component).ingreso.setDate(null);
+                        ((frmFactura) component).salida.setDate(null);
+                        ((frmFactura) component).placa.setText(null);
+                        ((frmFactura) component).tiempo.setDate(null);
+                        ((frmFactura) component).noTicket.setText("");
+                        ((frmFactura) component).codigo.setText("");
+                        ((frmFactura) component).total.setText("0.0");
+                        ((frmFactura) component).codigo.setText("");
+                        ((frmFactura) component).noTicket.setText("");
+                        ((frmFactura) component).placa.setText("");
+                        ((frmFactura) component).noTicket.requestFocusInWindow();
+                        ((frmFactura) component).cliente.setText("1");
+                        ((frmFactura) component).identificacion.setText("9999999999999");
+                        ((frmFactura) component).nombres.setText("CONSUMIDOR FINAL");
+                        ((frmFactura) component).telefono.setText("9999999999");
+                        return;
                     }
+                }
             } catch (Exception e) {
-                    System.out.println("ERROR EN COMPONENTE"+e);
+                System.out.println("ERROR EN COMPONENTE" + e);
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
             usu.setSize(716, 507);
-             
+
             usu.setLocation(0, 0);
             usu.setName("formaFactura");
             contenedor.add(usu);
-            
+
             usu.show();
             usu.noTicket.requestFocusInWindow();
 
@@ -4830,7 +4860,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4853,7 +4884,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Reportes' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -4987,26 +5019,26 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjeta.setViernes(true);
         tarjeta.setSabado(true);
         tarjeta.setDomingo(true);
-        
+
         todos.setSelected(true);
         tarjeta.setIngresos(20);
-        ingresos.setValue(new Integer(20)); 
+        ingresos.setValue(new Integer(20));
         todos.setSelected(true);
         Date horaInicio = new Date();
         horaInicio.setHours(6);
         horaInicio.setMinutes(0);
         horaInicio.setSeconds(0);
         tarjeta.setHorainicio(horaInicio);
-        
+
         Date horaFin = new Date();
         horaFin.setHours(23);
         horaFin.setMinutes(59);
         horaFin.setSeconds(59);
         tarjeta.setHorafin(horaFin);
-        
+
         tarjeta.setDesde(new Date());
         Date fechaFin = new Date();
-        fechaFin.setYear(fechaFin.getYear()+1); 
+        fechaFin.setYear(fechaFin.getYear() + 1);
         tarjeta.setHasta(fechaFin);
         tarjeta.setFacturar(false);
         tarjeta.setGracia(0);
@@ -5139,10 +5171,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                             tarjeta.setDesde(new Date());
                             Date fechaFin = new Date();
-                            fechaFin.setYear(fechaFin.getYear()+1); 
+                            fechaFin.setYear(fechaFin.getYear() + 1);
                             tarjeta.setHasta(fechaFin);
                             tarjeta.setIngresos(20);
-                            
+
                             llenarTarjeta();
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
@@ -5299,7 +5331,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         if (evt.getKeyCode() == evt.VK_ENTER) {
 
             Thread cargar = new Thread() {
-
                 public void run() {
                     procesando.setVisible(true);
 
@@ -5437,7 +5468,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.pantalla = 'Accesos' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -5509,7 +5541,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             List<Accesos> accesosL = adm.query("Select o from Accesos as o "
                     + "where o.pantalla = 'Reconfigurar' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
 
                 int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
                         "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
@@ -5563,10 +5596,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         barrera7.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("7".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera2.setEnabled(true);
@@ -5585,10 +5617,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         barrera6.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("6".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera6.setEnabled(true);
@@ -5607,10 +5638,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         barrera5.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("5".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera5.setEnabled(true);
@@ -5620,7 +5650,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "5");
                 barrera5.setEnabled(true);
-                control(5); 
+                control(5);
             }
         };
         cargar.start();
@@ -5630,11 +5660,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         barrera4.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("4".getBytes());
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     barrera4.setEnabled(true);
@@ -5643,7 +5672,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     lger.logger(frmPrincipal.class.getName(), ex + "");
                 }
                 barrera4.setEnabled(true);
-                control(4); 
+                control(4);
             }
         };
         cargar.start();
@@ -5653,10 +5682,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         barrera3.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("3".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
@@ -5684,9 +5712,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "3");
                 barrera3.setEnabled(true);
-                control(3); 
+                control(3);
             }
-            
         };
         cargar.start();
 }//GEN-LAST:event_barrera3ActionPerformed
@@ -5695,10 +5722,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         // TODO add your handling code here:
         barrera2.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
@@ -5727,37 +5753,38 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "2");
                 barrera2.setEnabled(true);
-                control(2); 
+                control(2);
             }
         };
         cargar.start();
 }//GEN-LAST:event_barrera2ActionPerformed
-public LeerTarjeta buscarPuerto(String tipo){
+    public LeerTarjeta buscarPuerto(String tipo) {
 //puertoListo;
-    
-    for (Iterator it = puertoListo.iterator(); it.hasNext();) {
-         LeerTarjeta ta = (LeerTarjeta) it.next();
-         if (ta.serialPort.getName().equals(empresaObj.getBarras()) && tipo==("barras")){
+
+        for (Iterator it = puertoListo.iterator(); it.hasNext();) {
+            LeerTarjeta ta = (LeerTarjeta) it.next();
+            if (ta.serialPort.getName().equals(empresaObj.getBarras()) && tipo == ("barras")) {
                 return ta;
-         }else if (ta.serialPort.getName().equals(empresaObj.getPuerto()) && tipo==("principal")){
+            } else if (ta.serialPort.getName().equals(empresaObj.getPuerto()) && tipo == ("principal")) {
                 return ta;
-         }else if (ta.serialPort.getName().equals(empresaObj.getBarras2()) && tipo==("barras2")){
+            } else if (ta.serialPort.getName().equals(empresaObj.getBarras2()) && tipo == ("barras2")) {
                 return ta;
-         }else if (ta.serialPort.getName().equals(empresaObj.getLed()) && tipo==("led")){
+            } else if (ta.serialPort.getName().equals(empresaObj.getLed()) && tipo == ("led")) {
                 return ta;
-         }
+            }
+        }
+        return null;
+
     }
-    return null;
-    
-}
-    private void control(int puerta){
+
+    private void control(int puerta) {
         try {
             Control c = new Control();
             c.setCodigo(adm.getNuevaClave("Control", "codigo"));
             c.setUsuario(usuarioActual);
             c.setFecha(new Date());
             c.setManual(true);
-            c.setPuerta(puerta); 
+            c.setPuerta(puerta);
             adm.guardar(c);
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -5767,10 +5794,9 @@ public LeerTarjeta buscarPuerto(String tipo){
         // TODO add your handling code here:
         barrera1.setEnabled(false);
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
-                     LeerTarjeta ta = buscarPuerto("principal");
+                    LeerTarjeta ta = buscarPuerto("principal");
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
@@ -5791,7 +5817,7 @@ public LeerTarjeta buscarPuerto(String tipo){
                     } catch (Exception e) {
                     }
                     barrera1.setEnabled(true);
-                    control(1); 
+                    control(1);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -5865,7 +5891,6 @@ public LeerTarjeta buscarPuerto(String tipo){
         // TODO add your handling code here:
 
         Thread cargar = new Thread() {
-
             public void run() {
                 procesando.setVisible(true);
                 btnIngresar.setEnabled(false);
@@ -5901,7 +5926,6 @@ public LeerTarjeta buscarPuerto(String tipo){
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             Thread cargar = new Thread() {
-
                 public void run() {
                     btnIngresar.doClick();
                 }
@@ -6124,7 +6148,8 @@ public LeerTarjeta buscarPuerto(String tipo){
             // TODO add your handling code here:
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'Auditoria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "'  and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -6280,7 +6305,6 @@ public LeerTarjeta buscarPuerto(String tipo){
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             Thread cargar = new Thread() {
-
                 public void run() {
                     procesando.setVisible(true);
 
@@ -6362,7 +6386,7 @@ public LeerTarjeta buscarPuerto(String tipo){
                     tarActu.setIngresos((Integer) noingresodiarios.getValue());
                     tarActu.setFacturar(facturar1.isSelected());
                     tarActu.setNocontar(nocontar1.isSelected());
-                    tarActu.setSalida(salida1.isSelected()); 
+                    tarActu.setSalida(salida1.isSelected());
                     tarActu.setGracia(Integer.parseInt(txtGracia1.getText()));
 //                    tarActu.setSalida(false);
                     System.out.println("CORRECTO" + tarActu.getClientes().getNombres());
@@ -6482,7 +6506,6 @@ public LeerTarjeta buscarPuerto(String tipo){
         // TODO add your handling code here:
 
         Thread cargar = new Thread() {
-
             public void run() {
                 verIp.mostrarFotop(camaraVista1, empresaObj.getUrl());
 
@@ -6813,7 +6836,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         // TODO add your handling code here:
         Thread cargar = new Thread() {
-
             public void run() {
                 try {
                     System.out.println("EMPEZO.. SERVIDOR");
@@ -6833,10 +6855,11 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void btnCobrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrar1ActionPerformed
         // TODO add your handling code here:
-           try {
+        try {
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'FacturaDiaria' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
-                permisos = accesosL.get(0);                accesosL = null;
+                permisos = accesosL.get(0);
+                accesosL = null;
             } else {
                 JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -6847,7 +6870,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             contenedor.add(usu);
 
             usu.show();
-            
+
 
 
         } catch (Exception ex) {
@@ -6954,7 +6977,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
-
             public void run() {
                 frmPrincipal pr = new frmPrincipal();
                 if (mostrar == true) {

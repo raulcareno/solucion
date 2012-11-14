@@ -52,6 +52,8 @@ public class Empresa implements Serializable {
     private String impresora;
     @Column(name = "impresora2")
     private String impresora2;
+    @Column(name = "impmulta")
+    private String impmulta;
     @Column(name = "puerto")
     private String puerto;
     @Column(name = "iva")
@@ -673,6 +675,15 @@ public class Empresa implements Serializable {
     public void setPuerta14(String puerta14) {
         this.puerta14 = puerta14;
     }
+
+    public String getImpmulta() {
+        return impmulta;
+    }
+
+    public void setImpmulta(String impmulta) {
+        this.impmulta = impmulta;
+    }
+    
     @Transient
     public Boolean webcam = false;
 
@@ -683,6 +694,7 @@ public class Empresa implements Serializable {
     public void setWebcam(Boolean webcam) {
         this.webcam = webcam;
     }
+    
     @Transient
     public Boolean ipcam = false;
 
