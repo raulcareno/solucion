@@ -167,7 +167,7 @@ Boolean validar(){
        }
  
            guardar.disabled  = true;
-           guardar.visible = false;
+           //guardar.visible = false;
            
            secuencial sec = new secuencial();
 List col =  lista.getRows().getChildren();
@@ -207,7 +207,7 @@ Date fec = adm.Date();
             cedula.value = "0000000000";
             validacion.getChildren().clear();
             
-
+            guardar.disabled  = false;
 }
 
 public void verificar(){
