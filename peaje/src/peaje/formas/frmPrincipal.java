@@ -3974,7 +3974,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 if (facturas.size() > 0) {
 
                     try {
-                        Date fechaFin = facturas.get(0).getFechafin();
+                                Factura act = facturas.get(0);
+                        Date fechaFin = act.getFechafin();
+                        Boolean yasalio = act.getYasalio();
+                        if(yasalio == null){
+                            yasalio = false;
+                        }
                         if (fechaFin == null) {
                             errores.setText("<html>TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)</html>");
                             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
@@ -3984,9 +3989,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             if (minutos > empresaObj.getSalida()) {
                                 errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                            }else if (yasalio) {
+                                errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
+                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else {
                                 errores.setText("SALIDA OK ...!");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                        
+                                act.setYasalio(true);
+                                adm.actualizar(act);
                                 abrirPuerta(puertoViene);
                             }
 

@@ -1652,6 +1652,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     facActual.setTiempo(fecTiempo);
                     facActual.setUsuarioc(principal.usuarioActual);
                     facActual.setSellado(false);
+                    facActual.setYasalio(false);
                     adm.actualizar(facActual);
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
@@ -2389,8 +2390,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
-            principal = null;
-            empresaObj = null;
+            //principal = null;
+            //empresaObj = null;
             System.gc();
             this.setVisible(false);
         } else if (evt.getKeyCode() == evt.VK_F1
@@ -2812,8 +2813,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
             principal.contenedor.requestFocus();
 
             this.setVisible(false);
-            principal = null;
-            empresaObj = null;
+            //principal = null;
+            //empresaObj = null;
             System.gc();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
@@ -2825,8 +2826,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         principal.contenedor.requestFocus();
         this.setVisible(false);
-        principal = null;
-        empresaObj = null;
+        //principal = null;
+        //empresaObj = null;
         System.gc();
     }//GEN-LAST:event_btnSalir1ActionPerformed
     public void sumar() {
@@ -3118,8 +3119,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
                         principal.contenedor.requestFocus();
                         this.setVisible(false);
-                        principal = null;
-                        empresaObj = null;
+                        //principal = null;
+                        //empresaObj = null;
                         System.gc();
 
 
@@ -3410,8 +3411,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
                         principal.contenedor.requestFocus();
                         this.setVisible(false);
-                        principal = null;
-                        empresaObj = null;
+                        //principal = null;
+                       // empresaObj = null;
                         System.gc();
 
 
@@ -3641,8 +3642,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
             principal.contenedor.requestFocus();
             this.setVisible(false);
-            principal = null;
-            empresaObj = null;
+            //principal = null;
+            //empresaObj = null;
             System.gc();
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -3914,8 +3915,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         // TODO add your handling code here:
         principal.contenedor.requestFocus();
         this.setVisible(false);
-        principal = null;
-        empresaObj = null;
+        //principal = null;
+        //empresaObj = null;
         System.gc();
     }//GEN-LAST:event_btnSalir2ActionPerformed
 
