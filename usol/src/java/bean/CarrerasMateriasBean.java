@@ -305,7 +305,7 @@ Auditar  aud = new Auditar();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
                   
-                    divisionPoliticas = adm.query("Select o from Niveles as o order by o.nombre ");
+                    divisionPoliticas = adm.query("Select o from Niveles as o  order by o.secuencia ");
                     if (divisionPoliticas.size() > 0) {
                         Niveles objSel = new Niveles(0);
                         items.add(new SelectItem(objSel, "Seleccione..."));
