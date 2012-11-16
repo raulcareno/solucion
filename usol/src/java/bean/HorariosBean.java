@@ -24,6 +24,7 @@ import jcinform.persistencia.Horarios;
 import jcinform.persistencia.Horas;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.Niveles;
+import jcinform.persistencia.Periodos;
 import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
 import jcinform.procesos.Administrador;
 import org.primefaces.event.DragDropEvent;
@@ -83,51 +84,56 @@ public class HorariosBean {
 
     }
 
-   
+    public Empleados buscarEmpleado(Materias mat) {
+        for (Horarios obj : model) {
+            if (obj.getIdMaterias().getIdMaterias().equals(mat.getIdMaterias())) {
+                return obj.getIdEmpleados();
+
+            }
+        }
+        return null;
+    }
 
     public String guardar() {
-        
-        if(true){
-             for (Horarios obj : model) {
-                    System.out.println("EMPLEADO: "+obj.getIdEmpleados());
-                }
-            return "";
-        }
         FacesContext context = FacesContext.getCurrentInstance();
+
+        for (Horarios obj : model) {
+            if (obj.getIdEmpleados().getIdEmpleados().equals(new Integer(0))) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor"));
+                return null;
+
+            }
+        }
+
+
+        Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
 //            if (!permisos.verificarPermisoReporte("Facultad", "agregar_facultad", "agregar", true, "PARAMETROS")) {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
 //            }
         try {
             //borro primero los prerequisitos
-            adm.ejecutaSql("Delete from Horarios where idHorarios.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ");
-            //borro primero las anteriores
-            adm.ejecutaSql("Delete from Horarios where idHorarios.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' ");
-            for (int i = 0; i < 30; i++) {
-                for (int j = 0; j < 12; j++) {
-                    Horarios carreraMateria = anadidasArray[i][j];
+            adm.ejecutaSql("Delete from Horarios where idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
+                    + "and idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' and idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
+                    + "and idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
 
-                    Horarios sec = new Horarios(adm.getNuevaClave("SecuenciaDeMaterias", "idSecuenciaDeMaterias"));
-//                    sec.setIdCarrerasMaterias(carreraMateria);
+            for (int i = 0; i < totalHoras; i++) {
+                for (int j = 0; j < 8; j++) {
+                    Horarios sec = anadidasArray[i][j];
+
+                    sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));
+                    sec.setIdCarreras(carreraSeleccionada);
+                    sec.setIdAulas(aulasSeleccionada);
+                    sec.setIdNiveles(nivelesSeleccionada);
+                    sec.setIdPeriodos(per);
+                    sec.setDia(j);
                     sec.setFila(i);
                     sec.setOrden(j);
-//                    sec.setSecuenciaDeMateriasAdicionalesList(carreraMateria.getSecuenciaDeMateriasAdicionalesList());
-                    if (carreraMateria.getIdCarreras().getIdCarreras() != null) {
+
+                    sec.setIdHoras(horas.get(i));
+                    if (sec.getIdMaterias().getIdMaterias() != null) {
+                        sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
                         adm.guardar(sec);
 
-                        /**
-                         * busco la coincidencia
-                         */
-                        String filaColumna = "f" + i + "c" + j;
-                        for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
-                            SecuenciaDeMateriasAdicionales secM = it.next();
-                            if (secM.getFilacolumna().equals(filaColumna)) {
-                                secM.setIdSecuenciaDeMateriasAdicionales(adm.getNuevaClave("SecuenciaDeMateriasAdicionales", "idSecuenciaDeMateriasAdicionales"));
-//                                        secM.setIdSecuenciaDeMaterias(sec);
-                                adm.guardar(secM);
-
-                            }
-
-                        }
                     }
 
                 }
@@ -157,20 +163,22 @@ public class HorariosBean {
         car.setIdNiveles(new Niveles());
         car.setIdCarreras(new Carreras());
         anadidasArray[fila][columna] = car;
-         
-             if(!verificarMateria2(player)){
-                    for (Horarios obj : model) {
-                        if(obj.getIdMaterias().getIdMaterias().equals(player.getIdMaterias().getIdMaterias()))
-                            model.remove(obj);
-                    }        
-             
-             }
-                    
-         
 
-        
+        if (!verificarMateria2(player)) {
+            for (Horarios obj : model) {
+                if (obj.getIdMaterias().getIdMaterias().equals(player.getIdMaterias().getIdMaterias())) {
+                    model.remove(obj);
+                }
+            }
+
+        }
+
+
+
+
     }
-             public Boolean verificarMateria2(Horarios player) {
+
+    public Boolean verificarMateria2(Horarios player) {
         for (int i = 0; i < totalHoras; i++) {
             for (int j = 0; j < 8; j++) {
                 Horarios carA = anadidasArray[i][j];
@@ -183,10 +191,10 @@ public class HorariosBean {
         }
         return false;
     }
-    
-     public void onEdit(RowEditEvent event) {
-        
-        Empleados emp = (Empleados) adm.buscarClave(((Horarios) event.getObject()).getIdEmpleados().getIdEmpleados(),Empleados.class);
+
+    public void onEdit(RowEditEvent event) {
+
+        Empleados emp = (Empleados) adm.buscarClave(((Horarios) event.getObject()).getIdEmpleados().getIdEmpleados(), Empleados.class);
         ((Horarios) event.getObject()).setIdEmpleados(emp);
 //        FacesMessage msg = new FacesMessage("Listo", ((Horarios) event.getObject()).getIdEmpleados().getApellidoPaterno()+"");
 //        FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -197,8 +205,6 @@ public class HorariosBean {
 //
 //        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
-    
     /**
      * VER ID QUE ESTÁ SELECCIONADO.
      */
@@ -299,24 +305,26 @@ public class HorariosBean {
         hora.setIdCarreras(carreraSeleccionada);
         hora.setIdMaterias(player.getIdMaterias());
 //        listaMaterias.remove(player);
-       
-      
-         if(!verificarMateria(player)){
-            if(model == null)
+
+
+        if (!verificarMateria(player)) {
+            if (model == null) {
                 model = new ArrayList<Horarios>();
+            }
             Empleados empVacio = new Empleados(0);
             empVacio.setApellidoPaterno("SIN PROFESOR");
             hora.setIdEmpleados(empVacio);
             hora.setIdHorarios(hora.getIdMaterias().getIdMaterias());
-            model.add(hora); 
-        }  
-         
+            model.add(hora);
+        }
+
         String filaColumna = event.getDropId();
         Integer fila = new Integer(filaColumna.substring(filaColumna.indexOf("f") + 1, filaColumna.indexOf("c")));
         Integer columna = new Integer(filaColumna.substring(filaColumna.indexOf("c") + 1, filaColumna.length()));
         anadidasArray[fila][columna] = hora;
     }
- public Boolean verificarMateria(CarrerasMaterias player) {
+
+    public Boolean verificarMateria(CarrerasMaterias player) {
         for (int i = 0; i < totalHoras; i++) {
             for (int j = 0; j < 8; j++) {
                 Horarios carA = anadidasArray[i][j];
@@ -330,7 +338,6 @@ public class HorariosBean {
         }
         return false;
     }
-    
     List<SecuenciaDeMateriasAdicionales> adicionales = new ArrayList<SecuenciaDeMateriasAdicionales>();
     List<SecuenciaDeMateriasAdicionales> adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
 
@@ -476,7 +483,7 @@ public class HorariosBean {
                 Empleados objSel = new Empleados(0);
                 items.add(new SelectItem(objSel, "SIN PROFESOR..."));
                 for (Empleados obj : divisionPoliticas) {
-                    items.add(new SelectItem(obj, obj.getApellidoPaterno()+" "+ obj.getNombre()));
+                    items.add(new SelectItem(obj, obj.getApellidoPaterno() + " " + obj.getNombre()));
                 }
             } else {
                 Empleados obj = new Empleados(0);
@@ -490,9 +497,29 @@ public class HorariosBean {
         }
         return null;
     }
+    public void encerar0(){
+        
+            Niveles objSel = new Niveles(0);
+                nivelesSeleccionada = objSel;
+                Aulas objSelA = new Aulas();
+                aulasSeleccionada = objSelA;
+                
+    }
+    public void encerar1(){
+                Aulas objSelA = new Aulas();
+                aulasSeleccionada = objSelA;
+                
+    }
+
     public void buscarMateriasdeCarrera() {
         try {
             llenarArreglo();
+            if(carreraSeleccionada.getIdCarreras() == null){
+                return;
+            }
+            if(nivelesSeleccionada.getIdNiveles() == null){
+                return;
+            }
             //SELECT * FROM carreras_materias WHERE id_carreras = 1 AND id_niveles = 1
             listaMaterias = adm.query("Select o from CarrerasMaterias as o "
                     + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
@@ -504,7 +531,25 @@ public class HorariosBean {
                     + "where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
                     + "  and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' "
                     + " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "'  order by o.fila, o.orden ");
+                model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
+            
+                for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
+                    Horarios cM = it.next();
+//                    cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
+                    CarrerasMaterias player = new CarrerasMaterias();
+                    player.setIdMaterias(cM.getIdMaterias());
+                    if (!verificarMateria(player)) { //CARGO LOS PROFESORES QUE DICTAN CADA MATERIA
+                        Horarios hora = new Horarios();
+                        hora.setIdCarreras(carreraSeleccionada);
+                        hora.setIdMaterias(player.getIdMaterias());
+                        hora.setIdEmpleados(cM.getIdEmpleados());
+                        hora.setIdHorarios(hora.getIdMaterias().getIdMaterias());
+                        model.add(hora);
+                    }
+                    anadidasArray[cM.getFila()][cM.getOrden()] = cM;
+
+                }
 
                 //LLENO LOS VACIOS
                 for (int i = 0; i < totalHoras; i++) {
