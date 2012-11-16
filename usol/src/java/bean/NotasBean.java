@@ -18,6 +18,7 @@ import javax.faces.model.SelectItem;
 import jcinform.persistencia.Aulas;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.Horarios;
+import jcinform.persistencia.Materias;
 import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Notas;
 import jcinform.procesos.Administrador;
@@ -210,6 +211,31 @@ public class NotasBean {
                 }
             } else {
                 Aulas obj = new Aulas(0);
+                items.add(new SelectItem(obj, "NO EXISTEN NIVELES"));
+            }
+
+
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(Horarios.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+     public List<SelectItem> getSelectedItemMaterias() {
+        try {
+            List<Materias> divisionPoliticas = new ArrayList<Materias>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+
+
+            divisionPoliticas = adm.query("Select o from Materias as o order by o.nombre ");
+            if (divisionPoliticas.size() > 0) {
+                Materias objSel = new Materias(0);
+                items.add(new SelectItem(objSel, "Seleccione..."));
+                for (Materias obj : divisionPoliticas) {
+                    items.add(new SelectItem(obj, obj.getNombre()));
+                }
+            } else {
+                Materias obj = new Materias(0);
                 items.add(new SelectItem(obj, "NO EXISTEN NIVELES"));
             }
 
