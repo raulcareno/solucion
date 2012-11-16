@@ -72,19 +72,19 @@
                     }
 
                 </style>
-                <p:panel id="registro"  style="width: 100%;" header="Malla(Materias por Carrera)">
+                <p:panel id="registro"  style="width: 100%;" header="Horarios">
                     <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid columns="6">
                          <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
                     <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
                         <f:selectItems value="#{horariosBean.selectedItemCarreras}"></f:selectItems>
-                        <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras availableCars selectedCars carList"/>
+                        <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel availableCars selectedCars carList"/>
                     </h:selectOneMenu>
                     <h:outputText value="NIVEL: " /> 
                     <h:selectOneMenu id="nivel"   label="nivel" converter="ConvNiveles" value="#{horariosBean.nivelesSeleccionada}" rendered="true">
                         <f:selectItems value="#{horariosBean.selectedItemNiveles}"></f:selectItems>
-                        <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel availableCars selectedCars carList"/>
+                        <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel aulas availableCars selectedCars carList"/>
                     </h:selectOneMenu>
                     <h:outputText value="AULAS: " /> 
                     <h:selectOneMenu id="aulas" label="aulas" converter="ConvAulas" value="#{horariosBean.aulasSeleccionada}" rendered="true">
