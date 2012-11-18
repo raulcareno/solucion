@@ -20,6 +20,8 @@
                         droppedCar.fadeOut('fast');
                     }
                 </script>
+                <script type="text/javascript" src="/script/funciones.js?ln=js">
+	</script>
                 <style type="text/css">
                     .slot {
                         width:150px;
@@ -98,7 +100,7 @@
                         <c:forEach items="#{notasBean.listaNotas}" var="item2" >
                             <c:forEach  items="#{item2}" var="item3">
                                     <h:outputText  rendered="#{item3.texto == true}"   style="color:#{item3.colorEstado};font-weight:bold;"   value="#{item3.nombre}"/>
-                                    <h:inputText value="#{item3.nota}" disabled="#{item3.estado}" size="3" styleClass="textoDerecha" onfocus="this.value=numerosCero(this.value);" onkeypress="return tabular(event,this)" rendered="#{item3.texto == false}" onblur="this.value=numeros(this,#{item3.desde},#{item3.hasta})"  style="background-color:#{item3.color};font-weight:bold;"  />
+                                    <h:inputText value="#{item3.nota}" disabled="#{item3.estado}" size="3" styleClass="textoDerecha" onfocus="this.value=numerosCero(this.value);" onkeypress="return tabular(event,this)" rendered="#{item3.texto == false}" onblur="this.value=numeros(this,#{item3.desde},#{item3.hasta});alert()"  style="background-color:#{item3.color};font-weight:bold;"  />
                                  
 
                             </c:forEach>
