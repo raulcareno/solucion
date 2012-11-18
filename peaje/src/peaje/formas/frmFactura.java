@@ -1746,9 +1746,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     placa.setText("");
                     noTicket.requestFocusInWindow();
                     System.gc();
-                    principal.contenedor.requestFocus();
-                    this.setVisible(false);
-                    principal.contenedor.requestFocus();
+                    //cordillera
+                    //principal.contenedor.requestFocus();
+                    //this.setVisible(false);
+                    //principal.contenedor.requestFocus();
+                    //cordillera
+                    noTicket.requestFocusInWindow();
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
