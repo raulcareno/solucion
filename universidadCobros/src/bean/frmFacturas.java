@@ -68,7 +68,6 @@ List<Parametros> parametrosList = null;
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        btnGuardarCerra = new javax.swing.JButton();
         frmActualizar = new javax.swing.JPanel();
         ruc1 = new javax.swing.JFormattedTextField();
         nombre1 = new javax.swing.JFormattedTextField();
@@ -78,6 +77,7 @@ List<Parametros> parametrosList = null;
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        btnGuardarCerra = new javax.swing.JButton();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         encontrados1 = new javax.swing.JList();
@@ -88,9 +88,6 @@ List<Parametros> parametrosList = null;
         btnModificar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -100,6 +97,7 @@ List<Parametros> parametrosList = null;
         jLabel6 = new javax.swing.JLabel();
         editarDatos = new javax.swing.JButton();
         buscarApellido = new javax.swing.JFormattedTextField();
+        jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         ruc = new javax.swing.JLabel();
         nombre = new javax.swing.JLabel();
@@ -123,14 +121,41 @@ List<Parametros> parametrosList = null;
         chkNuevo = new javax.swing.JRadioButton();
         chkAntiguo = new javax.swing.JRadioButton();
         jLabel3 = new javax.swing.JLabel();
-
-        btnGuardarCerra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
-        btnGuardarCerra.setText("Guardar y Cerrar");
-        btnGuardarCerra.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarCerraActionPerformed(evt);
-            }
-        });
+        jLabel4 = new javax.swing.JLabel();
+        factura = new javax.swing.JFormattedTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jFormattedTextField2 = new javax.swing.JFormattedTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        jFormattedTextField4 = new javax.swing.JFormattedTextField();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateChooser3 = new com.toedter.calendar.JDateChooser();
+        jDateChooser4 = new com.toedter.calendar.JDateChooser();
+        jFormattedTextField5 = new javax.swing.JFormattedTextField();
+        jFormattedTextField6 = new javax.swing.JFormattedTextField();
+        jFormattedTextField7 = new javax.swing.JFormattedTextField();
+        jComboBox1 = new javax.swing.JComboBox();
+        jComboBox2 = new javax.swing.JComboBox();
+        jComboBox3 = new javax.swing.JComboBox();
+        jLabel19 = new javax.swing.JLabel();
+        total6 = new javax.swing.JLabel();
+        total9 = new javax.swing.JLabel();
+        total10 = new javax.swing.JLabel();
+        total11 = new javax.swing.JLabel();
+        jFormattedTextField8 = new javax.swing.JFormattedTextField();
+        jComboBox4 = new javax.swing.JComboBox();
+        jFormattedTextField9 = new javax.swing.JFormattedTextField();
+        jDateChooser5 = new com.toedter.calendar.JDateChooser();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jLabel20 = new javax.swing.JLabel();
+        jFormattedTextField10 = new javax.swing.JFormattedTextField();
+        jComboBox5 = new javax.swing.JComboBox();
+        jFormattedTextField11 = new javax.swing.JFormattedTextField();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -191,8 +216,18 @@ List<Parametros> parametrosList = null;
         frmActualizar.add(jLabel14);
         jLabel14.setBounds(10, 70, 80, 14);
 
+        btnGuardarCerra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
+        btnGuardarCerra.setText("Guardar y Cerrar");
+        btnGuardarCerra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCerraActionPerformed(evt);
+            }
+        });
+        frmActualizar.add(btnGuardarCerra);
+        btnGuardarCerra.setBounds(80, 92, 133, 23);
+
         getContentPane().add(frmActualizar);
-        frmActualizar.setBounds(10, 70, 310, 120);
+        frmActualizar.setBounds(0, 20, 310, 120);
 
         panelencontrados1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
         panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -222,7 +257,7 @@ List<Parametros> parametrosList = null;
         jScrollPane8.setBounds(10, 10, 260, 170);
 
         getContentPane().add(panelencontrados1);
-        panelencontrados1.setBounds(80, 70, 280, 190);
+        panelencontrados1.setBounds(90, 20, 280, 190);
 
         tFactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -268,7 +303,7 @@ List<Parametros> parametrosList = null;
         tFactura.getColumnModel().getColumn(3).setResizable(false);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(20, 180, 580, 130);
+        jScrollPane1.setBounds(20, 140, 580, 130);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -320,49 +355,33 @@ List<Parametros> parametrosList = null;
         getContentPane().add(jPanel1);
         jPanel1.setBounds(130, 440, 480, 50);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Crear, Actualizar, Modificar Rubros x Matricula .......");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(20, 20, 290, 13);
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Facturar Matricula ..::..");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(20, 0, 270, 15);
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondoInicio.jpg"))); // NOI18N
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(0, 0, 680, 40);
-
         jDateChooser1.setDate(new Date());
         getContentPane().add(jDateChooser1);
-        jDateChooser1.setBounds(460, 100, 140, 30);
+        jDateChooser1.setBounds(460, 90, 140, 28);
 
         jLabel1.setText("Fecha: ");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(410, 100, 50, 30);
+        jLabel1.setBounds(410, 90, 50, 30);
 
         jLabel2.setText("Búsqueda: ");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(20, 50, 70, 14);
+        jLabel2.setBounds(10, 0, 70, 14);
 
         telefono.setText(".");
         getContentPane().add(telefono);
-        telefono.setBounds(100, 140, 230, 14);
+        telefono.setBounds(90, 80, 230, 14);
 
         carrera.setText(".");
         getContentPane().add(carrera);
-        carrera.setBounds(100, 160, 510, 20);
+        carrera.setBounds(90, 100, 510, 20);
 
         jLabel5.setText("NOMBRES: ");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(20, 100, 80, 14);
+        jLabel5.setBounds(10, 40, 80, 14);
 
         jLabel6.setText("DIRECCIÓN:");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(20, 120, 80, 14);
+        jLabel6.setBounds(10, 60, 80, 14);
 
         editarDatos.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         editarDatos.setText("EDITAR");
@@ -373,7 +392,7 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(editarDatos);
-        editarDatos.setBounds(230, 80, 70, 23);
+        editarDatos.setBounds(230, 20, 70, 23);
 
         buscarApellido.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         buscarApellido.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -390,67 +409,72 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(buscarApellido);
-        buscarApellido.setBounds(80, 50, 280, 21);
+        buscarApellido.setBounds(90, 0, 280, 21);
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondoInicio.jpg"))); // NOI18N
+        getContentPane().add(jLabel7);
+        jLabel7.setBounds(0, 0, 630, 20);
 
         jLabel9.setText("RUC: ");
         getContentPane().add(jLabel9);
-        jLabel9.setBounds(20, 80, 80, 14);
+        jLabel9.setBounds(10, 20, 80, 14);
 
         ruc.setText(".");
         getContentPane().add(ruc);
-        ruc.setBounds(100, 80, 140, 14);
+        ruc.setBounds(90, 20, 140, 14);
 
         nombre.setText(".");
         getContentPane().add(nombre);
-        nombre.setBounds(100, 100, 230, 14);
+        nombre.setBounds(90, 40, 230, 14);
 
         direccion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         direccion.setText(". ");
         getContentPane().add(direccion);
-        direccion.setBounds(100, 120, 320, 13);
+        direccion.setBounds(90, 60, 320, 13);
         getContentPane().add(codigoPariente);
-        codigoPariente.setBounds(20, 160, 20, 20);
+        codigoPariente.setBounds(130, 120, 20, 20);
 
-        subtotal.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        subtotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         subtotal.setForeground(new java.awt.Color(51, 51, 51));
         subtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         subtotal.setText("00.00");
         getContentPane().add(subtotal);
-        subtotal.setBounds(440, 310, 160, 30);
+        subtotal.setBounds(100, 270, 70, 30);
 
-        total1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        total1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total1.setForeground(new java.awt.Color(51, 51, 51));
         total1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total1.setText("TOTAL:");
         getContentPane().add(total1);
-        total1.setBounds(290, 400, 150, 30);
+        total1.setBounds(420, 270, 70, 30);
 
-        iva.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        iva.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         iva.setForeground(new java.awt.Color(51, 51, 51));
         iva.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         iva.setText("00.00");
         getContentPane().add(iva);
-        iva.setBounds(440, 370, 160, 30);
+        iva.setBounds(350, 270, 70, 30);
 
-        total.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        total.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        total.setForeground(new java.awt.Color(0, 51, 153));
         total.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total.setText("00.00");
         getContentPane().add(total);
-        total.setBounds(440, 400, 160, 30);
+        total.setBounds(490, 270, 110, 30);
 
-        total4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        total4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total4.setForeground(new java.awt.Color(51, 51, 51));
-        total4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total4.setText("Subtotal:");
+        total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total4.setText("Fecha");
         getContentPane().add(total4);
-        total4.setBounds(290, 310, 150, 30);
+        total4.setBounds(280, 320, 70, 20);
 
-        total5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        total5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total5.setForeground(new java.awt.Color(51, 51, 51));
         total5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total5.setText("IVA:");
         getContentPane().add(total5);
-        total5.setBounds(290, 370, 150, 30);
+        total5.setBounds(310, 270, 40, 30);
 
         buttonGroup1.add(chkTodo);
         chkTodo.setSelected(true);
@@ -466,7 +490,7 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(chkTodo);
-        chkTodo.setBounds(370, 40, 70, 23);
+        chkTodo.setBounds(390, 50, 70, 23);
 
         buttonGroup1.add(chkMatricula);
         chkMatricula.setText("Matricula");
@@ -476,7 +500,7 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(chkMatricula);
-        chkMatricula.setBounds(440, 40, 80, 23);
+        chkMatricula.setBounds(460, 50, 80, 23);
 
         buttonGroup1.add(chkCreditos);
         chkCreditos.setText("Créditos");
@@ -486,43 +510,42 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(chkCreditos);
-        chkCreditos.setBounds(520, 40, 80, 23);
+        chkCreditos.setBounds(540, 50, 80, 23);
 
         jLabel15.setText("TELÉFONO:");
         getContentPane().add(jLabel15);
-        jLabel15.setBounds(20, 140, 80, 14);
+        jLabel15.setBounds(10, 80, 80, 14);
 
         jLabel16.setText("CARRERA:");
         getContentPane().add(jLabel16);
-        jLabel16.setBounds(20, 160, 80, 14);
+        jLabel16.setBounds(10, 100, 80, 14);
 
-        categoriaSocial.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        categoriaSocial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         categoriaSocial.setForeground(new java.awt.Color(51, 51, 51));
         categoriaSocial.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         categoriaSocial.setText("A");
         getContentPane().add(categoriaSocial);
-        categoriaSocial.setBounds(100, 320, 30, 20);
+        categoriaSocial.setBounds(90, 120, 20, 20);
 
-        descuento.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        descuento.setForeground(new java.awt.Color(51, 51, 51));
+        descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        descuento.setForeground(new java.awt.Color(204, 51, 0));
         descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         descuento.setText("00.00");
         getContentPane().add(descuento);
-        descuento.setBounds(440, 340, 160, 30);
+        descuento.setBounds(230, 270, 70, 30);
 
-        total7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        total7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total7.setForeground(new java.awt.Color(51, 51, 51));
         total7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total7.setText("Descuento:");
+        total7.setText("Dscto.");
         getContentPane().add(total7);
-        total7.setBounds(290, 340, 150, 30);
+        total7.setBounds(180, 270, 50, 30);
 
-        total8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         total8.setForeground(new java.awt.Color(51, 51, 51));
-        total8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total8.setText("Categoría:");
+        total8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        total8.setText("CATEGORÍA:");
         getContentPane().add(total8);
-        total8.setBounds(20, 320, 80, 20);
+        total8.setBounds(10, 120, 80, 20);
 
         buttonGroup2.add(chkNuevo);
         chkNuevo.setSelected(true);
@@ -533,7 +556,7 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(chkNuevo);
-        chkNuevo.setBounds(450, 70, 70, 23);
+        chkNuevo.setBounds(460, 70, 70, 23);
 
         buttonGroup2.add(chkAntiguo);
         chkAntiguo.setText("Antiguo");
@@ -543,11 +566,151 @@ List<Parametros> parametrosList = null;
             }
         });
         getContentPane().add(chkAntiguo);
-        chkAntiguo.setBounds(520, 70, 80, 23);
+        chkAntiguo.setBounds(540, 70, 80, 23);
 
         jLabel3.setText("Estudiante:");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(380, 70, 70, 20);
+        jLabel3.setBounds(400, 70, 70, 20);
+
+        jLabel4.setText("Factura:");
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(410, 20, 60, 14);
+
+        factura.setText("FC0000000");
+        getContentPane().add(factura);
+        factura.setBounds(470, 20, 150, 25);
+
+        jLabel8.setText("Tarjeta: ");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(10, 420, 60, 14);
+
+        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField1.setText("0.00");
+        getContentPane().add(jFormattedTextField1);
+        jFormattedTextField1.setBounds(70, 420, 60, 20);
+
+        jLabel10.setText("Efectivo:");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(10, 320, 60, 14);
+
+        jFormattedTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField2.setText("0.00");
+        getContentPane().add(jFormattedTextField2);
+        jFormattedTextField2.setBounds(70, 320, 60, 20);
+
+        jLabel17.setText("Cheque: ");
+        getContentPane().add(jLabel17);
+        jLabel17.setBounds(10, 340, 60, 14);
+
+        jLabel18.setText("Cheque1: ");
+        getContentPane().add(jLabel18);
+        jLabel18.setBounds(10, 360, 60, 14);
+        getContentPane().add(jFormattedTextField3);
+        jFormattedTextField3.setBounds(210, 420, 70, 20);
+
+        jFormattedTextField4.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField4.setText("0.00");
+        getContentPane().add(jFormattedTextField4);
+        jFormattedTextField4.setBounds(70, 360, 60, 20);
+        getContentPane().add(jDateChooser2);
+        jDateChooser2.setBounds(280, 400, 80, 20);
+        getContentPane().add(jDateChooser3);
+        jDateChooser3.setBounds(280, 340, 80, 20);
+        getContentPane().add(jDateChooser4);
+        jDateChooser4.setBounds(280, 360, 80, 20);
+
+        jFormattedTextField5.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField5.setText("0.00");
+        getContentPane().add(jFormattedTextField5);
+        jFormattedTextField5.setBounds(70, 340, 60, 20);
+        getContentPane().add(jFormattedTextField6);
+        jFormattedTextField6.setBounds(210, 340, 70, 20);
+        getContentPane().add(jFormattedTextField7);
+        jFormattedTextField7.setBounds(210, 360, 70, 20);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
+        getContentPane().add(jComboBox1);
+        jComboBox1.setBounds(140, 420, 70, 20);
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
+        getContentPane().add(jComboBox2);
+        jComboBox2.setBounds(140, 340, 70, 20);
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
+        getContentPane().add(jComboBox3);
+        jComboBox3.setBounds(140, 360, 70, 20);
+
+        jLabel19.setText("Cheque 2: ");
+        getContentPane().add(jLabel19);
+        jLabel19.setBounds(10, 380, 60, 14);
+
+        total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        total6.setForeground(new java.awt.Color(51, 51, 51));
+        total6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total6.setText("Subtotal:");
+        getContentPane().add(total6);
+        total6.setBounds(20, 270, 80, 30);
+
+        total9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total9.setForeground(new java.awt.Color(51, 51, 51));
+        total9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total9.setText("Valor:");
+        getContentPane().add(total9);
+        total9.setBounds(70, 300, 60, 20);
+
+        total10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total10.setForeground(new java.awt.Color(51, 51, 51));
+        total10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total10.setText("Banco");
+        getContentPane().add(total10);
+        total10.setBounds(140, 320, 60, 20);
+
+        total11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total11.setForeground(new java.awt.Color(51, 51, 51));
+        total11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total11.setText("Referencia");
+        getContentPane().add(total11);
+        total11.setBounds(210, 320, 70, 20);
+
+        jFormattedTextField8.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField8.setText("0.00");
+        getContentPane().add(jFormattedTextField8);
+        jFormattedTextField8.setBounds(70, 380, 60, 20);
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
+        getContentPane().add(jComboBox4);
+        jComboBox4.setBounds(140, 380, 70, 20);
+        getContentPane().add(jFormattedTextField9);
+        jFormattedTextField9.setBounds(210, 380, 70, 20);
+        getContentPane().add(jDateChooser5);
+        jDateChooser5.setBounds(280, 380, 80, 20);
+
+        jCheckBox1.setText("Confirmado");
+        getContentPane().add(jCheckBox1);
+        jCheckBox1.setBounds(370, 380, 81, 23);
+
+        jCheckBox2.setText("Confirmado");
+        getContentPane().add(jCheckBox2);
+        jCheckBox2.setBounds(370, 340, 81, 23);
+
+        jCheckBox3.setText("Confirmado");
+        getContentPane().add(jCheckBox3);
+        jCheckBox3.setBounds(370, 360, 81, 23);
+
+        jLabel20.setText("Depósito: ");
+        getContentPane().add(jLabel20);
+        jLabel20.setBounds(10, 400, 60, 14);
+
+        jFormattedTextField10.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jFormattedTextField10.setText("0.00");
+        getContentPane().add(jFormattedTextField10);
+        jFormattedTextField10.setBounds(70, 400, 60, 20);
+
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
+        getContentPane().add(jComboBox5);
+        jComboBox5.setBounds(140, 400, 70, 20);
+        getContentPane().add(jFormattedTextField11);
+        jFormattedTextField11.setBounds(210, 400, 70, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1021,9 +1184,33 @@ List<Parametros> parametrosList = null;
     private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JButton editarDatos;
     private javax.swing.JList encontrados1;
+    private javax.swing.JFormattedTextField factura;
     private javax.swing.JPanel frmActualizar;
     private javax.swing.JLabel iva;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox jComboBox2;
+    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JComboBox jComboBox4;
+    private javax.swing.JComboBox jComboBox5;
     private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooser3;
+    private com.toedter.calendar.JDateChooser jDateChooser4;
+    private com.toedter.calendar.JDateChooser jDateChooser5;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JFormattedTextField jFormattedTextField10;
+    private javax.swing.JFormattedTextField jFormattedTextField11;
+    private javax.swing.JFormattedTextField jFormattedTextField2;
+    private javax.swing.JFormattedTextField jFormattedTextField3;
+    private javax.swing.JFormattedTextField jFormattedTextField4;
+    private javax.swing.JFormattedTextField jFormattedTextField5;
+    private javax.swing.JFormattedTextField jFormattedTextField6;
+    private javax.swing.JFormattedTextField jFormattedTextField7;
+    private javax.swing.JFormattedTextField jFormattedTextField8;
+    private javax.swing.JFormattedTextField jFormattedTextField9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1032,8 +1219,13 @@ List<Parametros> parametrosList = null;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1053,10 +1245,14 @@ List<Parametros> parametrosList = null;
     private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JLabel total;
     private javax.swing.JLabel total1;
+    private javax.swing.JLabel total10;
+    private javax.swing.JLabel total11;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
+    private javax.swing.JLabel total6;
     private javax.swing.JLabel total7;
     private javax.swing.JLabel total8;
+    private javax.swing.JLabel total9;
     // End of variables declaration//GEN-END:variables
 
     public Periodos getPeriodoActual() {
