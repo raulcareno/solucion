@@ -14,14 +14,9 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-                <script type="text/javascript">
-                    function handleDrop(event, ui) {
-                        var droppedCar = ui.draggable;
-                        droppedCar.fadeOut('fast');
-                    }
+                <script type="text/javascript" src="funciones.js">
                 </script>
-                <script type="text/javascript" src="/script/funciones.js?ln=js">
-	</script>
+                <h:outputScript library="javascript" name="funciones.js" />
                 <style type="text/css">
                     .slot {
                         width:150px;
@@ -74,6 +69,7 @@
                     }d
 
                 </style>
+            
                 <p:panel id="registro"  style="width: 100%;" header="Registro de Notas">
                     <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
@@ -99,9 +95,22 @@
                     <h:panelGrid border="1"  columns="#{notasBean.cabeceras.size()+2}"  id="datosNotas">
                         <c:forEach items="#{notasBean.listaNotas}" var="item2" >
                             <c:forEach  items="#{item2}" var="item3">
-                                    <h:outputText  rendered="#{item3.texto == true}"   style="color:#{item3.colorEstado};font-weight:bold;"   value="#{item3.nombre}"/>
-                                    <h:inputText value="#{item3.nota}" disabled="#{item3.estado}" size="3" styleClass="textoDerecha" onfocus="this.value=numerosCero(this.value);" onkeypress="return tabular(event,this)" rendered="#{item3.texto == false}" onblur="this.value=numeros(this,#{item3.desde},#{item3.hasta});alert()"  style="background-color:#{item3.color};font-weight:bold;"  />
+                                <h:outputText  rendered="#{item3.texto == true}"   
+                                               style="color:#{item3.colorEstado};font-weight:bold;"   
+                                               value="#{item3.nombre}"/>
                                  
+                                <h:inputText id="id#{item3.id}" value="#{item3.nota}" 
+                                              disabled="#{item3.estado}" 
+                                              size="3" styleClass="textoDerecha" required="true" 
+                                              requiredMessage="INGRESE UN VALOR"
+                                              onfocus="this.value=numerosCero(this.value);" 
+                                              onkeypress="return tabular(event,this)" 
+                                              rendered="#{item3.texto == false}" 
+                                              onblur="this.value=numeros(this,#{item3.desde},#{item3.hasta});"  
+                                              style="background-color:#{item3.color};font-weight:bold;" >
+                                    <p:ajax async="true" process="@this" event="change" />
+                                </h:inputText>
+
 
                             </c:forEach>
                         </c:forEach>
@@ -113,7 +122,7 @@
                         <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  
                             <p:printer target="datos" />  
                         </p:commandButton>  
-                        <p:commandButton  value="Guardar"  id="guardar"  
+                        <p:commandButton update="form" type="submit"  value="Guardar" id="guardar"   
                                           action="#{notasBean.guardar()}"  
                                           icon="ui-icon-disk" title="Guardar"/>  
 

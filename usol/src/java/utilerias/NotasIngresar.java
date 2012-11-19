@@ -10,6 +10,7 @@ package utilerias;
  */
 public class NotasIngresar {
     public Integer matricula;
+    public Integer id;
     public Double nota;
     public Double desde;
     public Double hasta;
@@ -92,6 +93,14 @@ public class NotasIngresar {
 
     public void setColorEstado(String colorEstado) {
         this.colorEstado = colorEstado;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
     
     

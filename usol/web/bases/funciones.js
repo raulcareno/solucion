@@ -105,7 +105,7 @@ function numeros(campo2,Rinicial,Rfinal){
         //alert("ERROR: NO SE PERMITEN CAMPOS VACIOS");
         return 0;
     }else if(campo > Rfinal || campo < Rinicial){
-        alert("El VALOR ingresado esta fuera de los rangos Inicial:"+Rinicial+" y Final: "+Rfinal+"");
+        alert("RANGO DE NOTA INGRESADO ESTÁ FUERA DE RANGOS: ["+Rinicial+" A "+Rfinal+"]");
         campo2.focus();
         return 0;
     }else{

@@ -15,6 +15,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -39,7 +40,7 @@ import utilerias.secuencial;
  * @author Geovanny
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class NotasBean {
 
     /**
@@ -88,8 +89,8 @@ public class NotasBean {
         cargarDataModel();
 
     }
-    List listaNotas = new ArrayList();
-    List cabeceras = new ArrayList();
+    List listaNotas = null;
+    List cabeceras = null;
 
     public String buscarNotas() {
         boolean interno = true;
@@ -125,6 +126,7 @@ public class NotasBean {
         List nativo = adm.queryNativo(q);
         Date fechaActual = new Date();
         DateMidnight actual = new DateMidnight(fechaActual);
+        int xy = 0;
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Object[] vec = (Object[]) itna.next();
             int a = 0;
@@ -190,10 +192,14 @@ public class NotasBean {
                     n.setNota(redondear(object, 2));
                     n.setNombre("");
                     n.setTexto(false);
+                    
                     x++;
                 }
-                if(a>0)
-                notaAnadir.add(n);
+                if(a>0){
+                    n.setId(xy);
+                    xy++;
+                    notaAnadir.add(n);
+                }
             }
             listaNotas.add(notaAnadir);
         }
@@ -206,6 +212,22 @@ public class NotasBean {
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
+         
+        for (Iterator it = listaNotas.iterator(); it.hasNext();) {
+            ArrayList  notasArray = (ArrayList)it.next();
+            for (Iterator it1 = notasArray.iterator(); it1.hasNext();) {
+                NotasIngresar  object1 = (NotasIngresar)it1.next();
+                System.out.println(".."+object1.getNota());
+                
+            }
+            
+            
+        }
+        if(true){
+            listaNotas = null;
+            materiasSeleccionada = new Materias(0);
+            return "";
+        }
 // if (object.getNombre().isEmpty()) {
 //            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
 //            return null;
