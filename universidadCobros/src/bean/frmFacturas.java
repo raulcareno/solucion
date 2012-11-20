@@ -565,32 +565,37 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         valorA.setEditable(false);
         valorA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         valorA.setText("0.00");
+        valorA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        valorA.setMargin(new java.awt.Insets(0, 0, 0, 0));
         valorA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 valorAKeyPressed(evt);
             }
         });
         getContentPane().add(valorA);
-        valorA.setBounds(130, 320, 60, 20);
+        valorA.setBounds(130, 320, 60, 28);
 
         fechaA.setEnabled(false);
+        fechaA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         fechaA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 fechaAKeyPressed(evt);
             }
         });
         getContentPane().add(fechaA);
-        fechaA.setBounds(340, 320, 80, 20);
+        fechaA.setBounds(340, 320, 130, 28);
 
         referenciaA.setEditable(false);
+        referenciaA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         referenciaA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 referenciaAKeyPressed(evt);
             }
         });
         getContentPane().add(referenciaA);
-        referenciaA.setBounds(270, 320, 70, 20);
+        referenciaA.setBounds(270, 320, 70, 28);
 
+        bancoA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         bancoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
         bancoA.setEnabled(false);
         bancoA.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -599,7 +604,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(bancoA);
-        bancoA.setBounds(200, 320, 70, 20);
+        bancoA.setBounds(200, 320, 70, 28);
 
         total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total6.setForeground(new java.awt.Color(51, 51, 51));
@@ -632,17 +637,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         confirmadoA.setText("Confirmado");
         confirmadoA.setEnabled(false);
         getContentPane().add(confirmadoA);
-        confirmadoA.setBounds(430, 320, 81, 23);
+        confirmadoA.setBounds(470, 320, 81, 28);
 
         anadir.setText("Añadir");
         anadir.setEnabled(false);
+        anadir.setMargin(new java.awt.Insets(0, 0, 0, 0));
         anadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 anadirActionPerformed(evt);
             }
         });
         getContentPane().add(anadir);
-        anadir.setBounds(520, 320, 73, 23);
+        anadir.setBounds(553, 320, 60, 28);
 
         total12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total12.setForeground(new java.awt.Color(51, 51, 51));
@@ -658,7 +664,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(tipoA);
-        tipoA.setBounds(30, 320, 100, 20);
+        tipoA.setBounds(30, 320, 100, 28);
 
         formasdePago.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -686,7 +692,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(formasdePago);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(30, 350, 560, 90);
+        jScrollPane2.setBounds(20, 350, 580, 90);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1204,6 +1210,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         anadir.setEnabled(false);
         bancoA.setEnabled(false);
         fechaA.setEnabled(false);
+        confirmadoA.setEnabled(false);
+        
+         valorA.setText("0.00");
+        referenciaA.setText("");
+        anadir.setEnabled(false);
+        bancoA.setSelectedIndex(0);
+        fechaA.setDate(new Date());
         confirmadoA.setEnabled(false);
         tipoA.setSelectedIndex(0); 
         tipoA.requestFocusInWindow();
