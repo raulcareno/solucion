@@ -138,6 +138,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tipoA = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         formasdePago = new javax.swing.JTable();
+        total2 = new javax.swing.JLabel();
+        total3 = new javax.swing.JLabel();
+        total13 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -335,7 +338,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         btnEliminar.setBounds(240, 10, 105, 30);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(130, 440, 480, 50);
+        jPanel1.setBounds(130, 480, 480, 50);
 
         jDateChooser1.setDate(new Date());
         getContentPane().add(jDateChooser1);
@@ -447,9 +450,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total4.setForeground(new java.awt.Color(51, 51, 51));
         total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total4.setText("Fecha");
+        total4.setText("Fecha Cheque");
         getContentPane().add(total4);
-        total4.setBounds(340, 300, 70, 20);
+        total4.setBounds(340, 300, 110, 20);
 
         total5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total5.setForeground(new java.awt.Color(51, 51, 51));
@@ -562,9 +565,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(factura);
         factura.setBounds(470, 20, 150, 25);
 
-        valorA.setEditable(false);
         valorA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         valorA.setText("0.00");
+        valorA.setEnabled(false);
         valorA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         valorA.setMargin(new java.awt.Insets(0, 0, 0, 0));
         valorA.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -585,7 +588,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(fechaA);
         fechaA.setBounds(340, 320, 130, 28);
 
-        referenciaA.setEditable(false);
+        referenciaA.setEnabled(false);
         referenciaA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         referenciaA.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -657,7 +660,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(total12);
         total12.setBounds(130, 300, 60, 20);
 
-        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
+        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Descuento", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
         tipoA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 tipoAItemStateChanged(evt);
@@ -694,6 +697,27 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jScrollPane2);
         jScrollPane2.setBounds(20, 350, 580, 90);
 
+        total2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        total2.setForeground(new java.awt.Color(0, 51, 153));
+        total2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total2.setText("00.00");
+        getContentPane().add(total2);
+        total2.setBounds(90, 440, 90, 30);
+
+        total3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        total3.setForeground(new java.awt.Color(51, 51, 51));
+        total3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total3.setText("Dstos.:");
+        getContentPane().add(total3);
+        total3.setBounds(200, 440, 60, 30);
+
+        total13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        total13.setForeground(new java.awt.Color(51, 51, 51));
+        total13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total13.setText("TOTAL:");
+        getContentPane().add(total13);
+        total13.setBounds(20, 440, 60, 30);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -707,7 +731,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.btnNuevo.setLabel("Nuevo");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
             this.btnModificar.setLabel("Modificar");
-//            this.txtNombre.setEditable(false);
+//            this.txtNombre.setEnabled(false);
         }
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
@@ -716,14 +740,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 // TODO add your handling code here:
 
         if (grabar == false) {
-//            this.txtNombre.setEditable(true);
-//            this.unidadContable.setEditable(true);
-//            this.codigoContable.setEditable(true);
-
-
-//            this.cmbCarreras.setEnabled(true);
-
-
+            DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
+            dtm.getDataVector().removeAllElements();
+            formasdePago.setModel(dtm); 
+            formasdePago.repaint();
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
             this.btnNuevo.setLabel("Guardar");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
@@ -752,7 +772,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.btnModificar.setLabel("Modificar");
             grabar = false;
             modificar = false;
-//            this.txtNombre.setEditable(false);
+//            this.txtNombre.setEnabled(false);
 //            this.cmbCarreras.setEnabled(false);
 
 
@@ -1149,14 +1169,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void tipoAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoAItemStateChanged
         // TODO add your handling code here:
         if (tipoA.getSelectedIndex() > 0) {
-            if (tipoA.getSelectedItem().toString().contains("Efec")) {
-                valorA.setEditable(true);
-                referenciaA.setEditable(true);
+            if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Desc")) {
+                valorA.setEnabled(true);
+                if(tipoA.getSelectedItem().toString().contains("Desc"))
+                    referenciaA.setEnabled(true);
                 anadir.setEnabled(true);
+                
                 valorA.requestFocusInWindow();
+                valorA.selectAll();
             } else {
-                valorA.setEditable(true);
-                referenciaA.setEditable(true);
+                valorA.setEnabled(true);
+                referenciaA.setEnabled(true);
                 bancoA.setEnabled(true);
                 fechaA.setEnabled(true);
                 anadir.setEnabled(true);
@@ -1164,6 +1187,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     confirmadoA.setEnabled(true);
                 }
                 valorA.requestFocusInWindow();
+                valorA.selectAll();
             }
         }
     }//GEN-LAST:event_tipoAItemStateChanged
@@ -1173,6 +1197,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             if (tipoA.getSelectedItem().toString().contains("Efe")) {
                 anadir.requestFocusInWindow();
+            } else  if (tipoA.getSelectedItem().toString().contains("Desc")) {
+                referenciaA.requestFocusInWindow();
             } else {
                 bancoA.requestFocusInWindow();
             }
@@ -1189,12 +1215,38 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_fechaAKeyPressed
-
+private void sumarPagos(){
+    
+        int filas = formasdePago.getRowCount();
+        BigDecimal totalCalc = new BigDecimal(0);
+        BigDecimal descuentos =  new BigDecimal(0);
+        for (int i = 0; i < filas; i++) {
+            if(formasdePago.getValueAt(i,0).toString().contains("Desc")){
+                descuentos = descuentos.add((BigDecimal) formasdePago.getValueAt(i, 1));
+            }else{
+                totalCalc = totalCalc.add((BigDecimal) formasdePago.getValueAt(i, 1));
+            }
+            
+        }
+        
+}
+    
     private void anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirActionPerformed
         // TODO add your handling code here:
 
         DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
         //dtm.getDataVector().removeAllElements();
+        if(valorA.getText().isEmpty()){
+            valorA.requestFocusInWindow();
+            valorA.selectAll();
+            return;
+        }
+        if(new Double(valorA.getText()) <=0.0){
+            valorA.requestFocusInWindow();
+            valorA.selectAll();
+            return;
+        }
+        
         Object[] obj = new Object[10];
         obj[0] = tipoA.getSelectedItem().toString();
         obj[1] = new Double(valorA.getText());
@@ -1205,8 +1257,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         dtm.addRow(obj);
         formasdePago.setModel(dtm);
 
-        valorA.setEditable(false);
-        referenciaA.setEditable(false);
+        valorA.setEnabled(false);
+        referenciaA.setEnabled(false);
         anadir.setEnabled(false);
         bancoA.setEnabled(false);
         fechaA.setEnabled(false);
@@ -1235,10 +1287,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void referenciaAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_referenciaAKeyPressed
         // TODO add your handling code here:
           if (evt.getKeyCode() == evt.VK_ENTER) {
-           
+            if (tipoA.getSelectedItem().toString().contains("Desc")) {
+                anadir.requestFocusInWindow();
+            } else{
                 fechaA.requestFocusInWindow();
-             
-        }
+                fechaA.requestFocus();
+            }
+        } 
     }//GEN-LAST:event_referenciaAKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1306,6 +1361,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel total10;
     private javax.swing.JLabel total11;
     private javax.swing.JLabel total12;
+    private javax.swing.JLabel total13;
+    private javax.swing.JLabel total2;
+    private javax.swing.JLabel total3;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
     private javax.swing.JLabel total6;
