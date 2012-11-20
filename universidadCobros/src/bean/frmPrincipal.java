@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Institucion;
+import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Periodos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
@@ -26,6 +28,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     Administrador adm;
     Empleados usuarioActual;
     Periodos periodoActual;
+    Institucion inst;
 
     /**
      * Creates new form frmPrincipal
@@ -560,6 +563,9 @@ public class frmPrincipal extends javax.swing.JFrame {
                         ((frmFacturas) component).setEmpleadoActual(usuarioActual);
                         ((frmFacturas) component).setPeriodoActual(periodoActual);
                         ((frmFacturas) component).setVisible(true);
+                        ((frmFacturas) component).inst = inst;
+                        ((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
+                        ((frmFacturas) component).actualMatricula = new Matriculas();
                         return;
                     }
                 }
@@ -571,6 +577,8 @@ public class frmPrincipal extends javax.swing.JFrame {
             usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
+            usu.inst = inst;
+            usu.actualMatricula = new Matriculas();
             usu.setName("formaFacturas");
             contenedor.add(usu);
 
@@ -657,6 +665,11 @@ public class frmPrincipal extends javax.swing.JFrame {
             Cobros.setEnabled(true);
             usuario1.setEnabled(true);
             usuarioActual = emp;
+            List<Institucion> instituciones = adm.query("Select o from Institucion as o ");
+            for (Iterator<Institucion> it = instituciones.iterator(); it.hasNext();) {
+                 inst = it.next();
+            }
+            
 
         } else {
 

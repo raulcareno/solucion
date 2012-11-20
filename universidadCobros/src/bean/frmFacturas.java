@@ -18,6 +18,8 @@ import jcinform.persistencia.Bancos;
 import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
+import jcinform.persistencia.Facturas;
+import jcinform.persistencia.Institucion;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Parametros;
@@ -40,6 +42,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     public Periodos periodoActual;
     public Empleados empleadoActual;
     List<Parametros> parametrosList = null;
+     public Institucion inst;
+    public Matriculas actualMatricula;
 
     /**
      * Creates new form frmRubros
@@ -326,6 +330,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif"))); // NOI18N
         btnModificar.setText("Modificar");
+        btnModificar.setEnabled(false);
         btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -347,7 +352,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         btnSalir.setBounds(350, 10, 105, 30);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
-        btnEliminar.setText("Eliminar");
+        btnEliminar.setText("Anular");
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -582,6 +587,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel4.setBounds(410, 20, 60, 14);
 
         factura.setText("FC0000000");
+        factura.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                facturaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                facturaFocusLost(evt);
+            }
+        });
         getContentPane().add(factura);
         factura.setBounds(470, 20, 150, 25);
 
@@ -779,48 +792,125 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
-
+public void llenarFactura(){
+         inst = (Institucion)adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
+        Long valor = Long.parseLong(inst.getFactura1()) + 1;
+        String asFac = String.format("%07d", valor);
+        this.factura.setText("" + asFac);
+                     
+}
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
 // TODO add your handling code here:
 
         if (grabar == false) {
+            EstudianteSeleccionado = new general("0", "");
             DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
             dtm.getDataVector().removeAllElements();
             formasdePago.setModel(dtm);
+             dtm = (DefaultTableModel) tFactura.getModel();
+            dtm.getDataVector().removeAllElements();
+            tFactura.setModel(dtm);
             formasdePago.repaint();
+            tFactura.repaint();
+            chkTodo.setSelected(true);
+            chkNuevo.setSelected(true);
+            codigoPariente.setText("0"); 
+            ruc.setText(".");
+            nombre.setText(".");
+            direccion.setText(".");
+            telefono.setText(".");
+            carrera.setText("."); 
+            llenarFactura();
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
             this.btnNuevo.setLabel("Guardar");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
             this.btnModificar.setLabel("Cancelar");
+            this.btnModificar.setEnabled(true);
 
             grabar = true;
             modificar = false;
         } else if (grabar == true) {
+                     
+                Facturas cab = new Facturas();
+//                secuencial sec = new secuencial();
+                inst = (Institucion)adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
+ 
+ 
+                    //FACTURAS
+                         Date fecha = adm.Date();
+                        cab.setFecha(fecha);
+                        cab.setFechaEmision(fecha);
+                        cab.setFechaVence(fecha);
+                        cab.setIdMatriculas((Matriculas) txtEstudiante.getSelectedItem());
+                        cab.setFacTotal(Double.parseDouble(this.txtTotalFacturas.getText()));
+                        cab.setFacEstado(true);
+                        String sucursal = (String) this.cmbSucursal.getSelectedItem();
+                        cab.setFacNumero(sucursal + this.noFactura.getText());
+                        //cab.setFacNumero(this.noFactura.getText());
+                        cab.setFacObservacion(this.observacion.getText());
+                        bs.guardar(cab);
+                        //ACTUALIZAR DOCUMENTO FACTURA
+                        //ACTUALIZAR DOCUMENTO FACTURA
+                        if (cmbSucursal.getSelectedIndex() == 0) {
+                            documento.setFactura(noFactura.getText().trim());
+                        } else if (cmbSucursal.getSelectedIndex() == 1) {
+                            documento.setFactura1(noFactura.getText().trim());
+                        } else if (cmbSucursal.getSelectedIndex() == 2) {
+                            documento.setFactura2(noFactura.getText().trim());
+                        }
+                        bs.actualizar(documento);
 
-            RubrosMatriculaPeriodo rub = new RubrosMatriculaPeriodo();
 
-            rub.setIdPeriodos(periodoActual);
+                        for (int i = 0; i < this.tFactura.getRowCount(); i++) {
+                            if ((Boolean) tFactura.getValueAt(i, 4) == true) {
+                                String mess = (String) tFactura.getValueAt(i, 2);
+                                Detallefactura det = new Detallefactura();
+//                                        DetallefacturaPK pks = new DetallefacturaPK();
+                                Integer anio = (Integer) tFactura.getValueAt(i, 3);
+//                                        pks.setDetCodigo((i+1)+"");
+                                det.setDetCodigo(sec.generarClave());
+                                det.setFacNumero(cab);
+//                                        det.setDetallefacturaPK(pks);
+                                det.setDetCantidad(1);
+                                det.setDetMes(val.mesint(mess.trim()));
+                                det.setDetAnio(anio);
+                                det.setDetDescripcion(((Productos) tFactura.getValueAt(i, 1)).getDescripcion());
+                                det.setProducto((Productos) tFactura.getValueAt(i, 1));
+                                det.setDetPrecio((Double) tFactura.getValueAt(i, 5));
+                                det.setBeca((Double) tFactura.getValueAt(i, 6));
+                                det.setDescuento((Double) tFactura.getValueAt(i, 7));
+                                det.setDetTotal((Double) tFactura.getValueAt(i, 8));
+                                det.setAsignado((Integer) tFactura.getValueAt(i, 0));
 
-//            if (codigoRubro.getText().isEmpty()) {
-//                rub.setIdRubrosMatriculaPeriodo(adm.getNuevaClave("RubrosMatriculaPeriodo", "idRubrosMatriculaPeriodo"));
-//                adm.guardar(rub);
-//            } else {
-//                rub.setIdRubrosMatriculaPeriodo(new Integer(codigoRubro.getText()));
-//                adm.actualizar(rub);
-//            }
-//
-
-            this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif")));
-            this.btnNuevo.setLabel("Nuevo");
-            this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
-            this.btnModificar.setLabel("Modificar");
-            grabar = false;
-            modificar = false;
-//            this.txtNombre.setEnabled(false);
-//            this.cmbCarreras.setEnabled(false);
+                                bs.guardar(det);
+                                Double valorPagado = (Double) tFactura.getValueAt(i, 5);
+                                String feString = anio + "-" + val.mesint(mess.trim()) + "-" + 01;
+                                Matriculas matricula = (Matriculas) txtEstudiante.getSelectedItem();
+                                List asignado = bs.query("SELECT o FROM Asignados AS o "
+                                        + "WHERE o.asigCodigo ='" + ((Integer) tFactura.getValueAt(i, 0)) + "' ");
 
 
-        }
+                                Asignados rubroA = (Asignados) asignado.get(0);
+//                                        rubroA.setActivo(false);
+                                rubroA.setEstado(false);
+                                bs.actualizar(rubroA);
+
+                            }
+                        }
+                        //FACTURAS
+                     
+                
+                }
+
+                grabar = false;
+                modificar = false;
+                this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif")));
+                this.btnNuevo.setLabel("Nuevo");
+                this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
+                this.btnModificar.setLabel("Modificar");
+                this.btnModificar.setEnabled(false); 
+                grabar = false;
+                modificar = false;
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -849,6 +939,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.btnNuevo.setLabel("Nuevo");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
             this.btnModificar.setLabel("Modificar");
+            this.btnModificar.setEnabled(false); 
 
         }
 
@@ -940,7 +1031,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         return false;
     }
 Estudiantes es =null;
+public general EstudianteSeleccionado = null;
     private void cargarRubros(general gen) {
+        if(gen.getCodigoString().equals("0")){
+            return;
+        }
         es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
         Parientes factura = new Parientes();
         if (es.getIdParientes().getTipoRepresentante().equals("F")) {
@@ -971,7 +1066,7 @@ Estudiantes es =null;
         }
         if (matriculaList.size() > 0) {
 
-            Matriculas actual = matriculaList.get(0);
+             actualMatricula = matriculaList.get(0);
             carrera.setText("" + actual.getIdCarreras().getNombre() + " " + actual.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actual.getIdCarreras().getIdJornada().getNombre() + " " + " " + actual.getIdCarreras().getIdModalidad().getNombre() + " ");
             categoriaSocial.setText("" + actual.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
@@ -1049,8 +1144,8 @@ Estudiantes es =null;
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             this.panelencontrados1.setVisible(false);
-            general fac = (general) this.encontrados1.getSelectedValue();
-            cargarRubros(fac);
+            EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
+            cargarRubros(EstudianteSeleccionado);
             buscarApellido.setText("");
         }
     }//GEN-LAST:event_encontrados1MouseClicked
@@ -1059,8 +1154,8 @@ Estudiantes es =null;
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             this.panelencontrados1.setVisible(false);
-            general fac = (general) this.encontrados1.getSelectedValue();
-            cargarRubros(fac);
+            EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
+            cargarRubros(EstudianteSeleccionado);
             buscarApellido.setText("");
 
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
@@ -1186,32 +1281,31 @@ Estudiantes es =null;
 
     private void chkTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTodoActionPerformed
         // TODO add your handling code here:
-        general fac = (general) this.encontrados1.getSelectedValue();
-        cargarRubros(fac);
+        //general fac = (general) this.encontrados1.getSelectedValue();
+        cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkTodoActionPerformed
 
     private void chkMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatriculaActionPerformed
         // TODO add your handling code here:
-        general fac = (general) this.encontrados1.getSelectedValue();
-        cargarRubros(fac);
+        cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkMatriculaActionPerformed
 
     private void chkCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditosActionPerformed
         // TODO add your handling code here:
-        general fac = (general) this.encontrados1.getSelectedValue();
-        cargarRubros(fac);
+        //general fac = (general) this.encontrados1.getSelectedValue();
+        cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkCreditosActionPerformed
 
     private void chkNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNuevoActionPerformed
         // TODO add your handling code here:
-        general fac = (general) this.encontrados1.getSelectedValue();
-        cargarRubros(fac);
+        
+        cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkNuevoActionPerformed
 
     private void chkAntiguoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAntiguoActionPerformed
         // TODO add your handling code here:
-        general fac = (general) this.encontrados1.getSelectedValue();
-        cargarRubros(fac);
+         
+        cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkAntiguoActionPerformed
 
     private void tipoAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoAItemStateChanged
@@ -1377,6 +1471,30 @@ Estudiantes es =null;
             this.sumar();
         }
     }//GEN-LAST:event_formasdePagoKeyPressed
+
+    private void facturaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_facturaFocusGained
+        // TODO add your handling code here:
+          factura.selectAll();
+    }//GEN-LAST:event_facturaFocusGained
+
+    private void facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_facturaFocusLost
+        // TODO add your handling code here:
+    String codigo = factura.getText() + "";
+    while (codigo.length() < 7) {
+        codigo = "0" + codigo;
+    }
+    factura.setText("" + codigo);
+
+    String abuscar = "" + inst.getSerie1() + "" + factura.getText();
+    Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
+    if (cabe != null) {
+        JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
+        factura.setText("");
+        factura.requestFocusInWindow();
+    }
+        
+    }//GEN-LAST:event_facturaFocusLost
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
