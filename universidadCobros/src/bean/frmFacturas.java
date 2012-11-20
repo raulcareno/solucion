@@ -14,6 +14,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
+import jcinform.persistencia.Bancos;
 import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
@@ -56,7 +57,22 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         frmActualizar.setVisible(false);
         panelencontrados1.setVisible(false);
         codigoPariente.setVisible(false);
-
+        cargarBancos();
+    }
+    private void cargarBancos(){
+        bancoA.removeAllItems();
+        
+        general gen = new general(-1, "Seleccione..");
+        bancoA.addItem(gen);
+        List<Bancos> bancosList = adm.query("Select o from Bancos as o ");
+         for (Iterator<Bancos> it = bancosList.iterator(); it.hasNext();) {
+            Bancos bancos = it.next();
+             gen = new general(bancos.getIdBancos(), bancos.getNombre());
+            bancoA.addItem(gen);
+            
+        }
+         bancosList = null;
+        
     }
 
     /**
@@ -116,7 +132,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         categoriaSocial = new javax.swing.JLabel();
-        descuento = new javax.swing.JLabel();
+        descuento2 = new javax.swing.JLabel();
         total7 = new javax.swing.JLabel();
         total8 = new javax.swing.JLabel();
         chkNuevo = new javax.swing.JRadioButton();
@@ -138,9 +154,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tipoA = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         formasdePago = new javax.swing.JTable();
-        total2 = new javax.swing.JLabel();
+        totalCobros = new javax.swing.JLabel();
         total3 = new javax.swing.JLabel();
         total13 = new javax.swing.JLabel();
+        descuento = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -512,12 +529,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(categoriaSocial);
         categoriaSocial.setBounds(90, 120, 20, 20);
 
-        descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        descuento.setForeground(new java.awt.Color(204, 51, 0));
-        descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        descuento.setText("00.00");
-        getContentPane().add(descuento);
-        descuento.setBounds(230, 270, 70, 30);
+        descuento2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        descuento2.setForeground(new java.awt.Color(204, 51, 0));
+        descuento2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        descuento2.setText("00.00");
+        getContentPane().add(descuento2);
+        descuento2.setBounds(90, 440, 70, 30);
 
         total7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total7.setForeground(new java.awt.Color(51, 51, 51));
@@ -642,7 +659,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(confirmadoA);
         confirmadoA.setBounds(470, 320, 81, 28);
 
-        anadir.setText("Añadir");
+        anadir.setText(">>");
+        anadir.setToolTipText("");
         anadir.setEnabled(false);
         anadir.setMargin(new java.awt.Insets(0, 0, 0, 0));
         anadir.addActionListener(new java.awt.event.ActionListener() {
@@ -651,7 +669,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(anadir);
-        anadir.setBounds(553, 320, 60, 28);
+        anadir.setBounds(553, 320, 50, 28);
 
         total12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total12.setForeground(new java.awt.Color(51, 51, 51));
@@ -674,14 +692,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Tipo", "Valor", "Banco", "Referencia", "Fecha", "Confirmado", "Acción"
+                "Tipo", "Valor", "Banco", "Referencia", "Fecha", "Confirmado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.String.class, java.util.Date.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true, true
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -697,26 +715,33 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jScrollPane2);
         jScrollPane2.setBounds(20, 350, 580, 90);
 
-        total2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        total2.setForeground(new java.awt.Color(0, 51, 153));
-        total2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total2.setText("00.00");
-        getContentPane().add(total2);
-        total2.setBounds(90, 440, 90, 30);
+        totalCobros.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        totalCobros.setForeground(new java.awt.Color(0, 51, 153));
+        totalCobros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        totalCobros.setText("00.00");
+        getContentPane().add(totalCobros);
+        totalCobros.setBounds(260, 440, 90, 30);
 
         total3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total3.setForeground(new java.awt.Color(51, 51, 51));
         total3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total3.setText("Dstos.:");
         getContentPane().add(total3);
-        total3.setBounds(200, 440, 60, 30);
+        total3.setBounds(20, 440, 60, 30);
 
         total13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total13.setForeground(new java.awt.Color(51, 51, 51));
         total13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total13.setText("TOTAL:");
+        total13.setText("A COBRAR:");
         getContentPane().add(total13);
-        total13.setBounds(20, 440, 60, 30);
+        total13.setBounds(180, 440, 80, 30);
+
+        descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        descuento.setForeground(new java.awt.Color(204, 51, 0));
+        descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        descuento.setText("00.00");
+        getContentPane().add(descuento);
+        descuento.setBounds(230, 270, 70, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -832,7 +857,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             iva.setText(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(totalCalc).setScale(2, RoundingMode.HALF_UP) + "");
             total5.setText("IVA " + valorIva + "%:");
             //BigDecimal subtotalLocal = new BigDecimal(subtotal.getText());
-            BigDecimal totalLocal = totalCalc.subtract(new BigDecimal(descuento.getText())).multiply(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)).add(totalCalc);
+            BigDecimal totalLocal = totalCalc.subtract(new BigDecimal(descuento2.getText())).multiply(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)).add(totalCalc);
             total.setText(totalLocal.setScale(2, RoundingMode.HALF_UP) + "");
 //            fac.setDescuento(new BigDecimal(0));
 //                fac.setBaseiva(valor.subtract(object.getDescuento()));
@@ -1218,17 +1243,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 private void sumarPagos(){
     
         int filas = formasdePago.getRowCount();
-        BigDecimal totalCalc = new BigDecimal(0);
-        BigDecimal descuentos =  new BigDecimal(0);
+        Double totalCalc = 0.0;
+        Double descuentos =  0.0;
         for (int i = 0; i < filas; i++) {
             if(formasdePago.getValueAt(i,0).toString().contains("Desc")){
-                descuentos = descuentos.add((BigDecimal) formasdePago.getValueAt(i, 1));
+                descuentos += ((Double) formasdePago.getValueAt(i, 1));
             }else{
-                totalCalc = totalCalc.add((BigDecimal) formasdePago.getValueAt(i, 1));
+                totalCalc +=((Double) formasdePago.getValueAt(i, 1));;
             }
-            
         }
-        
+        descuento2.setText(descuentos+"");
+        totalCobros.setText(""+totalCalc);
 }
     
     private void anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirActionPerformed
@@ -1246,6 +1271,26 @@ private void sumarPagos(){
             valorA.selectAll();
             return;
         }
+        if(!tipoA.getSelectedItem().toString().contains("Efe") ){
+             if(bancoA.getSelectedIndex() == 0){
+                bancoA.requestFocus(true);
+                bancoA.requestFocusInWindow();
+                return;
+            }
+            if(referenciaA.getText().isEmpty()){
+                referenciaA.requestFocusInWindow();
+                referenciaA.selectAll();
+                return;
+            }
+       
+            if(fechaA.getDate() == null){
+                fechaA.requestFocus(true);
+                fechaA.requestFocusInWindow();
+                return;
+            }
+             
+        }
+        
         
         Object[] obj = new Object[10];
         obj[0] = tipoA.getSelectedItem().toString();
@@ -1272,7 +1317,7 @@ private void sumarPagos(){
         confirmadoA.setEnabled(false);
         tipoA.setSelectedIndex(0); 
         tipoA.requestFocusInWindow();
-
+sumarPagos();
     }//GEN-LAST:event_anadirActionPerformed
 
     private void bancoAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bancoAKeyPressed
@@ -1317,6 +1362,7 @@ private void sumarPagos(){
     private javax.swing.JFormattedTextField codigoPariente;
     private javax.swing.JCheckBox confirmadoA;
     private javax.swing.JLabel descuento;
+    private javax.swing.JLabel descuento2;
     private javax.swing.JLabel direccion;
     private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JButton editarDatos;
@@ -1362,7 +1408,6 @@ private void sumarPagos(){
     private javax.swing.JLabel total11;
     private javax.swing.JLabel total12;
     private javax.swing.JLabel total13;
-    private javax.swing.JLabel total2;
     private javax.swing.JLabel total3;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
@@ -1370,6 +1415,7 @@ private void sumarPagos(){
     private javax.swing.JLabel total7;
     private javax.swing.JLabel total8;
     private javax.swing.JLabel total9;
+    private javax.swing.JLabel totalCobros;
     private javax.swing.JFormattedTextField valorA;
     // End of variables declaration//GEN-END:variables
 
