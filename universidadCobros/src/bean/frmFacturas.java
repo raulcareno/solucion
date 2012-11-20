@@ -59,20 +59,21 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         codigoPariente.setVisible(false);
         cargarBancos();
     }
-    private void cargarBancos(){
+
+    private void cargarBancos() {
         bancoA.removeAllItems();
-        
+
         general gen = new general(-1, "Seleccione..");
         bancoA.addItem(gen);
         List<Bancos> bancosList = adm.query("Select o from Bancos as o ");
-         for (Iterator<Bancos> it = bancosList.iterator(); it.hasNext();) {
+        for (Iterator<Bancos> it = bancosList.iterator(); it.hasNext();) {
             Bancos bancos = it.next();
-             gen = new general(bancos.getIdBancos(), bancos.getNombre());
+            gen = new general(bancos.getIdBancos(), bancos.getNombre());
             bancoA.addItem(gen);
-            
+
         }
-         bancosList = null;
-        
+        bancosList = null;
+
     }
 
     /**
@@ -158,6 +159,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total3 = new javax.swing.JLabel();
         total13 = new javax.swing.JLabel();
         descuento = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        total14 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -467,9 +470,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total4.setForeground(new java.awt.Color(51, 51, 51));
         total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total4.setText("Fecha Cheque");
+        total4.setText("Confirmado");
         getContentPane().add(total4);
-        total4.setBounds(340, 300, 110, 20);
+        total4.setBounds(440, 300, 80, 20);
 
         total5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total5.setForeground(new java.awt.Color(51, 51, 51));
@@ -654,12 +657,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(total11);
         total11.setBounds(270, 300, 70, 20);
 
-        confirmadoA.setText("Confirmado");
         confirmadoA.setEnabled(false);
         getContentPane().add(confirmadoA);
-        confirmadoA.setBounds(470, 320, 81, 28);
+        confirmadoA.setBounds(470, 320, 30, 28);
 
-        anadir.setText(">>");
+        anadir.setText("Añadir");
         anadir.setToolTipText("");
         anadir.setEnabled(false);
         anadir.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -669,7 +671,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(anadir);
-        anadir.setBounds(553, 320, 50, 28);
+        anadir.setBounds(513, 320, 90, 28);
 
         total12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total12.setForeground(new java.awt.Color(51, 51, 51));
@@ -679,6 +681,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total12.setBounds(130, 300, 60, 20);
 
         tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Descuento", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
+        tipoA.setEnabled(false);
         tipoA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 tipoAItemStateChanged(evt);
@@ -708,6 +711,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        formasdePago.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formasdePagoKeyPressed(evt);
             }
         });
         jScrollPane2.setViewportView(formasdePago);
@@ -743,6 +751,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(descuento);
         descuento.setBounds(230, 270, 70, 30);
 
+        jLabel8.setText("Presione SUPR para quitar");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(420, 440, 180, 14);
+
+        total14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total14.setForeground(new java.awt.Color(51, 51, 51));
+        total14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total14.setText("Fecha Cheque");
+        getContentPane().add(total14);
+        total14.setBounds(340, 300, 110, 20);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -767,7 +786,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (grabar == false) {
             DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
             dtm.getDataVector().removeAllElements();
-            formasdePago.setModel(dtm); 
+            formasdePago.setModel(dtm);
             formasdePago.repaint();
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
             this.btnNuevo.setLabel("Guardar");
@@ -847,11 +866,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tFacturaMouseClicked
     private void sumar() {
         int filas = tFactura.getRowCount();
+        tipoA.setEnabled(false);
         BigDecimal totalCalc = new BigDecimal(0);
         for (int i = 0; i < filas; i++) {
             totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 3));
         }
         this.subtotal.setText(totalCalc + "");
+        if (totalCalc.doubleValue() > 0) {
+            tipoA.setEnabled(true);
+        }
         BigDecimal valorIva = regresaVariableParametrosDecimal("IVA", parametrosList);
         if (valorIva.doubleValue() > 0) {
             iva.setText(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(totalCalc).setScale(2, RoundingMode.HALF_UP) + "");
@@ -916,9 +939,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         return false;
     }
-
+Estudiantes es =null;
     private void cargarRubros(general gen) {
-        Estudiantes es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
+        es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
         Parientes factura = new Parientes();
         if (es.getIdParientes().getTipoRepresentante().equals("F")) {
             factura = es.getIdParientes();
@@ -1196,10 +1219,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (tipoA.getSelectedIndex() > 0) {
             if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Desc")) {
                 valorA.setEnabled(true);
-                if(tipoA.getSelectedItem().toString().contains("Desc"))
+                if (tipoA.getSelectedItem().toString().contains("Desc")) {
                     referenciaA.setEnabled(true);
+                }
                 anadir.setEnabled(true);
-                
+
                 valorA.requestFocusInWindow();
                 valorA.selectAll();
             } else {
@@ -1222,7 +1246,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             if (tipoA.getSelectedItem().toString().contains("Efe")) {
                 anadir.requestFocusInWindow();
-            } else  if (tipoA.getSelectedItem().toString().contains("Desc")) {
+            } else if (tipoA.getSelectedItem().toString().contains("Desc")) {
                 referenciaA.requestFocusInWindow();
             } else {
                 bancoA.requestFocusInWindow();
@@ -1240,62 +1264,63 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_fechaAKeyPressed
-private void sumarPagos(){
-    
+    private void sumarPagos() {
+
         int filas = formasdePago.getRowCount();
         Double totalCalc = 0.0;
-        Double descuentos =  0.0;
+        Double descuentos = 0.0;
         for (int i = 0; i < filas; i++) {
-            if(formasdePago.getValueAt(i,0).toString().contains("Desc")){
+            if (formasdePago.getValueAt(i, 0).toString().contains("Desc")) {
                 descuentos += ((Double) formasdePago.getValueAt(i, 1));
-            }else{
-                totalCalc +=((Double) formasdePago.getValueAt(i, 1));;
+            } else {
+                totalCalc += ((Double) formasdePago.getValueAt(i, 1));;
             }
         }
-        descuento2.setText(descuentos+"");
-        totalCobros.setText(""+totalCalc);
-}
-    
+        descuento2.setText(descuentos + "");
+        totalCobros.setText("" + totalCalc);
+    }
+
     private void anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirActionPerformed
         // TODO add your handling code here:
 
         DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
         //dtm.getDataVector().removeAllElements();
-        if(valorA.getText().isEmpty()){
+        if (valorA.getText().isEmpty()) {
             valorA.requestFocusInWindow();
             valorA.selectAll();
             return;
         }
-        if(new Double(valorA.getText()) <=0.0){
+        if (new Double(valorA.getText()) <= 0.0) {
             valorA.requestFocusInWindow();
             valorA.selectAll();
             return;
         }
-        if(!tipoA.getSelectedItem().toString().contains("Efe") ){
-             if(bancoA.getSelectedIndex() == 0){
-                bancoA.requestFocus(true);
-                bancoA.requestFocusInWindow();
-                return;
-            }
-            if(referenciaA.getText().isEmpty()){
+        if (!tipoA.getSelectedItem().toString().contains("Efe")) {
+
+            if (referenciaA.getText().isEmpty()) {
                 referenciaA.requestFocusInWindow();
                 referenciaA.selectAll();
                 return;
             }
-       
-            if(fechaA.getDate() == null){
-                fechaA.requestFocus(true);
-                fechaA.requestFocusInWindow();
-                return;
+            if (!tipoA.getSelectedItem().toString().contains("Desc")) {
+                if (bancoA.getSelectedIndex() == 0) {
+                    bancoA.requestFocus(true);
+                    bancoA.requestFocusInWindow();
+                    return;
+                }
+                if (fechaA.getDate() == null) {
+                    fechaA.requestFocus(true);
+                    fechaA.requestFocusInWindow();
+                    return;
+                }
             }
-             
         }
-        
-        
+
+
         Object[] obj = new Object[10];
         obj[0] = tipoA.getSelectedItem().toString();
         obj[1] = new Double(valorA.getText());
-        obj[2] = bancoA.getSelectedItem();
+        obj[2] = (bancoA.getSelectedIndex()>0?bancoA.getSelectedItem():null);
         obj[3] = referenciaA.getText();
         obj[4] = fechaA.getDate();
         obj[5] = confirmadoA.isSelected();
@@ -1308,39 +1333,50 @@ private void sumarPagos(){
         bancoA.setEnabled(false);
         fechaA.setEnabled(false);
         confirmadoA.setEnabled(false);
-        
-         valorA.setText("0.00");
+
+        valorA.setText("0.00");
         referenciaA.setText("");
         anadir.setEnabled(false);
         bancoA.setSelectedIndex(0);
         fechaA.setDate(new Date());
         confirmadoA.setEnabled(false);
-        tipoA.setSelectedIndex(0); 
+        tipoA.setSelectedIndex(0);
         tipoA.requestFocusInWindow();
-sumarPagos();
+        sumarPagos();
     }//GEN-LAST:event_anadirActionPerformed
 
     private void bancoAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bancoAKeyPressed
         // TODO add your handling code here:
-           if (evt.getKeyCode() == evt.VK_ENTER) {
-           
-                referenciaA.requestFocusInWindow();
-             
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+
+            referenciaA.requestFocusInWindow();
+
         }
     }//GEN-LAST:event_bancoAKeyPressed
 
     private void referenciaAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_referenciaAKeyPressed
         // TODO add your handling code here:
-          if (evt.getKeyCode() == evt.VK_ENTER) {
+        if (evt.getKeyCode() == evt.VK_ENTER) {
             if (tipoA.getSelectedItem().toString().contains("Desc")) {
                 anadir.requestFocusInWindow();
-            } else{
+            } else {
                 fechaA.requestFocusInWindow();
                 fechaA.requestFocus();
             }
-        } 
+        }
     }//GEN-LAST:event_referenciaAKeyPressed
 
+    private void formasdePagoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formasdePagoKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_DELETE) {
+            int fil = formasdePago.getSelectedRow();
+            DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
+            dtm.removeRow(fil);
+            formasdePago.setModel(dtm);
+            this.sumarPagos();
+            this.sumar();
+        }
+    }//GEN-LAST:event_formasdePagoKeyPressed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
@@ -1386,6 +1422,7 @@ sumarPagos();
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1408,6 +1445,7 @@ sumarPagos();
     private javax.swing.JLabel total11;
     private javax.swing.JLabel total12;
     private javax.swing.JLabel total13;
+    private javax.swing.JLabel total14;
     private javax.swing.JLabel total3;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
