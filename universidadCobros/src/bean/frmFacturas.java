@@ -5,17 +5,24 @@
  */
 package bean;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import javax.swing.table.DefaultTableModel;
 import jcinform.persistencia.Bancos;
 import jcinform.persistencia.CarrerasMaterias;
+import jcinform.persistencia.Cxcobrar;
+import jcinform.persistencia.Descuentos;
 import jcinform.persistencia.Detalles;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
@@ -29,6 +36,15 @@ import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Rubros;
 import jcinform.persistencia.RubrosMatriculaPeriodo;
 import jcinform.procesos.Administrador;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import sources.ReporteDataSource;
+import util.WorkingDirectory;
 import util.general;
 import util.secuencial;
 
@@ -44,8 +60,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     public Periodos periodoActual;
     public Empleados empleadoActual;
     List<Parametros> parametrosList = null;
-     public Institucion inst;
+    public Institucion inst;
     public Matriculas actualMatricula;
+    private String separador = File.separator;
 
     /**
      * Creates new form frmRubros
@@ -64,6 +81,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         panelencontrados1.setVisible(false);
         codigoPariente.setVisible(false);
         cargarBancos();
+        separador = File.separator;
+        editarDatos.setEnabled(false);
     }
 
     private void cargarBancos() {
@@ -169,6 +188,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total14 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
+        total15 = new javax.swing.JLabel();
+        faltan = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -383,11 +404,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         telefono.setText(".");
         getContentPane().add(telefono);
-        telefono.setBounds(90, 80, 230, 14);
+        telefono.setBounds(90, 80, 140, 14);
 
         carrera.setText(".");
         getContentPane().add(carrera);
-        carrera.setBounds(90, 100, 510, 20);
+        carrera.setBounds(90, 100, 300, 40);
 
         jLabel5.setText("NOMBRES: ");
         getContentPane().add(jLabel5);
@@ -408,6 +429,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(editarDatos);
         editarDatos.setBounds(230, 20, 70, 23);
 
+        buscarApellido.setEnabled(false);
         buscarApellido.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         buscarApellido.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -460,14 +482,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total1.setText("TOTAL:");
         getContentPane().add(total1);
-        total1.setBounds(420, 270, 70, 30);
+        total1.setBounds(440, 270, 50, 30);
 
         iva.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         iva.setForeground(new java.awt.Color(51, 51, 51));
         iva.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         iva.setText("00.00");
         getContentPane().add(iva);
-        iva.setBounds(350, 270, 70, 30);
+        iva.setBounds(380, 270, 60, 30);
 
         total.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         total.setForeground(new java.awt.Color(0, 51, 153));
@@ -488,7 +510,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total5.setText("IVA:");
         getContentPane().add(total5);
-        total5.setBounds(310, 270, 40, 30);
+        total5.setBounds(290, 270, 80, 30);
 
         buttonGroup1.add(chkTodo);
         chkTodo.setSelected(true);
@@ -539,14 +561,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         categoriaSocial.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         categoriaSocial.setText("A");
         getContentPane().add(categoriaSocial);
-        categoriaSocial.setBounds(90, 120, 20, 20);
+        categoriaSocial.setBounds(310, 80, 20, 15);
 
         descuento2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         descuento2.setForeground(new java.awt.Color(204, 51, 0));
         descuento2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         descuento2.setText("00.00");
         getContentPane().add(descuento2);
-        descuento2.setBounds(90, 440, 70, 30);
+        descuento2.setBounds(70, 440, 60, 30);
 
         total7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total7.setForeground(new java.awt.Color(51, 51, 51));
@@ -559,7 +581,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         total8.setText("CATEGORÍA:");
         getContentPane().add(total8);
-        total8.setBounds(10, 120, 80, 20);
+        total8.setBounds(240, 80, 80, 14);
 
         buttonGroup2.add(chkNuevo);
         chkNuevo.setSelected(true);
@@ -716,7 +738,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.String.class, java.util.Date.class, java.lang.Boolean.class
+                java.lang.Object.class, java.math.BigDecimal.class, java.lang.Object.class, java.lang.String.class, java.util.Date.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -745,32 +767,33 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         totalCobros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         totalCobros.setText("00.00");
         getContentPane().add(totalCobros);
-        totalCobros.setBounds(260, 440, 90, 30);
+        totalCobros.setBounds(210, 440, 90, 30);
 
         total3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total3.setForeground(new java.awt.Color(51, 51, 51));
         total3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total3.setText("Dstos.:");
         getContentPane().add(total3);
-        total3.setBounds(20, 440, 60, 30);
+        total3.setBounds(20, 440, 50, 30);
 
         total13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total13.setForeground(new java.awt.Color(51, 51, 51));
         total13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total13.setText("A COBRAR:");
+        total13.setText("FALTAN: ");
         getContentPane().add(total13);
-        total13.setBounds(180, 440, 80, 30);
+        total13.setBounds(310, 440, 60, 30);
 
         descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         descuento.setForeground(new java.awt.Color(204, 51, 0));
         descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         descuento.setText("00.00");
         getContentPane().add(descuento);
-        descuento.setBounds(230, 270, 70, 30);
+        descuento.setBounds(230, 270, 60, 30);
 
+        jLabel8.setForeground(new java.awt.Color(153, 0, 51));
         jLabel8.setText("Presione SUPR para quitar");
         getContentPane().add(jLabel8);
-        jLabel8.setBounds(420, 440, 180, 14);
+        jLabel8.setBounds(480, 440, 160, 20);
 
         total14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total14.setForeground(new java.awt.Color(51, 51, 51));
@@ -785,6 +808,20 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         getContentPane().add(jScrollPane3);
         jScrollPane3.setBounds(10, 470, 110, 60);
+
+        total15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        total15.setForeground(new java.awt.Color(51, 51, 51));
+        total15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total15.setText("A COBRAR:");
+        getContentPane().add(total15);
+        total15.setBounds(130, 440, 80, 30);
+
+        faltan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        faltan.setForeground(new java.awt.Color(204, 0, 0));
+        faltan.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        faltan.setText("00.00");
+        getContentPane().add(faltan);
+        faltan.setBounds(370, 440, 90, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -803,13 +840,75 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
-public void llenarFactura(){
-         inst = (Institucion)adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
+    public void llenarFactura() {
+        inst = (Institucion) adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
         Long valor = Long.parseLong(inst.getFactura1()) + 1;
         String asFac = String.format("%07d", valor);
         this.factura.setText("" + asFac);
-                     
-}
+
+    }
+
+    private void imprimir() {
+
+        ArrayList detalle = new ArrayList();
+
+        String recibo = factura.getText().trim();
+
+        Facturas obj = (Facturas) adm.buscarClave(inst.getSerie1() + "FC" + recibo, Facturas.class);
+        String selecc = "SELECT d FROM Detalles d WHERE d.idFacturas.idFacturas= '" + obj.getIdFacturas().trim() + "' ";
+        List det = adm.query(selecc);
+        Detalles mdes;
+        for (Iterator it = det.iterator(); it.hasNext();) {
+            Detalles elem = (Detalles) it.next();
+            mdes = new Detalles();
+            detalle.add(elem);
+        }
+//        globales rd = new globales();
+
+        String direccio = "";
+        WorkingDirectory w = new WorkingDirectory();
+        direccio = w.get() + separador;
+        if (direccio.contains("build")) {
+            direccio = direccio.replace("\\build", "");
+            direccio = direccio.replace("/build", "");
+        }
+        direccio = direccio + separador + "impresion" + separador;
+
+        String dire = direccio + "factura.jasper";
+        try {
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dire);
+            ReporteDataSource ds = new ReporteDataSource(detalle);
+
+            Map parametros = new HashMap();
+            parametros.put("fecha", obj.getFecha());
+            parametros.put("nombre", obj.getNombres());
+            parametros.put("total", obj.getTotal());
+            parametros.put("alumno", obj.getIdMatriculas().getIdEstudiantes().getApellidoPaterno() + " " + obj.getIdMatriculas().getIdEstudiantes().getApellidoMaterno() + " " + obj.getIdMatriculas().getIdEstudiantes().getNombre());
+            parametros.put("ruc", obj.getRuc());
+            parametros.put("direccion", obj.getDireccion());
+            parametros.put("telefono", obj.getTelefono());
+            parametros.put("curso", obj.getIdMatriculas().getIdCarreras() + "");
+            parametros.put("escuela", obj.getIdMatriculas().getIdCarreras().getIdEscuela().getNombre() + "");
+            parametros.put("jornada", obj.getIdMatriculas().getIdCarreras().getIdJornada().getNombre() + "");
+            parametros.put("observacion", observacion.getText() + "");
+            parametros.put("usuario", empleadoActual.getApellidoPaterno() + " " + empleadoActual.getNombre());
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+//            JasperViewer viewer = new JasperViewer(masterPrint, false);
+//            if (vistaprevia.isSelected()) {
+//                viewer.show();
+//            } else {
+            try {
+                JasperPrintManager.printPage(masterPrint, 0, true);
+            } catch (JRException ex) {
+                ex.printStackTrace();
+            }
+//            }
+        } catch (JRException ex) {
+            ex.printStackTrace();
+        }
+
+    }
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
 // TODO add your handling code here:
 
@@ -819,85 +918,130 @@ public void llenarFactura(){
             DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
             dtm.getDataVector().removeAllElements();
             formasdePago.setModel(dtm);
-             dtm = (DefaultTableModel) tFactura.getModel();
+            dtm = (DefaultTableModel) tFactura.getModel();
             dtm.getDataVector().removeAllElements();
             tFactura.setModel(dtm);
             formasdePago.repaint();
             tFactura.repaint();
             chkTodo.setSelected(true);
             chkNuevo.setSelected(true);
-            codigoPariente.setText("0"); 
+            codigoPariente.setText("0");
             ruc.setText(".");
             nombre.setText(".");
             direccion.setText(".");
             telefono.setText(".");
-            carrera.setText("."); 
+            carrera.setText(".");
+            buscarApellido.setEnabled(true);
+            editarDatos.setEnabled(true);
             llenarFactura();
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
             this.btnNuevo.setLabel("Guardar");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
             this.btnModificar.setLabel("Cancelar");
             this.btnModificar.setEnabled(true);
-
+            buscarApellido.requestFocusInWindow();
             grabar = true;
             modificar = false;
         } else if (grabar == true) {
-                     
-                Facturas cab = new Facturas();
+            if (!comprobarAntesAnadir()) {
+                JOptionPane.showMessageDialog(this, "LOS VALORES COBRADOS NO COINCIDEN CON EL TOTAL", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            Facturas cab = new Facturas();
 //                secuencial sec = new secuencial();
-                inst = (Institucion)adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
- 
- 
-                    //FACTURAS
-                         Date fecha = adm.Date();
-                        cab.setFecha(fecha);
-                        cab.setFechaEmision(fecha);
-                        cab.setFechaVence(fecha);
-                        cab.setIdMatriculas(actualMatricula);
-                        cab.setRuc(ruc.getText());
-                        cab.setNombres(nombre.getText());
-                        cab.setTelefono(telefono.getText());
-                        cab.setDireccion(direccion.getText());
-                        cab.setIva(new BigDecimal(iva.getText()));
-                        cab.setBaseiva(BigDecimal.ZERO);
-                        cab.setBasecero(new BigDecimal(subtotal.getText()));
-                        cab.setDescuento(new BigDecimal(descuento.getText()));
-                        cab.setAutorizacion(true); //NO SE QUE HACE PERO LO OCUPO PARA VER SI ESTÁ ANULADA
-                        cab.setIdFacturas(inst.getSerie1()+"FC" + factura.getText());
-                        cab.setObservacion(observacion.getText());
-                        adm.guardar(cab);
-                        //ACTUALIZAR DOCUMENTO FACTURA
-                        //ACTUALIZAR DOCUMENTO FACTURA
-                         inst.setFactura1(factura.getText().trim());
-                         adm.actualizar(inst); 
+            inst = (Institucion) adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
 
-                        secuencial sec = new secuencial();
-                        for (int i = 0; i < this.tFactura.getRowCount(); i++) {
-                                Detalles det = new Detalles();
-                                det.setIdDetalles(sec.generarClave());
-                                det.setIdFacturas(cab);
-                                det.setCantidad((Integer)tFactura.getValueAt(i, 2));
-                                det.setIdRubros(new Rubros((Integer)tFactura.getValueAt(i, 0)));
-                                det.setValorUnitario((BigDecimal)tFactura.getValueAt(i, 3));
-                                det.setValorTotal(((BigDecimal)tFactura.getValueAt(i, 3))); 
-                                adm.guardar(det);
-                                 //CXC
- 
-                        }
-                        //FACTURAS
-                     
-                
+            buscarApellido.setEnabled(false);
+            editarDatos.setEnabled(false);
+            //FACTURAS
+            Date fecha = adm.Date();
+            cab.setFecha(fecha);
+            cab.setFechaEmision(fecha);
+            cab.setFechaVence(fecha);
+            cab.setIdMatriculas(actualMatricula);
+            cab.setRuc(ruc.getText());
+            cab.setNombres(nombre.getText());
+            cab.setSubtotal(new BigDecimal(subtotal.getText())); 
+            cab.setTelefono(telefono.getText());
+            cab.setDireccion(direccion.getText());
+            cab.setIva(new BigDecimal(iva.getText()));
+            cab.setBaseiva(BigDecimal.ZERO);
+            cab.setBasecero(new BigDecimal(subtotal.getText()));
+            cab.setDescuento(new BigDecimal(descuento.getText()));
+            cab.setAutorizacion(true); //NO SE QUE HACE PERO LO OCUPO PARA VER SI ESTÁ ANULADA
+            cab.setIdFacturas(inst.getSerie1() + "FC" + factura.getText());
+            cab.setObservacion(observacion.getText());
+            cab.setTotal(cab.getBasecero());
+            adm.guardar(cab);
+            //ACTUALIZAR DOCUMENTO FACTURA
+            //ACTUALIZAR DOCUMENTO FACTURA
+            inst.setFactura1(factura.getText().trim());
+            adm.actualizar(inst);
+
+            secuencial sec = new secuencial();
+            for (int i = 0; i < this.tFactura.getRowCount(); i++) {
+                Detalles det = new Detalles();
+                det.setIdDetalles(sec.generarClave());
+                det.setIdFacturas(cab);
+                det.setCantidad((Integer) tFactura.getValueAt(i, 2));
+                det.setIdRubros(new Rubros((Integer) tFactura.getValueAt(i, 0)));
+                det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
+                det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 3)));
+                adm.guardar(det);
+                //CXC
+
+            }
+            Cxcobrar cx = new Cxcobrar();
+            cx.setIdCxcobrar(adm.getNuevaClave("Cxcobrar", "idCxcobrar"));
+            cx.setDebe(cab.getTotal());
+            cx.setHaber(BigDecimal.ZERO);
+            cx.setFecha(fecha);
+            cx.setFechareferencia(fecha);
+            cx.setIdFacturas(cab);
+            cx.setReferencia("" + cab.getIdFacturas());
+            cx.setTipopago("F");
+            cx.setTotal(BigDecimal.ZERO);
+            adm.guardar(cx);
+            for (int i = 0; i < this.formasdePago.getRowCount(); i++) {
+                cx = new Cxcobrar();
+                cx.setIdCxcobrar(adm.getNuevaClave("Cxcobrar", "idCxcobrar"));
+                cx.setTipopago(formasdePago.getValueAt(i, 0).toString());
+                cx.setTotal(((BigDecimal) formasdePago.getValueAt(i, 1)));
+                cx.setDebe(BigDecimal.ZERO);
+                cx.setHaber(((BigDecimal) formasdePago.getValueAt(i, 1)));
+                cx.setFecha(fecha);
+                cx.setIdFacturas(cab);
+                cx.setReferencia(formasdePago.getValueAt(i, 3).toString());
+                cx.setFechareferencia((Date) formasdePago.getValueAt(i, 4));
+                cx.setConfirmado((Boolean) formasdePago.getValueAt(i, 5));
+
+                if (cx.getTipopago().contains("Desc")) {
+                    Descuentos desc = new Descuentos(adm.getNuevaClave("Descuentos", "idDescuentos"));
+                    desc.setIdEstudiantes(es);
+                    desc.setIdFacturas(cab);
+                    desc.setValor(cx.getTotal());
+                    adm.guardar(desc);
+                } else {
+                    adm.guardar(cx);
                 }
 
-                grabar = false;
-                modificar = false;
-                this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif")));
-                this.btnNuevo.setLabel("Nuevo");
-                this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
-                this.btnModificar.setLabel("Modificar");
-                this.btnModificar.setEnabled(false); 
-                grabar = false;
-                modificar = false;
+                //CXC
+
+            }
+            //FACTURAS
+            imprimir();
+            grabar = false;
+            modificar = false;
+            this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif")));
+            this.btnNuevo.setLabel("Nuevo");
+            this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
+            this.btnModificar.setLabel("Modificar");
+            this.btnModificar.setEnabled(false);
+            grabar = false;
+            modificar = false;
+        }
+
+
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -921,12 +1065,14 @@ public void llenarFactura(){
         } else {
             grabar = false;
             modificar = false;
+            buscarApellido.setEnabled(false);
+            editarDatos.setEnabled(false);
 
             this.btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
             this.btnNuevo.setLabel("Nuevo");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
             this.btnModificar.setLabel("Modificar");
-            this.btnModificar.setEnabled(false); 
+            this.btnModificar.setEnabled(false);
 
         }
 
@@ -952,25 +1098,19 @@ public void llenarFactura(){
         this.subtotal.setText(totalCalc + "");
         if (totalCalc.doubleValue() > 0) {
             tipoA.setEnabled(true);
+            
         }
         BigDecimal valorIva = regresaVariableParametrosDecimal("IVA", parametrosList);
         if (valorIva.doubleValue() > 0) {
             iva.setText(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(totalCalc).setScale(2, RoundingMode.HALF_UP) + "");
             total5.setText("IVA " + valorIva + "%:");
             //BigDecimal subtotalLocal = new BigDecimal(subtotal.getText());
-            BigDecimal totalLocal = totalCalc.subtract(new BigDecimal(descuento2.getText())).multiply(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)).add(totalCalc);
+            BigDecimal subTotal = totalCalc.subtract(new BigDecimal(descuento.getText()));
+            BigDecimal totalLocal = subTotal.multiply(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)).add(subTotal);
             total.setText(totalLocal.setScale(2, RoundingMode.HALF_UP) + "");
-//            fac.setDescuento(new BigDecimal(0));
-//                fac.setBaseiva(valor.subtract(object.getDescuento()));
-//                fac.setPorcentajeiva(suc.getEmpresa().getIva());
-//                fac.setValoriva(valor.subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
-//                fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
-//                adm.guardar(fac);
-//                Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-//                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(), 2)).subtract(object.getDescuento()));
-//                det.setPlan(object.getPlan());
-//                det.setCantidad(1);
-
+        } else {
+            BigDecimal subTotal = totalCalc.subtract(new BigDecimal(descuento.getText()));
+            total.setText(subTotal.setScale(2, RoundingMode.HALF_UP) + "");
         }
 
 
@@ -1017,10 +1157,11 @@ public void llenarFactura(){
         }
         return false;
     }
-Estudiantes es =null;
-public general EstudianteSeleccionado = null;
+    Estudiantes es = null;
+    public general EstudianteSeleccionado = null;
+
     private void cargarRubros(general gen) {
-        if(gen.getCodigoString().equals("0")){
+        if (gen.getCodigoString().equals("0")) {
             return;
         }
         es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
@@ -1053,8 +1194,8 @@ public general EstudianteSeleccionado = null;
         }
         if (matriculaList.size() > 0) {
 
-             actualMatricula = matriculaList.get(0);
-            carrera.setText("" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " ");
+            actualMatricula = matriculaList.get(0);
+            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
             categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
@@ -1133,6 +1274,7 @@ public general EstudianteSeleccionado = null;
             this.panelencontrados1.setVisible(false);
             EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
             cargarRubros(EstudianteSeleccionado);
+            faltan.setText(total.getText());
             buscarApellido.setText("");
         }
     }//GEN-LAST:event_encontrados1MouseClicked
@@ -1144,6 +1286,7 @@ public general EstudianteSeleccionado = null;
             EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
             cargarRubros(EstudianteSeleccionado);
             buscarApellido.setText("");
+            faltan.setText(total.getText());
 
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
             this.buscarApellido.requestFocusInWindow();
@@ -1285,13 +1428,13 @@ public general EstudianteSeleccionado = null;
 
     private void chkNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNuevoActionPerformed
         // TODO add your handling code here:
-        
+
         cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkNuevoActionPerformed
 
     private void chkAntiguoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAntiguoActionPerformed
         // TODO add your handling code here:
-         
+
         cargarRubros(EstudianteSeleccionado);
     }//GEN-LAST:event_chkAntiguoActionPerformed
 
@@ -1304,10 +1447,11 @@ public general EstudianteSeleccionado = null;
                     referenciaA.setEnabled(true);
                 }
                 anadir.setEnabled(true);
-
+                valorA.setText(faltan.getText()); 
                 valorA.requestFocusInWindow();
                 valorA.selectAll();
             } else {
+                valorA.setText(faltan.getText()); 
                 valorA.setEnabled(true);
                 referenciaA.setEnabled(true);
                 bancoA.setEnabled(true);
@@ -1348,19 +1492,38 @@ public general EstudianteSeleccionado = null;
     private void sumarPagos() {
 
         int filas = formasdePago.getRowCount();
-        Double totalCalc = 0.0;
-        Double descuentos = 0.0;
+        BigDecimal totalCalc = new BigDecimal(BigInteger.ZERO);
+        BigDecimal descuentos0 = new BigDecimal(BigInteger.ZERO);
         for (int i = 0; i < filas; i++) {
             if (formasdePago.getValueAt(i, 0).toString().contains("Desc")) {
-                descuentos += ((Double) formasdePago.getValueAt(i, 1));
+                descuentos0 = descuentos0.add((BigDecimal) formasdePago.getValueAt(i, 1));
             } else {
-                totalCalc += ((Double) formasdePago.getValueAt(i, 1));;
+                totalCalc = totalCalc.add((BigDecimal) formasdePago.getValueAt(i, 1));
             }
         }
-        descuento2.setText(descuentos + "");
+        descuento2.setText(descuentos0 + "");
+        descuento.setText(descuentos0 + "");
         totalCobros.setText("" + totalCalc);
+        sumar();
     }
 
+    public boolean comprobarAntesAnadir() {
+        int filas = formasdePago.getRowCount();
+        BigDecimal totalCobrado = new BigDecimal(BigInteger.ZERO);
+
+        for (int i = 0; i < filas; i++) {
+            if (formasdePago.getValueAt(i, 0).toString().contains("Desc")) {
+            } else {
+                totalCobrado = totalCobrado.add((BigDecimal) formasdePago.getValueAt(i, 1));
+            }
+        }
+        BigDecimal acobrar = new BigDecimal(total.getText());
+        if (acobrar.compareTo(totalCobrado) == -1 || acobrar.compareTo(totalCobrado) == 1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     private void anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirActionPerformed
         // TODO add your handling code here:
 
@@ -1400,8 +1563,8 @@ public general EstudianteSeleccionado = null;
 
         Object[] obj = new Object[10];
         obj[0] = tipoA.getSelectedItem().toString();
-        obj[1] = new Double(valorA.getText());
-        obj[2] = (bancoA.getSelectedIndex()>0?bancoA.getSelectedItem():null);
+        obj[1] = new BigDecimal(valorA.getText());
+        obj[2] = (bancoA.getSelectedIndex() > 0 ? bancoA.getSelectedItem() : null);
         obj[3] = referenciaA.getText();
         obj[4] = fechaA.getDate();
         obj[5] = confirmadoA.isSelected();
@@ -1424,6 +1587,11 @@ public general EstudianteSeleccionado = null;
         tipoA.setSelectedIndex(0);
         tipoA.requestFocusInWindow();
         sumarPagos();
+        sumar();
+        BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText(""+(to.subtract(co))); 
+        
     }//GEN-LAST:event_anadirActionPerformed
 
     private void bancoAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bancoAKeyPressed
@@ -1461,27 +1629,26 @@ public general EstudianteSeleccionado = null;
 
     private void facturaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_facturaFocusGained
         // TODO add your handling code here:
-          factura.selectAll();
+        factura.selectAll();
     }//GEN-LAST:event_facturaFocusGained
 
     private void facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_facturaFocusLost
         // TODO add your handling code here:
-    String codigo = factura.getText() + "";
-    while (codigo.length() < 7) {
-        codigo = "0" + codigo;
-    }
-    factura.setText("" + codigo);
+        String codigo = factura.getText() + "";
+        while (codigo.length() < 7) {
+            codigo = "0" + codigo;
+        }
+        factura.setText("" + codigo);
 
-    String abuscar = "" + inst.getSerie1() + "FC" + factura.getText();
-    Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
-    if (cabe != null) {
-        JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
-        factura.setText("");
-        factura.requestFocusInWindow();
-    }
-        
+        String abuscar = "" + inst.getSerie1() + "FC" + factura.getText();
+        Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
+        if (cabe != null) {
+            JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
+            factura.setText("");
+            factura.requestFocusInWindow();
+        }
+
     }//GEN-LAST:event_facturaFocusLost
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
@@ -1509,6 +1676,7 @@ public general EstudianteSeleccionado = null;
     private javax.swing.JButton editarDatos;
     private javax.swing.JList encontrados1;
     private javax.swing.JFormattedTextField factura;
+    private javax.swing.JLabel faltan;
     private com.toedter.calendar.JDateChooser fechaA;
     private javax.swing.JTable formasdePago;
     private javax.swing.JPanel frmActualizar;
@@ -1553,6 +1721,7 @@ public general EstudianteSeleccionado = null;
     private javax.swing.JLabel total12;
     private javax.swing.JLabel total13;
     private javax.swing.JLabel total14;
+    private javax.swing.JLabel total15;
     private javax.swing.JLabel total3;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
