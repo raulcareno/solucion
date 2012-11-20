@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import jcinform.persistencia.Bancos;
 import jcinform.persistencia.CarrerasMaterias;
+import jcinform.persistencia.Detalles;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Facturas;
@@ -29,6 +30,7 @@ import jcinform.persistencia.Rubros;
 import jcinform.persistencia.RubrosMatriculaPeriodo;
 import jcinform.procesos.Administrador;
 import util.general;
+import util.secuencial;
 
 /**
  *
@@ -165,6 +167,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         descuento = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         total14 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        observacion = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -586,7 +590,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jLabel4);
         jLabel4.setBounds(410, 20, 60, 14);
 
-        factura.setText("FC0000000");
+        factura.setText("0000000");
         factura.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 facturaFocusGained(evt);
@@ -775,6 +779,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(total14);
         total14.setBounds(340, 300, 110, 20);
 
+        observacion.setColumns(20);
+        observacion.setRows(5);
+        jScrollPane3.setViewportView(observacion);
+
+        getContentPane().add(jScrollPane3);
+        jScrollPane3.setBounds(10, 470, 110, 60);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -803,6 +814,7 @@ public void llenarFactura(){
 // TODO add your handling code here:
 
         if (grabar == false) {
+            actualMatricula = new Matriculas();
             EstudianteSeleccionado = new general("0", "");
             DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
             dtm.getDataVector().removeAllElements();
@@ -841,61 +853,36 @@ public void llenarFactura(){
                         cab.setFecha(fecha);
                         cab.setFechaEmision(fecha);
                         cab.setFechaVence(fecha);
-                        cab.setIdMatriculas((Matriculas) txtEstudiante.getSelectedItem());
-                        cab.setFacTotal(Double.parseDouble(this.txtTotalFacturas.getText()));
-                        cab.setFacEstado(true);
-                        String sucursal = (String) this.cmbSucursal.getSelectedItem();
-                        cab.setFacNumero(sucursal + this.noFactura.getText());
-                        //cab.setFacNumero(this.noFactura.getText());
-                        cab.setFacObservacion(this.observacion.getText());
-                        bs.guardar(cab);
+                        cab.setIdMatriculas(actualMatricula);
+                        cab.setRuc(ruc.getText());
+                        cab.setNombres(nombre.getText());
+                        cab.setTelefono(telefono.getText());
+                        cab.setDireccion(direccion.getText());
+                        cab.setIva(new BigDecimal(iva.getText()));
+                        cab.setBaseiva(BigDecimal.ZERO);
+                        cab.setBasecero(new BigDecimal(subtotal.getText()));
+                        cab.setDescuento(new BigDecimal(descuento.getText()));
+                        cab.setAutorizacion(true); //NO SE QUE HACE PERO LO OCUPO PARA VER SI ESTÁ ANULADA
+                        cab.setIdFacturas(inst.getSerie1()+"FC" + factura.getText());
+                        cab.setObservacion(observacion.getText());
+                        adm.guardar(cab);
                         //ACTUALIZAR DOCUMENTO FACTURA
                         //ACTUALIZAR DOCUMENTO FACTURA
-                        if (cmbSucursal.getSelectedIndex() == 0) {
-                            documento.setFactura(noFactura.getText().trim());
-                        } else if (cmbSucursal.getSelectedIndex() == 1) {
-                            documento.setFactura1(noFactura.getText().trim());
-                        } else if (cmbSucursal.getSelectedIndex() == 2) {
-                            documento.setFactura2(noFactura.getText().trim());
-                        }
-                        bs.actualizar(documento);
+                         inst.setFactura1(factura.getText().trim());
+                         adm.actualizar(inst); 
 
-
+                        secuencial sec = new secuencial();
                         for (int i = 0; i < this.tFactura.getRowCount(); i++) {
-                            if ((Boolean) tFactura.getValueAt(i, 4) == true) {
-                                String mess = (String) tFactura.getValueAt(i, 2);
-                                Detallefactura det = new Detallefactura();
-//                                        DetallefacturaPK pks = new DetallefacturaPK();
-                                Integer anio = (Integer) tFactura.getValueAt(i, 3);
-//                                        pks.setDetCodigo((i+1)+"");
-                                det.setDetCodigo(sec.generarClave());
-                                det.setFacNumero(cab);
-//                                        det.setDetallefacturaPK(pks);
-                                det.setDetCantidad(1);
-                                det.setDetMes(val.mesint(mess.trim()));
-                                det.setDetAnio(anio);
-                                det.setDetDescripcion(((Productos) tFactura.getValueAt(i, 1)).getDescripcion());
-                                det.setProducto((Productos) tFactura.getValueAt(i, 1));
-                                det.setDetPrecio((Double) tFactura.getValueAt(i, 5));
-                                det.setBeca((Double) tFactura.getValueAt(i, 6));
-                                det.setDescuento((Double) tFactura.getValueAt(i, 7));
-                                det.setDetTotal((Double) tFactura.getValueAt(i, 8));
-                                det.setAsignado((Integer) tFactura.getValueAt(i, 0));
-
-                                bs.guardar(det);
-                                Double valorPagado = (Double) tFactura.getValueAt(i, 5);
-                                String feString = anio + "-" + val.mesint(mess.trim()) + "-" + 01;
-                                Matriculas matricula = (Matriculas) txtEstudiante.getSelectedItem();
-                                List asignado = bs.query("SELECT o FROM Asignados AS o "
-                                        + "WHERE o.asigCodigo ='" + ((Integer) tFactura.getValueAt(i, 0)) + "' ");
-
-
-                                Asignados rubroA = (Asignados) asignado.get(0);
-//                                        rubroA.setActivo(false);
-                                rubroA.setEstado(false);
-                                bs.actualizar(rubroA);
-
-                            }
+                                Detalles det = new Detalles();
+                                det.setIdDetalles(sec.generarClave());
+                                det.setIdFacturas(cab);
+                                det.setCantidad((Integer)tFactura.getValueAt(i, 2));
+                                det.setIdRubros(new Rubros((Integer)tFactura.getValueAt(i, 0)));
+                                det.setValorUnitario((BigDecimal)tFactura.getValueAt(i, 3));
+                                det.setValorTotal(((BigDecimal)tFactura.getValueAt(i, 3))); 
+                                adm.guardar(det);
+                                 //CXC
+ 
                         }
                         //FACTURAS
                      
@@ -1067,26 +1054,26 @@ public general EstudianteSeleccionado = null;
         if (matriculaList.size() > 0) {
 
              actualMatricula = matriculaList.get(0);
-            carrera.setText("" + actual.getIdCarreras().getNombre() + " " + actual.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actual.getIdCarreras().getIdJornada().getNombre() + " " + " " + actual.getIdCarreras().getIdModalidad().getNombre() + " ");
-            categoriaSocial.setText("" + actual.getIdCategoriasSociales().getNombre());
+            carrera.setText("" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " ");
+            categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
 
             //tengo que verificar si el estado esta null o false y le cargo los rubros que se encuetnra en matricula
             //de acuerdo a la carrera y al perido actual buscando en rbrosMatriculasPeriodo
-            if (actual.getPagada() == null) {
-                actual.setPagada(false);
+            if (actualMatricula.getPagada() == null) {
+                actualMatricula.setPagada(false);
 
             }
             DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
             dtm.getDataVector().removeAllElements();
             //no ha estado pagada
             if (chkMatricula.isSelected() || chkTodo.isSelected()) {
-                if (actual.getPagada() == false) {
+                if (actualMatricula.getPagada() == false) {
                     //AQUÍ HE BUSCADO LOS RUBROS QUE ESTÁN ASIGNADOS PARA LA MATRICULA
                     List<RubrosMatriculaPeriodo> rubros = adm.query("Select o from RubrosMatriculaPeriodo as o "
-                            + " where o.idPeriodos.idPeriodos = '" + actual.getIdPeriodos().getIdPeriodos() + "' and "
-                            + "o.idCarreras.idCarreras = '" + actual.getIdCarreras().getIdCarreras() + "' ");
+                            + " where o.idPeriodos.idPeriodos = '" + actualMatricula.getIdPeriodos().getIdPeriodos() + "' and "
+                            + "o.idCarreras.idCarreras = '" + actualMatricula.getIdCarreras().getIdCarreras() + "' ");
                     for (Iterator<RubrosMatriculaPeriodo> it = rubros.iterator(); it.hasNext();) {
                         RubrosMatriculaPeriodo elem = it.next();
                         Object[] obj = new Object[20];
@@ -1102,7 +1089,7 @@ public general EstudianteSeleccionado = null;
 
                 //BUSCO LAS MATERIAS QUE ESTÁ TOMANDO PARA PROCEDER A FACTURAR LOS CRÉDITOS
                 List<MateriasMatricula> rubrosCreditos = adm.query("Select o from MateriasMatricula as o "
-                        + " where o.idMatriculas.idMatriculas = '" + actual.getIdMatriculas() + "' ");
+                        + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' ");
                 int creditos = 0;
                 for (Iterator<MateriasMatricula> it = rubrosCreditos.iterator(); it.hasNext();) {
                     MateriasMatricula materiasMatricula = it.next();
@@ -1125,7 +1112,7 @@ public general EstudianteSeleccionado = null;
                     obj[0] = rubroCredito.getIdRubros();
                     obj[1] = rubroCredito.getNombre();
                     obj[2] = creditos;
-                    obj[3] = actual.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                    obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
                     dtm.addRow(obj);
 
                 }
@@ -1485,7 +1472,7 @@ public general EstudianteSeleccionado = null;
     }
     factura.setText("" + codigo);
 
-    String abuscar = "" + inst.getSerie1() + "" + factura.getText();
+    String abuscar = "" + inst.getSerie1() + "FC" + factura.getText();
     Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
     if (cabe != null) {
         JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
@@ -1545,9 +1532,11 @@ public general EstudianteSeleccionado = null;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JLabel nombre;
     private javax.swing.JFormattedTextField nombre1;
+    private javax.swing.JTextArea observacion;
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JFormattedTextField referenciaA;
     private javax.swing.JLabel ruc;
