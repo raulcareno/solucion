@@ -583,11 +583,21 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         fechaA.setBounds(340, 320, 80, 20);
 
         referenciaA.setEditable(false);
+        referenciaA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                referenciaAKeyPressed(evt);
+            }
+        });
         getContentPane().add(referenciaA);
         referenciaA.setBounds(270, 320, 70, 20);
 
         bancoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
         bancoA.setEnabled(false);
+        bancoA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                bancoAKeyPressed(evt);
+            }
+        });
         getContentPane().add(bancoA);
         bancoA.setBounds(200, 320, 70, 20);
 
@@ -1199,6 +1209,25 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tipoA.requestFocusInWindow();
 
     }//GEN-LAST:event_anadirActionPerformed
+
+    private void bancoAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bancoAKeyPressed
+        // TODO add your handling code here:
+           if (evt.getKeyCode() == evt.VK_ENTER) {
+           
+                referenciaA.requestFocusInWindow();
+             
+        }
+    }//GEN-LAST:event_bancoAKeyPressed
+
+    private void referenciaAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_referenciaAKeyPressed
+        // TODO add your handling code here:
+          if (evt.getKeyCode() == evt.VK_ENTER) {
+           
+                fechaA.requestFocusInWindow();
+             
+        }
+    }//GEN-LAST:event_referenciaAKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
