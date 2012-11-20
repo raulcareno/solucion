@@ -38,7 +38,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     Administrador adm;
     public Periodos periodoActual;
     public Empleados empleadoActual;
-List<Parametros> parametrosList = null;
+    List<Parametros> parametrosList = null;
+
     /**
      * Creates new form frmRubros
      */
@@ -123,39 +124,20 @@ List<Parametros> parametrosList = null;
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         factura = new javax.swing.JFormattedTextField();
-        jLabel8 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
-        jLabel10 = new javax.swing.JLabel();
-        jFormattedTextField2 = new javax.swing.JFormattedTextField();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
-        jFormattedTextField4 = new javax.swing.JFormattedTextField();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
-        jDateChooser3 = new com.toedter.calendar.JDateChooser();
-        jDateChooser4 = new com.toedter.calendar.JDateChooser();
-        jFormattedTextField5 = new javax.swing.JFormattedTextField();
-        jFormattedTextField6 = new javax.swing.JFormattedTextField();
-        jFormattedTextField7 = new javax.swing.JFormattedTextField();
-        jComboBox1 = new javax.swing.JComboBox();
-        jComboBox2 = new javax.swing.JComboBox();
-        jComboBox3 = new javax.swing.JComboBox();
-        jLabel19 = new javax.swing.JLabel();
+        valorA = new javax.swing.JFormattedTextField();
+        fechaA = new com.toedter.calendar.JDateChooser();
+        referenciaA = new javax.swing.JFormattedTextField();
+        bancoA = new javax.swing.JComboBox();
         total6 = new javax.swing.JLabel();
         total9 = new javax.swing.JLabel();
         total10 = new javax.swing.JLabel();
         total11 = new javax.swing.JLabel();
-        jFormattedTextField8 = new javax.swing.JFormattedTextField();
-        jComboBox4 = new javax.swing.JComboBox();
-        jFormattedTextField9 = new javax.swing.JFormattedTextField();
-        jDateChooser5 = new com.toedter.calendar.JDateChooser();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jLabel20 = new javax.swing.JLabel();
-        jFormattedTextField10 = new javax.swing.JFormattedTextField();
-        jComboBox5 = new javax.swing.JComboBox();
-        jFormattedTextField11 = new javax.swing.JFormattedTextField();
+        confirmadoA = new javax.swing.JCheckBox();
+        anadir = new javax.swing.JButton();
+        total12 = new javax.swing.JLabel();
+        tipoA = new javax.swing.JComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        formasdePago = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -467,7 +449,7 @@ List<Parametros> parametrosList = null;
         total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total4.setText("Fecha");
         getContentPane().add(total4);
-        total4.setBounds(280, 320, 70, 20);
+        total4.setBounds(340, 300, 70, 20);
 
         total5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total5.setForeground(new java.awt.Color(51, 51, 51));
@@ -580,69 +562,34 @@ List<Parametros> parametrosList = null;
         getContentPane().add(factura);
         factura.setBounds(470, 20, 150, 25);
 
-        jLabel8.setText("Tarjeta: ");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(10, 420, 60, 14);
+        valorA.setEditable(false);
+        valorA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valorA.setText("0.00");
+        valorA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                valorAKeyPressed(evt);
+            }
+        });
+        getContentPane().add(valorA);
+        valorA.setBounds(130, 320, 60, 20);
 
-        jFormattedTextField1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField1.setText("0.00");
-        getContentPane().add(jFormattedTextField1);
-        jFormattedTextField1.setBounds(70, 420, 60, 20);
+        fechaA.setEnabled(false);
+        fechaA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                fechaAKeyPressed(evt);
+            }
+        });
+        getContentPane().add(fechaA);
+        fechaA.setBounds(340, 320, 80, 20);
 
-        jLabel10.setText("Efectivo:");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(10, 320, 60, 14);
+        referenciaA.setEditable(false);
+        getContentPane().add(referenciaA);
+        referenciaA.setBounds(270, 320, 70, 20);
 
-        jFormattedTextField2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField2.setText("0.00");
-        getContentPane().add(jFormattedTextField2);
-        jFormattedTextField2.setBounds(70, 320, 60, 20);
-
-        jLabel17.setText("Cheque: ");
-        getContentPane().add(jLabel17);
-        jLabel17.setBounds(10, 340, 60, 14);
-
-        jLabel18.setText("Cheque1: ");
-        getContentPane().add(jLabel18);
-        jLabel18.setBounds(10, 360, 60, 14);
-        getContentPane().add(jFormattedTextField3);
-        jFormattedTextField3.setBounds(210, 420, 70, 20);
-
-        jFormattedTextField4.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField4.setText("0.00");
-        getContentPane().add(jFormattedTextField4);
-        jFormattedTextField4.setBounds(70, 360, 60, 20);
-        getContentPane().add(jDateChooser2);
-        jDateChooser2.setBounds(280, 400, 80, 20);
-        getContentPane().add(jDateChooser3);
-        jDateChooser3.setBounds(280, 340, 80, 20);
-        getContentPane().add(jDateChooser4);
-        jDateChooser4.setBounds(280, 360, 80, 20);
-
-        jFormattedTextField5.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField5.setText("0.00");
-        getContentPane().add(jFormattedTextField5);
-        jFormattedTextField5.setBounds(70, 340, 60, 20);
-        getContentPane().add(jFormattedTextField6);
-        jFormattedTextField6.setBounds(210, 340, 70, 20);
-        getContentPane().add(jFormattedTextField7);
-        jFormattedTextField7.setBounds(210, 360, 70, 20);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
-        getContentPane().add(jComboBox1);
-        jComboBox1.setBounds(140, 420, 70, 20);
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
-        getContentPane().add(jComboBox2);
-        jComboBox2.setBounds(140, 340, 70, 20);
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
-        getContentPane().add(jComboBox3);
-        jComboBox3.setBounds(140, 360, 70, 20);
-
-        jLabel19.setText("Cheque 2: ");
-        getContentPane().add(jLabel19);
-        jLabel19.setBounds(10, 380, 60, 14);
+        bancoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
+        bancoA.setEnabled(false);
+        getContentPane().add(bancoA);
+        bancoA.setBounds(200, 320, 70, 20);
 
         total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total6.setForeground(new java.awt.Color(51, 51, 51));
@@ -654,63 +601,82 @@ List<Parametros> parametrosList = null;
         total9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total9.setForeground(new java.awt.Color(51, 51, 51));
         total9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total9.setText("Valor:");
+        total9.setText("Tipo:");
         getContentPane().add(total9);
-        total9.setBounds(70, 300, 60, 20);
+        total9.setBounds(40, 300, 60, 20);
 
         total10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total10.setForeground(new java.awt.Color(51, 51, 51));
         total10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total10.setText("Banco");
         getContentPane().add(total10);
-        total10.setBounds(140, 320, 60, 20);
+        total10.setBounds(200, 300, 60, 20);
 
         total11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total11.setForeground(new java.awt.Color(51, 51, 51));
         total11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total11.setText("Referencia");
         getContentPane().add(total11);
-        total11.setBounds(210, 320, 70, 20);
+        total11.setBounds(270, 300, 70, 20);
 
-        jFormattedTextField8.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField8.setText("0.00");
-        getContentPane().add(jFormattedTextField8);
-        jFormattedTextField8.setBounds(70, 380, 60, 20);
+        confirmadoA.setText("Confirmado");
+        confirmadoA.setEnabled(false);
+        getContentPane().add(confirmadoA);
+        confirmadoA.setBounds(430, 320, 81, 23);
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
-        getContentPane().add(jComboBox4);
-        jComboBox4.setBounds(140, 380, 70, 20);
-        getContentPane().add(jFormattedTextField9);
-        jFormattedTextField9.setBounds(210, 380, 70, 20);
-        getContentPane().add(jDateChooser5);
-        jDateChooser5.setBounds(280, 380, 80, 20);
+        anadir.setText("Añadir");
+        anadir.setEnabled(false);
+        anadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anadirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(anadir);
+        anadir.setBounds(520, 320, 73, 23);
 
-        jCheckBox1.setText("Confirmado");
-        getContentPane().add(jCheckBox1);
-        jCheckBox1.setBounds(370, 380, 81, 23);
+        total12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total12.setForeground(new java.awt.Color(51, 51, 51));
+        total12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total12.setText("Valor:");
+        getContentPane().add(total12);
+        total12.setBounds(130, 300, 60, 20);
 
-        jCheckBox2.setText("Confirmado");
-        getContentPane().add(jCheckBox2);
-        jCheckBox2.setBounds(370, 340, 81, 23);
+        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
+        tipoA.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                tipoAItemStateChanged(evt);
+            }
+        });
+        getContentPane().add(tipoA);
+        tipoA.setBounds(30, 320, 100, 20);
 
-        jCheckBox3.setText("Confirmado");
-        getContentPane().add(jCheckBox3);
-        jCheckBox3.setBounds(370, 360, 81, 23);
+        formasdePago.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jLabel20.setText("Depósito: ");
-        getContentPane().add(jLabel20);
-        jLabel20.setBounds(10, 400, 60, 14);
+            },
+            new String [] {
+                "Tipo", "Valor", "Banco", "Referencia", "Fecha", "Confirmado", "Acción"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Double.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true, true
+            };
 
-        jFormattedTextField10.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jFormattedTextField10.setText("0.00");
-        getContentPane().add(jFormattedTextField10);
-        jFormattedTextField10.setBounds(70, 400, 60, 20);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
-        getContentPane().add(jComboBox5);
-        jComboBox5.setBounds(140, 400, 70, 20);
-        getContentPane().add(jFormattedTextField11);
-        jFormattedTextField11.setBounds(210, 400, 70, 20);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(formasdePago);
+
+        getContentPane().add(jScrollPane2);
+        jScrollPane2.setBounds(30, 350, 560, 90);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -825,13 +791,13 @@ List<Parametros> parametrosList = null;
             totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 3));
         }
         this.subtotal.setText(totalCalc + "");
-        BigDecimal valorIva =  regresaVariableParametrosDecimal("IVA", parametrosList);
-        if(valorIva.doubleValue()>0){
-            iva.setText(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(totalCalc).setScale(2, RoundingMode.HALF_UP) +"");
-            total5.setText("IVA "+valorIva+"%:");
+        BigDecimal valorIva = regresaVariableParametrosDecimal("IVA", parametrosList);
+        if (valorIva.doubleValue() > 0) {
+            iva.setText(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(totalCalc).setScale(2, RoundingMode.HALF_UP) + "");
+            total5.setText("IVA " + valorIva + "%:");
             //BigDecimal subtotalLocal = new BigDecimal(subtotal.getText());
-            BigDecimal totalLocal = totalCalc.subtract(new BigDecimal(descuento.getText())).multiply(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)).add(totalCalc); 
-            total.setText(totalLocal.setScale(2, RoundingMode.HALF_UP)+"");
+            BigDecimal totalLocal = totalCalc.subtract(new BigDecimal(descuento.getText())).multiply(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)).add(totalCalc);
+            total.setText(totalLocal.setScale(2, RoundingMode.HALF_UP) + "");
 //            fac.setDescuento(new BigDecimal(0));
 //                fac.setBaseiva(valor.subtract(object.getDescuento()));
 //                fac.setPorcentajeiva(suc.getEmpresa().getIva());
@@ -842,12 +808,13 @@ List<Parametros> parametrosList = null;
 //                det.setTotal(new BigDecimal(redondear(object.getPlan().getValor(), 2)).subtract(object.getDescuento()));
 //                det.setPlan(object.getPlan());
 //                det.setCantidad(1);
-            
+
         }
-        
+
 
     }
-  public Double redondear(Double numero, int decimales) {
+
+    public Double redondear(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);
             d = d.setScale(decimales, RoundingMode.HALF_UP);
@@ -856,6 +823,7 @@ List<Parametros> parametrosList = null;
             return 0.0;
         }
     }
+
     public String regresaVariableString(String variable, List<Parametros> textos) {
         String dato = "";
         for (Iterator<Parametros> it = textos.iterator(); it.hasNext();) {
@@ -912,16 +880,16 @@ List<Parametros> parametrosList = null;
                 + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' ");
 
-        
-        if(parametrosList == null){
-                parametrosList = adm.query("Select o from Parametros as o "
-                        + " where o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' ");
+
+        if (parametrosList == null) {
+            parametrosList = adm.query("Select o from Parametros as o "
+                    + " where o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' ");
         }
         if (matriculaList.size() > 0) {
-            
+
             Matriculas actual = matriculaList.get(0);
-            carrera.setText(""+actual.getIdCarreras().getNombre()+" "+actual.getIdCarreras().getIdEscuela().getNombre()+" "+" "+actual.getIdCarreras().getIdJornada().getNombre()+" "+" "+actual.getIdCarreras().getIdModalidad().getNombre()+" ");
-            categoriaSocial.setText(""+actual.getIdCategoriasSociales().getNombre());
+            carrera.setText("" + actual.getIdCarreras().getNombre() + " " + actual.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actual.getIdCarreras().getIdJornada().getNombre() + " " + " " + actual.getIdCarreras().getIdModalidad().getNombre() + " ");
+            categoriaSocial.setText("" + actual.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
 
@@ -946,7 +914,7 @@ List<Parametros> parametrosList = null;
                         obj[0] = elem.getIdRubros().getIdRubros();
                         obj[1] = elem.getIdRubros().getNombre();
                         obj[2] = 1;
-                        obj[3] = (chkNuevo.isSelected()?elem.getValorNueva():elem.getValorAntigua());
+                        obj[3] = (chkNuevo.isSelected() ? elem.getValorNueva() : elem.getValorAntigua());
                         dtm.addRow(obj);
                     }
                 }
@@ -1134,35 +1102,106 @@ List<Parametros> parametrosList = null;
 
     private void chkTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTodoActionPerformed
         // TODO add your handling code here:
-         general fac = (general) this.encontrados1.getSelectedValue();
-         cargarRubros(fac);
+        general fac = (general) this.encontrados1.getSelectedValue();
+        cargarRubros(fac);
     }//GEN-LAST:event_chkTodoActionPerformed
 
     private void chkMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatriculaActionPerformed
         // TODO add your handling code here:
         general fac = (general) this.encontrados1.getSelectedValue();
-         cargarRubros(fac);
+        cargarRubros(fac);
     }//GEN-LAST:event_chkMatriculaActionPerformed
 
     private void chkCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditosActionPerformed
         // TODO add your handling code here:
         general fac = (general) this.encontrados1.getSelectedValue();
-         cargarRubros(fac);
+        cargarRubros(fac);
     }//GEN-LAST:event_chkCreditosActionPerformed
 
     private void chkNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNuevoActionPerformed
         // TODO add your handling code here:
         general fac = (general) this.encontrados1.getSelectedValue();
-         cargarRubros(fac);
+        cargarRubros(fac);
     }//GEN-LAST:event_chkNuevoActionPerformed
 
     private void chkAntiguoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAntiguoActionPerformed
         // TODO add your handling code here:
         general fac = (general) this.encontrados1.getSelectedValue();
-         cargarRubros(fac);
+        cargarRubros(fac);
     }//GEN-LAST:event_chkAntiguoActionPerformed
 
+    private void tipoAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoAItemStateChanged
+        // TODO add your handling code here:
+        if (tipoA.getSelectedIndex() > 0) {
+            if (tipoA.getSelectedItem().toString().contains("Efec")) {
+                valorA.setEditable(true);
+                referenciaA.setEditable(true);
+                anadir.setEnabled(true);
+                valorA.requestFocusInWindow();
+            } else {
+                valorA.setEditable(true);
+                referenciaA.setEditable(true);
+                bancoA.setEnabled(true);
+                fechaA.setEnabled(true);
+                anadir.setEnabled(true);
+                if (!tipoA.getSelectedItem().toString().contains("Tarje")) {
+                    confirmadoA.setEnabled(true);
+                }
+                valorA.requestFocusInWindow();
+            }
+        }
+    }//GEN-LAST:event_tipoAItemStateChanged
+
+    private void valorAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_valorAKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (tipoA.getSelectedItem().toString().contains("Efe")) {
+                anadir.requestFocusInWindow();
+            } else {
+                bancoA.requestFocusInWindow();
+            }
+        }
+    }//GEN-LAST:event_valorAKeyPressed
+
+    private void fechaAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fechaAKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (tipoA.getSelectedItem().toString().contains("Tarj")) {
+                anadir.requestFocusInWindow();
+            } else {
+                confirmadoA.requestFocusInWindow();
+            }
+        }
+    }//GEN-LAST:event_fechaAKeyPressed
+
+    private void anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirActionPerformed
+        // TODO add your handling code here:
+
+        DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
+        //dtm.getDataVector().removeAllElements();
+        Object[] obj = new Object[10];
+        obj[0] = tipoA.getSelectedItem().toString();
+        obj[1] = new Double(valorA.getText());
+        obj[2] = bancoA.getSelectedItem();
+        obj[3] = referenciaA.getText();
+        obj[4] = fechaA.getDate();
+        obj[5] = confirmadoA.isSelected();
+        dtm.addRow(obj);
+        formasdePago.setModel(dtm);
+
+        valorA.setEditable(false);
+        referenciaA.setEditable(false);
+        anadir.setEnabled(false);
+        bancoA.setEnabled(false);
+        fechaA.setEnabled(false);
+        confirmadoA.setEnabled(false);
+        tipoA.setSelectedIndex(0); 
+        tipoA.requestFocusInWindow();
+
+    }//GEN-LAST:event_anadirActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton anadir;
+    private javax.swing.JComboBox bancoA;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardarCerra;
     private javax.swing.JButton btnModificar;
@@ -1179,80 +1218,59 @@ List<Parametros> parametrosList = null;
     private javax.swing.JRadioButton chkNuevo;
     private javax.swing.JRadioButton chkTodo;
     private javax.swing.JFormattedTextField codigoPariente;
+    private javax.swing.JCheckBox confirmadoA;
     private javax.swing.JLabel descuento;
     private javax.swing.JLabel direccion;
     private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JButton editarDatos;
     private javax.swing.JList encontrados1;
     private javax.swing.JFormattedTextField factura;
+    private com.toedter.calendar.JDateChooser fechaA;
+    private javax.swing.JTable formasdePago;
     private javax.swing.JPanel frmActualizar;
     private javax.swing.JLabel iva;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JComboBox jComboBox5;
     private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private com.toedter.calendar.JDateChooser jDateChooser3;
-    private com.toedter.calendar.JDateChooser jDateChooser4;
-    private com.toedter.calendar.JDateChooser jDateChooser5;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField10;
-    private javax.swing.JFormattedTextField jFormattedTextField11;
-    private javax.swing.JFormattedTextField jFormattedTextField2;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
-    private javax.swing.JFormattedTextField jFormattedTextField4;
-    private javax.swing.JFormattedTextField jFormattedTextField5;
-    private javax.swing.JFormattedTextField jFormattedTextField6;
-    private javax.swing.JFormattedTextField jFormattedTextField7;
-    private javax.swing.JFormattedTextField jFormattedTextField8;
-    private javax.swing.JFormattedTextField jFormattedTextField9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JLabel nombre;
     private javax.swing.JFormattedTextField nombre1;
     private javax.swing.JPanel panelencontrados1;
+    private javax.swing.JFormattedTextField referenciaA;
     private javax.swing.JLabel ruc;
     private javax.swing.JFormattedTextField ruc1;
     private javax.swing.JLabel subtotal;
     private javax.swing.JTable tFactura;
     private javax.swing.JLabel telefono;
     private javax.swing.JFormattedTextField telefono1;
+    private javax.swing.JComboBox tipoA;
     private javax.swing.JLabel total;
     private javax.swing.JLabel total1;
     private javax.swing.JLabel total10;
     private javax.swing.JLabel total11;
+    private javax.swing.JLabel total12;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
     private javax.swing.JLabel total6;
     private javax.swing.JLabel total7;
     private javax.swing.JLabel total8;
     private javax.swing.JLabel total9;
+    private javax.swing.JFormattedTextField valorA;
     // End of variables declaration//GEN-END:variables
 
     public Periodos getPeriodoActual() {
