@@ -4,19 +4,21 @@
  */
 package bean;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -24,11 +26,14 @@ import jcinform.persistencia.Aulas;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.Horarios;
 import jcinform.persistencia.Materias;
+import jcinform.persistencia.MateriasMatricula;
+import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Notas;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.SistemaNotas;
 import jcinform.procesos.Administrador;
+import jcinform.procesos.SequenceUtil;
 import org.joda.time.DateMidnight;
 import utilerias.NotasIngresar;
 
@@ -40,8 +45,8 @@ import utilerias.secuencial;
  * @author Geovanny
  */
 @ManagedBean
-@SessionScoped
-public class NotasBean {
+@SessionScoped 
+public class NotasBean implements Serializable{
 
     /**
      * Creates a new instance of NotasBean
@@ -56,7 +61,7 @@ public class NotasBean {
     Periodos per = null;
 
     public NotasBean() {
-        //super();
+//        super();
         FacesContext context = FacesContext.getCurrentInstance();
         per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
         if (adm == null) {
@@ -89,7 +94,7 @@ public class NotasBean {
         cargarDataModel();
 
     }
-    List listaNotas = null;
+    List listaNotas;
     List cabeceras = null;
 
     public String buscarNotas() {
@@ -114,14 +119,13 @@ public class NotasBean {
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
-        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, "
-                + "CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,' ',estudiantes.nombre),  " + query.toUpperCase() + "   "
-                + " FROM Matriculas matricula  "
-                + "LEFT JOIN  Estudiantes estudiantes ON matricula.id_estudiantes = estudiantes.id_estudiantes  "
-                + "LEFT JOIN Materias_matricula mm ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '" + materiasSeleccionada.getIdMaterias() + "' "
-                + "LEFT JOIN Notas notas ON mm.id_materias_matricula  = notas.id_materias_matricula   "
-                + "   WHERE  matricula.estado_mat IN ('M','P','R') "
-                + "    ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
+        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',"
+                + "estudiantes.nombre),  NOTA1,NOTA2    FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
+                + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '"+materiasSeleccionada.getIdMaterias()+"'   "
+                + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
+                + " LEFT JOIN Notas notas ON mm.id_materias_matricula  = notas.id_materias_matricula     "
+                + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '"+per.getIdPeriodos()+"'     "
+                + "   ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
 //        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         Date fechaActual = new Date();
@@ -183,13 +187,13 @@ public class NotasBean {
 
                     }
 
-                    Double object = (Double) vec[a];
+                    BigDecimal object = (BigDecimal) vec[a];
                     if (object == null) {
-                        object = 0.0;
+                        object = new BigDecimal(0.0);
                     }
                     n.setDesde(0.0);
                     n.setHasta(10d);
-                    n.setNota(redondear(object, 2));
+                    n.setNota(redondear(object.doubleValue(), 2));
                     n.setNombre("");
                     n.setTexto(false);
                     
@@ -210,61 +214,109 @@ public class NotasBean {
     /**
      * Graba el registro asociado al objeto que
      */
-    public String guardar() {
+    public void  guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
-         
-        for (Iterator it = listaNotas.iterator(); it.hasNext();) {
-            ArrayList  notasArray = (ArrayList)it.next();
-            for (Iterator it1 = notasArray.iterator(); it1.hasNext();) {
-                NotasIngresar  object1 = (NotasIngresar)it1.next();
-                System.out.println(".."+object1.getNota());
-                
-            }
-            
-            
-        }
-        if(true){
-            listaNotas = null;
-            materiasSeleccionada = new Materias(0);
-            return "";
-        }
-// if (object.getNombre().isEmpty()) {
-//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese el NOMBRE", ""));
-//            return null;
-//        }
-//        if (object.getIdNotas() == 0) {
-        if (!permisos.verificarPermisoReporte("Notas", "agregar_notas", "agregar", true, "PARAMETROS")) {
+          if (!permisos.verificarPermisoReporte("Notas", "agregar_notas", "agregar", true, "PARAMETROS")) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
-            return null;
+             return;
         }
-        try {
-            object.setIdNotas(secuencial.generarClave());
-            adm.guardar(object);
-            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
-            inicializar();
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
+         
+         try {
+            System.out.println("INICIO GUARDAR NOTAS : " + new Date());
+            String redondear = "public Double redondear(Double numero, int decimales) {" +
+                    "    try{" + "        java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        } " + "     } ";
+             
+            Interpreter inter = new Interpreter();
+            secuencial sec = new secuencial();
+            //List<SistemaNotas> notas = adm.query("Select o from SistemaNotas as o order by o.sistema.orden ");
+            List<SistemaNotas> sistemas0 = adm.query("Select o from SistemaNotas as o " +
+                    "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos()  + "' " +
+                    "order by o.idSistemaNotas");
+            for (Iterator<SistemaNotas> its = sistemas0.iterator(); its.hasNext();) {
+                SistemaNotas acaNotanotas = its.next();
+                if (!acaNotanotas.getFormula().trim().equals("")) {
+//                    if (verificar(acaNotanotas.getFormula().trim(), false) == false) {
+//                        mensajes = "NO SE HA PROCEDIDO A GUARDAR REVISE LAS FORMULAS DE DISCIPLINA";
+//                        return;
+//                    }
+                }
 
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+
+            }
+            List<SistemaNotas> notas = adm.query("Select o from SistemaNotas as o " +
+                    "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' order by o.idSistemaNotas");
+//            String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " + "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' ";
+//            adm.ejecutaSql(del);
+            inter.eval(redondear);
+            for (int i = 0; i < listaNotas.size(); i++) {
+                try {
+                    ArrayList labels = (ArrayList) listaNotas.get(i);
+                    Notas notaIngresada = new Notas();
+                    notaIngresada.setIdNotas(sec.generarClave());
+                    System.out.println(""+((NotasIngresar) labels.get(0)).getNombre());
+                    MateriasMatricula matMat = (MateriasMatricula)adm.querySimple("Select o from MateriasMatricula as o "
+                            + "where o.idMatriculas.idMatriculas = '"+new Matriculas(new Integer(((NotasIngresar) labels.get(0)).getNombre())).getIdMatriculas()+"' "
+                            + " and o.idMaterias.idMaterias = '"+materiasSeleccionada.getIdMaterias()+"' "
+                            + " and o.idMatriculas.idPeriodos.idPeriodos = '"+per.getIdPeriodos()+"' ");
+                    notaIngresada.setIdMateriasMatricula(matMat);
+                    notaIngresada.setConvalidad(false);
+                    notaIngresada.setEstado("");
+                    notaIngresada.setEquivalencia(""); 
+                    //notaIngresada.setSistemaNotas(asiprofesor.getOrden());
+                    //notaIngresada.setNotFecha(new Date());
+                    inter.set("nota", notaIngresada);
+                    for (int j = 2; j < labels.size(); j++) {
+                        NotasIngresar object1 = (NotasIngresar) labels.get(j);
+                        String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
+                        //formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
+                        String toda = notas.get(j - 2).getNota() + "";
+                        String uno = toda.substring(0, 1).toUpperCase();
+                        toda = toda.substring(1, toda.length());
+                        inter.eval("nota.set" + (uno + toda) + "(new java.math.BigDecimal(" + redondear(object1.getNota(), 2) + "));");
+                        inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + redondear(object1.getNota(), 2) + ";");
+                        if (!formula.isEmpty()) {
+                            inter.eval("nota.set" + (uno + toda) + "(new java.math.BigDecimal(" + formula + "));");
+                            inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + formula + ";");
+                        }
+                        BigDecimal valor = (BigDecimal) inter.get("nota." + (uno + toda) + "");
+//                    System.out.println("NOTA: "+valor);
+                        object1.setNota(redondear(valor.doubleValue(), 2));
+                    }
+                    notaIngresada = (Notas) inter.get("nota");
+//                    String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " +
+//                            "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' and disciplina = false " +
+//                            "and matCodigo.matCodigo = '" + notaIngresada.getMatCodigo().getMatCodigo() + "' ";
+                    String del = "Delete from Notas where idMateriasMatricula.idMateriasMatricula = '"+matMat.getIdMateriasMatricula()+"' ";
+                    adm.ejecutaSql(del);
+                    
+                    adm.guardar(notaIngresada);
+                    
+                    //adm.crearAcaNotas(acaNotas);
+                } catch (EvalError ex) {
+                     
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "NO SE HA GRABADO LOS REGISTROS\\n ERROR: "+ex));
+                    Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+
+            }
+                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));           
+ //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
+        } catch (EvalError ex) {
+            Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        } else {
-//            if (!permisos.verificarPermisoReporte("Notas", "actualizar_notas", "agregar", true, "PARAMETROS")) {
-//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
-//            }
-//            try {
-//                adm.actualizar(object);
-//                aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdNotas()+"");
-//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
-//                inicializar();
-//            } catch (Exception e) {
-//                //log.error("grabarAction() {} ", e.getMessage());
-//                java.util.logging.Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, e);
-//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-//            }
+//        try {
+//            object.setIdNotas(secuencial.generarClave());
+//            adm.guardar(object);
+
+//            inicializar();
+//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
 //
+//        } catch (Exception e) {
+//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 //        }
-
-        return null;
+         
+        //return null;
     }
 
     /**
