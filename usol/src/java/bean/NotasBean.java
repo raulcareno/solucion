@@ -142,12 +142,13 @@ public class NotasBean implements Serializable {
                     if (estadoNota) {
                         n.setColorEstado("red");
                     }
+                    n.setAncho(45);
                 } else if (a == 1) {
                     Integer object = (Integer) vec[a];
                     n.setNombre(object + "");
                     n.setTexto(true);
                     n.setNota(null);
-                    n.setAncho(45);
+                    n.setAncho(5);
                 } else if (a == 0) {
                     String object = (String) vec[a];
 
@@ -160,7 +161,7 @@ public class NotasBean implements Serializable {
                         n.setEstado(true);//DESHABILITO LA NOTA
                         n.setNombre("");
                     }
-                    n.setAncho(15);
+                    n.setAncho(5);
                 } else {
 
                     DateMidnight inicial = new DateMidnight(tnota.getFechai());
@@ -191,19 +192,19 @@ public class NotasBean implements Serializable {
                     n.setHasta(100d);
                     n.setNota(redondear(object.doubleValue(), 2));
                     n.setNombre("");
-                    n.setAncho(15);
+                    n.setAncho(10);
                     n.setTexto(false);
                     if (tnota.getEsgpa()) {
                         n.setNombre(gpa(rangos,n.getNota())+"");
                         n.setTexto(true);
-                        n.setAncho(15); 
+                        n.setAncho(10); 
                         n.setNota(null);
                     }
                     if (tnota.getEsexamen()) {
                         n.setNombre(equivalencia(rangos,n.getNota())+"");
                         n.setTexto(true);
                         n.setNota(null);
-                        n.setAncho(15);
+                        n.setAncho(10);
                     }
                     
                     x++;
@@ -302,7 +303,7 @@ public class NotasBean implements Serializable {
                     for (int j = 2; j < labels.size(); j++) {
                         NotasIngresar object1 = (NotasIngresar) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
-                        //formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
+                        formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());

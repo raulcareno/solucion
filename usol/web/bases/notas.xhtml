@@ -83,11 +83,11 @@ gua
                     </h:panelGrid>
 
                     <h:panelGrid columns="#{notasBean.cabeceras.size()+2}" id="datos">
-                        <h:inputText size="3"   style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="Mat." />
-                        <h:inputText size="40" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="ESTUDIANTES" />
+                        <h:inputText size="5"   style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="Mat." />
+                        <h:inputText size="45" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="ESTUDIANTES" />
 
                         <c:forEach items="#{notasBean.cabeceras}" var="item2">
-                            <h:outputText   value="#{item2.abreviatura}" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"/>
+                            <h:inputText size="10" disabled="true" value="#{item2.abreviatura}" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"/>
                         </c:forEach>
                     </h:panelGrid>
 
@@ -95,13 +95,13 @@ gua
                     <h:panelGrid border="0" class="mars"  columns="#{notasBean.cabeceras.size()+2}"  id="datosNotas">
                         <c:forEach items="#{notasBean.listaNotas}" var="item2" >
                             <c:forEach  items="#{item2}" var="item3">
-                                <h:inputText  rendered="#{item3.texto == true}"   
+                                <h:inputText disabled="true" rendered="#{item3.texto == true}"   
                                                style="color:#{item3.colorEstado};font-weight:bold;"   
                                                value="#{item3.nombre}" size="#{item3.ancho}" />
                                  
                                 <h:inputText immediate="true" id="id#{item3.id}" value="#{item3.nota}" 
                                               disabled="#{item3.estado}" 
-                                              size="3" styleClass="textoDerecha" required="true" 
+                                              size="10" styleClass="textoDerecha" required="true" 
                                               requiredMessage="INGRESE UN VALOR"
                                               onfocus="this.value=numerosCero(this.value);" 
                                               onkeypress="return tabular(event,this)" 
