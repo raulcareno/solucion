@@ -101,7 +101,7 @@ public class SistemaNotasBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
-                if (adm.existe("SistemaNotas", "nombre", object.getNombre()).size() <= 0) {
+                if (adm.existe("SistemaNotas", "nombre", object.getNombre(),"idPeriodos",per,"").size() <= 0) {
                     object.setIdSistemaNotas(adm.getNuevaClave("SistemaNotas", "idSistemaNotas"));
                     adm.guardar(object);
                     aud.auditar(adm,this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdSistemaNotas()+"");

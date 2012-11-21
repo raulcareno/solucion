@@ -11,6 +11,7 @@ package utilerias;
 public class NotasIngresar {
     public Integer matricula;
     public Integer id;
+    public Integer ancho;
     public Double nota;
     public Double desde;
     public Double hasta;
@@ -102,7 +103,15 @@ public class NotasIngresar {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
+    public Integer getAncho() {
+        return ancho;
+    }
+
+    public void setAncho(Integer ancho) {
+        this.ancho = ancho;
+    }
+     
     
     
 }

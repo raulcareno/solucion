@@ -9,6 +9,7 @@ import bsh.Interpreter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,7 @@ import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Notas;
 import jcinform.persistencia.Periodos;
+import jcinform.persistencia.RangosGpa;
 import jcinform.persistencia.SistemaNotas;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.SequenceUtil;
@@ -45,8 +47,8 @@ import utilerias.secuencial;
  * @author Geovanny
  */
 @ManagedBean
-@SessionScoped 
-public class NotasBean implements Serializable{
+@SessionScoped
+public class NotasBean implements Serializable {
 
     /**
      * Creates a new instance of NotasBean
@@ -100,18 +102,10 @@ public class NotasBean implements Serializable{
     public String buscarNotas() {
         boolean interno = true;
         listaNotas = new ArrayList();
+        List<RangosGpa> rangos = adm.query("Select o from RangosGpa as o ");
         List<SistemaNotas> sistemas = adm.query("Select o from SistemaNotas as o "
                 + "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
                 + "order by o.idSistemaNotas ");
-//        for (Iterator<SistemaNotas> its = sistemas0.iterator(); its.hasNext();) {
-//            SistemaNotas acaNotanotas = its.next();
-//            if (!acaNotanotas.getFormula().trim().equals("")) {
-//                if (verificar(acaNotanotas.getFormula().trim(), false) == false) {
-//                    mensajes = "NO SE HA PROCEDIDO A CARGAR LAS NOTAS, LAS FORMULAS INGRESADAS EN APROVECHAMIENTO ESTÀN INCORRECTAS ...!";
-//                    return;
-//                }
-//            }
-//        }
 
         String query = "";
         for (SistemaNotas notass : sistemas) {
@@ -120,11 +114,11 @@ public class NotasBean implements Serializable{
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
         String q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',"
-                + "estudiantes.nombre),  NOTA1,NOTA2    FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
-                + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '"+materiasSeleccionada.getIdMaterias()+"'   "
+                + "estudiantes.nombre),  " + query + "   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
+                + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '" + materiasSeleccionada.getIdMaterias() + "'   "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
                 + " LEFT JOIN Notas notas ON mm.id_materias_matricula  = notas.id_materias_matricula     "
-                + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '"+per.getIdPeriodos()+"'     "
+                + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '" + per.getIdPeriodos() + "'     "
                 + "   ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
 //        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
@@ -153,6 +147,7 @@ public class NotasBean implements Serializable{
                     n.setNombre(object + "");
                     n.setTexto(true);
                     n.setNota(null);
+                    n.setAncho(45);
                 } else if (a == 0) {
                     String object = (String) vec[a];
 
@@ -165,6 +160,7 @@ public class NotasBean implements Serializable{
                         n.setEstado(true);//DESHABILITO LA NOTA
                         n.setNombre("");
                     }
+                    n.setAncho(15);
                 } else {
 
                     DateMidnight inicial = new DateMidnight(tnota.getFechai());
@@ -192,14 +188,27 @@ public class NotasBean implements Serializable{
                         object = new BigDecimal(0.0);
                     }
                     n.setDesde(0.0);
-                    n.setHasta(10d);
+                    n.setHasta(100d);
                     n.setNota(redondear(object.doubleValue(), 2));
                     n.setNombre("");
+                    n.setAncho(15);
                     n.setTexto(false);
+                    if (tnota.getEsgpa()) {
+                        n.setNombre(gpa(rangos,n.getNota())+"");
+                        n.setTexto(true);
+                        n.setAncho(15); 
+                        n.setNota(null);
+                    }
+                    if (tnota.getEsexamen()) {
+                        n.setNombre(equivalencia(rangos,n.getNota())+"");
+                        n.setTexto(true);
+                        n.setNota(null);
+                        n.setAncho(15);
+                    }
                     
                     x++;
                 }
-                if(a>0){
+                if (a > 0) {
                     n.setId(xy);
                     xy++;
                     notaAnadir.add(n);
@@ -212,26 +221,51 @@ public class NotasBean implements Serializable{
     }
 
     /**
+     * REGRESAR GPA
+     */
+    public Double gpa(List<RangosGpa> ra, Double valor) {
+        for (Iterator<RangosGpa> it = ra.iterator(); it.hasNext();) {
+            RangosGpa rangosGpa = it.next();
+            if (valor.doubleValue() >= rangosGpa.getDesde() && valor.doubleValue() <= rangosGpa.getHasta()) {
+                return rangosGpa.getGpa().doubleValue();
+            }
+        }
+        return 0.0;
+    }
+    /**
+     * REGRESAR EQUIVALENCIA
+     */
+    public String equivalencia(List<RangosGpa> ra, Double valor) {
+        for (Iterator<RangosGpa> it = ra.iterator(); it.hasNext();) {
+            RangosGpa rangosGpa = it.next();
+            if (valor.doubleValue() >= rangosGpa.getDesde() && valor.doubleValue() <= rangosGpa.getHasta()) {
+                return rangosGpa.getEquivalencia();
+            }
+        }
+        return "";
+    }
+
+    /**
      * Graba el registro asociado al objeto que
      */
-    public void  guardar() {
+    public void guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
-          if (!permisos.verificarPermisoReporte("Notas", "agregar_notas", "agregar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Notas", "agregar_notas", "agregar", true, "PARAMETROS")) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
-             return;
+            return;
         }
-         
-         try {
+
+        try {
             System.out.println("INICIO GUARDAR NOTAS : " + new Date());
-            String redondear = "public Double redondear(Double numero, int decimales) {" +
-                    "    try{" + "        java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        } " + "     } ";
-             
+            String redondear = "public Double redondear(Double numero, int decimales) {"
+                    + "    try{" + "        java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        } " + "     } ";
+
             Interpreter inter = new Interpreter();
             secuencial sec = new secuencial();
             //List<SistemaNotas> notas = adm.query("Select o from SistemaNotas as o order by o.sistema.orden ");
-            List<SistemaNotas> sistemas0 = adm.query("Select o from SistemaNotas as o " +
-                    "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos()  + "' " +
-                    "order by o.idSistemaNotas");
+            List<SistemaNotas> sistemas0 = adm.query("Select o from SistemaNotas as o "
+                    + "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
+                    + "order by o.idSistemaNotas");
             for (Iterator<SistemaNotas> its = sistemas0.iterator(); its.hasNext();) {
                 SistemaNotas acaNotanotas = its.next();
                 if (!acaNotanotas.getFormula().trim().equals("")) {
@@ -243,8 +277,8 @@ public class NotasBean implements Serializable{
 
 
             }
-            List<SistemaNotas> notas = adm.query("Select o from SistemaNotas as o " +
-                    "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' order by o.idSistemaNotas");
+            List<SistemaNotas> notas = adm.query("Select o from SistemaNotas as o "
+                    + "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' order by o.idSistemaNotas");
 //            String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " + "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' ";
 //            adm.ejecutaSql(del);
             inter.eval(redondear);
@@ -253,15 +287,15 @@ public class NotasBean implements Serializable{
                     ArrayList labels = (ArrayList) listaNotas.get(i);
                     Notas notaIngresada = new Notas();
                     notaIngresada.setIdNotas(sec.generarClave());
-                    System.out.println(""+((NotasIngresar) labels.get(0)).getNombre());
-                    MateriasMatricula matMat = (MateriasMatricula)adm.querySimple("Select o from MateriasMatricula as o "
-                            + "where o.idMatriculas.idMatriculas = '"+new Matriculas(new Integer(((NotasIngresar) labels.get(0)).getNombre())).getIdMatriculas()+"' "
-                            + " and o.idMaterias.idMaterias = '"+materiasSeleccionada.getIdMaterias()+"' "
-                            + " and o.idMatriculas.idPeriodos.idPeriodos = '"+per.getIdPeriodos()+"' ");
+                    System.out.println("" + ((NotasIngresar) labels.get(0)).getNombre());
+                    MateriasMatricula matMat = (MateriasMatricula) adm.querySimple("Select o from MateriasMatricula as o "
+                            + "where o.idMatriculas.idMatriculas = '" + new Matriculas(new Integer(((NotasIngresar) labels.get(0)).getNombre())).getIdMatriculas() + "' "
+                            + " and o.idMaterias.idMaterias = '" + materiasSeleccionada.getIdMaterias() + "' "
+                            + " and o.idMatriculas.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
                     notaIngresada.setIdMateriasMatricula(matMat);
                     notaIngresada.setConvalidad(false);
                     notaIngresada.setEstado("");
-                    notaIngresada.setEquivalencia(""); 
+                    notaIngresada.setEquivalencia("");
                     //notaIngresada.setSistemaNotas(asiprofesor.getOrden());
                     //notaIngresada.setNotFecha(new Date());
                     inter.set("nota", notaIngresada);
@@ -286,22 +320,22 @@ public class NotasBean implements Serializable{
 //                    String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " +
 //                            "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' and disciplina = false " +
 //                            "and matCodigo.matCodigo = '" + notaIngresada.getMatCodigo().getMatCodigo() + "' ";
-                    String del = "Delete from Notas where idMateriasMatricula.idMateriasMatricula = '"+matMat.getIdMateriasMatricula()+"' ";
+                    String del = "Delete from Notas where idMateriasMatricula.idMateriasMatricula = '" + matMat.getIdMateriasMatricula() + "' ";
                     adm.ejecutaSql(del);
-                    
+
                     adm.guardar(notaIngresada);
-                    
+
                     //adm.crearAcaNotas(acaNotas);
                 } catch (EvalError ex) {
-                     
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "NO SE HA GRABADO LOS REGISTROS\\n ERROR: "+ex));
+
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "NO SE HA GRABADO LOS REGISTROS\\n ERROR: " + ex));
                     Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
                     return;
                 }
 
             }
-                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));           
- //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));
+            //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
         } catch (EvalError ex) {
             Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -315,7 +349,7 @@ public class NotasBean implements Serializable{
 //        } catch (Exception e) {
 //            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
 //        }
-         
+
         //return null;
     }
 
