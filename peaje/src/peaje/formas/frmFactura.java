@@ -1682,6 +1682,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
                     if(facActual.getTotal().doubleValue()>0){
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                        Thread.sleep(5000); 
+                        System.out.println("mando a imprimir otra vez");
+                        imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     }
                     if (empresaObj.getSeabrefac()) {
                         if (empresaObj.getRetardoSalida() != null) {

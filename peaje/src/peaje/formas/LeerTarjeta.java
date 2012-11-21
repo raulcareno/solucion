@@ -220,7 +220,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             }
             //System.out.println("VAL: TARJETA: " + tarjeta);
             //System.out.println("" + tarjeta);
-            if (tarjeta.contains("AEIOUA")) {
+            if (tarjeta.contains("AEIOUAE1")) {
                 //if (tarjeta.contains("AEIOUA")) {
                 try {
                     //                            tarjeta = tarjeta.replace("00", "");
@@ -249,7 +249,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 }
 
             }
-            if (tarjeta.contains("AEIOU2")) {
+            if (tarjeta.contains("AEIOUAE2")) {
                 try {
                     tarjeta = tarjeta.replace("00", "");
                     System.out.println("AEIOUAEIOU2" + new Date());
@@ -262,7 +262,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                                    Thread.sleep(retardo * 1000);
 //                                }
 //                      }
-                    abrirPuerta(princip.empresaObj.getEntra1());
+                    abrirPuerta(princip.empresaObj.getEntra2());
                     System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
                     tarjeta = "";
                     return;
@@ -312,7 +312,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
             } else if (tarjeta.contains("AEIOUAE2")) {
                 try {
-                    System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
+                    System.out.println("abrio 2:  " + tarjeta + " ** " + new Date());
                     //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
                     //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
                     //             tarjeta = tarjeta.replace("00", "");
@@ -324,8 +324,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                                     Thread.sleep(retardo * 1000);
                                 }
                       }
-                    abrirPuerta(princip.empresaObj.getEntra1());
-                    System.out.println("ABRIO PUERTA aeiou1: " + princip.empresaObj.getEntra1());
+                    abrirPuerta(princip.empresaObj.getEntra2());
+                    System.out.println("ABRIO PUERTA aeiou2: " + princip.empresaObj.getEntra2());
                     return;
                 } catch (InterruptedException ex) {
                     Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -505,7 +505,10 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;
             /* Scan found services to see if anyone suits our needs */
-            String impre = emp.getImpresora() + impresoraLlega;
+            String impre = emp.getImpresora();
+            if(impresoraLlega.equals("2")){
+                    impre = emp.getImpresora2();
+            }
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName();
                 if (nombre.contains(impre)) {
