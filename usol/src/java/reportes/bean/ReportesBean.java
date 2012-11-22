@@ -162,7 +162,7 @@ public class ReportesBean implements Serializable {
                 String codigoMatriculas = "";
                 for (int i = 0; i < mediumMatriculasModel.size(); i++) {
                     if (mediumMatriculasModel.get(i).getConfirmada()) {
-                        codigoMatriculas += mediumMatriculasModel.get(i).getIdMatriculas();
+                        codigoMatriculas += mediumMatriculasModel.get(i).getIdMatriculas()+",";
                     }
                 }
                 if(codigoMatriculas.length()>0){
@@ -196,7 +196,7 @@ public class ReportesBean implements Serializable {
                 String codigoMatriculas = "";
                 for (int i = 0; i < mediumMatriculasModel.size(); i++) {
                     if (mediumMatriculasModel.get(i).getConfirmada()) {
-                        codigoMatriculas += mediumMatriculasModel.get(i).getIdMatriculas();
+                        codigoMatriculas += mediumMatriculasModel.get(i).getIdMatriculas()+",";
                     }
                 }
                 if(codigoMatriculas.length()>0){
