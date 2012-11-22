@@ -106,7 +106,15 @@ public class NotasBean implements Serializable {
         List<SistemaNotas> sistemas = adm.query("Select o from SistemaNotas as o "
                 + "where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
                 + "order by o.idSistemaNotas ");
-
+        SistemaNotas sisEstado = new SistemaNotas(-1);
+        sisEstado.setAbreviatura("ESTADO");
+        sisEstado.setEsgpa(false);
+        sisEstado.setEsexamen(false);
+        sisEstado.setEsnota(false);
+        sisEstado.setEsasistencia(false);
+        sisEstado.setSeimprime(false); 
+        sisEstado.setNota("");
+        sistemas.add(sisEstado); 
         String query = "";
         for (SistemaNotas notass : sistemas) {
             query += notass.getNota() + ",";
@@ -114,7 +122,7 @@ public class NotasBean implements Serializable {
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
         String q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',"
-                + "estudiantes.nombre),  " + query + "   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
+                + "estudiantes.nombre),  " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
                 + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '" + materiasSeleccionada.getIdMaterias() + "'   "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
                 + " LEFT JOIN Notas notas ON mm.id_materias_matricula  = notas.id_materias_matricula     "
@@ -131,14 +139,30 @@ public class NotasBean implements Serializable {
             int x = 0;
             ArrayList notaAnadir = new ArrayList();
             Boolean estadoNota = false;
+            Double notaVerifica = 0.0;
             for (a = 0; a < vec.length; a++) {
                 SistemaNotas tnota = sistemas.get(x);
                 NotasIngresar n = new NotasIngresar();
-                if (a == 2) {
+                if (a == vec.length-1) {
+                    String object = (String) vec[a];
+                    n.setNombre(aprobado(rangos, notaVerifica)); 
+                    n.setTexto(true);
+                    n.setNota(null);
+                    if (n.getNombre().contains("A")) {
+                        n.setNombre("APROBADO");
+                        n.setColorEstado("blue");
+                    }else{
+                        n.setNombre("REPROBADO");
+                        n.setColorEstado("red");
+                    }
+                    System.out.println("NOTAveri: "+notaVerifica);
+                    n.setAncho(12);
+                }else if (a == 2) {
                     String object = (String) vec[a];
                     n.setNombre(object);
                     n.setTexto(true);
                     n.setNota(null);
+                    n.setColorEstado("black");
                     if (estadoNota) {
                         n.setColorEstado("red");
                     }
@@ -147,8 +171,9 @@ public class NotasBean implements Serializable {
                     Integer object = (Integer) vec[a];
                     n.setNombre(object + "");
                     n.setTexto(true);
+                    n.setColorEstado("black");
                     n.setNota(null);
-                    n.setAncho(5);
+                    n.setAncho(2);
                 } else if (a == 0) {
                     String object = (String) vec[a];
 
@@ -194,16 +219,21 @@ public class NotasBean implements Serializable {
                     n.setNombre("");
                     n.setAncho(10);
                     n.setTexto(false);
+                    if(tnota.getEsnota()){
+                        notaVerifica = n.getNota();
+                    }
                     if (tnota.getEsgpa()) {
                         n.setNombre(gpa(rangos,n.getNota())+"");
                         n.setTexto(true);
                         n.setAncho(10); 
+                        n.setColorEstado("black");
                         n.setNota(null);
                     }
                     if (tnota.getEsexamen()) {
                         n.setNombre(equivalencia(rangos,n.getNota())+"");
                         n.setTexto(true);
                         n.setNota(null);
+                        n.setColorEstado("black");
                         n.setAncho(10);
                     }
                     
@@ -246,10 +276,21 @@ public class NotasBean implements Serializable {
         return "";
     }
 
+    public String aprobado(List<RangosGpa> ra, Double valor) {
+        for (Iterator<RangosGpa> it = ra.iterator(); it.hasNext();) {
+            RangosGpa rangosGpa = it.next();
+            if (valor.doubleValue() >= rangosGpa.getDesde() && valor.doubleValue() <= rangosGpa.getHasta()) {
+                return rangosGpa.getResultado();
+            }
+        }
+        return "";
+    }
+
     /**
      * Graba el registro asociado al objeto que
      */
     public void guardar() {
+        List<RangosGpa> rangos = adm.query("Select o from RangosGpa as o ");
         FacesContext context = FacesContext.getCurrentInstance();
         if (!permisos.verificarPermisoReporte("Notas", "agregar_notas", "agregar", true, "PARAMETROS")) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
@@ -300,7 +341,7 @@ public class NotasBean implements Serializable {
                     //notaIngresada.setSistemaNotas(asiprofesor.getOrden());
                     //notaIngresada.setNotFecha(new Date());
                     inter.set("nota", notaIngresada);
-                    for (int j = 2; j < labels.size(); j++) {
+                    for (int j = 2; j < labels.size()-1; j++) {
                         NotasIngresar object1 = (NotasIngresar) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
@@ -316,6 +357,9 @@ public class NotasBean implements Serializable {
                         Double valor = (Double) inter.get("nota." + (uno + toda) + "");
 //                    System.out.println("NOTA: "+valor);
                         object1.setNota(redondear(valor.doubleValue(), 2));
+                        if(notas.get(j - 2).getEsnota()){
+                            inter.eval("nota.setEstado(\"" + aprobado(rangos, valor) + " \");");
+                        }
                     }
                     notaIngresada = (Notas) inter.get("nota");
 //                    String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " +
@@ -323,7 +367,7 @@ public class NotasBean implements Serializable {
 //                            "and matCodigo.matCodigo = '" + notaIngresada.getMatCodigo().getMatCodigo() + "' ";
                     String del = "Delete from Notas where idMateriasMatricula.idMateriasMatricula = '" + matMat.getIdMateriasMatricula() + "' ";
                     adm.ejecutaSql(del);
-
+                    
                     adm.guardar(notaIngresada);
 
                     //adm.crearAcaNotas(acaNotas);
@@ -335,6 +379,7 @@ public class NotasBean implements Serializable {
                 }
 
             }
+            buscarNotas();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));
             //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
         } catch (EvalError ex) {
