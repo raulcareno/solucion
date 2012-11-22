@@ -184,9 +184,9 @@ public class NotasBean implements Serializable {
 
                     }
 
-                    BigDecimal object = (BigDecimal) vec[a];
+                    Double object = (Double) vec[a];
                     if (object == null) {
-                        object = new BigDecimal(0.0);
+                        object = new Double(0.0);
                     }
                     n.setDesde(0.0);
                     n.setHasta(100d);
@@ -307,13 +307,13 @@ public class NotasBean implements Serializable {
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());
-                        inter.eval("nota.set" + (uno + toda) + "(new java.math.BigDecimal(" + redondear(object1.getNota(), 2) + "));");
+                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(object1.getNota(), 2) + ");");
                         inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + redondear(object1.getNota(), 2) + ";");
                         if (!formula.isEmpty()) {
-                            inter.eval("nota.set" + (uno + toda) + "(new java.math.BigDecimal(" + formula + "));");
+                            inter.eval("nota.set" + (uno + toda) + "((" + formula + "));");
                             inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + formula + ";");
                         }
-                        BigDecimal valor = (BigDecimal) inter.get("nota." + (uno + toda) + "");
+                        Double valor = (Double) inter.get("nota." + (uno + toda) + "");
 //                    System.out.println("NOTA: "+valor);
                         object1.setNota(redondear(valor.doubleValue(), 2));
                     }
