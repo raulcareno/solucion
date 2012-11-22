@@ -17,6 +17,7 @@ import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -25,6 +26,7 @@ import javax.servlet.ServletContext;
 import jcinform.persistencia.Accesos;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Institucion;
+import jcinform.persistencia.Materias;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.RangosGpa;
@@ -39,8 +41,8 @@ import utilerias.RecuperarBean;
  * @author Geovanny
  */
 @ManagedBean
-@SessionScoped
-public class LoginEstudianteBean {
+@ViewScoped
+public class NotasEstudianteBean {
 
     public String usuario;
     public String clave;
@@ -49,41 +51,17 @@ FacesContext context = FacesContext.getCurrentInstance();
     /**
      * Creates a new instance of LoginBean
      */
-    public LoginEstudianteBean() {
+    public NotasEstudianteBean() {
         super();
         usuario = "";
         clave = "";
         adm = new Administrador();
          context = FacesContext.getCurrentInstance();
 //        context.addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "", ""));
-         
-        try {
-            List<Institucion> user = adm.query("Select o from Institucion as o ");
-            ServletContext servletContext = (ServletContext) context.getExternalContext().getContext();
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("institucion");
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("institucion", user.get(0));
-                                 
-            String fileFoto = servletContext.getRealPath("") + File.separator +"logo.png";
-            String fileFoto2 = servletContext.getRealPath("") +  File.separator +"imagen.png";
-            if (!new File(fileFoto).exists() || !new File(fileFoto2).exists()) {
-                System.out.println("ENTRO A SELECCIONAR LA IMAGEN...");
-                generarImagen("logo.png", user.get(0).getLogo());
-                generarImagen("imagen.png", user.get(0).getImagen());
-            }
-        } catch (Exception e) {
-            System.out.println("NO SE PUDO CARGAR LA IMAGEN DE INICIO");
-        }
-
-        try {
-            //FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().getSessionMap().remove("accesos");
-            context.getExternalContext().getSessionMap().remove("user");
-            context.getExternalContext().getSessionMap().remove("periodo");
-        } catch (Exception e) {
-        }
-       
+ 
+         Matriculas mat = (Matriculas) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("matricula");
+         if(mat !=null)
+            buscarNotasEstudiante();
 
     }
     public Periodos periodoSeleccionado;
@@ -112,7 +90,7 @@ FacesContext context = FacesContext.getCurrentInstance();
 
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(LoginEstudianteBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NotasEstudianteBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -144,7 +122,7 @@ FacesContext context = FacesContext.getCurrentInstance();
          Matriculas mat = (Matriculas) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("matricula");
          try {
           cabeceras = adm.query("Select o from SistemaNotas as o "
-                  + " where o.idPeriodos.estado = true = '" + mat.getIdPeriodos().getIdPeriodos() + "' ");
+                  + " where o.idPeriodos.idPeriodos = '" + mat.getIdPeriodos().getIdPeriodos() + "' ");
       } catch (Exception e) {
       }
           
@@ -169,8 +147,7 @@ FacesContext context = FacesContext.getCurrentInstance();
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
-        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',"
-                + "estudiantes.nombre),  " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
+        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, notas.id_materias, " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
                 + "ON matricula.id_matriculas = mm.id_matriculas    "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
                 + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas      "
@@ -192,7 +169,7 @@ FacesContext context = FacesContext.getCurrentInstance();
                 SistemaNotas tnota = sistemas.get(x);
                 NotasIngresar n = new NotasIngresar();
                 if (a == vec.length-1) {
-                    String object = (String) vec[a];
+//                    String object = (String) vec[a];
                     n.setNombre(aprobado(rangos, notaVerifica)); 
                     n.setTexto(true);
                     n.setNota(null);
@@ -206,8 +183,9 @@ FacesContext context = FacesContext.getCurrentInstance();
                     System.out.println("NOTAveri: "+notaVerifica);
                     n.setAncho(12);
                 }else if (a == 2) {
-                    String object = (String) vec[a];
-                    n.setNombre(object);
+                    Integer idMat = (Integer) vec[a];
+                    Materias mater = (Materias) adm.buscarClave(idMat,Materias.class);
+                    n.setNombre(mater.getNombre());
                     n.setTexto(true);
                     n.setNota(null);
                     n.setColorEstado("black");

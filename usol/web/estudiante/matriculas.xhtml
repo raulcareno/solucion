@@ -42,7 +42,7 @@
                     }
                 </script>
             <script src="locales.js" type="text/javascript"/>
-            <h:panelGrid width="100%" id="busqueda" >
+            <h:panelGrid   rendered="#{matriculasBeanEstudiantes.habilitadoMatriculas == true}"  width="100%" id="busqueda" >
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                 <!--p:message for="form" /-->
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 

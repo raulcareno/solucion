@@ -13,6 +13,7 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
+                <script src="locales.js" type="text/javascript"/>
                 <h:panelGrid width="100%"  columns="2">
                     <p:panelGrid columns="1" style="vertical-align: top;width:300px;height: 360px" >
                         <p:dataTable style="vertical-align: top; width:300px;height: 300px"  id="modalidad" var="obj" value="#{sistemaNotasBean.model}">  
@@ -36,24 +37,30 @@
                             <h:outputText value="FORMULA" />  
                             <p:inputText value="#{sistemaNotasBean.object.formula}" id="formula"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="ES ASISTENCIA" />  
-                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esasistencia}" id="esasistencia"   style="font-weight:bold;"/>  
+                            <h:panelGrid columns="3">
+                                <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esasistencia}" id="esasistencia"   style="font-weight:bold;"/>  
 
-                            <h:outputText value="ES GPA" />  
-                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esgpa}" id="esgpa"   style="font-weight:bold;"/>  
-
+                                <h:outputText value="ES GPA" />  
+                                <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esgpa}" id="esgpa"   style="font-weight:bold;"/>  
+                            </h:panelGrid>
                             <h:outputText value="ES NOTA" />  
-                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esnota}" id="esnota"   style="font-weight:bold;"/>  
+                            <h:panelGrid columns="3">
+                                <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esnota}" id="esnota"   style="font-weight:bold;"/>  
 
-                            <h:outputText value="ES EQUIVALENCIA" />  
-                            <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esexamen}" id="esexamen"   style="font-weight:bold;"/>  
-
+                                <h:outputText value="ES EQUIVALENCIA" />  
+                                <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esexamen}" id="esexamen"   style="font-weight:bold;"/>  
+                            </h:panelGrid>
                             <h:outputText value="SE IMPRIME" />  
                             <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.seimprime}" id="seimprime"   style="font-weight:bold;"/>  
-                                <h:outputText value="NOTA" />  
-                                <p:inputText value="#{sistemaNotasBean.object.nota}" id="nota"  maxlength="10" size="35" readonly="true"  style="font-weight:bold;"/>  
 
+                            <h:outputText value="DESDE" />  
+                            <p:calendar value="#{sistemaNotasBean.object.fechai}"   locale="es" pattern="dd/MM/yyyy HH:mm"  navigator="true"  showOn="button" />
+                            <h:outputText value="HASTA" />  
+                            <p:calendar value="#{sistemaNotasBean.object.fechaf}" locale="es" pattern="dd/MM/yyyy HH:mm"   navigator="true"  showOn="button"/>
+
+                            <h:outputText value="NOTA" />  
+                            <p:inputText value="#{sistemaNotasBean.object.nota}" id="nota"  maxlength="10" size="35" readonly="true"  style="font-weight:bold;"/>  
                             <p:inputText  value="#{sistemaNotasBean.object.idSistemaNotas}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
-
                         </h:panelGrid>  
                         <h:panelGrid columns="4">
                             <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:modalidad"   action="#{sistemaNotasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  

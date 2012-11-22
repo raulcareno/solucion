@@ -125,12 +125,12 @@ public class NotasBean implements Serializable {
                 + "estudiantes.nombre),  " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
                 + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '" + materiasSeleccionada.getIdMaterias() + "'   "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
-                + " LEFT JOIN Notas notas ON mm.id_materias_matricula  = notas.id_materias_matricula     "
+                + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas      "
                 + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '" + per.getIdPeriodos() + "'     "
                 + "   ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
 //        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
-        Date fechaActual = new Date();
+        Date fechaActual = adm.Date();
         DateMidnight actual = new DateMidnight(fechaActual);
         int xy = 0;
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -191,10 +191,10 @@ public class NotasBean implements Serializable {
 
                     DateMidnight inicial = new DateMidnight(tnota.getFechai());
                     DateMidnight finale = new DateMidnight(tnota.getFechaf());
-                    if (interno) {
-                        inicial = new DateMidnight(tnota.getFechasi());
-                        finale = new DateMidnight(tnota.getFechasf());
-                    }
+//                    if (interno) {
+//                        inicial = new DateMidnight(tnota.getFechasi());
+//                        finale = new DateMidnight(tnota.getFechasf());
+//                    }
 
                     if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
                         n.setEstado(false);//habilito la notaIngresada
@@ -330,11 +330,12 @@ public class NotasBean implements Serializable {
                     Notas notaIngresada = new Notas();
                     notaIngresada.setIdNotas(sec.generarClave());
                     System.out.println("" + ((NotasIngresar) labels.get(0)).getNombre());
-                    MateriasMatricula matMat = (MateriasMatricula) adm.querySimple("Select o from MateriasMatricula as o "
-                            + "where o.idMatriculas.idMatriculas = '" + new Matriculas(new Integer(((NotasIngresar) labels.get(0)).getNombre())).getIdMatriculas() + "' "
-                            + " and o.idMaterias.idMaterias = '" + materiasSeleccionada.getIdMaterias() + "' "
-                            + " and o.idMatriculas.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
-                    notaIngresada.setIdMateriasMatricula(matMat);
+//                    MateriasMatricula matMat = (MateriasMatricula) adm.querySimple("Select o from MateriasMatricula as o "
+//                            + "where o.idMatriculas.idMatriculas = '" + new Matriculas(new Integer(((NotasIngresar) labels.get(0)).getNombre())).getIdMatriculas() + "' "
+//                            + " and o.idMaterias.idMaterias = '" + materiasSeleccionada.getIdMaterias() + "' "
+//                            + " and o.idMatriculas.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
+                    notaIngresada.setIdMatriculas(new Matriculas(new Integer(((NotasIngresar) labels.get(0)).getNombre())));
+                    notaIngresada.setIdMaterias(materiasSeleccionada);
                     notaIngresada.setConvalidad(false);
                     notaIngresada.setEstado("");
                     notaIngresada.setEquivalencia("");
@@ -365,7 +366,9 @@ public class NotasBean implements Serializable {
 //                    String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " +
 //                            "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' and disciplina = false " +
 //                            "and matCodigo.matCodigo = '" + notaIngresada.getMatCodigo().getMatCodigo() + "' ";
-                    String del = "Delete from Notas where idMateriasMatricula.idMateriasMatricula = '" + matMat.getIdMateriasMatricula() + "' ";
+                    String del = "Delete from Notas "
+                            + " where idMaterias.idMaterias = '" + materiasSeleccionada.getIdMaterias() + "' "
+                            + " and idMatriculas.idMatriculas = '"+notaIngresada.getIdMatriculas().getIdMatriculas()+"'   ";
                     adm.ejecutaSql(del);
                     
                     adm.guardar(notaIngresada);

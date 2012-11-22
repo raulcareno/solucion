@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templatesE/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:define name="title">
+Registro de Notas
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid  width="100%" id="busqueda" >
+            <h:form  prependId="false" id="form">
+                <script type="text/javascript" src="funciones.js">
+                </script>
+                <h:outputScript library="javascript" name="funciones.js" />
+                <style type="text/css">
+                    .slot {
+                        width:150px;
+                        height:150px;
+                        display:block;
+                        background: lightgrey;
+                    }
+
+                    .blueslot {
+                        width:100%;
+                        height:200px;
+                        background: blue;
+                        display:block;
+                    }
+                    .panelito{
+                        vertical-align: top;
+                        margin: -5px -5px 0px 0px;
+                        border:none; 
+
+                        border-color: transparent; 
+                        text-align:center;
+
+
+                    }
+                    .panelGrande2{
+                        vertical-align: top;
+                        width: 150px; 
+                        text-align:center;
+                        margin: 0px 0px 0px 0px;
+                    }
+                    .panelGrande{
+
+                        width: 93px; 
+                        text-align:center;
+                        margin: 0px 0px 0px 0px;
+                        padding: -2px !important;
+                        border-width: 1px;
+                        border-color: black;
+                    }
+
+                    .textos{
+                        font-size: 9px;font-weight: bold; margin: -15px -5px -5px -5px; padding: -5px -5px -5px -5px; text-align:center;
+                    }
+                    .textos2{
+                        font-size: 9px;font-weight: bold; margin: -5px; text-align:center;
+                    }
+                    .textos3{
+                        font-size: 12px;font-weight: bold;   text-align:center; float:center;
+                        color: red ;
+                    }d
+
+                </style>
+            
+                <p:panel id="registro"  style="width: 100%;" header="#{sessionScope.matricula.idCarreras.nombre}"  >
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                    <!--p:messages id="messages" showDetail="false" autoUpdate="true" /--> 
+                    <h:outputText   style="border:0px ;background: white;font-weight:bold;"
+                                    value="#{sessionScope.matricula.idEstudiantes.apellidoPaterno} "/>
+                    <h:outputText  style="border:0px ;background: white;font-weight:bold;"  value="#{sessionScope.matricula.idEstudiantes.apellidoMaterno} "/>
+                    <h:outputText   style="border:0px ;background: white;font-weight:bold;" value="#{sessionScope.matricula.idEstudiantes.nombre}"/>
+                    <h:panelGrid columns="#{notasEstudianteBean.cabeceras.size()+3}" id="datos">
+                        <h:inputText size="5"   style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="Mat." />
+                        <h:inputText size="45" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="ESTUDIANTES" />
+                        <c:forEach items="#{notasEstudianteBean.cabeceras}" var="item2">
+                            <h:inputText size="10" disabled="true" value="#{item2.abreviatura}" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"/>
+                        </c:forEach>
+                        <h:inputText size="10" style="background-color:#FFFFCC;color:black;font-weight:bold;border:0px"  styleClass="texto" value="ESTADO" />
+                    </h:panelGrid>
+
+                    <!-- DIBUJO LAS NOTAS -->
+                    <h:panelGrid border="1"  class="mars"  columns="#{notasEstudianteBean.cabeceras.size()+3}"  id="datosNotas">
+                        <c:forEach items="#{notasEstudianteBean.listaNotas}" var="item2" >
+                            <c:forEach  items="#{item2}" var="item3">
+                                <h:inputText disabled="true" rendered="#{item3.texto == true}"   
+                                               style="border:0px ;background: white;font-weight:bold;color:#{item3.colorEstado};"   
+                                               value="#{item3.nombre}" size="#{item3.ancho}" />
+                                 
+                                <h:inputText immediate="true" id="id#{item3.id}" value="#{item3.nota}" 
+                                              disabled="#{item3.estado}" 
+                                              size="10" styleClass="textoDerecha" required="true" 
+                                             rendered="#{item3.texto == false}" 
+                                              
+                                             style="border:0px ;background: white;font-weight:bold;color:black;"   >
+                                    <p:ajax async="true" process="@this" event="change" />
+                                </h:inputText>
+
+
+                            </c:forEach>
+                        </c:forEach>
+                    </h:panelGrid>
+
+
+                  
+                </p:panel>
+                  <h:panelGrid columns="4">
+
+                        <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  
+                            <p:printer target="registro" />  
+                        </p:commandButton>  
+
+                    </h:panelGrid>
+
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>
