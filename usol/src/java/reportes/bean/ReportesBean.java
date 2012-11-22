@@ -22,11 +22,14 @@ import javax.faces.model.SelectItem;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.Estudiantes;
+import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Pais;
+import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Provincia;
 import jcinform.procesos.Administrador;
 import reportes.ExportarReportes;
+import reportes.ExportarReportesCon;
 import reportes.FichaMatricula;
 
 import utilerias.Permisos;
@@ -45,11 +48,14 @@ public class ReportesBean implements Serializable {
     private Matriculas selectedMatricula;
     private Matriculas[] selectedMatriculas;
     private List<Matriculas> mediumMatriculasModel;
+    Periodos per;
+    Institucion inst;
 
     public ReportesBean() {
         //super();
         FacesContext context = FacesContext.getCurrentInstance();
-
+        per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+        inst = (Institucion) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("institucion");
         if (adm == null) {
             adm = new Administrador();
         }
@@ -98,7 +104,8 @@ public class ReportesBean implements Serializable {
         try {
             try {
                 mediumMatriculasModel = adm.query("Select o from Matriculas as o "
-                        + "where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by o.idEstudiantes.apellidoPaterno ");
+                        + "where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' "
+                        + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' order by o.idEstudiantes.apellidoPaterno ");
                 for (Iterator<Matriculas> it = mediumMatriculasModel.iterator(); it.hasNext();) {
                     Matriculas matriculas = it.next();
                     matriculas.setConfirmada(false);
@@ -148,35 +155,80 @@ public class ReportesBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione un Reporte...!", "Seleccione un Reporte...!"));
                 return null;
             } else if (tipoReporte.equals("FM")) { //Ficha de Matricula" itemValue="FM" />
-                if (mediumMatriculasModel.size()  <= 0) {
+                if (mediumMatriculasModel.size() <= 0) {
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione un Estudiante...!", "Seleccione un Estudiante...!"));
                     return null;
                 }
-                for (int i = 0; i < mediumMatriculasModel.size() ; i++) {
-                    if(mediumMatriculasModel.get(i).getConfirmada())
-                        estu.add(mediumMatriculasModel.get(i).getIdEstudiantes());
+                String codigoMatriculas = "";
+                for (int i = 0; i < mediumMatriculasModel.size(); i++) {
+                    if (mediumMatriculasModel.get(i).getConfirmada()) {
+                        codigoMatriculas += mediumMatriculasModel.get(i).getIdMatriculas();
+                    }
+                }
+                if(codigoMatriculas.length()>0){
+                    codigoMatriculas = codigoMatriculas.substring(0,codigoMatriculas.length()-1);
+                }else{
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "Seleccione al Menos un estudiantes...!"));
+                    return null;
                 }
                 map.put("tituloReporte", "FICHA DE MATRICULA");
-                map.put("titulo1", "USUARIO");
-                map.put("titulo2", "# DE INFORMES");
+                map.put("nombre", inst.getNombre());
+                carreraSeleccionado = new Carreras(0);
+                tipoReporte = "";
+                String query = "SELECT MAT.*,EST.*,CAR.NOMBRE CARRERA FROM matriculas mat, estudiantes est, carreras car  "
+                        + "WHERE mat.id_estudiantes = est.id_estudiantes  AND mat.id_matriculas in ("+codigoMatriculas+") "
+                        + "AND car.id_carreras = mat.id_carreras AND mat.id_periodos = '" + per.getIdPeriodos() + "' ";
+                ExportarReportesCon ex = new ExportarReportesCon(query, "fichaMatricula", map);
+                if (tipo.equals("PDF")) {
+                    ex.PDF();
+                } else if (tipo.equals("DOCX")) {
+                    ex.DOCX();
+                } else if (tipo.equals("XLS")) {
+                    ex.XLSX();
+                } else if (tipo.equals("PRINT")) {
+                    ex.PRINT();
+                }
+            } else if (tipoReporte.equals("CM")) { //Ficha de Matricula" itemValue="FM" />
+                if (mediumMatriculasModel.size() <= 0) {
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione un Estudiante...!", "Seleccione un Estudiante...!"));
+                    return null;
+                }
+                String codigoMatriculas = "";
+                for (int i = 0; i < mediumMatriculasModel.size(); i++) {
+                    if (mediumMatriculasModel.get(i).getConfirmada()) {
+                        codigoMatriculas += mediumMatriculasModel.get(i).getIdMatriculas();
+                    }
+                }
+                if(codigoMatriculas.length()>0){
+                    codigoMatriculas = codigoMatriculas.substring(0,codigoMatriculas.length()-1);
+                }else{
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error:", "Seleccione al Menos un estudiantes...!"));
+                    return null;
+                }
+                map.put("tituloReporte", "FICHA DE MATRICULA");
+                map.put("nombre", inst.getNombre());
+                carreraSeleccionado = new Carreras(0);
+                tipoReporte = "";
+                String query = "SELECT MAT.*,EST.*,CAR.NOMBRE CARRERA FROM matriculas mat, estudiantes est, carreras car  "
+                        + "WHERE mat.id_estudiantes = est.id_estudiantes  AND mat.id_matriculas in ("+codigoMatriculas+") "
+                        + "AND car.id_carreras = mat.id_carreras AND mat.id_periodos = '" + per.getIdPeriodos() + "' ";
+                ExportarReportesCon ex = new ExportarReportesCon(query, "certificadoMatricula", map);
+                if (tipo.equals("PDF")) {
+                    ex.PDF();
+                } else if (tipo.equals("DOCX")) {
+                    ex.DOCX();
+                } else if (tipo.equals("XLS")) {
+                    ex.XLSX();
+                } else if (tipo.equals("PRINT")) {
+                    ex.PRINT();
+                }
             }
-            carreraSeleccionado = new Carreras(0);
-            tipoReporte = "";
-            ExportarReportes ex = new ExportarReportes(estu, "fichaMatricula", map);
-            if (tipo.equals("PDF")) {
-                ex.PDF();
-            } else if (tipo.equals("DOCX")) {
-                ex.DOCX();
-            } else if (tipo.equals("XLS")) {
-                ex.XLSX();
-            } else if (tipo.equals("PRINT")) {
-                ex.PRINT();
-            }
+
         } catch (Exception ex1) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, ex1.getMessage(), ex1.getMessage()));
             java.util.logging.Logger.getLogger(FichaMatricula.class.getName()).log(Level.SEVERE, null, ex1);
         }
-        
+
         return null;
 
     }

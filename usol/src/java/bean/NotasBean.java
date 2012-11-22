@@ -443,7 +443,7 @@ public class NotasBean implements Serializable {
 
     public List<SelectItem> getSelectedItemMaterias() {
         try {
-            Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+            //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             List<Materias> divisionPoliticas = new ArrayList<Materias>();
             List<SelectItem> items = new ArrayList<SelectItem>();
 

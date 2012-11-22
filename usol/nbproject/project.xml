@@ -95,10 +95,6 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.jasperreports-4.0.2.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
                     <file>${file.reference.jfreechart-1.0.12.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
@@ -136,6 +132,10 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.bsh-2.0b4.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.jasperreports-4.8.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
