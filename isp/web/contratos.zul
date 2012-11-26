@@ -1,5 +1,7 @@
 <?page id="contratospage"?>
 <window id="contratosventana"  border="normal" >
+    <zk xmlns="http://www.zkoss.org/2005/zul">
+        
     <style>
         .MyGridRowHeight tr.z-row td.z-row-inner  
         {
@@ -874,6 +876,7 @@ if(sihay==0){
                             cuenta.setNotarjeta("");
                             cuenta.setNocheque("");
                             cuenta.setTotal(fac.getTotal());
+                            cuenta.setRtotal(BigDecimal.ZERO);
                             adm.guardar(cuenta);
 
 
@@ -2459,7 +2462,7 @@ void llamar(){
                 ELIMINAR
             </vbox>
         </popup>
-        <tabbox width="100%"  height="600px" orient="vertical"  >
+        <tabbox width="100%"  height="750px" orient="vertical"  >
             <tabs  width="150px">
                 <tab id="registro" label="Contratos"/>
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
@@ -3039,14 +3042,14 @@ void llamar(){
                         <listitem forEach="${allEvents}" value="${each}">
                         </listitem>
                     </listbox--> 
-                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="facturasDatos" >
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"   id="facturasDatos" >
                         <columns>
                             <column  label="No."/>
                             <column  label="Obligación"/>
                             <column   label="Total"/>
                             <column   label="Saldo"/>
                             <column   label="Ref."/>
-                            <column   label="No.Factura"/>
+                            <column  width="150px"  label="No.Factura"/>
                             <column   label="Emitida"/>
                             <column   width="50px"  label="Dsctos"/>
                             <column  width="150px"  label="Acciones"/>
@@ -3168,4 +3171,5 @@ void llamar(){
             </panelchildren>
         </panel>
     </div>
+    </zk>
 </window>

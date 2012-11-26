@@ -135,6 +135,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                     cobrar.setDeposito(new BigDecimal(0));
                                                     cobrar.setBancario(empf.getDebito());
                                                     cobrar.setTarjeta(new BigDecimal(0));
+                                                    cobrar.setRtotal(BigDecimal.ZERO);
                                                     cobrar.setNocheque("");
                                                     cobrar.setEmpleados(usuarioActual);
                                                     cobrar.setNotarjeta("");
