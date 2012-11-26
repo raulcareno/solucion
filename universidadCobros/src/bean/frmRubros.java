@@ -293,7 +293,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
             this.btnNuevo.setLabel("Guardar");
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
             this.btnModificar.setLabel("Cancelar");
-
+        tableRubros.setEnabled(false);
             grabar = true;
             modificar = false;
         } else if (grabar == true) {
@@ -324,7 +324,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
             grabar = false;
             modificar = false;
             this.txtNombre.setEditable(false);
-
+            tableRubros.setEnabled(true);
         }
 
     }//GEN-LAST:event_btnNuevoActionPerformed
@@ -356,6 +356,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
             this.btnModificar.setLabel("Cancelar");
             modificar = true;
             grabar = true;
+            tableRubros.setEnabled(false);
         } else {
             grabar = false;
             modificar = false;
@@ -365,6 +366,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
             this.btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif")));
             this.btnModificar.setLabel("Modificar");
             this.txtNombre.setEditable(false);
+            tableRubros.setEnabled(true);
         }
 
     }//GEN-LAST:event_btnModificarActionPerformed

@@ -4,6 +4,8 @@
  */
 package util;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author inform
@@ -12,6 +14,7 @@ public class general {
     Integer codigo;
     String codigoString="";
     String descripcion="";
+    BigDecimal valor=new BigDecimal("0");
 
     public general() {
     }
@@ -26,6 +29,12 @@ public class general {
         this.codigo = codigo;
         this.descripcion = descripcion;
     }
+     public general(Integer codigo, String descripcion,BigDecimal valor) {
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.valor = valor;
+    }
+
 
     public Integer getCodigo() {
         return codigo;
@@ -55,6 +64,14 @@ public class general {
     @Override
     public String toString() {
         return ""+descripcion ;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
     }
     
     
