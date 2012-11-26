@@ -909,11 +909,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
 
     }
-    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-// TODO add your handling code here:
-
-        if (grabar == false) {
-            actualMatricula = new Matriculas();
+    public void limpiar(){
+    actualMatricula = new Matriculas();
             EstudianteSeleccionado = new general("0", "");
             DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
             dtm.getDataVector().removeAllElements();
@@ -931,6 +928,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             direccion.setText(".");
             telefono.setText(".");
             carrera.setText(".");
+    }
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+// TODO add your handling code here:
+
+        if (grabar == false) {
+            limpiar();
             buscarApellido.setEnabled(true);
             editarDatos.setEnabled(true);
             llenarFactura();
@@ -977,6 +980,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             //ACTUALIZAR DOCUMENTO FACTURA
             inst.setFactura1(factura.getText().trim());
             adm.actualizar(inst);
+            actualMatricula.setPagada(true);
+            adm.actualizar(actualMatricula);
 
             secuencial sec = new secuencial();
             for (int i = 0; i < this.tFactura.getRowCount(); i++) {
@@ -1204,6 +1209,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             //de acuerdo a la carrera y al perido actual buscando en rbrosMatriculasPeriodo
             if (actualMatricula.getPagada() == null) {
                 actualMatricula.setPagada(false);
+                //limpiar();
+                llenarFactura();
+                JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
+                return;
 
             }
             DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
