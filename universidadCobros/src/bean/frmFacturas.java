@@ -909,25 +909,26 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
 
     }
-    public void limpiar(){
-    actualMatricula = new Matriculas();
-            EstudianteSeleccionado = new general("0", "");
-            DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
-            dtm.getDataVector().removeAllElements();
-            formasdePago.setModel(dtm);
-            dtm = (DefaultTableModel) tFactura.getModel();
-            dtm.getDataVector().removeAllElements();
-            tFactura.setModel(dtm);
-            formasdePago.repaint();
-            tFactura.repaint();
-            chkTodo.setSelected(true);
-            chkNuevo.setSelected(true);
-            codigoPariente.setText("0");
-            ruc.setText(".");
-            nombre.setText(".");
-            direccion.setText(".");
-            telefono.setText(".");
-            carrera.setText(".");
+
+    public void limpiar() {
+        actualMatricula = new Matriculas();
+        EstudianteSeleccionado = new general("0", "");
+        DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
+        dtm.getDataVector().removeAllElements();
+        formasdePago.setModel(dtm);
+        dtm = (DefaultTableModel) tFactura.getModel();
+        dtm.getDataVector().removeAllElements();
+        tFactura.setModel(dtm);
+        formasdePago.repaint();
+        tFactura.repaint();
+        chkTodo.setSelected(true);
+        chkNuevo.setSelected(true);
+        codigoPariente.setText("0");
+        ruc.setText(".");
+        nombre.setText(".");
+        direccion.setText(".");
+        telefono.setText(".");
+        carrera.setText(".");
     }
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
 // TODO add your handling code here:
@@ -964,7 +965,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             cab.setIdMatriculas(actualMatricula);
             cab.setRuc(ruc.getText());
             cab.setNombres(nombre.getText());
-            cab.setSubtotal(new BigDecimal(subtotal.getText())); 
+            cab.setSubtotal(new BigDecimal(subtotal.getText()));
             cab.setTelefono(telefono.getText());
             cab.setDireccion(direccion.getText());
             cab.setIva(new BigDecimal(iva.getText()));
@@ -1103,7 +1104,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         this.subtotal.setText(totalCalc + "");
         if (totalCalc.doubleValue() > 0) {
             tipoA.setEnabled(true);
-            
+
         }
         BigDecimal valorIva = regresaVariableParametrosDecimal("IVA", parametrosList);
         if (valorIva.doubleValue() > 0) {
@@ -1209,14 +1210,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             //de acuerdo a la carrera y al perido actual buscando en rbrosMatriculasPeriodo
             if (actualMatricula.getPagada() == null) {
                 actualMatricula.setPagada(false);
+            }
+
+            DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
+            dtm.getDataVector().removeAllElements();
+            if (actualMatricula.getPagada()) {
                 //limpiar();
+                tFactura.setModel(dtm);
+                sumar();
                 llenarFactura();
                 JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
                 return;
-
             }
-            DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
-            dtm.getDataVector().removeAllElements();
+
             //no ha estado pagada
             if (chkMatricula.isSelected() || chkTodo.isSelected()) {
                 if (actualMatricula.getPagada() == false) {
@@ -1456,11 +1462,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     referenciaA.setEnabled(true);
                 }
                 anadir.setEnabled(true);
-                valorA.setText(faltan.getText()); 
+                valorA.setText(faltan.getText());
                 valorA.requestFocusInWindow();
                 valorA.selectAll();
             } else {
-                valorA.setText(faltan.getText()); 
+                valorA.setText(faltan.getText());
                 valorA.setEnabled(true);
                 referenciaA.setEnabled(true);
                 bancoA.setEnabled(true);
@@ -1599,8 +1605,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         sumar();
         BigDecimal to = new BigDecimal(total.getText());
         BigDecimal co = new BigDecimal(totalCobros.getText());
-        faltan.setText(""+(to.subtract(co))); 
-        
+        faltan.setText("" + (to.subtract(co)));
+
     }//GEN-LAST:event_anadirActionPerformed
 
     private void bancoAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bancoAKeyPressed
