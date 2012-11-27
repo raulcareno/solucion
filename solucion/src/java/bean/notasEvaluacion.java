@@ -98,7 +98,7 @@ public class notasEvaluacion extends Rows {
         return false;
     }
 
-    public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
+    public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema,Boolean vertical) {
         System.out.println("TOP INI; " + new Date());
 //        int tamanio = 0;
         Session ses = Sessions.getCurrent();
@@ -164,12 +164,13 @@ public class notasEvaluacion extends Rows {
             Boolean deshabilitado = false;
             String color = "black";
 int kk=0;
-            if (materia.getCuantitativa()) {
+            if (!materia.getIngcualitativo()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
                     notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
-//                    notaTexto.setTabindex(kk);
+                    if(vertical)
+                    notaTexto.setTabindex(kk);
                     label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                     try {
@@ -186,7 +187,8 @@ int kk=0;
 
                             Listitem item = new Listitem("");
                             notaTexto = new Decimalbox();
-//                            combo.setTabindex(kk);
+                            if(vertical)
+                            combo.setTabindex(kk);
                             System.out.println(""+kk);
                             label3 = new Label();
 
@@ -339,7 +341,8 @@ int kk=0;
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
-//                    combo.setTabindex(kk);
+                    if(vertical)
+                        combo.setTabindex(kk);
                     label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");
                     try {
@@ -358,6 +361,8 @@ int kk=0;
                         combo.setMold("select");
                         combo.setWidth("50px");
                         combo.setRows(1);
+                       if(vertical)
+                            combo.setTabindex(kk);
                         combo.setStyle("font-size:9px;width:30px");
                         for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
                             Equivalencias equivalencias = it2.next();

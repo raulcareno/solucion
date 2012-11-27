@@ -68,6 +68,7 @@ void llenar(MateriaProfesor estudent){
     promediada.checked = estudent.getMinisterio();
     opcional.checked = estudent.getOpcional();
     cuantitativa.checked = estudent.getCuantitativa();
+    ingcualitativo.checked = estudent.getIngcualitativo();
     orden.value = estudent.getOrden();
     formula.value = estudent.getFormula();
     
@@ -131,6 +132,7 @@ void estado(Boolean estado,Boolean modificar){
     promediada.disabled = estado;
     opcional.disabled = estado;
     cuantitativa.disabled = estado;
+    ingcualitativo.disabled = estado;
     orden.readonly = estado;
     mates.disabled = estado;
     profes.disabled = estado;
@@ -156,6 +158,7 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setMinisterio(promediada.checked);
         matricula.setOpcional(opcional.checked); //ingresan disciplina
         matricula.setCuantitativa(cuantitativa.checked);
+        matricula.setIngcualitativo(ingcualitativo.checked);
 
         if((!matricula.getCodigomap().equals(0)) ){
                 adm.actualizar(matricula);
@@ -475,7 +478,11 @@ llenarGrid(Empleados emp){
                                      ch = new Checkbox();
                                         ch.setChecked(acceIt.getSeimprime());
                                         row.appendChild(ch);
-
+                                        
+                                      ch = new Checkbox();
+                                        ch.setChecked(acceIt.getIngcualitativo());
+                                        row.appendChild(ch);
+                                        
                                         Intbox tx = new Intbox(acceIt.getOrden());
                                         row.appendChild(tx);
                                         Textbox formu = new Textbox(acceIt.getFormula());
@@ -569,6 +576,9 @@ llenarGrid2(Integer n){
                                      ch = new Checkbox();
                                         ch.setChecked(true);
                                         row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(false);
+                                        row.appendChild(ch); 
 
                                      Intbox tx = new Intbox(0);
                                         row.appendChild(tx);
@@ -605,8 +615,9 @@ void guardarp(){
                                   mateProfe.setMinisterio(((Checkbox)labels.get(4)).isChecked());
                                   mateProfe.setOpcional(((Checkbox)labels.get(5)).isChecked()); //ingresan disciplina
                                   mateProfe.setSeimprime(((Checkbox)labels.get(6)).isChecked());
-                                  mateProfe.setOrden((((Intbox)labels.get(7)).value));
-                                  mateProfe.setFormula((((Textbox)labels.get(8)).value));
+                                  mateProfe.setIngcualitativo(((Checkbox)labels.get(7)).isChecked());
+                                  mateProfe.setOrden((((Intbox)labels.get(8)).value));
+                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1))
                                             adm.actualizar(mateProfe);
@@ -724,6 +735,10 @@ llenarGrid3(Cursos cur){
                                      ch = new Checkbox();
                                         ch.setChecked(acceIt.getSeimprime());
                                         row.appendChild(ch);
+                                        
+                                      ch = new Checkbox();
+                                        ch.setChecked(acceIt.getIngcualitativo());
+                                        row.appendChild(ch);   
 
                                         
                                         Textbox formu = new Textbox(acceIt.getFormula());
@@ -876,6 +891,9 @@ llenarGrid23(Integer n){
                                      ch = new Checkbox();
                                         ch.setChecked(true);
                                         row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(false);
+                                        row.appendChild(ch);
 
                                 
                                      Textbox formu = new Textbox("");
@@ -956,7 +974,8 @@ void guardarc(){
                                   mateProfe.setMinisterio(((Checkbox)labels.get(5)).isChecked());
                                   mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
                                   mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
-                                  mateProfe.setFormula((((Textbox)labels.get(8)).value));
+                                  mateProfe.setIngcualitativo(((Checkbox)labels.get(8)).isChecked());
+                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
                                             adm.actualizar(mateProfe);
@@ -1097,6 +1116,14 @@ void guardarc(){
                                 <checkbox   label="Promediada"  id="promediada"  disabled="true"  />
                                 <checkbox  label="Ingresan Disciplina" id="opcional"  disabled="true"   />
                                 <checkbox  label="Se Imprime" id="seimprime"  disabled="true"   />
+                                 <image src="/images/information.png" height="16px" width="16px" tooltip="direcciont" popup="direcciont" style="cursor: pointer" />
+                                    <popup id="direcciont" width="300px">
+                                        <html>
+                                        Para que ingresen la nota de forma CUALITATIVA (A,B,C) y 
+                                        Sirve únicamente para el Registro de Notas Evaluaciones
+                                        </html>
+                                    </popup>
+                                <checkbox  label="Ingresan Cualitativamente" id="ingcualitativo"  disabled="true"   />
                             </span>
                         </row>
 
@@ -1258,6 +1285,7 @@ void guardarc(){
                                     <column  width="15px" label="Prom"/>
                                     <column  width="18px" label="Disc."/>
                                     <column  width="15px" label="Impr"/>
+                                    <column  width="15px" label="Ing.Cual."/>
                                     <column  width="15px" label="Orden"/>
                                     <column  width="30px" label="Formula"/>
                                     <column  width="30px" label="Opción"/>
@@ -1306,6 +1334,7 @@ void guardarc(){
                                     <column  width="15px" label="Prom"/>
                                     <column  width="18px" label="Disc."/>
                                     <column  width="15px" label="Impr"/>
+                                    <column  width="15px" label="Ing.Cual."/>
                                     <column  width="30px" label="Formula"/>
                                     <column  width="30px" label="Opción"/>
                                 </columns>
@@ -1343,12 +1372,15 @@ void guardarc(){
                                     <listcell label="${each.institucion.tipo}" />
                                 </listitem>
                             </listbox>
-                            <button image="/images/guardar.gif" id="guardarDis" label="Guardar"  onClick="guardarCopiaDistributivo()"/>
+                            <button image="/images/guardar.gif" id="guardarDis" label="Empezar a Copiar y Guardar"  onClick="guardarCopiaDistributivo()"/>
                             </span>
                             
  
                         </row>
-                        <row spans="2">
+                        <row >
+                             <span style="float:right"> PERIODO ACTUAL(*):</span>
+                             <span>
+                                 
                             <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="cursosCopiar" >
                                 <columns>
                                     <column  width="30px" label="Todos"/>
@@ -1360,6 +1392,8 @@ void guardarc(){
                                 <rows id="filasCursos">
                                 </rows>
                             </grid>
+                            
+                             </span>
                         </row>
                          
                     </rows>
