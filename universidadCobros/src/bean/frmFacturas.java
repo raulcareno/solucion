@@ -358,7 +358,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnSalir);
-        btnSalir.setBounds(350, 10, 105, 30);
+        btnSalir.setBounds(360, 10, 105, 30);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
         btnEliminar.setText("Anular");
@@ -374,8 +374,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jPanel1);
         jPanel1.setBounds(130, 480, 480, 50);
 
-        panelAnadirRubros.setBackground(new java.awt.Color(204, 204, 255));
-        panelAnadirRubros.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelAnadirRubros.setBackground(new java.awt.Color(255, 204, 102));
+        panelAnadirRubros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelAnadirRubros.setLayout(null);
 
         cmbRubros.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -387,17 +387,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         panelAnadirRubros.add(cmbRubros);
         cmbRubros.setBounds(10, 20, 210, 20);
 
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel18.setText("Valor: ");
         panelAnadirRubros.add(jLabel18);
-        jLabel18.setBounds(10, 50, 40, 14);
+        jLabel18.setBounds(10, 50, 40, 26);
 
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setText("Rubros");
         panelAnadirRubros.add(jLabel19);
         jLabel19.setBounds(10, 2, 40, 14);
 
         txtValorAgregar.setText(".");
         panelAnadirRubros.add(txtValorAgregar);
-        txtValorAgregar.setBounds(50, 50, 50, 26);
+        txtValorAgregar.setBounds(50, 50, 70, 26);
 
         btnAnadir.setText("<< Añadir");
         btnAnadir.addActionListener(new java.awt.event.ActionListener() {
@@ -808,7 +810,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(total12);
         total12.setBounds(130, 300, 60, 20);
 
-        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Descuento", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
+        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Beca", "25% Ayuda Financiera", "30% Ayuda Financiera", "35% Ayuda Financiera", "40% Ayuda Financiera", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
         tipoA.setEnabled(false);
         tipoA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1061,7 +1063,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             modificar = false;
         } else if (grabar == true) {
             if (!comprobarAntesAnadir()) {
-                JOptionPane.showMessageDialog(this, "LOS VALORES COBRADOS NO COINCIDEN CON EL TOTAL", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             Facturas cab = new Facturas();
@@ -1546,29 +1548,34 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //general fac = (general) this.encontrados1.getSelectedValue();
         cargarRubros(EstudianteSeleccionado);
+        tFactura.repaint();
     }//GEN-LAST:event_chkTodoActionPerformed
 
     private void chkMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatriculaActionPerformed
         // TODO add your handling code here:
         cargarRubros(EstudianteSeleccionado);
+        tFactura.repaint();
     }//GEN-LAST:event_chkMatriculaActionPerformed
 
     private void chkCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditosActionPerformed
         // TODO add your handling code here:
         //general fac = (general) this.encontrados1.getSelectedValue();
         cargarRubros(EstudianteSeleccionado);
+        tFactura.repaint();
     }//GEN-LAST:event_chkCreditosActionPerformed
 
     private void chkNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNuevoActionPerformed
         // TODO add your handling code here:
 
         cargarRubros(EstudianteSeleccionado);
+        tFactura.repaint();
     }//GEN-LAST:event_chkNuevoActionPerformed
 
     private void chkAntiguoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAntiguoActionPerformed
         // TODO add your handling code here:
 
         cargarRubros(EstudianteSeleccionado);
+        tFactura.repaint();
     }//GEN-LAST:event_chkAntiguoActionPerformed
 
     private void tipoAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoAItemStateChanged
@@ -1825,8 +1832,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             tFactura.setModel(dtm);
             panelAnadirRubros.setVisible(false);
             btnAnadirRubrosVer.setSelected(false);
-            sumar();
+        
             sumarPagos();
+            faltan.setText(total.getText()); 
         }
 
     }//GEN-LAST:event_btnAnadirActionPerformed

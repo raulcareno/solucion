@@ -115,6 +115,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         categoriasSociales = new javax.swing.JMenuItem();
         Cobros = new javax.swing.JMenu();
         Facturar = new javax.swing.JMenuItem();
+        Reportes = new javax.swing.JMenuItem();
         usuario1 = new javax.swing.JMenu();
         usuarioActualLabel = new javax.swing.JMenu();
         cambiarClave = new javax.swing.JMenuItem();
@@ -308,6 +309,14 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         Cobros.add(Facturar);
+
+        Reportes.setText("Reportes");
+        Reportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReportesActionPerformed(evt);
+            }
+        });
+        Cobros.add(Reportes);
 
         jMenuBar1.add(Cobros);
 
@@ -644,6 +653,41 @@ public class frmPrincipal extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_categoriasSocialesActionPerformed
+
+    private void ReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportesActionPerformed
+        // TODO add your handling code here:
+          try {
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaReportes")) {
+                        System.out.println("LO ENCONTRE");
+                        ((frmFacturas) component).setEmpleadoActual(usuarioActual);
+                        ((frmFacturas) component).setPeriodoActual(periodoActual);
+                        ((frmFacturas) component).setVisible(true);
+                        ((frmFacturas) component).inst = inst;
+                        ((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
+                        ((frmFacturas) component).actualMatricula = new Matriculas();
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR EN COMPONENTE" + e);
+            }
+            frmReportes  usu = new frmReportes(adm);
+            usu.setSize(642, 557);
+            usu.setEmpleadoActual(usuarioActual);
+            usu.setPeriodoActual(periodoActual);
+            usu.setLocation(0, 0);
+            //usu.inst = inst;
+            //usu.actualMatricula = new Matriculas();
+            usu.setName("formaReportes");
+            contenedor.add(usu);
+
+            usu.show();
+        
+        
+    }//GEN-LAST:event_ReportesActionPerformed
     private int intento = 0;
 
     public JLabel getIntentos() {
@@ -761,6 +805,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu Administracion;
     private javax.swing.JMenu Cobros;
     private javax.swing.JMenuItem Facturar;
+    private javax.swing.JMenuItem Reportes;
     private javax.swing.JButton btnCambiarClave;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JMenuItem cambiarClave;
