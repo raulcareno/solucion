@@ -200,7 +200,7 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
                 //guardar2.disabled=true;
             }
 
-                filas.addRow(curso,materia,sistCali);
+                filas.addRow(curso,materia,sistCali,vertical.checked);
                    if(periodo.getCerrado()){
                         guardar1.disabled = true;
                         //guardar2.disabled = true;
@@ -287,6 +287,8 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                               orden = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getOrden();
                               codigo = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getCodigosis();
                               cabes[k][0]= trime.getDescripcion();
+                              if(((MateriaProfesor)mates.selectedItem.value).getIngcualitativo())
+                                    cabes[k][0]= trime.getDescripcion2();
                                cabes[k][1]= siseval0.size()+"";
                           }else{
                                cabes[k][1]= 1+"";
@@ -450,7 +452,13 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                             </bandbox>
                             
                             
-
+                             <image src="/images/information.png" height="16px" width="16px" tooltip="direcciont" popup="direcciont" style="cursor: pointer" />
+                                    <popup id="direcciont" width="300px">
+                                        <html>
+                                        Si desea ingresar de Forma vertical, seleccione aquí
+                                        </html>
+                                    </popup>
+<checkbox id="vertical" label="Vertical" />
                             <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                             <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
                             <!--button label="Formato CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/-->
