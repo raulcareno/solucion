@@ -287,7 +287,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                               orden = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getOrden();
                               codigo = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getCodigosis();
                               cabes[k][0]= trime.getDescripcion();
-                              if(((MateriaProfesor)mates.selectedItem.value).getIngcualitativo())
+                              if(!((MateriaProfesor)mates.selectedItem.value).getCuantitativa())
                                     cabes[k][0]= trime.getDescripcion2();
                                cabes[k][1]= siseval0.size()+"";
                           }else{
