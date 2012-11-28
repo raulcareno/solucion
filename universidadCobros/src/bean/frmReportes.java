@@ -41,7 +41,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
     public Empleados empleadoActual;
     Administrador adm;
     String separador = File.separator;
-
+ public Institucion inst;
     /**
      * Creates new form frmRubros
      */
@@ -289,12 +289,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String query = "";
         String dirreporte = "";
-        Institucion emp = (Institucion) adm.querySimple("Select o from Institucion as o");
+        
         String desde2 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
         String hasta2 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
           Map parametros = new HashMap();
-            parametros.put("empresa", emp.getNombre());
-            parametros.put("direccion", emp.getDireccion());
+            parametros.put("empresa", inst.getNombre());
+            parametros.put("direccion", inst.getDireccion());
      
              parametros.put("ubicacion", dirreporte);
             Date des = desde.getDate();
@@ -459,4 +459,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
     public void setEmpleadoActual(Empleados empleadoActual) {
         this.empleadoActual = empleadoActual;
     }
+
+    public Institucion getInst() {
+        return inst;
+    }
+
+    public void setInst(Institucion inst) {
+        this.inst = inst;
+    }
+    
 }

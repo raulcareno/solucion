@@ -662,12 +662,11 @@ public class frmPrincipal extends javax.swing.JFrame {
                     System.out.println("" + component.getName());
                     if ((component.getName() + "").equals("formaReportes")) {
                         System.out.println("LO ENCONTRE");
-                        ((frmFacturas) component).setEmpleadoActual(usuarioActual);
-                        ((frmFacturas) component).setPeriodoActual(periodoActual);
-                        ((frmFacturas) component).setVisible(true);
-                        ((frmFacturas) component).inst = inst;
-                        ((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
-                        ((frmFacturas) component).actualMatricula = new Matriculas();
+                        ((frmReportes) component).setEmpleadoActual(usuarioActual);
+                        ((frmReportes) component).setPeriodoActual(periodoActual);
+                        ((frmReportes) component).setVisible(true);
+                        ((frmReportes) component).inst = inst;
+              
                         return;
                     }
                 }
@@ -679,7 +678,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
-            //usu.inst = inst;
+            usu.inst = inst;
             //usu.actualMatricula = new Matriculas();
             usu.setName("formaReportes");
             contenedor.add(usu);
