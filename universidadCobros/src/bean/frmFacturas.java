@@ -987,7 +987,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             direccio = direccio.replace("\\build", "");
             direccio = direccio.replace("/build", "");
         }
-        direccio = direccio + separador + "impresion" + separador;
+        direccio = direccio + separador + "reportes" + separador;
 
         String dire = direccio + "factura.jasper";
         try {

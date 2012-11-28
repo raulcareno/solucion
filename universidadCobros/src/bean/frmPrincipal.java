@@ -675,7 +675,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
             frmReportes  usu = new frmReportes(adm);
-            usu.setSize(642, 557);
+            usu.setSize(805, 626);
             usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);

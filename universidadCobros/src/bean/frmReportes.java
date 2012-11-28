@@ -6,13 +6,27 @@
 package bean;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Periodos;
 import jcinform.procesos.Administrador;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JRViewer;
 import util.WorkingDirectory;
 
 /**
@@ -23,10 +37,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     public boolean grabar = false;
     public boolean modificar = false;
-       public Periodos periodoActual;
+    public Periodos periodoActual;
     public Empleados empleadoActual;
     Administrador adm;
-    String separador = File.pathSeparator;
+    String separador = File.separator;
 
     /**
      * Creates new form frmRubros
@@ -34,15 +48,15 @@ public class frmReportes extends javax.swing.JInternalFrame {
     public frmReportes() {
         initComponents();
         ancho();
-       
+
     }
 
     public frmReportes(Administrador adm1) {
-    
+
         adm = adm1;
         this.initComponents();
         listar();
-     
+
 //        lblCodigo.setVisible(false);
 //        codigoRubro.setVisible(false);
     }
@@ -59,21 +73,18 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         cmbTipoReporte = new javax.swing.JComboBox();
         desde = new com.toedter.calendar.JDateChooser();
         hasta = new com.toedter.calendar.JDateChooser();
-        jLabel3 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        hastahora2 = new com.toedter.calendar.JDateChooser();
-        desdehora2 = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         panelReportes = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(236, 246, 255));
+        setMaximizable(true);
         setTitle("Creación de Rubros");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rubros.gif"))); // NOI18N
 
@@ -95,15 +106,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("HORA:");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(190, 60, 60, 14);
-
         cmbTipoReporte.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "[Seleccione]", "# de matriculados por carrera (101)", "# de matriculados por periodos (102)", "# de matriculados sin tomar creditos (103)", "# de matriculados tomados creditos impagos.(104)", "# becas por carreras (105)", "# ayuda financiera (106)", " " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "[Seleccione]", "# de matriculados por carrera (101)", "# de matriculados sin tomar creditos (102)", "# de matriculados sin tomar creditos con nombres (103)", "# de matriculados tomados creditos impagos (104)", "# becas por carreras (105)", "# ayuda financiera (106)", " " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -115,7 +120,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(cmbTipoReporte);
-        cmbTipoReporte.setBounds(80, 10, 300, 22);
+        cmbTipoReporte.setBounds(80, 10, 380, 22);
 
         desde.setDate(new Date());
         desde.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -124,7 +129,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(desde);
-        desde.setBounds(80, 40, 130, 20);
+        desde.setBounds(80, 40, 130, 26);
 
         hasta.setDate(new Date());
         hasta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -133,13 +138,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(hasta);
-        hasta.setBounds(260, 40, 120, 20);
-
-        jLabel3.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("HORA:");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(10, 60, 60, 14);
+        hasta.setBounds(260, 40, 120, 26);
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
         btnBuscar.setMnemonic('B');
@@ -153,7 +152,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnBuscar);
-        btnBuscar.setBounds(460, 20, 60, 50);
+        btnBuscar.setBounds(460, 10, 60, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -167,25 +166,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnSalir);
-        btnSalir.setBounds(530, 20, 60, 50);
-
-        hastahora2.setDateFormatString("HH:mm:ss");
-        hastahora2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                hastahora2KeyPressed(evt);
-            }
-        });
-        jPanel1.add(hastahora2);
-        hastahora2.setBounds(260, 60, 100, 20);
-
-        desdehora2.setDateFormatString("HH:mm:ss");
-        desdehora2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                desdehora2KeyPressed(evt);
-            }
-        });
-        jPanel1.add(desdehora2);
-        desdehora2.setBounds(80, 60, 100, 20);
+        btnSalir.setBounds(520, 10, 60, 50);
 
         jLabel4.setForeground(new java.awt.Color(0, 0, 153));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -227,7 +208,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -238,16 +219,15 @@ public class frmReportes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         //106 CIERRE CAJA
-        if(cmbTipoReporte.getSelectedItem().toString().contains("103") || cmbTipoReporte.getSelectedItem().toString().contains("104") ||
-            cmbTipoReporte.getSelectedItem().toString().contains("105") ||  cmbTipoReporte.getSelectedItem().toString().contains("102") ||
-            cmbTipoReporte.getSelectedItem().toString().contains("200") || cmbTipoReporte.getSelectedItem().toString().contains("201") ||
-            cmbTipoReporte.getSelectedItem().toString().contains("202")  || cmbTipoReporte.getSelectedItem().toString().contains("203")
-            || cmbTipoReporte.getSelectedItem().toString().contains("307")){
-          
+        if (cmbTipoReporte.getSelectedItem().toString().contains("103") || cmbTipoReporte.getSelectedItem().toString().contains("104")
+                || cmbTipoReporte.getSelectedItem().toString().contains("105") || cmbTipoReporte.getSelectedItem().toString().contains("102")
+                || cmbTipoReporte.getSelectedItem().toString().contains("200") || cmbTipoReporte.getSelectedItem().toString().contains("201")
+                || cmbTipoReporte.getSelectedItem().toString().contains("202") || cmbTipoReporte.getSelectedItem().toString().contains("203")
+                || cmbTipoReporte.getSelectedItem().toString().contains("307")) {
             //               if(principal.getUsuario().getGlobal().getNombre().contains("Administrador")){
-                //                     cmbUsuarios.setEnabled(true);
-                //                }
-        }else if(cmbTipoReporte.getSelectedItem().toString().contains("304") || cmbTipoReporte.getSelectedItem().toString().contains("204") ){
+            //                     cmbUsuarios.setEnabled(true);
+            //                }
+        } else if (cmbTipoReporte.getSelectedItem().toString().contains("304") || cmbTipoReporte.getSelectedItem().toString().contains("204")) {
             try {
 //                cmbClientes.setEnabled(true);
 //                //cmbUsuarios.setEnabled(true);
@@ -277,39 +257,128 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     private void desdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_desdeKeyPressed
         // TODO add your handling code here:
-  
     }//GEN-LAST:event_desdeKeyPressed
 
     private void hastaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hastaKeyPressed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_hastaKeyPressed
+    public void verReporteConexion(String dirreporte, String query, String titulo, Map parametros) {
+        try {
+            System.out.println("QUERY: " + query);
+            Connection con = adm.conexion();
+            System.out.println(query);
+            ResultSet rs = con.createStatement().executeQuery(query);
+            JRResultSetDataSource s = new JRResultSetDataSource(rs);
+            //JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            JasperPrint masterPrint = JasperFillManager.fillReport(dirreporte, parametros, s);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String query = "";
         String dirreporte = "";
-
+        Institucion emp = (Institucion) adm.querySimple("Select o from Institucion as o");
         String desde2 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
         String hasta2 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
-        //        String desde02 = (desde.getDate().getYear() + 1900) + "-" + (desde.getDate().getMonth() + 1) + "-" + (desde.getDate().getDate());
-        //        String hasta02 = (hasta.getDate().getYear() + 1900) + "-" + (hasta.getDate().getMonth() + 1) + "-" + (hasta.getDate().getDate());
-        desde2 = desde2+" "+desdehora2.getDate().getHours()+":"+desdehora2.getDate().getMinutes()+":"+desdehora2.getDate().getSeconds();
-        hasta2 = hasta2+" "+hastahora2.getDate().getHours()+":"+hastahora2.getDate().getMinutes()+":"+hastahora2.getDate().getSeconds();
-        String titulo = "";
+          Map parametros = new HashMap();
+            parametros.put("empresa", emp.getNombre());
+            parametros.put("direccion", emp.getDireccion());
+     
+             parametros.put("ubicacion", dirreporte);
+            Date des = desde.getDate();
+            Date has = desde.getDate();
+
+            parametros.put("desde", des);
+            parametros.put("hasta", has);
+     String titulo = "";
         WorkingDirectory w = new WorkingDirectory();
         //            String query = "";
-        String ubicacionDirectorio = w.get()+separador;
-        if(ubicacionDirectorio.contains("build"))
-        ubicacionDirectorio = ubicacionDirectorio.replace(separador+"build", "");
-
-        if (cmbTipoReporte.getSelectedItem().toString().contains("(101)")) {//TICKEST x cobrar
-            query = "Select o from Factura as o" +
-            " where o.fecha between '" + desde2 + "' and '" + hasta2 + "'  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-            + "and o.fechafin is null ";
-            dirreporte = ubicacionDirectorio+"reportes"+separador+"ticketsporcobrar.jasper";
-            titulo = "Tickest por Cobrar";
-//            tickets(dirreporte, query, titulo);
+        String ubicacionDirectorio = w.get() + separador;
+        if (ubicacionDirectorio.contains("build")) {
+            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
         }
+
+        if (cmbTipoReporte.getSelectedItem().toString().contains("(101)")) {//# de MATRICULADOS POR CARRERA 
+            query = "SELECT COUNT(*) AS TOTAL, carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE,"
+                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,  jornada.`NOMBRE` AS jornada_NOMBRE "
+                    + " FROM `carreras` carreras , `matriculas` matriculas, `escuela` escuela, `modalidad` modalidad, `jornada` jornada  "
+                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS`  "
+                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
+                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
+                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
+                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
+                    + " GROUP BY carreras.`ID_CARRERAS` "; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculados.jasper";
+            titulo = "NÚMERO DE MATRICULADOS POR CARRERA";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(102)")) {//# de MATRICULADOS POR CARRERA 
+            query = "SELECT COUNT(*) AS TOTAL, carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE,"
+                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,  jornada.`NOMBRE` AS jornada_NOMBRE "
+                    + " FROM `carreras` carreras , `matriculas` matriculas, `escuela` escuela, `modalidad` modalidad, `jornada` jornada  "
+                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS`  "
+                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
+                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
+                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
+                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
+                    + " AND matriculas.ID_MATRICULAS NOT IN (SELECT ID_MATRICULAS FROM MATERIAS_MATRICULA) "
+                    + " GROUP BY carreras.`ID_CARRERAS` "; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculados.jasper";
+            titulo = "NÚMERO DE MATRICULADOS QUE NO HAN TOMADO CRÉDITOS";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(103)")) {//# de MATRICULADOS POR CARRERA 
+            query = "SELECT CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno, ' ',estudiantes.nombre) ESTUDIANTE, carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE,"
+                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,  jornada.`NOMBRE` AS jornada_NOMBRE "
+                    + " FROM `carreras` carreras , `matriculas` matriculas,`estudiantes` estudiantes, `escuela` escuela, `modalidad` modalidad, `jornada` jornada  "
+                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS`  "
+                    + "    AND matriculas.id_estudiantes = estudiantes.id_estudiantes "
+                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
+                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
+                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
+                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
+                    + " AND matriculas.ID_MATRICULAS NOT IN (SELECT ID_MATRICULAS FROM MATERIAS_MATRICULA) "
+                    + " ORDER BY carreras.`ID_CARRERAS` "; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculadosDetallado.jasper";
+            titulo = "NÚMERO DE MATRICULADOS QUE NO HAN TOMADO CRÉDITOS DETALLADO";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(104)")) {//# de CREDITOS IMPAGOS 
+            query = "SELECT matriculas.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno, ' ',estudiantes.nombre) ESTUDIANTE, "
+                    + " carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE, "
+                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,    "
+                    + " jornada.`NOMBRE` AS jornada_NOMBRE FROM "
+                    + " `carreras` carreras , `matriculas` matriculas,`estudiantes` estudiantes, `escuela` escuela, `modalidad` modalidad, `jornada` jornada "
+                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS` "
+                    + " AND matriculas.id_estudiantes = estudiantes.id_estudiantes  "
+                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
+                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
+                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
+                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
+                    + " AND matriculas.ID_MATRICULAS  IN (SELECT ID_MATRICULAS FROM MATERIAS_MATRICULA)"
+                    + " AND matriculas.id_matriculas NOT IN (SELECT id_matriculas FROM `facturas` facturas, `detalles` detalles WHERE facturas.id_facturas = detalles.id_facturas  "
+                    + " AND detalles.id_rubros IN (SELECT id_rubros FROM rubros WHERE eselcredito = TRUE)) "
+                    + " ORDER BY carreras.`ID_CARRERAS`"; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculadosDetallado.jasper";
+            titulo = "ESTUDIANTES CON CRÉDITOS IMPAGOS";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }
+        
+        
+        
 //        principal.contenedor.requestFocus();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -321,16 +390,6 @@ public class frmReportes extends javax.swing.JInternalFrame {
 //        empresaObj = null;
 //        System.gc();
     }//GEN-LAST:event_btnSalirActionPerformed
-
-    private void hastahora2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_hastahora2KeyPressed
-        // TODO add your handling code here:
-//        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_hastahora2KeyPressed
-
-    private void desdehora2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_desdehora2KeyPressed
-        // TODO add your handling code here:
-//        principal.tecla(evt.getKeyCode());
-    }//GEN-LAST:event_desdehora2KeyPressed
 
     public void listar() {
 //
@@ -355,12 +414,8 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox cmbTipoReporte;
     private com.toedter.calendar.JDateChooser desde;
-    private com.toedter.calendar.JDateChooser desdehora2;
     private com.toedter.calendar.JDateChooser hasta;
-    private com.toedter.calendar.JDateChooser hastahora2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -387,7 +442,6 @@ public class frmReportes extends javax.swing.JInternalFrame {
 //
 //
 //        }
-
     }
 
     public Periodos getPeriodoActual() {
@@ -405,6 +459,4 @@ public class frmReportes extends javax.swing.JInternalFrame {
     public void setEmpleadoActual(Empleados empleadoActual) {
         this.empleadoActual = empleadoActual;
     }
-    
-    
 }
