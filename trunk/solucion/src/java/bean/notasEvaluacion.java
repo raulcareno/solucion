@@ -2,6 +2,7 @@ package bean;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import java.awt.Robot;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -279,12 +280,41 @@ int kk=0;
                                             ((Decimalbox) event.getTarget()).setFocus(true);
                                             ((Decimalbox) event.getTarget()).focus();
                                             ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+                                               Robot b = new Robot();
+                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
                                             Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
                                         }
                                     } catch (Exception e) {
                                         ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
                                     }
 
+                                }
+                            });
+                            
+                                  notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');" );
+                              notaTexto.addEventListener("onFocus", new EventListener() {
+
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
+                                    try {
+                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+                                        if(valor<=0){
+                                               ((Decimalbox) event.getTarget()).setValue(null);
+                                        }
+                                         
+                                    } catch (Exception e) {
+                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+                                    }
+
+                                }
+                            });
+                            notaTexto.addEventListener("onOK", new EventListener() {
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    Robot b = new Robot();
+                                    b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+                                    b.keyRelease(java.awt.event.KeyEvent.VK_TAB);
                                 }
                             });
                             if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
