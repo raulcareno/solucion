@@ -176,7 +176,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total1 = new javax.swing.JLabel();
         iva = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
-        total4 = new javax.swing.JLabel();
         total5 = new javax.swing.JLabel();
         chkTodo = new javax.swing.JRadioButton();
         chkMatricula = new javax.swing.JRadioButton();
@@ -184,7 +183,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         categoriaSocial = new javax.swing.JLabel();
-        descuento2 = new javax.swing.JLabel();
         total7 = new javax.swing.JLabel();
         total8 = new javax.swing.JLabel();
         chkNuevo = new javax.swing.JRadioButton();
@@ -192,12 +190,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         factura = new javax.swing.JFormattedTextField();
+        total6 = new javax.swing.JLabel();
+        descuento = new javax.swing.JLabel();
+        busquedaVacio = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        btnAnadirRubrosVer = new javax.swing.JToggleButton();
+        jPanel2 = new javax.swing.JPanel();
+        total4 = new javax.swing.JLabel();
+        descuento2 = new javax.swing.JLabel();
         valorA = new javax.swing.JFormattedTextField();
         fechaA = new com.toedter.calendar.JDateChooser();
         referenciaA = new javax.swing.JFormattedTextField();
         bancoA = new javax.swing.JComboBox();
-        total6 = new javax.swing.JLabel();
-        total9 = new javax.swing.JLabel();
         total10 = new javax.swing.JLabel();
         total11 = new javax.swing.JLabel();
         confirmadoA = new javax.swing.JCheckBox();
@@ -209,17 +214,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         totalCobros = new javax.swing.JLabel();
         total3 = new javax.swing.JLabel();
         total13 = new javax.swing.JLabel();
-        descuento = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         total14 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        observacion = new javax.swing.JTextArea();
         total15 = new javax.swing.JLabel();
         faltan = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        btnAnadirRubrosVer = new javax.swing.JToggleButton();
+        total16 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        observacion = new javax.swing.JTextArea();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -291,7 +292,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         btnGuardarCerra.setBounds(80, 92, 133, 23);
 
         getContentPane().add(frmActualizar);
-        frmActualizar.setBounds(0, 20, 310, 120);
+        frmActualizar.setBounds(0, 80, 310, 120);
 
         panelencontrados1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
         panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -321,7 +322,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jScrollPane8.setBounds(10, 10, 260, 170);
 
         getContentPane().add(panelencontrados1);
-        panelencontrados1.setBounds(90, 20, 280, 190);
+        panelencontrados1.setBounds(90, 75, 280, 190);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -335,7 +336,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnNuevo);
-        btnNuevo.setBounds(10, 10, 105, 30);
+        btnNuevo.setBounds(10, 5, 105, 30);
 
         btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif"))); // NOI18N
         btnModificar.setText("Modificar");
@@ -347,7 +348,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnModificar);
-        btnModificar.setBounds(120, 10, 110, 30);
+        btnModificar.setBounds(120, 5, 110, 30);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
         btnSalir.setText("Salir");
@@ -358,10 +359,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnSalir);
-        btnSalir.setBounds(360, 10, 105, 30);
+        btnSalir.setBounds(360, 5, 105, 30);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
         btnEliminar.setText("Anular");
+        btnEliminar.setEnabled(false);
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -369,10 +371,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(btnEliminar);
-        btnEliminar.setBounds(240, 10, 105, 30);
+        btnEliminar.setBounds(240, 5, 105, 30);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(130, 480, 480, 50);
+        jPanel1.setBounds(10, 0, 610, 40);
 
         panelAnadirRubros.setBackground(new java.awt.Color(255, 204, 102));
         panelAnadirRubros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -420,12 +422,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         btnCerrarAnadirRubros.setBounds(120, 80, 100, 23);
 
         getContentPane().add(panelAnadirRubros);
-        panelAnadirRubros.setBounds(375, 136, 230, 110);
+        panelAnadirRubros.setBounds(380, 200, 230, 110);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel17.setText("Digite un apellido");
         getContentPane().add(jLabel17);
-        jLabel17.setBounds(380, 0, 180, 14);
+        jLabel17.setBounds(380, 60, 180, 14);
 
         tFactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -477,36 +479,36 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tFactura.getColumnModel().getColumn(3).setResizable(false);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(20, 140, 580, 130);
+        jScrollPane1.setBounds(20, 200, 580, 120);
 
         jDateChooser1.setDate(new Date());
         getContentPane().add(jDateChooser1);
-        jDateChooser1.setBounds(460, 90, 140, 26);
+        jDateChooser1.setBounds(460, 150, 140, 26);
 
         jLabel1.setText("Fecha: ");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(410, 90, 50, 30);
+        jLabel1.setBounds(410, 150, 50, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Búsqueda: ");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(20, 0, 70, 14);
+        jLabel2.setBounds(20, 54, 70, 20);
 
         telefono.setText(".");
         getContentPane().add(telefono);
-        telefono.setBounds(90, 80, 140, 14);
+        telefono.setBounds(90, 140, 140, 14);
 
         carrera.setText(".");
         getContentPane().add(carrera);
-        carrera.setBounds(90, 100, 300, 40);
+        carrera.setBounds(90, 160, 300, 40);
 
         jLabel5.setText("NOMBRES: ");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(10, 40, 80, 14);
+        jLabel5.setBounds(10, 100, 80, 14);
 
         jLabel6.setText("DIRECCIÓN:");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(10, 60, 80, 14);
+        jLabel6.setBounds(10, 120, 80, 14);
 
         editarDatos.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         editarDatos.setText("EDITAR");
@@ -517,7 +519,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(editarDatos);
-        editarDatos.setBounds(230, 20, 70, 23);
+        editarDatos.setBounds(230, 80, 70, 23);
 
         buscarApellido.setEnabled(false);
         buscarApellido.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -535,73 +537,66 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(buscarApellido);
-        buscarApellido.setBounds(90, 0, 280, 21);
+        buscarApellido.setBounds(90, 55, 280, 21);
 
-        jLabel7.setBackground(new java.awt.Color(204, 204, 204));
+        jLabel7.setBackground(new java.awt.Color(153, 153, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(0, 0, 630, 20);
+        jLabel7.setBounds(10, 60, 610, 20);
 
         jLabel9.setText("RUC: ");
         getContentPane().add(jLabel9);
-        jLabel9.setBounds(10, 20, 80, 14);
+        jLabel9.setBounds(10, 80, 80, 14);
 
         ruc.setText(".");
         getContentPane().add(ruc);
-        ruc.setBounds(90, 20, 140, 14);
+        ruc.setBounds(90, 80, 140, 14);
 
         nombre.setText(".");
         getContentPane().add(nombre);
-        nombre.setBounds(90, 40, 230, 14);
+        nombre.setBounds(90, 100, 230, 14);
 
         direccion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         direccion.setText(". ");
         getContentPane().add(direccion);
-        direccion.setBounds(90, 60, 320, 13);
+        direccion.setBounds(90, 120, 320, 13);
         getContentPane().add(codigoPariente);
-        codigoPariente.setBounds(130, 120, 20, 20);
+        codigoPariente.setBounds(130, 180, 20, 20);
 
         subtotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         subtotal.setForeground(new java.awt.Color(51, 51, 51));
         subtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         subtotal.setText("00.00");
         getContentPane().add(subtotal);
-        subtotal.setBounds(100, 270, 70, 30);
+        subtotal.setBounds(100, 320, 70, 30);
 
         total1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total1.setForeground(new java.awt.Color(51, 51, 51));
         total1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total1.setText("TOTAL:");
         getContentPane().add(total1);
-        total1.setBounds(440, 270, 50, 30);
+        total1.setBounds(440, 320, 50, 30);
 
         iva.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         iva.setForeground(new java.awt.Color(51, 51, 51));
         iva.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         iva.setText("00.00");
         getContentPane().add(iva);
-        iva.setBounds(380, 270, 60, 30);
+        iva.setBounds(380, 320, 60, 30);
 
         total.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         total.setForeground(new java.awt.Color(0, 51, 153));
         total.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total.setText("00.00");
         getContentPane().add(total);
-        total.setBounds(490, 270, 110, 30);
-
-        total4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        total4.setForeground(new java.awt.Color(51, 51, 51));
-        total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total4.setText("Confirmado");
-        getContentPane().add(total4);
-        total4.setBounds(440, 300, 80, 20);
+        total.setBounds(490, 320, 110, 30);
 
         total5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total5.setForeground(new java.awt.Color(51, 51, 51));
         total5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total5.setText("IVA:");
         getContentPane().add(total5);
-        total5.setBounds(290, 270, 80, 30);
+        total5.setBounds(290, 320, 80, 30);
 
         buttonGroup1.add(chkTodo);
         chkTodo.setSelected(true);
@@ -617,7 +612,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkTodo);
-        chkTodo.setBounds(390, 50, 70, 23);
+        chkTodo.setBounds(390, 110, 70, 23);
 
         buttonGroup1.add(chkMatricula);
         chkMatricula.setText("Matricula");
@@ -627,7 +622,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkMatricula);
-        chkMatricula.setBounds(460, 50, 80, 23);
+        chkMatricula.setBounds(460, 110, 80, 23);
 
         buttonGroup1.add(chkCreditos);
         chkCreditos.setText("Créditos");
@@ -637,42 +632,35 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkCreditos);
-        chkCreditos.setBounds(540, 50, 80, 23);
+        chkCreditos.setBounds(540, 110, 80, 23);
 
         jLabel15.setText("TELÉFONO:");
         getContentPane().add(jLabel15);
-        jLabel15.setBounds(10, 80, 80, 14);
+        jLabel15.setBounds(10, 140, 80, 14);
 
         jLabel16.setText("CARRERA:");
         getContentPane().add(jLabel16);
-        jLabel16.setBounds(10, 100, 80, 14);
+        jLabel16.setBounds(10, 160, 80, 14);
 
         categoriaSocial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         categoriaSocial.setForeground(new java.awt.Color(51, 51, 51));
         categoriaSocial.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         categoriaSocial.setText("A");
         getContentPane().add(categoriaSocial);
-        categoriaSocial.setBounds(310, 80, 20, 15);
-
-        descuento2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        descuento2.setForeground(new java.awt.Color(204, 51, 0));
-        descuento2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        descuento2.setText("00.00");
-        getContentPane().add(descuento2);
-        descuento2.setBounds(70, 440, 60, 30);
+        categoriaSocial.setBounds(310, 140, 20, 15);
 
         total7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total7.setForeground(new java.awt.Color(51, 51, 51));
         total7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total7.setText("Dscto.");
         getContentPane().add(total7);
-        total7.setBounds(180, 270, 50, 30);
+        total7.setBounds(180, 320, 50, 30);
 
         total8.setForeground(new java.awt.Color(51, 51, 51));
         total8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         total8.setText("CATEGORÍA:");
         getContentPane().add(total8);
-        total8.setBounds(240, 80, 80, 14);
+        total8.setBounds(240, 140, 80, 14);
 
         buttonGroup2.add(chkNuevo);
         chkNuevo.setSelected(true);
@@ -683,7 +671,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkNuevo);
-        chkNuevo.setBounds(460, 70, 70, 23);
+        chkNuevo.setBounds(460, 130, 70, 23);
 
         buttonGroup2.add(chkAntiguo);
         chkAntiguo.setText("Antiguo");
@@ -693,15 +681,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkAntiguo);
-        chkAntiguo.setBounds(540, 70, 80, 23);
+        chkAntiguo.setBounds(540, 130, 80, 23);
 
         jLabel3.setText("Estudiante:");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(400, 70, 70, 20);
+        jLabel3.setBounds(400, 130, 70, 20);
 
         jLabel4.setText("Factura:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(410, 20, 60, 14);
+        jLabel4.setBounds(410, 80, 60, 14);
 
         factura.setText("0000000");
         factura.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -713,7 +701,62 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(factura);
-        factura.setBounds(470, 20, 150, 25);
+        factura.setBounds(470, 80, 150, 25);
+
+        total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        total6.setForeground(new java.awt.Color(51, 51, 51));
+        total6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total6.setText("Subtotal:");
+        getContentPane().add(total6);
+        total6.setBounds(20, 320, 80, 30);
+
+        descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        descuento.setForeground(new java.awt.Color(204, 51, 0));
+        descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        descuento.setText("00.00");
+        getContentPane().add(descuento);
+        descuento.setBounds(230, 320, 60, 30);
+
+        busquedaVacio.setBackground(new java.awt.Color(204, 204, 204));
+        getContentPane().add(busquedaVacio);
+        busquedaVacio.setBounds(10, 50, 610, 30);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel10.setText("Búsqueda: ");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(10, 60, 70, 14);
+
+        jButton2.setText("Historial");
+        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        getContentPane().add(jButton2);
+        jButton2.setBounds(500, 180, 100, 20);
+
+        btnAnadirRubrosVer.setText("Añadir Rubros");
+        btnAnadirRubrosVer.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAnadirRubrosVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirRubrosVerActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAnadirRubrosVer);
+        btnAnadirRubrosVer.setBounds(370, 180, 130, 20);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "FORMAS DE PAGO:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
+        jPanel2.setLayout(null);
+
+        total4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total4.setForeground(new java.awt.Color(51, 51, 51));
+        total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total4.setText("Confirmado");
+        jPanel2.add(total4);
+        total4.setBounds(430, 20, 80, 20);
+
+        descuento2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        descuento2.setForeground(new java.awt.Color(204, 51, 0));
+        descuento2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        descuento2.setText("00.00");
+        jPanel2.add(descuento2);
+        descuento2.setBounds(60, 160, 60, 30);
 
         valorA.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         valorA.setText("0.00");
@@ -725,8 +768,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 valorAKeyPressed(evt);
             }
         });
-        getContentPane().add(valorA);
-        valorA.setBounds(130, 320, 60, 28);
+        jPanel2.add(valorA);
+        valorA.setBounds(120, 40, 60, 28);
 
         fechaA.setEnabled(false);
         fechaA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -735,8 +778,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 fechaAKeyPressed(evt);
             }
         });
-        getContentPane().add(fechaA);
-        fechaA.setBounds(340, 320, 130, 28);
+        jPanel2.add(fechaA);
+        fechaA.setBounds(330, 40, 130, 28);
 
         referenciaA.setEnabled(false);
         referenciaA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -745,8 +788,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 referenciaAKeyPressed(evt);
             }
         });
-        getContentPane().add(referenciaA);
-        referenciaA.setBounds(270, 320, 70, 28);
+        jPanel2.add(referenciaA);
+        referenciaA.setBounds(260, 40, 70, 28);
 
         bancoA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         bancoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
@@ -756,40 +799,26 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 bancoAKeyPressed(evt);
             }
         });
-        getContentPane().add(bancoA);
-        bancoA.setBounds(200, 320, 70, 28);
-
-        total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        total6.setForeground(new java.awt.Color(51, 51, 51));
-        total6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total6.setText("Subtotal:");
-        getContentPane().add(total6);
-        total6.setBounds(20, 270, 80, 30);
-
-        total9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        total9.setForeground(new java.awt.Color(51, 51, 51));
-        total9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total9.setText("Tipo:");
-        getContentPane().add(total9);
-        total9.setBounds(40, 300, 60, 20);
+        jPanel2.add(bancoA);
+        bancoA.setBounds(180, 40, 80, 28);
 
         total10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total10.setForeground(new java.awt.Color(51, 51, 51));
         total10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total10.setText("Banco");
-        getContentPane().add(total10);
-        total10.setBounds(200, 300, 60, 20);
+        jPanel2.add(total10);
+        total10.setBounds(190, 20, 60, 20);
 
         total11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total11.setForeground(new java.awt.Color(51, 51, 51));
         total11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total11.setText("Referencia");
-        getContentPane().add(total11);
-        total11.setBounds(270, 300, 70, 20);
+        jPanel2.add(total11);
+        total11.setBounds(260, 20, 70, 20);
 
         confirmadoA.setEnabled(false);
-        getContentPane().add(confirmadoA);
-        confirmadoA.setBounds(470, 320, 30, 28);
+        jPanel2.add(confirmadoA);
+        confirmadoA.setBounds(460, 40, 30, 28);
 
         anadir.setText("Añadir");
         anadir.setToolTipText("");
@@ -800,25 +829,25 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 anadirActionPerformed(evt);
             }
         });
-        getContentPane().add(anadir);
-        anadir.setBounds(513, 320, 90, 28);
+        jPanel2.add(anadir);
+        anadir.setBounds(500, 40, 90, 28);
 
         total12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total12.setForeground(new java.awt.Color(51, 51, 51));
         total12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total12.setText("Valor:");
-        getContentPane().add(total12);
-        total12.setBounds(130, 300, 60, 20);
+        jPanel2.add(total12);
+        total12.setBounds(120, 20, 60, 20);
 
-        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Beca", "25% Ayuda Financiera", "30% Ayuda Financiera", "35% Ayuda Financiera", "40% Ayuda Financiera", "Cheque", "Debito", "Tarjeta", "Transferencia" }));
+        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Tarjeta", "Transferencia", "Beca", "20% Ayuda Financiera", "25% Ayuda Financiera", "30% Ayuda Financiera", "35% Ayuda Financiera", "40% Ayuda Financiera", " " }));
         tipoA.setEnabled(false);
         tipoA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 tipoAItemStateChanged(evt);
             }
         });
-        getContentPane().add(tipoA);
-        tipoA.setBounds(30, 320, 100, 28);
+        jPanel2.add(tipoA);
+        tipoA.setBounds(10, 40, 110, 28);
 
         formasdePago.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -850,93 +879,72 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(formasdePago);
 
-        getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(20, 350, 580, 90);
+        jPanel2.add(jScrollPane2);
+        jScrollPane2.setBounds(10, 70, 580, 90);
 
         totalCobros.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         totalCobros.setForeground(new java.awt.Color(0, 51, 153));
         totalCobros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         totalCobros.setText("00.00");
-        getContentPane().add(totalCobros);
-        totalCobros.setBounds(210, 440, 90, 30);
+        jPanel2.add(totalCobros);
+        totalCobros.setBounds(200, 160, 90, 30);
 
         total3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total3.setForeground(new java.awt.Color(51, 51, 51));
         total3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total3.setText("Dstos.:");
-        getContentPane().add(total3);
-        total3.setBounds(20, 440, 50, 30);
+        jPanel2.add(total3);
+        total3.setBounds(10, 160, 50, 30);
 
         total13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total13.setForeground(new java.awt.Color(51, 51, 51));
         total13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total13.setText("FALTAN: ");
-        getContentPane().add(total13);
-        total13.setBounds(310, 440, 60, 30);
-
-        descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        descuento.setForeground(new java.awt.Color(204, 51, 0));
-        descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        descuento.setText("00.00");
-        getContentPane().add(descuento);
-        descuento.setBounds(230, 270, 60, 30);
+        jPanel2.add(total13);
+        total13.setBounds(300, 160, 60, 30);
 
         jLabel8.setForeground(new java.awt.Color(153, 0, 51));
         jLabel8.setText("Presione SUPR para quitar");
-        getContentPane().add(jLabel8);
-        jLabel8.setBounds(480, 440, 160, 20);
+        jPanel2.add(jLabel8);
+        jLabel8.setBounds(470, 160, 160, 20);
 
         total14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total14.setForeground(new java.awt.Color(51, 51, 51));
         total14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total14.setText("Fecha Cheque");
-        getContentPane().add(total14);
-        total14.setBounds(340, 300, 110, 20);
+        jPanel2.add(total14);
+        total14.setBounds(330, 20, 110, 20);
+
+        total15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        total15.setForeground(new java.awt.Color(51, 51, 51));
+        total15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        total15.setText("A COBRAR:");
+        jPanel2.add(total15);
+        total15.setBounds(120, 160, 80, 30);
+
+        faltan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        faltan.setForeground(new java.awt.Color(204, 0, 0));
+        faltan.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        faltan.setText("00.00");
+        jPanel2.add(faltan);
+        faltan.setBounds(360, 160, 90, 30);
+
+        total16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        total16.setForeground(new java.awt.Color(51, 51, 51));
+        total16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        total16.setText("Tipo:");
+        jPanel2.add(total16);
+        total16.setBounds(10, 20, 50, 20);
+
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(10, 350, 600, 200);
 
         observacion.setColumns(20);
         observacion.setRows(5);
         jScrollPane3.setViewportView(observacion);
 
         getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(10, 470, 110, 60);
-
-        total15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        total15.setForeground(new java.awt.Color(51, 51, 51));
-        total15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        total15.setText("A COBRAR:");
-        getContentPane().add(total15);
-        total15.setBounds(130, 440, 80, 30);
-
-        faltan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        faltan.setForeground(new java.awt.Color(204, 0, 0));
-        faltan.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        faltan.setText("00.00");
-        getContentPane().add(faltan);
-        faltan.setBounds(370, 440, 90, 30);
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 630, 20);
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel10.setText("Búsqueda: ");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(10, 0, 70, 14);
-
-        jButton2.setText("Historial");
-        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        getContentPane().add(jButton2);
-        jButton2.setBounds(500, 117, 100, 20);
-
-        btnAnadirRubrosVer.setText("Añadir Rubros");
-        btnAnadirRubrosVer.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAnadirRubrosVer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnadirRubrosVerActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnAnadirRubrosVer);
-        btnAnadirRubrosVer.setBounds(370, 117, 130, 20);
+        jScrollPane3.setBounds(10, 550, 600, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1864,6 +1872,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JFormattedTextField buscarApellido;
+    private javax.swing.JPanel busquedaVacio;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel carrera;
@@ -1936,13 +1945,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel total13;
     private javax.swing.JLabel total14;
     private javax.swing.JLabel total15;
+    private javax.swing.JLabel total16;
     private javax.swing.JLabel total3;
     private javax.swing.JLabel total4;
     private javax.swing.JLabel total5;
     private javax.swing.JLabel total6;
     private javax.swing.JLabel total7;
     private javax.swing.JLabel total8;
-    private javax.swing.JLabel total9;
     private javax.swing.JLabel totalCobros;
     private javax.swing.JFormattedTextField txtValorAgregar;
     private javax.swing.JFormattedTextField valorA;
