@@ -436,7 +436,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                             </bandbox>
                             
                             <span> Aporte: </span>
-                            
+
                             <bandbox  width="150px" readonly="true"  id="bd5">
                                 <bandpopup>
                                     <vbox>

@@ -1374,7 +1374,7 @@ void guardarc(){
                             </listbox>
                             <button image="/images/guardar.gif" id="guardarDis" label="Empezar a Copiar y Guardar"  onClick="guardarCopiaDistributivo()"/>
                             </span>
-                            
+
  
                         </row>
                         <row >
