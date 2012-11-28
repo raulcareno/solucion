@@ -15,6 +15,7 @@ public class general {
     String codigoString="";
     String descripcion="";
     BigDecimal valor=new BigDecimal("0");
+    Boolean verdadero = false;
 
     public general() {
     }
@@ -33,6 +34,12 @@ public class general {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.valor = valor;
+    }
+       public general(Integer codigo, String descripcion,BigDecimal valor,Boolean verdadero) {
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.valor = valor;
+        this.verdadero = verdadero;
     }
 
 
@@ -58,6 +65,14 @@ public class general {
 
     public void setCodigoString(String codigoString) {
         this.codigoString = codigoString;
+    }
+
+    public Boolean getVerdadero() {
+        return verdadero;
+    }
+
+    public void setVerdadero(Boolean verdadero) {
+        this.verdadero = verdadero;
     }
     
 

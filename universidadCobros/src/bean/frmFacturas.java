@@ -69,7 +69,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
      */
     public frmFacturas() {
         initComponents();
-
+        cmbPorcentaje.setVisible(false);
     }
 
     public frmFacturas(Administrador adm1) {
@@ -96,7 +96,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         List<Rubros> bancosList = adm.query("Select o from Rubros as o where o.eselcredito = false ");
         for (Iterator<Rubros> it = bancosList.iterator(); it.hasNext();) {
             Rubros bancos = it.next();
-            gen = new general(bancos.getIdRubros(), bancos.getNombre(), bancos.getValor());
+            gen = new general(bancos.getIdRubros(), bancos.getNombre(), bancos.getValor(), bancos.getNoaplica());
             cmbRubros.addItem(gen);
 
         }
@@ -208,6 +208,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total11 = new javax.swing.JLabel();
         confirmadoA = new javax.swing.JCheckBox();
         anadir = new javax.swing.JButton();
+        cmbPorcentaje = new javax.swing.JComboBox();
         valorLabel = new javax.swing.JLabel();
         tipoA = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -220,7 +221,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total15 = new javax.swing.JLabel();
         faltan = new javax.swing.JLabel();
         total16 = new javax.swing.JLabel();
-        cmbPorcentaje = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
 
@@ -433,20 +433,20 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         tFactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "Cantidad", "V.Nuevo"
+                "Código", "Nombre", "Cantidad", "Valor", "S.D.", "TIPO"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -479,6 +479,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tFactura.getColumnModel().getColumn(2).setResizable(false);
         tFactura.getColumnModel().getColumn(2).setPreferredWidth(0);
         tFactura.getColumnModel().getColumn(3).setResizable(false);
+        tFactura.getColumnModel().getColumn(4).setPreferredWidth(15);
+        tFactura.getColumnModel().getColumn(5).setPreferredWidth(15);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(20, 200, 580, 120);
@@ -834,6 +836,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jPanel2.add(anadir);
         anadir.setBounds(500, 40, 90, 28);
 
+        cmbPorcentaje.setForeground(new java.awt.Color(0, 0, 153));
+        cmbPorcentaje.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "%", "20", "25", "30", "35", "40" }));
+        cmbPorcentaje.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbPorcentajeItemStateChanged(evt);
+            }
+        });
+        jPanel2.add(cmbPorcentaje);
+        cmbPorcentaje.setBounds(120, 20, 60, 20);
+
         valorLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         valorLabel.setForeground(new java.awt.Color(51, 51, 51));
         valorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -856,14 +868,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Tipo", "Valor", "Banco", "Referencia", "Fecha", "Confirmado"
+                "Tipo", "Valor", "Banco", "Referencia", "Fecha", "Confirmado","%"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.math.BigDecimal.class, java.lang.Object.class, java.lang.String.class, java.util.Date.class, java.lang.Boolean.class
+                java.lang.Object.class, java.math.BigDecimal.class, java.lang.Object.class, java.lang.String.class, java.util.Date.class, java.lang.Boolean.class,java.lang.String.class,
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -937,11 +949,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total16.setText("Tipo:");
         jPanel2.add(total16);
         total16.setBounds(10, 20, 50, 20);
-
-        cmbPorcentaje.setForeground(new java.awt.Color(0, 0, 153));
-        cmbPorcentaje.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "%", "20", "25", "30", "35", "40" }));
-        jPanel2.add(cmbPorcentaje);
-        cmbPorcentaje.setBounds(120, 20, 60, 20);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(10, 350, 600, 200);
@@ -1105,7 +1112,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             cab.setAutorizacion(true); //NO SE QUE HACE PERO LO OCUPO PARA VER SI ESTÁ ANULADA
             cab.setIdFacturas(inst.getSerie1() + "FC" + factura.getText());
             cab.setObservacion(observacion.getText());
-            cab.setTotal(cab.getBasecero());
+            cab.setTotal(cab.getBasecero().subtract(cab.getDescuento())); 
             adm.guardar(cab);
             //ACTUALIZAR DOCUMENTO FACTURA
             //ACTUALIZAR DOCUMENTO FACTURA
@@ -1151,11 +1158,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 cx.setFechareferencia((Date) formasdePago.getValueAt(i, 4));
                 cx.setConfirmado((Boolean) formasdePago.getValueAt(i, 5));
 
-                if (cx.getTipopago().contains("Desc")) {
+                if (cx.getTipopago().contains("Ayuda") || cx.getTipopago().contains("Beca")) {
                     Descuentos desc = new Descuentos(adm.getNuevaClave("Descuentos", "idDescuentos"));
                     desc.setIdEstudiantes(es);
                     desc.setIdFacturas(cab);
                     desc.setValor(cx.getTotal());
+                    desc.setPorcentaje(new BigDecimal(formasdePago.getValueAt(i, 6).toString()));
+                    desc.setTipo(formasdePago.getValueAt(i, 0).toString());
                     adm.guardar(desc);
                 } else {
                     adm.guardar(cx);
@@ -1372,6 +1381,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         obj[1] = elem.getIdRubros().getNombre();
                         obj[2] = 1;
                         obj[3] = (chkNuevo.isSelected() ? elem.getValorNueva() : elem.getValorAntigua());
+                        obj[4] = elem.getIdRubros().getNoaplica();
+                        obj[5] = "M";
                         dtm.addRow(obj);
                     }
                 }
@@ -1404,6 +1415,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     obj[1] = rubroCredito.getNombre();
                     obj[2] = creditos;
                     obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                    obj[4] = rubroCredito.getNoaplica();
+                    obj[5] = "C";
                     dtm.addRow(obj);
 
                 }
@@ -1596,16 +1609,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void tipoAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoAItemStateChanged
         // TODO add your handling code here:
         if (tipoA.getSelectedIndex() > 0) {
-                valorLabel.setVisible(true); 
-                 cmbPorcentaje.setVisible(false); 
+            valorLabel.setVisible(true);
+            cmbPorcentaje.setVisible(false);
             if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda")) {
                 valorA.setEnabled(true);
                 if (tipoA.getSelectedItem().toString().contains("Ayuda") || tipoA.getSelectedItem().toString().contains("Beca")) {
                     referenciaA.setEnabled(true);
-                    cmbPorcentaje.setVisible(true); 
-                    valorLabel.setVisible(false); 
+                    cmbPorcentaje.setVisible(true);
+                    valorLabel.setVisible(false);
                 }
-                
+
                 anadir.setEnabled(true);
                 valorA.setText(faltan.getText());
                 valorA.requestFocusInWindow();
@@ -1655,7 +1668,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         BigDecimal totalCalc = new BigDecimal(BigInteger.ZERO);
         BigDecimal descuentos0 = new BigDecimal(BigInteger.ZERO);
         for (int i = 0; i < filas; i++) {
-            if (formasdePago.getValueAt(i, 0).toString().contains("Desc")) {
+            if (formasdePago.getValueAt(i, 0).toString().contains("Ayuda") || formasdePago.getValueAt(i, 0).toString().contains("Beca")) {
                 descuentos0 = descuentos0.add((BigDecimal) formasdePago.getValueAt(i, 1));
             } else {
                 totalCalc = totalCalc.add((BigDecimal) formasdePago.getValueAt(i, 1));
@@ -1672,7 +1685,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         BigDecimal totalCobrado = new BigDecimal(BigInteger.ZERO);
 
         for (int i = 0; i < filas; i++) {
-            if (formasdePago.getValueAt(i, 0).toString().contains("Desc")) {
+            if (formasdePago.getValueAt(i, 0).toString().contains("Ayuda") || formasdePago.getValueAt(i, 0).toString().contains("Beca") ) {
             } else {
                 totalCobrado = totalCobrado.add((BigDecimal) formasdePago.getValueAt(i, 1));
             }
@@ -1706,7 +1719,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 referenciaA.selectAll();
                 return;
             }
-            if (!tipoA.getSelectedItem().toString().contains("Desc")) {
+            if (!tipoA.getSelectedItem().toString().contains("Ayuda") && !tipoA.getSelectedItem().toString().contains("Beca")) {
                 if (bancoA.getSelectedIndex() == 0) {
                     bancoA.requestFocus(true);
                     bancoA.requestFocusInWindow();
@@ -1728,6 +1741,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         obj[3] = referenciaA.getText();
         obj[4] = fechaA.getDate();
         obj[5] = confirmadoA.isSelected();
+        if(tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda")){
+            obj[6] = cmbPorcentaje.getSelectedItem().toString();    
+        }else{
+            obj[6] = "0";    
+        }
+        
         dtm.addRow(obj);
         formasdePago.setModel(dtm);
 
@@ -1847,31 +1866,62 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             obj[1] = gen.getDescripcion();
             obj[2] = 1;
             obj[3] = new BigDecimal(txtValorAgregar.getText());
- 
+            obj[4] = gen.getVerdadero();
+            obj[5] = "N";
+
             dtm.addRow(obj);
             tFactura.setModel(dtm);
             panelAnadirRubros.setVisible(false);
             btnAnadirRubrosVer.setSelected(false);
-        
+
             sumarPagos();
-            faltan.setText(total.getText()); 
+            faltan.setText(total.getText());
         }
 
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void tFacturaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tFacturaKeyPressed
         // TODO add your handling code here:
-           if (evt.getKeyCode() == evt.VK_DELETE) {
+        if (evt.getKeyCode() == evt.VK_DELETE) {
             int fil = tFactura.getSelectedRow();
             DefaultTableModel dtm = (DefaultTableModel) tFactura.getModel();
             dtm.removeRow(fil);
             tFactura.setModel(dtm);
             this.sumar();
             this.sumarPagos();
-            
+
         }
     }//GEN-LAST:event_tFacturaKeyPressed
+public BigDecimal sumarSegun(String tipo){
+     int filas = tFactura.getRowCount();
+            BigDecimal totalCalc = new BigDecimal(0);
+        for (int i = 0; i < filas; i++) {
+            if(tFactura.getValueAt(i,5).toString().contains(tipo))
+                totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 3));
+        }
+        return totalCalc;
+}
 
+    private void cmbPorcentajeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPorcentajeItemStateChanged
+        // TODO add your handling code here:
+if(cmbPorcentaje.getSelectedIndex()>0){
+    if(tipoA.getSelectedItem().toString().contains("Ayuda")){
+        BigDecimal totalMatriculas = sumarSegun("C");
+        BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
+        valorA.setText(descontar+"");
+         
+    }else if(tipoA.getSelectedItem().toString().contains("Beca")){
+        BigDecimal totalMatriculas = sumarSegun("M");
+        BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
+        valorA.setText(descontar+"");
+    }
+        
+}else{
+    
+}
+    
+
+    }//GEN-LAST:event_cmbPorcentajeItemStateChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
