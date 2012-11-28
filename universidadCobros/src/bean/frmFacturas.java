@@ -85,6 +85,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         editarDatos.setEnabled(false);
         panelAnadirRubros.setVisible(false);
         cargarRubros();
+        cmbPorcentaje.setVisible(false);
     }
 
     private void cargarRubros() {
@@ -207,7 +208,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total11 = new javax.swing.JLabel();
         confirmadoA = new javax.swing.JCheckBox();
         anadir = new javax.swing.JButton();
-        total12 = new javax.swing.JLabel();
+        valorLabel = new javax.swing.JLabel();
         tipoA = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         formasdePago = new javax.swing.JTable();
@@ -219,6 +220,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total15 = new javax.swing.JLabel();
         faltan = new javax.swing.JLabel();
         total16 = new javax.swing.JLabel();
+        cmbPorcentaje = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
 
@@ -832,14 +834,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jPanel2.add(anadir);
         anadir.setBounds(500, 40, 90, 28);
 
-        total12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        total12.setForeground(new java.awt.Color(51, 51, 51));
-        total12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        total12.setText("Valor:");
-        jPanel2.add(total12);
-        total12.setBounds(120, 20, 60, 20);
+        valorLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        valorLabel.setForeground(new java.awt.Color(51, 51, 51));
+        valorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        valorLabel.setText("Valor:");
+        jPanel2.add(valorLabel);
+        valorLabel.setBounds(120, 20, 60, 20);
 
-        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Tarjeta", "Transferencia", "Beca", "20% Ayuda Financiera", "25% Ayuda Financiera", "30% Ayuda Financiera", "35% Ayuda Financiera", "40% Ayuda Financiera", " " }));
+        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Tarjeta", "Transferencia", "Beca", "Ayuda Financiera", " " }));
         tipoA.setEnabled(false);
         tipoA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -935,6 +937,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total16.setText("Tipo:");
         jPanel2.add(total16);
         total16.setBounds(10, 20, 50, 20);
+
+        cmbPorcentaje.setForeground(new java.awt.Color(0, 0, 153));
+        cmbPorcentaje.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "%", "20", "25", "30", "35", "40" }));
+        jPanel2.add(cmbPorcentaje);
+        cmbPorcentaje.setBounds(120, 20, 60, 20);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(10, 350, 600, 200);
@@ -1589,11 +1596,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void tipoAItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tipoAItemStateChanged
         // TODO add your handling code here:
         if (tipoA.getSelectedIndex() > 0) {
-            if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Desc")) {
+                valorLabel.setVisible(true); 
+                 cmbPorcentaje.setVisible(false); 
+            if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda")) {
                 valorA.setEnabled(true);
-                if (tipoA.getSelectedItem().toString().contains("Desc")) {
+                if (tipoA.getSelectedItem().toString().contains("Ayuda") || tipoA.getSelectedItem().toString().contains("Beca")) {
                     referenciaA.setEnabled(true);
+                    cmbPorcentaje.setVisible(true); 
+                    valorLabel.setVisible(false); 
                 }
+                
                 anadir.setEnabled(true);
                 valorA.setText(faltan.getText());
                 valorA.requestFocusInWindow();
@@ -1882,6 +1894,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton chkMatricula;
     private javax.swing.JRadioButton chkNuevo;
     private javax.swing.JRadioButton chkTodo;
+    private javax.swing.JComboBox cmbPorcentaje;
     private javax.swing.JComboBox cmbRubros;
     private javax.swing.JFormattedTextField codigoPariente;
     private javax.swing.JCheckBox confirmadoA;
@@ -1941,7 +1954,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel total1;
     private javax.swing.JLabel total10;
     private javax.swing.JLabel total11;
-    private javax.swing.JLabel total12;
     private javax.swing.JLabel total13;
     private javax.swing.JLabel total14;
     private javax.swing.JLabel total15;
@@ -1955,6 +1967,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel totalCobros;
     private javax.swing.JFormattedTextField txtValorAgregar;
     private javax.swing.JFormattedTextField valorA;
+    private javax.swing.JLabel valorLabel;
     // End of variables declaration//GEN-END:variables
 
     public Periodos getPeriodoActual() {
