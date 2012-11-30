@@ -152,6 +152,26 @@ if(usuarioActual.getTipo().equals("OTRO")){
                           }
 
  }
+ void sumaTotal(){
+  BigDecimal total = new BigDecimal("0");
+  int totalSeleccionados = 0;
+       
+                             List col = facturasDatosAsignados.getRows().getChildren();
+                             for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                            try{
+                                                    total = total.add(((Decimalbox)labels.get(6)).getValue());
+                                                    if(((Checkbox)labels.get(8)).isChecked()){
+                                                        totalSeleccionados ++;
+                                                    }
+                                              }catch(Exception ax){
+                                                System.out.println(ax+" --- "+ax.getMessage());
+                                            }
+                          }
+                          totalLabel.value = ""+total;
+                          totalLabel2.value = ""+totalSeleccionados;
+ }
    void facturasPendientesEmpleado(){
         try{
            Date fechaAc = fecha.value;
@@ -172,8 +192,8 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                     row = new Row();
                                     row.setValue(empf);
                                     row.appendChild(new Label(empf.getFactura().getNumero().substring(9)));
-                                    SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
-                                    Date d = empf.getFecha();
+                                    SimpleDateFormat d1 = new SimpleDateFormat("MMM-yyyy");
+                                    Date d = empf.getFactura().getFecha();
                                     row.appendChild(new Label(d1.format(d)+""));
                                     row.appendChild(new Label(empf.getFactura().getClientes()+""));
                                     row.appendChild(new Label(empf.getSaldo()+""));
@@ -223,8 +243,10 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                     try {
                                     if(todo.isChecked()){
                                         deposito.setValue(empf.getSaldo().subtract(descuento.getValue()));
+                                        sumaTotal();
                                      }else{
                                         deposito.setValue(new BigDecimal("0"));
+                                        sumaTotal();
                                      }
                                     } catch (Exception e) {
                                       
@@ -232,6 +254,9 @@ if(usuarioActual.getTipo().equals("OTRO")){
 
                                 }
                             });
+                            if(empf.getSaldo().compareTo(empf.getDebito())==0){
+                            todo.checked = true;
+                            }
                             
                             row.appendChild(todo);
 
@@ -248,7 +273,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             System.out.println("ERROR: "+e);
                    }
-
+sumaTotal();
  }
  
   
@@ -335,6 +360,8 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                     <rows id="filasFacAsignados">
                                     </rows>
                                 </grid>
+                                <span><label value="Total:" style="font-weight:bold"/><label id="totalLabel" /> <label value="Seleccionados:" style="font-weight:bold"/> <label id="totalLabel2" /></span>
+                                
                             </vbox>
                         </hbox>
                  

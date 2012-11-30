@@ -123,7 +123,17 @@ void ingresarSoporte(Soporte sop){
         background-color:#FFC66F;
         }
     </style>
-
+        <grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         pendientes.setHeight(""+(evt.getScreenHeight()-300)+"px");
+     }
+    </zscript>
+</grid>
     <borderlayout onCreate="verificar();"  width="100%" style="float:center"  height="100%">
        
     
@@ -265,7 +275,7 @@ void ingresarSoporte(Soporte sop){
                 <panel id="mensajes"   border="normal" width="430px" height="100%" >
                     <panelchildren >
                        
-                        <listbox id="pendientes" width="420px" onSelect="soporteSeleccionado(self.selectedItem.value);">
+                        <listbox id="pendientes" width="93%"  onSelect="soporteSeleccionado(self.selectedItem.value);">
                             <listitem value="21" label="sdsd" />
                         </listbox>
                      

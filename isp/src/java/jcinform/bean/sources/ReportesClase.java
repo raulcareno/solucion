@@ -120,22 +120,22 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource clientesxestado(String estado,Integer formapago) {
+    public JRDataSource clientesxestado(String estado, Integer formapago) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
-        
-         String formaPago = " and o.formapago = '" + formapago + "' ";
+
+        String formaPago = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals(0)) {
             formaPago = " and o.formapago in (0,1,2,3) ";
         }
-        
+
         List<Contratos> contra = adm.query("Select o from Contratos as o "
                 + " where o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + estadoComp  + " " + formaPago
+                + estadoComp + " " + formaPago
                 + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
@@ -175,14 +175,24 @@ public class ReportesClase {
         ArrayList detalles = new ArrayList();
         String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
                 + " and substring(o.contratos.clientes.apellidos,1,1) <= '" + letrafin + "' ";
-
+        String complemento2 = " and substring(o.clientes.apellidos,1,1) >= '" + letraini + "' "
+                + " and substring(o.clientes.apellidos,1,1) <= '" + letrafin + "' ";
+        String estadoString2 = "";
+        String estadoString = "";
+        if(!estado.contains("Todo")){
+            estadoString = " and o.contratos.estado = '" + estado + "'  ";
+            estadoString2 = " and o.estado = '" + estado + "'  ";
+        }
+        
+        String codigosContratos = "";
         List<Series> contra = adm.query("Select o from Series as o "
                 + "where o.contratos.sector.numero "
                 + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
                 + "and o.estado = 'P' "
                 + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + "and o.contratos.estado = '" + estado + "' "
+                + " "+estadoString
                 + "order by o.contratos.clientes.apellidos");
+
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
             Series ser = it.next();
             Contratos contratos = ser.getContratos();
@@ -190,6 +200,24 @@ public class ReportesClase {
             //contratos.setSerie2(ser.getDetallecompra().getCabeceracompra());
             contratos.setSerie3(ser.getSerie()); // SERIE SERIE3
             detalles.add(contratos);
+            codigosContratos += contratos.getCodigo() + ",";
+        }
+        if (codigosContratos.length() > 0) {
+            codigosContratos = codigosContratos.substring(0, codigosContratos.length() - 1);
+            List<Contratos> contra2 = adm.query("Select o from Contratos as o "
+                    + " where o.codigo not in (" + codigosContratos + ") "
+                    + " and  o.sector.numero "
+                    + " between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento2
+                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + " "+ estadoString2
+                    + "order by o.clientes.apellidos");
+
+            for (Iterator<Contratos> it = contra2.iterator(); it.hasNext();) {
+                Contratos contratos = it.next();
+                contratos.setSerie1(""); // EQUIPO SERIE1
+                contratos.setSerie3(""); // SERIE SERIE3
+                detalles.add(contratos);
+            }
         }
         ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
         return ds;
@@ -276,8 +304,8 @@ public class ReportesClase {
                     pendi.setContratos(c);
                     pendi.setPlan(c.getPlan() + "");
                     pendi.setDireccion(c.getDireccion());
-                    pendi.setContrato(c.getContrato()+"");
-                    pendi.setTelefono(c.getTelefono()+" "+c.getTelefonof());
+                    pendi.setContrato(c.getContrato() + "");
+                    pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
                     pendi.setTotal((BigDecimal) vec.get(2));
                     pendi.setSaldo((BigDecimal) vec.get(3));
                     detalles.add(pendi);
@@ -495,7 +523,7 @@ public class ReportesClase {
                     pendi.setFecha(d);
                     Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
                     pendi.setPlan(c.getPlan() + "");
-                    pendi.setContrato(c.getContrato()+"");
+                    pendi.setContrato(c.getContrato() + "");
                     pendi.setTelefono(c.getTelefono());
                     pendi.setDireccion(c.getDireccion());
                     pendi.setTotal((BigDecimal) vec.get(2));
