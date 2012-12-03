@@ -1712,6 +1712,7 @@ public class reportesClase {
 
     }
 
+    
     //Promedio por curso
     public JRDataSource promediocurso(Sistemacalificacion sistema) {
         Administrador adm = new Administrador();
@@ -1740,32 +1741,34 @@ public class reportesClase {
         for (int i = 0; i < sistemas.size(); i++) {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
-        List<Cursos> cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '" + sistema.getPeriodo().getCodigoper() + "' ");
+//        List<Cursos> cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '" + sistema.getPeriodo().getCodigoper() + "' ");
         List<Nota> lisNotas = new ArrayList();
-        for (Iterator<Cursos> it = cursos.iterator(); it.hasNext();) {
-            Cursos curso = it.next();
-            String q = "Select round(avg (" + query + "),2)  from notas, materia_profesor, matriculas mat, estudiantes est "
-                    + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
-                    + "AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                    + "and notas.promedia = true  "
-                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  )"
-                    + "and notas.disciplina = false  "
-                    + "order by est.apellido, materia_profesor.orden";
+//        for (Iterator<Cursos> it = cursos.iterator(); it.hasNext();) {
+//            Cursos curso = it.next();
+            String  q = "SELECT round(avg (" + query + "),2),mat.curso FROM notas, matriculas mat "
+                    + "WHERE  notas.matricula = mat.codigomat AND notas.promedia = TRUE   "
+                    + " AND notas.matricula IN (SELECT codigomat FROM matriculas "
+                    + "WHERE  curso  IN (SELECT codigocur FROM cursos WHERE periodo = '"+periodo.getCodigoper()+"' )  )  "
+                    + " AND notas.disciplina = FALSE   "
+                    + " AND notas.promedia = TRUE  "
+                    + " AND notas.seimprime = TRUE  "
+                    + " GROUP BY mat.curso ORDER BY 1 DESC";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
 
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Matriculas matriculaNo = new Matriculas(-1);
-                matriculaNo.setCurso(curso);
+                matriculaNo.setCurso((Cursos)adm.buscarClave(new Integer(vec.get(1)+""), Cursos.class));
                 Nota n = new Nota();
                 n.setMatricula(matriculaNo);
                 n.setNota((vec.get(0)));
+                
                 lisNotas.add(n);
             }
             nativo = null;
 
-        }
+//        }
         ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
         return ds;
 
@@ -1861,9 +1864,73 @@ public class reportesClase {
                     + "from notas, materia_profesor, matriculas mat, estudiantes est "
                     + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
                     + "AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  )"
+                    + "and matricula in (select codigomat from matriculas where   estado in ('Matriculado','Recibir Pase')  and    curso  =  '" + curso.getCodigocur() + "'  )"
                     + "and notas.disciplina = false and notas.promedia = true  GROUP BY notas.matricula "
                     + "order by 1 desc limit 3";
+            System.out.println("" + q);
+            List nativo = adm.queryNativo(q);
+
+            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                Matriculas matriculaNo = new Matriculas(-1);
+                matriculaNo.setCurso(curso);
+                Nota n = new Nota();
+                Estudiantes estu = new Estudiantes(-2);
+                estu.setApellido((vec.get(1) + ""));
+                estu.setNombre((vec.get(2) + ""));
+                matriculaNo.setEstudiante(estu);
+                n.setMatricula(matriculaNo);
+                n.setNota((vec.get(0)));
+                lisNotas.add(n);
+            }
+            nativo = null;
+
+        }
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        return ds;
+
+
+    }
+
+     //Promedio por curso
+    public JRDataSource mejoresporcurso2(Sistemacalificacion sistema) {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+        List sistemas = adm.query("Select o from Sistemacalificacion as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "order by o.sistema.orden ");
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        String query = "";
+        for (Notanotas notass : notas) {
+            query += notass.getNota() + ",";
+        }
+
+        //2 666-882
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        String[] values = new String[sistemas.size()];
+        for (int i = 0; i < sistemas.size(); i++) {
+            values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
+        }
+        List<Cursos> cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '" + sistema.getPeriodo().getCodigoper() + "' ");
+        List<Nota> lisNotas = new ArrayList();
+        for (Iterator<Cursos> it = cursos.iterator(); it.hasNext();) {
+            Cursos curso = it.next();
+            String q = "Select round(avg (" + query + "),3) valor, est.apellido ,est.nombre  "
+                    + "from notas, materia_profesor, matriculas mat, estudiantes est "
+                    + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
+                    + "AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                    + "and matricula in (select codigomat from matriculas where  estado in ('Matriculado','Recibir Pase')  and   curso  =  '" + curso.getCodigocur() + "'  )"
+                    + "and notas.disciplina = false and notas.promedia = true  GROUP BY notas.matricula "
+                    + "order by 1 asc limit 5";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
 
