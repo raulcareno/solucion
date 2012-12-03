@@ -108,7 +108,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         cmbTipoReporte.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "[Seleccione]", "# de matriculados por carrera (101)", "# de matriculados sin tomar creditos (102)", "# de matriculados sin tomar creditos con nombres (103)", "# de matriculados tomados creditos impagos (104)", "# becas por carreras (105)", "# ayuda financiera (106)", " " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "[Seleccione]", "# de matriculados por carrera (101)", "# de matriculados sin tomar creditos (102)", "# de matriculados sin tomar creditos con nombres (103)", "# de matriculados tomados creditos impagos (104)", "# becas por carreras (105)", "# ayuda financiera (106)", "# becas y ayudas por carreras (107)", " ", " " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -208,7 +208,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -373,6 +373,48 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     + " ORDER BY carreras.`ID_CARRERAS`"; 
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculadosDetallado.jasper";
             titulo = "ESTUDIANTES CON CRÉDITOS IMPAGOS";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(105)")) {//# de Becas
+            query = "SELECT estudiantes.id_estudiantes,CONCAT(estudiantes.apellido_paterno,' ', estudiantes.apellido_materno,' ',  estudiantes.nombre) estudiante, "
+                    + "descuentos.porcentaje, descuentos.valor,  "
+                    + "descuentos.tipo, "
+                    + " facturas.id_facturas , carreras.NOMBRE carrera  FROM `carreras` carreras , `descuentos` descuentos, `facturas` facturas, `matriculas` matriculas,`estudiantes` estudiantes "
+                    + "WHERE descuentos.id_facturas = facturas.id_facturas  "
+                    + "AND matriculas.id_matriculas = facturas.id_matriculas "
+                    + "AND estudiantes.id_estudiantes = matriculas.id_estudiantes  "
+                    + "AND descuentos.tipo LIKE '%Bec%' AND carreras.ID_CARRERAS = matriculas.ID_CARRERAS  "
+                    + "AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoBecas.jasper";
+            titulo = "ESTUDIANTES CON BECAS";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(106)")) {//# de AYUDA
+            query = "SELECT estudiantes.id_estudiantes,CONCAT(estudiantes.apellido_paterno,' ', estudiantes.apellido_materno,' ',  estudiantes.nombre) estudiante, "
+                    + "descuentos.porcentaje, descuentos.valor,  "
+                    + "descuentos.tipo, "
+                    + " facturas.id_facturas , carreras.NOMBRE carrera  FROM `carreras` carreras , `descuentos` descuentos, `facturas` facturas, `matriculas` matriculas,`estudiantes` estudiantes "
+                    + "WHERE descuentos.id_facturas = facturas.id_facturas  "
+                    + "AND matriculas.id_matriculas = facturas.id_matriculas "
+                    + "AND estudiantes.id_estudiantes = matriculas.id_estudiantes  "
+                    + "AND descuentos.tipo LIKE '%Ayu%' AND carreras.ID_CARRERAS = matriculas.ID_CARRERAS  "
+                    + "AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoBecas.jasper";
+            titulo = "ESTUDIANTES CON AYUDAS FINANCIERAS";
+                   parametros.put("titulo", titulo);
+            verReporteConexion(dirreporte, query, titulo, parametros);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(107)")) {//# de AYUDA Y BECA
+            query = "SELECT estudiantes.id_estudiantes,CONCAT(estudiantes.apellido_paterno,' ', estudiantes.apellido_materno,' ',  estudiantes.nombre) estudiante, "
+                    + "descuentos.porcentaje, descuentos.valor,  "
+                    + "descuentos.tipo, "
+                    + " facturas.id_facturas , carreras.NOMBRE carrera  FROM `carreras` carreras , `descuentos` descuentos, `facturas` facturas, `matriculas` matriculas,`estudiantes` estudiantes "
+                    + "WHERE descuentos.id_facturas = facturas.id_facturas  "
+                    + "AND matriculas.id_matriculas = facturas.id_matriculas "
+                    + "AND estudiantes.id_estudiantes = matriculas.id_estudiantes  "
+                    + " AND carreras.ID_CARRERAS = matriculas.ID_CARRERAS  "
+                    + "AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "; 
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "NoBecasyAyudas.jasper";
+            titulo = "ESTUDIANTES CON BECAS Y AYUDAS FINANCIERAS";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
         }
