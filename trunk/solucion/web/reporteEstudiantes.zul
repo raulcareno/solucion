@@ -43,7 +43,7 @@ Cursos selec = new Cursos(-1);
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 void buscar2(Cursos cur){
     String tipo = reporte.getSelectedItem().getValue();
-    if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP2") || tipo.equals("LREP3") ){
+   if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP7") || tipo.equals("LREP2") || tipo.equals("LREP3") ){
             filaestudiantes.visible = false;
             estudiantesCombo.disabled = true;
            return;
@@ -878,7 +878,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     
                 	Set items2 = estudiantesCombo.getSelectedItems();
 
-                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")   && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") && !tipo.equals("LREP3") ) {
+                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")   && !tipo.equals("LREP7")  && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") && !tipo.equals("LREP3") ) {
                             Messagebox.show("NO HA SELECCIONADO NINGÚN ESTUDIANTE...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             return;
 						} else {
@@ -972,6 +972,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"condatos.jasper");
             }else if(tipo.equals("LREP2")){
+                    datasource = certificados(listadoCursos,"LREP2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"actaMatricula3.jasper");
+            }else if(tipo.equals("LREP7")){
                     datasource = certificados(listadoCursos,"LREP2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"libromatriculas.jasper");
@@ -1284,6 +1288,10 @@ void campos(String valor){
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LMIN"))
             titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LREP2"))
+            titulo.value = "Libro de Matriculas";
+            if(valor.equals("LREP7"))
+            titulo.value = "Libro de Matriculas";
        if(valor.equals("LCED"))
             titulo.value = "Listado de Estudiantes";
             if(valor.equals("LDAT"))
@@ -1341,6 +1349,7 @@ void campos(String valor){
                                 <listitem  id="LINSF" label="Inscritos por Fechas" value="LINSF" />
                                 <listitem id="RET"  label="Retirados" value="RET" />
                                 <listitem  id="LREP2" label="Libro de Matriculas" value="LREP2"/>
+                                <listitem  id="LREP7" label="Libro de Matriculas Resumido" value="LREP7"/>
                                 <listitem  id="LPAS" label="Pases Recibidos" value="LPAS"/>
                                 <listitem  id="LMAT2" label="Totalizado de Matriculados" value="LMAT2" />
                                 <listitem  id="LMAT3" label="Totalizado de Matriculados(x Genero)" value="LMAT3" />

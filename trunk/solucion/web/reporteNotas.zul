@@ -475,6 +475,9 @@ void recalcular(){
             }else if(tipo.equals("MEJ")){
                     datasource = noti.mejoresporcurso(sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"mejoresporcurso.jasper");
+            }else if(tipo.equals("MEJ2")){
+                    datasource = noti.mejoresporcurso2(sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"mejoresporcurso.jasper");
             }else if(tipo.equals("PROC")){
                     reportesClase noti = new reportesClase();
                     datasource = noti.promediosxcursoymateria(sistemasCombo.getSelectedItem().getValue(),curs.getSelectedItem().getValue());
@@ -809,6 +812,10 @@ void campos(String valor){
              titulo.value= "Mejores por Curso";
              sistemasCombo.disabled = false;
              filaaportes.visible = true;
+        }else if(valor.equals("MEJ2")){
+             titulo.value= "Estudiantes con bajo rendimiento por Curso";
+             sistemasCombo.disabled = false;
+             filaaportes.visible = true;
         }else if(valor.equals("MEJE")){
              titulo.value= "Mejores Estudiantes";
              curs.disabled = false;
@@ -1066,6 +1073,7 @@ void campos(String valor){
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="PROC" label="Promedios x Materias y Curso " value="PROC" />
                                     <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
+                                    <listitem  id="MEJ2" label="Bajo Rendimiento por Curso" value="MEJ2"/>
                                     <listitem  id="EST" label="Estadístico por Curso" value="EST" />
                                     <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
                                     <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
@@ -1134,10 +1142,10 @@ void campos(String valor){
                                 <decimalbox id="desde" value="0.0" cols="5" /> 
                                 <separator bar="true" orient="vertical" />
                                 Hasta:
-                                <decimalbox id="hasta" value="20.0" cols="5"/>
+                                <decimalbox id="hasta" value="10.0" cols="5"/>
                                 <separator bar="true" orient="vertical" />
                                 Nota de Peligro:
-                                <decimalbox id="peligro" value="13.33" cols="5"/>
+                                <decimalbox id="peligro" value="6.99" cols="5"/>
                            
                             </span>
                             <span style="color:black">  

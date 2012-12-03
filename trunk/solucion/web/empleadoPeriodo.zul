@@ -17,13 +17,16 @@
  List periodos = adm.query("Select o from Periodo as o");
   Periodo per = new Periodo(-1);
   per.setDescripcion("[Seleccione]");
+  
   Institucion inst = new Institucion();
   Global g = new Global();
   g.setDescripcion("");
+  //inst.setTipo("");
+  //inst.setSeccion("");
   
   per.setSeccion(g);
   per.setInstitucion(inst);
-  periodos.add(0,per);
+  //periodos.add(0,per);
 
 //FUNCIONES
  
@@ -115,6 +118,7 @@ void modificar(){
     <panel  title="Seleccione un Periodo">
         <panelchildren>
             <listbox  onOK="ingresar.focus()" onSelect="buscar((Periodo)self.selectedItem.value);"   width="435px"  id="periodo" mold="select">
+                <listitem label="- S E L E C C I O N E -" selected="true" value="-1"/>
                 <listitem forEach="${periodos}" value="${each}">
                     <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
 
