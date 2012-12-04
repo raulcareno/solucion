@@ -20,7 +20,7 @@ import jcinform.persistencia.Pais;
 import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Provincia;
 import jcinform.procesos.Administrador;
- 
+
 import utilerias.Permisos;
 
 /**
@@ -42,7 +42,7 @@ public class AccesosBean {
     Permisos permisos;
     Perfiles perfil;
     String modulo;
- Auditar  aud = new Auditar();
+    Auditar aud = new Auditar();
 
     public AccesosBean() {
         //super();
@@ -67,14 +67,14 @@ public class AccesosBean {
 //                Logger.getLogger(AccesosBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-     //   inicializar();
+        //   inicializar();
         //selectedAccesos = new Accesos();
-          ingresar = true;
+        ingresar = true;
         modificar = true;
         eliminar = true;
         agregar = true;
-perfil = new Perfiles();
-modulo = "";
+        perfil = new Perfiles();
+        modulo = "";
     }
 
     public String editarAction(Accesos obj) {
@@ -84,13 +84,13 @@ modulo = "";
         modificar = true;
         eliminar = true;
         agregar = true;
-         
+
         return null;
     }
 
     protected void inicializar() {
         object = new Accesos(0);
-         
+
         cargarDataModel();
     }
 
@@ -99,28 +99,35 @@ modulo = "";
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
- 
-            if (!permisos.verificarPermisoReporte("Accesos", "accesos.jspx", "agregar", true, "ADMINISTRACION")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
-            }
-            try {
-                
-                for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
-                    Accesos accesos = it.next();
-                    accesos.setIngresar(ingresar);
+
+        if (!permisos.verificarPermisoReporte("Accesos", "accesos.jspx", "agregar", true, "ADMINISTRACION")) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
+            return null;
+        }
+        try {
+
+            for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
+                Accesos accesos = it.next();
+                //accesos.setIngresar(ingresar);
+                accesos.setIdPerfiles(perfil);
+                if (accesos.getIdAccesos() == null) {
+                    accesos.setIdAccesos(adm.getNuevaClave("Accesos", "idAccesos"));
+                    adm.guardar(accesos);
+                } else {
                     adm.actualizar(accesos);
                 }
-                
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
-                aud.auditar(adm,"Accesos", "actualizar", "", object.getIdAccesos()+"");
-                inicializar();
-            } catch (Exception e) {
-                //log.error("grabarAction() {} ", e.getMessage());
-                java.util.logging.Logger.getLogger(AccesosBean.class.getName()).log(Level.SEVERE, null, e);
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
 
-  
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
+            aud.auditar(adm, "Accesos", "actualizar", "", object.getIdAccesos() + "");
+            inicializar();
+        } catch (Exception e) {
+            //log.error("grabarAction() {} ", e.getMessage());
+            java.util.logging.Logger.getLogger(AccesosBean.class.getName()).log(Level.SEVERE, null, e);
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+        }
+
+
 
         return null;
     }
@@ -132,10 +139,11 @@ modulo = "";
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             if (!permisos.verificarPermisoReporte("Accesos", "accesos.jspx", "eliminar", true, "PARAMETROS")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
+                return null;
             }
             adm.eliminarObjeto(Accesos.class, obj.getIdAccesos());
-            aud.auditar(adm,"Accesos", "eliminar", "", obj.getIdAccesos()+"");
+            aud.auditar(adm, "Accesos", "eliminar", "", obj.getIdAccesos() + "");
             inicializar();
             cargarDataModel();
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
@@ -165,7 +173,7 @@ modulo = "";
         }
         return null;
     }
-    List<SelectItem> provinciasEncontradas ;
+    List<SelectItem> provinciasEncontradas;
 
     public List<SelectItem> getProvinciasEncontradas() {
         return provinciasEncontradas;
@@ -174,38 +182,39 @@ modulo = "";
     public void setProvinciasEncontradas(List<SelectItem> provinciasEncontradas) {
         this.provinciasEncontradas = provinciasEncontradas;
     }
-    
+
     /**
      * Obtiene el el listado de provincias
-     * @return 
+     *
+     * @return
      */
-     public void buscarProvincia() {
+    public void buscarProvincia() {
         try {
             List<Provincia> divisionPoliticas = new ArrayList<Provincia>();
             provinciasEncontradas = new ArrayList<SelectItem>();
-            
+
             if (object == null) {
                 object = new Accesos();
-             }
+            }
             if (object != null) {
 //                if (!object.getIdAccesos().equals("")) {
-                    try {
-                       divisionPoliticas = adm.query("Select o from Provincia as o where o.idPais.idPais= '"+paisSeleccionado.getIdPais()+"' order by o.nombre ");
-                        if(divisionPoliticas.size()>0){
-                            Provincia objSel = new Provincia(0);
-                            provinciasEncontradas.add(new SelectItem(objSel, "Seleccione..."));
+                try {
+                    divisionPoliticas = adm.query("Select o from Provincia as o where o.idPais.idPais= '" + paisSeleccionado.getIdPais() + "' order by o.nombre ");
+                    if (divisionPoliticas.size() > 0) {
+                        Provincia objSel = new Provincia(0);
+                        provinciasEncontradas.add(new SelectItem(objSel, "Seleccione..."));
                         for (Provincia obj : divisionPoliticas) {
                             provinciasEncontradas.add(new SelectItem(obj, obj.getNombre()));
                         }
-                    }else{
-                        Provincia obj = new Provincia(0);
-                        provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
-                    } 
-                    } catch (Exception e) {
+                    } else {
                         Provincia obj = new Provincia(0);
                         provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
                     }
-                    
+                } catch (Exception e) {
+                    Provincia obj = new Provincia(0);
+                    provinciasEncontradas.add(new SelectItem(obj, "No ha seleccionado el País"));
+                }
+
 //                }
             }
 //            return items;
@@ -214,64 +223,65 @@ modulo = "";
         }
 //        return null;
     }
-     /**
+    /**
      * Obtiene el el listado de paises
-     * @return 
+     *
+     * @return
      */
-     public Boolean ingresar;
-     public void seleccionarIngresar(){
-         for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
-             Accesos accesos = it.next();
-             accesos.setIngresar(ingresar);
-         }
-     }
-     
-     public Boolean agregar;
-     public void seleccionarAgregar(){
-         for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
-             Accesos accesos = it.next();
-             accesos.setAgregar(agregar);
-         }
-     }
-     
-     public Boolean eliminar;
-     public void seleccionarEliminar(){
-         for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
-             Accesos accesos = it.next();
-             accesos.setEliminar(eliminar);
-         }
-     }
-     
-     public Boolean modificar;
-     public void seleccionarModificar(){
-         for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
-             Accesos accesos = it.next();
-             accesos.setModificar(modificar);
-         }
-     }
-     
-       
- public List<SelectItem> getSelectedItemPais() {
+    public Boolean ingresar;
+
+    public void seleccionarIngresar() {
+        for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
+            Accesos accesos = it.next();
+            accesos.setIngresar(ingresar);
+        }
+    }
+    public Boolean agregar;
+
+    public void seleccionarAgregar() {
+        for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
+            Accesos accesos = it.next();
+            accesos.setAgregar(agregar);
+        }
+    }
+    public Boolean eliminar;
+
+    public void seleccionarEliminar() {
+        for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
+            Accesos accesos = it.next();
+            accesos.setEliminar(eliminar);
+        }
+    }
+    public Boolean modificar;
+
+    public void seleccionarModificar() {
+        for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
+            Accesos accesos = it.next();
+            accesos.setModificar(modificar);
+        }
+    }
+
+    public List<SelectItem> getSelectedItemPais() {
         try {
             List<Pais> divisionPoliticas = new ArrayList<Pais>();
             List<SelectItem> items = new ArrayList<SelectItem>();
-              if (object == null) {
+            if (object == null) {
                 object = new Accesos();
             }
             if (object != null) {
-               
-                    divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
-                    if(divisionPoliticas.size()>0){
-                        Pais objSel = new Pais(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
+
+                divisionPoliticas = adm.query("Select o from Pais as o order by o.nombre ");
+                if (divisionPoliticas.size() > 0) {
+                    Pais objSel = new Pais(0);
+                    items.add(new SelectItem(objSel, "Seleccione..."));
                     for (Pais obj : divisionPoliticas) {
                         items.add(new SelectItem(obj, obj.getNombre()));
                     }
-                    }else{
-                        Pais obj = new Pais(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
-                    }
-                
+                } else {
+                    Pais obj = new Pais(0);
+                    items.add(new SelectItem(obj, "NO EXISTEN PAISES"));
+                }
+
             }
             return items;
         } catch (Exception e) {
@@ -279,19 +289,36 @@ modulo = "";
         }
         return null;
     }
+
     /**
      * llena el listado con datos
      */
     public void cargarDataModel() {
         try {
             String query = "Select o from Accesos as o  "
-                    + " where o.idPerfiles.idPerfiles = '"+perfil.getIdPerfiles()+"' "
-                    + "and o.modulo = '"+modulo+"'  ";
-            if(modulo.toLowerCase().equals("todos")){
-             query = "Select o from Accesos as o  "
-                    + " where o.idPerfiles.idPerfiles = '"+perfil.getIdPerfiles()+"' ";
+                    + " where o.idPerfiles.idPerfiles = '" + perfil.getIdPerfiles() + "' "
+                    + "and o.modulo = '" + modulo + "'  ";
+            if (modulo.toLowerCase().equals("todos")) {
+                query = "Select o from Accesos as o  "
+                        + " where o.idPerfiles.idPerfiles = '" + perfil.getIdPerfiles() + "' ";
             }
             model = (adm.query(query));
+            if (model.size() <= 0) {
+                query = "Select o from Accesos as o  "
+                        + " where o.idPerfiles is null "
+                        + "and o.modulo = '" + modulo + "'  ";
+                if (modulo.toLowerCase().equals("todos")) {
+                    query = "Select o from Accesos as o  "
+                            + " where o.idPerfiles is null ";
+                }
+
+                model = (adm.query(query));
+                for (Iterator<Accesos> it = model.iterator(); it.hasNext();) {
+                    Accesos accesos = it.next();
+                    accesos.setIdAccesos(null);
+
+                }
+            }
             setModel(model);
 
         } catch (Exception e) {
@@ -318,8 +345,8 @@ modulo = "";
             System.out.println("" + e);
         }
     }
-public Pais paisSeleccionado= new Pais();
-public Provincia provinciaSeleccionado= new Provincia();
+    public Pais paisSeleccionado = new Pais();
+    public Provincia provinciaSeleccionado = new Provincia();
 
     public Pais getPaisSeleccionado() {
         return paisSeleccionado;
@@ -336,8 +363,6 @@ public Provincia provinciaSeleccionado= new Provincia();
     public void setProvinciaSeleccionado(Provincia provinciaSeleccionado) {
         this.provinciaSeleccionado = provinciaSeleccionado;
     }
-
-    
 
     /**
      * propiedades
@@ -397,12 +422,12 @@ public Provincia provinciaSeleccionado= new Provincia();
     }
 
     public Boolean getIngresar() {
-        
+
         return ingresar;
     }
 
     public void setIngresar(Boolean ingresar) {
-        
+
         this.ingresar = ingresar;
 //        seleccionarIngresar();
     }
@@ -446,6 +471,4 @@ public Provincia provinciaSeleccionado= new Provincia();
     public void setModulo(String modulo) {
         this.modulo = modulo;
     }
-    
-    
 }
