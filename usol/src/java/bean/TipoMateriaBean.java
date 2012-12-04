@@ -52,7 +52,7 @@ public class TipoMateriaBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("TipoMateria", "ingresar_tipoMateria", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("TipoMateria", "ingresar_tipomateria.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -89,7 +89,7 @@ if (object.getNombre().isEmpty()) {
             return null;
         }
         if (object.getIdTipoMateria() == 0) {
-            if (!permisos.verificarPermisoReporte("TipoMateria", "agregar_tipoMateria", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("TipoMateria", "agregar_tipomateria.jspx", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -106,7 +106,7 @@ if (object.getNombre().isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("TipoMateria", "actualizar_tipoMateria", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("TipoMateria", "actualizar_tipomateria.jspx", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -131,7 +131,7 @@ if (object.getNombre().isEmpty()) {
     public String eliminar(TipoMateria obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("TipoMateria", "eliminar_tipoMateria", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("TipoMateria", "eliminar_tipomateria.jspx", "eliminar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(TipoMateria.class, obj.getIdTipoMateria());

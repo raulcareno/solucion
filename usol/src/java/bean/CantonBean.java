@@ -54,7 +54,7 @@ public class CantonBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Canton", "ingresar_canton", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Canton", "ingresar_canton.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -110,7 +110,7 @@ public class CantonBean {
         
         
         if (object.getIdCanton() == 0) {
-            if (!permisos.verificarPermisoReporte("Canton", "agregar_canton", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Canton", "agregar_canton.jspx", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -127,7 +127,7 @@ public class CantonBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Canton", "actualizar_canton", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Canton", "actualizar_canton.jspx", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -152,7 +152,7 @@ public class CantonBean {
     public String eliminar(Canton obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Canton", "eliminar_canton", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Canton", "eliminar_canton.jspx", "eliminar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Canton.class, obj.getIdCanton());

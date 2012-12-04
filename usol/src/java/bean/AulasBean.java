@@ -55,7 +55,7 @@ public class AulasBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Aulas", "ingresar_aulas", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Aulas", "ingresar_aulas.jspx", "ingresar", true, "HORARIOS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -94,7 +94,7 @@ Auditar  aud = new Auditar();
             return null;
         }
         if (object.getIdAulas() == 0) {
-            if (!permisos.verificarPermisoReporte("Aulas", "agregar_aulas", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Aulas", "agregar_aulas.jspx", "agregar", true, "HORARIOS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
                 return null;
             }
@@ -112,7 +112,7 @@ Auditar  aud = new Auditar();
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Aulas", "actualizar_aulas", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Aulas", "actualizar_aulas.jspx", "agregar", true, "HORARIOS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -137,7 +137,7 @@ Auditar  aud = new Auditar();
     public String eliminar(Aulas obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Aulas", "eliminar_aulas", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Aulas", "eliminar_aulas.jspx", "eliminar", true, "HORARIOS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Aulas.class, obj.getIdAulas());

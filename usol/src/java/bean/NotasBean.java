@@ -73,7 +73,7 @@ public class NotasBean implements Serializable {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Notas", "ingresar_notas", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Registro de Notas", "ingresar_notas.jspx", "ingresar", true, "NOTAS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -292,7 +292,7 @@ public class NotasBean implements Serializable {
     public void guardar() {
         List<RangosGpa> rangos = adm.query("Select o from RangosGpa as o ");
         FacesContext context = FacesContext.getCurrentInstance();
-        if (!permisos.verificarPermisoReporte("Notas", "agregar_notas", "agregar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Registro de Notas", "agregar_notas.jspx", "agregar", true, "NOTAS")) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
             return;
         }
@@ -408,7 +408,7 @@ public class NotasBean implements Serializable {
     public String eliminar(Notas obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Notas", "eliminar_notas", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Registro de Notas", "eliminar_notas.jspx", "eliminar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
                 return null;
             }

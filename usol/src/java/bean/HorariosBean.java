@@ -66,7 +66,7 @@ public class HorariosBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Horarios", "ingresar_carrerasMaterias", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Horarios", "ingresar_horarios.jspx", "ingresar", true, "HORARIOS")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
@@ -107,7 +107,7 @@ public class HorariosBean {
 
 
         Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
-//            if (!permisos.verificarPermisoReporte("Facultad", "agregar_facultad", "agregar", true, "PARAMETROS")) {
+//            if (!permisos.verificarPermisoReporte("Facultad", "agregar_facultad", "agregar", true, "HORARIOS")) {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
 //            }
         try {

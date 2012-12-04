@@ -51,7 +51,7 @@ public class EjesBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Ejes", "ingresar_ejes", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Ejes", "ingresar_ejes.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -88,7 +88,7 @@ public class EjesBean {
             return null;
         }
         if (object.getIdEjes() == 0) {
-            if (!permisos.verificarPermisoReporte("Ejes", "agregar_ejes", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Ejes", "agregar_ejes.jspx", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -105,7 +105,7 @@ public class EjesBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Ejes", "actualizar_ejes", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Ejes", "actualizar_ejes.jspx", "agregar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -130,7 +130,7 @@ public class EjesBean {
     public String eliminar(Ejes obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Ejes", "eliminar_ejes", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Ejes", "eliminar_ejes.jspx", "eliminar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Ejes.class, obj.getIdEjes());

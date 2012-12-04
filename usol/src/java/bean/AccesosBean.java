@@ -57,7 +57,7 @@ public class AccesosBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Accesos", "ingresar_accesos", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Accesos", "accesos.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -100,7 +100,7 @@ modulo = "";
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
  
-            if (!permisos.verificarPermisoReporte("Accesos", "actualizar_accesos", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Accesos", "accesos.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -131,7 +131,7 @@ modulo = "";
     public String eliminar(Accesos obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Accesos", "eliminar_accesos", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("Accesos", "accesos.jspx", "eliminar", true, "PARAMETROS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Accesos.class, obj.getIdAccesos());

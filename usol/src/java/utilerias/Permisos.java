@@ -22,7 +22,7 @@ public class Permisos {
     }
     
     
-    public boolean verificarPermisoReporte(String idVariable, String descripcion, String accion, Boolean pantalla, String modulo) {
+    public boolean verificarPermisoReporte(String idVariable, String accionPantalla, String accion, Boolean pantalla, String modulo) {
 
        
         if (idVariable == null) {
@@ -86,12 +86,12 @@ public class Permisos {
              ac.setVariable(idVariable);;
 
             ac.setAgregar(true);
-            ac.setNombre(descripcion);
+            ac.setNombre(accionPantalla.replace("ingresar_", "").replace("actualizar_", "").replace("eliminar_", "").replace("agregar_", ""));
             ac.setIngresar(true);
             ac.setModificar(true);
             ac.setEliminar(Boolean.TRUE);
             ac.setIdPerfiles(empleadoAc.getIdPerfiles());
-            if(adm.existe("Accesos","variable", idVariable,"nombre", descripcion," ").size()<=0) {
+            if(adm.existe("Accesos","variable", idVariable,"nombre", accionPantalla.replace("ingresar_", "").replace("actualizar_", "").replace("eliminar_", "").replace("agregar_", "")," ").size()<=0) {
                 adm.guardar(ac);
             }
 
@@ -109,13 +109,13 @@ public class Permisos {
 
             }
             ac.setVariable(idVariable);
-            ac.setNombre(descripcion);
+            ac.setNombre(accionPantalla.replace("ingresar_", "").replace("actualizar_", "").replace("eliminar_", "").replace("agregar_", ""));
             ac.setAgregar(true);
             ac.setIngresar(true);
             ac.setModificar(true);
             ac.setEliminar(Boolean.TRUE);
             ac.setIdPerfiles(null);
-            if(adm.existe("Accesos","variable", idVariable,"nombre", descripcion," and o.idPerfiles is null").size()<=0) {
+            if(adm.existe("Accesos","variable", idVariable,"nombre", accionPantalla.replace("ingresar_", "").replace("actualizar_", "").replace("eliminar_", "").replace("agregar_", "")," and o.idPerfiles is null").size()<=0) {
                 adm.guardar(ac);
             }
             //**********************
@@ -134,14 +134,14 @@ public class Permisos {
                 ac.setModulo("REPORTES");
             }
            ac.setVariable(idVariable);
-           ac.setNombre(descripcion);
+           ac.setNombre(accionPantalla.replace("ingresar_", "").replace("actualizar_", "").replace("eliminar_", "").replace("agregar_", ""));
             ac.setAgregar(false);
             ac.setIngresar(false);
             ac.setModificar(false);
             ac.setEliminar(false);
             ac.setIdPerfiles(empleadoAc.getIdPerfiles());
 //            if(adm.query("Select o from Accesos as o where o.modulo = '"+ac.getModulo()+"' and perfil is null ").size()>0)
-            if(adm.existe("Accesos","variable", idVariable,"nombre", descripcion," ").size()<=0) {
+            if(adm.existe("Accesos","variable", idVariable,"nombre", accionPantalla.replace("ingresar_", "").replace("actualizar_", "").replace("eliminar_", "").replace("agregar_", "")," ").size()<=0) {
                 adm.guardar(ac);
             }
             accesosList.add(ac);

@@ -52,7 +52,7 @@ public class RangosGpaBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("RangosGpa", "ingresar_facultad", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("RangosGpa", "ingresar_rangosGpa.jspx", "ingresar", true, "NOTAS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -106,7 +106,7 @@ public class RangosGpaBean {
             return null;
          }
         if (object.getIdRangosGpa() == 0) {
-            if (!permisos.verificarPermisoReporte("RangosGpa", "agregar_facultad", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("RangosGpa", "agregar_rangosGpa.jspx", "agregar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -123,7 +123,7 @@ public class RangosGpaBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("RangosGpa", "actualizar_facultad", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("RangosGpa", "actualizar_rangosGpa.jspx", "agregar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -148,7 +148,7 @@ public class RangosGpaBean {
     public String eliminar(RangosGpa obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("RangosGpa", "eliminar_facultad", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("RangosGpa", "eliminar_rangosGpa.jspx", "eliminar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(RangosGpa.class, obj.getIdRangosGpa());

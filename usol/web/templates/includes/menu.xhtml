@@ -3,7 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:c="http://java.sun.com/jsp/jstl/core">
+                xmlns:c="http://java.sun.com/jsp/jstl/core" >
 
     <h:panelGroup>
 
@@ -13,57 +13,34 @@
                     <p:menubar style="background-color: transparent;border: 0px" >  
                         <p:menuitem value="Inicio" url="/index.jspx" icon="ui-icon-home" />  
                         <p:submenu label="Administración" icon="ui-icon-document">
-                            <p:menuitem      value="Accesos" url="/bases/accesos.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Institucion" url="/bases/institucion.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Empleados" url="/bases/empleados.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Matriculación" url="/bases/matriculas.jspx" icon="ui-icon-carat-1-e"  />  
+                            <c:forEach items="#{sessionScope.accesos}" var="i" >
+                                <p:menuitem rendered="#{i.getModulo().contains('ADMINIS')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
+                            </c:forEach>
                             <p:menuitem      value="Reportes" url="/bases/reportesEstudiantes.jspx" icon="ui-icon-carat-1-e"  />  
                         </p:submenu>
                             
                         <p:submenu label="Parametros Sistema" icon="ui-icon-document">  
-                            
-                            <p:menuitem  value="Pais"  url="/bases/pais.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem    value="Provincia"  url="/bases/provincia.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem    value="Canton"  url="/bases/canton.jspx" icon="ui-icon-carat-1-e"  />  
+                             <c:forEach items="#{sessionScope.accesos}" var="i" >
+                                <p:menuitem rendered="#{i.getModulo().contains('PARAMETR')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
+                            </c:forEach>
                             <p:separator />  
-                            <p:menuitem   value="Perfiles" url="/bases/perfiles.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem    value="Titulos" url="/bases/titulos.jspx" icon="ui-icon-carat-1-e" />  
-                            <p:menuitem     value="Tipos de Materia" url="/bases/tipomateria.jspx" icon="ui-icon-carat-1-e"  />  
-                            
-                            <p:separator />  
-                            
-                            <p:menuitem      value="Periodos" url="/bases/periodos.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Jornada" url="/bases/jornada.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Facultad" url="/bases/facultad.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Niveles" url="/bases/niveles.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Modalidad" url="/bases/modalidad.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Materias" url="/bases/materias.jspx" icon="ui-icon-carat-1-e"  />  
-                         
-                            <p:menuitem      value="Escuela" url="/bases/escuela.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Ejes" url="/bases/ejes.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Rangos GPA" url="/bases/rangosGpa.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Rangos ING/EGRE" url="/bases/rangosIngresos.jspx" icon="ui-icon-carat-1-e"  />  
-                            
                         </p:submenu>  
 
                         <p:submenu label="Pagos" icon="ui-icon-pencil">  
-                            <p:menuitem      value="Auditoria" url="/bases/auditoria.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Categorias Sociales" url="/bases/categoriasSociales.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Bancos" url="/bases/bancos.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem     value="Rubros" url="/bases/rubros.jspx" icon="ui-icon-carat-1-e"  />  
+                            <c:forEach items="#{sessionScope.accesos}" var="i" >
+                                <p:menuitem rendered="#{i.getModulo().contains('PAGO')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
+                            </c:forEach>
                         </p:submenu>  
                         <p:submenu label="Horarios" icon="ui-icon-pencil">  
-                            <p:menuitem      value="Horas" url="/bases/horas.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Aulas" url="/bases/aulas.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Horarios" url="/bases/horarios.jspx" icon="ui-icon-carat-1-e"  />  
+                              <c:forEach items="#{sessionScope.accesos}" var="i" >
+                                <p:menuitem rendered="#{i.getModulo().contains('HORA')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
+                            </c:forEach>
                         </p:submenu>  
                          <p:submenu label="Notas" icon="ui-icon-pencil">  
-                            <p:menuitem      value="Carreras" url="/bases/carreras.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Malla" url="/bases/carrerasMaterias.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Aportes" url="/bases/sistemaNotas.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Secuencia de Malla" url="/bases/carrerasMateriasSecuencia.jspx" icon="ui-icon-carat-1-e"  />  
-                            <p:menuitem      value="Notas" url="/bases/notas.jspx" icon="ui-icon-carat-1-e"  />  
-                             
+                            <c:forEach items="#{sessionScope.accesos}" var="i" >
+                                <p:menuitem rendered="#{i.getModulo().contains('NOTA')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
+                            </c:forEach>
+                                          
                         </p:submenu>  
 
                         <p:menuitem value="Salir" url="/login.jspx" icon="ui-icon-close" />  

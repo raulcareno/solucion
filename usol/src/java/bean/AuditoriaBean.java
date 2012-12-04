@@ -48,7 +48,7 @@ public class AuditoriaBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Auditoria", "ingresar_auditoria", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("Auditoria", "ingresar_auditoria.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");

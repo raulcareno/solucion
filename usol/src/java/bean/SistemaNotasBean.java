@@ -55,7 +55,7 @@ public class SistemaNotasBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("SistemaNotas", "ingresar_modalidad", "ingresar", true, "PARAMETROS")) {
+        if (!permisos.verificarPermisoReporte("SistemaNotas", "ingresar_sistemaNotas.jspx", "ingresar", true, "NOTAS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
@@ -97,7 +97,7 @@ public class SistemaNotasBean {
         object.setIdPeriodos(per);
         if (object.getIdSistemaNotas() == 0) {
             
-            if (!permisos.verificarPermisoReporte("SistemaNotas", "agregar_modalidad", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("SistemaNotas", "agregar_sistemaNotas.jspx", "agregar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -114,7 +114,7 @@ public class SistemaNotasBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("SistemaNotas", "actualizar_modalidad", "agregar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("SistemaNotas", "actualizar_sistemaNotas.jspx", "agregar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -139,7 +139,7 @@ public class SistemaNotasBean {
     public String eliminar(SistemaNotas obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("SistemaNotas", "eliminar_modalidad", "eliminar", true, "PARAMETROS")) {
+            if (!permisos.verificarPermisoReporte("SistemaNotas", "eliminar_sistemaNotas.jspx", "eliminar", true, "NOTAS")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(SistemaNotas.class, obj.getIdSistemaNotas());
