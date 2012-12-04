@@ -34,11 +34,13 @@ void enviarCorreo(){
                      Listitem object = (Listitem)it.next();
                      Estudiantes emp = object.getValue();
                      //correos += emp.getMail()+";\n"+emp.getRepresentante().getMailpadre()+";\n"+emp.getRepresentante().getMailmadre()+";\n";
-                      if(!emp.getMail().isEmpty() && emp.getMail().contains("@"))
+                      if(!emp.getMail().isEmpty() && emp.getMail().contains("@") && sest.isChecked() )
                             correosH.add(emp.getMail().replace("/","; "));
-                     if(!emp.getRepresentante().getMailpadre().isEmpty() && emp.getRepresentante().getMailpadre().contains("@"))
+                     if(!emp.getRepresentante().getEmail().isEmpty() && emp.getRepresentante().getEmail().contains("@") && srep.isChecked() )
                             correosH.add(emp.getRepresentante().getMailpadre().replace("/","; "));
-                     if(!emp.getRepresentante().getMailmadre().isEmpty() && emp.getRepresentante().getMailmadre().contains("@"))
+                     if(!emp.getRepresentante().getMailpadre().isEmpty() && emp.getRepresentante().getMailpadre().contains("@")  && spad.isChecked() )
+                            correosH.add(emp.getRepresentante().getMailpadre().replace("/","; "));
+                     if(!emp.getRepresentante().getMailmadre().isEmpty() && emp.getRepresentante().getMailmadre().contains("@") && smad.isChecked() )
                         correosH.add(emp.getRepresentante().getMailmadre().replace("/","; "));
                 }
                 //System.out.println(" - Lista de mandado con " + correosH.size() + " elementos");
@@ -81,7 +83,7 @@ void enviarCorreo(){
                                 left.appendChild(li);
                         }
         }else{
-                 List equivaEncontrados = adm.query("Select d from Empleados as d order by d.apellidos ");
+                 List equivaEncontrados = adm.query("Select d.empleado from Empleadoperiodo as d where d.periodo.codigoper = '"+periodo.getCodigoper()+"'  order by d.empleado.apellidos ");
                         left = new Listbox();
                         int a=0;
                         for(Iterator it = left.getItems().iterator(); it.hasNext();) {
@@ -136,18 +138,23 @@ void enviarCorreo(){
                      Listitem object = (Listitem)it.next();
                      Estudiantes emp = object.getValue();
                      if(emp.getMail() !=null){
-                      if(!emp.getMail().isEmpty() && emp.getMail().contains("@")){
+                      if(!emp.getMail().isEmpty() && emp.getMail().contains("@") && sest.isChecked()){
                             correosH.add(emp.getMail().replace("/","; "));
                       }
                      }
                       if(emp.getRepresentante().getMailpadre() !=null){
-                         if(!emp.getRepresentante().getMailpadre().isEmpty() && emp.getRepresentante().getMailpadre().contains("@")){
+                         if(!emp.getRepresentante().getMailpadre().isEmpty() && emp.getRepresentante().getMailpadre().contains("@") && spad.isChecked()){
                             correosH.add(emp.getRepresentante().getMailpadre().replace("/","; "));
                             }
                     }
                       if(emp.getRepresentante().getMailmadre() !=null){
-                        if(!emp.getRepresentante().getMailmadre().isEmpty() && emp.getRepresentante().getMailmadre().contains("@")){
+                        if(!emp.getRepresentante().getMailmadre().isEmpty() && emp.getRepresentante().getMailmadre().contains("@") && smad.isChecked()){
                             correosH.add(emp.getRepresentante().getMailmadre().replace("/","; "));
+                            }
+                     }
+                      if(emp.getRepresentante().getEmail() !=null){
+                        if(!emp.getRepresentante().getEmail().isEmpty() && emp.getRepresentante().getEmail().contains("@") && srep.isChecked()){
+                            correosH.add(emp.getRepresentante().getEmail().replace("/","; "));
                             }
                      }
                 }
@@ -245,6 +252,12 @@ void enviarCorreo(){
                          
                             <label value="TOTAL: " style="color:black;font-size:14px;font-weight:bold"/>
                             <label id="totalDestinos" value="(0)" style="color:blue;font-size:14px;font-weight:bold"/>
+                            </span>
+                            <span>
+                            <checkbox id="srep"  checked="true" label="Rep."/>
+                            <checkbox id="spad" label="Pad."/>
+                            <checkbox id="smad" label="Mad."/>
+                            <checkbox id="sest" label="Est."/>
 
                         </span>
                     </panelchildren>
