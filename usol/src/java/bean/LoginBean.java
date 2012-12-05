@@ -266,6 +266,7 @@ public class LoginBean {
         verificarPermisoReporte("Auditoria", "ingresar_auditoria.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Matriculas", "ingresar_matriculas.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Empleados", "ingresar_empleados.jspx", "ingresar", true, "ADMINISTRACION");
+        verificarPermisoReporte("Inscripciones", "ingresar_inscripciones.jspx", "ingresar", true, "ADMINISTRACION");
 
         
         verificarPermisoReporte("Aulas", "ingresar_aulas.jspx", "ingresar", true, "HORARIOS");
@@ -319,8 +320,9 @@ public class LoginBean {
                 generar();
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
-                List<Accesos> accesos = adm.query("Select o from Accesos as o  "
-                        + " where o.idPerfiles.idPerfiles = '" + user.getIdPerfiles().getIdPerfiles() + "' order by o.variable ");
+                List<Accesos> accesos = adm.query("Select o from Accesos as o "
+                        + " where o.idPerfiles.idPerfiles = '" + user.getIdPerfiles().getIdPerfiles() + "' "
+                        + " and o.ingresar = true order by o.variable ");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accesos", accesos);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
