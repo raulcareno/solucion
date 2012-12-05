@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <JCINFORMEMPRESA>
-    <PUERTOPRINCIPAL>COM6</PUERTOPRINCIPAL>
+    <PUERTOPRINCIPAL>COM4</PUERTOPRINCIPAL>
     <LED>null</LED>
     <BARRA1/>
     <BARRA2/>
@@ -35,7 +35,7 @@
     <ACTIVA6>false</ACTIVA6>
     <ACTIVA7>false</ACTIVA7>
     <WEBCAM>true</WEBCAM>
-    <SEABREFAC>true</SEABREFAC>
+    <SEABREFAC>false</SEABREFAC>
     <SEABRETIC>true</SEABRETIC>
     <MULTA>15.0</MULTA>
     <IPCAM>false</IPCAM>
