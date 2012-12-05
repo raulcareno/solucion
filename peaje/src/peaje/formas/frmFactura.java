@@ -3035,17 +3035,34 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facActual.setPlaca("PAGO MULTA");
                         facActual.setTiempo(new Date());
                         facActual.setTicket("000000000");
+                        Boolean pasar0 = true;
+                        Integer numero0 = new Integer(emp.getDocumentoticket())+1;
+                        while(pasar0){
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '"+numero0+"'"); 
+                            if(sihay.size()<=0){
+                                pasar0 = false;
+                                facActual.setTicket("" + numero0);
+                                emp.setDocumentoticket((numero0) + "");
+                                adm.actualizar(emp);//GUARDO EMPRESA
+                            }else{
+                                numero0++;
+                            }
+
+                        }
+                        
                         facActual.setUsuario(principal.usuarioActual);
                         facActual.setUsuarioc(principal.usuarioActual);
                         facActual.setSellado(false);
+                        facActual.setYasalio(false); 
+                        facActual.setAnulado(false); 
 
                         //adm.guardar(facActual);
 
 
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
-                        Boolean pasar = true;
-                        Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                      Boolean pasar = true;
+                      Integer numero = new Integer(emp.getDocumentofac()) + 1;
                         while (pasar) {
                             List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
                             if (sihay.size() <= 0) {
@@ -3067,6 +3084,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             dia = 0;
                         }
 
+                       
                         imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
                         if (empresaObj.getSeabrefac()) {
                             if (empresaObj.getRetardoSalida() != null) {
@@ -3112,7 +3130,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             }
                             System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
                         } else {
-                            System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
+                            System.out.println("imprimo nuevo ticket");
+                            imprimirTicket(facActual.getCodigo(), emp);
+                            System.out.println("NO ABRE BARRERA POR DESHABILITACION EN FRMEMPRESA ");
                         }
 
                         principal.noDisponibles();
@@ -3144,6 +3164,74 @@ public class frmFactura extends javax.swing.JInternalFrame {
             guardando = false;
         }
     }//GEN-LAST:event_btnMultaActionPerformed
+
+    public void imprimirTicket(int cod, Empresa emp) {
+
+//                    viewer.show();
+        try {
+            
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket.jasper");
+
+            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+            ArrayList detalle = new ArrayList();
+            detalle.add(fac);
+            FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            PrinterJob job = PrinterJob.getPrinterJob();
+            /* Create an array of PrintServices */
+            PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+            int selectedService = 0;
+            /* Scan found services to see if anyone suits our needs */
+            for (int i = 0; i < services.length; i++) {
+                String nombre = services[i].getName();
+                if (nombre.contains(emp.getImpmulta())) {
+                    selectedService = i;
+                }
+            }
+            job.setPrintService(services[selectedService]);
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            MediaSizeName mediaSizeName = MediaSize.findMedia(3.08F, 3.70F, MediaPrintableArea.INCH);
+            //MediaSizeName mediaSizeName = MediaSize.findMedia(3F,3F, MediaPrintableArea.INCH);
+            printRequestAttributeSet.add(mediaSizeName);
+            printRequestAttributeSet.add(new Copies(1));
+            JRPrintServiceExporter exporter;
+            exporter = new JRPrintServiceExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, masterPrint);
+            /* We set the selected service and pass it as a paramenter */
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, services[selectedService]);
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, services[selectedService].getAttributes());
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+            exporter.exportReport();
+
+
+
+//            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+//            viewer.show();
+//            try {
+//                JasperPrintManager.printPage(masterPrint, 0, false);//LE ENVIO A IMPRIMIR false NO MUESTRA EL CUADRO DE DIALOGO
+//            } catch (JRException ex) {
+//                ex.printStackTrace();
+//            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+//            lger.logger(frmTicket.class.getName(), ex+"");
+        }
+
+//        } catch (JRException ex) {
+//            ex.printStackTrace();
+//        }
+    }
 
     private void btnMultaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnMultaKeyPressed
         // TODO add your handling code here:
