@@ -478,6 +478,7 @@
             Listas.visible = per.verificarPermisoReporte("Listas","Listas", "Ingresar",true,"VARIOS");
             TipoCandidatos.visible = per.verificarPermisoReporte("TipoCandidatos","TipoCandidatos", "Ingresar",true,"VARIOS");
             Candidatos.visible = per.verificarPermisoReporte("Candidatos","Candidatos", "Ingresar",true,"VARIOS");
+            Registrar_Recomendacion.visible = per.verificarPermisoReporte("Registrar_Recomendacion","Registrar_Recomendacion", "Ingresar",true,"NOTAS");
    
 
             }

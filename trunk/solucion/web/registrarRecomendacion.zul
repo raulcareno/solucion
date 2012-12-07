@@ -76,8 +76,7 @@ guardar(){
  
 doAdd(Cursos curso){
  if(!verificar("Agregar")){
-                guardar1.disabled=true;
-                guardar2.disabled=true;
+            
             }
 Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
         filas.addPerfil(curso,sistema);
