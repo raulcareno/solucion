@@ -896,6 +896,63 @@ public class ReportesClase {
         return "";
 
     }
+  public JRDataSource reporteCajaRF(String tipo, Date desde, Date hasta) {//RECIBOS Y FACTURAS
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
+        Pendientes pendi = null;
+        String comDocumento = "";
+        if(tipo.contains("0")){
+            comDocumento ="";
+        }else if(tipo.contains("1")){
+            comDocumento =" and o.factura.numero like '%FAC%' ";
+        }else if(tipo.contains("2")){
+            comDocumento =" and o.factura.numero like '%REC%' ";
+        }
+        
+        List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
+                + "where o.haber > 0 "
+                + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' " +comDocumento
+                + " order by o.factura.numero");
+        int i = 1;
+        for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
+            Cxcobrar cIt = itAbono.next();
+            pendi = new Pendientes();
+            pendi.setFactura("" + cIt.getFactura().getNumero());
+            pendi.setFecha(cIt.getFecha());
+            pendi.setPlan("");
+            pendi.setTotal(new BigDecimal(0));
+            try {
+                pendi.setCliente(cIt.getFactura().getClientes());
+            } catch (Exception e) {
+            }
+            pendi.setSaldo(new BigDecimal(0));
+            pendi.setNoabono(cIt.getCodigo());
+            pendi.setFechapago(cIt.getFecha());
+            pendi.setValorabonoefe(cIt.getEfectivo());
+            pendi.setValorabonoche(cIt.getCheque());
+            pendi.setValorabonodep(cIt.getDeposito() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getDeposito());
+            pendi.setValorabonotar(cIt.getTarjeta() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTarjeta());
+            pendi.setNocheque(cIt.getNocheque());
+            pendi.setNocuenta(cIt.getNocuenta());
+            pendi.setValorabonotra(cIt.getTransferencia() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getTransferencia());
+            pendi.setValorabonorfue(cIt.getRfuente());
+            pendi.setValorabonoriva(cIt.getRiva());
+            pendi.setValorabonotot(cIt.getRtotal());
+            pendi.setValorabonoban(cIt.getBancario() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getBancario());
+            pendi.setNumeroretencion(cIt.getNumeroretencion());
+            pendi.setNumerotransferencia(cIt.getNotransferencia());
+            pendi.setNotarjeta(cIt.getNotarjeta());
+            pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
+            detalles.add(pendi);
+            i++;
+        }
+
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
 
     public JRDataSource reporteCaja(Date desde, Date hasta) {
         Administrador adm = new Administrador();

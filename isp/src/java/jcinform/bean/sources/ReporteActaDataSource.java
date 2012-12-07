@@ -65,7 +65,7 @@ public class ReporteActaDataSource implements JRDataSource {
 //            }
 
         } catch (Exception e) {
-            System.out.println("en datasource Acta " + e);
+            //System.out.println("en datasource Acta " + e);
         }
 
         return valor;

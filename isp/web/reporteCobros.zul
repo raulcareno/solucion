@@ -277,6 +277,9 @@ List nodos = adm.query("Select o from Nodos as o " +
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
+            }else  if(tipo.equals("ARQUEORF")){
+                   datasource = reportes.reporteCajaRF(tipodocumento.selectedItem.value,desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"rpcaja.jasper");
             }else  if(tipo.equals("ARQUEO2")){
                    datasource = reportes.reporteCaja2(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcajapei.jasper");
@@ -346,6 +349,7 @@ void campos(String valor){
       filacanton.visible=false;
       filasector.visible=false;
       filaletras.visible=false;
+      filarf.visible=false;
       Date fec = adm.Date();
       filasector2.visible = false;
       filaempleados.visible=false;
@@ -456,6 +460,11 @@ void campos(String valor){
         }else if(valor.equals("ARQUEO") || valor.equals("ARQUEO2")){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;
+            desde.value = adm.Date();
+        }else if(valor.equals("ARQUEORF")){
+            titulo.value= "Cobros Diarios";
+            filafechas.visible=true;
+            filarf.visible=true;
             desde.value = adm.Date();
         }else if(valor.equals("COMISIONES1")){
             titulo.value= "Contratos por Empleado";
@@ -609,6 +618,7 @@ void campos(String valor){
                                     <listitem id="ARQUEO" label="Reporte Diario de Caja X Fechas" value="ARQUEO" />
                                     <listitem id="ARQUEO2" label="Reporte Diario de Caja X Fechas (Plan,Equi,Serv)" value="ARQUEO2" />
                                     <listitem id="ARQUEOU" label="Reporte Diario de Caja X Fechas y Usuario" value="ARQUEOU" />
+                                    <listitem id="ARQUEORF" label="Reporte de Caja X Fechas y Documentos" value="ARQUEORF" />
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="COBROS2"  label="Cuenta Mensual para Contabilidad" value="COBROS2" />
                                     <listitem id="COBROS3"  label="Reporte Mensual para Contabilidad(SAFI)" value="COBROS3" />
@@ -648,6 +658,17 @@ void campos(String valor){
                                 </listbox>
     
                             </span>
+                        </row>
+                        <row id="filarf"  visible="false" >
+                             <span>
+                                <label style="font-weight:bold2;float:right" value=" Documento: " />
+                            </span>
+                            <radiogroup Id="tipodocumento" onCheck="">
+                                <radio id="todosrf" selected="true" value="0" label="Todos"/>
+                                <radio id="facrf" value="1" label="Facturas"/>
+                                <radio id="recrf" value="2" label="Recibos"/>
+                                 
+                            </radiogroup>
                         </row>
                         <row id="filaempleados" visible="false">
                             <span style="float:right"> Empleado: </span>

@@ -79,7 +79,7 @@ public class ReporteInventarioNormalDataSource implements JRDataSource {
                 valor = nodo.getEmpleado();
             } 
         } catch (Exception e) {
-            System.out.println("en datasource Acta " + e);
+//            System.out.println("en datasource Acta " + e);
         }
 
         return valor;
