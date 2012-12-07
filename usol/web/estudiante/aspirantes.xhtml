@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich"
+                template="vacio.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+   
+    <ui:define  name="contenido">
+     
+            <h:form prependId="false" id="form">
+              <h:panelGrid width="100%" id="busqueda" >     <script type="text/javascript">
+                    function handleDrop(event, ui) {
+                        var droppedCar = ui.draggable;
+
+                        droppedCar.fadeOut('fast');
+                    }
+                </script>
+                <script src="locales.js" type="text/javascript"/>
+
+                <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                <!--p:message for="form" /-->
+              
+                              <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS DE INSCRIPCION">
+                    <h:panelGrid columns="2">  
+                        <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">  
+
+                            <h:outputText value="CEDULA IDENTIDAD.: " />  
+                            <p:inputText value="#{aspirantesBean.object.idAspirantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;">
+                                <p:ajax event="blur" listener="#{aspirantesBean.buscarCedula}"  update=":form"  />
+                            </p:inputText>  
+                    
+
+                            <h:outputText value="NOMBRES: " />  
+                            <p:inputText value="#{aspirantesBean.object.nombres}" id="Nombres"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                            <h:outputText value="COLEGIO: " />  
+                            <p:inputText value="#{aspirantesBean.object.colegio}" id="Colegio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            
+                            <h:outputText value="DIRECCIÓN: " />  
+                            <p:inputText value="#{aspirantesBean.object.direccion}" id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
+                           
+                            <h:outputText value="TELEFONO: " />  
+                            <p:inputText value="#{aspirantesBean.object.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                            <h:outputText value="CELULAR: " />  
+                            <p:inputText value="#{aspirantesBean.object.celular}" id="celular"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                           
+
+                            <h:outputText value="SEXO: " />  
+                            <p:selectOneRadio id="sexo" value="#{aspirantesBean.object.sexo}">  
+                                <f:selectItem itemLabel="MASCULINO"  itemValue="M" />  
+                                <f:selectItem itemLabel="FEMENINO" itemValue="F" />  
+                            </p:selectOneRadio>  
+                          
+                            
+                           
+                            <h:outputText value="EMAIL: " />  
+                            <p:inputText value="#{aspirantesBean.object.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+
+                           
+
+                  
+                        </h:panelGrid>  
+                     
+                    </h:panelGrid>
+
+             
+
+
+                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 ;">
+
+                        <h:outputText value="CARRERA: " />     
+
+                        <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{aspirantesBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
+                            <f:selectItems value="#{aspirantesBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
+                            <p:ajax event="change"  process="@this carrera" listener="#{aspirantesBean.buscarMateriasdeCarrera}" update=":form"/>
+                        </p:selectOneMenu>    
+                       
+                    </h:panelGrid> 
+                
+                </p:fieldset>
+             
+
+                <h:panelGrid columns="4">
+                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{aspirantesBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                    <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{aspirantesBean.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
+                    <p:splitButton  value="PDF" ajax="false"  actionListener="#{aspirantesBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
+                        <p:menuitem value="EXCEL" ajax="false" actionListener="#{aspirantesBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
+                        <p:menuitem value="WORD" ajax="false" actionListener="#{aspirantesBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
+                    </p:splitButton>  
+                </h:panelGrid> 
+              </h:panelGrid>
+            </h:form>
+
+       
+    </ui:define>
+</ui:composition>
