@@ -575,10 +575,21 @@ int kk=0;
 
             secuencial sec = new secuencial();
 
-            String del = "Delete from Notasevaluacion where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " +  
-                    " and materia.codigo = '" + materia.getMateria().getCodigo() + "'  " + 
-                    " and sistemacalificacion.codigosis = '"+sistema.getCodigosis()+"' ";
-            adm.ejecutaSql(del);
+    List codigosNotas = adm.query("Select o.codigonot from Notasevaluacion as o "
+                    + " where o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' " +  
+                    " and o.materia.codigo = '" + materia.getMateria().getCodigo() + "'  " + 
+                    " and o.sistemacalificacion.codigosis = '"+sistema.getCodigosis()+"'  ");
+            String codigosNotasString = "";
+            if(codigosNotas.size()>0){
+                for (Iterator it = codigosNotas.iterator(); it.hasNext();) {
+                    Object object = it.next();
+                    codigosNotasString +="'"+object.toString()+"',";
+                }
+                System.out.println(""+codigosNotasString);
+                codigosNotasString = codigosNotasString.substring(0,codigosNotasString.length()-1);
+//                return "FALLO";
+                
+            }
             for (int i = 0; i < col.size(); i++) {
                 try {
                     Row object = (Row) col.get(i);
@@ -640,6 +651,11 @@ int kk=0;
                 } catch (EvalError ex) {
                     Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            
+             if(codigosNotasString.length()>0){
+                    String del = "Delete from Notasevaluacion where codigonot in  ("+codigosNotasString+")  ";
+                    adm.ejecutaSql(del);
             }
             //recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());

@@ -7,11 +7,11 @@
             <minimum-ant-version>1.6</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-                    <file>${libs.toplink.classpath}</file>
+                    <file>${libs.jsf12.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.jsf12.classpath}</file>
+                    <file>${libs.toplink.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -204,14 +204,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.xercesImpl.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.canvas4z.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.webcam-0.8.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
