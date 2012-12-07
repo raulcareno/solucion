@@ -2811,6 +2811,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 adm.guardar(det);
             }
             imprimir(facActual.getCodigo(), emp, dia, true, cli);
+            /**
+             * cordillera
+             */
+            Thread.sleep(5000); 
+            System.out.println("mando a imprimir otra vez");
+            imprimir(facActual.getCodigo(), emp, dia, true, cli);
+            
             //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
             DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
             dtm.getDataVector().removeAllElements();
