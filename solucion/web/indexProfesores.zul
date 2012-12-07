@@ -257,6 +257,7 @@
                                         <listitem id="Chat" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
                                         <listitem id="Reportes_Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                         <listitem id="Reportes_Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
+                                        <listitem id="Registrar_Recomendacion"  label="Registro de Recomendaciones" image="/images/notas.png" value="/registrarRecomendacion.zul" />
                                         <listitem id="Comentarios" label="Comentarios"  image="/images/comentarios.png" value="/comentarios.zul" />
                                         <listitem id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
                                         <listitem/>
@@ -342,7 +343,7 @@
         Reportes_Estudiantes.visible = per.verificarPermisoReporte("Reportes_Estudiantes","Reportes_Estudiantes", "Ingresar",true,"MATRICULAS");
         Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas","Reportes_Notas", "Ingresar",true,"NOTAS");
         ListaPendientes.visible = per.verificarPermisoReporte("ListaPendientes","ListaPendientes", "Ingresar",true,"MATRICULAS");
-        
+        Registrar_Recomendacion.visible = per.verificarPermisoReporte("Registrar_Recomendacion","Registrar_Recomendacion", "Ingresar",true,"NOTAS");
         }
 
 
