@@ -107,7 +107,7 @@ public class notasEvaluacion extends Rows {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     if(listad==null){
         Administrador adm = new Administrador();
-
+        sistema = (Sistemacalificacion)adm.buscarClave(sistema.getCodigosis(), Sistemacalificacion.class);
         List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
                 + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
         String query = "";
