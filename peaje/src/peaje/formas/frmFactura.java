@@ -1680,9 +1680,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         }
 
                     }
-                    if(facActual.getTotal().doubleValue()>0){
+                    if (facActual.getTotal().doubleValue() > 0) {
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
-                        Thread.sleep(5000); 
+                        Thread.sleep(5000);
                         System.out.println("mando a imprimir otra vez");
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     }
@@ -1724,8 +1724,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
-                    } else {
-                        System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
+                    } else {   
+                        System.out.println("imprimo nuevo ticket");
+                            imprimirTicket(facActual.getCodigo(), emp);
+                            System.out.println("NO ABRE BARRERA POR DESHABILITACION EN FRMEMPRESA ");
                     }
 
 //                cargar.start();
@@ -1741,7 +1743,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     nombres.setText("CONSUMIDOR FINAL");
                     telefono.setText("9999999999");
                     principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
-                    
+
                     descuento.setText("0.0");
                     total.setText("0.0");
                     codigo.setText("");
@@ -1868,7 +1870,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //            ex.printStackTrace();
 //        }
     }
-    
+
     public void imprimir2(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
 
 //                    viewer.show();
@@ -1883,24 +1885,24 @@ public class frmFactura extends javax.swing.JInternalFrame {
             ArrayList detalle = new ArrayList();
             Map parametros = new HashMap();
             String observacion = "";
-                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
-                observacion = fac.getObservacion();
-                Clientes cli1 = (Clientes) fac.getClientes();
-                cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
-                System.out.println("" + cli1.getCodigo());
-                fac.setClientes(cli1);
-                detalle.add(fac);
-                cli = cli1;
-                ds = new FacturaSource(detalle);
+            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+            observacion = fac.getObservacion();
+            Clientes cli1 = (Clientes) fac.getClientes();
+            cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
+            System.out.println("" + cli1.getCodigo());
+            fac.setClientes(cli1);
+            detalle.add(fac);
+            cli = cli1;
+            ds = new FacturaSource(detalle);
 
- 
+
             parametros.put("ruc", cli.getIdentificacion());
             parametros.put("cliente", cli.getNombres());
             parametros.put("direccion", cli.getDireccion());
             parametros.put("telefono", cli.getTelefono());
             parametros.put("placa", placa.getText());
             parametros.put("observacion", observacion);
-            parametros.put("notickets", ticketsPendientes.getRowCount()+"");
+            parametros.put("notickets", ticketsPendientes.getRowCount() + "");
             parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
@@ -1957,7 +1959,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         principal.contenedor.requestFocus();
 //        principal = null;
-  //      empresaObj = null;
+        //      empresaObj = null;
         this.setVisible(false);
         System.gc();
 }//GEN-LAST:event_btnSalirActionPerformed
@@ -2189,6 +2191,62 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 noTicket.requestFocusInWindow();
                 return;
             }
+            Long minutosEntreSalidayActual = diferenciaFechas(fac.getFechafin(), new Date());
+            int minutosPasados = minutosEntreSalidayActual.intValue();
+            if (minutosPasados > empresaObj.getSalida().intValue() && fac.getYasalio() == false) {
+                int seleccion = JOptionPane.showOptionDialog(this, "Ticket NO HA SALIDO y se ha SOBREPASADO con: " + minutosPasados + " min. "
+                        + "\n ¿Desea volver a facturar e imprimir un nuevo Ticket?",
+                        "JCINFORM",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null, // null para icono por defecto.
+                        new Object[]{"SI", "NO", "Salir"}, // null para YES, NO y CANCEL
+                        "SI");
+                System.out.println("" + seleccion);
+
+                if (0 == seleccion) {
+                    try {
+                        //CREO UNA NUEVA FACTURA CON UN DETERMINADO NÚMERO DE TICKET 
+                        Factura facNueva = new Factura();
+                        facNueva.setFechaini(fac.getFechafin());
+                        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+
+                        facNueva.setPlaca("");
+                        facNueva.setFechaini(fac.getFechafin());
+                        facNueva.setFecha(fac.getFechafin());
+                        facNueva.setAnulado(false);
+                        facNueva.setUsuario(principal.getUsuario());
+                        facNueva.setNocontar(false);
+                        facNueva.setAnulado(false);
+                        facNueva.setYasalio(false);
+                        facNueva.setTarifa0(false);
+                        facNueva.setSellado(false); 
+                        Boolean pasar = true;
+                        Integer numero = new Integer(emp.getDocumentoticket()) + 1;
+                        while (pasar) {
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
+                            if (sihay.size() <= 0) {
+                                pasar = false;
+
+                                facNueva.setTicket("" + numero);
+                                emp.setDocumentoticket((numero) + "");
+                                adm.actualizar(emp);//GUARDO EMPRESA
+                                adm.guardar(facNueva); // GUARDO FACTURA
+                                noTicket.setText(numero + "");
+                                codigo.setText(facNueva.getCodigo() + "");
+                            } else {
+                                numero++;
+                            }
+
+                        }
+                        llenarFactura(facNueva); 
+guardando = false;
+                    } catch (Exception ab) {
+                    }
+                }
+                return;
+            }
+
 //                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
             int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
                     "JCINFORM",
@@ -2358,12 +2416,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
     @SuppressWarnings("static-access")
     private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
         // TODO add your handling code here:
-        
+
 
         if (evt.getKeyCode() == evt.VK_ENTER) {
             try {
                 descuento.setText("0.0");
-        
+
                 ingreso.setDate(null);
                 salida.setDate(null);
                 placa.setText(null);
@@ -2392,7 +2450,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 salida.setDate(null);
                 placa.setText(null);
                 tiempo.setDate(null);
-                
+
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
@@ -2814,10 +2872,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
             /**
              * cordillera
              */
-            Thread.sleep(5000); 
+            Thread.sleep(5000);
             System.out.println("mando a imprimir otra vez");
             imprimir(facActual.getCodigo(), emp, dia, true, cli);
-            
+
             //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
             DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
             dtm.getDataVector().removeAllElements();
@@ -3043,33 +3101,33 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facActual.setTiempo(new Date());
                         facActual.setTicket("000000000");
                         Boolean pasar0 = true;
-                        Integer numero0 = new Integer(emp.getDocumentoticket())+1;
-                        while(pasar0){
-                            List sihay = adm.query("Select o from Factura as o where o.ticket = '"+numero0+"'"); 
-                            if(sihay.size()<=0){
+                        Integer numero0 = new Integer(emp.getDocumentoticket()) + 1;
+                        while (pasar0) {
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero0 + "'");
+                            if (sihay.size() <= 0) {
                                 pasar0 = false;
                                 facActual.setTicket("" + numero0);
                                 emp.setDocumentoticket((numero0) + "");
                                 adm.actualizar(emp);//GUARDO EMPRESA
-                            }else{
+                            } else {
                                 numero0++;
                             }
 
                         }
-                        
+
                         facActual.setUsuario(principal.usuarioActual);
                         facActual.setUsuarioc(principal.usuarioActual);
                         facActual.setSellado(false);
-                        facActual.setYasalio(false); 
-                        facActual.setAnulado(false); 
+                        facActual.setYasalio(false);
+                        facActual.setAnulado(false);
 
                         //adm.guardar(facActual);
 
 
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
-                      Boolean pasar = true;
-                      Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                        Boolean pasar = true;
+                        Integer numero = new Integer(emp.getDocumentofac()) + 1;
                         while (pasar) {
                             List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
                             if (sihay.size() <= 0) {
@@ -3091,7 +3149,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             dia = 0;
                         }
 
-                       
+
                         imprimir(facActual.getCodigo(), emp, dia, false, nuevoCl);
                         if (empresaObj.getSeabrefac()) {
                             if (empresaObj.getRetardoSalida() != null) {
@@ -3176,7 +3234,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
 //                    viewer.show();
         try {
-            
+
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
@@ -3513,7 +3571,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         principal.contenedor.requestFocus();
                         this.setVisible(false);
                         //principal = null;
-                       // empresaObj = null;
+                        // empresaObj = null;
                         System.gc();
 
 
@@ -3614,14 +3672,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 nuevoCl.setNombres(nombres.getText());
                 cli = nuevoCl;
                 adm.guardar(nuevoCl);
-                 nuevoCLiente = true;
+                nuevoCLiente = true;
                 identificacion.setText("9999999999999");
                 nombres.setText("CONSUMIDOR FINAL");
                 direccion.setText("S/D");
                 telefono.setText("9999999999999");
                 cliente.setText("1");
                 facActual.setClientes(nuevoCl);
-                
+
             } else {
                 facActual.setClientes(new Clientes(new Integer(cliente.getText())));
                 cli.setCodigo(new Integer(cliente.getText()));
@@ -3632,21 +3690,21 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 adm.actualizar(cli);
             }
             Boolean alNuevoClienteCobrarle = false;
-            if(nuevoCLiente){
-                        int seleccion = JOptionPane.showOptionDialog(this, "SE HA CREADO UN NUEVO CLIENTE, \n ¿Desea aplicar la TARIFA 0 en los TICKETS SELLADOS?",
-                            "JCINFORM",
-                            JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null, // null para icono por defecto.
-                            new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
-                            "NO");
-                    System.out.println("" + seleccion);
+            if (nuevoCLiente) {
+                int seleccion = JOptionPane.showOptionDialog(this, "SE HA CREADO UN NUEVO CLIENTE, \n ¿Desea aplicar la TARIFA 0 en los TICKETS SELLADOS?",
+                        "JCINFORM",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, // null para icono por defecto.
+                        new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                        "NO");
+                System.out.println("" + seleccion);
 
-                    if (0 == seleccion) {
-                            alNuevoClienteCobrarle = true;
-                    }
-      
-            } 
+                if (0 == seleccion) {
+                    alNuevoClienteCobrarle = true;
+                }
+
+            }
             Date fecSalida = new Date();
             fecSalida.setHours(salida.getDate().getHours());
             fecSalida.setMinutes(salida.getDate().getMinutes());
@@ -3669,14 +3727,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             facActual.setTiempo(fecTiempo);
             facActual.setUsuarioc(principal.usuarioActual);
             facActual.setNumero(null);
-            if(!alNuevoClienteCobrarle){
+            if (!alNuevoClienteCobrarle) {
                 facActual.setDescuento(new BigDecimal(descuentoV));
                 facActual.setTotal(new BigDecimal(totalv));
                 facActual.setSubtotal(new BigDecimal(subtotalv));
                 facActual.setIva(new BigDecimal(ivav1));
                 facActual.setSellado(true);
             }
-            
+
             adm.actualizar(facActual);
             /**
              * GENERAR CUENTA POR COBRAR PARA LOS VALORES PENDIENTES.
@@ -3684,7 +3742,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             Cxcobrar cx = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cx.setFactura(facActual);
             cx.setClientes(cli);
-            cx.setPagada(false); 
+            cx.setPagada(false);
             cx.setUsuario(principal.usuarioActual);
             adm.guardar(cx);
 
@@ -4000,7 +4058,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
             }
             imprimir2(facActual.getCodigo(), emp, dia, false, cli);
-            llenarTickest(cli); 
+            llenarTickest(cli);
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }

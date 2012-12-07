@@ -349,6 +349,10 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     fac.setAnulado(false);
                     fac.setUsuario(principal.getUsuario());
                     fac.setNocontar(false);
+                    fac.setAnulado(false);
+                    fac.setYasalio(false);
+                    fac.setTarifa0(false);
+                    fac.setSellado(false); 
                       Boolean pasar = true;
                         Integer numero = new Integer(emp.getDocumentoticket())+1;
                         while(pasar){
