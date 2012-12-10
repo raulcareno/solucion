@@ -90,7 +90,7 @@ public class EmpleadosBean{
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Empleados", "ingresar_empleados.jspx", "ingresar", true, "ADMINSTRACION")) {
+        if (!permisos.verificarPermisoReporte("Empleados", "ingresar_empleados.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
@@ -210,7 +210,7 @@ public class EmpleadosBean{
         }
         
         if (object.getIdEmpleados().equals(new Integer(0))) {
-            if (!permisos.verificarPermisoReporte("Empleados", "agregar_empleados.jspx", "agregar", true, "ADMINSTRACION")) {
+            if (!permisos.verificarPermisoReporte("Empleados", "agregar_empleados.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -239,7 +239,7 @@ public class EmpleadosBean{
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Empleados", "actualizar_empleados.jspx", "agregar", true, "ADMINSTRACION")) {
+            if (!permisos.verificarPermisoReporte("Empleados", "actualizar_empleados.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
@@ -273,7 +273,7 @@ public class EmpleadosBean{
     public String eliminar(Empleados obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Empleados", "eliminar_empleados.jspx", "eliminar", true, "ADMINSTRACION")) {
+            if (!permisos.verificarPermisoReporte("Empleados", "eliminar_empleados.jspx", "eliminar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             adm.eliminarObjeto(Empleados.class, obj.getIdEmpleados());
