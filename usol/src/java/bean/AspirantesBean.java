@@ -9,17 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
@@ -41,30 +35,19 @@ import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Aspirantes;
-import jcinform.persistencia.Niveles;
-import jcinform.persistencia.Notas;
 import jcinform.persistencia.Pais;
 import jcinform.persistencia.Parametros;
 import jcinform.persistencia.Parientes;
-import jcinform.persistencia.Perfiles;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.Provincia;
 import jcinform.persistencia.RangosGpa;
 import jcinform.persistencia.RangosIngresos;
-import jcinform.persistencia.SecuenciaDeMaterias;
-import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
-import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
 import miniaturas.ProcesadorImagenes;
-import net.sf.jasperreports.engine.JRException;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.StreamedContent;
-import reportes.ExportarReportes;
-import reportes.FichaMatricula;
 import utilerias.Permisos;
 
 /**
@@ -125,8 +108,17 @@ public class AspirantesBean {
     Archivos arTitulo;
     Archivos arCedula;
     List<RangosGpa> rangos;
-
-    ;
+    Boolean hoja;
+    Boolean charla;
+    Boolean charlavin;
+    Boolean paginaweb;
+    Boolean pp; //prensa
+    Boolean pu; //publicidad Universidad
+    Boolean rp;
+    Boolean pr;
+    Boolean goo;
+    Boolean puev;
+    Boolean red;
     public AspirantesBean() {
         //super();
         if (adm == null) {
@@ -135,16 +127,16 @@ public class AspirantesBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Aspirantes", "ingresar_aspirantes.jspx", "ingresar", true, "ADMINSTRACION")) {
-            try {
-//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
-            } //selectedAspirantes = new Aspirantes();
-            catch (IOException ex) {
-                java.util.logging.Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
-//                Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        if (!permisos.verificarPermisoReporte("Aspirantes", "ingresar_aspirantes.jspx", "ingresar", true, "ADMINSTRACION")) {
+//            try {
+////                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
+//            } //selectedAspirantes = new Aspirantes();
+//            catch (IOException ex) {
+//                java.util.logging.Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
+////                Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         p = new ProcesadorImagenes();
         inicializar();
         per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
@@ -197,78 +189,41 @@ public class AspirantesBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese los NOMBRES:", ""));
             return null;
         }
-
-
-        try {
-            if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
-                return null;
-            }
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
-            return null;
-        }
-
         /**
          * GUARDAR PARIENTES ANTES DE GUARDAR A ESTUDIANTES
          */
-        pariente1.setTipoRepresentante("F");
-        pariente2.setTipoRepresentante("P");
-        pariente3.setTipoRepresentante("M");
-        //1.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente1.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion(), "tipoRepresentante", "F", "");
-            if (pariList.size() > 0) {
-                pariente1.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente1);
-            } else {
-                pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente1);
-            }
-        } else {
-            adm.actualizar(pariente1);
-        }
+         object.setIdCarreras(carreraSeleccionado);
 
-        //2.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente2.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion(), "tipoRepresentante", "P", "");
-            if (pariList.size() > 0) {
-                pariente2.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente2);
-            } else {
-                pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente2);
-            }
-        } else {
-            adm.actualizar(pariente2);
-        }
-
-        //3.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente3.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion(), "tipoRepresentante", "M", "");
-            if (pariList.size() > 0) {
-                pariente3.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente3);
-            } else {
-                pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente3);
-            }
-        } else {
-            adm.actualizar(pariente3);
-        }
-
-
-        object.setIdCarreras(carreraSeleccionado);
-
-        if (object.getIdAspirantes().equals("")) {
+        if (!object.getIdAspirantes().equals("")) {
             if (!permisos.verificarPermisoReporte("Aspirantes", "agregar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
                 return null;
             }
             try {
-                if (adm.existe("Aspirantes", "idEstudiantes", object.getIdAspirantes()).size() <= 0) {
-                    //object.setIdAspirantes(adm.getNuevaClave("Aspirantes", "idAspirantes"));
-
+//                  Boolean hoja;
+//                    Boolean charla;
+//                    Boolean charlavin;
+//                    Boolean paginaweb;
+//                    Boolean pp; //prensa
+//                    Boolean pu; //publicidad Universidad
+//                    Boolean rp;
+//                    Boolean pr;
+//                    Boolean goo;
+//                    Boolean puev;
+//                    Boolean red;
+            object.setIdCarreras(carreraSeleccionado); 
+                if (adm.existe("Aspirantes", "idAspirantes", object.getIdAspirantes()).size() <= 0) {
+                    object.setMedio((hoja.booleanValue()?"hoja;":"")
+                            +""+(charla.booleanValue()?"charla;":"")
+                            +""+(charlavin.booleanValue()?"charlavin;":"")
+                            +""+(paginaweb.booleanValue()?"paginaweb;":"")
+                            +""+(pp.booleanValue()?"pp;":"")
+                            +""+(pu.booleanValue()?"pu;":"")
+                            +""+(rp.booleanValue()?"rp;":"")
+                            +""+(pr.booleanValue()?"pr;":"")
+                            +""+(goo.booleanValue()?"goo;":"")
+                            +""+(puev.booleanValue()?"puev;":"")
+                            +""+(red.booleanValue()?"red;":"")); 
                     adm.guardar(object);
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdAspirantes() + "");
 //                    inicializar();
@@ -451,7 +406,7 @@ public class AspirantesBean {
     public void buscarCedula() {
 
         String cedula2 = object.getIdAspirantes();
-        object = (Aspirantes) adm.buscarClave(cedula2, Estudiantes.class);
+        object = (Aspirantes) adm.buscarClave(cedula2, Aspirantes.class);
 
     }
 
@@ -991,4 +946,94 @@ public class AspirantesBean {
     public void setNoCreditos(int noCreditos) {
         this.noCreditos = noCreditos;
     }
+
+    public Boolean getHoja() {
+        return hoja;
+    }
+
+    public void setHoja(Boolean hoja) {
+        this.hoja = hoja;
+    }
+
+    public Boolean getCharla() {
+        return charla;
+    }
+
+    public void setCharla(Boolean charla) {
+        this.charla = charla;
+    }
+
+    public Boolean getCharlavin() {
+        return charlavin;
+    }
+
+    public void setCharlavin(Boolean charlavin) {
+        this.charlavin = charlavin;
+    }
+
+    public Boolean getPp() {
+        return pp;
+    }
+
+    public void setPp(Boolean pp) {
+        this.pp = pp;
+    }
+
+    public Boolean getPu() {
+        return pu;
+    }
+
+    public void setPu(Boolean pu) {
+        this.pu = pu;
+    }
+
+    public Boolean getRp() {
+        return rp;
+    }
+
+    public void setRp(Boolean rp) {
+        this.rp = rp;
+    }
+
+    public Boolean getGoo() {
+        return goo;
+    }
+
+    public void setGoo(Boolean goo) {
+        this.goo = goo;
+    }
+
+    public Boolean getRed() {
+        return red;
+    }
+
+    public void setRed(Boolean red) {
+        this.red = red;
+    }
+
+    public Boolean getPaginaweb() {
+        return paginaweb;
+    }
+
+    public void setPaginaweb(Boolean paginaweb) {
+        this.paginaweb = paginaweb;
+    }
+
+    public Boolean getPr() {
+        return pr;
+    }
+
+    public void setPr(Boolean pr) {
+        this.pr = pr;
+    }
+
+    public Boolean getPuev() {
+        return puev;
+    }
+
+    public void setPuev(Boolean puev) {
+        this.puev = puev;
+    }
+    
+    
 }
