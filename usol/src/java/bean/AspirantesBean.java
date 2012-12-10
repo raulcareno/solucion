@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -119,6 +120,8 @@ public class AspirantesBean {
     Boolean goo;
     Boolean puev;
     Boolean red;
+    Boolean guardado = true;
+
     public AspirantesBean() {
         //super();
         if (adm == null) {
@@ -127,6 +130,7 @@ public class AspirantesBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
+        guardado = true;
 //        if (!permisos.verificarPermisoReporte("Aspirantes", "ingresar_aspirantes.jspx", "ingresar", true, "ADMINSTRACION")) {
 //            try {
 ////                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
@@ -146,7 +150,55 @@ public class AspirantesBean {
 
     public String editarAction(Aspirantes obj) {
         inicializar();
+        object = new Aspirantes("");
         object = obj;
+        carreraSeleccionado = object.getIdCarreras();
+        hoja = false;
+        charla = false;
+        charlavin = false;
+        paginaweb = false;
+        pp = false;
+        pu = false;
+        rp = false;
+        pr = false;
+        goo = false;
+        puev = false;
+        red = false;
+        if (object.getMedio().contains("hoja")) {
+            hoja = true;
+        }
+        if (object.getMedio().contains("charla")) {
+            charla = true;
+        }
+        if (object.getMedio().contains("charlavin")) {
+            charlavin = true;
+        }
+        if (object.getMedio().contains("paginaweb")) {
+            paginaweb = true;
+        }
+        if (object.getMedio().contains("pp")) {
+            pp = true;
+        }
+        if (object.getMedio().contains("pu")) {
+            pu = true;
+        }
+        if (object.getMedio().contains("rp")) {
+            rp = true;
+        }
+        if (object.getMedio().contains("pr")) {
+            pr = true;
+        }
+        if (object.getMedio().contains("goo")) {
+            goo = true;
+        }
+
+        if (object.getMedio().contains("puev")) {
+            puev = true;
+        }
+        if (object.getMedio().contains("red")) {
+            red = true;
+        }
+
 
 
         return null;
@@ -154,9 +206,7 @@ public class AspirantesBean {
 
     protected void inicializar() {
         object = new Aspirantes("");
-        foto1 = null;
-        clave2 = "";
-        rangos = adm.listar("RangosGpa");
+        
     }
 
     public StreamedContent getImageAsStream() {
@@ -192,13 +242,13 @@ public class AspirantesBean {
         /**
          * GUARDAR PARIENTES ANTES DE GUARDAR A ESTUDIANTES
          */
-         object.setIdCarreras(carreraSeleccionado);
-
+        object.setIdCarreras(carreraSeleccionado);
+        object.setFecha(adm.Date());
         if (!object.getIdAspirantes().equals("")) {
-            if (!permisos.verificarPermisoReporte("Aspirantes", "agregar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
-                return null;
-            }
+//            if (!permisos.verificarPermisoReporte("Aspirantes", "agregar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
+//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+//                return null;
+//            }
             try {
 //                  Boolean hoja;
 //                    Boolean charla;
@@ -211,38 +261,55 @@ public class AspirantesBean {
 //                    Boolean goo;
 //                    Boolean puev;
 //                    Boolean red;
-            object.setIdCarreras(carreraSeleccionado); 
+                object.setIdCarreras(carreraSeleccionado);
                 if (adm.existe("Aspirantes", "idAspirantes", object.getIdAspirantes()).size() <= 0) {
-                    object.setMedio((hoja.booleanValue()?"hoja;":"")
-                            +""+(charla.booleanValue()?"charla;":"")
-                            +""+(charlavin.booleanValue()?"charlavin;":"")
-                            +""+(paginaweb.booleanValue()?"paginaweb;":"")
-                            +""+(pp.booleanValue()?"pp;":"")
-                            +""+(pu.booleanValue()?"pu;":"")
-                            +""+(rp.booleanValue()?"rp;":"")
-                            +""+(pr.booleanValue()?"pr;":"")
-                            +""+(goo.booleanValue()?"goo;":"")
-                            +""+(puev.booleanValue()?"puev;":"")
-                            +""+(red.booleanValue()?"red;":"")); 
+                    object.setLlamadas(0); 
+                    object.setMedio((hoja.booleanValue() ? "hoja;" : "")
+                            + "" + (charla.booleanValue() ? "charla;" : "")
+                            + "" + (charlavin.booleanValue() ? "charlavin;" : "")
+                            + "" + (paginaweb.booleanValue() ? "paginaweb;" : "")
+                            + "" + (pp.booleanValue() ? "pp;" : "")
+                            + "" + (pu.booleanValue() ? "pu;" : "")
+                            + "" + (rp.booleanValue() ? "rp;" : "")
+                            + "" + (pr.booleanValue() ? "pr;" : "")
+                            + "" + (goo.booleanValue() ? "goo;" : "")
+                            + "" + (puev.booleanValue() ? "puev;" : "")
+                            + "" + (red.booleanValue() ? "red;" : ""));
                     adm.guardar(object);
-                    aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdAspirantes() + "");
+                    guardado = false;
+                    //  aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdAspirantes() + "");
 //                    inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre y Cedula ya MATRICULADOS, búsquelos primero si desea editarlos...!", "Nombre y Cedula ya MATRICULADOS, busquelos primero si desea editarlos...!"));
+                    object.setLlamadas(0); 
+                    object.setMedio((hoja.booleanValue() ? "hoja;" : "")
+                            + "" + (charla.booleanValue() ? "charla;" : "")
+                            + "" + (charlavin.booleanValue() ? "charlavin;" : "")
+                            + "" + (paginaweb.booleanValue() ? "paginaweb;" : "")
+                            + "" + (pp.booleanValue() ? "pp;" : "")
+                            + "" + (pu.booleanValue() ? "pu;" : "")
+                            + "" + (rp.booleanValue() ? "rp;" : "")
+                            + "" + (pr.booleanValue() ? "pr;" : "")
+                            + "" + (goo.booleanValue() ? "goo;" : "")
+                            + "" + (puev.booleanValue() ? "puev;" : "")
+                            + "" + (red.booleanValue() ? "red;" : ""));
+                    adm.actualizar(object);
+                    guardado = false;
+                    //aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdAspirantes() + "");
+                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 }
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Aspirantes", "actualizar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
-                return null;
-            }
+//            if (!permisos.verificarPermisoReporte("Aspirantes", "actualizar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
+//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+//                return null;
+//            }
             try {
                 adm.actualizar(object);
                 aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdAspirantes() + "");
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
+                //FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
 //                inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
@@ -324,7 +391,7 @@ public class AspirantesBean {
      */
     public void cargarDataModel() {
         try {
-            model = (adm.listar("Aspirantes"));
+            model = (adm.query("Select o from Aspirantes as o order by o.fecha"));
             setModel(model);
 
         } catch (Exception e) {
@@ -343,15 +410,62 @@ public class AspirantesBean {
      * busca según criterio textoBuscar
      */
     public void buscar() {
-        try {
-            //setModel(adm.listar("Aspirantes"));
-            model = (adm.query("Select o from Aspirantes as o where o.nombre like '%" + textoBuscar + "%' order by o.nombre "));
-            setModel(model);
-
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("" + e);
+        FacesContext context = FacesContext.getCurrentInstance();
+   
+        if(object.getLlamadas()!=null){
+            object.setLlamadas(object.getLlamadas()+1);
+        }else{
+            object.setLlamadas(1);
         }
+        object.setObservacion(object.getObservacion()+"["+(new Date()).toLocaleString().substring(0,10)+"]" );
+        if (!object.getIdAspirantes().equals("")) {
+            if (!permisos.verificarPermisoReporte("Aspirantes", "agregar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                return;
+            }
+            try {
+
+                object.setIdCarreras(carreraSeleccionado);
+                if (adm.existe("Aspirantes", "idAspirantes", object.getIdAspirantes()).size() <= 0) {
+                } else {
+                    object.setMedio((hoja.booleanValue() ? "hoja;" : "")
+                            + "" + (charla.booleanValue() ? "charla;" : "")
+                            + "" + (charlavin.booleanValue() ? "charlavin;" : "")
+                            + "" + (paginaweb.booleanValue() ? "paginaweb;" : "")
+                            + "" + (pp.booleanValue() ? "pp;" : "")
+                            + "" + (pu.booleanValue() ? "pu;" : "")
+                            + "" + (rp.booleanValue() ? "rp;" : "")
+                            + "" + (pr.booleanValue() ? "pr;" : "")
+                            + "" + (goo.booleanValue() ? "goo;" : "")
+                            + "" + (puev.booleanValue() ? "puev;" : "")
+                            + "" + (red.booleanValue() ? "red;" : ""));
+                    adm.actualizar(object);
+                    guardado = false;
+                    aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdAspirantes() + "");
+//                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
+                }
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+            }
+        } else {
+            if (!permisos.verificarPermisoReporte("Aspirantes", "actualizar_aspirantes.jspx", "agregar", true, "ADMINSTRACION")) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
+                return;
+            }
+            try {
+                adm.actualizar(object);
+                aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdAspirantes() + "");
+  //              FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
+//                inicializar();
+            } catch (Exception e) {
+                //log.error("grabarAction() {} ", e.getMessage());
+                java.util.logging.Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, e);
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+            }
+
+        }
+inicializar();
+        //return null;
     }
 
     public List<Estudiantes> buscarApellido(String apellido) {
@@ -612,7 +726,7 @@ public class AspirantesBean {
      */
     public List<Aspirantes> getModel() {
         if (model == null) {
-            //cargarDataModel();
+            cargarDataModel();
         }
         return model;
     }
@@ -1034,6 +1148,12 @@ public class AspirantesBean {
     public void setPuev(Boolean puev) {
         this.puev = puev;
     }
-    
-    
+
+    public Boolean getGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(Boolean guardado) {
+        this.guardado = guardado;
+    }
 }

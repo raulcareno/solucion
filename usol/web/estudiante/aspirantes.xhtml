@@ -12,7 +12,7 @@
     <ui:define  name="contenido">
 
         <h:form prependId="false" id="form">
-            <h:panelGrid width="100%" id="busqueda" >     <script type="text/javascript">
+            <h:panelGrid  width="100%" id="busqueda" >     <script type="text/javascript">
                 function handleDrop(event, ui) {
                     var droppedCar = ui.draggable;
 
@@ -23,8 +23,12 @@
 
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                 <!--p:message for="form" /-->
-
-                <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS DE INSCRIPCION">
+                <h:panelGrid  rendered="#{!aspirantesBean.guardado}"   >
+                    <p:separator/>
+                    <h:outputText style="font-family: Verdana" value="Gracias por confiar en nosotros, pronto nos pondremos en contacto con Usted." />
+                    <p:separator/>
+                </h:panelGrid>
+                <p:fieldset rendered="#{aspirantesBean.guardado}"  toggleable="false" toggleSpeed="500" legend="DATOS DE INSCRIPCION">
                     <h:panelGrid columns="2">  
                         <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">  
 
@@ -88,13 +92,13 @@
                         <p:inputText id="otro" value="#{aspirantesBean.object.descripcion}" />
                         <p:watermark for="otro" value="Otro Medio" />  
                     </h:panelGrid>  
-
-                </p:fieldset>
-
-
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{aspirantesBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
                 </h:panelGrid> 
+                </p:fieldset>
+
+
+
             </h:panelGrid>
         </h:form>
 
