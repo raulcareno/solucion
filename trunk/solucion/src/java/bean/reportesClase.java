@@ -3482,10 +3482,10 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
 
                     }
                     //IMPRIMO LAS FALTAS
-                    q = "Select " + query4 + ", tri.descripcion from disciplina, sistemacalificacion  sis, trimestres tri "
+                    q = "Select " + query4 + ",sis.abreviatura from disciplina, sistemacalificacion  sis, trimestres tri "
                             + "where matricula = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
                             + "and sis.orden <= '" + sistema.getOrden() + "'   AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
-                            + "  group by tri.codigotrim  order by  tri.codigotrim, sis.orden "
+                            + "  group by sis.codigosis order by  tri.codigotrim, sis.orden "
                             + " ";
 //                System.out.println(""+q);
                     nativo = adm.queryNativo(q);
