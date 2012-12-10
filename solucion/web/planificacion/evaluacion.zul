@@ -1,0 +1,220 @@
+
+<window onCreate='buscar("")'  width="500px" >
+
+    <zscript>
+                    <![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.Evaluacion;
+ 
+  import jcinform.persistencia.Periodo;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+Session ses = Sessions.getCurrent();
+    Administrador adm = new Administrador();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    List allEvents = adm.query("Select o from Evaluacion as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigoeva ");
+    static Evaluacion empa = new Evaluacion();
+    Permisos permiso = new Permisos();
+    Object media = null;
+ 
+//FUNCIONES
+void llenar(Evaluacion empa){
+    nombres.value = empa.getDescripcion();
+    nombres2.value = empa.getDescripcion2();
+    abreviatura.value = empa.getAbreviatura();
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Evaluacion)datos.selectedItem.value;
+        }else{empa.setCodigoeva(0);}
+        nombres.readonly = estado;
+        nombres2.readonly = estado;
+        abreviatura.readonly = estado;
+}
+
+
+ void guardar(){
+  if(nombres.value==""){
+    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+ 
+        empa.setDescripcion(nombres.value);
+        empa.setDescripcion2(nombres2.value);
+        empa.setAbreviatura(abreviatura.value);
+        empa.setPeriodo(periodo);
+        if((!empa.getCodigoeva().equals(0)) ){
+             adm.actualizar(empa);
+                List children = datos.selectedItem.children;
+                  ((Listcell)children.get(0)).label = empa.getCodigoeva()+"";
+                  ((Listcell)children.get(1)).label = empa.getDescripcion()+" ";
+         }else{
+             empa.setCodigoeva(adm.getNuevaClave("Evaluacion","codigoeva"));
+             adm.guardar(empa);
+         }
+          permiso.auditar("Evaluacion","Guardar",""+nombres.value);
+          Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+          guardar.disabled=true;
+          agregar.disabled=false;
+          estado(true,false);
+          llenar(new Evaluacion(0));
+
+
+    }
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Evaluacion",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false;
+llenar(new Evaluacion(0));
+estado(false,false);
+//alert(empa.getCodigoeva());
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Evaluacion)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Evaluacion)datos.selectedItem.value;
+             adm.eliminarObjeto(Evaluacion.class, empa.getCodigoeva());
+            datos.removeItemAt(datos.getSelectedIndex());
+            permiso.auditar("Evaluacion","Eliminar",""+nombres.value);
+            llenar(new Evaluacion(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Evaluacion as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Evaluacion object = (Evaluacion)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Evaluacion(0);
+            }
+
+        }
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Evaluacion as o " + 
+        " where o.descripcion like '%"+p+"%' and o.periodo.codigoper  = '"+periodo.getCodigoper()+"' order by o.codigoeva ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Evaluacion acceIt = (Evaluacion) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigoeva()+" "));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargarEspe(Global g){
+    empa.setEspecialidad(g);
+}
+void cargarSec(Global g){
+    empa.setSeccion(g);
+}
+void cargarPar(Global g){
+    empa.setParalelo(g);
+}
+     ]]>
+
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
+
+        <grid width="100%">
+            <rows>
+              
+                <row>
+                    <span style="float:right"> Nombres(*):</span>
+                    <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />   
+                    </row>
+                        <row>
+                    <span style="float:right"> Abreviatura(*):</span>
+                    <textbox id="abreviatura"  maxlength="10" cols="10" readonly="true"   />   
+                    </row>  <row>
+                    <span style="float:right"> Descripción Opt.(*):</span>
+                    <textbox id="nombres2"  maxlength="60" cols="40" readonly="true"   />   
+                    </row>
+            
+
+
+
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox mold="3d" >
+        <caption label="Busquedas" />
+        <vbox>
+            <hbox> Evaluacion:  
+                <textbox id="buscarText"  maxlength="60" cols="40" />  
+                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> 
+            </hbox>
+            <hbox>
+                <listbox mold="paging" rows="5" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="450px">
+                    <listhead>
+                        <listheader label="Cod."/>
+                        <listheader label="Nombres"/>
+
+                    </listhead>
+                    <listitem  forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigoeva}" />
+                        <listcell label="${each.descripcion}" />
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+    </groupbox>
+
+</window>
