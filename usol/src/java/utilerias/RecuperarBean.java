@@ -25,6 +25,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import jcinform.persistencia.Aspirantes;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Matriculas;
@@ -61,7 +62,7 @@ public class RecuperarBean {
             
     }
     
-    
+
     public String recuperarClave() {
         claves val = new claves();
                    FacesContext context = FacesContext.getCurrentInstance();
@@ -127,7 +128,73 @@ public class RecuperarBean {
             return "no";
         }
     }
-    
+     
+    public String confirmarAspirante(String cedula) {
+            claves val = new claves();
+                   FacesContext context = FacesContext.getCurrentInstance();
+         Aspirantes emp;
+         try {
+         emp = (Aspirantes) adm.querySimple("Select o from Aspirantes as o where o.idAspirantes= '" + cedula + "' ");   
+        } catch (Exception e) {
+            emp = null;
+        }
+         
+        
+        if (emp != null) {
+             mensaje = "<html><p> Gracias  " + emp.getNombres() + " "
+                     + " por confiar en nosotros. </b></p> <p>Nos estaremos comunicando contigo <p> "
+                    + " "
+                    + "<p>."
+                    + "<p>"
+                    + "<p>"
+                    + "<br/>"
+                    + "LA ADMINISTRACION "
+                    + "<p>"
+                    + "<br/>" 
+                    + "<p>"
+                    + "<br/>"
+                    + "<p>"
+                    + "<br/>"
+                    + "<hr>"
+                    + "Desarrollado por <a href=http://www.jcinform.com> JC INFORM </a> "
+                    + "<p>"
+                    + "<hr>"
+                    + "</html> ";
+             try {
+            System.out.println(""+emp.getEmail().trim()+ mensaje+
+                    "PRE-INSCRIPCION " + emp.getNombres()+ 
+                    institucion.getEmail()+ 
+                    institucion.getClave()+ 
+                    institucion.getSmtp()+ 
+                    institucion.getPuerto()+
+                    institucion.getAutorizacion()+
+                    institucion.getStar());                  
+            } catch (Exception e) {
+                 System.out.println("error: "+e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ud. no tiene registrado un email en su cuenta...!","Ud. no tiene registrado un email en su cuenta...!"));
+                return "no";
+            }
+            
+            Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
+                    "PRE-INSCRIPCION " + emp.getNombres(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(),institucion.getAutorizacion(),institucion.getStar());
+ 
+ 
+            if (estado) {
+                
+//                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso","Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso"));
+//                return "[OK] " + emp.getEmail();
+            } else {
+//                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha enviado el email...!","No se ha enviado el email...!"));
+//                return "no";
+
+            }
+            return "ok";
+
+        } else {
+//                                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha encontrado el estudiante con la cédula ingresada...!","No se ha encontrado el estudiante con la cédula ingresada...!"));
+            return "no";
+        }
+    }
     public String recuperarClave(String cedula) {
             claves val = new claves();
                    FacesContext context = FacesContext.getCurrentInstance();

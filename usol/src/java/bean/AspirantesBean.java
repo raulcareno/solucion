@@ -51,6 +51,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.StreamedContent;
 import utilerias.Permisos;
+import utilerias.RecuperarBean;
 
 /**
  *
@@ -322,9 +323,13 @@ public class AspirantesBean {
             }
 
         }
+        RecuperarBean rec = new RecuperarBean();
+        rec.confirmarAspirante(object.getIdAspirantes());
 
         return null;
     }
+
+     
 
     /**
      * Elimina un registro asociado a la página

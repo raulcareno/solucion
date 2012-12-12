@@ -136,7 +136,7 @@ FacesContext context = FacesContext.getCurrentInstance();
 
     public String recuperarClave() {
         RecuperarBean rec = new RecuperarBean();
-        return rec.recuperarClave(cedula);
+        return rec.recuperarClaveEstudiante(cedula);
     }
     ArrayList listaNotas;
      List cabeceras = null;
