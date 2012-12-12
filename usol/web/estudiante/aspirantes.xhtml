@@ -28,30 +28,30 @@
                     <h:outputText style="font-family: Verdana" value="Gracias por confiar en nosotros, pronto nos pondremos en contacto con Usted." />
                     <p:separator/>
                 </h:panelGrid>
-                <p:fieldset rendered="#{aspirantesBean.guardado}"  toggleable="false" toggleSpeed="500" legend="DATOS DE INSCRIPCION">
+                <p:fieldset rendered="#{aspirantesBean.guardado}"  toggleable="false" toggleSpeed="500" legend="Registre la información y presione Guardar">
                     <h:panelGrid columns="2">  
                         <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">  
 
-                            <h:outputText value="CEDULA IDENTIDAD.: " />  
+                            <h:outputText style="font-weight: bold"  value="CEDULA IDENTIDAD.: " />  
                             <p:inputText value="#{aspirantesBean.object.idAspirantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;"/>
 
-                            <h:outputText value="NOMBRES: " />  
+                            <h:outputText style="font-weight: bold"  value="NOMBRES: " />  
                             <p:inputText value="#{aspirantesBean.object.nombres}" id="Nombres"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="COLEGIO: " />  
                             <p:inputText value="#{aspirantesBean.object.colegio}" id="Colegio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
-                            <h:outputText value="DIRECCIÓN: " />  
+                            <h:outputText style="font-weight: bold"  value="DIRECCIÓN: " />  
                             <p:inputText value="#{aspirantesBean.object.direccion}" id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
 
-                            <h:outputText value="TELEFONO: " />  
+                            <h:outputText style="font-weight: bold"  value="TELEFONO: " />  
                             <p:inputText value="#{aspirantesBean.object.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="CELULAR: " />  
                             <p:inputText value="#{aspirantesBean.object.celular}" id="celular"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                            <h:outputText value="EMAIL: " />  
+                            <h:outputText style="font-weight: bold"  value="EMAIL: " />  
                             <p:inputText value="#{aspirantesBean.object.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                            <h:outputText value="CARRERA DE INTERÉS: " />     
+                            <h:outputText style="font-weight: bold"  value="CARRERA DE INTERÉS: " />     
 
                             <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{aspirantesBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
                                 <f:selectItems value="#{aspirantesBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
@@ -63,8 +63,9 @@
 
 
                     </h:panelGrid>
+                     <p:separator/>
                     <h:outputText style="font-weight: bold" value="¿Como se enteró de Nosotros?" /> 
-                    <p:separator/>
+              
                     <h:panelGrid columns="6">  
                         <h:selectBooleanCheckbox value="#{aspirantesBean.hoja}" label="Hoja" />
                         <h:outputText value="Hoja Volante:" />

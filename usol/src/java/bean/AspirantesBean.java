@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -134,17 +136,17 @@ public class AspirantesBean {
         }
         guardado = true;
         Empleados user = (Empleados) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
-        if(user !=null){
-        if (!permisos.verificarPermisoReporte("Aspirantes", "ingresar_listaAspirantes.jspx", "ingresar", true, "ADMINISTRACION")) {
-            try {
+        if (user != null) {
+            if (!permisos.verificarPermisoReporte("Aspirantes", "ingresar_listaAspirantes.jspx", "ingresar", true, "ADMINISTRACION")) {
+                try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
-            } //selectedAspirantes = new Aspirantes();
-            catch (IOException ex) {
-                java.util.logging.Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
+                } //selectedAspirantes = new Aspirantes();
+                catch (IOException ex) {
+                    java.util.logging.Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
 //                Logger.getLogger(AspirantesBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
         }
         p = new ProcesadorImagenes();
         inicializar();
@@ -211,7 +213,7 @@ public class AspirantesBean {
 
     protected void inicializar() {
         object = new Aspirantes("");
-        
+
     }
 
     public StreamedContent getImageAsStream() {
@@ -234,16 +236,74 @@ public class AspirantesBean {
         }
         return null;
     }
-
+   public boolean isEmail(String correo) {
+        Pattern pat;
+        pat = null;
+        Matcher mat = null;        
+        pat = Pattern.compile("^([0-9a-zA-Z]([_.w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-w]*[0-9a-zA-Z].)+([a-zA-Z]{2,9}.)+[a-zA-Z]{2,3})$");
+        mat = pat.matcher(correo);
+        if (mat.find()) {
+            System.out.println("[" + mat.group() + "]");
+            return true;
+        }else{
+            return false;
+        }        
+    }
     /**
      * Graba el registro asociado al objeto que
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
-        if (object.getNombres().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese los NOMBRES:", ""));
+        if (object.getIdAspirantes().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese su Cédula de Identidad:", ""));
             return null;
         }
+        if (object.getNombres().isEmpty() || object.getNombres().length() < 7) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese sus Nombres y Apellidos:", ""));
+            return null;
+        }
+        if (object.getDireccion().isEmpty() || object.getDireccion().length() < 5) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la Dirección", ""));
+            return null;
+        }
+        if (object.getTelefono().isEmpty() || object.getTelefono().length() < 5) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese al menos Un número telefónico", ""));
+            return null;
+        }
+        
+        
+        if (object.getEmail().isEmpty() || object.getEmail().length() < 5) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese un correo electrónico", ""));
+            return null;
+        }
+        if (!isEmail(object.getEmail())) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese un correo electrónico Correcto", ""));
+            return null;
+        }
+       
+        
+        if (carreraSeleccionado.getIdCarreras().equals(new Integer(0))) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seleccione una Carrera de Interés", ""));
+            return null;
+        }
+        String valores = (hoja.booleanValue() ? "hoja;" : "")
+                + "" + (charla.booleanValue() ? "charla;" : "")
+                + "" + (charlavin.booleanValue() ? "charlavin;" : "")
+                + "" + (paginaweb.booleanValue() ? "paginaweb;" : "")
+                + "" + (pp.booleanValue() ? "pp;" : "")
+                + "" + (pu.booleanValue() ? "pu;" : "")
+                + "" + (rp.booleanValue() ? "rp;" : "")
+                + "" + (pr.booleanValue() ? "pr;" : "")
+                + "" + (goo.booleanValue() ? "goo;" : "")
+                + "" + (puev.booleanValue() ? "puev;" : "")
+                + "" + (red.booleanValue() ? "red;" : "");
+        valores = valores.replaceAll(";", "").trim();
+
+        if (valores.length() <= 0) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Por favor seleccione al menos una opción de ¿Cómo se enteró de Nosotros?", ""));
+            return null;
+        }
+
         /**
          * GUARDAR PARIENTES ANTES DE GUARDAR A ESTUDIANTES
          */
@@ -268,7 +328,7 @@ public class AspirantesBean {
 //                    Boolean red;
                 object.setIdCarreras(carreraSeleccionado);
                 if (adm.existe("Aspirantes", "idAspirantes", object.getIdAspirantes()).size() <= 0) {
-                    object.setLlamadas(0); 
+                    object.setLlamadas(0);
                     object.setMedio((hoja.booleanValue() ? "hoja;" : "")
                             + "" + (charla.booleanValue() ? "charla;" : "")
                             + "" + (charlavin.booleanValue() ? "charlavin;" : "")
@@ -286,7 +346,7 @@ public class AspirantesBean {
 //                    inicializar();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
                 } else {
-                    object.setLlamadas(0); 
+                    object.setLlamadas(0);
                     object.setMedio((hoja.booleanValue() ? "hoja;" : "")
                             + "" + (charla.booleanValue() ? "charla;" : "")
                             + "" + (charlavin.booleanValue() ? "charlavin;" : "")
@@ -323,13 +383,17 @@ public class AspirantesBean {
             }
 
         }
-        RecuperarBean rec = new RecuperarBean();
-        rec.confirmarAspirante(object.getIdAspirantes());
+        Thread cargar = new Thread() {
+            public void run() {
+                RecuperarBean rec = new RecuperarBean();
+                rec.confirmarAspirante(object.getIdAspirantes());
+            }
+        };
+        cargar.start();
+
 
         return null;
     }
-
-     
 
     /**
      * Elimina un registro asociado a la página
@@ -420,13 +484,13 @@ public class AspirantesBean {
      */
     public void buscar() {
         FacesContext context = FacesContext.getCurrentInstance();
-   
-        if(object.getLlamadas()!=null){
-            object.setLlamadas(object.getLlamadas()+1);
-        }else{
+
+        if (object.getLlamadas() != null) {
+            object.setLlamadas(object.getLlamadas() + 1);
+        } else {
             object.setLlamadas(1);
         }
-        object.setObservacion(object.getObservacion()+"["+(new Date()).toLocaleString().substring(0,10)+"]" );
+        object.setObservacion(object.getObservacion() + "[" + (new Date()).toLocaleString().substring(0, 10) + "]");
         if (!object.getIdAspirantes().equals("")) {
             if (!permisos.verificarPermisoReporte("Aspirantes", "agregar_listaAspirantes.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
@@ -464,7 +528,7 @@ public class AspirantesBean {
             try {
                 adm.actualizar(object);
                 aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "actualizar", "", object.getIdAspirantes() + "");
-  //              FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
+                //              FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
 //                inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
@@ -473,7 +537,7 @@ public class AspirantesBean {
             }
 
         }
-inicializar();
+        inicializar();
         //return null;
     }
 
