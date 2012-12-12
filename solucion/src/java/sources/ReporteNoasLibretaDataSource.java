@@ -51,6 +51,8 @@ public class ReporteNoasLibretaDataSource implements JRDataSource{
            valor = nodo.getMatricula().getEstudiante().getApellido()+" "+ nodo.getMatricula().getEstudiante().getNombre();
         }else    if ("matricula".equals(fieldName)) {
            valor = nodo.getMatricula().getCodigomat();
+        }else    if ("observacion".equals(fieldName)) {
+           valor = nodo.getObservacion();
         }else    if ("fotoestudiante".equals(fieldName)) {
             if(nodo.getMatricula().getExtension()!=null){
             valor = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getFotos()+""+nodo.getMatricula().getCodigomat()+"."+nodo.getMatricula().getExtension();

@@ -3064,7 +3064,15 @@ public class reportesClase {
                 System.out.println("FALTA PARAMETROS DE FIRMAS: DE LIBRETA" + e);
             }
 
-
+                List recomenList = adm.query("Select o from Recomendaciones as o "
+                        + " where o.sistema.codigosis = '"+sistema.getCodigosis()+"'  "
+                        + " and o.matricula.codigomat = '"+matriculas1.getCodigomat()+"' ");
+                if(recomenList.size()>0){
+                     nota.setObservacion(((Recomendaciones)recomenList.get(0)).getRecomendacion());
+                }else{
+                     nota.setObservacion(""); 
+                }
+                
             nota.setMatricula(matriculas1);
             nota.setNotas(lisNotasC);
             nota.setFaltas(lisFaltas);
@@ -3589,6 +3597,15 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
                 nota.setCargo1(cargo1);
                 nota.setCargo2(cargo2);
                 nota.setCargo3(cargo3);
+                List recomenList = adm.query("Select o from Recomendaciones as o "
+                        + " where o.sistema.codigosis = '"+sistema.getCodigosis()+"'  "
+                        + " and o.matricula.codigomat = '"+matriculas1.getCodigomat()+"' ");
+                if(recomenList.size()>0){
+                     nota.setObservacion(((Recomendaciones)recomenList.get(0)).getRecomendacion());
+                }else{
+                     nota.setObservacion(""); 
+                }
+                
 
                 nota.setPromedioFinal(promedioFinal);
                 nota.setDisciplinaFinal(disciplinaFinal);
