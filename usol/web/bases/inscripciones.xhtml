@@ -23,8 +23,6 @@
                 <script src="locales.js" type="text/javascript"/>
 
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
-                <!--p:message for="form" /-->
-                <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
 
                 <p:fieldset >
                     <h:panelGrid columns="2">  
@@ -179,6 +177,21 @@
 
 
                             </h:panelGrid>
+
+                            <h:outputText value="ANIO GRADUACIÓN: " />  
+                            <p:inputText value="#{inscripcionesBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:spacer width="10"/>
+                            <h:outputText value="COLEGIO GRADUADO: " />  
+                            <p:inputText value="#{inscripcionesBean.estudiante.colegioGraduado}" id="ColegioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:outputText value="TITULOS SUPERIORES: " />  
+                            <p:inputText value="#{inscripcionesBean.estudiante.titulosSuperiores}" id="TitulosSuperiores"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            
+                            <p:spacer width="10"/>
+                            <h:outputText value="CARRERA: " />  
+                            <p:selectOneMenu   id="carrera" label="carrera"  style="width:200px"  value="#{inscripcionesBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
+                            <f:selectItems value="#{inscripcionesBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
+                        </p:selectOneMenu> 
+
                         </h:panelGrid>  
                         <h:panelGrid   cellpadding="-1" style="margin:0 auto;" columns="1"> 
                             <p:graphicImage id="logoSubido2" style="border:2px;border-color: #919396"  width="70"
@@ -215,60 +228,15 @@
                     </h:panelGrid>
 
                 </p:fieldset>
-                <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS DE MATRICULA">
-
-
-                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 ;">
-
-                        <h:outputText value="CARRERA: " />     
-
-                        <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{inscripcionesBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
-                            <f:selectItems value="#{inscripcionesBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
-                        </p:selectOneMenu>    
-                        <h:outputText value="No. MATRICULA: " />  
-                        <p:inputText value="#{inscripcionesBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
-                    </h:panelGrid> 
-                    <h:panelGrid columns="5" cellpadding="-1" style="margin:0 ;">
-
-                        <h:outputText value="FECHA MATRICULA: " />  
-                        <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{inscripcionesBean.object.fecha}" id="FechaMatricula" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
-                        <p:spacer width="10"/>
-                        <h:outputText value="CATEGORÍA: " />  
-                        <p:selectOneRadio id="CategoriasSociales" label="CategoriasSociales"  value="#{inscripcionesBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales">  
-                            <f:selectItems value="#{inscripcionesBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
-                        </p:selectOneRadio>
-
-                        <h:outputText value="ESTADO: " />  
-                        <p:selectOneRadio id="EstadoMatricula" label="EstadoMatricula"  value="#{inscripcionesBean.object.estadoMat}">  
-                            <f:selectItem itemLabel="INSCRITO"  itemValue="I" />      
-                            <f:selectItem itemLabel="MATRICULADO"  itemValue="M" />  
-                            <f:selectItem itemLabel="RETIRADO" itemValue="R" />  
-
-                        </p:selectOneRadio> 
-                        <p:spacer width="10"/>
-                        <h:outputText value="CONFIRMADA: " />  
-                        <p:selectBooleanCheckbox value="#{inscripcionesBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  
-                        <h:outputText value="ANIO GRADUACIÓN: " />  
-                        <p:inputText value="#{inscripcionesBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                        <p:spacer width="10"/>
-                        <h:outputText value="COLEGIO GRADUADO: " />  
-                        <p:inputText value="#{inscripcionesBean.estudiante.colegioGraduado}" id="ColegioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                        <h:outputText value="TITULOS SUPERIORES: " />  
-                        <p:inputText value="#{inscripcionesBean.estudiante.titulosSuperiores}" id="TitulosSuperiores"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-
-
-                    </h:panelGrid>
-          
-                </p:fieldset>
                 <h:panelGrid columns="2"> 
                     <p:fieldset  toggleable="false" toggleSpeed="500" legend="DATOS PARA FACTURA">
                         <h:panelGrid columns="2" id="datosFactura" cellpadding="-1" style="margin:0 auto;">  
-                            
+
                             <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">       
-                            
-                            
+
+
                             </h:panelGrid>     
-                                <p:commandButton  update="datosFactura" action="#{inscripcionesBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
+                            <p:commandButton  update="datosFactura" action="#{inscripcionesBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
                             <h:outputText value="CED o RUC: " />  
                             <p:inputText value="#{inscripcionesBean.pariente1.identificacion}" id="IdentificacionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NOMBRES: " />  

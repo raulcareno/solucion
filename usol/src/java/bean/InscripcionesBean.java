@@ -105,8 +105,6 @@ public class InscripcionesBean {
     List<SelectItem> provinciasEncontradas1;
     List<SelectItem> cantonesEncontradas1;
     protected Parientes pariente1;
-    protected Parientes pariente2;
-    protected Parientes pariente3;
     public Pais paisSeleccionado = new Pais();
     public Carreras carreraSeleccionado = new Carreras();
     public Provincia provinciaSeleccionado = new Provincia();
@@ -195,12 +193,7 @@ public class InscripcionesBean {
         if (pariente1 == null) {
             pariente1 = new Parientes();
         }
-        if (pariente2 == null) {
-            pariente2 = new Parientes();
-        }
-        if (pariente3 == null) {
-            pariente3 = new Parientes();
-        }
+
         if (arLibreta == null) {
             arLibreta = new Archivos();
         }
@@ -218,24 +211,7 @@ public class InscripcionesBean {
         rangos = adm.listar("RangosGpa");
     }
 
-    public String anadir(CarrerasMaterias obj) {
-
-
-        if (!validarSecuencia(obj)) {
-            destino.add(obj);
-            origen.remove(obj);
-            sumarCreditos();
-        }
-
-        return null;
-    }
-
-    public String quitar(CarrerasMaterias obj) {
-        origen.add(obj);
-        destino.remove(obj);
-        sumarCreditos();
-        return null;
-    }
+   
 
     public StreamedContent getImageAsStream() {
         try {
@@ -263,6 +239,11 @@ public class InscripcionesBean {
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
+        
+        object.setEstadoMat("I");
+        object.setConfirmada(false);
+        object.setPagada(false);
+        
         if (estudiante.getIdEstudiantes().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la IDENTIFICACIÓN del Estudiante", ""));
             return null;
@@ -314,8 +295,7 @@ public class InscripcionesBean {
          * GUARDAR PARIENTES ANTES DE GUARDAR A ESTUDIANTES
          */
         pariente1.setTipoRepresentante("F");
-        pariente2.setTipoRepresentante("P");
-        pariente3.setTipoRepresentante("M");
+ 
         //1.- PARIENTES EMPIEZO A GUARDAR
         if (pariente1.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion(), "tipoRepresentante", "F", "");
@@ -330,37 +310,8 @@ public class InscripcionesBean {
             adm.actualizar(pariente1);
         }
 
-        //2.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente2.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion(), "tipoRepresentante", "P", "");
-            if (pariList.size() > 0) {
-                pariente2.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente2);
-            } else {
-                pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente2);
-            }
-        } else {
-            adm.actualizar(pariente2);
-        }
-
-        //3.- PARIENTES EMPIEZO A GUARDAR
-        if (pariente3.getIdParientes().equals(new Integer(0))) {
-            List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion(), "tipoRepresentante", "M", "");
-            if (pariList.size() > 0) {
-                pariente3.setIdParientes(pariList.get(0).getIdParientes());
-                adm.actualizar(pariente3);
-            } else {
-                pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                adm.guardar(pariente3);
-            }
-        } else {
-            adm.actualizar(pariente3);
-        }
+     
         estudiante.setIdParientes(pariente1);
-        estudiante.setParIdParientes(pariente2);
-        estudiante.setParIdParientes2(pariente3);
-
 
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
@@ -477,10 +428,10 @@ public class InscripcionesBean {
             matMat.setIdMatriculas(object);
             //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
             matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat); 
-            
+            adm.guardar(matMat);
+
         }
-        
+
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
     }
@@ -570,8 +521,7 @@ public class InscripcionesBean {
         object = new Matriculas(0);
         estudiante = new Estudiantes("");
         pariente1 = new Parientes();
-        pariente2 = new Parientes();
-        pariente3 = new Parientes();
+  
         object.setIdEstudiantes(estudiante);
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
@@ -644,50 +594,27 @@ public class InscripcionesBean {
 
     }
 
-    public void buscarCedulaPadre() {
-        List<Parientes> parientesEncontrados = adm.query("Select o from Parientes as o "
-                + "where o.identificacion = '" + pariente2.getIdentificacion() + "' "
-                + " and o.tipoRepresentante = 'P'  ");
-        for (Iterator<Parientes> it = parientesEncontrados.iterator(); it.hasNext();) {
-            Parientes parientes = it.next();
-            pariente2 = parientes;
-        }
 
-    }
-
-    public void buscarCedulaMadre() {
-        List<Parientes> parientesEncontrados = adm.query("Select o from Parientes as o "
-                + "where o.identificacion = '" + pariente3.getIdentificacion() + "' "
-                + " and o.tipoRepresentante = 'M'  ");
-        for (Iterator<Parientes> it = parientesEncontrados.iterator(); it.hasNext();) {
-            Parientes parientes = it.next();
-            pariente3 = parientes;
-        }
-
-    }
 
     public void buscarCedula() {
 
-        String cedula2 = estudiante.getIdEstudiantes();
-        estudiante = (Estudiantes) adm.buscarClave(cedula2, Estudiantes.class);
+//        String cedula2 = estudiante.getIdEstudiantes();
+        //estudiante = (Estudiantes) adm.buscarClave(cedula2, Estudiantes.class);
+
+        
+        if(buscarMatricula(estudiante)){
+              FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ya se encuentra matriculado no puede volver a inscribir", "Ya se encuentra matriculado no puede volver a inscribir"));
+            System.out.println("ya se ha matriculado no puede continuar");
+            return;
+        }
+        
         if (estudiante.getIdParientes() != null) {
             pariente1 = estudiante.getIdParientes();
         } else {
             pariente1 = new Parientes();
         }
-        if (estudiante.getParIdParientes() != null) {
-            pariente2 = estudiante.getParIdParientes();
-        } else {
-            pariente2 = new Parientes();
-        }
-
-        if (estudiante.getParIdParientes2() != null) {
-            pariente3 = estudiante.getParIdParientes2();
-        } else {
-            pariente3 = new Parientes();
-        }
-
-        arLibreta = new Archivos();
+            arLibreta = new Archivos();
         arTitulo = new Archivos();
         arCedula = new Archivos();
         List<Archivos> archi = adm.query("Select o from Archivos as o "
@@ -764,34 +691,7 @@ public class InscripcionesBean {
         }
     }
 
-    protected void buscarMateriasMatricula(Matriculas mat) {
-        if(!object.getIdMatriculas().equals(new Integer(0))){
-            destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
-                    + " WHERE c.id_Materias in "
-                    + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
-                    + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
-                    + " ", CarrerasMaterias.class);
 
-            origen = adm.query("Select m from CarrerasMaterias as m  where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
-            for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-                CarrerasMaterias destItem = it.next();
-                origen.remove(destItem);
-
-            }
-            sumarCreditos();
-        }else{
-                destino = new ArrayList<CarrerasMaterias>();
-                origen = adm.query("Select m from CarrerasMaterias as m  "
-                    + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
-                for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-                    CarrerasMaterias destItem = it.next();
-                    origen.remove(destItem);
-
-                }
-                sumarCreditos();
-        
-        }
-    }
     public int noCreditos = 0;
 
     public void sumarCreditos() {
@@ -891,217 +791,19 @@ public class InscripcionesBean {
 //        
 //
 //    }
-    public boolean validarSecuencia(CarrerasMaterias materiaAanadir) {
 
-        //ESTE METODO DEBE INICIALIZARSE CADA VEZ QUE CAMBIO DE ESPECIALDIAD
-                        try {
-                            CarrerasMaterias tmp = anadidasArray[0][0];
-                            if (tmp.getIdCarrerasMaterias().equals(null)) {
-                                buscarMateriasdeCarrera();                     
-                            }
-                        } catch (Exception e) {
-                            buscarMateriasdeCarrera();                
-                        }
-        
-        
-
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        int fila = -1;
-        int columna = -1;
-        String requeridas = "";
-        for (int i = 0; i < 30; i++) {
-            for (int j = 0; j < 12; j++) {
-                CarrerasMaterias carreraMateria = anadidasArray[i][j];
-                if (materiaAanadir.getIdMaterias().getIdMaterias().equals(carreraMateria.getIdMaterias().getIdMaterias())) {
-                    fila = i;
-                    columna = j;
-                    break;
-                }
-            }
-
-            if (fila > -1) {
-                break;
-            }
-        }
-        System.out.println("f: " + fila + " c: " + columna);
-        int existenReprobadas = 0;
-        //RECORRO PARA ENCONTRAR LAS MENORES A LA SELECCIONADA
-        for (int j = 0; j < columna; j++) {
-            CarrerasMaterias carreraMateria = anadidasArray[fila][j];
-            if (carreraMateria.getIdMaterias().getIdMaterias() != null) {
-                List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
-                        + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + carreraMateria.getIdMaterias().getIdMaterias() + "' "
-                        + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
-                if (notasEncontradas.size() > 0) {
-                    for (Iterator<Notas> it1 = notasEncontradas.iterator(); it1.hasNext();) {
-                        Notas notas = it1.next();
-                        if (notas.getEstadoNot() == false) {
-                            requeridas += " || " + carreraMateria.getIdNiveles().getNombre() + ": " + carreraMateria.getIdMaterias().getNombre();
-                        }
-                    }
-
-                } else {
-                    requeridas += " || " + carreraMateria.getIdNiveles().getNombre() + ": " + carreraMateria.getIdMaterias().getNombre();
-                }
-
-
-            }
-        }
-
-
-
-        String idSeleccionado = "f" + fila + "c" + columna;
-        adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
-        for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
-            SecuenciaDeMateriasAdicionales secM = it.next();
-            if (secM.getFilacolumna().equals(idSeleccionado)) {
  
-                 List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
-                        + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + secM.getIdCarrerasMaterias().getIdMaterias().getIdMaterias() + "' "
-                        + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
-                if (notasEncontradas.size() > 0) {
-                    for (Iterator<Notas> it1 = notasEncontradas.iterator(); it1.hasNext();) {
-                        Notas notas = it1.next();
-                        if (notas.getEstadoNot() == false) {
-                            requeridas += " || " + secM.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secM.getIdCarrerasMaterias().getIdMaterias().getNombre();
-                        }
-                    }
 
-                } else {
-                    requeridas += " || " + secM.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secM.getIdCarrerasMaterias().getIdMaterias().getNombre();
-                }
+ 
 
-                
-
-            }
-
-        }
-        if(requeridas.length()>0){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
-        return true;
-        }else{
-        return false;
-        }
-        
-
-    }
-    List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
-    CarrerasMaterias anadidasArray[][] = new CarrerasMaterias[30][12];
-    List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
-    List<SecuenciaDeMateriasAdicionales> adicionales = new ArrayList<SecuenciaDeMateriasAdicionales>();
-    List<SecuenciaDeMateriasAdicionales> adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
-    List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
-    List<SelectItem> listaMateriasAdicionales2 = new ArrayList<SelectItem>();
-
-    public void llenarArreglo() {
-        for (int i = 0; i < 30; i++) {
-            for (int j = 0; j < 12; j++) {
-                CarrerasMaterias car = new CarrerasMaterias();
-                Materias mat = new Materias();
-                mat.setNombre("");
-                car.setIdMaterias(mat);
-                car.setIdNiveles(new Niveles());
-                car.setIdCarreras(new Carreras());
-                car.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-                anadidasArray[i][j] = car;
-            }
-        }
-    }
-
-    public void buscarMateriasdeCarrera() {
-        try {
-             buscarMateriasMatricula(object);
-            llenarArreglo();
-            listaMaterias = adm.query("Select o from CarrerasMaterias as o "
-                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
-                    + "and o.idCarrerasMaterias NOT IN (Select c.idCarrerasMaterias.idCarrerasMaterias "
-                    + "from SecuenciaDeMaterias as c "
-                    + " WHERE c.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' ) "
-                    + " order by o.idNiveles.secuencia ");
-            List<CarrerasMaterias> adicionalesEncontradas = adm.query("Select o from CarrerasMaterias as o "
-                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
-                    + "   order by o.idNiveles.secuencia ");
-
-            listaMateriasAdicionales = new ArrayList<SelectItem>();
-            for (Iterator<CarrerasMaterias> it = adicionalesEncontradas.iterator(); it.hasNext();) {
-                CarrerasMaterias carrerasMaterias = it.next();
-                listaMateriasAdicionales.add(new SelectItem(carrerasMaterias, carrerasMaterias.getIdNiveles().getNombre() + " - " + carrerasMaterias.getIdMaterias().getNombre()));
-
-            }
-
-            adicionales = adm.query("SELECT o FROM SecuenciaDeMateriasAdicionales AS o "
-                    + " WHERE o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  ");
-
-
-            List<SecuenciaDeMaterias> materiasSecuenciales = adm.query("Select o from SecuenciaDeMaterias as o "
-                    + "where o.idCarrerasMaterias.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' "
-                    + "order by o.fila, o.orden ");
-            if (materiasSecuenciales.size() > 0) {
-                for (Iterator<SecuenciaDeMaterias> it = materiasSecuenciales.iterator(); it.hasNext();) {
-                    SecuenciaDeMaterias cM = it.next();
-                    cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-                    anadidasArray[cM.getFila()][cM.getOrden()] = cM.getIdCarrerasMaterias();
-                }
-                //LLENO LOS VACIOS
-                for (int i = 0; i < 30; i++) {
-                    for (int j = 0; j < 12; j++) {
-                        try {
-                            CarrerasMaterias tmp = anadidasArray[i][j];
-                            if (tmp.getIdCarrerasMaterias().equals(null)) {
-                                CarrerasMaterias car = new CarrerasMaterias();
-                                Materias mat = new Materias();
-                                mat.setNombre("");
-                                car.setIdMaterias(mat);
-                                car.setIdNiveles(new Niveles());
-                                car.setIdCarreras(new Carreras());
-                                car.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-                                anadidasArray[i][j] = car;
-                            }
-
-
-                        } catch (Exception e) {
-                            CarrerasMaterias car = new CarrerasMaterias();
-                            Materias mat = new Materias();
-                            mat.setNombre("");
-                            car.setIdMaterias(mat);
-                            car.setIdNiveles(new Niveles());
-                            car.setIdCarreras(new Carreras());
-                            car.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-                            anadidasArray[i][j] = car;
-                        }
-
-
-
-
-                    }
-
-                }
-
-            } else {
-                llenarArreglo();
-            }
-
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-
-    protected void buscarMatricula(Estudiantes estudiante) {
+    protected Boolean buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
-        if (matriculasListado.size() > 0) {
-            object = matriculasListado.get(0);
-            carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdCategoriasSociales();
-            buscarMateriasMatricula(object);
-
-        }else{
-            carreraSeleccionado = new Carreras(0);
-            object = new Matriculas(0); 
-            buscarMateriasMatricula(object);
-        
+                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat = 'M' ");
+        if (matriculasListado.size() > 0) { //System.out.println("NO SE PUEDE MATRICULAR YA SE ENCUENTRA MATRICULADO");
+            return true; //MATRICULADO
+        } else {
+            return false; //MATRICULADO
         }
     }
 
@@ -1110,24 +812,14 @@ public class InscripcionesBean {
 
         imagen = estudiante.getFoto();
         pariente1 = new Parientes();
-        pariente2 = new Parientes();
-        pariente3 = new Parientes();
+
         if (estudiante.getIdParientes() != null) {
             pariente1 = estudiante.getIdParientes();
         } else {
             pariente1 = new Parientes();
         }
-        if (estudiante.getParIdParientes() != null) {
-            pariente2 = estudiante.getParIdParientes();
-        } else {
-            pariente2 = new Parientes();
-        }
+    
 
-        if (estudiante.getParIdParientes2() != null) {
-            pariente3 = estudiante.getParIdParientes2();
-        } else {
-            pariente3 = new Parientes();
-        }
 
 //        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
 //        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
@@ -1376,22 +1068,6 @@ public class InscripcionesBean {
 
         }
         return null;
-    }
-
-    public String copiarPadre() {
-        pariente1.setNombres(pariente2.getApellidos() + " " + pariente2.getNombres());
-        pariente1.setDireccion(pariente2.getDireccion());
-        pariente1.setTelefonoTrabajo(pariente2.getTelefonoTrabajo());
-        pariente1.setIdentificacion(pariente2.getIdentificacion());
-        return "";
-    }
-
-    public String copiarMadre() {
-        pariente1.setNombres(pariente3.getApellidos() + " " + pariente3.getNombres());
-        pariente1.setDireccion(pariente3.getDireccion());
-        pariente1.setTelefonoTrabajo(pariente3.getTelefonoTrabajo());
-        pariente1.setIdentificacion(pariente3.getIdentificacion());
-        return "";
     }
 
     public String copiarEstudiante() {
@@ -1825,22 +1501,7 @@ public class InscripcionesBean {
         this.pariente1 = pariente1;
     }
 
-    public Parientes getPariente2() {
-        return pariente2;
-    }
-
-    public void setPariente2(Parientes pariente2) {
-        this.pariente2 = pariente2;
-    }
-
-    public Parientes getPariente3() {
-        return pariente3;
-    }
-
-    public void setPariente3(Parientes pariente3) {
-        this.pariente3 = pariente3;
-    }
-
+ 
     public Estudiantes getEstudiante() {
         if (estudiante == null) {
             estudiante = new Estudiantes("");
