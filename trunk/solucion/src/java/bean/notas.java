@@ -181,7 +181,7 @@ public class notas extends Rows {
                     if (j >= 2) {
                         Double valor = (Double) dos;
                         if (valor.equals(0.0)) {
-                            notaTexto.setValue(new BigDecimal(0));
+                            notaTexto.setValue(null);
                         } else {
                             notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
                         }
@@ -237,37 +237,38 @@ public class notas extends Rows {
 
                                             ((Decimalbox) event.getTarget()).setFocus(true);
                                             ((Decimalbox) event.getTarget()).focus();
-                                            ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                             Robot b = new Robot();
-                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
-                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
-                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
-                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+                                            ((Decimalbox) event.getTarget()).setValue(null);
+                                             Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+//                                             Robot b = new Robot();
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+//                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
+                                           
                                         }
                                     } catch (Exception e) {
-                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+                                        ((Decimalbox) event.getTarget()).setValue(null);
                                     }
 
                                 }
                             });
                            
                             notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');" );
-                              notaTexto.addEventListener("onFocus", new EventListener() {
-
-                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
-                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-                                    try {
-                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
-                                        if(valor<=0){
-                                               ((Decimalbox) event.getTarget()).setValue(null);
-                                        }
-                                         
-                                    } catch (Exception e) {
-                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                    }
-
-                                }
-                            });
+//                              notaTexto.addEventListener("onFocus", new EventListener() {
+//
+//                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+//                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
+//                                    try {
+//                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+//                                        if(valor<=0){
+//                                               ((Decimalbox) event.getTarget()).setValue(null);
+//                                        }
+//                                         
+//                                    } catch (Exception e) {
+//                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+//                                    }
+//
+//                                }
+//                            });
                             notaTexto.addEventListener("onOK", new EventListener() {
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
                                     Robot b = new Robot();
@@ -477,6 +478,9 @@ public class notas extends Rows {
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
                 Decimalbox object1 = (Decimalbox) labels.get(j);
+                   if(object1.getValue() ==null){
+                            object1.setValue(new BigDecimal(0));
+                        }
                 String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
                 formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                 String toda = notas.get(j - 2).getNota() + "";
@@ -563,6 +567,10 @@ public class notas extends Rows {
                     inter.set("nota", nota);
                     for (int j = 2; j < labels.size(); j++) {
                         Decimalbox object1 = (Decimalbox) labels.get(j);
+                        if(object1.getValue() ==null){
+                            object1.setValue(new BigDecimal(0));
+                        }
+                                
                         String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getNota() + "";
