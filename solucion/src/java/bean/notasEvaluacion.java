@@ -102,6 +102,7 @@ public class notasEvaluacion extends Rows {
     public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema,Boolean vertical) {
         System.out.println("TOP INI; " + new Date());
 //        int tamanio = 0;
+         System.setProperty("java.awt.headless","true");
         Session ses = Sessions.getCurrent();
         Empleados empleado = (Empleados) ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -221,7 +222,7 @@ int kk=0;
                             combo.setSelectedItem(item);
                         }else{
                         if (valor.equals(0.0)) {
-                            notaTexto.setValue(new BigDecimal(0));
+                            notaTexto.setValue(null);
                         } else {
                             notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
                         }
@@ -279,37 +280,22 @@ int kk=0;
 
                                             ((Decimalbox) event.getTarget()).setFocus(true);
                                             ((Decimalbox) event.getTarget()).focus();
-                                            ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                               Robot b = new Robot();
-                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
-                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
-                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
+                                            ((Decimalbox) event.getTarget()).setValue(null);
                                             Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+//                                               Robot b = new Robot();
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);    
+                                            
                                         }
                                     } catch (Exception e) {
-                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
+                                        //((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
                                     }
 
                                 }
                             });
                             
-                                  notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');" );
-                              notaTexto.addEventListener("onFocus", new EventListener() {
-
-                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
-                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-                                    try {
-                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
-                                        if(valor<=0){
-                                               ((Decimalbox) event.getTarget()).setValue(null);
-                                        }
-                                         
-                                    } catch (Exception e) {
-                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                                    }
-
-                                }
-                            });
+                           notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');" );
                             notaTexto.addEventListener("onOK", new EventListener() {
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
                                     Robot b = new Robot();
@@ -613,6 +599,9 @@ int kk=0;
                             object1 = ((Decimalbox) labels.get(j)).getValue();
                         }else if(labels.get(j) instanceof Listbox){
                             object1 = new BigDecimal(((Equivalencias)((Listbox) labels.get(j)).getSelectedItem().getValue()).getNota());
+                        }
+                        if(object1 == null){
+                             object1 = new BigDecimal(0); 
                         }
                         //Decimalbox object1 = (Decimalbox) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
