@@ -224,12 +224,13 @@ public class reportesClase {
 //PARA EL CUADRO DE PORCENTAJES, SIRVE PARA SACAR LOS PORCENTAJES
         try {
             int i = 0;
-            String q2 = "Select  count(nota1) from matriculas "
+            String q2 = "Select  count(nota1)  from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                     + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
                     + "and notasevaluacion.materia = '" + materia.getCodigo() + "'  "
                     + "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase')  "
-                    + "order by estudiantes.apellido";
+                    + " group by sistemacalificacion order by estudiantes.apellido";
+            System.out.println("" + q2);
             List resulValor = adm.queryNativo(q2);
             Long totalEstudiantes = (Long) ((Vector) resulValor.get(0)).get(0);
             for (Iterator<Equivalencias> it = equivalencias.iterator(); it.hasNext();) {
@@ -238,7 +239,7 @@ public class reportesClase {
                 parametros.put("ran" + (i + 1), equivalencias1.getValorminimo() + " - " + equivalencias1.getValormaximo());
 
                 String notaAseleccionar = notas.get(notas.size() - 1).getNombre();
-                String q = "Select  count(" + notaAseleccionar + ")  from matriculas "
+                String q = "Select  count(" + notaAseleccionar + ") from matriculas "
                         + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                         + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
                         + "and notasevaluacion.materia = '" + materia.getCodigo() + "' "
@@ -246,7 +247,7 @@ public class reportesClase {
                         + "where matriculas.curso = '" + curso.getCodigocur() + "' and  " + notaAseleccionar + " "
                         + " BETWEEN " + equivalencias1.getValorminimo() + " AND " + equivalencias1.getValormaximo() + " "
                         + "and matriculas.estado in ('Matriculado','Recibir Pase')  "
-                        + "order by estudiantes.apellido";
+                        + " order by estudiantes.apellido";
 //                 System.out.println(""+q);
                 List valor = adm.queryNativo(q);
                 Long val = (Long) ((Vector) valor.get(0)).get(0);
@@ -274,6 +275,13 @@ public class reportesClase {
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
         int cont = 1;
+        List<MateriaProfesor> map = adm.query("Select o from MateriaProfesor as o  "
+                + "where o.curso.codigocur = '"+curso.getCodigocur()+"' "
+                + " and o.materia.codigo = '"+materia.getCodigo()+"'  ");
+        MateriaProfesor map2 = new MateriaProfesor(0);
+        if(map.size()>0){
+                map2 = map.get(0);
+        }
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             //row = new Row();
@@ -312,12 +320,19 @@ public class reportesClase {
                     }
 
                     nota.setMateria(materia);
+                   
                     nota.setSistemaSi(notas.get(ksis).getAbreviatura());
                     try {
                         nota.setTipoSi(notas.get(ksis).getEvaluacion().getDescripcion());
                     } catch (Exception e) {
                         nota.setTipoSi("Prom.");
                     }
+                    if(!map2.getCodigomap().equals(new Integer(0))){
+                        if(map2.getIngcualitativo()){
+                            nota.setTipoSi(notas.get(ksis).getEvaluacion().getDescripcion2());
+                        }
+                    }
+                    
 
                     nota.setSistema(notas.get(ksis).getSistemacalificacion());
                     lisNotas.add(nota);
