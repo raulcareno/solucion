@@ -11,11 +11,16 @@ import java.math.BigDecimal;
 import bean.disciplina;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
- 
+ import net.sf.jasperreports.engine.JRDataSource;
+  import bean.reportesClase;
+ import sources.*;
+  
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
  import bean.Permisos;
+ 
+ reportesClase noti = new reportesClase();
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Boolean guardando = false;
@@ -134,6 +139,41 @@ doAdd(Cursos curso, MateriaProfesor materia){
             }
         filas.addRow(curso,materia);
 }
+
+	void showReport(String tipo) {
+			//Preparing parameters
+            reportes.visible = true;
+
+            Institucion insts = periodo.getInstitucion();
+
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+ String directorioReportes = insts.getReportes();
+                ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
+                datasource = (ReporteNotasDataSource) arreglo.get(0);
+                parametros = (HashMap) arreglo.get(1);
+                parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+
+             MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+             parametros.put("materia", mate.getMateria().getDescripcion());
+             parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+             parametros.put("titulo", "Notas Registradas");
+             report.setSrc(directorioReportes+"notaspor.jasper");
+
+
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+		}
+
+
         ]]>
     </zscript>
            
@@ -186,6 +226,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                         </bandpopup>
                     </bandbox>
                     <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
+                    <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
                 </span>
             </row>
         </rows>
@@ -206,4 +247,37 @@ doAdd(Cursos curso, MateriaProfesor materia){
         </rows>
     </grid>
     <button label="Guardar" visible="false"  id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
+     <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+    <panel id="reportes" width="98%" height="97%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
+        <panelchildren>
+            <toolbar  align="end">
+                <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
+            </toolbar>
+            <grid width="75%">
+                <rows>
+                    <row  spans="3">
+                        <span style="color:red;font-size:14px;">
+                            Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
+                        </span>
+                    </row>
+                    <row visible="false">
+                        <span style="float:right"> Aporte que desea imprimir: </span>
+
+                        <listbox id="sistemasCombo" width="300px"  mold="select" >
+                            <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                <listcell label="${each.trimestre} - ${each.nombre}" />
+                            </listitem>
+                        </listbox>
+                        <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                    </row>
+
+                </rows>
+            </grid>
+
+
+            <jasperreport id="report" />
+
+        </panelchildren>
+    </panel>
+    
 </zk>
