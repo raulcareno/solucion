@@ -219,7 +219,7 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
             String directorioReportes = insts.getReportes();
-               ArrayList arreglo = noti.notasdAportes(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()).getMateria(),sisevalCombo.getSelectedItem().getValue());
+               ArrayList arreglo = noti.notasdAportes(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sisevalCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
                      parametros = (HashMap) arreglo.get(1);
                      

@@ -2,20 +2,23 @@
 <?page id="main-page"?>
 
 <zk  xmlns="http://www.zkoss.org/2005/zul"
-	xmlns:h="http://www.w3.org/1999/xhtml" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+     xmlns:h="http://www.w3.org/1999/xhtml" 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
     <zscript>
         <![CDATA[
 import java.math.BigDecimal;
 import bean.disciplina;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
-
+import net.sf.jasperreports.engine.JRDataSource;
 import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
  import bean.Permisos;
+ import bean.reportesClase;
+ import sources.*;
+  
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -24,7 +27,7 @@ Boolean guardando = false;
 List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.secuencia, o.paralelo.descripcion ");
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 disciplina no = new disciplina();
-
+reportesClase noti = new reportesClase();
 List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.esdisciplina = true order by o.orden ");
  List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 String[][] cabes = new String[trimestres.size()][2];
@@ -140,22 +143,58 @@ doAdd(Cursos curso, MateriaProfesor materia){
         filas.addRow(curso,materia);
 }
 
+ 
+     	void showReport(String tipo) {
+			//Preparing parameters
+            reportes.visible = true;
+
+            Institucion insts = periodo.getInstitucion();
+
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+ String directorioReportes = insts.getReportes();
+                ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
+                datasource = (ReporteNotasDataSource) arreglo.get(0);
+                parametros = (HashMap) arreglo.get(1);
+                parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+
+             MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+             parametros.put("materia", mate.getMateria().getDescripcion());
+             parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+             parametros.put("titulo", "Notas Registradas");
+             report.setSrc(directorioReportes+"notaspor.jasper");
+
+
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+		}
 
         ]]>
     </zscript>
        
-<grid onClientInfo="onClientInfo(event)" visible="false">
-    <rows>
-        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
-    </rows>
+    <grid onClientInfo="onClientInfo(event)" visible="false">
+        <rows>
+            <row>
+                <intbox id="alto"/> ancho: 
+                <intbox id="ancho"/>
+            </row>
+        </rows>
  
-    <zscript>
-     void onClientInfo(ClientInfoEvent evt) {
-         alto.setValue(evt.getScreenHeight());
-         ancho.setValue(evt.getScreenWidth());
-     }
-    </zscript>
-</grid>
+        <zscript>
+            void onClientInfo(ClientInfoEvent evt) {
+            alto.setValue(evt.getScreenHeight());
+            ancho.setValue(evt.getScreenWidth());
+            }
+        </zscript>
+    </grid>
     <grid>
         <rows>
             <row>
@@ -191,6 +230,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                         </bandpopup>
                     </bandbox>
                     <button label="Guardar"   id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
+                    <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
                 </span>
             </row>
         </rows>
@@ -211,5 +251,37 @@ doAdd(Cursos curso, MateriaProfesor materia){
         </rows>
     </grid>
     <button label="Guardar" visible="false"   id="guardar2"  image="/images/guardar.gif" onClick="guardar();"/>
+   
+    <panel id="reportes" width="98%" height="97%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
+        <panelchildren>
+            <toolbar  align="end">
+                <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
+            </toolbar>
+            <grid width="75%">
+                <rows>
+                    <row  spans="3">
+                        <span style="color:red;font-size:14px;">
+                            Nota: imprima una vez que haya guardado las notas, sino estas no se reflejarán en el reporte
+                        </span>
+                    </row>
+                    <row visible="false">
+                        <span style="float:right"> Aporte que desea imprimir: </span>
+
+                        <listbox id="sistemasCombo" width="300px"  mold="select" >
+                            <listitem selected="true"  forEach="${sistemas}" value="${each}">
+                                <listcell label="${each.trimestre} - ${each.nombre}" />
+                            </listitem>
+                        </listbox>
+                        <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                    </row>
+
+                </rows>
+            </grid>
+
+
+            <jasperreport id="report" />
+
+        </panelchildren>
+    </panel>
 </zk>
 
