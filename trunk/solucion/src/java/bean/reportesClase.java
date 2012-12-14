@@ -74,7 +74,7 @@ public class reportesClase {
     }
 //CUADRO DE NOTAS POR MATERIA
 
-    public ArrayList notasd(Cursos curso, Global materia, Sistemacalificacion sistema) {
+    public ArrayList notasd(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     int tamanio=0;
@@ -86,6 +86,8 @@ public class reportesClase {
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true  and o.sistema.orden  <= '" + sistema.getOrden() + "' "
                 + "order by o.sistema.orden ");
+            
+        
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -98,6 +100,10 @@ public class reportesClase {
         }
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        if(materia.getMateria().getCodigo().equals(new Integer(0))){
+             equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        }
         Map parametros = new HashMap();
         Institucion insts = curso.getPeriodo().getInstitucion();
         parametros.put("denominacion", insts.getDenominacion());
@@ -111,7 +117,7 @@ public class reportesClase {
             String q2 = "Select  count(nota1) from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                     + "left join notas on matriculas.codigomat = notas.matricula "
-                    + "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false "
+                    + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false "
                     + "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase')  "
                     + "order by estudiantes.apellido";
             List resulValor = adm.queryNativo(q2);
@@ -125,7 +131,7 @@ public class reportesClase {
                 String q = "Select  count(" + notaAseleccionar + ")  from matriculas "
                         + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                         + "left join notas on matriculas.codigomat = notas.matricula "
-                        + "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false "
+                        + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false "
                         + "where matriculas.curso = '" + curso.getCodigocur() + "' and  " + notaAseleccionar + " "
                         + " BETWEEN " + equivalencias1.getValorminimo() + " AND " + equivalencias1.getValormaximo() + " "
                         + "and matriculas.estado in ('Matriculado','Recibir Pase')  "
@@ -140,7 +146,7 @@ public class reportesClase {
                 parametros.put("por" + (i + 1), porcentaje);
                 i++;
             }
-            equivalencias = null;
+            //equivalencias = null;
         } catch (Exception e) {
             System.out.println("ERROR EN CUADRO DE EQUIVALENCIAS EN REPORTE DE NOTAS POR MATERIA:_  " + e);
         }
@@ -149,7 +155,7 @@ public class reportesClase {
         String q = "Select matriculas.codigomat, " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notas on matriculas.codigomat = notas.matricula "
-                + "and notas.materia = '" + materia.getCodigo() + "' and notas.disciplina = false "
+                + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false "
                 + "where matriculas.curso = '" + curso.getCodigocur() + "' "
                 + "and matriculas.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase')  "
                 + "order by estudiantes.apellido";
@@ -180,7 +186,11 @@ public class reportesClase {
                     nota.setMatricula(matriculaNo);
                     nota.setContador(cont);
                     nota.setNota(val);
-                    nota.setMateria(materia);
+                    if(materia.getMateria().getCodigo().equals(new Integer(0)) ||  !materia.getCuantitativa()){
+                        nota.setNota(equivalencia(dos, equivalencias));
+                    }
+                    
+                    nota.setMateria(materia.getMateria());
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     lisNotas.add(nota);
                     ksis++;
@@ -200,7 +210,7 @@ public class reportesClase {
     }
 
     //CUADRO DE NOTAS POR MATERIA OTRO.
-    public ArrayList notasdAportes(Cursos curso, Global materia, Sistemacalificacion sistema) {
+    public ArrayList notasdAportes(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
@@ -214,6 +224,11 @@ public class reportesClase {
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        
+         if(materia.getMateria().getCodigo().equals(new Integer(0))){
+             equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        }
         Map parametros = new HashMap();
         Institucion insts = curso.getPeriodo().getInstitucion();
         parametros.put("denominacion", insts.getDenominacion());
@@ -227,7 +242,7 @@ public class reportesClase {
             String q2 = "Select  count(nota1)  from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                     + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
-                    + "and notasevaluacion.materia = '" + materia.getCodigo() + "'  "
+                    + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "'  "
                     + "where matriculas.curso = '" + curso.getCodigocur() + "' and matriculas.estado in ('Matriculado','Recibir Pase')  "
                     + " group by sistemacalificacion order by estudiantes.apellido";
             System.out.println("" + q2);
@@ -242,7 +257,7 @@ public class reportesClase {
                 String q = "Select  count(" + notaAseleccionar + ") from matriculas "
                         + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                         + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
-                        + "and notasevaluacion.materia = '" + materia.getCodigo() + "' "
+                        + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "' "
                         + "and notasevaluacion.sistemacalificacion = '" + sistema.getCodigosis() + "' "
                         + "where matriculas.curso = '" + curso.getCodigocur() + "' and  " + notaAseleccionar + " "
                         + " BETWEEN " + equivalencias1.getValorminimo() + " AND " + equivalencias1.getValormaximo() + " "
@@ -267,7 +282,7 @@ public class reportesClase {
         String q = "Select matriculas.codigomat, " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
-                + "and notasevaluacion.materia = '" + materia.getCodigo() + "' and notasevaluacion.sistemacalificacion = '" + sistema.getCodigosis() + "'"
+                + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "' and notasevaluacion.sistemacalificacion = '" + sistema.getCodigosis() + "'"
                 + "where matriculas.curso = '" + curso.getCodigocur() + "' "
                 + "and matriculas.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase')  "
                 + "order by estudiantes.apellido";
@@ -277,7 +292,7 @@ public class reportesClase {
         int cont = 1;
         List<MateriaProfesor> map = adm.query("Select o from MateriaProfesor as o  "
                 + "where o.curso.codigocur = '"+curso.getCodigocur()+"' "
-                + " and o.materia.codigo = '"+materia.getCodigo()+"'  ");
+                + " and o.materia.codigo = '"+materia.getMateria().getCodigo()+"'  ");
         MateriaProfesor map2 = new MateriaProfesor(0);
         if(map.size()>0){
                 map2 = map.get(0);
@@ -304,7 +319,7 @@ public class reportesClase {
                     val = redondear((Double) dos, 2);
                     nota.setMatricula(matriculaNo);
                     nota.setContador(cont);
-                    if (notas.get(ksis).getEsdisciplina()) {
+                    if (notas.get(ksis).getEsdisciplina() || !materia.getCuantitativa()) {
                         try {
                             String valo = (String) equivalencia(val, equivalencias);
                             System.out.println("OTENIDO: " + valo);
@@ -319,7 +334,7 @@ public class reportesClase {
                         nota.setNota(val);
                     }
 
-                    nota.setMateria(materia);
+                    nota.setMateria(materia.getMateria());
                    
                     nota.setSistemaSi(notas.get(ksis).getAbreviatura());
                     try {
