@@ -1119,6 +1119,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             inst.setFactura1(factura.getText().trim());
             adm.actualizar(inst);
             actualMatricula.setPagada(true);
+            actualMatricula.setEstadoMat("M");
             adm.actualizar(actualMatricula);
 
             secuencial sec = new secuencial();
