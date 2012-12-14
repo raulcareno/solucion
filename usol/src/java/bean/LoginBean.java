@@ -267,6 +267,7 @@ public class LoginBean {
         verificarPermisoReporte("Matriculas", "ingresar_matriculas.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Empleados", "ingresar_empleados.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Inscripciones", "ingresar_inscripciones.jspx", "ingresar", true, "ADMINISTRACION");
+        verificarPermisoReporte("Orientacion", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Aspirantes", "ingresar_listaAspirantes.jspx", "ingresar", true, "ADMINISTRACION");
 
         

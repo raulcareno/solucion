@@ -74,7 +74,7 @@ import utilerias.Permisos;
 @ManagedBean
 @ViewScoped
 //@RequestScoped
-public class InscripcionesBean {
+public class OrientacionBean {
 
     /**
      * Creates a new instance of MatriculasBean
@@ -125,9 +125,10 @@ public class InscripcionesBean {
     Archivos arLibreta;
     Archivos arTitulo;
     Archivos arCedula;
-    List<RangosGpa> rangos; 
-    
-    public InscripcionesBean() {
+    List<RangosGpa> rangos;
+
+    ;
+    public OrientacionBean() {
         //super();
         if (adm == null) {
             adm = new Administrador();
@@ -135,13 +136,13 @@ public class InscripcionesBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Inscripciones", "ingresar_inscripciones.jspx", "ingresar", true, "ADMINISTRACION")) {
+        if (!permisos.verificarPermisoReporte("Orientacion", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
             } //selectedMatriculas = new Matriculas();
             catch (IOException ex) {
-                java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+                java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
 //                Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -252,7 +253,7 @@ public class InscripcionesBean {
             return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
 
         } catch (IOException ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -261,10 +262,6 @@ public class InscripcionesBean {
      * Graba el registro asociado al objeto que
      */
     public String guardar() {
-        object.setEstadoMat("I");
-        object.setConfirmada(false);
-        object.setPagada(false);
-
         FacesContext context = FacesContext.getCurrentInstance();
         if (estudiante.getIdEstudiantes().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la IDENTIFICACIÓN del Estudiante", ""));
@@ -295,15 +292,10 @@ public class InscripcionesBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado la CARRERA", "No ha seleccionado la CARRERA"));
             return null;
         }
-
         try {
-            if (categoriaSeleccionado.getIdCategoriasSociales()==null) {
-                List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
-                if (datos.size() > 0) {
-                    object.setIdCategoriasSociales(datos.get(0));
-                    categoriaSeleccionado = object.getIdCategoriasSociales();
-                }
-
+            if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
+                return null;
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
@@ -441,7 +433,7 @@ public class InscripcionesBean {
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
-            if (!permisos.verificarPermisoReporte("Inscripciones", "agregar_Inscripciones.jspx", "agregar", true, "ADMINISTRACION")) {
+            if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
                 return null;
             }
@@ -460,7 +452,7 @@ public class InscripcionesBean {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
-            if (!permisos.verificarPermisoReporte("Inscripciones", "actualizar_inscripciones.jspx", "agregar", true, "ADMINISTRACION")) {
+            if (!permisos.verificarPermisoReporte("Matriculas", "actualizar_matriculas.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
                 return null;
             }
@@ -471,7 +463,7 @@ public class InscripcionesBean {
 //                inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
-                java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+                java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
 
@@ -499,7 +491,7 @@ public class InscripcionesBean {
     public String eliminar(Matriculas obj) {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-            if (!permisos.verificarPermisoReporte("Inscripciones", "eliminar_inscripciones.jspx", "eliminar", true, "ADMINISTRACION")) {
+            if (!permisos.verificarPermisoReporte("Matriculas", "eliminar_matriculas.jspx", "eliminar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
             }
             adm.eliminarObjeto(Matriculas.class, obj.getIdMatriculas());
@@ -509,7 +501,7 @@ public class InscripcionesBean {
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         return null;
@@ -528,7 +520,7 @@ public class InscripcionesBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e.getMessage());
         }
         return null;
@@ -553,7 +545,7 @@ public class InscripcionesBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e.getMessage());
         }
         return null;
@@ -568,7 +560,7 @@ public class InscripcionesBean {
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -600,7 +592,7 @@ public class InscripcionesBean {
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -615,7 +607,7 @@ public class InscripcionesBean {
 
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
         return null;
@@ -632,7 +624,7 @@ public class InscripcionesBean {
                     + " order by o.idEstudiantes ", 0, 10);
             return estudiantesListado;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
         return null;
@@ -678,13 +670,6 @@ public class InscripcionesBean {
 
         String cedula2 = estudiante.getIdEstudiantes();
         estudiante = (Estudiantes) adm.buscarClave(cedula2, Estudiantes.class);
-        if(buscarMatricula(estudiante)){
-            FacesContext context = FacesContext.getCurrentInstance();
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_WARN, "INFORMACIÓN","Ya se encuentra matriculado no puede volver a inscribir"));
-            System.out.println("ya se ha matriculado no puede continuar");
-            estudiante = null;
-            return;
-        }
         if (estudiante.getIdParientes() != null) {
             pariente1 = estudiante.getIdParientes();
         } else {
@@ -734,16 +719,7 @@ public class InscripcionesBean {
         cantonSeleccionado = estudiante.getIdCanton();
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         clave2 = estudiante.getClave();
-                List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
-                + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
-                + " and o.estadoMat = 'I'  ");
-        if (matriculasListado.size() > 0) {
-            object = matriculasListado.get(0);
-            carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdCategoriasSociales();
-            buscarMateriasMatricula(object);
-        }
+        buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
             if (estudiante.getFoto() != null) {
@@ -1111,48 +1087,23 @@ public class InscripcionesBean {
         }
     }
 
-      protected Boolean buscarMatricula(Estudiantes estudiante) {
+    protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat = 'M' ");
-        if (matriculasListado.size() > 0) { //System.out.println("NO SE PUEDE MATRICULAR YA SE ENCUENTRA MATRICULADO");
-            return true; //MATRICULADO
-        } else {
-            return false; //MATRICULADO
+                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
+        if (matriculasListado.size() > 0) {
+            object = matriculasListado.get(0);
+            carreraSeleccionado = object.getIdCarreras();
+            categoriaSeleccionado = object.getIdCategoriasSociales();
+            buscarMateriasMatricula(object);
+
+        }else{
+            carreraSeleccionado = new Carreras(0);
+            object = new Matriculas(0); 
+            buscarMateriasMatricula(object);
+        
         }
     }
-//    protected void buscarMatricula(Estudiantes estudiante) {
-//        List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
-//                + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-//                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
-//        if (matriculasListado.size() > 0) {
-//            object = matriculasListado.get(0);
-//            carreraSeleccionado = object.getIdCarreras();
-//            categoriaSeleccionado = object.getIdCategoriasSociales();
-//            buscarMateriasMatricula(object);
-//        }else{
-//            carreraSeleccionado = new Carreras(0);
-//            object = new Matriculas(0); 
-//            buscarMateriasMatricula(object);
-//        }
-//    }
-//    protected void buscarMatricula(Estudiantes estudiante) {
-//        List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
-//                + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-//                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
-//        if (matriculasListado.size() > 0) {
-//            object = matriculasListado.get(0);
-//            carreraSeleccionado = object.getIdCarreras();
-//            categoriaSeleccionado = object.getIdCategoriasSociales();
-//            buscarMateriasMatricula(object);
-//
-//        }else{
-//            carreraSeleccionado = new Carreras(0);
-//            object = new Matriculas(0); 
-//            buscarMateriasMatricula(object);
-//        
-//        }
-//    }
 
     public void handleSelect(SelectEvent event) {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
@@ -1267,7 +1218,7 @@ public class InscripcionesBean {
             libretaNombre = event.getFile().getFileName();
             arLibreta.setNombre(libretaNombre);
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1279,7 +1230,7 @@ public class InscripcionesBean {
             tituloNombre = event.getFile().getFileName();
             arTitulo.setNombre(tituloNombre);
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1291,7 +1242,7 @@ public class InscripcionesBean {
             cedulaNombre = event.getFile().getFileName();
             arCedula.setNombre(cedulaNombre);
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1337,14 +1288,14 @@ public class InscripcionesBean {
                 archivoNuevo = null;
                 foto1 = event.getFile().getFileName().substring(0, event.getFile().getFileName().lastIndexOf(".")) + "." + formato;
             } catch (Exception ax) {
-                Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ax);
+                Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ax);
 
             }
 
 
 
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1367,7 +1318,7 @@ public class InscripcionesBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1392,7 +1343,7 @@ public class InscripcionesBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1421,7 +1372,7 @@ public class InscripcionesBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1471,7 +1422,7 @@ public class InscripcionesBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -2028,7 +1979,7 @@ public class InscripcionesBean {
             fileLibreta = new DefaultStreamedContent(input, "application/pdf", "libretaMilitar.pdf");
             return fileLibreta;
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -2040,7 +1991,7 @@ public class InscripcionesBean {
             fileTitulo = new DefaultStreamedContent(input, "application/pdf", "tituloBachiller.pdf");
             return fileTitulo;
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -2052,7 +2003,7 @@ public class InscripcionesBean {
             fileCedula = new DefaultStreamedContent(input, "application/pdf", "cedula.pdf");
             return fileCedula;
         } catch (Exception ex) {
-            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
