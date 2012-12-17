@@ -29,3 +29,8 @@ a:link:hover, a:visited:hover  {
   font-weight : bold;
   text-decoration : underline;
 }
+.ui-state-disabled{
+    background: none;
+    border: 2px inset;
+    
+}

@@ -87,5 +87,10 @@
     font-size: 90% !important;
 
 }
-
+ 
+.ui-state-disabled{
+    background: none;
+    border: 2px inset;
+    
+}
 
