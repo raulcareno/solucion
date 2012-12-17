@@ -2679,6 +2679,8 @@ public class reportesClase {
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasDisc = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
@@ -2895,7 +2897,7 @@ public class reportesClase {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
                             if (!discCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
-                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalenciasDisc));
                             } else {
                                 if (val == 0.0) {
                                     coll.setNota("");
@@ -3164,6 +3166,8 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasDisc = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
@@ -3471,7 +3475,7 @@ public int buscarOrden(List<MateriaProfesor> materiaProfesores,Global materia){
                                 val = ((BigDecimal) dos).doubleValue();
                                 coll.setNota(dos);
                                 if (!discCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
-                                    coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                    coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalenciasDisc));
                                 } else {
                                     if (val == 0.0) {
                                         coll.setNota("");
