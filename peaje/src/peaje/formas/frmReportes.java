@@ -210,7 +210,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         cmbTipoReporte.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Facturas con Descuentos(203)", "Facturas Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) ", "Numero de Aperturas Manuales(307) " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Facturas Tickest y Tarjetas (200)", "Facturas de Tickets (201)", "Facturas de Tarjetas (202)", "Facturas con Descuentos(203)", "Facturas Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (304) ", "Numero de Aperturas Manuales(307) ", "Detalle de Facturas(308) " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -353,7 +353,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -1145,6 +1145,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     + "AND o.fechafin is null AND o.ticket  IS NULL order by o.fechaini ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"clientesActuales.jasper";
             titulo = "Clientes dentro del parqueadero";
+            tickets(dirreporte, query, titulo);
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(308)")) {     //Detalle de facturas 
+            query = "Select o from Factura as o" +
+                    " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
+                    + " and o.numero  > 0 order by o.fechafin ";
+            dirreporte = ubicacionDirectorio+"reportes"+separador+"detalleFacturas.jasper";
+            titulo = "Detalle de Facturas";
             tickets(dirreporte, query, titulo);
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(301)")) {      //Consolidado x fechas (301) 14
         //} else if (cmbTipoReporte.getSelectedIndex() == 14) {//CONSOLIDADO
