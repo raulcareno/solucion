@@ -126,8 +126,6 @@ public class OrientacionBean {
     Archivos arTitulo;
     Archivos arCedula;
     List<RangosGpa> rangos;
-
-    ;
     public OrientacionBean() {
         //super();
         if (adm == null) {
@@ -136,13 +134,13 @@ public class OrientacionBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Orientacion", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION")) {
+        if (!permisos.verificarPermisoReporte("Orientacion", "ingresar_matriculas.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
             } //selectedMatriculas = new Matriculas();
             catch (IOException ex) {
-                java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+                java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
 //                Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -253,7 +251,7 @@ public class OrientacionBean {
             return new DefaultStreamedContent(new ByteArrayInputStream(os.toByteArray()), "image/png");
 
         } catch (IOException ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -433,7 +431,7 @@ public class OrientacionBean {
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
-            if (!permisos.verificarPermisoReporte("Matriculas", "agregar_matriculas.jspx", "agregar", true, "ADMINISTRACION")) {
+            if (!permisos.verificarPermisoReporte("Orientacion", "agregar_matriculas.jspx", "agregar", true, "ADMINISTRACION")) {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para realizar ésta acción"));
                 return null;
             }
@@ -463,7 +461,7 @@ public class OrientacionBean {
 //                inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
-                java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+                java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
 
@@ -501,7 +499,7 @@ public class OrientacionBean {
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         return null;
@@ -520,7 +518,7 @@ public class OrientacionBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e.getMessage());
         }
         return null;
@@ -545,7 +543,7 @@ public class OrientacionBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println(e.getMessage());
         }
         return null;
@@ -560,7 +558,7 @@ public class OrientacionBean {
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -592,7 +590,7 @@ public class OrientacionBean {
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -607,7 +605,7 @@ public class OrientacionBean {
 
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
         return null;
@@ -624,7 +622,7 @@ public class OrientacionBean {
                     + " order by o.idEstudiantes ", 0, 10);
             return estudiantesListado;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
         return null;
@@ -1218,7 +1216,7 @@ public class OrientacionBean {
             libretaNombre = event.getFile().getFileName();
             arLibreta.setNombre(libretaNombre);
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1230,7 +1228,7 @@ public class OrientacionBean {
             tituloNombre = event.getFile().getFileName();
             arTitulo.setNombre(tituloNombre);
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1242,7 +1240,7 @@ public class OrientacionBean {
             cedulaNombre = event.getFile().getFileName();
             arCedula.setNombre(cedulaNombre);
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1288,14 +1286,14 @@ public class OrientacionBean {
                 archivoNuevo = null;
                 foto1 = event.getFile().getFileName().substring(0, event.getFile().getFileName().lastIndexOf(".")) + "." + formato;
             } catch (Exception ax) {
-                Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ax);
+                Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ax);
 
             }
 
 
 
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1318,7 +1316,7 @@ public class OrientacionBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1343,7 +1341,7 @@ public class OrientacionBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1372,7 +1370,7 @@ public class OrientacionBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1422,7 +1420,7 @@ public class OrientacionBean {
             }
             return items;
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
 
         }
         return null;
@@ -1979,7 +1977,7 @@ public class OrientacionBean {
             fileLibreta = new DefaultStreamedContent(input, "application/pdf", "libretaMilitar.pdf");
             return fileLibreta;
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -1991,7 +1989,7 @@ public class OrientacionBean {
             fileTitulo = new DefaultStreamedContent(input, "application/pdf", "tituloBachiller.pdf");
             return fileTitulo;
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -2003,7 +2001,7 @@ public class OrientacionBean {
             fileCedula = new DefaultStreamedContent(input, "application/pdf", "cedula.pdf");
             return fileCedula;
         } catch (Exception ex) {
-            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
