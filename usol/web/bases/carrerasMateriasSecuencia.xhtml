@@ -91,15 +91,12 @@
                         <p:column>  
                             <p:panel  id="pnl" styleClass="panelGrande">  
                                 <f:facet name="header">
-                                    <p:graphicImage value="/images/plus.png"/>    
-                                    #{car.idMaterias.nombre}
-                                </f:facet>
-                                <h:panelGrid columns="1" style="text-align:justify;width:100%">  
-                                    <span>
+                                    <p:graphicImage value="/images/plus.png"/>  <p:spacer width="7"   />
                                     <h:outputText styleClass="textos2"   value="#{car.idNiveles.nombre}" />     
-                                    <h:outputText styleClass="textos2"   value="#{car.idEjes.nombre}" />     
+                                </f:facet>
+                                <h:panelGrid columns="1" cellpadding="-1" cellspacing="0" style="text-align:justify;width:100%">  
+                                    <h:outputText styleClass="textos2"   value="#{car.idMaterias.nombre}" />     
                                     <h:outputText styleClass="textos2"   value="#{car.numeroHoras}H / #{car.numeroCreditos}C " />     
-                                    </span>
                                 </h:panelGrid>
                             </p:panel>  
                             <p:draggable  for="pnl" revert="true"  scope="#{car.idNiveles.secuencia}"  stack=".ui-panel"/>  
