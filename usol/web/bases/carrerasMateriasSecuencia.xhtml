@@ -86,8 +86,8 @@
                     Si desea quitar presione el menos
                     <p:graphicImage value="/images/anadir.gif"/>   
                     Añadir otro pre-requisito adicional.
-                    <p:dataGrid emptyMessage="..." id="availableCars"  styleClass="panelito" style="padding: -5px -5px -5px -5px " 
-                                var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="9">  
+                    <p:dataGrid emptyMessage="..." id="availableCars"  paginator="true" rows="10"  styleClass="panelito" style="padding: -5px -5px -5px -5px; height: 100px " 
+                                var="car" value="#{carrerasMateriasSecuenciaBean.listaMaterias}" columns="10">  
                         <p:column>  
                             <p:panel  id="pnl" styleClass="panelGrande">  
                                 <f:facet name="header">
@@ -95,9 +95,11 @@
                                     #{car.idMaterias.nombre}
                                 </f:facet>
                                 <h:panelGrid columns="1" style="text-align:justify;width:100%">  
+                                    <span>
                                     <h:outputText styleClass="textos2"   value="#{car.idNiveles.nombre}" />     
                                     <h:outputText styleClass="textos2"   value="#{car.idEjes.nombre}" />     
                                     <h:outputText styleClass="textos2"   value="#{car.numeroHoras}H / #{car.numeroCreditos}C " />     
+                                    </span>
                                 </h:panelGrid>
                             </p:panel>  
                             <p:draggable  for="pnl" revert="true"  scope="#{car.idNiveles.secuencia}"  stack=".ui-panel"/>  
