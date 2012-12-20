@@ -109,9 +109,15 @@ public class ReporteCertificadoDataSource implements JRDataSource{
         }else  if ("curso".equals(fieldName)){
             valor = nodo.getCurso().toString();
         }else if ("folio".equals(fieldName)) {
-            valor = nodo.getNumero() ;
+            valor = nodo.getFolio() ;
+        }else if ("especialidad".equals(fieldName)){
+            valor = nodo.getCurso().getEspecialidad().getDescripcion();
+        }else if ("cursodescripcion".equals(fieldName)){
+            valor = nodo.getCurso().getDescripcion();
+        }else if ("paralelo".equals(fieldName)){
+            valor = nodo.getCurso().getParalelo().getDescripcion();
         }else if ("estudiante".equals(fieldName)) {
-            valor = nodo.getEstudiante().getApellido() + " "+  nodo.getEstudiante().getApellido() ;
+            valor = nodo.getEstudiante().getApellido() + " "+  nodo.getEstudiante().getNombre() ;
         }else if ("fecha".equals(fieldName)) {
             valor = nodo.getFechamat();
         }else if ("extension".equals(fieldName)) {
