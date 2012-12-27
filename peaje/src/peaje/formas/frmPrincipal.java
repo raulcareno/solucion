@@ -3211,7 +3211,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     public void cargarEmpresa(EmpresaPuertosStatic emp) {
 
-        empresaObj.setPuerto(emp.getPuerto());
+        empresaObj.setImprime2facturas(emp.getImprime2facturas());
+        empresaObj.setTrabajanotaventa(emp.getTrabajanotaventa());
         empresaObj.setBarras(emp.getBarras());
         empresaObj.setBarras2(emp.getBarras2());
         empresaObj.setLed(emp.getLed());
@@ -4711,7 +4712,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //            usu.noTicket.requestFocusInWindow();
 //            
                     frmEmpresa usu = new frmEmpresa(this, true, this, adm);
-                    usu.setSize(462, 515);
+                    usu.setSize(462, 615);
                     usu.setLocation(0, 0);
                     usu.setLocation(0, 0);
                     usu.setName("formaEmpresa");
@@ -4852,6 +4853,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         ((frmFactura) component).identificacion.setText("9999999999999");
                         ((frmFactura) component).nombres.setText("CONSUMIDOR FINAL");
                         ((frmFactura) component).telefono.setText("9999999999");
+                        ((frmFactura) component).chkEsNotaVenta.setSelected(empresaObj.getTrabajanotaventa());
                         return;
                     }
                 }
@@ -4860,7 +4862,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
             usu.setSize(716, 507);
-
+            usu.chkEsNotaVenta.setSelected(empresaObj.getTrabajanotaventa());
             usu.setLocation(0, 0);
             usu.setName("formaFactura");
             contenedor.add(usu);

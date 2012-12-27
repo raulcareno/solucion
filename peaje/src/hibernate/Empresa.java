@@ -54,6 +54,8 @@ public class Empresa implements Serializable {
     private String impresora2;
     @Column(name = "impmulta")
     private String impmulta;
+    @Column(name = "impnota")
+    private String impnota;
     @Column(name = "puerto")
     private String puerto;
     @Column(name = "iva")
@@ -685,6 +687,29 @@ public class Empresa implements Serializable {
     }
     
     @Transient
+    public Boolean imprime2facturas = false;
+    
+    @Transient
+    public Boolean trabajanotaventa = false;
+
+    public Boolean getImprime2facturas() {
+        return imprime2facturas;
+    }
+
+    public void setImprime2facturas(Boolean imprime2facturas) {
+        this.imprime2facturas = imprime2facturas;
+    }
+
+    public Boolean getTrabajanotaventa() {
+        return trabajanotaventa;
+    }
+
+    public void setTrabajanotaventa(Boolean trabajanotaventa) {
+        this.trabajanotaventa = trabajanotaventa;
+    }
+    
+    
+    @Transient
     public Boolean webcam = false;
 
     public Boolean getWebcam() {
@@ -888,6 +913,16 @@ public class Empresa implements Serializable {
         int hash = 0;
         hash += (ruc != null ? ruc.hashCode() : 0);
         return hash;
+    }
+
+  
+
+    public String getImpnota() {
+        return impnota;
+    }
+
+    public void setImpnota(String impnota) {
+        this.impnota = impnota;
     }
 
     @Override

@@ -274,6 +274,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel33 = new javax.swing.JLabel();
         btnAplicarDscto = new javax.swing.JButton();
         btnAgregar3 = new javax.swing.JButton();
+        chkEsNotaVenta = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -950,6 +951,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel4.add(btnAgregar3);
         btnAgregar3.setBounds(190, 130, 60, 50);
+
+        chkEsNotaVenta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        chkEsNotaVenta.setForeground(new java.awt.Color(255, 51, 51));
+        chkEsNotaVenta.setText("ES NOTA DE VENTA");
+        jPanel4.add(chkEsNotaVenta);
+        chkEsNotaVenta.setBounds(10, 50, 160, 23);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 380, 190);
@@ -1653,6 +1660,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     facActual.setUsuarioc(principal.usuarioActual);
                     facActual.setSellado(false);
                     facActual.setYasalio(false);
+                    facActual.setEsnota(chkEsNotaVenta.isSelected());
                     adm.actualizar(facActual);
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
@@ -1684,8 +1692,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         Thread.sleep(5000);
                         //CORDILLERA
-                        //System.out.println("mando a imprimir otra vez");
-                        //imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                        if(empresaObj.getImprime2facturas()){
+                            System.out.println("mando a imprimir otra vez");
+                            imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                        }
                     }
                     if (empresaObj.getSeabrefac()) {
                         if (empresaObj.getRetardoSalida() != null) {
@@ -1726,8 +1736,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         }
                         System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
                     } else {   
-                        System.out.println("imprimo nuevo ticket");
-                            imprimirTicket(facActual.getCodigo(), emp);
+                        //System.out.println("imprimo nuevo ticket");
+                        //asdf    
+                        //imprimirTicket(facActual.getCodigo(), emp);
                             System.out.println("NO ABRE BARRERA POR DESHABILITACION EN FRMEMPRESA ");
                     }
 
@@ -1832,9 +1843,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
             /*
              * Scan found services to see if anyone suits our needs
              */
+            String impresora = emp.getImpfactura();
+            if(chkEsNotaVenta.isSelected()){
+                impresora = emp.getImpnota();
+            }
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName();
-                if (nombre.contains(emp.getImpfactura())) {
+                if (nombre.contains(impresora)) {
                     selectedService = i;
                 }
             }
@@ -1916,9 +1931,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
             /*
              * Scan found services to see if anyone suits our needs
              */
+            String impresora = emp.getImpfactura();
+             if(chkEsNotaVenta.isSelected()){
+                impresora = emp.getImpnota();
+            }
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName();
-                if (nombre.contains(emp.getImpfactura())) {
+                if (nombre.contains(impresora)) {
                     selectedService = i;
                 }
             }
@@ -2220,6 +2239,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facNueva.setNocontar(false);
                         facNueva.setAnulado(false);
                         facNueva.setYasalio(false);
+                        facNueva.setEsnota(chkEsNotaVenta.isSelected());
                         facNueva.setTarifa0(false);
                         facNueva.setSellado(false); 
                         Boolean pasar = true;
@@ -2873,9 +2893,12 @@ guardando = false;
             /**
              * cordillera
              */
-//            Thread.sleep(5000);
-//            System.out.println("mando a imprimir otra vez");
-//            imprimir(facActual.getCodigo(), emp, dia, true, cli);
+             if(empresaObj.getImprime2facturas()){
+                            Thread.sleep(5000);
+                            System.out.println("mando a imprimir otra vez");
+                            imprimir(facActual.getCodigo(), emp, dia, true, cli);
+             }
+
 
             //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
             DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
@@ -3120,6 +3143,7 @@ guardando = false;
                         facActual.setUsuarioc(principal.usuarioActual);
                         facActual.setSellado(false);
                         facActual.setYasalio(false);
+                        facActual.setEsnota(chkEsNotaVenta.isSelected());
                         facActual.setAnulado(false);
 
                         //adm.guardar(facActual);
@@ -4030,6 +4054,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             facActual.setFechaini(fecTiempo);
             facActual.setFechafin(fecTiempo);
             facActual.setSellado(false);
+            facActual.setEsnota(chkEsNotaVenta.isSelected());
             facActual.setUsuarioc(principal.usuarioActual);
             adm.actualizar(facActual);
             //                    Integer numero = new Integer(emp.getDocumentofac());
@@ -4104,6 +4129,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton btnSalir1;
     private javax.swing.JButton btnSalir2;
     private javax.swing.JTable busquedaTabla;
+    public javax.swing.JCheckBox chkEsNotaVenta;
     public javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField cliente1;
     private javax.swing.JFormattedTextField cliente2;

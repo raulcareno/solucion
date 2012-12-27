@@ -32,6 +32,8 @@ public class EmpresaPuertos {
      */
     public EmpresaPuertos() {
     }
+    public Boolean trabajanotaventa;
+    public Boolean imprime2facturas;
     public String url;
     public String entra1;
     public String entra2;
@@ -685,6 +687,22 @@ public class EmpresaPuertos {
 
     public void setRetardoSalida(String retardoSalida) {
         this.retardoSalida = retardoSalida;
+    }
+
+    public Boolean getTrabajanotaventa() {
+        return trabajanotaventa;
+    }
+
+    public void setTrabajanotaventa(Boolean trabajanotaventa) {
+        this.trabajanotaventa = trabajanotaventa;
+    }
+
+    public Boolean getImprime2facturas() {
+        return imprime2facturas;
+    }
+
+    public void setImprime2facturas(Boolean imprime2facturas) {
+        this.imprime2facturas = imprime2facturas;
     }
              
      

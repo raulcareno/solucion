@@ -59,6 +59,10 @@ public class EmpresaPuertosStatic {
         public String salida5;
         public String salida6;
         public String salida7;
+        
+        public Boolean trabajanotaventa;
+        public Boolean imprime2facturas;
+        
         public Boolean activa1;
         public Boolean activa2;
         public Boolean activa3;
@@ -679,6 +683,22 @@ public class EmpresaPuertosStatic {
 
     public void setRetardoSalida(String retardoSalida) {
         this.retardoSalida = retardoSalida;
+    }
+
+    public Boolean getTrabajanotaventa() {
+        return trabajanotaventa;
+    }
+
+    public void setTrabajanotaventa(Boolean trabajanotaventa) {
+        this.trabajanotaventa = trabajanotaventa;
+    }
+
+    public Boolean getImprime2facturas() {
+        return imprime2facturas;
+    }
+
+    public void setImprime2facturas(Boolean imprime2facturas) {
+        this.imprime2facturas = imprime2facturas;
     }
         
     

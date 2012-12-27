@@ -90,6 +90,9 @@ public class Factura implements Serializable {
     private Boolean sellado;
     @Column(name = "yasalio")
     private Boolean yasalio;
+        @Column(name = "esnota")
+    private Boolean esnota;
+
 //    @OneToMany(mappedBy = "factura")
 //    private Collection<Detalle> detalleCollection;
 
@@ -284,7 +287,13 @@ public class Factura implements Serializable {
         this.sellado = sellado;
     }
 
-    
+      public Boolean getEsnota() {
+        return esnota;
+    }
+
+    public void setEsnota(Boolean esnota) {
+        this.esnota = esnota;
+    }
 //
 //    public Collection<Detalle> getDetalleCollection() {
 //        return detalleCollection;

@@ -117,6 +117,9 @@ public static UsuarioActivo user = new UsuarioActivo();
     private static final String PUERTOBARRAS2 = "PUERTOBARRAS2";
     private static final String RETARDOENTRADA = "RETARDOENTRADA";
     private static final String RETARDOSALIDA = "RETARDOSALIDA";
+    private static final String TRABAJANOTAVENTA = "TRABAJANOTAVENTA";
+    private static final String IMPRIME2FACTURAS = "IMPRIME2FACTURAS";
+    
      
 
     // Variables
@@ -328,6 +331,14 @@ public static UsuarioActivo user = new UsuarioActivo();
         item = xmlDoc.createElement(RETARDOSALIDA);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getRetardoSalida()+""));
         personal.appendChild(item);
+        item = xmlDoc.createElement(TRABAJANOTAVENTA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getTrabajanotaventa()+""));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(IMPRIME2FACTURAS);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getImprime2facturas()+""));
+        personal.appendChild(item);
+        
+        //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
         
     }
 
@@ -480,6 +491,9 @@ public static UsuarioActivo user = new UsuarioActivo();
         beanEmpleado.setBarreras(emp.getBarreras());
         beanEmpleado.setRetardoEntrada(emp.getRetardoEntrada());
         beanEmpleado.setRetardoSalida(emp.getRetardoSalida());
+        
+        beanEmpleado.setTrabajanotaventa(emp.getTrabajanotaventa());
+        beanEmpleado.setImprime2facturas(emp.getImprime2facturas());
         
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -1035,6 +1049,27 @@ public static UsuarioActivo user = new UsuarioActivo();
                     Element RETARDOSALIDAoutElement = (Element) RETARDOSALIDAoutList.item(0);
                     NodeList RETARDOSALIDAoutAgeList = RETARDOSALIDAoutElement.getChildNodes();
                     user.setRetardoSalida(((Node) RETARDOSALIDAoutAgeList.item(0)).getNodeValue().trim());
+                    } catch (Exception parserConfigurationException) {
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                     
+    //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
+                    try {
+                    NodeList TRABAJANOTAVENTAoutList = firstPersonElement.getElementsByTagName("TRABAJANOTAVENTA");
+                    Element TRABAJANOTAVENTAoutElement = (Element) TRABAJANOTAVENTAoutList.item(0);
+                    NodeList TRABAJANOTAVENTAoutAgeList = TRABAJANOTAVENTAoutElement.getChildNodes();
+                    //user.setTrabajanotaventa(((Node) TRABAJANOTAVENTAoutAgeList.item(0)).getNodeValue().trim());
+                    user.setTrabajanotaventa(new Boolean(((Node) TRABAJANOTAVENTAoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        // System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    try {
+                    NodeList IMPRIME2FACTURASoutList = firstPersonElement.getElementsByTagName("IMPRIME2FACTURAS");
+                    Element IMPRIME2FACTURASoutElement = (Element) IMPRIME2FACTURASoutList.item(0);
+                    NodeList IMPRIME2FACTURASoutAgeList = IMPRIME2FACTURASoutElement.getChildNodes();
+                    user.setImprime2facturas(new Boolean(((Node) IMPRIME2FACTURASoutAgeList.item(0)).getNodeValue().trim()));
                     } catch (Exception parserConfigurationException) {
                         //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
