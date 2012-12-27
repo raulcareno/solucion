@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import xml.XMLEmpresa;
 //import hibernate.cargar.validaciones;
 

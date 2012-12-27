@@ -1683,8 +1683,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     if (facActual.getTotal().doubleValue() > 0) {
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         Thread.sleep(5000);
-                        System.out.println("mando a imprimir otra vez");
-                        imprimir(facActual.getCodigo(), emp, dia, false, cli);
+                        //CORDILLERA
+                        //System.out.println("mando a imprimir otra vez");
+                        //imprimir(facActual.getCodigo(), emp, dia, false, cli);
                     }
                     if (empresaObj.getSeabrefac()) {
                         if (empresaObj.getRetardoSalida() != null) {
@@ -2872,9 +2873,9 @@ guardando = false;
             /**
              * cordillera
              */
-            Thread.sleep(5000);
-            System.out.println("mando a imprimir otra vez");
-            imprimir(facActual.getCodigo(), emp, dia, true, cli);
+//            Thread.sleep(5000);
+//            System.out.println("mando a imprimir otra vez");
+//            imprimir(facActual.getCodigo(), emp, dia, true, cli);
 
             //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
             DefaultTableModel dtm = (DefaultTableModel) productos.getModel();
