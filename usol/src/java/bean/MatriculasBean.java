@@ -477,10 +477,10 @@ public class MatriculasBean {
             matMat.setIdMatriculas(object);
             //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
             matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat); 
-            
+            adm.guardar(matMat);
+
         }
-        
+
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
     }
@@ -666,6 +666,23 @@ public class MatriculasBean {
 
     }
 
+    public String generarUsuarioSiVacio(String apellido1,String apellido2, String nombre) {
+        String usuario = apellido1.substring(0,2)+""+apellido2.substring(0,2)+""+nombre.substring(0,3);
+        return usuario.toUpperCase();
+    }
+
+    public String generarClaveSiVacio() {
+        String caracterNumeros = "012345678901234567890123456789012345678901234567890123456789";
+        int numero_caracteres = 4;
+        int total = caracterNumeros.length();
+        for (int a = 0; a < numero_caracteres; a++) {
+            clave2 += caracterNumeros.charAt(((Double) (total * Math.random())).intValue());
+        }
+        String clave = clave2.toUpperCase();
+        return clave;
+
+    }
+
     public void buscarCedula() {
 
         String cedula2 = estudiante.getIdEstudiantes();
@@ -717,8 +734,15 @@ public class MatriculasBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-        estudiante.setClave(cl.desencriptar(estudiante.getClave()));
-        clave2 = estudiante.getClave();
+        try {
+            estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            clave2 = estudiante.getClave();
+        } catch (Exception e) {
+            estudiante.setUsuario(generarUsuarioSiVacio(estudiante.getApellidoPaterno(), estudiante.getApellidoMaterno(), estudiante.getNombre()));
+            estudiante.setClave(generarClaveSiVacio());
+            clave2 = estudiante.getClave();
+        }
+
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
@@ -765,7 +789,7 @@ public class MatriculasBean {
     }
 
     protected void buscarMateriasMatricula(Matriculas mat) {
-        if(!object.getIdMatriculas().equals(new Integer(0))){
+        if (!object.getIdMatriculas().equals(new Integer(0))) {
             destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
                     + " WHERE c.id_Materias in "
                     + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
@@ -779,17 +803,17 @@ public class MatriculasBean {
 
             }
             sumarCreditos();
-        }else{
-                destino = new ArrayList<CarrerasMaterias>();
-                origen = adm.query("Select m from CarrerasMaterias as m  "
+        } else {
+            destino = new ArrayList<CarrerasMaterias>();
+            origen = adm.query("Select m from CarrerasMaterias as m  "
                     + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
-                for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-                    CarrerasMaterias destItem = it.next();
-                    origen.remove(destItem);
+            for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+                CarrerasMaterias destItem = it.next();
+                origen.remove(destItem);
 
-                }
-                sumarCreditos();
-        
+            }
+            sumarCreditos();
+
         }
     }
     public int noCreditos = 0;
@@ -894,16 +918,16 @@ public class MatriculasBean {
     public boolean validarSecuencia(CarrerasMaterias materiaAanadir) {
 
         //ESTE METODO DEBE INICIALIZARSE CADA VEZ QUE CAMBIO DE ESPECIALDIAD
-                        try {
-                            CarrerasMaterias tmp = anadidasArray[0][0];
-                            if (tmp.getIdCarrerasMaterias().equals(null)) {
-                                buscarMateriasdeCarrera();                     
-                            }
-                        } catch (Exception e) {
-                            buscarMateriasdeCarrera();                
-                        }
-        
-        
+        try {
+            CarrerasMaterias tmp = anadidasArray[0][0];
+            if (tmp.getIdCarrerasMaterias().equals(null)) {
+                buscarMateriasdeCarrera();
+            }
+        } catch (Exception e) {
+            buscarMateriasdeCarrera();
+        }
+
+
 
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -956,8 +980,8 @@ public class MatriculasBean {
         for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
             SecuenciaDeMateriasAdicionales secM = it.next();
             if (secM.getFilacolumna().equals(idSeleccionado)) {
- 
-                 List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
+
+                List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
                         + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + secM.getIdCarrerasMaterias().getIdMaterias().getIdMaterias() + "' "
                         + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
                 if (notasEncontradas.size() > 0) {
@@ -972,18 +996,18 @@ public class MatriculasBean {
                     requeridas += " || " + secM.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secM.getIdCarrerasMaterias().getIdMaterias().getNombre();
                 }
 
-                
+
 
             }
 
         }
-        if(requeridas.length()>0){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
-        return true;
-        }else{
-        return false;
+        if (requeridas.length() > 0) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
+            return true;
+        } else {
+            return false;
         }
-        
+
 
     }
     List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
@@ -1011,7 +1035,7 @@ public class MatriculasBean {
 
     public void buscarMateriasdeCarrera() {
         try {
-             buscarMateriasMatricula(object);
+            buscarMateriasMatricula(object);
             llenarArreglo();
             listaMaterias = adm.query("Select o from CarrerasMaterias as o "
                     + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
@@ -1097,11 +1121,11 @@ public class MatriculasBean {
             categoriaSeleccionado = object.getIdCategoriasSociales();
             buscarMateriasMatricula(object);
 
-        }else{
+        } else {
             carreraSeleccionado = new Carreras(0);
-            object = new Matriculas(0); 
+            object = new Matriculas(0);
             buscarMateriasMatricula(object);
-        
+
         }
     }
 
@@ -1171,7 +1195,17 @@ public class MatriculasBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-        estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+         try {
+            estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            clave2 = estudiante.getClave();
+        } catch (Exception e) {
+            estudiante.setUsuario(generarUsuarioSiVacio(estudiante.getApellidoPaterno(), estudiante.getApellidoMaterno(), estudiante.getNombre()));
+            estudiante.setClave(generarClaveSiVacio());
+            clave2 = estudiante.getClave();
+        }
+        
+        
         clave2 = estudiante.getClave();
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";

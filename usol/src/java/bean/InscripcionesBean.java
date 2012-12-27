@@ -732,8 +732,15 @@ public class InscripcionesBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-        estudiante.setClave(cl.desencriptar(estudiante.getClave()));
-        clave2 = estudiante.getClave();
+                try {
+            estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            clave2 = estudiante.getClave();
+        } catch (Exception e) {
+            estudiante.setUsuario(generarUsuarioSiVacio(estudiante.getApellidoPaterno(), estudiante.getApellidoMaterno(), estudiante.getNombre()));
+            estudiante.setClave(generarClaveSiVacio());
+            clave2 = estudiante.getClave();
+        }
                 List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
@@ -1153,7 +1160,22 @@ public class InscripcionesBean {
 //        
 //        }
 //    }
+ public String generarUsuarioSiVacio(String apellido1,String apellido2, String nombre) {
+        String usuario = apellido1.substring(0,2)+""+apellido2.substring(0,2)+""+nombre.substring(0,3);
+        return usuario.toUpperCase();
+    }
 
+    public String generarClaveSiVacio() {
+        String caracterNumeros = "012345678901234567890123456789012345678901234567890123456789";
+        int numero_caracteres = 4;
+        int total = caracterNumeros.length();
+        for (int a = 0; a < numero_caracteres; a++) {
+            clave2 += caracterNumeros.charAt(((Double) (total * Math.random())).intValue());
+        }
+        String clave = clave2.toUpperCase();
+        return clave;
+
+    }
     public void handleSelect(SelectEvent event) {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
 
@@ -1220,8 +1242,15 @@ public class InscripcionesBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-        estudiante.setClave(cl.desencriptar(estudiante.getClave()));
-        clave2 = estudiante.getClave();
+                try {
+            estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
+            clave2 = estudiante.getClave();
+        } catch (Exception e) {
+            estudiante.setUsuario(generarUsuarioSiVacio(estudiante.getApellidoPaterno(), estudiante.getApellidoMaterno(), estudiante.getNombre()));
+            estudiante.setClave(generarClaveSiVacio());
+            clave2 = estudiante.getClave();
+        }
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
