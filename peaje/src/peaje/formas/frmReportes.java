@@ -1149,7 +1149,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(308)")) {     //Detalle de facturas 
             query = "Select o from Factura as o" +
                     " where o.fechaini between '" + desde2 + "' and '" + hasta2 + "' "
-                    + " and o.numero  > 0 order by o.fechafin ";
+                    + " and o.numero  > 0 and o.esnota = false order by o.fechafin ";
             dirreporte = ubicacionDirectorio+"reportes"+separador+"detalleFacturas.jasper";
             titulo = "Detalle de Facturas";
             tickets(dirreporte, query, titulo);
