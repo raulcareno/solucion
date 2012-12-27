@@ -142,9 +142,9 @@ String llenarCeros(String numero){
         void actualFactura(){
         String nn = "";
                 if(esRecibo.checked ){
-                       nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+""+llenarCeros(""+nofactura.value);        
+                       nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"REC"+llenarCeros(""+nofactura.value);        
                 }else{
-                      nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+""+llenarCeros(""+nofactura.value);        
+                      nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value);        
               }
                         List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
                         if(siExiste.size()>0){
