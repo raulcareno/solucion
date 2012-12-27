@@ -109,6 +109,9 @@ List nodos = adm.query("Select o from Nodos as o " +
                 
                 
                 report.setSrc(directorioReportes+"cxcclientes.jasper");
+            }else if(tipo.equals("FACEMI")){
+                datasource = reportes.facturasEmitidas(sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value), new Integer(tipodocumentoEm.selectedItem.value));
+                report.setSrc(directorioReportes+"emitidas.jasper");
             }else if(tipo.equals("HISTORIA")){
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
@@ -360,8 +363,9 @@ void campos(String valor){
             estadossoporterow.visible = false;
              filanumerofactura.visible=false;
              filaproveedores.visible=false;
-             eterminado.visible = true;
-                        ependiente.visible = true;
+      eterminado.visible = true;
+        ependiente.visible = true;
+       filaemitidas.visible = false;
       fec.setDate(1);
       todasfechas.visible = false;
       todasfechas.setChecked(false);
@@ -418,6 +422,15 @@ void campos(String valor){
             filafechas.visible=true;
              filaformapago.visible = true;
             todasfechas.visible = true;
+            desde.value = fec; 
+        }else if(valor.equals("FACEMI")){
+            titulo.value= "Cobros Emitidos";
+            filacanton.visible=true;
+            filasector.visible=true;      
+            filafechas.visible=true;
+             filaformapago.visible = true;
+            todasfechas.visible = true;
+            filaemitidas.visible = true;
             desde.value = fec; 
         }else if(valor.equals("CXCLIEST")){
             titulo.value= "Cuentas por Pagar";
@@ -622,6 +635,7 @@ void campos(String valor){
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="COBROS2"  label="Cuenta Mensual para Contabilidad" value="COBROS2" />
                                     <listitem id="COBROS3"  label="Reporte Mensual para Contabilidad(SAFI)" value="COBROS3" />
+                                    <listitem id="FACEMI"  label="Reporte Facturas Emitidas" value="FACEMI" />
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
                                     <listitem id="PORESTADOCONTADOR" label="Clientes para Contador" value="PORESTADOCONTADOR" />
@@ -751,6 +765,17 @@ void campos(String valor){
                                 <radio id="efe" value="1" label="Oficina"/>
                                 <radio id="cbr" value="3" label="Domicilio"/>
                                 <radio id="deb"   value="2" label="Débito"/>
+                            </radiogroup>
+                        </row>
+                        <row id="filaemitidas"  visible="false" >
+                             <span>
+                                <label style="font-weight:bold2;float:right" value="  " />
+                            </span>
+                            <radiogroup Id="tipodocumentoEm" onCheck="">
+                                <radio id="todEm" selected="true" value="0" label="Todos"/>
+                                <radio id="facEm" value="1" label="Facturas"/>
+                                <radio id="recEm" value="2" label="Recibos"/>
+                                 
                             </radiogroup>
                         </row>
                         <row   id="filafechas"  visible="false">
