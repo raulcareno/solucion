@@ -1147,7 +1147,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 actualMatricula.setEstadoMat("I");
             } 
             if(tipoMatricula){
-                actualMatricula.setPagadainscripcion(true);
+                actualMatricula.setPagada(true);
                 actualMatricula.setEstadoMat("M");
             } 
 
