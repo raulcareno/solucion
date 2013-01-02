@@ -81,6 +81,8 @@ public class frmRubros extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         chkNoAplica = new javax.swing.JCheckBox();
         jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        chkInscripcion = new javax.swing.JCheckBox();
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Es el Crédito:");
@@ -96,20 +98,20 @@ public class frmRubros extends javax.swing.JInternalFrame {
 
         tableRubros.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "Valor", "CRÉDITO", "NO APLICA", "Cod.Contable", "Uni.Contable"
+                "Código", "Nombre", "Valor", "CRÉDITO", "NO APLICA", "Cod.Contable", "Uni.Contable", "Inscripción"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true
+                false, false, false, false, false, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -136,6 +138,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
         tableRubros.getColumnModel().getColumn(3).setResizable(false);
         tableRubros.getColumnModel().getColumn(4).setResizable(false);
         tableRubros.getColumnModel().getColumn(5).setResizable(false);
+        tableRubros.getColumnModel().getColumn(7).setResizable(false);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(10, 250, 490, 170);
@@ -225,9 +228,9 @@ public class frmRubros extends javax.swing.JInternalFrame {
         jLabel4.setBounds(10, 80, 120, 20);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("No aplica Descuentos: ");
+        jLabel5.setText("No aplica Descuentos:   ");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(220, 150, 140, 30);
+        jLabel5.setBounds(0, 150, 140, 30);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Código contable:");
@@ -263,12 +266,19 @@ public class frmRubros extends javax.swing.JInternalFrame {
         getContentPane().add(jLabel7);
         jLabel7.setBounds(0, 0, 520, 40);
         getContentPane().add(chkNoAplica);
-        chkNoAplica.setBounds(370, 150, 110, 30);
+        chkNoAplica.setBounds(140, 150, 60, 30);
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText("Es el Crédito:");
+        jLabel11.setText("Es Inscripción:");
         getContentPane().add(jLabel11);
-        jLabel11.setBounds(260, 80, 100, 30);
+        jLabel11.setBounds(260, 150, 100, 30);
+
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel12.setText("Es el Crédito:");
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(260, 80, 100, 30);
+        getContentPane().add(chkInscripcion);
+        chkInscripcion.setBounds(370, 150, 21, 21);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -321,6 +331,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
             rub.setValor(new BigDecimal(valor.getText()));
             rub.setCodigoContable(codigoContable.getText());
             rub.setUnidadContable(unidadContable.getText());
+            rub.setEsinscripcion(chkInscripcion.isSelected());
             if (codigoRubro.getText().isEmpty()) {
                 rub.setIdRubros(adm.getNuevaClave("Rubros", "idRubros"));
                 adm.guardar(rub);
@@ -398,7 +409,9 @@ public class frmRubros extends javax.swing.JInternalFrame {
         this.chkNoAplica.setSelected(Boolean.valueOf(val));
         this.codigoContable.setText((String) this.tableRubros.getValueAt(fila, 5));
         this.unidadContable.setText((String) this.tableRubros.getValueAt(fila, 6));
-
+        
+         val = new Boolean(tableRubros.getValueAt(fila, 7).toString());
+        this.chkInscripcion.setSelected(Boolean.valueOf(val));
         //boolean val2 = new Boolean(.toString());
 //        this.chkEstado.setSelected((Boolean)tableRubros.getValueAt(fila,3));
     }//GEN-LAST:event_tableRubrosMouseClicked
@@ -414,7 +427,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
         dtm.getDataVector().removeAllElements();
         for (Iterator it = lista.iterator(); it.hasNext();) {
             Rubros elem = (Rubros) it.next();
-            Object obj[] = new Object[7];
+            Object obj[] = new Object[8];
             obj[0] = elem.getIdRubros();
             obj[1] = elem.getNombre();
             obj[2] = elem.getValor();
@@ -422,6 +435,7 @@ public class frmRubros extends javax.swing.JInternalFrame {
             obj[4] = elem.getNoaplica();
             obj[5] = elem.getCodigoContable();
             obj[6] = elem.getUnidadContable();
+            obj[7] = elem.getEsinscripcion();
             dtm.addRow(obj);
         }
         tableRubros.setModel(dtm);
@@ -432,12 +446,14 @@ public class frmRubros extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JCheckBox chkEscredito;
+    private javax.swing.JCheckBox chkInscripcion;
     private javax.swing.JCheckBox chkNoAplica;
     private javax.swing.JFormattedTextField codigoContable;
     private javax.swing.JFormattedTextField codigoRubro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -1118,11 +1118,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             //ACTUALIZAR DOCUMENTO FACTURA
             inst.setFactura1(factura.getText().trim());
             adm.actualizar(inst);
-            actualMatricula.setPagada(true);
-            actualMatricula.setEstadoMat("M");
-            adm.actualizar(actualMatricula);
+            
+          
 
             secuencial sec = new secuencial();
+            Boolean tipoInscripcion = false;
+            Boolean tipoMatricula = false;
             for (int i = 0; i < this.tFactura.getRowCount(); i++) {
                 Detalles det = new Detalles();
                 det.setIdDetalles(sec.generarClave());
@@ -1132,9 +1133,28 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
                 det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 3)));
                 adm.guardar(det);
+                if(((String) tFactura.getValueAt(i, 5)).equals("I")){ 
+                    tipoInscripcion = true;
+                }
+                if(((String) tFactura.getValueAt(i, 5)).equals("M")){ 
+                    tipoMatricula = true;
+                }
                 //CXC
 
             }
+            if(tipoInscripcion){
+                actualMatricula.setPagadainscripcion(true);
+                actualMatricula.setEstadoMat("I");
+            } 
+            if(tipoMatricula){
+                actualMatricula.setPagadainscripcion(true);
+                actualMatricula.setEstadoMat("M");
+            } 
+
+            
+            
+            adm.actualizar(actualMatricula);
+            
             Cxcobrar cx = new Cxcobrar();
             cx.setIdCxcobrar(adm.getNuevaClave("Cxcobrar", "idCxcobrar"));
             cx.setDebe(cab.getTotal());
@@ -1305,7 +1325,96 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }
     Estudiantes es = null;
     public general EstudianteSeleccionado = null;
+   public void cargarRubros2(general gen) {
+        if (gen.getCodigoString().equals("0")) {
+            return;
+        }
+        es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
+        Parientes factura = new Parientes();
+        if (es.getIdParientes().getTipoRepresentante().equals("F")) {
+            factura = es.getIdParientes();
+        } else if (es.getParIdParientes().getTipoRepresentante().equals("F")) {
+            factura = es.getParIdParientes();
+        } else if (es.getParIdParientes2().getTipoRepresentante().equals("F")) {
+            factura = es.getParIdParientes2();
+        }
+        codigoPariente.setText(factura.getIdParientes() + "");
+        ruc.setText(factura.getIdentificacion());
+        nombre.setText(factura.getNombres());
+        direccion.setText(factura.getDireccion());
+        telefono.setText(factura.getTelefonoTrabajo());
+        ruc1.setText(factura.getIdentificacion());
+        nombre1.setText(factura.getNombres());
+        direccion1.setText(factura.getDireccion());
+        telefono1.setText(factura.getTelefonoTrabajo());
 
+        List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
+                + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
+                + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' and o.estadoMat = 'I' ");
+
+
+        if (parametrosList == null) {
+            parametrosList = adm.query("Select o from Parametros as o "
+                    + " where o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' ");
+        }
+        if (matriculaList.size() > 0) {
+
+            actualMatricula = matriculaList.get(0);
+            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
+            categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
+            //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
+//            List<Facturas> facturaLista = adm.query("Select o from Detalles");
+
+            //tengo que verificar si el estado esta null o false y le cargo los rubros que se encuetnra en matricula
+            //de acuerdo a la carrera y al perido actual buscando en rbrosMatriculasPeriodo
+            if (actualMatricula.getPagada() == null) {
+                actualMatricula.setPagada(false);
+            }
+
+            DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
+            dtm.getDataVector().removeAllElements();
+            DefaultTableModel dtm2 = (DefaultTableModel) formasdePago.getModel();
+            dtm2.getDataVector().removeAllElements();
+
+            if (actualMatricula.getPagadainscripcion()!=null) {
+            if (actualMatricula.getPagadainscripcion()) {
+                //limpiar();
+                tFactura.setModel(dtm);
+                formasdePago.setModel(dtm2);
+                sumar();
+                sumarPagos();
+                llenarFactura();
+                JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }    
+                
+            }
+
+    
+                    Rubros rubroCredito = null;
+                    List<Rubros> rub = adm.query("Select o from Rubros as o where o.esinscripcion = true ");
+                    if (rub.size() > 0) {
+                        rubroCredito = rub.get(0);
+                    }//no existe el crédito
+                    Object[] obj = new Object[20];
+                    obj[0] = rub.get(0).getIdRubros();
+                    obj[1] = rubroCredito.getNombre();
+                    obj[2] = 1;
+                    obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(1));
+                    obj[4] = rubroCredito.getNoaplica();
+                    obj[5] = "I";
+                    dtm.addRow(obj);
+
+          
+            tFactura.setModel(dtm);
+            sumar();
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Estudiante no se encuentra matriculado", "JC INFORM", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }
     private void cargarRubros(general gen) {
         if (gen.getCodigoString().equals("0")) {
             return;
@@ -1932,7 +2041,7 @@ if(cmbPorcentaje.getSelectedIndex()>0){
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardarCerra;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JButton btnNuevo;
+    public javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JFormattedTextField buscarApellido;
     private javax.swing.JPanel busquedaVacio;

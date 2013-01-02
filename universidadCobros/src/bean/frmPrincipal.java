@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Periodos;
@@ -36,27 +37,28 @@ public class frmPrincipal extends javax.swing.JFrame {
     public frmPrincipal() {
 //        try {
         initComponents();
+
         this.setExtendedState(this.MAXIMIZED_BOTH);
         frmCambiarClave.setVisible(false);
-     
+
 //            frmLogin.setSelected(true);
 //            frmLogin.requestFocusInWindow();
         usuario.requestFocusInWindow();
-         
-         general gen = new general(-1, " - CARGANDO -");
-         cmbPeriodo.addItem(gen);
+
+        general gen = new general(-1, " - CARGANDO -");
+        cmbPeriodo.addItem(gen);
         Thread cargar = new Thread() {
             public void run() {
-                   adm = new Administrador();
+                adm = new Administrador();
                 List<Periodos> periodosLista = adm.query("Select o from Periodos as o where o.activo = true");
                 cmbPeriodo.removeAllItems();
-         general gen = new general(-1, " - SELECCIONE -");
-         cmbPeriodo.addItem(gen);      
-         java.text.SimpleDateFormat sdf=new java.text.SimpleDateFormat("MMM/yyyy");
+                general gen = new general(-1, " - SELECCIONE -");
+                cmbPeriodo.addItem(gen);
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
 
                 for (Iterator<Periodos> it = periodosLista.iterator(); it.hasNext();) {
                     Periodos periodos = it.next();
-                     gen = new general(periodos.getIdPeriodos(), sdf.format(periodos.getFechaInicio()) + " - " + sdf.format(periodos.getFechaFin()) );
+                    gen = new general(periodos.getIdPeriodos(), sdf.format(periodos.getFechaInicio()) + " - " + sdf.format(periodos.getFechaFin()));
                     cmbPeriodo.addItem(gen);
 
                 }
@@ -108,6 +110,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         claveActual = new javax.swing.JPasswordField();
         nuevaClave = new javax.swing.JPasswordField();
         confirmeClave = new javax.swing.JPasswordField();
+        panelInscritos = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaInscritos = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         Administracion = new javax.swing.JMenu();
         rubros = new javax.swing.JMenuItem();
@@ -267,6 +272,45 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         frmCambiarClave.setBounds(150, 2, 320, 160);
         contenedor.add(frmCambiarClave, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        panelInscritos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estudiantes Inscritos Pendientes de Cobro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.blue));
+        panelInscritos.setLayout(null);
+
+        tablaInscritos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "..", "Estudiante"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaInscritos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaInscritosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaInscritos);
+        tablaInscritos.getColumnModel().getColumn(0).setResizable(false);
+        tablaInscritos.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tablaInscritos.getColumnModel().getColumn(1).setResizable(false);
+        tablaInscritos.getColumnModel().getColumn(1).setPreferredWidth(220);
+
+        panelInscritos.add(jScrollPane1);
+        jScrollPane1.setBounds(10, 20, 270, 200);
+
+        panelInscritos.setBounds(10, 290, 290, 230);
+        contenedor.add(panelInscritos, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         getContentPane().add(contenedor, java.awt.BorderLayout.CENTER);
 
@@ -433,9 +477,9 @@ public class frmPrincipal extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmRubrosMatriculas usu = new frmRubrosMatriculas( adm);
+            frmRubrosMatriculas usu = new frmRubrosMatriculas(adm);
             usu.setSize(546, 507);
- usu.setEmpleadoActual(usuarioActual);
+            usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
             usu.setName("formaRubrosMatriculas");
@@ -460,6 +504,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (cmbPeriodo.getSelectedIndex() > 0) {
             verificarUsuario();
+            LeerInscrito le = new LeerInscrito(this);
+            le.start();
         } else {
             mensaje.setText("Seleccione un periodo...!");
         }
@@ -476,7 +522,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void contrasenaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasenaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-           cmbPeriodo.requestFocusInWindow();
+            cmbPeriodo.requestFocusInWindow();
         }
     }//GEN-LAST:event_contrasenaKeyPressed
 
@@ -563,42 +609,42 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void FacturarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacturarActionPerformed
         // TODO add your handling code here:
-          try {
-                Component[] componentes = contenedor.getComponents();
-                for (Component component : componentes) {
-                    System.out.println("" + component.getName());
-                    if ((component.getName() + "").equals("formaFacturas")) {
-                        System.out.println("LO ENCONTRE");
-                        ((frmFacturas) component).setEmpleadoActual(usuarioActual);
-                        ((frmFacturas) component).setPeriodoActual(periodoActual);
-                        ((frmFacturas) component).setVisible(true);
-                        ((frmFacturas) component).inst = inst;
-                        ((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
-                        ((frmFacturas) component).actualMatricula = new Matriculas();
-                        return;
-                    }
+        try {
+            Component[] componentes = contenedor.getComponents();
+            for (Component component : componentes) {
+                System.out.println("" + component.getName());
+                if ((component.getName() + "").equals("formaFacturas")) {
+                    System.out.println("LO ENCONTRE");
+                    ((frmFacturas) component).setEmpleadoActual(usuarioActual);
+                    ((frmFacturas) component).setPeriodoActual(periodoActual);
+                    ((frmFacturas) component).setVisible(true);
+                    ((frmFacturas) component).inst = inst;
+                    ((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
+                    ((frmFacturas) component).actualMatricula = new Matriculas();
+                    return;
                 }
-            } catch (Exception e) {
-                System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmFacturas usu = new frmFacturas(adm);
-            usu.setSize(642, 630);
-            usu.setEmpleadoActual(usuarioActual);
-            usu.setPeriodoActual(periodoActual);
-            usu.setLocation(0, 0);
-            usu.inst = inst;
-            usu.actualMatricula = new Matriculas();
-            usu.setName("formaFacturas");
-            contenedor.add(usu);
+        } catch (Exception e) {
+            System.out.println("ERROR EN COMPONENTE" + e);
+        }
+        frmFacturas usu = new frmFacturas(adm);
+        usu.setSize(642, 630);
+        usu.setEmpleadoActual(usuarioActual);
+        usu.setPeriodoActual(periodoActual);
+        usu.setLocation(0, 0);
+        usu.inst = inst;
+        usu.actualMatricula = new Matriculas();
+        usu.setName("formaFacturas");
+        contenedor.add(usu);
 
-            usu.show();
-        
+        usu.show();
+
     }//GEN-LAST:event_FacturarActionPerformed
 
     private void cmbPeriodoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbPeriodoKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==evt.VK_ENTER){
-         if (cmbPeriodo.getSelectedIndex() > 0) {
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            if (cmbPeriodo.getSelectedIndex() > 0) {
                 verificarUsuario();
             } else {
                 mensaje.setText("Seleccione un periodo...!");
@@ -608,7 +654,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void categoriasSocialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoriasSocialesActionPerformed
         // TODO add your handling code here:
-               // TODO add your handling code here:
+        // TODO add your handling code here:
         try {
 //            List<Accesos> accesosL = adm.query("Select o from Accesos as o "
 //                    + "where o.pantalla = 'Factura' " + "and o.global.codigo  = '" + usuario.getGlobal().getCodigo() + "' and o.ingresar = true  ");
@@ -635,9 +681,9 @@ public class frmPrincipal extends javax.swing.JFrame {
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmCategorias usu = new frmCategorias( adm);
+            frmCategorias usu = new frmCategorias(adm);
             usu.setSize(546, 507);
- usu.setEmpleadoActual(usuarioActual);
+            usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
             usu.setName("formaCategoriasSociales");
@@ -656,37 +702,77 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void ReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReportesActionPerformed
         // TODO add your handling code here:
-          try {
+        try {
+            Component[] componentes = contenedor.getComponents();
+            for (Component component : componentes) {
+                System.out.println("" + component.getName());
+                if ((component.getName() + "").equals("formaReportes")) {
+                    System.out.println("LO ENCONTRE");
+                    ((frmReportes) component).setEmpleadoActual(usuarioActual);
+                    ((frmReportes) component).setPeriodoActual(periodoActual);
+                    ((frmReportes) component).setVisible(true);
+                    ((frmReportes) component).inst = inst;
+
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR EN COMPONENTE" + e);
+        }
+        frmReportes usu = new frmReportes(adm);
+        usu.setSize(805, 650);
+        usu.setEmpleadoActual(usuarioActual);
+        usu.setPeriodoActual(periodoActual);
+        usu.setLocation(0, 0);
+        usu.inst = inst;
+        //usu.actualMatricula = new Matriculas();
+        usu.setName("formaReportes");
+        contenedor.add(usu);
+
+        usu.show();
+
+
+    }//GEN-LAST:event_ReportesActionPerformed
+
+    private void tablaInscritosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaInscritosMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            try {
                 Component[] componentes = contenedor.getComponents();
                 for (Component component : componentes) {
                     System.out.println("" + component.getName());
-                    if ((component.getName() + "").equals("formaReportes")) {
+                    if ((component.getName() + "").equals("formaFacturas")) {
                         System.out.println("LO ENCONTRE");
-                        ((frmReportes) component).setEmpleadoActual(usuarioActual);
-                        ((frmReportes) component).setPeriodoActual(periodoActual);
-                        ((frmReportes) component).setVisible(true);
-                        ((frmReportes) component).inst = inst;
-              
+                        ((frmFacturas) component).setEmpleadoActual(usuarioActual);
+                        ((frmFacturas) component).setPeriodoActual(periodoActual);
+                        ((frmFacturas) component).setVisible(true);
+                        ((frmFacturas) component).inst = inst;
+                        //((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
+                        ((frmFacturas) component).btnNuevo.doClick();
+                        ((frmFacturas) component).EstudianteSeleccionado = new general(((Estudiantes) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 0)).getIdEstudiantes(), ((String) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 1)));
+                        ((frmFacturas) component).cargarRubros2(((frmFacturas) component).EstudianteSeleccionado);
                         return;
                     }
                 }
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmReportes  usu = new frmReportes(adm);
-            usu.setSize(805, 650);
+
+            frmFacturas usu = new frmFacturas(adm);
+            usu.setSize(642, 630);
             usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);
             usu.inst = inst;
-            //usu.actualMatricula = new Matriculas();
-            usu.setName("formaReportes");
+            usu.btnNuevo.doClick();
+            usu.EstudianteSeleccionado = new general(((Estudiantes) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 0)).getIdEstudiantes(), ((String) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 1)));
+            usu.setName("formaFacturas");
+            usu.cargarRubros2(usu.EstudianteSeleccionado);
             contenedor.add(usu);
 
             usu.show();
-        
-        
-    }//GEN-LAST:event_ReportesActionPerformed
+        }
+    }//GEN-LAST:event_tablaInscritosMouseClicked
     private int intento = 0;
 
     public JLabel getIntentos() {
@@ -710,9 +796,9 @@ public class frmPrincipal extends javax.swing.JFrame {
             usuarioActual = emp;
             List<Institucion> instituciones = adm.query("Select o from Institucion as o ");
             for (Iterator<Institucion> it = instituciones.iterator(); it.hasNext();) {
-                 inst = it.next();
+                inst = it.next();
             }
-            
+
 
         } else {
 
@@ -829,11 +915,14 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollBar jScrollBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel mensaje;
     private javax.swing.JPasswordField nuevaClave;
+    public javax.swing.JPanel panelInscritos;
     private javax.swing.JMenu periodoActualLabel;
     private javax.swing.JMenuItem rubros;
     private javax.swing.JMenuItem rubrosMatricula;
+    public javax.swing.JTable tablaInscritos;
     private javax.swing.JFormattedTextField usuario;
     private javax.swing.JMenu usuario1;
     private javax.swing.JMenu usuarioActualLabel;
