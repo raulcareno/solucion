@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.conexion.Administrador;
@@ -554,7 +555,62 @@ public class generarFacturas {
 
         return deudas;
     }
+    public List buscar(Sucursal suc, String tipoPlan,String dondepaga,Bancos banco) {
+        /*
+          if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA
+            efe.checked = true;
+        }else if(equi.getFormapago().equals(2)){//POR DÉBITO BANCARIO
+            deb.checked = true;
+        }else if(equi.getFormapago().equals(3)){ //COBRA A DOMICIOLIO
+            cbr.checked = true;
+        } else {
+            efe.checked = true;
+        } 
+         */
+        
+        
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        String compleDondePaga = " and o.formapago  = '" + dondepaga + "' ";
+        if(dondepaga.contains("0")){
+             compleDondePaga = " and o.formapago is not null ";
+        }else if(dondepaga.contains("2")){//ES POR DÉBITO
+             compleDondePaga = " and o.formapago   = '" + dondepaga + "'   and o.bancos.codigo = '"+banco.getCodigo()+"' ";
+             if(banco.getCodigo().equals(new Integer(0))){
+                compleDondePaga = " and o.formapago   = '" + dondepaga + "'  ";    
+             }
+        }
+        List contratos = adm.query("Select o.codigo from Contratos as o "
+                + "where o.plan.tipo = '"+tipoPlan+"' "+compleDondePaga+"  order by o.clientes.apellidos ");
+        String contraString = "";
+        contraString = contratos.toString().replace("[", "").replace("]", "");
+//        for (Iterator itContratos = contratos.iterator(); itContratos.hasNext();) {
+//            Integer contratos1 = (Integer)itContratos.next();
+//            //contratos1.getBancos().getCodigo();
+//            contraString = "" + contratos1 + "," + contraString + "";
+//        }
+//        if (contraString.length() > 0) {
+//            contraString = contraString.substring(0, contraString.length() - 1);
+//        }
+        
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres),  fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo, c.serie3  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
+                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes "
+                + "and fa.sucursal = '" + suc.getCodigo() + "' and (fa.numero = '' or fa.numero is null) "
+                + " GROUP BY fa.codigo "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 "
+                + "order by cli.apellidos, fa.fecha ";
+        List deudas = null;
+        try {
+            deudas = adm.queryNativo(quer);
+        } catch (Exception e) {
+            System.out.println("ERRROR: " + e);
+            return null;
+        }
+        contratos = null;
 
+        return deudas;
+    }
     public List buscar(Sucursal suc, Empleados emp, Date fecha) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String fec = convertiraString(fecha);

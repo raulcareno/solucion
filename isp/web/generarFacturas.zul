@@ -25,7 +25,11 @@
     Permisos permiso = new Permisos();
     generarFacturas gen = new generarFacturas();
 
-    
+    List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
+     Bancos banSel = new Bancos();
+     banSel.setNombre("Todos");
+     banSel.setCodigo(0);
+     bancos.add(0,banSel);
     Empresa empresa = ses.getAttribute("empresa"); 
     String directorioReportes = empresa.getReportes();
     void generar(){
@@ -70,7 +74,13 @@
     }
  void facturasPendientes(){
         try{
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),tipo.value);
+        Bancos ban = new Bancos();
+        try{
+          ban = bancosList.selectedItem.value;
+        }catch(Exception am){
+            
+        }
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),tipo.value,dondepaga.selectedItem.value+"",ban );
             facturasDatos.getRows().getChildren().clear();
             if(facEncontradas == null){
                 return;
@@ -414,14 +424,55 @@ void generarFacturas(){
                 </groupbox>
                 <groupbox id="gssb" mold="3d" width="400px">
                     <caption> 2.- Asignación de No. de facturas</caption>    
-                    <span > SELECCIONE UN PLAN: </span>
-                    <combobox  value="HOME" id="tipo">
-                        <comboitem label="HOME" />
-                        <comboitem label="BASICO" />
-                        <comboitem label="CORPORATIVO" />
-                        <comboitem label="PREMIUM" />
-                        <comboitem label="CIBERCAFE" />
-                    </combobox>
+                    <grid>
+                        <rows>
+                            <row>
+                                <span > SELECCIONE UN PLAN: </span>
+                                <combobox  value="HOME" id="tipo">
+                                    <comboitem label="HOME" />
+                                    <comboitem label="BASICO" />
+                                    <comboitem label="CORPORATIVO" />
+                                    <comboitem label="PREMIUM" />
+                                    <comboitem label="CIBERCAFE" />
+                                </combobox>
+                                </row>
+                                <row>
+                                    
+                                <span>
+                                    <label style="font-weight:bold2" value=" Paga(*): " />
+                                </span>
+                                <radiogroup Id="dondepaga" onCheck="">
+                                    <radio id="Tod" selected="true" value="0" onCheck="bd22.disabled=true;" label="Todos"/>
+                                    <radio id="efe"  value="1" onCheck="bd22.disabled=true;" label="Ofic."/>
+                                    <radio  id="cbr" value="3" onCheck="bd22.disabled=true; " label="Domic."/>
+                                    <radio id="deb"   value="2" onCheck="bd22.disabled=false;  " label="Déb."/>
+                                </radiogroup>
+                                </row>
+                                <row>
+                                <span>
+                                    <label style="font-weight:bold2" value="Banco:" />
+                                </span>
+                                <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
+                                    <bandpopup>
+                                        <vbox>
+                                            <listbox  id="bancosList" width="250px"
+                                          onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                <listhead>
+                                                    <listheader label="Seleccione un Banco"/>
+                                                </listhead>
+                                                <listitem forEach="${bancos}" value="${each}">
+                                                    <listcell label="${each.nombre}" />
+
+                                                </listitem>
+                                            </listbox>
+                                        </vbox>
+                                    </bandpopup>
+                                </bandbox>
+                            </row>
+                        </rows>
+                        
+                    </grid>
+                   
                     <button image="/images/auditoria.gif" label="BUSCAR DEUDAS " onClick="facturasPendientes()"/>
                 </groupbox>
                 
@@ -459,7 +510,7 @@ void generarFacturas(){
                                 <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date(); " id="vencimiento" />
                             
                                 <span></span>
-                            <span></span>
+                                <span></span>
                              
                             </row>
                            
@@ -468,7 +519,7 @@ void generarFacturas(){
                                 
                                 <intbox id="numeroRec" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
                                 <span></span>
-                                    <span>
+                                <span>
                                     <button label="Generar Facturas" image="/images/generar.png"  onClick="numero.getValue();numeroRec.getValue(); generarFacturas(); "/>
                                     <button label="Imp.Facturas" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
                                     <button label="Imp.Recibos" image="/images/imprimir.gif" onClick="imprimirTodos2()"/>
