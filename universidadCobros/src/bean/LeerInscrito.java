@@ -28,7 +28,8 @@ public class LeerInscrito extends Thread {
                 
                 DefaultTableModel dtm = (DefaultTableModel) princip.tablaInscritos.getModel();
                 dtm.getDataVector().removeAllElements();
-                List<Matriculas> matriculas = adm.query("Select o from Matriculas as o where o.estadoMat = 'I' and( o.pagadainscripcion is null or o.pagadainscripcion = false) ");
+                List<Matriculas> matriculas = adm.query("Select o from Matriculas as o"
+                        + " where o.estadoMat = 'I' and( o.pagadainscripcion is null or o.pagadainscripcion = false) ");
                 if(matriculas.size()>0){
                  for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
                     Matriculas matriculas1 = it.next();

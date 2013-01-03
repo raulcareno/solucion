@@ -37,7 +37,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     public frmPrincipal() {
 //        try {
         initComponents();
-
+panelInscritos.setVisible(false);
         this.setExtendedState(this.MAXIMIZED_BOTH);
         frmCambiarClave.setVisible(false);
 
@@ -273,6 +273,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         frmCambiarClave.setBounds(150, 2, 320, 160);
         contenedor.add(frmCambiarClave, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        panelInscritos.setBackground(new java.awt.Color(153, 153, 153));
         panelInscritos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estudiantes Inscritos Pendientes de Cobro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.blue));
         panelInscritos.setLayout(null);
 
@@ -309,7 +310,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         panelInscritos.add(jScrollPane1);
         jScrollPane1.setBounds(10, 20, 270, 200);
 
-        panelInscritos.setBounds(10, 290, 290, 230);
+        panelInscritos.setBounds(5, 5, 290, 230);
         contenedor.add(panelInscritos, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         getContentPane().add(contenedor, java.awt.BorderLayout.CENTER);
