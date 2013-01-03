@@ -1120,8 +1120,11 @@ public class MatriculasBean {
             carreraSeleccionado = object.getIdCarreras();
             categoriaSeleccionado = object.getIdCategoriasSociales();
             buscarMateriasMatricula(object);
-            FacesContext context = FacesContext.getCurrentInstance();
+            if(object.getEstadoMat().equals("I") && (object.getPagadainscripcion() ==null || object.getPagadainscripcion() == false)){
+                FacesContext context = FacesContext.getCurrentInstance();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante Inscrito no ha cancelado valores por INSCRIPCION...!"));
+            }
+            
         } else {
             carreraSeleccionado = new Carreras(0);
             object = new Matriculas(0);

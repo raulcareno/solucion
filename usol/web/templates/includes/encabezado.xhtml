@@ -29,21 +29,21 @@
                     <h:outputText style="font-weight: bold;font-size: 11px"  value=""/>
                     <h:outputText style="font-weight: bold;font-size: 13px"  value="#{institucion.nombre}"/>
                     <h:panelGrid style="background-color:transparent;border-color: transparent;"  columns="12">
-                        <h:outputText style="font-weight: bold;font-size: 10px;color: #919396"  value="Usuario: "/>
-                        <h:outputText style="font-size: 10px"  value="#{user.apellidoPaterno} #{user.nombre} | "/>
+                        <h:outputText style="font-weight: bold;font-size: 10px;color: #919396" rendered="#{not empty periodo}"   value="Usuario: "/>
+                        <h:outputText style="font-size: 10px"  rendered="#{not empty user}"  value="#{user.apellidoPaterno} #{user.nombre} | "/>
 
-                        <h:outputText style="font-weight: bold;font-size: 10px;color: #919396"  value="DESDE:"/>
+                        <h:outputText style="font-weight: bold;font-size: 10px;color: #919396" rendered="#{not empty periodo}"   value="DESDE:"/>
                         <h:outputText style="font-weight: bold;font-size: 10px"   value="#{periodo.fechaInicio}">
                             <f:convertDateTime dateStyle="long"/>
                         </h:outputText>  
 
-                        <h:outputText style="font-weight: bold;font-size: 10px;color: #919396"  value="HASTA:"/>
+                        <h:outputText style="font-weight: bold;font-size: 10px;color: #919396" rendered="#{not empty periodo}"  value="HASTA:"/>
                         <h:outputText style="font-weight: bold;font-size: 10px" value="#{periodo.fechaFin}">
                             <f:convertDateTime dateStyle="long"/>
                         </h:outputText>  
 
-                        <h:outputText style="font-weight: bold;font-size: 10px;color:black" value="| ACTIVO" rendered="#{periodo.activo}"/>
-                        <h:outputText style="font-weight: bold;font-size: 10px;color:red" value="| CERRADO" rendered="#{!periodo.activo}"/>
+                        <h:outputText style="font-weight: bold;font-size: 10px;color:black" value="| ACTIVO" rendered="#{periodo.activo  and  not empty periodo }"/>
+                        <h:outputText style="font-weight: bold;font-size: 10px;color:red" value="| CERRADO" rendered="#{!periodo.activo  and  not empty periodo}"/>
 
 
                     </h:panelGrid>    
