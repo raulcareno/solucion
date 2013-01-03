@@ -10,6 +10,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import jcinform.persistencia.Accesos;
 import jcinform.persistencia.Empleados;
+import jcinform.persistencia.Periodos;
 import jcinform.procesos.Administrador;
 
 /**
@@ -23,7 +24,7 @@ public class Permisos {
     
     
     public boolean verificarPermisoReporte(String idVariable, String accionPantalla, String accion, Boolean pantalla, String modulo) {
-
+Periodos periodoAc = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
        
         if (idVariable == null) {
             return true;
@@ -63,10 +64,19 @@ public class Permisos {
                 if (accion.equals("ingresar")) {
                     return accesos.getIngresar();
                 } else if (accion.equals("agregar")) {
+                      if (!periodoAc.getActivo()) {
+                        return false;
+                    }
                     return accesos.getAgregar();
                 } else if (accion.equals("modificar")) {
+                      if (!periodoAc.getActivo()) {
+                        return false;
+                    }
                     return accesos.getModificar();
                 } else if (accion.equals("eliminar")) {
+                      if (!periodoAc.getActivo()) {
+                        return false;
+                    }
                     return accesos.getEliminar();
                 }
             }

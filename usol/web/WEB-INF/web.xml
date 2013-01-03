@@ -4,10 +4,10 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Production</param-value>
     </context-param>
-    <context-param> 
-    <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
-    <param-value>true</param-value> 
-</context-param>
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>bluesky</param-value>
@@ -38,11 +38,19 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>redireccionSalir</servlet-name>
+        <servlet-class>bean.redireccionSalir</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>redireccionSalirEstudiante</servlet-name>
+        <servlet-class>bean.redireccionSalirEstudiante</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jspx</url-pattern>
     </servlet-mapping>
-     <context-param>
+    <context-param>
         <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
         <param-value>server</param-value>
     </context-param>
@@ -54,6 +62,14 @@
         <param-name>javax.faces.FULL_STATE_SAVING_VIEW_IDS</param-name>
         <param-value>/notas.xhtml</param-value>
     </context-param>
+    <servlet-mapping>
+        <servlet-name>redireccionSalir</servlet-name>
+        <url-pattern>/redireccionSalir</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>redireccionSalirEstudiante</servlet-name>
+        <url-pattern>/redireccionSalirEstudiante</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

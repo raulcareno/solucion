@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -125,6 +126,30 @@ public class LoginBean {
     public String recuperarClave() {
         RecuperarBean rec = new RecuperarBean();
         return rec.recuperarClave(cedula);
+    }
+
+    public String cerrarSesion() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/login.jspx");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "login.jspx?faces-redirect=true";
+    }
+  public String cerrarSesionE() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/estudiante/loginEstudiantes.jspx");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "estudiante/loginEstudiantes.jspx?faces-redirect=true";
+    }
+    public void mantenerViva() {
+        System.out.println("actualice sesion para que no cierre");
     }
 
     public boolean verificarPermisoReporte(String idVariable, String accionPantalla, String accion, Boolean pantalla, String modulo) {
@@ -270,24 +295,24 @@ public class LoginBean {
         verificarPermisoReporte("Orientacion", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Aspirantes", "ingresar_listaAspirantes.jspx", "ingresar", true, "ADMINISTRACION");
 
-        
+
         verificarPermisoReporte("Aulas", "ingresar_aulas.jspx", "ingresar", true, "HORARIOS");
         verificarPermisoReporte("Horarios", "ingresar_horarios.jspx", "ingresar", true, "HORARIOS");
         verificarPermisoReporte("Horas", "ingresar_horas.jspx", "ingresar", true, "HORARIOS");
-        
-        
+
+
         verificarPermisoReporte("RangosGpa", "ingresar_rangosGpa.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("Carreras", "ingresar_carreras.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("Malla", "ingresar_carrerasMaterias.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("SecuenciaMaterias", "ingresar_carrerasMateriasSecuencia.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("SistemaNotas", "ingresar_sistemaNotas.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("Registro de Notas", "ingresar_notas.jspx", "ingresar", true, "NOTAS");
-        
-        
+
+
         verificarPermisoReporte("Rubros", "ingresar_rubros.jspx", "ingresar", true, "PAGOS");
         verificarPermisoReporte("CategoriasSociales", "ingresar_categoriasSociales.jspx", "ingresar", true, "PAGOS");
         verificarPermisoReporte("Bancos", "ingresar_bancos.jspx", "ingresar", true, "PAGOS");
-        
+
         verificarPermisoReporte("Jornada", "ingresar_jornada.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Canton", "ingresar_canton.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Ejes", "ingresar_ejes.jspx", "ingresar", true, "PARAMETROS");
@@ -327,6 +352,7 @@ public class LoginBean {
                         + " and o.ingresar = true order by o.variable ");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accesos", accesos);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
+                periodoSeleccionado = (Periodos) adm.buscarClave(periodoSeleccionado.getIdPeriodos(), Periodos.class);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("menu");

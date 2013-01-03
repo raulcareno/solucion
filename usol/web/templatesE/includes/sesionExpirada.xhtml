@@ -8,17 +8,82 @@
         <h:head> </h:head>
         <h:body>
             <h:form>
-            <p:idleMonitor onactive="sessionTimeOutDialog.show();" timeout="600000" />
-            <p:dialog header="Sesión Expirada" widgetVar="sessionTimeOutDialog"
-                      modal="true" closable="false" width="400" visible="false">
-                <h:outputText value="Su sesión a excedido el tiempo de 5 minutos sin actividad, presione el botón para volver a ingresar" />
+                <p:idleMonitor
+                    timeout="300000"
+                    onidle="startIdleMonitor()" 
+                    onactive="timeoutDialog.hide()" />
+
+                <p:dialog id="timeoutSession"
+                          header="Sesión Expirada"
+                          widgetVar="timeoutDialog" 
+                          showEffect="fade" hideEffect="fade"
+                          modal="true" 
+                          width="400" 
+                          height="200" 
+                          closable="false"
+                          draggable="false" 
+                          resizable="false" 
+                          appendToBody="true"
+                          onHide="stopCount()" 
+                          onShow="doTimer()">
+                    <br />
+                    <p>
+                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 8px 8px 0;"/>
+                        <p:panel>
+                            Ha permanecido mucho tiempo fuera del sistema por su seguridad se reiniciará su sistema en 
+                            <span id="dialog-countdown" style="font-weight: bold;font-size: 16px"></span>
+                            segundos
+                        </p:panel>
+                    </p>
+                    <br />
+                    <p style="font-weight: bold;">Mueva el cursor para continuar con la actual sesión </p>
+                </p:dialog>
+                <p:remoteCommand name="keepAlive" actionListener="#{loginBean.mantenerViva()}" />
                 
-                <input id="confirmBackToLogin" type="button"  value="Pulse aquí para volver a ingresar"
-                       onclick="window.location='#{facesContext.externalContext.requestContextPath}/estudiante/loginEstudiante.jspx';" />
-            </p:dialog>
             </h:form>
+            <script type="text/javascript">
+                var TIME = 10; // in seconds
+                var countTimer = TIME;
+                var processTimer;
+                var timer_is_on = 0;
+                var redirectPage = "#{request.contextPath}/redireccionSalirEstudiante";
+      
+                var countDownDiv = "dialog-countdown";
+                var txtCountDown = null;
+                if (!txtCountDown)
+                    txtCountDown = document.getElementById(countDownDiv);
+      
+                function startIdleMonitor() {
+                    countTimer = TIME;
+                    txtCountDown.innerHTML = countTimer;
+                    timeoutDialog.show();
+                }
+                function timedCount() {
+                    txtCountDown.innerHTML = countTimer;
+                    if (countTimer == 0) {
+                        stopCount(); 
+                        //alert(redirectPage+"aqui va");
+                        window.location.href = redirectPage;
+                        return;
+                    }
+                    countTimer = countTimer - 1;
+                    processTimer = setTimeout("timedCount()", 1000);
+                }
+                function doTimer() {
+                    if (!timer_is_on) {
+                        timer_is_on = 1;
+                        timedCount();
+                    }
+                }
+                function stopCount() {
+                    clearTimeout(processTimer);
+                    timer_is_on = 0;
+                    keepAlive();
+                }
+            </script>
+       
         </h:body>
-        
+
 
     </f:view>
 </html>
