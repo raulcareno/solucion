@@ -224,21 +224,15 @@
                     <p:tab id="registro03" title="BUSQUEDAS">
                         <h:panelGrid columns="1" cellpadding="1" style="margin:0 auto;">  
 
-                            <p:panel  style="width:780px">
-                                <h:panelGrid  columns="4">
-
-                                    <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
-                                    <p:inputText id="textoBuscar" value="#{empleadosBean.textoBuscar}" style="font-weight:bold"/>  
-                                    <p:commandButton id="buscar" value="Buscar" update=":form:RegistroInformacion:empleados" actionListener="#{empleadosBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
-
-                                </h:panelGrid>
-                            </p:panel>
-
                             <p:dataTable style="width:780px;" id="empleados" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  var="obj" value="#{empleadosBean.model}">  
 
-                                <p:column headerText="NOMBRE" style="width:80%">  
-                                    <h:outputText value="#{obj.nombre}" />  
-                                </p:column>  
+                            
+                             <p:column headerText="NOMBRE"   sortBy="#{obj.nombre}" filterBy="#{obj.nombre}"  style="width:20%">  
+                                <h:outputText value="#{obj.nombre}" />  
+                            </p:column>  
+                                 <p:column headerText="APELLIDO"   sortBy="#{obj.apellidoPaterno}" filterBy="#{obj.apellidoPaterno}"  style="width:20%">  
+                                     <h:outputText value="#{obj.apellidoPaterno}" />  
+                            </p:column>  
                                 <p:column style="width:10%">  
                                     <h:panelGrid style="border-color: transparent;" columns="2">
 
