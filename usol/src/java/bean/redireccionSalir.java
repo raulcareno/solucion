@@ -30,6 +30,12 @@ public class redireccionSalir extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             request.getSession().invalidate();
+           request.getSession().removeAttribute("admin");
+           request.getSession().removeAttribute("para");
+          request.getSession().removeAttribute("pago");
+          request.getSession().removeAttribute("hora");
+          request.getSession().removeAttribute("nota");
+            
             request.getSession().removeAttribute("user");
             request.getSession().removeAttribute("accesos");
             request.getSession().removeAttribute("menu");

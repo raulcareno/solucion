@@ -130,7 +130,15 @@ public class LoginBean {
 
     public String cerrarSesion() {
         try {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("admin");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("para");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("pago");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("hora");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("nota");
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("menu");
             FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/login.jspx");
             
         } catch (IOException ex) {
@@ -140,6 +148,16 @@ public class LoginBean {
     }
   public String cerrarSesionE() {
         try {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("admin");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("para");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("pago");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("hora");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("nota");
+            
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("menu");
+            
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
             FacesContext.getCurrentInstance().getExternalContext().redirect("/estudiante/loginEstudiantes.jspx");
             
@@ -347,10 +365,54 @@ public class LoginBean {
                 generar();
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
-                List<Accesos> accesos = adm.query("Select o from Accesos as o "
+                List<Accesos> accesosList = adm.query("Select o from Accesos as o "
                         + " where o.idPerfiles.idPerfiles = '" + user.getIdPerfiles().getIdPerfiles() + "' "
                         + " and o.ingresar = true order by o.variable ");
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accesos", accesos);
+                /**
+                 * CARGO LOS ESTADO DE LOS MENUES PARA QUE SE VEO O NO 
+                 */
+                
+                   Boolean menuAdministrador = false;
+            Boolean menuParametros = false;
+            Boolean menuNotas = false;
+            Boolean menuPagos = false;
+            Boolean menuHoras = false;
+            for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
+                Accesos accesos = it.next();
+                if(accesos.getModulo().contains("ADMINIS")){
+                    menuAdministrador = true;
+                }
+                if(accesos.getModulo().contains("PARAMETR")){
+                    menuParametros = true;
+                }
+                 if(accesos.getModulo().contains("PAGO")){
+                    menuPagos = true;
+                }
+                  if(accesos.getModulo().contains("HORA")){
+                    menuHoras = true;
+                }
+                   if(accesos.getModulo().contains("NOTA")){
+                    menuNotas = true;
+                }
+                
+            }
+            
+             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("admin");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("para");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("pago");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("hora");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("nota");
+            
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("admin", menuAdministrador);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("para", menuParametros);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pago", menuPagos);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("hora", menuHoras);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("nota", menuNotas);
+            
+            
+
+                
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accesos", accesosList);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 periodoSeleccionado = (Periodos) adm.buscarClave(periodoSeleccionado.getIdPeriodos(), Periodos.class);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);

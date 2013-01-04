@@ -31,6 +31,11 @@ public class redireccionSalirEstudiante extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
          request.getSession().invalidate();
+          request.getSession().removeAttribute("admin");
+           request.getSession().removeAttribute("para");
+          request.getSession().removeAttribute("pago");
+          request.getSession().removeAttribute("hora");
+          request.getSession().removeAttribute("nota");
             request.getSession().removeAttribute("user");
             request.getSession().removeAttribute("accesos");
             request.getSession().removeAttribute("menu");
