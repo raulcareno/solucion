@@ -9,7 +9,7 @@
         <h:body>
             <h:form>
                 <p:idleMonitor
-                    timeout="300000"
+                    timeout="5000"
                     onidle="startIdleMonitor()" 
                     onactive="timeoutDialog.hide()" />
 
@@ -26,23 +26,25 @@
                           appendToBody="true"
                           onHide="stopCount()" 
                           onShow="doTimer()">
-                    <br />
-                    <p>
-                        <span class="ui-icon ui-icon-alert" style="float: left; margin: 8px 8px 0;"/>
-                        <p:panel>
-                            Ha permanecido mucho tiempo fuera del sistema por su seguridad se reiniciará su sistema en 
-                            <span id="dialog-countdown" style="font-weight: bold;font-size: 16px"></span>
-                            segundos
-                        </p:panel>
-                    </p>
-                    <br />
-                    <p style="font-weight: bold;">Mueva el cursor para continuar con la actual sesión </p>
+                    <p:panel>
+                        Ha permanecido mucho tiempo fuera del sistema por su seguridad se reiniciará su sistema en 
+                        <span id="dialog-countdown" style="font-weight: bold;font-size: 16px"></span>
+                        segundos
+                        <p style="text-align: center; font-weight: bold;"><p:graphicImage   width="80" height="80"  value="/images/cargando.gif" />   </p>
+
+
+
+
+                        <p style="font-weight: bold;">Mueva el cursor para continuar con la actual sesión </p>
+                    </p:panel>
+
+
                 </p:dialog>
                 <p:remoteCommand name="keepAlive" actionListener="#{loginBean.mantenerViva()}" />
-                
+
             </h:form>
             <script type="text/javascript">
-                var TIME = 10; // in seconds
+                var TIME = 20; // in seconds
                 var countTimer = TIME;
                 var processTimer;
                 var timer_is_on = 0;
@@ -81,7 +83,7 @@
                     keepAlive();
                 }
             </script>
-       
+
         </h:body>
 
 
