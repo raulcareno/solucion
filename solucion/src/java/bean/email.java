@@ -221,10 +221,11 @@ public class email {
                 }
                 i++;
             }
-            System.out.println("enviado a: ("+k+") emails");
+            
             if (matriculados2.size() > 0) {
                 EnviarAutenticacion.EnviarCorreo(matriculados2, mensaje, tema, periodo.getInstitucion().getUsuariomail(), periodo.getInstitucion().getClavemail(), periodo.getInstitucion().getSmtp(), periodo.getInstitucion().getPuerto(), empleado.getEmail(),periodo.getInstitucion().getAutorizacion(),periodo.getInstitucion().getStar());
             }
+            System.out.println("enviado a: ("+k+") emails");
         } catch (Exception e) {
             System.out.println("" + e);
         }
