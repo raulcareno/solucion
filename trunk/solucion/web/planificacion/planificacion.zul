@@ -27,75 +27,111 @@ import org.zkoss.zul.Columns;
 Administrador adm = new Administrador();
 exportarExcel exp = new exportarExcel();
 
-Session ses = Sessions.getCurrent();
-Periodo periodo = (Periodo) ses.getAttribute("periodo");
+ Session ses = Sessions.getCurrent();
+ Periodo periodo = (Periodo) ses.getAttribute("periodo");
+ Empleados user =  (Empleados)ses.getAttribute("user");
+Permisos permiso = new Permisos();    
 
-
-    void generar(){
-            try{datos.getChildren().clear();}catch(Exception ab){System.out.println(ab+"");}
-            try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(ab+"");}
-                    datos = new Grid();
-        // ************************************************************************************************************** 
-             
-            evaluaciones = adm.query("Select o from PlanificacionEvaluadores as o " + 
+List evaluaciones = adm.query("Select o from PlanificacionEvaluadores as o " + 
              " where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigo  ");
-            String[][] cabes = new String[evaluaciones.size()][2];
-            int k=0;
-             for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
-                          PlanificacionEvaluadores trime = (PlanificacionEvaluadores) it.next();
-                          int orden = 0;
-                          int codigo=0;
-                              orden = trime.getOrden();
-                              codigo = trime.getCodigo();
-                              cabes[k][0]= trime.getNombre();
-                               cabes[k][1]= trime.getNombre()+"";
-                        k++;
-             }
-
             String[][] values = new String[evaluaciones.size()][2];
                       for (int i=0;i< evaluaciones.size();i++) {
                          values[i][0]= ((PlanificacionEvaluadores)evaluaciones.get(i)).getNombre();
-                         values[i][1]= "number";
                       }
-        // ****************************************************************************************************************
-        Auxhead auh = new Auxhead();
-        Auxheader aud = new Auxheader();
-        Textbox est = new Textbox(" ");
-        est.setCols(50);
-        est.setStyle("background: transparent;border:0px");
-        est.setReadonly(true);
-        est.setParent(aud);
-        aud.setColspan(2);
-        aud.setParent(auh);
-        for (String[] strings : cabes) {
-                    aud = new Auxheader(strings[0]);
-                    //aud.setColspan(new Integer(strings[1]));
-                    aud.setParent(auh);
-        }
-        aud = new Auxheader("PROM");
-        aud.setParent(auh);
-        auh.setParent(datos);
-         Columns cols = new Columns();
-         datos.appendChild(cols);
-         Column matCol = new Column("Matriculas");
-         datos.getColumns().appendChild(matCol);
-         Column  estCol = new Column("Estudiante");
-         datos.getColumns().appendChild(estCol);
-         for (String[] strings : values ){
-                    matCol = new Column(strings[0]);
-                    matCol.setAlign("right");
-                    datos.getColumns().appendChild(matCol);
-              
-        }
-         estCol = new Column("PF");
-         datos.getColumns().appendChild(estCol);
-           Rows filasR = new bean.Planificacion();
-           filasR.setId("filas");
-           filasR.setParent(datos);
+List cursos0 = null;
+    if(user.getTipo().equals("Interna")){
+        cursos0 = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
+           " group by o.curso order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }else{
+        cursos0 = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+          " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }
+    List cursos = new ArrayList();
+    List secuencias = new ArrayList();
+    int i =0;
+    for (Iterator it = cursos0.iterator(); it.hasNext();) {
+                      Cursos estudent = (Cursos) it.next();
+                      if(i==0){
+                      cursos.add(estudent);
+                      secuencias.add(estudent.getSecuencia());
+                      }else{
+                        if(!secuencias.contains(estudent.getSecuencia())){
+                            cursos.add(estudent); 
+                            secuencias.add(estudent.getSecuencia());
+                        }
+                      
+                      }
+                      i++;
  
-          
+    }
+     Boolean verificar(String accion){
+        return permiso.verificarPermiso("Planificacion",accion);
+
+    }
+    void nuevo(){
+        if(verificar("Agregar")){
+                guardar.disabled=false;
+                    llenar(new Planificacion(0));
+                    estado(false,false);
+ 
+       }else{
+                    Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
 }
+
+void llenar(Planificacion empa){
+   
+}
+void estado(Boolean estado,Boolean modificar){
+          curs.disabled = estado; 
+        materia.disabled = estado;
+        ejeexplorador.readonly = estado;
+        ejeaprendizaje.readonly = estado;
+        bloque.readonly = estado;
+        duracion.readonly = estado;
+        fechainicio.readonly = estado;
+        fechafin.readonly = estado;
+        objetivos.readonly = estado;
+        ejetransversal .readonly = estado;
+         
+}
+
+
+    
+void buscarMaterias(Cursos curso){
+        List materias;
+            if(user.getTipo().equals("Interna")){
+                materias = adm.query("Select distinct  o.materia from MateriaProfesor as o " +
+                " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' and o.curso.secuencia = '"+curso.getSecuencia()+"'  " + 
+                " order by o.materia.descripcion ");
+            }else{
+                materias= adm.query("Select distinct o.materia from MateriaProfesor as o " +
+                " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  and o.curso.secuencia = '"+curso.getSecuencia()+"'    " + 
+                " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.materia.descripcion ");
+            }
+        materia.getChildren().clear();
+        try{ 
+        
+             datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(""+ab);}
+             bd2.value = "";
+               for (Iterator it = materias.iterator(); it.hasNext();) {
+                      Global estudent = (Global) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getDescripcion()+""));
+                        materia.appendChild(item);
+             }
+    }
+
+    void generar(){
             
+         filas.addRow(curs.selectedItem.value.getSecuencia()+"",materia.selectedItem.value);  
+ 
+
+}
+//
 ]]>
     </zscript>
     
@@ -119,25 +155,29 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
                 <rows>
               
                     <row>
-                        <span style="float:right"> AREA(*):</span>
-                    </row>
-                    <row>
-                        <span style="float:right"> AÑO DE BÁSICA: (*):</span>
-                        <listbox id="curso"  mold="select" >
-                            <listitem value="1" label="PRIMER GRADO" />
-                            <listitem value="2" label="SEGUNDO GRADO" />
-                            <listitem value="3" label="TERCER GRADO" />
-                            <listitem value="4" label="CUARTO GRADO" />
-                            <listitem value="5" label="QUINTO GRADO" />
-                            <listitem value="6" label="SEXTO GRADO" />
-                            <listitem value="7" label="SEPTIMO GRADO" />
-                            <listitem selected="true" value="8" label="OCTAVO GRADO" />
-                            <listitem value="9" label="NOVENO GRADO" />
-                            <listitem value="10" label="DECIMO GRADO" />
-                            <listitem value="11" label="PRIMER CURSO" />
-                            <listitem value="12" label="SEGUNDO CURSO" />
-                            <listitem value="13" label="TERCER CURSO" />
-                        </listbox>
+                        
+                        <span style="float:right"> AÑO:</span>
+                        <span>
+                         
+                         <listbox id="curs"   mold ="select" 
+                                             onSelect="buscarMaterias(self.selectedItem.value)">
+                                        <listitem label="SELECCIONE" value="-1"/>
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion}" />
+
+                                        </listitem>
+                                    </listbox>
+                        <span> AREA(*):</span>
+                          
+                                    <listbox id="materia" mold="select" >
+                                        <listitem label="SELECCIONE" value="0"/> 
+                                        <listitem forEach="${materias}" value="${each}">
+                                            <listcell label="${each.descripcion}" />
+
+                                        </listitem>
+                                    </listbox>
+                                    </span>
+                        
                     </row>
                     <row>
                         <span style="float:right"> EJE INTEGRADOR:</span>
@@ -179,20 +219,13 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
          
      
             <vbox>
-                     <grid height="100px"  id="datos" >
-
-                <auxhead >
-                    <auxheader colspan="2">
-                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
-                    </auxheader>
-                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
-                </auxhead>
+          <grid height="100px"  id="datos" >
                 <columns>
-                    <column width="10px"   label ="Mat."/>
-                    <column width="300px" label ="Estudiante"/>
-                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                        <column forEach="${values}" height="70px" style="text-align:justify"  width="155px"  align="justify" >
+                            <textbox style="text-align:justify;background:transparent;border:0px"  width="155px" value="${each[0]}" rows="3"/>
+                        </column>
                 </columns>
-                <rows id="filas" use="bean.notas">
+                <rows id="filas" use="bean.Planificacion">
                 </rows>
             </grid>
             </vbox>

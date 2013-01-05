@@ -4,6 +4,9 @@
  */
 package bean;
 
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Textbox;
+
 /**
  *
  * @author inform
@@ -15,7 +18,9 @@ public class Rtora {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-          Permisos c = new Permisos();
-          System.out.println(""+c.decriptar("oMsh4As51uX9ZIKgRZRIog=="));
+        Column c = new Column();
+        Textbox t = new Textbox();
+        t.setParent(c);
+           
     }
 }
