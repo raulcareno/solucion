@@ -111,21 +111,25 @@ public class Planificacion extends Rows {
         List<PlanificacionDetalle> detalle = adm.query("Select o from PlanificacionDetalle as o  "
                 + " where o.evaluador.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " order by o.evaluador.orden  ");
-        if (detalle.size() <= 0) {
+        if (detalle.size()> 0) {
+            row = new Row();
             for (Iterator<PlanificacionDetalle> it = detalle.iterator(); it.hasNext();) {
                 PlanificacionDetalle planificacionDetalle = it.next();
-                row = new Row();
-                notaTexto.setCols(40);
+                
+                notaTexto = new Textbox();
+                notaTexto.setCols(30);
                 notaTexto.setValue(planificacionDetalle.getDescripcion()); 
                 notaTexto.setRows(2);
                 row.appendChild(notaTexto);
             }
             row.setParent(this);
         } else {
-            for (int i = 0; i < 10; i++) {
-                row = new Row();
-                notaTexto.setCols(40);
-                notaTexto.setRows(2);
+            row = new Row();
+            for (int i = 0; i < 5; i++) {
+                
+                notaTexto = new Textbox();
+                notaTexto.setCols(30);
+                notaTexto.setRows(30);
                 row.appendChild(notaTexto);
             }
             row.setParent(this);

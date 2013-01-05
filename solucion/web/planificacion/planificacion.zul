@@ -217,9 +217,8 @@ void buscarMaterias(Cursos curso){
                 </rows>
             </grid>
          
-     
-            <vbox>
-          <grid height="100px"  id="datos" >
+      
+          <grid height="400px"  width="100%" id="datos" >
                 <columns>
                         <column forEach="${values}" height="70px" style="text-align:justify"  width="155px"  align="justify" >
                             <textbox style="text-align:justify;background:transparent;border:0px"  width="155px" value="${each[0]}" rows="3"/>
@@ -228,7 +227,7 @@ void buscarMaterias(Cursos curso){
                 <rows id="filas" use="bean.Planificacion">
                 </rows>
             </grid>
-            </vbox>
+       
         </groupbox>
 
     </window>
