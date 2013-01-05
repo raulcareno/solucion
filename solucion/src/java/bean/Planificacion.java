@@ -93,8 +93,10 @@ public class Planificacion extends Rows {
         }
         return false;
     }
+    
+    
 
-    public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema, Boolean vertical) {
+    public void addRow(String curso, Global materia) {
         System.out.println("TOP INI; " + new Date());
 //        int tamanio = 0;
         System.setProperty("java.awt.headless", "true");
@@ -107,7 +109,8 @@ public class Planificacion extends Rows {
         getChildren().clear();
         Textbox notaTexto = null;
         List<PlanificacionDetalle> detalle = adm.query("Select o from PlanificacionDetalle as o  "
-                + " where o.evaluador.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.evaluador.evaluador.orden )  ");
+                + " where o.evaluador.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + " order by o.evaluador.orden  ");
         if (detalle.size() <= 0) {
             for (Iterator<PlanificacionDetalle> it = detalle.iterator(); it.hasNext();) {
                 PlanificacionDetalle planificacionDetalle = it.next();
