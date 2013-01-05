@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk xmlns="http://www.zkoss.org/2005/zul">
+    <window>
+    <zscript>
+        <![CDATA[
+        
+import bean.reportesClase;
+import java.math.BigDecimal;
+import bean.notasPlanificacionEvaluadores;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import sources.*;
+import bean.Permisos;
+import net.sf.jasperreports.engine.JRDataSource;
+import bean.exportarExcel;
+
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+
+Administrador adm = new Administrador();
+exportarExcel exp = new exportarExcel();
+
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+
+    void generar(){
+            try{datos.getChildren().clear();}catch(Exception ab){System.out.println(ab+"");}
+            try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(ab+"");}
+                    datos = new Grid();
+        // ************************************************************************************************************** 
+             
+            evaluaciones = adm.query("Select o from PlanificacionEvaluadores as o " + 
+             " where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigo  ");
+            String[][] cabes = new String[evaluaciones.size()][2];
+            int k=0;
+             for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
+                          PlanificacionEvaluadores trime = (PlanificacionEvaluadores) it.next();
+                          int orden = 0;
+                          int codigo=0;
+                              orden = trime.getOrden();
+                              codigo = trime.getCodigo();
+                              cabes[k][0]= trime.getNombre();
+                               cabes[k][1]= trime.getNombre()+"";
+                        k++;
+             }
+
+            String[][] values = new String[evaluaciones.size()][2];
+                      for (int i=0;i< evaluaciones.size();i++) {
+                         values[i][0]= ((PlanificacionEvaluadores)evaluaciones.get(i)).getNombre();
+                         values[i][1]= "number";
+                      }
+        // ****************************************************************************************************************
+        Auxhead auh = new Auxhead();
+        Auxheader aud = new Auxheader();
+        Textbox est = new Textbox(" ");
+        est.setCols(50);
+        est.setStyle("background: transparent;border:0px");
+        est.setReadonly(true);
+        est.setParent(aud);
+        aud.setColspan(2);
+        aud.setParent(auh);
+        for (String[] strings : cabes) {
+                    aud = new Auxheader(strings[0]);
+                    //aud.setColspan(new Integer(strings[1]));
+                    aud.setParent(auh);
+        }
+        aud = new Auxheader("PROM");
+        aud.setParent(auh);
+        auh.setParent(datos);
+         Columns cols = new Columns();
+         datos.appendChild(cols);
+         Column matCol = new Column("Matriculas");
+         datos.getColumns().appendChild(matCol);
+         Column  estCol = new Column("Estudiante");
+         datos.getColumns().appendChild(estCol);
+         for (String[] strings : values ){
+                    matCol = new Column(strings[0]);
+                    matCol.setAlign("right");
+                    datos.getColumns().appendChild(matCol);
+              
+        }
+         estCol = new Column("PF");
+         datos.getColumns().appendChild(estCol);
+           Rows filasR = new bean.Planificacion();
+           filasR.setId("filas");
+           filasR.setParent(datos);
+ 
+          
+}
+            
+]]>
+    </zscript>
+    
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button   label="Genera"    onClick="generar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+        <groupbox mold="3d" >
+            <caption label="Agregar" />
+
+            <grid width="100%">
+                <rows>
+              
+                    <row>
+                        <span style="float:right"> AREA(*):</span>
+                    </row>
+                    <row>
+                        <span style="float:right"> AÑO DE BÁSICA: (*):</span>
+                        <listbox id="curso"  mold="select" >
+                            <listitem value="1" label="PRIMER GRADO" />
+                            <listitem value="2" label="SEGUNDO GRADO" />
+                            <listitem value="3" label="TERCER GRADO" />
+                            <listitem value="4" label="CUARTO GRADO" />
+                            <listitem value="5" label="QUINTO GRADO" />
+                            <listitem value="6" label="SEXTO GRADO" />
+                            <listitem value="7" label="SEPTIMO GRADO" />
+                            <listitem selected="true" value="8" label="OCTAVO GRADO" />
+                            <listitem value="9" label="NOVENO GRADO" />
+                            <listitem value="10" label="DECIMO GRADO" />
+                            <listitem value="11" label="PRIMER CURSO" />
+                            <listitem value="12" label="SEGUNDO CURSO" />
+                            <listitem value="13" label="TERCER CURSO" />
+                        </listbox>
+                    </row>
+                    <row>
+                        <span style="float:right"> EJE INTEGRADOR:</span>
+                        <textbox id="ejeexplorador" rows="2"  cols="125" readonly="true"   />   
+                    </row>
+                    <row>
+                        <span style="float:right"> EJE APRENDIZAJE:</span>
+                        <textbox id="ejeaprendizaje" rows="2"  cols="125" readonly="true"   />   
+                    </row>
+                    
+                    <row>
+                        <span style="float:right"> BLOQUES:</span>
+                        <textbox id="bloque" cols="125" readonly="true"   />   
+                    </row>
+                    <row>
+                        <span style="float:right"> DURACIÓN:</span>
+                        <span>
+                            <textbox id="duracion" cols="40" readonly="true" />   
+                     
+                            <span> FECHA DE INICIO:</span>
+                            <datebox id="fechainicio" />
+                     
+                            <span> FECHA DE EVALUACIÓN:</span>
+                            <datebox id="fechafin" />
+                        </span>
+                    </row>
+                    
+                    <row>
+                        <span style="float:right"> OBJETIVOS:</span>
+                        <textbox id="objetivos" cols="125" rows="2"  readonly="true"   />   
+                    </row>
+                    <row>
+                        <span style="float:right"> EJE TRANSVERSAL:</span>
+                        <textbox id="ejetransversal" rows="2" cols="125" readonly="true"   />   
+                    </row>
+                    
+                </rows>
+            </grid>
+         
+     
+            <vbox>
+                     <grid height="100px"  id="datos" >
+
+                <auxhead >
+                    <auxheader colspan="2">
+                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                    </auxheader>
+                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                </auxhead>
+                <columns>
+                    <column width="10px"   label ="Mat."/>
+                    <column width="300px" label ="Estudiante"/>
+                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                </columns>
+                <rows id="filas" use="bean.notas">
+                </rows>
+            </grid>
+            </vbox>
+        </groupbox>
+
+    </window>
+
+</zk>

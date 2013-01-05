@@ -13,12 +13,12 @@
 
         }
         .estilo2{
-            height:100%;
-            //width: 80%;
-            left: 15px;
-            background-color:#E0E0E0;
-            padding-left:60px;
-            padding-right:120px;
+        height:100%;
+        //width: 80%;
+        left: 15px;
+        background-color:#E0E0E0;
+        padding-left:60px;
+        padding-right:120px;
         }
     </style>
     <style>
@@ -37,7 +37,7 @@
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-                Executions.sendRedirect("login.zul");
+            Executions.sendRedirect("login.zul");
             }
             void salir(){
             
@@ -117,13 +117,13 @@
             }
             }
 
-  void cambio(){
+            void cambio(){
             Permisos permisos = new Permisos();
             Periodo perio = (Periodo)periodo.selectedItem.value;
             a.removeAttribute("periodo");
             a.setAttribute("periodo",perio);
             Executions.sendRedirect("index.zul");
-  }
+            }
             void verificar(){
             Empleados user = a.getAttribute("user");
             if(user != null){
@@ -293,9 +293,9 @@
                                             <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"    image="/images/preaprobados.png"  value="/seleccionPreaprobados.zul" />
                                             <menuitem onClick="ingresar(self)" id="SorteoInscritos" label="Sorteo Automático de Inscritos"   image="/images/sorteo.png"      value="/inscripcionesSorteo.zul" />
                                             <!--menuitem onClick="ingresar(self)" id="Bloquear" label="Bloquear Matricula" image="/images/bloquear.gif"   value="/actualizacion_1.zul" /-->
-                                                                                        <menuseparator></menuseparator>
+                                            <menuseparator></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Reportes_Estudiantes" label="Reportes Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
-                                                                                        <menuseparator></menuseparator>
+                                            <menuseparator></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
                                         </menupopup>
                                     </menu>
@@ -353,6 +353,12 @@
                                                     <menuitem onClick="ingresar(self)" id="TipoCandidatos"  image="/images/circulo.png"   label="TipoCandidatos" value="/votacion/tipoCandidato.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Candidatos"  image="/images/pensum.png"   label="Candidatos" value="/votacion/candidatos.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Votar"  image="/images/preaprobados.png"   label="Votar" value="/votacion/votar.zul"    />
+                                                </menupopup>
+                                            </menu>
+                                            <menu label="Planificación" image="/images/llave.gif"  >
+                                                <menupopup>
+                                                    <menuitem onClick="ingresar(self)" id="Evaluadores"  image="/images/circulo.png"   label="Evaluadores" value="/planificacion/evaluacion.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Planificacion"  image="/images/circulo.png"   label="Planificación" value="/planificacion/planificacion.zul"    />
                                                 </menupopup>
                                             </menu>
                                         </menupopup>
@@ -479,6 +485,7 @@
             TipoCandidatos.visible = per.verificarPermisoReporte("TipoCandidatos","TipoCandidatos", "Ingresar",true,"VARIOS");
             Candidatos.visible = per.verificarPermisoReporte("Candidatos","Candidatos", "Ingresar",true,"VARIOS");
             Registrar_Recomendacion.visible = per.verificarPermisoReporte("Registrar_Recomendacion","Registrar_Recomendacion", "Ingresar",true,"NOTAS");
+            Evaluadores.visible = per.verificarPermisoReporte("PlanificacionEvaluadores","PlanificacionEvaluadores", "Ingresar",true,"VARIOS");
    
 
             }
