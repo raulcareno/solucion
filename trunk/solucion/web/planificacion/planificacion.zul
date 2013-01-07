@@ -71,6 +71,14 @@ List cursos0 = null;
         return permiso.verificarPermiso("Planificacion",accion);
 
     }
+    
+    void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
     void nuevo(){
         if(verificar("Agregar")){
                 guardar.disabled=false;
@@ -93,24 +101,9 @@ try{
         }catch(Exception abc){
         
         }
-         if(pla.getMateria()!=null){
-                  for (int i = 0; i <= materia.getItems().size(); i++) {
-                            Global tr0 = ((Global)((Listitem)materia.getItems().get(i)).getValue());
-                            int primero = tr0.getCodigo();
-                            int segundo = pla.getMateria().getCodigo();
-                            if(primero == segundo){
-                                materia.setSelectedItem((Listitem)materia.getItems().get(i));
-                                //bd.value = pla.getMateria()+"";
-                                break;
-                            }
-                   }
-
-
-                    
-         }
-         
-          if(pla.getCurso()!=null){
+        if(pla.getCurso()!=null){
                   for (int i = 0; i <= curs.getItems().size(); i++) {
+                  try{
                             Cursos tr0 = ((Cursos)((Listitem)curs.getItems().get(i)).getValue());
                             int primero = tr0.getSecuencia();
                             int segundo = pla.getCurso();
@@ -119,11 +112,34 @@ try{
                                 //bd.value = pla.getMateria()+"";
                                 break;
                             }
+                            }catch(Exception erroCur){}
                    }
 
 
                     
          }
+         Cursos tmp = new Cursos(pla.getCurso());
+         tmp.setSecuencia(pla.getCurso());
+         buscarMaterias(tmp);
+         if(pla.getMateria()!=null){
+                  for (int i = 0; i <= materia.getItems().size(); i++) {
+                  try{
+                            Global tr0 = ((Global)((Listitem)materia.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = pla.getMateria().getCodigo();
+                            if(primero == segundo){
+                                materia.setSelectedItem((Listitem)materia.getItems().get(i));
+                                //bd.value = pla.getMateria()+"";
+                                break;
+                            }
+                            }catch(Exception erroMa){}
+                   }
+
+
+                    
+         }
+         
+          
         
         bloque.value = pla.getBloque(); 
         duracion.value = pla.getDuracion(); 
@@ -136,9 +152,30 @@ try{
         
          
 }//FIN DE LA funcion llenar
+ void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Planificacion as o " + 
+        " where o.materia.descripcion like '%"+p+"%' order by o.materia.descripcion");
+        datosBusca = new Listbox();
+        int a=0;
+            for (Iterator it = datosBusca.getItems().iterator(); it.hasNext();) {
+                    datosBusca.getItems().remove(a);
+                }
 
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Planificacion acceIt = (Planificacion) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getMateria()+""));
+                      li.appendChild(new Listcell(acceIt.getFechainicio().toLocaleString().substring(0,10)+""));
+                      li.appendChild(new Listcell(acceIt.getFechafin().toLocaleString().substring(0,10)+""));
+                      li.appendChild(new Listcell(" "+acceIt.getCurso()+" " ));
+                      datosBusca.appendChild(li);
+             }
+
+    }
  void move(){
-        llenar((Equivalencias)datos.selectedItem.value);
+        llenar((Planificacion)datosBusca.selectedItem.value);
         modificar.disabled = false;
   }
 void estado(Boolean estado,Boolean modificar){
@@ -206,7 +243,7 @@ void buscarMaterias(Cursos curso){
          }
          
          // EMPIEZA A GUARDAR DETALLES
-         List col = datos.getRows().getChildren();
+                  List col = datos.getRows().getChildren();
             for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
                     List labels = object.getChildren();
@@ -214,7 +251,7 @@ void buscarMaterias(Cursos curso){
                        PlanificacionDetalle det = new PlanificacionDetalle();
                        det.setEvaluador(evaluaciones.get(i));
                        det.setPlanificacion(pla);
-                       det.setDescripcion((labels.get(j)).getValue());
+                       det.setDescripcion(((Textbox)labels.get(j)).getValue());
                        adm.guardar(det);
                     }
            }
@@ -240,7 +277,6 @@ void buscarMaterias(Cursos curso){
                     <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    <button   label="Genera"    onClick="generar();"/>
                 </hbox>
             </vbox>
 
@@ -339,22 +375,13 @@ void buscarMaterias(Cursos curso){
                                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                             </hbox>
                             <hbox>
-                                <listbox mold="paging" rows="20" pageSize="20"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datosBusca" width="100%">
+                                <listbox mold="paging" rows="20" pageSize="20"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datosBusca" width="550px">
                                     <listhead>
-                                        <listheader label="Cod."/>
-                                        <listheader label="Nombres"/>
-                                        <listheader label="Teléfono"/>
-                                        <listheader label="Dirección"/>
-                                        
-                                        <listheader label="Perfil"/>
-                                        <listheader label="Pantalla"/>
-
+                                        <listheader label="Materia"/>
+                                        <listheader label="Fecha"/>
+                                        <listheader label="Evaluación"/>
+                                        <listheader label="Curso"/>
                                     </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigoemp}" />
-                                        <listcell label="${each.apellidos}" />
-                                        <listcell label="${each.direccion}" />
-                                    </listitem>
                                 </listbox>
 
 
