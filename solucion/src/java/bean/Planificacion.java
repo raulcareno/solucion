@@ -60,10 +60,10 @@ public class Planificacion extends Rows {
             for (Iterator<PlanificacionDetalle> it = detalle.iterator(); it.hasNext();) {
                 PlanificacionDetalle planificacionDetalle = it.next();
                 notaTexto = new Textbox();
-                notaTexto.setId("det"+planificacionDetalle.getCodigo());
+                notaTexto.setId("detalle"+planificacionDetalle.getCodigo());
                 notaTexto.setCols(30);
+                notaTexto.setRows(30);
                 notaTexto.setValue(planificacionDetalle.getDescripcion()); 
-                notaTexto.setRows(2);
                 row.appendChild(notaTexto);
             }
             row.setParent(this);

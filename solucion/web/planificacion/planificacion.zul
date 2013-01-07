@@ -94,13 +94,7 @@ List cursos0 = null;
 }
 
 void llenar(Planificacion pla){
-try{
  
-        pla.getMateria(materia.selectedItem.value);
-        pla.getCurso(curs.selectedItem.value+"");
-        }catch(Exception abc){
-        
-        }
         if(pla.getCurso()!=null){
                   for (int i = 0; i <= curs.getItems().size(); i++) {
                   try{
@@ -175,7 +169,10 @@ try{
 
     }
  void move(){
-        llenar((Planificacion)datosBusca.selectedItem.value);
+         pla = (Planificacion)datosBusca.selectedItem.value;
+        llenar(pla);
+        
+        filas.addRow(((Planificacion)datosBusca.selectedItem.value));  
         modificar.disabled = false;
   }
 void estado(Boolean estado,Boolean modificar){
@@ -252,7 +249,13 @@ void buscarMaterias(Cursos curso){
                        det.setEvaluador(evaluaciones.get(i));
                        det.setPlanificacion(pla);
                        det.setDescripcion(((Textbox)labels.get(j)).getValue());
-                       adm.guardar(det);
+                       if(((Textbox)labels.get(j)).getId().contains("detalle")){
+                            det.setCodigo(new Integer(((Textbox)labels.get(j)).getId().replace("detalle","")));
+                            adm.actualizar(det);
+                       }else{
+                            adm.guardar(det);
+                       }
+                       
                     }
            }
          //TERMINA GUARDAR DETALLE
