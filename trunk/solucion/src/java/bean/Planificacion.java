@@ -95,7 +95,31 @@ public class Planificacion extends Rows {
     }
     
     
+  public void addFila() {
+        System.out.println("TOP INI; " + new Date());
+//        int tamanio = 0;
+        System.setProperty("java.awt.headless", "true");
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Administrador adm = new Administrador();
+        Row row = new Row();
+        getChildren().clear();
+        Textbox notaTexto = null;
+        List<PlanificacionDetalle> detalle = adm.query("Select o from PlanificacionEvaluadores as o  "
+                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + " order by o.orden  ");
+            row = new Row();
+            for (int i = 0; i < detalle.size(); i++) {
+                notaTexto = new Textbox();
+                notaTexto.setCols(30);
+                notaTexto.setRows(30);
+                row.appendChild(notaTexto);
+            }
+            row.setParent(this);
+         
+    }
 
+  
     public void addRow(String curso, Global materia) {
         System.out.println("TOP INI; " + new Date());
 //        int tamanio = 0;
