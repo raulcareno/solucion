@@ -2,7 +2,7 @@
 
 <zk xmlns="http://www.zkoss.org/2005/zul">
     <window>
-    <zscript>
+        <zscript>
         <![CDATA[
         
 import bean.reportesClase;
@@ -31,6 +31,7 @@ exportarExcel exp = new exportarExcel();
  Periodo periodo = (Periodo) ses.getAttribute("periodo");
  Empleados user =  (Empleados)ses.getAttribute("user");
 Permisos permiso = new Permisos();    
+Planificacion pla = new Planificacion();
 
 List evaluaciones = adm.query("Select o from PlanificacionEvaluadores as o " + 
              " where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigo  ");
@@ -73,24 +74,82 @@ List cursos0 = null;
     void nuevo(){
         if(verificar("Agregar")){
                 guardar.disabled=false;
-                    llenar(new Planificacion(0));
+                    pla = new Planificacion();
+                    pla.setCodigo(0);
+                    llenar(pla);
                     estado(false,false);
+                    filas.addFila();  
  
        }else{
                     Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         }
 }
 
-void llenar(Planificacion empa){
-   
-}
+void llenar(Planificacion pla){
+try{
+ 
+        pla.getMateria(materia.selectedItem.value);
+        pla.getCurso(curs.selectedItem.value+"");
+        }catch(Exception abc){
+        
+        }
+         if(pla.getMateria()!=null){
+                  for (int i = 0; i <= materia.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)materia.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = pla.getMateria().getCodigo();
+                            if(primero == segundo){
+                                materia.setSelectedItem((Listitem)materia.getItems().get(i));
+                                //bd.value = pla.getMateria()+"";
+                                break;
+                            }
+                   }
+
+
+                    
+         }
+         
+          if(pla.getCurso()!=null){
+                  for (int i = 0; i <= curs.getItems().size(); i++) {
+                            Cursos tr0 = ((Cursos)((Listitem)curs.getItems().get(i)).getValue());
+                            int primero = tr0.getSecuencia();
+                            int segundo = pla.getCurso();
+                            if(primero == segundo){
+                                curs.setSelectedItem((Listitem)curs.getItems().get(i));
+                                //bd.value = pla.getMateria()+"";
+                                break;
+                            }
+                   }
+
+
+                    
+         }
+        
+        bloque.value = pla.getBloque(); 
+        duracion.value = pla.getDuracion(); 
+        fechainicio.value = pla.getFechainicio();
+        fechafin.value = pla.getFechafin();
+        objetivos.value = pla.getObjetivos();
+        ejetransversal.value = pla.getEjetransversal();
+        ejeaprendizaje.value = pla.getEjeaprendizaje();
+        ejeintegrador.value = pla.getEjeintegrador(); 
+        
+         
+}//FIN DE LA funcion llenar
+
+ void move(){
+        llenar((Equivalencias)datos.selectedItem.value);
+        modificar.disabled = false;
+  }
 void estado(Boolean estado,Boolean modificar){
           curs.disabled = estado; 
         materia.disabled = estado;
-        ejeexplorador.readonly = estado;
+        ejeintegrador.readonly = estado;
         ejeaprendizaje.readonly = estado;
         bloque.readonly = estado;
         duracion.readonly = estado;
+        fechainicio.disabled = estado;
+        fechafin.disabled = estado;
         fechainicio.readonly = estado;
         fechafin.readonly = estado;
         objetivos.readonly = estado;
@@ -112,9 +171,6 @@ void buscarMaterias(Cursos curso){
                 " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.materia.descripcion ");
             }
         materia.getChildren().clear();
-        try{ 
-        
-             datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(""+ab);}
              bd2.value = "";
                for (Iterator it = materias.iterator(); it.hasNext();) {
                       Global estudent = (Global) it.next();
@@ -125,16 +181,58 @@ void buscarMaterias(Cursos curso){
              }
     }
 
-    void generar(){
-            
-         filas.addRow(curs.selectedItem.value.getSecuencia()+"",materia.selectedItem.value);  
- 
-
-}
+    void guardar(){
+        
+      if(bloque.value.equals("")  || duracion.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+        }
+        pla.setPeriodo(periodo);
+        pla.setMateria(materia.selectedItem.value);
+        pla.setCurso(curs.selectedItem.value.secuencia);
+        pla.setBloque(bloque.value); 
+        pla.setDuracion(duracion.value); 
+        pla.setFechainicio(fechainicio.value);
+        pla.setFechafin(fechafin.value);
+        pla.setObjetivos(objetivos.value);
+        pla.setEjetransversal(ejetransversal.value);
+        pla.setEjeaprendizaje(ejeaprendizaje.value);
+        pla.setEjeintegrador(ejeintegrador.value); 
+        if((!pla.getCodigo().equals(0)) ){
+             adm.actualizar(pla);
+         }else{
+         pla.setCodigo(adm.getNuevaClave("Planificacion","codigo"));
+             adm.guardar(pla);
+         }
+         
+         // EMPIEZA A GUARDAR DETALLES
+         List col = datos.getRows().getChildren();
+            for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    List labels = object.getChildren();
+                    for (int j = 0; j < labels.size(); j++) {
+                       PlanificacionDetalle det = new PlanificacionDetalle();
+                       det.setEvaluador(evaluaciones.get(i));
+                       det.setPlanificacion(pla);
+                       det.setDescripcion((labels.get(j)).getValue());
+                       adm.guardar(det);
+                    }
+           }
+         //TERMINA GUARDAR DETALLE
+         
+         
+   }
 //
 ]]>
-    </zscript>
-    
+        </zscript>
+      <tabbox width="100%">
+            <tabs>
+                <tab id="registro" label="Registro" />
+                <tab id="busqueda" label="Busquedas" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                              
         <vbox>
             <vbox>
                 <hbox>
@@ -148,8 +246,7 @@ void buscarMaterias(Cursos curso){
 
         </vbox>
 
-        <groupbox mold="3d" >
-            <caption label="Agregar" />
+         
 
             <grid width="100%">
                 <rows>
@@ -159,76 +256,120 @@ void buscarMaterias(Cursos curso){
                         <span style="float:right"> AÑO:</span>
                         <span>
                          
-                         <listbox id="curs"   mold ="select" 
-                                             onSelect="buscarMaterias(self.selectedItem.value)">
-                                        <listitem label="SELECCIONE" value="-1"/>
-                                        <listitem forEach="${cursos}" value="${each}">
-                                            <listcell label="${each.descripcion}" />
+                            <listbox id="curs" disabled="true"   mold ="select" 
+                                  onSelect="buscarMaterias(self.selectedItem.value)">
+                                <listitem label="SELECCIONE" value="-1"/>
+                                <listitem forEach="${cursos}" value="${each}">
+                                    <listcell label="${each.descripcion}" />
 
-                                        </listitem>
-                                    </listbox>
-                        <span> AREA(*):</span>
+                                </listitem>
+                            </listbox> </span>
+                            <span> AREA(*):</span>
                           
-                                    <listbox id="materia" mold="select" >
-                                        <listitem label="SELECCIONE" value="0"/> 
-                                        <listitem forEach="${materias}" value="${each}">
-                                            <listcell label="${each.descripcion}" />
+                            <listbox id="materia"  disabled="true"  mold="select" >
+                                <listitem label="SELECCIONE" value="0"/> 
+                                <listitem forEach="${materias}" value="${each}">
+                                    <listcell label="${each.descripcion}" />
 
-                                        </listitem>
-                                    </listbox>
-                                    </span>
+                                </listitem>
+                            </listbox>
+                       
                         
                     </row>
                     <row>
                         <span style="float:right"> EJE INTEGRADOR:</span>
-                        <textbox id="ejeexplorador" rows="2"  cols="125" readonly="true"   />   
-                    </row>
-                    <row>
+                        <textbox id="ejeintegrador" rows="2"  cols="60" readonly="true"   />   
+                    
                         <span style="float:right"> EJE APRENDIZAJE:</span>
-                        <textbox id="ejeaprendizaje" rows="2"  cols="125" readonly="true"   />   
+                        <textbox id="ejeaprendizaje" rows="2"  cols="60" readonly="true"   />   
                     </row>
                     
                     <row>
                         <span style="float:right"> BLOQUES:</span>
-                        <textbox id="bloque" cols="125" readonly="true"   />   
+                        <textbox id="bloque" cols="60" readonly="true"   />   
+                        
+                            <span> FECHA DE INICIO:</span>
+                            <datebox id="fechainicio" />
                     </row>
                     <row>
                         <span style="float:right"> DURACIÓN:</span>
                         <span>
                             <textbox id="duracion" cols="40" readonly="true" />   
                      
-                            <span> FECHA DE INICIO:</span>
-                            <datebox id="fechainicio" />
-                     
+                            </span>
+ 
                             <span> FECHA DE EVALUACIÓN:</span>
                             <datebox id="fechafin" />
-                        </span>
+
                     </row>
                     
                     <row>
                         <span style="float:right"> OBJETIVOS:</span>
-                        <textbox id="objetivos" cols="125" rows="2"  readonly="true"   />   
-                    </row>
-                    <row>
+                        <textbox id="objetivos" cols="60" rows="2"  readonly="true"   />   
                         <span style="float:right"> EJE TRANSVERSAL:</span>
-                        <textbox id="ejetransversal" rows="2" cols="125" readonly="true"   />   
+                        <textbox id="ejetransversal" rows="2" cols="60" readonly="true"   />   
                     </row>
                     
                 </rows>
             </grid>
          
       
-          <grid height="400px"  width="100%" id="datos" >
+            <grid height="400px"  width="100%" id="datos" >
                 <columns>
-                        <column forEach="${values}" height="70px" style="text-align:justify"  width="155px"  align="justify" >
-                            <textbox style="text-align:justify;background:transparent;border:0px"  width="155px" value="${each[0]}" rows="3"/>
-                        </column>
+                    <column forEach="${values}" height="70px" style="text-align:justify"  width="155px"  align="justify" >
+                        <textbox style="text-align:justify;background:transparent;border:0px"  width="155px" value="${each[0]}" rows="3"/>
+                    </column>
                 </columns>
                 <rows id="filas" use="bean.Planificacion">
                 </rows>
             </grid>
        
-        </groupbox>
+         
+                </tabpanel>
+                
+               
+                <tabpanel>
+
+                    <groupbox  width="100%" mold="3d" >
+
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  MATERIA:
+                                <textbox onChanging="buscar(event.value)" id="buscarText"  maxlength="60" cols="40" />
+                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="20" pageSize="20"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datosBusca" width="100%">
+                                    <listhead>
+                                        <listheader label="Cod."/>
+                                        <listheader label="Nombres"/>
+                                        <listheader label="Teléfono"/>
+                                        <listheader label="Dirección"/>
+                                        
+                                        <listheader label="Perfil"/>
+                                        <listheader label="Pantalla"/>
+
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigoemp}" />
+                                        <listcell label="${each.apellidos}" />
+                                        <listcell label="${each.direccion}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+
+
+
+                </tabpanel>
+
+                </tabpanels>
+                
+           </tabbox>
+      
 
     </window>
 
