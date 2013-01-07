@@ -219,7 +219,7 @@ void buscarMaterias(Cursos curso){
                     }
            }
          //TERMINA GUARDAR DETALLE
-         
+                         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
          
    }
 //
