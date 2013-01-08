@@ -214,8 +214,8 @@ public class EmpleadosBean{
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
             }
             try {
-                if (adm.existe("Empleados", "nombre", object.getNombre()).size() <= 0) {
-                    //object.setIdEmpleados(adm.getNuevaClave("Empleados", "idEmpleados"));
+                if (adm.existe("Empleados", "identificacion", object.getIdentificacion()).size() <= 0) {
+                    object.setIdEmpleados(adm.getNuevaClave("Empleados", "idEmpleados"));
                     adm.guardar(object);
                     
                    adm.ejecutaSql("Delete from EmpleadosMaterias where idEmpleados.idEmpleados = '"+object.getIdEmpleados()+"' ");

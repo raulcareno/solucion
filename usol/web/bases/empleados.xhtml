@@ -68,7 +68,7 @@
                             <h:outputText value="FECHA NACIMIENTO: " />  
                             <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{empleadosBean.object.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
                             <h:outputText value="CONFIRMAR CLAVE: " />  
-                            <p:password  value="#{empleadosBean.clave2}" redisplay="true"  id="Clave2"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{empleadosBean.object.clave}" redisplay="true"  id="Clave2"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="PAIS: " /> 
                             <p:selectOneMenu   id="pais" label="pais"  style="width:160px"  value="#{empleadosBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
