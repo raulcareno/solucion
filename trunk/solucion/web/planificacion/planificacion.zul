@@ -5,7 +5,7 @@
         <zscript>
         <![CDATA[
         
-import bean.reportesClase;
+import bean.*;
 import java.math.BigDecimal;
 import bean.notasPlanificacionEvaluadores;
 import jcinform.persistencia.*;
@@ -262,10 +262,40 @@ void buscarMaterias(Cursos curso){
                          Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
          
    }
+   
+   
+    void showReport() {
+            //Preparing parameters
+            Institucion insts = periodo.getInstitucion();
+            reportesClase noti = new reportesClase();
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+             datasource = noti.planificaciones(pla);
+             report.setSrc(directorioReportes+"planificacion.jasper");
+             parametros.put("titulo", "PLANIFICACION POR BLOQUES");
+             parametros.put("pathSubRel",directorioReportes);//planificacion_sub.jasper
+            //if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+            //}
+             contenidoReporte.visible=true; 
+             contenido.visible=false; 
+        }
+
+   
 //
 ]]>
         </zscript>
-      <tabbox width="100%">
+      <tabbox id="contenido" width="100%">
             <tabs>
                 <tab id="registro" label="Registro" />
                 <tab id="busqueda" label="Busquedas" />
@@ -280,6 +310,7 @@ void buscarMaterias(Cursos curso){
                     <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="showReport();"/>
                 </hbox>
             </vbox>
 
@@ -399,7 +430,16 @@ void buscarMaterias(Cursos curso){
                 </tabpanels>
                 
            </tabbox>
-      
+       <panel height="800px" visible="false"  id="contenidoReporte">
+                <toolbar align="center">
+		   <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
+           onClick="contenidoReporte.visible=false; contenido.visible=true; botones1.visible=true; botones2.visible=true; separador.visible=true;  "/>
+            	</toolbar>
+                    <panelchildren>
+
+                        <jasperreport id="report" />
+                    </panelchildren>
+                </panel>
 
     </window>
 
