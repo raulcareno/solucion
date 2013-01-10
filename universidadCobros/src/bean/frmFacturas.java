@@ -62,6 +62,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     List<Parametros> parametrosList = null;
     public Institucion inst;
     public Matriculas actualMatricula;
+    public Parientes actualPariente;
     private String separador = File.separator;
 
     /**
@@ -140,6 +141,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         btnGuardarCerra = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         encontrados1 = new javax.swing.JList();
@@ -232,6 +234,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         frmActualizar.setLayout(null);
 
         ruc1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        ruc1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ruc1FocusLost(evt);
+            }
+        });
         ruc1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 ruc1KeyPressed(evt);
@@ -292,6 +299,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         });
         frmActualizar.add(btnGuardarCerra);
         btnGuardarCerra.setBounds(80, 92, 133, 23);
+
+        jButton1.setText("Cerrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        frmActualizar.add(jButton1);
+        jButton1.setBounds(220, 92, 80, 23);
 
         getContentPane().add(frmActualizar);
         frmActualizar.setBounds(0, 80, 310, 120);
@@ -975,6 +991,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.btnModificar.setLabel("Modificar");
 //            this.txtNombre.setEnabled(false);
         }
+        panelencontrados1.setVisible(false);
+        buscarApellido.setText("");
+        ruc1.setText("");
+        nombre1.setText("");
+        direccion1.setText("");
+        telefono1.setText("");
+        frmActualizar.setVisible(false);
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
     public void llenarFactura() {
@@ -1015,18 +1038,24 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         try {
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(dire);
             ReporteDataSource ds = new ReporteDataSource(detalle);
-
             Map parametros = new HashMap();
             parametros.put("fecha", obj.getFecha());
             parametros.put("nombre", obj.getNombres());
             parametros.put("total", obj.getTotal());
-            parametros.put("alumno", obj.getIdMatriculas().getIdEstudiantes().getApellidoPaterno() + " " + obj.getIdMatriculas().getIdEstudiantes().getApellidoMaterno() + " " + obj.getIdMatriculas().getIdEstudiantes().getNombre());
             parametros.put("ruc", obj.getRuc());
             parametros.put("direccion", obj.getDireccion());
             parametros.put("telefono", obj.getTelefono());
-            parametros.put("curso", obj.getIdMatriculas().getIdCarreras() + "");
-            parametros.put("escuela", obj.getIdMatriculas().getIdCarreras().getIdEscuela().getNombre() + "");
-            parametros.put("jornada", obj.getIdMatriculas().getIdCarreras().getIdJornada().getNombre() + "");
+            if (actualMatricula.getIdMatriculas() == null) {
+                parametros.put("alumno", nombre1.getText());
+                parametros.put("curso", "..");
+                parametros.put("escuela", "..");
+                parametros.put("jornada", "..");
+            } else {
+                parametros.put("alumno", obj.getIdMatriculas().getIdEstudiantes().getApellidoPaterno() + " " + obj.getIdMatriculas().getIdEstudiantes().getApellidoMaterno() + " " + obj.getIdMatriculas().getIdEstudiantes().getNombre());
+                parametros.put("curso", obj.getIdMatriculas().getIdCarreras() + "");
+                parametros.put("escuela", obj.getIdMatriculas().getIdCarreras().getIdEscuela().getNombre() + "");
+                parametros.put("jornada", obj.getIdMatriculas().getIdCarreras().getIdJornada().getNombre() + "");
+            }
             parametros.put("observacion", observacion.getText() + "");
             parametros.put("usuario", empleadoActual.getApellidoPaterno() + " " + empleadoActual.getNombre());
 
@@ -1066,6 +1095,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         direccion.setText(".");
         telefono.setText(".");
         carrera.setText(".");
+        ruc1.setText("");
+            nombre1.setText("");
+            direccion1.setText("");
+            telefono1.setText("");
+            codigoPariente.setText("");
+            actualPariente = new Parientes();
     }
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
 // TODO add your handling code here:
@@ -1099,12 +1134,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             cab.setFecha(fecha);
             cab.setFechaEmision(fecha);
             cab.setFechaVence(fecha);
-            cab.setIdMatriculas(actualMatricula);
+            if (actualMatricula.getIdMatriculas() == null) {
+                cab.setIdMatriculas(null);
+            } else {
+                cab.setIdMatriculas(actualMatricula);
+            }
+
             cab.setRuc(ruc.getText());
             cab.setNombres(nombre.getText());
             cab.setSubtotal(new BigDecimal(subtotal.getText()));
             cab.setTelefono(telefono.getText());
             cab.setDireccion(direccion.getText());
+
             cab.setIva(new BigDecimal(iva.getText()));
             cab.setBaseiva(BigDecimal.ZERO);
             cab.setBasecero(new BigDecimal(subtotal.getText()));
@@ -1112,14 +1153,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             cab.setAutorizacion(true); //NO SE QUE HACE PERO LO OCUPO PARA VER SI ESTÁ ANULADA
             cab.setIdFacturas(inst.getSerie1() + "FC" + factura.getText());
             cab.setObservacion(observacion.getText());
-            cab.setTotal(cab.getBasecero().subtract(cab.getDescuento())); 
+            cab.setTotal(cab.getBasecero().subtract(cab.getDescuento()));
             adm.guardar(cab);
             //ACTUALIZAR DOCUMENTO FACTURA
             //ACTUALIZAR DOCUMENTO FACTURA
             inst.setFactura1(factura.getText().trim());
             adm.actualizar(inst);
-            
-          
+
+
 
             secuencial sec = new secuencial();
             Boolean tipoInscripcion = false;
@@ -1133,28 +1174,28 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
                 det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 3)));
                 adm.guardar(det);
-                if(((String) tFactura.getValueAt(i, 5)).equals("I")){ 
+                if (((String) tFactura.getValueAt(i, 5)).equals("I")) {
                     tipoInscripcion = true;
                 }
-                if(((String) tFactura.getValueAt(i, 5)).equals("M")){ 
+                if (((String) tFactura.getValueAt(i, 5)).equals("M")) {
                     tipoMatricula = true;
                 }
                 //CXC
 
             }
-            if(tipoInscripcion){
+            if (tipoInscripcion) {
                 actualMatricula.setPagadainscripcion(true);
                 actualMatricula.setEstadoMat("I");
-            } 
-            if(tipoMatricula){
+            }
+            if (tipoMatricula) {
                 actualMatricula.setPagada(true);
                 actualMatricula.setEstadoMat("M");
-            } 
+            }
 
-            
-            
+
+            if(actualMatricula.getIdMatriculas() != null)
             adm.actualizar(actualMatricula);
-            
+
             Cxcobrar cx = new Cxcobrar();
             cx.setIdCxcobrar(adm.getNuevaClave("Cxcobrar", "idCxcobrar"));
             cx.setDebe(cab.getTotal());
@@ -1229,6 +1270,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             modificar = true;
             grabar = true;
         } else {
+            frmActualizar.setVisible(false);
+            ruc1.setText("");
+            nombre1.setText("");
+            direccion1.setText("");
+            telefono1.setText("");
+
             grabar = false;
             modificar = false;
             buscarApellido.setEnabled(false);
@@ -1266,7 +1313,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             tipoA.setEnabled(true);
 
         }
-        BigDecimal valorIva = regresaVariableParametrosDecimal("IVA", parametrosList);
+        BigDecimal valorIva;
+        try {
+            valorIva = regresaVariableParametrosDecimal("IVA", parametrosList);
+        } catch (Exception e) {
+            valorIva = new BigDecimal(0);
+        }
+
         if (valorIva.doubleValue() > 0) {
             iva.setText(valorIva.divide(new BigDecimal(100), 2, RoundingMode.HALF_UP).multiply(totalCalc).setScale(2, RoundingMode.HALF_UP) + "");
             total5.setText("IVA " + valorIva + "%:");
@@ -1325,7 +1378,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }
     Estudiantes es = null;
     public general EstudianteSeleccionado = null;
-   public void cargarRubros2(general gen) {
+
+    public void cargarRubros2(general gen) {
         if (gen.getCodigoString().equals("0")) {
             return;
         }
@@ -1376,36 +1430,36 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             DefaultTableModel dtm2 = (DefaultTableModel) formasdePago.getModel();
             dtm2.getDataVector().removeAllElements();
 
-            if (actualMatricula.getPagadainscripcion()!=null) {
-            if (actualMatricula.getPagadainscripcion()) {
-                //limpiar();
-                tFactura.setModel(dtm);
-                formasdePago.setModel(dtm2);
-                sumar();
-                sumarPagos();
-                llenarFactura();
-                JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }    
-                
+            if (actualMatricula.getPagadainscripcion() != null) {
+                if (actualMatricula.getPagadainscripcion()) {
+                    //limpiar();
+                    tFactura.setModel(dtm);
+                    formasdePago.setModel(dtm2);
+                    sumar();
+                    sumarPagos();
+                    llenarFactura();
+                    JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
             }
 
-    
-                    Rubros rubroCredito = null;
-                    List<Rubros> rub = adm.query("Select o from Rubros as o where o.esinscripcion = true ");
-                    if (rub.size() > 0) {
-                        rubroCredito = rub.get(0);
-                    }//no existe el crédito
-                    Object[] obj = new Object[20];
-                    obj[0] = rub.get(0).getIdRubros();
-                    obj[1] = rubroCredito.getNombre();
-                    obj[2] = 1;
-                    obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(1));
-                    obj[4] = rubroCredito.getNoaplica();
-                    obj[5] = "I";
-                    dtm.addRow(obj);
 
-          
+            Rubros rubroCredito = null;
+            List<Rubros> rub = adm.query("Select o from Rubros as o where o.esinscripcion = true ");
+            if (rub.size() > 0) {
+                rubroCredito = rub.get(0);
+            }//no existe el crédito
+            Object[] obj = new Object[20];
+            obj[0] = rub.get(0).getIdRubros();
+            obj[1] = rubroCredito.getNombre();
+            obj[2] = 1;
+            obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(1));
+            obj[4] = rubroCredito.getNoaplica();
+            obj[5] = "I";
+            dtm.addRow(obj);
+
+
             tFactura.setModel(dtm);
             sumar();
 
@@ -1415,28 +1469,63 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
 
     }
+
+    void llenarDatos() {
+
+        try {
+            if (es.getIdParientes().getTipoRepresentante().equals("F")) {
+                actualPariente = es.getIdParientes();
+            } else if (es.getParIdParientes().getTipoRepresentante().equals("F")) {
+                actualPariente = es.getParIdParientes();
+            } else if (es.getParIdParientes2().getTipoRepresentante().equals("F")) {
+                actualPariente = es.getParIdParientes2();
+            } else {
+                actualPariente = new Parientes();
+            }
+        } catch (Exception e) {
+            System.out.println("no se cargo datos del pariente...");
+            e.printStackTrace();
+        }
+        if (actualPariente.getIdParientes() == null) {
+            try {
+
+                ruc.setText(es.getIdEstudiantes());
+                nombre.setText(es.getApellidoPaterno() + " "+es.getApellidoMaterno()+" " + es.getNombre());
+                direccion.setText(es.getDireccion());
+                telefono.setText(es.getTelefono());
+                ruc1.setText(es.getIdEstudiantes());
+                nombre1.setText(es.getApellidoPaterno() + " "+es.getApellidoMaterno()+" " + es.getNombre());
+                direccion1.setText(es.getDireccion());
+                telefono1.setText(es.getTelefono());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                codigoPariente.setText(actualPariente.getIdParientes() + "");
+                ruc.setText(actualPariente.getIdentificacion());
+                nombre.setText(actualPariente.getNombres());
+                direccion.setText(actualPariente.getDireccion());
+                telefono.setText(actualPariente.getTelefonoTrabajo());
+                ruc1.setText(actualPariente.getIdentificacion());
+                nombre1.setText(actualPariente.getNombres());
+                direccion1.setText(actualPariente.getDireccion());
+                telefono1.setText(actualPariente.getTelefonoTrabajo());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private void cargarRubros(general gen) {
         if (gen.getCodigoString().equals("0")) {
             return;
         }
+        actualPariente = new Parientes();
+        actualMatricula = new Matriculas();
         es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
-        Parientes factura = new Parientes();
-        if (es.getIdParientes().getTipoRepresentante().equals("F")) {
-            factura = es.getIdParientes();
-        } else if (es.getParIdParientes().getTipoRepresentante().equals("F")) {
-            factura = es.getParIdParientes();
-        } else if (es.getParIdParientes2().getTipoRepresentante().equals("F")) {
-            factura = es.getParIdParientes2();
-        }
-        codigoPariente.setText(factura.getIdParientes() + "");
-        ruc.setText(factura.getIdentificacion());
-        nombre.setText(factura.getNombres());
-        direccion.setText(factura.getDireccion());
-        telefono.setText(factura.getTelefonoTrabajo());
-        ruc1.setText(factura.getIdentificacion());
-        nombre1.setText(factura.getNombres());
-        direccion1.setText(factura.getDireccion());
-        telefono1.setText(factura.getTelefonoTrabajo());
+        llenarDatos();
 
         List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
@@ -1536,6 +1625,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             sumar();
 
         } else {
+            actualMatricula = new Matriculas();
             JOptionPane.showMessageDialog(this, "Estudiante no se encuentra matriculado", "JC INFORM", JOptionPane.ERROR_MESSAGE);
         }
 
@@ -1626,21 +1716,35 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void btnGuardarCerraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCerraActionPerformed
         // TODO add your handling code here:
-        Parientes par = new Parientes(new Integer(codigoPariente.getText()));
+        Parientes par;
+        try{
+             par = new Parientes(new Integer(codigoPariente.getText()));
+        }catch(Exception e){
+                par = new Parientes(0);
+        }
         par.setIdentificacion(ruc1.getText());
         par.setNombres(nombre1.getText());
         par.setDireccion(direccion1.getText());
         par.setTelefonoTrabajo(telefono1.getText());
         par.setTipoRepresentante("F");
-        adm.actualizar(par);
-        adm.actualizar(par);
-        ruc.setText(ruc1.getText());
-        nombre.setText(nombre1.getText());
-        direccion.setText(direccion1.getText());
-        telefono.setText(telefono1.getText());
+        if (par.getIdParientes().equals(0)) {
+            par.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+            adm.guardar(par);
+            ruc.setText(ruc1.getText());
+            nombre.setText(nombre1.getText());
+            direccion.setText(direccion1.getText());
+            telefono.setText(telefono1.getText());
+            frmActualizar.setVisible(false);
+        } else {
+            adm.actualizar(par);
+            ruc.setText(ruc1.getText());
+            nombre.setText(nombre1.getText());
+            direccion.setText(direccion1.getText());
+            telefono.setText(telefono1.getText());
+            frmActualizar.setVisible(false);
+        }
 
 
-        frmActualizar.setVisible(false);
     }//GEN-LAST:event_btnGuardarCerraActionPerformed
 
     private void editarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarDatosActionPerformed
@@ -1795,7 +1899,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         BigDecimal totalCobrado = new BigDecimal(BigInteger.ZERO);
 
         for (int i = 0; i < filas; i++) {
-            if (formasdePago.getValueAt(i, 0).toString().contains("Ayuda") || formasdePago.getValueAt(i, 0).toString().contains("Beca") ) {
+            if (formasdePago.getValueAt(i, 0).toString().contains("Ayuda") || formasdePago.getValueAt(i, 0).toString().contains("Beca")) {
             } else {
                 totalCobrado = totalCobrado.add((BigDecimal) formasdePago.getValueAt(i, 1));
             }
@@ -1851,12 +1955,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         obj[3] = referenciaA.getText();
         obj[4] = fechaA.getDate();
         obj[5] = confirmadoA.isSelected();
-        if(tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda")){
-            obj[6] = cmbPorcentaje.getSelectedItem().toString();    
-        }else{
-            obj[6] = "0";    
+        if (tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda")) {
+            obj[6] = cmbPorcentaje.getSelectedItem().toString();
+        } else {
+            obj[6] = "0";
         }
-        
+
         dtm.addRow(obj);
         formasdePago.setModel(dtm);
 
@@ -2002,36 +2106,58 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         }
     }//GEN-LAST:event_tFacturaKeyPressed
-public BigDecimal sumarSegun(String tipo){
-     int filas = tFactura.getRowCount();
-            BigDecimal totalCalc = new BigDecimal(0);
+    public BigDecimal sumarSegun(String tipo) {
+        int filas = tFactura.getRowCount();
+        BigDecimal totalCalc = new BigDecimal(0);
         for (int i = 0; i < filas; i++) {
-            if(tFactura.getValueAt(i,5).toString().contains(tipo))
+            if (tFactura.getValueAt(i, 5).toString().contains(tipo)) {
                 totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 3));
+            }
         }
         return totalCalc;
-}
+    }
 
     private void cmbPorcentajeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbPorcentajeItemStateChanged
         // TODO add your handling code here:
-if(cmbPorcentaje.getSelectedIndex()>0){
-    if(tipoA.getSelectedItem().toString().contains("Ayuda")){
-        BigDecimal totalMatriculas = sumarSegun("C");
-        BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
-        valorA.setText(descontar+"");
-         
-    }else if(tipoA.getSelectedItem().toString().contains("Beca")){
-        BigDecimal totalMatriculas = sumarSegun("M");
-        BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
-        valorA.setText(descontar+"");
-    }
-        
-}else{
-    
-}
-    
+        if (cmbPorcentaje.getSelectedIndex() > 0) {
+            if (tipoA.getSelectedItem().toString().contains("Ayuda")) {
+                BigDecimal totalMatriculas = sumarSegun("C");
+                BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
+                valorA.setText(descontar + "");
+
+            } else if (tipoA.getSelectedItem().toString().contains("Beca")) {
+                BigDecimal totalMatriculas = sumarSegun("M");
+                BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
+                valorA.setText(descontar + "");
+            }
+
+        } else {
+        }
+
 
     }//GEN-LAST:event_cmbPorcentajeItemStateChanged
+
+    private void ruc1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ruc1FocusLost
+        // TODO add your handling code here:
+        //1717996132
+        ruc1.getText();
+        List<Parientes> par = adm.query("Select o from Parientes as o where o.identificacion =  '" + ruc1.getText() + "'");
+        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
+            actualPariente = it.next();
+            codigoPariente.setText(actualPariente.getIdParientes()+"");
+            ruc1.setText("" + actualPariente.getIdentificacion());
+            nombre1.setText("" + actualPariente.getNombres());
+            direccion1.setText("" + actualPariente.getDireccion());
+            telefono1.setText("" + actualPariente.getTelefonoTrabajo());
+
+        }
+
+    }//GEN-LAST:event_ruc1FocusLost
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        frmActualizar.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
@@ -2070,6 +2196,7 @@ if(cmbPorcentaje.getSelectedIndex()>0){
     private javax.swing.JTable formasdePago;
     private javax.swing.JPanel frmActualizar;
     private javax.swing.JLabel iva;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
