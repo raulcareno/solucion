@@ -1,0 +1,336 @@
+ 
+<window  id="ventana"  border="normal"  onCreate='buscar("");' xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+
+    <zscript>
+        import java.io.File;
+        import jcinform.persistencia.Global;
+        import bean.EventDAO; 
+        import java.util.ArrayList; 
+        import jcinform.persistencia.*;
+        import jcinform.procesos.Administrador;
+        import bean.Permisos;
+        import org.zkoss.image.AImage;
+        import org.zkoss.image.Image;
+        Administrador adm = new Administrador();
+        List allEvents = adm.query("Select o from PlanificacionResultados as o where o.denominacion = 0");
+        PlanificacionResultados inobjeto = new PlanificacionResultados();
+        Permisos permiso = new Permisos();
+        //FUNCIONES
+
+        Session a = Sessions.getCurrent();
+        jcinform.persistencia.Empleados emp = a.getAttribute("user");
+        if(emp==null) Executions.sendRedirect("login.zul");
+
+
+        void cargarEscudo(byte[] imageData){
+        foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+        }
+        void cargarVacio(){
+        foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+        }
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Empleados user =  (Empleados)ses.getAttribute("user");
+        List cursos = null;
+        if(user.getTipo().equals("Interna")){
+            cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+            " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
+            " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+        }else{
+            cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+            " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+            " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+        }
+        
+        void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+          if(user.getTipo().equals("Interna")){
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+            }else{
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
+                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%' and o.formula = ''  order by o.orden");
+            }
+        mates.getChildren().clear();
+             bd2.value = "";
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        mates.appendChild(item);
+             }
+    }
+
+
+
+    </zscript>
+    <hbox>
+        <groupbox mold="3d" >
+   
+            <grid width="100%">
+                <rows>
+                    <row>
+                         <span style="float:right"> Curso(*):</span>
+                        <bandbox  width="350px"  readonly="true"  id="bd1">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs" height="300px" width="420px"
+                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();datos.getChildren().clear();">
+
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
+                    </row>
+                    <row>
+                        <span style="float:right"> Materia:</span>
+                        <bandbox  width="350px" readonly="true"  id="bd2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="mates" height="300px"  width="420px"
+                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();datos.getChildren().clear(); sisevalCombo.selectedIndex = -1;bd5.value = null; ">
+
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                    </row>
+                    <row>
+                        <span style="float:right"> Tuvimos Evaluación(*):</span>
+                        <span>
+                        <a:bind checked="inobjeto.esprueba"/>
+                        <checkbox  id="esprueba" onChange="update();"/>
+                        <span> No hubo clases(*):</span>
+                        <a:bind checked="inobjeto.noclase"/>
+                        <checkbox  id="noclase" onChange="update();"/>
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Hora:</span>
+                        <a:bind value="inobjeto.hora"/>
+                        <combobox  id="hora" onChange="update();" width="50px"  >
+                            <comboitem label="1era."/>
+                            <comboitem label="2da."/>
+                            <comboitem label="3era."/>
+                            <comboitem label="4ta."/>
+                            <comboitem label="5ta."/>
+                            <comboitem label="6ta."/>
+                            <comboitem label="7ma."/>
+                            <comboitem label="8va."/>
+                            <comboitem label="9va."/>
+                            <comboitem label="10ma."/>
+                        </combobox>
+                    </row>
+                    <row>
+                        <span style="float:right"> Conocimiento Tratado en Clase(*):</span>
+                        <a:bind value="inobjeto.conocimiento"/>
+                        <textbox rows="2" id="conocimiento" onChange="update();"  width="350px"  />
+                    </row>
+                    <row>
+                        <span style="float:right"> Destreza Desarrollada:</span>
+                        <span>
+                            <a:bind value="inobjeto.destreza"/>
+                            <textbox rows="2"  id="destreza" onChange="update();"  width="350px"  />
+                        </span>
+                    </row>
+                    <row>
+                        <span style="float:right"> Actividad:</span>
+                        <a:bind value="inobjeto.actividad"/>
+                        <textbox rows="2"  id="actividad" onChange="update();" width="350px" />
+                    </row>
+                    <row>
+                        <span style="float:right"> Estudiantes con Dificultades de Aprendizaje:</span>
+                        <a:bind value="inobjeto.estudiantes"/>
+                        <textbox  rows="2" id="estudiantes" onChange="update();" width="350px" />
+                    </row>
+                    <row>
+                        <span style="float:right"> Observaciones:</span>
+                        <a:bind value="inobjeto.observaciones"/>
+                        <textbox rows="2"  id="observaciones" onChange="update();"  width="350px" />
+                    </row>
+                  
+                    <row spans="3">
+                        <hbox>
+                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        </hbox>           
+                    </row>
+                     
+                </rows>
+            </grid>
+        </groupbox>
+                     
+    </hbox>
+    <groupbox width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+        <vbox>
+            <hbox>  Perfiles:
+                <textbox id="buscarText"  maxlength="60" cols="40" />
+                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+            </hbox>
+            <hbox width="100%">
+                <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                    <listhead>
+                        <listheader label="Cod."/>
+                        <listheader label="Nombres"/>
+
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigoinst}" />
+                        <listcell label="${each.denominacion}" />
+                    </listitem>
+                </listbox>
+
+
+            </hbox>
+        </vbox>
+
+
+    </groupbox>
+
+    <zscript>
+        AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
+        binder.bindBean("inobjeto", inobjeto);
+        binder.loadAll();
+
+        void update() {
+        binder.saveAll();
+        binder.loadAll();
+        }
+
+        //FUNCIONES
+ 
+        void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+        inobjeto = (PlanificacionResultados)datos.selectedItem.value;
+        }
+
+        denominacion.readonly = estado;
+        nombre.readonly = estado;
+        telefono.readonly = estado;
+        email.readonly = estado;
+        email2.readonly = estado;
+        direccion.readonly = estado;
+        secretaria.readonly = estado;
+        rector.readonly = estado;
+        clave.readonly = estado;
+        tipo.readonly = estado;
+        slogan.readonly = estado;
+     
+
+        }
+
+
+        void guardar(){
+        if(denominacion.value=="" || nombre=="" || telefono =="" || secretaria =="" ||rector ==""  || direccion =="" ){
+        Messagebox.show("Ingrese todos los campos para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        return ;
+        }
+        org.zkoss.image.Image nueva = foto0.getContent();
+        inobjeto.setEscudo(nueva.getByteData());
+
+        if((!inobjeto.getCodigoinst().equals(0)) ){
+        adm.actualizar(inobjeto);
+        List children = datos.selectedItem.children;
+        ((Listcell)children.get(0)).label = inobjeto.codigoinst+"";
+        ((Listcell)children.get(1)).label = inobjeto.denominacion+ " " + inobjeto.nombre +" " +inobjeto.getTipo() ;
+        }else{
+        inobjeto.setCodigoinst(adm.getNuevaClave("PlanificacionResultados","codigoinst"));
+        adm.guardar(inobjeto);
+        }
+        permiso.auditar("PlanificacionResultados","Guardar",""+denominacion.value+" "+nombre.value);
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        guardar.disabled=true;
+        agregar.disabled=false;
+        estado(true,false);
+        binder.bindBean("inobjeto",(new PlanificacionResultados(0)));
+        binder.loadAll();
+          
+
+        }
+
+        Boolean verificar(String accion){
+        return permiso.verificarPermiso("PlanificacionResultados",accion);
+
+        }
+        void nuevo(){
+        if(verificar("Agregar")){
+        guardar.disabled=false; 
+        inobjeto = new PlanificacionResultados(0);
+        binder.bindBean("inobjeto",inobjeto);
+        binder.loadAll();
+        estado(false,false);
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void move(){
+        binder.bindBean("inobjeto",(PlanificacionResultados)datos.selectedItem.value);
+        binder.loadAll();
+        if(((PlanificacionResultados)datos.selectedItem.value).getEscudo() != null){
+        cargarEscudo(((PlanificacionResultados)datos.selectedItem.value).getEscudo());
+        }else{
+        cargarVacio();
+        }
+        modificar.disabled = false;
+        }
+        void modificar(){
+        if(verificar("Modificar")){
+        guardar.disabled=false; estado(false,true);
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void eliminar(){
+        if(verificar("Eliminar")){
+        try{
+        inobjeto = (PlanificacionResultados)datos.selectedItem.value;
+        adm.eliminarObjeto(PlanificacionResultados.class, inobjeto.getCodigoinst());
+        datos.removeItemAt(datos.getSelectedIndex());
+           
+        Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        permiso.auditar("PlanificacionResultados","Eliminar",""+denominacion.value+" "+nombre.value);
+        }catch(Exception e){
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+   
+        void buscar(String p){
+        /*  List empleadosEncontrados = adm.query("Select o from PlanificacionResultados as o where o.nombre like '%"+p+"%' order by o.nombre");
+        datos = new Listbox();
+        int a=0;
+        for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+        datos.getItems().remove(a);
+        }
+        for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+        PlanificacionResultados acceIt = (PlanificacionResultados) it.next();
+        Listitem li = new Listitem();
+        li.setValue(acceIt);
+        li.appendChild(new Listcell(acceIt.getCodigoinst()+""));
+        li.appendChild(new Listcell(acceIt.getDenominacion()+" "+acceIt.getNombre() +" " +acceIt.getTipo() ));
+        datos.appendChild(li);
+        }
+        */
+        }
+        void cargar(Global g){
+        inobjeto.setPerfil(g);
+        }
+
+    </zscript>
+</window>

@@ -195,6 +195,9 @@ void estado(Boolean estado,Boolean modificar){
     
 void buscarMaterias(Cursos curso){
         List materias;
+        if(curso.getSecuencia()==null){
+            return;
+        }
             if(user.getTipo().equals("Interna")){
                 materias = adm.query("Select distinct  o.materia from MateriaProfesor as o " +
                 " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' and o.curso.secuencia = '"+curso.getSecuencia()+"'  " + 
@@ -246,7 +249,7 @@ void buscarMaterias(Cursos curso){
                     List labels = object.getChildren();
                     for (int j = 0; j < labels.size(); j++) {
                        PlanificacionDetalle det = new PlanificacionDetalle();
-                       det.setEvaluador(evaluaciones.get(i));
+                       det.setEvaluador(evaluaciones.get(j));
                        det.setPlanificacion(pla);
                        det.setDescripcion(((Textbox)labels.get(j)).getValue());
                        if(((Textbox)labels.get(j)).getId().contains("detalle")){
@@ -390,7 +393,7 @@ void buscarMaterias(Cursos curso){
                         <textbox style="text-align:justify;background:transparent;border:0px"  width="155px" value="${each[0]}" rows="3"/>
                     </column>
                 </columns>
-                <rows id="filas" use="bean.Planificacion">
+                <rows id="filas" use="bean.PlanificacionRow">
                 </rows>
             </grid>
        

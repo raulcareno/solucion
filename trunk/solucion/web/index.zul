@@ -359,6 +359,7 @@
                                                 <menupopup>
                                                     <menuitem onClick="ingresar(self)" id="Evaluadores"  image="/images/circulo.png"   label="Evaluadores" value="/planificacion/evaluacion.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Planificacion"  image="/images/circulo.png"   label="Planificación" value="/planificacion/planificacion.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="SeguimientoPlanificacion"  image="/images/circulo.png"   label="Seguimiento de Planificación" value="/planificacion/registro.zul"    />
                                                 </menupopup>
                                             </menu>
                                         </menupopup>
