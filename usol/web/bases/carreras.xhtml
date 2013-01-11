@@ -49,7 +49,7 @@
                         <h:outputText value="CIUDAD" />  
                         <p:inputText value="#{carrerasBean.object.ciudad}" id="ciudad"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="CON CONVENIO" />  
-                        <p:selectBooleanCheckbox value="#{carrerasBean.object.conConvenio}" id="conConvenio"  style="font-weight:bold;"/>  
+                        <p:selectBooleanButton id="ConConvenio" value="#{carrerasBean.object.conConvenio}" onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close" />  
                         <h:outputText value="INST_CONVENIO" />  
                         <p:inputText value="#{carrerasBean.object.instConvenio}" id="instConvenio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="FIN_INST_CONVENIO" />  
@@ -76,6 +76,8 @@
                         <p:inputText value="#{carrerasBean.object.numCreditosCt}" id="numCreditosCt"  maxlength="50" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="# NUMERO DE CRÉDITOS ST" />  
                         <p:inputText value="#{carrerasBean.object.numCreditosSt}" id="numCreditosSt"  maxlength="50" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="ES UNA MAESTRIA " />  
+                        <p:selectBooleanButton id="EsMaestria" value="#{carrerasBean.object.maestria}" onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close" />  
                         
                         
                         

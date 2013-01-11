@@ -37,6 +37,12 @@
 
                             <h:outputText style="font-weight: bold"  value="NOMBRES: " />  
                             <p:inputText value="#{aspirantesBean.object.nombres}" id="Nombres"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                             
+                            <h:outputText value="SEXO: " />  
+                            <p:selectOneRadio id="sexo" value="#{aspirantesBean.object.sexo}">  
+                                <f:selectItem itemLabel="MASCULINO"  itemValue="M" />  
+                                <f:selectItem itemLabel="FEMENINO" itemValue="F" />  
+                            </p:selectOneRadio> 
 
                             <h:outputText value="COLEGIO: " />  
                             <p:inputText value="#{aspirantesBean.object.colegio}" id="Colegio"  maxlength="100" size="35"  style="font-weight:bold;"/>  
