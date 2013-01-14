@@ -294,11 +294,11 @@ public class MatriculasBean {
         }
         try {
             if (categoriaSeleccionado.getIdCategoriasSociales().equals(new Integer(0))) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado la Categoría", "No ha seleccionado la categoría A,B,C "));
                 return null;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado  la Categoría", "No ha seleccionado la categoría A,B,C "));
             return null;
         }
         if (object.getEstadoMat().equals("")) {
@@ -320,7 +320,11 @@ public class MatriculasBean {
         if (pariente1.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion(), "tipoRepresentante", "F", "");
             if (pariList.size() > 0) {
-                pariente1.setIdParientes(pariList.get(0).getIdParientes());
+                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                    pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                }else{
+                    pariente1.setIdParientes(pariList.get(0).getIdParientes());
+                }
                 adm.actualizar(pariente1);
             } else {
                 pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
@@ -334,7 +338,11 @@ public class MatriculasBean {
         if (pariente2.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion(), "tipoRepresentante", "P", "");
             if (pariList.size() > 0) {
-                pariente2.setIdParientes(pariList.get(0).getIdParientes());
+                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                    pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                }else{
+                    pariente2.setIdParientes(pariList.get(0).getIdParientes());
+                }
                 adm.actualizar(pariente2);
             } else {
                 pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
@@ -348,7 +356,11 @@ public class MatriculasBean {
         if (pariente3.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion(), "tipoRepresentante", "M", "");
             if (pariList.size() > 0) {
-                pariente3.setIdParientes(pariList.get(0).getIdParientes());
+                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                    pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                }else{
+                    pariente3.setIdParientes(pariList.get(0).getIdParientes());
+                    }
                 adm.actualizar(pariente3);
             } else {
                 pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));

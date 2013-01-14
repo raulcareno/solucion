@@ -328,7 +328,11 @@ public class InscripcionesBean {
         if (pariente1.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion(), "tipoRepresentante", "F", "");
             if (pariList.size() > 0) {
-                pariente1.setIdParientes(pariList.get(0).getIdParientes());
+                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                    pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                }else{
+                    pariente1.setIdParientes(pariList.get(0).getIdParientes());
+                }
                 adm.actualizar(pariente1);
             } else {
                 pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
@@ -342,7 +346,11 @@ public class InscripcionesBean {
         if (pariente2.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion(), "tipoRepresentante", "P", "");
             if (pariList.size() > 0) {
-                pariente2.setIdParientes(pariList.get(0).getIdParientes());
+                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                    pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                }else{
+                    pariente2.setIdParientes(pariList.get(0).getIdParientes());
+                }
                 adm.actualizar(pariente2);
             } else {
                 pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
@@ -356,7 +364,11 @@ public class InscripcionesBean {
         if (pariente3.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion(), "tipoRepresentante", "M", "");
             if (pariList.size() > 0) {
-                pariente3.setIdParientes(pariList.get(0).getIdParientes());
+                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                    pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
+                }else{
+                    pariente3.setIdParientes(pariList.get(0).getIdParientes());
+                }
                 adm.actualizar(pariente3);
             } else {
                 pariente3.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
@@ -608,9 +620,9 @@ public class InscripcionesBean {
     public List<Estudiantes> buscarApellido(String apellido) {
         try {
             apellido = apellido.trim();
-            estudiantesListado = adm.query("Select o from Estudiantes as o "
-                    + " where o.apellidoPaterno like '%" + apellido + "%' "
-                    + " order by o.apellidoPaterno ", 0, 10);
+            estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
+                    + " where o.idEstudiantes.apellidoPaterno like '%" + apellido + "%' "
+                    + " and o.estadoMat = 'I' order by o.idEstudiantes.apellidoPaterno ", 0, 10);
             return estudiantesListado;
 
 
@@ -627,9 +639,9 @@ public class InscripcionesBean {
             if (cedula.isEmpty()) {
                 cedula = estudiante.getIdEstudiantes();
             }
-            estudiantesListado = adm.query("Select o from Estudiantes as o "
-                    + " where o.idEstudiantes like '%" + cedula + "%' "
-                    + " order by o.idEstudiantes ", 0, 10);
+            estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
+                    + " where o.idEstudiantes.idEstudiantes like '%" + cedula + "%' "
+                    + "  and o.estadoMat = 'I' order by o.idEstudiantes.idEstudiantes ", 0, 10);
             return estudiantesListado;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
@@ -1121,12 +1133,20 @@ public class InscripcionesBean {
       protected Boolean buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat = 'M' ");
-        if (matriculasListado.size() > 0) { //System.out.println("NO SE PUEDE MATRICULAR YA SE ENCUENTRA MATRICULADO");
+                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat in ('M','I') ");
+         if (matriculasListado.size() > 0) {
+            object = matriculasListado.get(0);
+            carreraSeleccionado = object.getIdCarreras();
+            categoriaSeleccionado = object.getIdCategoriasSociales();
+            buscarMateriasMatricula(object);
             return true; //MATRICULADO
-        } else {
-            return false; //MATRICULADO
+        }else{
+            carreraSeleccionado = new Carreras(0);
+            object = new Matriculas(0); 
+            buscarMateriasMatricula(object);
+               return false; //MATRICULADO
         }
+        
     }
 //    protected void buscarMatricula(Estudiantes estudiante) {
 //        List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
@@ -1199,19 +1219,7 @@ public class InscripcionesBean {
         } else {
             pariente3 = new Parientes();
         }
-
-//        List<Parientes> par = adm.query("Select o from Parientes as o where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "'  ");
-//        for (Iterator<Parientes> it = par.iterator(); it.hasNext();) {
-//            Parientes parientes = it.next();
-//            if (parientes.getTipoRepresentante().equals("F")) {
-//                pariente1 = parientes;
-//            } else if (parientes.getTipoRepresentante().equals("P")) {
-//                pariente2 = parientes;
-//            } else if (parientes.getTipoRepresentante().equals("M")) {
-//                pariente3 = parientes;
-//            }
-//
-//        }
+ 
         arLibreta = new Archivos();
         arTitulo = new Archivos();
         arCedula = new Archivos();
