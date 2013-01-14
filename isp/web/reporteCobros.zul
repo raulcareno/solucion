@@ -109,6 +109,20 @@ List nodos = adm.query("Select o from Nodos as o " +
                 
                 
                 report.setSrc(directorioReportes+"cxcclientes.jasper");
+            }else if(tipo.equals("ALDIA")){
+                Integer cclientev = ccliente.value;
+                if(cclientev != null ){
+                }else{
+                        cclientev = -1; //TODOS LOS CLIENTES
+                }
+                if(cclientev.equals(-1)){
+                        datasource = reportes.alDia(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
+                }else{
+                        datasource = reportes.alDia(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
+                }
+                
+                
+                report.setSrc(directorioReportes+"cxcclientesaldia.jasper");
             }else if(tipo.equals("FACEMI")){
                 datasource = reportes.facturasEmitidas(sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value), new Integer(tipodocumentoEm.selectedItem.value));
                 report.setSrc(directorioReportes+"emitidas.jasper");
@@ -413,7 +427,7 @@ void campos(String valor){
             filafechas.visible=true;
            filasector.visible=true;
             desde.value = fec; 
-        }else if(valor.equals("CXCLI")){
+        }else if(valor.equals("CXCLI") || valor.equals("ALDIA")){
             titulo.value= "Cuentas por Pagar";
             filaclientes.visible=true;
             filaclientes1.visible=true;
@@ -636,6 +650,7 @@ void campos(String valor){
                                     <listitem id="COBROS2"  label="Cuenta Mensual para Contabilidad" value="COBROS2" />
                                     <listitem id="COBROS3"  label="Reporte Mensual para Contabilidad(SAFI)" value="COBROS3" />
                                     <listitem id="FACEMI"  label="Reporte Facturas Emitidas" value="FACEMI" />
+                                    <listitem id="ALDIA"  label="Reporte Clientes al Día" value="ALDIA" />
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea" label="=========CONTRATOS================" value="linea" />
                                     <listitem id="PORESTADOCONTADOR" label="Clientes para Contador" value="PORESTADOCONTADOR" />

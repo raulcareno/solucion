@@ -223,6 +223,101 @@ public class ReportesClase {
         return ds;
     }
 
+    
+    public JRDataSource alDia(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+        String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+        String compleme = " and fa.fecha between '" + desdestr + "' and  '" + hastastr + "' ";
+        if (todasLasFechas) {
+            compleme = "";
+        }
+        String formaPago = " and o.formapago = '" + formapago + "' ";
+        if (formapago.equals(0)) {
+            formaPago = " and o.formapago in (0,1,2,3) ";
+        }
+        if (cli.getCodigo().equals(-1)) {
+
+            
+
+            if (sec.getCodigo().equals(-1)) {
+                if (canton.getCodigo().equals(-1)) {
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'   and o.estado = 'Activo' "
+                            + " " + formaPago
+                            + "order by o.clientes.apellidos");
+                } else {
+                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                            + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' "
+                            + "  and o.estado = 'Activo' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                            + " " + formaPago
+                            + " order by o.clientes.apellidos");
+                }
+            } else if (canton.getCodigo().equals(-1)) {
+
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.estado = 'Activo'  "
+                        + " " + formaPago
+                        + " order by o.clientes.apellidos");
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                        + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' and o.estado = 'Activo' "
+                        + " " + formaPago
+                        + " order by o.clientes.apellidos");
+            }
+        } else {
+            cli = (Clientes) adm.buscarClave(cli.getCodigo(), Clientes.class);
+            clientes.add(cli);
+        }
+        ArrayList detalles = new ArrayList();
+        String quer = "";
+        
+           String codClientes = "";
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            codClientes += clientes1.getCodigo()+",";
+        
+        }
+        if(codClientes.length()>0){
+            codClientes = codClientes.substring(0, codClientes.length()-1);
+        }
+            quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                    + "FROM cxcobrar cx, factura  fa "
+                    + " WHERE fa.clientes  in  (" + codClientes + ")  "
+                    + "  AND cx.factura = fa.codigo"
+                    + compleme
+                    + " GROUP BY fa.contratos  "
+                    + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) = 0 order by fa.contratos ";
+            List facEncontradas = adm.queryNativo(quer);
+            if (facEncontradas.size() > 0) {
+                Pendientes pendi = null;
+                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    pendi = new Pendientes();
+                    pendi.setFactura("" + vec.get(0));
+                    Date d = (Date) vec.get(1);
+                    pendi.setFecha(d);
+                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                    pendi.setContratos(c);
+                    pendi.setCliente(c.getClientes());
+                    pendi.setPlan(c.getPlan() + "");
+                    pendi.setDireccion(c.getDireccion());
+                    pendi.setContrato(c.getContrato() + "");
+                    pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
+                    pendi.setTotal((BigDecimal) vec.get(2));
+                    pendi.setSaldo((BigDecimal) vec.get(3));
+                    detalles.add(pendi);
+                }
+            }
+
+ 
+        System.out.println("" + quer);
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+
     public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
@@ -1928,4 +2023,30 @@ public class ReportesClase {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
         return beanCollectionDataSource;
     }
+    
+    
+    public static boolean esIp(String dir) {
+        StringTokenizer st = new StringTokenizer( dir, "." );
+        if ( st.countTokens() != 4 ) {
+            return false;
+        }
+        while ( st.hasMoreTokens() ) {
+            String nro = st.nextToken();
+            if ( ( nro.length() > 3 ) || ( nro.length() < 1 ) ) {
+                return false;
+            }
+            int nroInt = 0;
+            try {
+                nroInt = Integer.parseInt( nro );
+            }
+            catch ( NumberFormatException s ) {
+                return false;
+            }
+            if ( ( nroInt < 0 ) || ( nroInt > 255 ) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
 }
