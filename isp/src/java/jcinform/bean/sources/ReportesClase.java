@@ -318,8 +318,13 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago,String estado) {
         Administrador adm = new Administrador();
+        
+         String estadoComp = " and o.estado = '" + estado + "' ";
+        if (estado.equals("Todos")) {
+            estadoComp = "";
+        }
         List<Clientes> clientes = new ArrayList<Clientes>();
         String desdestr = convertiraString(desde) + "";
         String hastastr = convertiraString(hasta) + "";
@@ -339,13 +344,13 @@ public class ReportesClase {
                 if (canton.getCodigo().equals(-1)) {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago
+                            + " " + formaPago +" " + estadoComp
                             + "order by o.clientes.apellidos");
 
                 } else {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago
+                            + " " + formaPago +" " + estadoComp
                             + " order by o.clientes.apellidos");
 
                 }
@@ -353,7 +358,7 @@ public class ReportesClase {
 
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                        + " " + formaPago
+                        + " " + formaPago +" " + estadoComp
                         + " order by o.clientes.apellidos");
 
 
@@ -361,7 +366,7 @@ public class ReportesClase {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                         + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                        + " " + formaPago
+                        + " " + formaPago +" " + estadoComp
                         + " order by o.clientes.apellidos");
 
             }
@@ -835,15 +840,14 @@ public class ReportesClase {
             }
             String sql = "SELECT fa.codigo, fa.numero, fa.emision,  fa.total,  "
                     + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva ,fa.contratos "
-                    + " FROM detalle de, cxcobrar cx, factura  fa "
-                    + " WHERE de.factura = fa.codigo "
-                    + "AND fa.clientes  =  " + clientes1.getCodigo() + "  "
+                    + " FROM cxcobrar cx, factura  fa "
+                    + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
                     + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
                     + " AND cx.factura = fa.codigo "
                     + "AND fa.emision between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";
             //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
-//            System.out.println(""+sql);
+            //System.out.println("ESTE ES EL QUE NECESITO: "+sql);
             List facEncontradas = adm.queryNativo(sql);
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
