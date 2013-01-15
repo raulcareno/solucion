@@ -1173,6 +1173,22 @@ void buscarEstudiante(String valor){
 int ini = valor.indexOf("[");
 int fin = valor.indexOf("]");
 valor = valor.substring(ini+1, fin);
+
+
+List matriculas = adm.query("Select o from Matriculas as o where o.estudiante.codigoest = '"+valor+"' "
++ " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
+    if(matriculas.size()<= 0)
+    { 
+       int valor0 = Messagebox.show("El estudiante No se encuentra matriculado en éste PERIODO desea visualizar la información?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+      if(valor0 != 16){
+        return;
+       }
+    }
+
+
+
+
+
             List empleados = adm.query("Select o from Estudiantes as o where o.codigoest = '"+valor+"' ");
             if(empleados.size()>0){
                 for(Iterator it = empleados.iterator(); it.hasNext();) {

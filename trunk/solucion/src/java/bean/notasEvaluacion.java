@@ -5,7 +5,6 @@ import bsh.Interpreter;
 import java.awt.Robot;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -884,7 +883,7 @@ int kk=0;
                     Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            recalculoNotas(materia, curso);
+//            recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
             return "ok";
         } catch (EvalError ex) {
@@ -974,7 +973,7 @@ int kk=0;
                     Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            recalculoNotas(materia, curso);
+//            recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
             return "ok";
         } catch (EvalError ex) {
@@ -985,14 +984,15 @@ int kk=0;
 
     }
 
-    public void recalculoNotas(MateriaProfesor materia, Cursos curso) {
+    public void recalculoNotas(MateriaProfesor materia, Cursos curso,Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
 
-        List sistemas = adm.query("Select o from Sistemacalificacion as o "
-                + "where o.periodo.codigoper =  '" + periodo.getCodigoper() + "'  ");
-        List<Notanotas> notas = adm.query("Select o from Notanotas as o where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
+        List sistemas = adm.query("Select o from Sistemaevaluacion as o "
+                + "where o.sistemacalificacion.codigosis = '"+sistema+"' periodo.codigoper =  '" + periodo.getCodigoper() + "'  ");
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
