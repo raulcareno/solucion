@@ -158,7 +158,10 @@ public class notasEvaluacion extends Rows {
         Row row = new Row();
         String Shabilitado = "color:black;font-weight:bold;width:27px;font:arial;font-size:11px;text-align:right;";
         String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:27px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
-        String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:27px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+//        String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:23px;font:arial;font-size:9px;text-align:right;background:transparent;font-weigth:bold";
+        String ShabilitadoCombo = "color:black;font-weight:bold;width:38px;font:arial;font-size:9px;text-align:right;";
+        String SdeshabilitadoCombo = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:38px;font:arial;font-size:9px;text-align:right;background:transparent;font-weigth:bold";
+        
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
@@ -201,10 +204,10 @@ int kk=0;
  
                             combo = new Listbox();
                             combo.setMold("select");
-                            combo.setWidth("70px");
+                            combo.setWidth("40px");
                              
                             combo.setRows(1);
-                            combo.setStyle("font-size:9px;width:40px");
+                            combo.setStyle("font-size:8px;width:30px");
                             for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
                                 Equivalencias equivalencias = it2.next();
                                 item = new Listitem("" + equivalencias.getAbreviatura());
@@ -327,13 +330,20 @@ int kk=0;
                                 notaTexto.setDisabled(true);
                                 notaTexto.setStyle(Sdeshabilitado);
                             }
+                           
 
                         } else {
                             notaTexto.setDisabled(true);
                             notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
 
                         }
-
+//                        if(sistema.getAbreviatura().equals("Prom")){
+//                            notaTexto.setDisabled(true);    
+//                            notaTexto.setStyle(Sdeshabilitado);    
+//                            combo.setDisabled(true);
+//                            combo.setStyle(s);
+//                                
+//                            }
                         if (notas.get(kk).getEsdisciplina()) {
                         row.appendChild(combo);    
                         }else{
@@ -374,11 +384,11 @@ int kk=0;
                         }
                         combo = new Listbox();
                         combo.setMold("select");
-                        combo.setWidth("50px");
+                        combo.setWidth("15px");
                         combo.setRows(1);
                        if(vertical)
                             combo.setTabindex(kk);
-                        combo.setStyle("font-size:9px;width:30px");
+                        combo.setStyle("font-size:8px;width:15px");
                         for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
                             Equivalencias equivalencias = it2.next();
                             item = new Listitem("" + equivalencias.getAbreviatura());
@@ -444,10 +454,10 @@ int kk=0;
 
                             if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
                                 combo.setDisabled(false);
-                                combo.setStyle(Shabilitado);
+                                combo.setStyle(ShabilitadoCombo);
                             } else {
                                 combo.setDisabled(true);
-                                combo.setStyle(Sdeshabilitado);
+                                combo.setStyle(SdeshabilitadoCombo);
 
                             }
 
@@ -461,11 +471,11 @@ int kk=0;
 //                            System.out.println("FECHA INICIAL: "+fecha);
                                 if (fecha.getDate() == 0) {
                                     combo.setDisabled(true);
-                                    combo.setStyle(Sdeshabilitado);
+                                    combo.setStyle(SdeshabilitadoCombo);
                                 }
                             } catch (Exception z) {
                                 combo.setDisabled(true);
-                                combo.setStyle(Sdeshabilitado);
+                                combo.setStyle(SdeshabilitadoCombo);
                             }
 
                         } else {
@@ -473,7 +483,10 @@ int kk=0;
                             combo.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
 
                         }
-
+//                        if(sistema.getAbreviatura().equals("Prom")){
+//                                combo.setDisabled(true);
+//                                combo.setStyle(SdeshabilitadoCombo);  
+//                            }
                         row.appendChild(combo);
 
                     }
