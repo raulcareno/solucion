@@ -729,7 +729,7 @@ public class notasEvaluacion extends Rows {
         Rows filas = new Rows();
 
         Session ses = Sessions.getCurrent();
-        Empleados empleado = (Empleados) ses.getAttribute("user");
+//        Empleados empleado = (Empleados) ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 //     if(listad==null){
         Administrador adm = new Administrador();
