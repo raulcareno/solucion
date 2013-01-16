@@ -179,18 +179,18 @@ public class ReportesClase {
                 + " and substring(o.clientes.apellidos,1,1) <= '" + letrafin + "' ";
         String estadoString2 = "";
         String estadoString = "";
-        if(!estado.contains("Todo")){
+        if (!estado.contains("Todo")) {
             estadoString = " and o.contratos.estado = '" + estado + "'  ";
             estadoString2 = " and o.estado = '" + estado + "'  ";
         }
-        
+
         String codigosContratos = "";
         List<Series> contra = adm.query("Select o from Series as o "
                 + "where o.contratos.sector.numero "
                 + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
                 + "and o.estado = 'P' "
                 + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + " "+estadoString
+                + " " + estadoString
                 + "order by o.contratos.clientes.apellidos");
 
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
@@ -209,7 +209,7 @@ public class ReportesClase {
                     + " and  o.sector.numero "
                     + " between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento2
                     + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " "+ estadoString2
+                    + " " + estadoString2
                     + "order by o.clientes.apellidos");
 
             for (Iterator<Contratos> it = contra2.iterator(); it.hasNext();) {
@@ -223,7 +223,6 @@ public class ReportesClase {
         return ds;
     }
 
-    
     public JRDataSource alDia(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
@@ -239,7 +238,7 @@ public class ReportesClase {
         }
         if (cli.getCodigo().equals(-1)) {
 
-            
+
 
             if (sec.getCodigo().equals(-1)) {
                 if (canton.getCodigo().equals(-1)) {
@@ -273,55 +272,86 @@ public class ReportesClase {
         }
         ArrayList detalles = new ArrayList();
         String quer = "";
-        
-           String codClientes = "";
+
+        String codClientes = "";
+        ArrayList codClientesArreglo = new ArrayList();
+
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
             codClientes += clientes1.getCodigo()+",";
+            codClientesArreglo.add(clientes1.getCodigo()+"");
+        }
+         if (codClientes.length() > 0) {
+            codClientes = codClientes.substring(0, codClientes.length() - 1);
+        }
+        String queryClientesMorosos = "SELECT fa.clientes, fa.contratos "
+                + "FROM cxcobrar cx, factura  fa "
+                + " WHERE fa.clientes  in  (" + codClientes + ")  "
+                + "  AND cx.factura = fa.codigo"
+                + compleme
+                + " GROUP BY fa.contratos  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos ";
+        List clientesMorosos = adm.queryNativo(queryClientesMorosos);
+        codClientes = "";
+        String codiClientes = "";
+        for (Iterator it = clientesMorosos.iterator(); it.hasNext();) {
+            Vector vec = (Vector) it.next();
+            codiClientes = (vec.get(0) + "");
+            if(codClientesArreglo.contains(codiClientes)){
+                codClientesArreglo.remove(codClientesArreglo.indexOf(codiClientes));
+                System.out.println("removido:"+codiClientes);
+            }
         
         }
-        if(codClientes.length()>0){
-            codClientes = codClientes.substring(0, codClientes.length()-1);
-        }
-            quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
-                    + "FROM cxcobrar cx, factura  fa "
-                    + " WHERE fa.clientes  in  (" + codClientes + ")  "
-                    + "  AND cx.factura = fa.codigo"
-                    + compleme
-                    + " GROUP BY fa.contratos  "
-                    + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) = 0 order by fa.contratos ";
-            List facEncontradas = adm.queryNativo(quer);
-            if (facEncontradas.size() > 0) {
-                Pendientes pendi = null;
-                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    pendi = new Pendientes();
-                    pendi.setFactura("" + vec.get(0));
-                    Date d = (Date) vec.get(1);
-                    pendi.setFecha(d);
-                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
-                    pendi.setContratos(c);
-                    pendi.setCliente(c.getClientes());
-                    pendi.setPlan(c.getPlan() + "");
-                    pendi.setDireccion(c.getDireccion());
-                    pendi.setContrato(c.getContrato() + "");
-                    pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
-                    pendi.setTotal((BigDecimal) vec.get(2));
-                    pendi.setSaldo((BigDecimal) vec.get(3));
-                    detalles.add(pendi);
-                }
-            }
 
- 
+        for (Iterator it = codClientesArreglo.iterator(); it.hasNext();) {
+            String object = (String) it.next();
+            codClientes += object + ",";
+        }
+
+        if (codClientes.length() > 0) {
+            codClientes = codClientes.substring(0, codClientes.length() - 1);
+        }
+
+        quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                + "FROM cxcobrar cx, factura  fa "
+                + " WHERE fa.clientes  in  (" + codClientes + ")  "
+                + "  AND cx.factura = fa.codigo"
+                + compleme
+                + " GROUP BY fa.contratos  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) = 0 order by fa.contratos ";
+        List facEncontradas = adm.queryNativo(quer);
+        if (facEncontradas.size() > 0) {
+            Pendientes pendi = null;
+            for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                pendi = new Pendientes();
+                pendi.setFactura("" + vec.get(0));
+                Date d = (Date) vec.get(1);
+                pendi.setFecha(d);
+                Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                pendi.setContratos(c);
+                pendi.setCliente(c.getClientes());
+                pendi.setPlan(c.getPlan() + "");
+                pendi.setDireccion(c.getDireccion());
+                pendi.setContrato(c.getContrato() + "");
+                pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
+                pendi.setTotal((BigDecimal) vec.get(2));
+                pendi.setSaldo((BigDecimal) vec.get(3));
+                detalles.add(pendi);
+            }
+        }
+
+
         System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
     }
 
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago,String estado) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, String estado) {
         Administrador adm = new Administrador();
-        
-         String estadoComp = " and o.estado = '" + estado + "' ";
+
+        String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
@@ -344,13 +374,13 @@ public class ReportesClase {
                 if (canton.getCodigo().equals(-1)) {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago +" " + estadoComp
+                            + " " + formaPago + " " + estadoComp
                             + "order by o.clientes.apellidos");
 
                 } else {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago +" " + estadoComp
+                            + " " + formaPago + " " + estadoComp
                             + " order by o.clientes.apellidos");
 
                 }
@@ -358,7 +388,7 @@ public class ReportesClase {
 
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                        + " " + formaPago +" " + estadoComp
+                        + " " + formaPago + " " + estadoComp
                         + " order by o.clientes.apellidos");
 
 
@@ -366,7 +396,7 @@ public class ReportesClase {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                         + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                        + " " + formaPago +" " + estadoComp
+                        + " " + formaPago + " " + estadoComp
                         + " order by o.clientes.apellidos");
 
             }
@@ -419,7 +449,7 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource facturasEmitidas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago,Integer documento) {
+    public JRDataSource facturasEmitidas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         String desdestr = convertiraString(desde) + "";
@@ -429,89 +459,89 @@ public class ReportesClase {
             compleme = "";
         }
         String formaPago = " and o.formapago = '" + formapago + "' ";
-        String documentoComple  = " " ;
-        if(!documento.equals(new Integer(0))){
-            documentoComple  = " and fa.numero like '%"+(documento.equals(new Integer(1))?"FAC":"REC")  +"%'" ;
+        String documentoComple = " ";
+        if (!documento.equals(new Integer(0))) {
+            documentoComple = " and fa.numero like '%" + (documento.equals(new Integer(1)) ? "FAC" : "REC") + "%'";
         }
-        
+
         if (formapago.equals(0)) {
             formaPago = " and o.formapago in (0,1,2,3) ";
         }
-            if (sec.getCodigo().equals(-1)) {
+        if (sec.getCodigo().equals(-1)) {
 
-                if (canton.getCodigo().equals(-1)) {
-                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                            + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago
-                            + "order by o.clientes.apellidos");
-
-                } else {
-                    clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                            + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago
-                            + " order by o.clientes.apellidos");
-
-                }
-            } else if (canton.getCodigo().equals(-1)) {
-
+            if (canton.getCodigo().equals(-1)) {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                         + " " + formaPago
-                        + " order by o.clientes.apellidos");
-
+                        + "order by o.clientes.apellidos");
 
             } else {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where o.sector.codigo = '" + sec.getCodigo() + "' "
-                        + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                        + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                         + " " + formaPago
                         + " order by o.clientes.apellidos");
 
             }
- 
+        } else if (canton.getCodigo().equals(-1)) {
+
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + " " + formaPago
+                    + " order by o.clientes.apellidos");
+
+
+        } else {
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where o.sector.codigo = '" + sec.getCodigo() + "' "
+                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                    + " " + formaPago
+                    + " order by o.clientes.apellidos");
+
+        }
+
         ArrayList detalles = new ArrayList();
         String codClientes = "";
         for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
             Clientes clientes1 = itCli.next();
-            codClientes += clientes1.getCodigo()+",";
-        
+            codClientes += clientes1.getCodigo() + ",";
+
         }
-        if(codClientes.length()>0){
-            codClientes = codClientes.substring(0, codClientes.length()-1);
+        if (codClientes.length() > 0) {
+            codClientes = codClientes.substring(0, codClientes.length() - 1);
         }
-        String quer ;
+        String quer;
 //        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
 //            Clientes clientes1 = itCli.next();
-            quer = "SELECT fa.codigo, fa.fecha, fa.total,  fa.total, fa.contratos, fa.contratos "
-                    + "FROM Factura fa "
-                    + " WHERE  fa.clientes  in ("+codClientes+")  "
-                    + compleme + documentoComple
-                    + "  order by  fa.fecha ";
-            System.out.println(""+quer);
-            List facEncontradas = adm.queryNativo(quer);
+        quer = "SELECT fa.codigo, fa.fecha, fa.total,  fa.total, fa.contratos, fa.contratos "
+                + "FROM Factura fa "
+                + " WHERE  fa.clientes  in (" + codClientes + ")  "
+                + compleme + documentoComple
+                + "  order by  fa.fecha ";
+        System.out.println("" + quer);
+        List facEncontradas = adm.queryNativo(quer);
 
-            if (facEncontradas.size() > 0) {
-                Pendientes pendi = null;
-                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    pendi = new Pendientes();
-                    
-                    pendi.setFactura("" + vec.get(0));
-                    Date d = (Date) vec.get(1);
-                    pendi.setFecha(d);
-                    Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
-                    pendi.setContratos(c);
-                    pendi.setCliente(c.getClientes());
-                    pendi.setPlan(c.getPlan() + "");
-                    pendi.setDireccion(c.getDireccion());
-                    pendi.setContrato(c.getContrato() + "");
-                    pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
-                    pendi.setTotal((BigDecimal) vec.get(2));
-                    pendi.setSaldo((BigDecimal) vec.get(3));
-                    detalles.add(pendi);
-                }
+        if (facEncontradas.size() > 0) {
+            Pendientes pendi = null;
+            for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                pendi = new Pendientes();
 
+                pendi.setFactura("" + vec.get(0));
+                Date d = (Date) vec.get(1);
+                pendi.setFecha(d);
+                Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                pendi.setContratos(c);
+                pendi.setCliente(c.getClientes());
+                pendi.setPlan(c.getPlan() + "");
+                pendi.setDireccion(c.getDireccion());
+                pendi.setContrato(c.getContrato() + "");
+                pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
+                pendi.setTotal((BigDecimal) vec.get(2));
+                pendi.setSaldo((BigDecimal) vec.get(3));
+                detalles.add(pendi);
             }
+
+        }
 
 //        }
         System.out.println("" + quer);
@@ -1095,25 +1125,26 @@ public class ReportesClase {
         return "";
 
     }
-  public JRDataSource reporteCajaRF(String tipo, Date desde, Date hasta) {//RECIBOS Y FACTURAS
+
+    public JRDataSource reporteCajaRF(String tipo, Date desde, Date hasta) {//RECIBOS Y FACTURAS
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
         Pendientes pendi = null;
         String comDocumento = "";
-        if(tipo.contains("0")){
-            comDocumento ="";
-        }else if(tipo.contains("1")){
-            comDocumento =" and o.factura.numero like '%FAC%' ";
-        }else if(tipo.contains("2")){
-            comDocumento =" and o.factura.numero like '%REC%' ";
+        if (tipo.contains("0")) {
+            comDocumento = "";
+        } else if (tipo.contains("1")) {
+            comDocumento = " and o.factura.numero like '%FAC%' ";
+        } else if (tipo.contains("2")) {
+            comDocumento = " and o.factura.numero like '%REC%' ";
         }
-        
+
         List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
                 + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' " +comDocumento
+                + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' " + comDocumento
                 + " order by o.factura.numero");
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
@@ -2027,30 +2058,27 @@ public class ReportesClase {
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
         return beanCollectionDataSource;
     }
-    
-    
+
     public static boolean esIp(String dir) {
-        StringTokenizer st = new StringTokenizer( dir, "." );
-        if ( st.countTokens() != 4 ) {
+        StringTokenizer st = new StringTokenizer(dir, ".");
+        if (st.countTokens() != 4) {
             return false;
         }
-        while ( st.hasMoreTokens() ) {
+        while (st.hasMoreTokens()) {
             String nro = st.nextToken();
-            if ( ( nro.length() > 3 ) || ( nro.length() < 1 ) ) {
+            if ((nro.length() > 3) || (nro.length() < 1)) {
                 return false;
             }
             int nroInt = 0;
             try {
-                nroInt = Integer.parseInt( nro );
-            }
-            catch ( NumberFormatException s ) {
+                nroInt = Integer.parseInt(nro);
+            } catch (NumberFormatException s) {
                 return false;
             }
-            if ( ( nroInt < 0 ) || ( nroInt > 255 ) ) {
+            if ((nroInt < 0) || (nroInt > 255)) {
                 return false;
             }
         }
         return true;
     }
-    
 }
