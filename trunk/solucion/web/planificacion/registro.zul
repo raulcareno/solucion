@@ -2,13 +2,14 @@
 <window  id="ventana"  border="normal"  onCreate='buscar("");' xmlns:a="http://www.zkoss.org/2005/zk/annotation">
 
     <zscript>
+    <![CDATA[
         import java.io.File;
         import jcinform.persistencia.Global;
         import bean.EventDAO; 
         import java.util.ArrayList; 
         import jcinform.persistencia.*;
         import jcinform.procesos.Administrador;
-        import bean.Permisos;
+        import bean.*;
         import org.zkoss.image.AImage;
         import org.zkoss.image.Image;
         Administrador adm = new Administrador();
@@ -19,52 +20,89 @@
 
         Session a = Sessions.getCurrent();
         jcinform.persistencia.Empleados emp = a.getAttribute("user");
-        if(emp==null) Executions.sendRedirect("login.zul");
+        if(emp==null) 
+        Executions.sendRedirect("login.zul");
 
 
         void cargarEscudo(byte[] imageData){
-        foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+          foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
         }
         void cargarVacio(){
-        foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+         foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
         }
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Empleados user =  (Empleados)ses.getAttribute("user");
         List cursos = null;
         if(user.getTipo().equals("Interna")){
-            cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
-            " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
-            " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+                cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+                " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
+                " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
         }else{
-            cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
-            " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
-            " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+                cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+                " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+                " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
         }
         
         void buscar2(Cursos cur){
-        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
-        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
-          if(user.getTipo().equals("Interna")){
-                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+                if(user.getTipo().equals("Interna")){
+                        empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
                         " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
-            }else{
-                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                }else{
+                        empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
                         " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
                         "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%' and o.formula = ''  order by o.orden");
-            }
-        mates.getChildren().clear();
-             bd2.value = "";
-               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                }
+                mates.getChildren().clear();
+                bd2.value = "";
+                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                        MateriaProfesor estudent = (MateriaProfesor) it.next();
                         Listitem item = new Listitem();
                         item.setValue(estudent);
                         item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
                         mates.appendChild(item);
-             }
-    }
+                }
+        }
+   void buscarPlanificacion(MateriaProfesor mate){
+                List empleadosEncontrados = adm.query("Select o from Planificacion as o " + 
+                        " where o.curso  = '"+mate.getCurso().getSecuencia()+"' " + 
+                        " and o.materia.codigo = '"+mate.getMateria().getCodigo()+"' " + 
+                        " and o.periodo.codigoper = '"+mate.getCurso().getPeriodo().getCodigoper() +"' " + 
+                        " order by o.codigo ");
+               
+                planificacion.getChildren().clear();
+                bd2.value = "";
+                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                        Planificacion estudent = (Planificacion) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getBloque()));
+                        planificacion.appendChild(item);
+                }
+  }
+        esconder(String tipo){
+                    filacontenido.visible = true; 
+                    filadestreza.visible = true; 
+                    filaactividad.visible = true; 
+                    filaestudiantes.visible = true; 
+                    filaobservaciones.visible = true;
+                    if(tipo.equals("1")){
+                            filacontenido.visible = false; 
+                            filadestreza.visible = false; 
+                            filaestudiantes.visible = false; 
+                    }else if(tipo.equals("2")){
+                        filacontenido.visible = false; 
+                        filadestreza.visible = false; 
+                        filaactividad.visible = false; 
+                        filaestudiantes.visible = false; 
+                        //filaobservaciones.visible = false;
+                    }
 
-
+        }
+      
+  ]]> 
 
     </zscript>
     <hbox>
@@ -73,7 +111,7 @@
             <grid width="100%">
                 <rows>
                     <row>
-                         <span style="float:right"> Curso(*):</span>
+                        <span style="float:right"> Curso(*):</span>
                         <bandbox  width="350px"  readonly="true"  id="bd1">
                             <bandpopup>
                                 <vbox>
@@ -91,29 +129,48 @@
                     </row>
                     <row>
                         <span style="float:right"> Materia:</span>
+                        <bandbox  width="350px" readonly="true"  id="bd22">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="mates" height="300px"  width="420px"
+                                             onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown(); buscarPlanificacion(self.selectedItem.value);   ">
+
+                                        <listitem forEach="${materias}" value="${each}">
+                                            <listcell label="${each.descripcion}" />
+
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
+                    </row>
+                     <row>
+                        <span style="float:right"> Bloque:</span>
                         <bandbox  width="350px" readonly="true"  id="bd2">
-                                <bandpopup>
-                                    <vbox>
-                                        <listbox id="mates" height="300px"  width="420px"
-                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();datos.getChildren().clear(); sisevalCombo.selectedIndex = -1;bd5.value = null; ">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="planificacion" height="300px"  width="420px"
+                                             onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown(); ">
 
-                                            <listitem forEach="${materias}" value="${each}">
-                                                <listcell label="${each.descripcion}" />
+                                        <listitem forEach="${materias2}" value="${each}">
+                                            <listcell label="${each.descripcion}" />
 
-                                            </listitem>
-                                        </listbox>
-                                    </vbox>
-                                </bandpopup>
-                            </bandbox>
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
                     </row>
                     <row>
-                        <span style="float:right"> Tuvimos Evaluación(*):</span>
+                        <span style="float:right"> </span>
                         <span>
-                        <a:bind checked="inobjeto.esprueba"/>
-                        <checkbox  id="esprueba" onChange="update();"/>
-                        <span> No hubo clases(*):</span>
-                        <a:bind checked="inobjeto.noclase"/>
-                        <checkbox  id="noclase" onChange="update();"/>
+                            
+                            <radiogroup onCheck="esconder(self.selectedItem.value)" Id="tipo" >
+                                <radio selected="true"  value="0" label="Clase Normal"/>
+                                <radio value="1"  label="Evaluación"/>
+                                <radio value="2"  label="No hubo Asistencia"/>
+                            </radiogroup>
+                            
                         </span>
                     </row>
                     <row>
@@ -132,29 +189,29 @@
                             <comboitem label="10ma."/>
                         </combobox>
                     </row>
-                    <row>
-                        <span style="float:right"> Conocimiento Tratado en Clase(*):</span>
+                    <row id="filacontenido">
+                        <span style="float:right"> Conocimiento Tratado en Clase:</span>
                         <a:bind value="inobjeto.conocimiento"/>
                         <textbox rows="2" id="conocimiento" onChange="update();"  width="350px"  />
                     </row>
-                    <row>
+                    <row id="filadestreza">
                         <span style="float:right"> Destreza Desarrollada:</span>
                         <span>
                             <a:bind value="inobjeto.destreza"/>
                             <textbox rows="2"  id="destreza" onChange="update();"  width="350px"  />
                         </span>
                     </row>
-                    <row>
-                        <span style="float:right"> Actividad:</span>
+                    <row id="filaactividad">
+                        <span style="float:right"> Actividad Realizada:</span>
                         <a:bind value="inobjeto.actividad"/>
                         <textbox rows="2"  id="actividad" onChange="update();" width="350px" />
                     </row>
-                    <row>
+                    <row id="filaestudiantes">
                         <span style="float:right"> Estudiantes con Dificultades de Aprendizaje:</span>
                         <a:bind value="inobjeto.estudiantes"/>
                         <textbox  rows="2" id="estudiantes" onChange="update();" width="350px" />
                     </row>
-                    <row>
+                    <row id="filaobservaciones">
                         <span style="float:right"> Observaciones:</span>
                         <a:bind value="inobjeto.observaciones"/>
                         <textbox rows="2"  id="observaciones" onChange="update();"  width="350px" />
@@ -202,135 +259,163 @@
     </groupbox>
 
     <zscript>
+        
+            <![CDATA[
         AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
         binder.bindBean("inobjeto", inobjeto);
         binder.loadAll();
 
         void update() {
-        binder.saveAll();
-        binder.loadAll();
+                binder.saveAll();
+                binder.loadAll();
         }
 
         //FUNCIONES
  
         void estado(Boolean estado,Boolean modificar){
-        if(modificar){
-        inobjeto = (PlanificacionResultados)datos.selectedItem.value;
-        }
-
-        denominacion.readonly = estado;
-        nombre.readonly = estado;
-        telefono.readonly = estado;
-        email.readonly = estado;
-        email2.readonly = estado;
-        direccion.readonly = estado;
-        secretaria.readonly = estado;
-        rector.readonly = estado;
-        clave.readonly = estado;
-        tipo.readonly = estado;
-        slogan.readonly = estado;
-     
+                    
+                    curs.disabled = estado;
+                    mates.disabled = estado;
+                    
+                    conocimiento.readonly = estado;
+                    destreza.readonly = estado;
+                    actividad.readonly = estado;
+                    estudiantes.readonly = estado;
+                    observaciones.readonly = estado;
+                    hora.disabled = estado;
+//tipo.disabled = estado;
 
         }
 
 
         void guardar(){
-        if(denominacion.value=="" || nombre=="" || telefono =="" || secretaria =="" ||rector ==""  || direccion =="" ){
-        Messagebox.show("Ingrese todos los campos para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-        return ;
+        String mensaje = "";
+        if(curs.selectedItem == null){
+            mensaje = "Seleccione un Curso ...!";    
         }
-        org.zkoss.image.Image nueva = foto0.getContent();
-        inobjeto.setEscudo(nueva.getByteData());
+        if(mates.selectedItem == null){
+            mensaje = "Seleccione una Materia";
+        }
+        
+        if(tipo.selectedItem.value.equals("0")){
+                if(conocimiento.value ==""){
+                    mensaje += "\n Ingrese el Conocimiento Tratado en Clase ";
+                }
+                if(destreza.value ==""){
+                    mensaje += "\n Ingrese la Destreza Desarrollada ";
+                }
+        }else if(tipo.selectedItem.value.equals("1")){
+                if(actividad.value ==""){
+                    mensaje += "\n Ingrese la Actividad Realizada ";
+                }
+               if(observaciones.value ==""){
+                    mensaje += "\n Ingrese alguna Observación ";
+                }
+        }else if(tipo.selectedItem.value.equals("2")){
+                if(observaciones.value ==""){
+                    mensaje += "\n Ingrese alguna Observación ";
+                }
+        }
+       
+        
+        if(!mensaje.equals("")){
+            Messagebox.show(mensaje, "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        }
+        
+        
+              inobjeto.setTipo(tipo.selectedItem.value);
+              inobjeto.setMateriaProfesor(mates.selectedItem.value);
+              inobjeto.setPlanificacion(plani.selectedItem.value);
+               secuencial sec = new secuencial();
 
-        if((!inobjeto.getCodigoinst().equals(0)) ){
-        adm.actualizar(inobjeto);
-        List children = datos.selectedItem.children;
-        ((Listcell)children.get(0)).label = inobjeto.codigoinst+"";
-        ((Listcell)children.get(1)).label = inobjeto.denominacion+ " " + inobjeto.nombre +" " +inobjeto.getTipo() ;
-        }else{
-        inobjeto.setCodigoinst(adm.getNuevaClave("PlanificacionResultados","codigoinst"));
-        adm.guardar(inobjeto);
-        }
-        permiso.auditar("PlanificacionResultados","Guardar",""+denominacion.value+" "+nombre.value);
-        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        guardar.disabled=true;
-        agregar.disabled=false;
-        estado(true,false);
-        binder.bindBean("inobjeto",(new PlanificacionResultados(0)));
-        binder.loadAll();
-          
+                if((!inobjeto.getCodigo().equals("0")) ){
+                        adm.actualizar(inobjeto);
+                }else{
+                        inobjeto.setCodigo(sec.generarClave());
+                        adm.guardar(inobjeto);
+                }
+                permiso.auditar("SeguimientoPlanificacion","Guardar"," SEGUIMIENTO");
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                binder.bindBean("inobjeto",(new PlanificacionResultados("0")));
+                binder.loadAll();
+
 
         }
 
         Boolean verificar(String accion){
-        return permiso.verificarPermiso("PlanificacionResultados",accion);
+                return permiso.verificarPermiso("SeguimientoPlanificacion",accion);
 
         }
         void nuevo(){
-        if(verificar("Agregar")){
-        guardar.disabled=false; 
-        inobjeto = new PlanificacionResultados(0);
-        binder.bindBean("inobjeto",inobjeto);
-        binder.loadAll();
-        estado(false,false);
-        }else{
-        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-        }
+                if(verificar("Agregar")){
+                        guardar.disabled=false; 
+                        inobjeto = new PlanificacionResultados("0");
+                        binder.bindBean("inobjeto",inobjeto);
+                        binder.loadAll();
+                        estado(false,false);
+                }else{
+                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
         }
         void move(){
-        binder.bindBean("inobjeto",(PlanificacionResultados)datos.selectedItem.value);
-        binder.loadAll();
-        if(((PlanificacionResultados)datos.selectedItem.value).getEscudo() != null){
-        cargarEscudo(((PlanificacionResultados)datos.selectedItem.value).getEscudo());
-        }else{
-        cargarVacio();
-        }
-        modificar.disabled = false;
+                binder.bindBean("inobjeto",(PlanificacionResultados)datos.selectedItem.value);
+                binder.loadAll();
+                if(((PlanificacionResultados)datos.selectedItem.value).getEscudo() != null){
+                     cargarEscudo(((PlanificacionResultados)datos.selectedItem.value).getEscudo());
+                }else{
+                     cargarVacio();
+                }
+                modificar.disabled = false;
         }
         void modificar(){
-        if(verificar("Modificar")){
-        guardar.disabled=false; estado(false,true);
-        }else{
-        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-        }
+                if(verificar("Modificar")){
+                        guardar.disabled=false; estado(false,true);
+                }else{
+                        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
         }
         void eliminar(){
-        if(verificar("Eliminar")){
-        try{
-        inobjeto = (PlanificacionResultados)datos.selectedItem.value;
-        adm.eliminarObjeto(PlanificacionResultados.class, inobjeto.getCodigoinst());
-        datos.removeItemAt(datos.getSelectedIndex());
-           
-        Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        permiso.auditar("PlanificacionResultados","Eliminar",""+denominacion.value+" "+nombre.value);
-        }catch(Exception e){
-        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-        }
-        }else{
-        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-        }
+                if(verificar("Eliminar")){
+                        try{
+                                inobjeto = (PlanificacionResultados)datos.selectedItem.value;
+                                adm.eliminarObjeto(PlanificacionResultados.class, inobjeto.getCodigo());
+                                datos.removeItemAt(datos.getSelectedIndex());
+
+                                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                                //permiso.auditar("PlanificacionResultados","Eliminar",""+denominacion.value+" "+nombre.value);
+                        }catch(Exception e){
+                                Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        }
+                }else{
+                     Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
         }
    
         void buscar(String p){
-        /*  List empleadosEncontrados = adm.query("Select o from PlanificacionResultados as o where o.nombre like '%"+p+"%' order by o.nombre");
-        datos = new Listbox();
-        int a=0;
-        for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-        datos.getItems().remove(a);
-        }
-        for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-        PlanificacionResultados acceIt = (PlanificacionResultados) it.next();
-        Listitem li = new Listitem();
-        li.setValue(acceIt);
-        li.appendChild(new Listcell(acceIt.getCodigoinst()+""));
-        li.appendChild(new Listcell(acceIt.getDenominacion()+" "+acceIt.getNombre() +" " +acceIt.getTipo() ));
-        datos.appendChild(li);
-        }
-        */
+                /*  List empleadosEncontrados = adm.query("Select o from PlanificacionResultados as o where o.nombre like '%"+p+"%' order by o.nombre");
+                datos = new Listbox();
+                int a=0;
+                for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                     datos.getItems().remove(a);
+                }
+                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                        PlanificacionResultados acceIt = (PlanificacionResultados) it.next();
+                        Listitem li = new Listitem();
+                        li.setValue(acceIt);
+                        li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                        li.appendChild(new Listcell(acceIt.getDenominacion()+" "+acceIt.getNombre() +" " +acceIt.getTipo() ));
+                        datos.appendChild(li);
+                }
+                */
         }
         void cargar(Global g){
-        inobjeto.setPerfil(g);
+                inobjeto.setPerfil(g);
         }
+      
+  ]]> 
 
     </zscript>
 </window>

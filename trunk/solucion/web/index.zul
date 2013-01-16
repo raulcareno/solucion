@@ -488,6 +488,7 @@
             Registrar_Recomendacion.visible = per.verificarPermisoReporte("Registrar_Recomendacion","Registrar_Recomendacion", "Ingresar",true,"NOTAS");
             Evaluadores.visible = per.verificarPermisoReporte("PlanificacionEvaluadores","PlanificacionEvaluadores", "Ingresar",true,"VARIOS");
             Planificacion.visible = per.verificarPermisoReporte("Planificacion","Planificacion", "Ingresar",true,"VARIOS");
+            SeguimientoPlanificacion.visible = per.verificarPermisoReporte("SeguimientoPlanificacion","SeguimientoPlanificacion", "Ingresar",true,"VARIOS");
             
    
 
