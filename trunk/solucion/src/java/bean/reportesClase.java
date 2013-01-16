@@ -344,7 +344,13 @@ public class reportesClase {
                     }
                     if (!map2.getCodigomap().equals(new Integer(0))) {
                         if (map2.getIngcualitativo()) {
-                            nota.setTipoSi(notas.get(ksis).getEvaluacion().getDescripcion2());
+                            try {
+                                    nota.setTipoSi(notas.get(ksis).getEvaluacion().getDescripcion2());    
+                            } catch (Exception e) {
+                                    nota.setTipoSi("Prom");    
+//                                e.printStackTrace();
+                            }
+                            
                         }
                     }
 

@@ -1,5 +1,5 @@
  
-<window  id="ventana"  border="normal"  onCreate='buscar("");' xmlns:a="http://www.zkoss.org/2005/zk/annotation">
+<window  id="ventana"  border="normal"  xmlns:a="http://www.zkoss.org/2005/zk/annotation">
 
     <zscript>
     <![CDATA[
@@ -13,7 +13,7 @@
         import org.zkoss.image.AImage;
         import org.zkoss.image.Image;
         Administrador adm = new Administrador();
-        List allEvents = adm.query("Select o from PlanificacionResultados as o where o.denominacion = 0");
+        List allEvents = adm.query("Select o from PlanificacionResultados as o where o.codigo = 0");
         PlanificacionResultados inobjeto = new PlanificacionResultados();
         Permisos permiso = new Permisos();
         //FUNCIONES
@@ -61,8 +61,31 @@
                         MateriaProfesor estudent = (MateriaProfesor) it.next();
                         Listitem item = new Listitem();
                         item.setValue(estudent);
-                        item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        //item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        item.appendChild(new Listcell(estudent.getMateria()+""));
                         mates.appendChild(item);
+                }
+        }
+             void buscar3(Cursos cur){
+                List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+                if(user.getTipo().equals("Interna")){
+                        empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+                }else{
+                        empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
+                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%' and o.formula = ''  order by o.orden");
+                }
+                mates1.getChildren().clear();
+                bd21.value = "";
+                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                        MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        //item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        item.appendChild(new Listcell(estudent.getMateria()+""));
+                        mates1.appendChild(item);
                 }
         }
    void buscarPlanificacion(MateriaProfesor mate){
@@ -144,7 +167,7 @@
                             </bandpopup>
                         </bandbox>
                     </row>
-                     <row>
+                    <row>
                         <span style="float:right"> Bloque:</span>
                         <bandbox  width="350px" readonly="true"  id="bd2">
                             <bandpopup>
@@ -234,9 +257,44 @@
 
         <caption label="Busquedas" />
         <vbox>
-            <hbox>  Perfiles:
-                <textbox id="buscarText"  maxlength="60" cols="40" />
-                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+            <hbox> <span style="float:right"> Curso(*):</span>
+                <bandbox  width="350px"  readonly="true"  id="bd11">
+                    <bandpopup>
+                        <vbox>
+                            <listbox id="curs1" height="300px" width="420px"
+                                             onSelect="bd11.value=self.selectedItem.label;buscar3(((Cursos)self.selectedItem.value));bd11.closeDropdown(); ">
+
+                                <listitem forEach="${cursos}" value="${each}">
+                                    <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                </listitem>
+                            </listbox>
+                        </vbox>
+                    </bandpopup>
+                </bandbox>
+                     
+                <span style="float:right"> Materia:</span>
+                <bandbox  width="300px" readonly="true"  id="bd221">
+                    <bandpopup>
+                        <vbox>
+                            <listbox id="mates1" height="300px"  width="300px"
+                                             onSelect="bd221.value=self.selectedItem.label;bd221.closeDropdown();   ">
+
+                                <listitem forEach="${materias}" value="${each}">
+                                    <listcell label="${each.descripcion}" />
+
+                                </listitem>
+                            </listbox>
+                        </vbox>
+                    </bandpopup>
+                </bandbox>
+              </hbox>
+              <hbox>
+                 <span style="float:right"> Desde:</span>
+                  <datebox id="desde" onCreate="self.value = adm.Date()" />
+                   <span style="float:right"> Hasta:</span>
+                  <datebox id="hasta" onCreate="self.value = adm.Date()" />
+                <button id="buscar"  label="Buscar" onClick="buscar();"/>
             </hbox>
             <hbox width="100%">
                 <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
@@ -325,9 +383,9 @@
         
               inobjeto.setTipo(tipo.selectedItem.value);
               inobjeto.setMateriaProfesor(mates.selectedItem.value);
-              inobjeto.setPlanificacion(plani.selectedItem.value);
+              inobjeto.setPlanificacion(planificacion.selectedItem.value);
                secuencial sec = new secuencial();
-
+inobjeto.setFecha(adm.Date());
                 if((!inobjeto.getCodigo().equals("0")) ){
                         adm.actualizar(inobjeto);
                 }else{
@@ -394,8 +452,13 @@
                 }
         }
    
-        void buscar(String p){
-                /*  List empleadosEncontrados = adm.query("Select o from PlanificacionResultados as o where o.nombre like '%"+p+"%' order by o.nombre");
+        void buscar(){
+        String desde1 = (desde.value.getYear()+1900) +"-"+ (desde.value.getMonth()+1)+"-"+(desde.value.getDate()) ;
+        String hasta1 = (hasta.value.getYear()+1900) +"-"+ (hasta.value.getMonth()+1)+"-"+(hasta.value.getDate()) ;
+                List empleadosEncontrados = adm.query("Select o from PlanificacionResultados as o " +
+                     " where o.materiaProfesor.curso.codigocur = '"+(curs1.selectedItem.value).getCodigocur()+"' " + 
+                     " and o.materiaProfesor.materia.codigo = '"+(mates1.selectedItem.value).getMateria().getCodigo()+"'  " + 
+                     " and o.fecha between '"+desde1+"00:00:01' and  '"+hasta1+"23:59:59' order by o.fecha");
                 datos = new Listbox();
                 int a=0;
                 for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -405,11 +468,12 @@
                         PlanificacionResultados acceIt = (PlanificacionResultados) it.next();
                         Listitem li = new Listitem();
                         li.setValue(acceIt);
-                        li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                        li.appendChild(new Listcell(acceIt.getDenominacion()+" "+acceIt.getNombre() +" " +acceIt.getTipo() ));
+                        li.appendChild(new Listcell(acceIt.getHora()+""));
+                        li.appendChild(new Listcell(acceIt.getMateriaProfesor().getEmpleado()+"" ));
+                        li.appendChild(new Listcell(acceIt.getMateriaProfesor().getFecha()+"" ));
                         datos.appendChild(li);
                 }
-                */
+                 
         }
         void cargar(Global g){
                 inobjeto.setPerfil(g);
