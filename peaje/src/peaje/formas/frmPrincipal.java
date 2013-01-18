@@ -4871,6 +4871,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.noTicket.requestFocusInWindow();
 
 
+            
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
