@@ -34,16 +34,21 @@
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Empleados user =  (Empleados)ses.getAttribute("user");
         List cursos = null;
+        registro.visible = false;
+        busquedas.visible = false;
+        
         if(user.getTipo().equals("Interna")){
+         busquedas.visible = true;
                 cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
                 " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
                 " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
         }else{
+                registro.visible = true;
                 cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
                 " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
                 " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
         }
-        
+        List profesores = adm.query("Select o.empleado from Empleadoperiodo as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
         void buscar2(Cursos cur){
                 List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
                 " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
@@ -129,7 +134,7 @@
 
     </zscript>
     <hbox>
-        <groupbox mold="3d" >
+        <groupbox id="registro" mold="3d" >
    
             <grid width="100%">
                 <rows>
@@ -253,7 +258,7 @@
         </groupbox>
                      
     </hbox>
-    <groupbox width="100%" mold="3d" >
+    <groupbox id="busquedas" width="100%" mold="3d" >
 
         <caption label="Busquedas" />
         <vbox>
@@ -289,7 +294,21 @@
                     </bandpopup>
                 </bandbox>
               </hbox>
-              <hbox>
+              <hbox>  <span style="float:right"> Profesor: </span>
+                <bandbox  width="300px" readonly="true"  id="bd333">
+                    <bandpopup>
+                        <vbox>
+                            <listbox id="profes1" height="300px"  width="300px"
+                                             onSelect="bd333.value=self.selectedItem.label;bd333.closeDropdown();   ">
+
+                                <listitem forEach="${profesores}" value="${each}">
+                                    <listcell label="${each.apellidos} ${each.nombres} " />
+
+                                </listitem>
+                            </listbox>
+                        </vbox>
+                    </bandpopup>
+                </bandbox>
                  <span style="float:right"> Desde:</span>
                   <datebox id="desde" onCreate="self.value = adm.Date()" />
                    <span style="float:right"> Hasta:</span>
@@ -299,8 +318,10 @@
             <hbox width="100%">
                 <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                     <listhead>
-                        <listheader label="Cod."/>
-                        <listheader label="Nombres"/>
+                        <listheader label="Hora"/>
+                        <listheader label="Profesor"/>
+                        <listheader label="Fecha"/>
+                        <listheader label="Tipo"/>
 
                     </listhead>
                     <listitem forEach="${allEvents}" value="${each}">
@@ -453,26 +474,30 @@ inobjeto.setFecha(adm.Date());
         }
    
         void buscar(){
-        String desde1 = (desde.value.getYear()+1900) +"-"+ (desde.value.getMonth()+1)+"-"+(desde.value.getDate()) ;
-        String hasta1 = (hasta.value.getYear()+1900) +"-"+ (hasta.value.getMonth()+1)+"-"+(hasta.value.getDate()) ;
-                List empleadosEncontrados = adm.query("Select o from PlanificacionResultados as o " +
-                     " where o.materiaProfesor.curso.codigocur = '"+(curs1.selectedItem.value).getCodigocur()+"' " + 
-                     " and o.materiaProfesor.materia.codigo = '"+(mates1.selectedItem.value).getMateria().getCodigo()+"'  " + 
-                     " and o.fecha between '"+desde1+"00:00:01' and  '"+hasta1+"23:59:59' order by o.fecha");
-                datos = new Listbox();
-                int a=0;
-                for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                     datos.getItems().remove(a);
-                }
-                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                        PlanificacionResultados acceIt = (PlanificacionResultados) it.next();
-                        Listitem li = new Listitem();
-                        li.setValue(acceIt);
-                        li.appendChild(new Listcell(acceIt.getHora()+""));
-                        li.appendChild(new Listcell(acceIt.getMateriaProfesor().getEmpleado()+"" ));
-                        li.appendChild(new Listcell(acceIt.getMateriaProfesor().getFecha()+"" ));
-                        datos.appendChild(li);
-                }
+            String desde1 = (desde.value.getYear()+1900) +"-"+ (desde.value.getMonth()+1)+"-"+(desde.value.getDate()) ;
+            String hasta1 = (hasta.value.getYear()+1900) +"-"+ (hasta.value.getMonth()+1)+"-"+(hasta.value.getDate()) ;
+            String quer = "Select o from PlanificacionResultados as o " +
+                        " where o.materiaProfesor.curso.codigocur = '"+(curs1.selectedItem.value).getCodigocur()+"' " + 
+                        " and o.materiaProfesor.materia.codigo = '"+(mates1.selectedItem.value).getMateria().getCodigo()+"'  " + 
+                        " and o.fecha between '"+desde1+" 00:00:01' and  '"+hasta1+" 23:59:59' order by o.fecha";
+                        System.out.println(""+quer);
+                    List empleadosEncontrados = adm.query(quer);
+                        System.out.println(""+empleadosEncontrados.size());
+                    datos = new Listbox();
+                    int a=0;
+                    for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                        datos.getItems().remove(a);
+                    }
+                    for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                            PlanificacionResultados acceIt = (PlanificacionResultados) it.next();
+                            Listitem li = new Listitem();
+                            li.setValue(acceIt);
+                            li.appendChild(new Listcell(acceIt.getHora()+""));
+                            li.appendChild(new Listcell(acceIt.getMateriaProfesor().getEmpleado()+"" ));
+                            li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+"" ));
+                            li.appendChild(new Listcell( (acceIt.getTipo()+"").equals("0")?"CLASE":(acceIt.getTipo()+"").equals("1")?"EVALUACIÓN":(acceIt.getTipo()+"").equals("2")?"NO HUBO CLASES":""     ));
+                            datos.appendChild(li);
+                    }
                  
         }
         void cargar(Global g){
