@@ -43,6 +43,9 @@ import java.text.SimpleDateFormat;
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+    
+    
+    
       List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
       generarFacturas gen = new generarFacturas();
@@ -51,6 +54,37 @@ List cantonesList = adm.query("Select o from Canton as o ");
     Boolean agregare = false;
 
 //FUNCIONES
+public void existeIp(String ip1){
+    List ipList = adm.query("Select o from Contratos as o " + 
+        " where o.ip = '"+ip1+"' " + 
+        " and o.codigo <> '"+equi.getCodigo()+"' ");
+        if(ipList.size()>0){
+            Messagebox.show("La ip: "+ip1+" está asignada a: \n "+ipList.get(0).getClientes()+" ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                
+        }
+}
+
+    public static boolean esIp(String dir) {
+        StringTokenizer st = new StringTokenizer(dir, ".");
+        if (st.countTokens() != 4) {
+            return false;
+        }
+        while (st.hasMoreTokens()) {
+            String nro = st.nextToken();
+            if ((nro.length() > 3) || (nro.length() < 1)) {
+                return false;
+            }
+            int nroInt = 0;
+            try {
+                nroInt = Integer.parseInt(nro);
+            } catch (NumberFormatException s) {
+                return false;
+            }
+            if ((nroInt < 0) || (nroInt > 255)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 void llenarCliente(Clientes cli){
            codigocli.value = cli.getCodigo()+"";
@@ -2791,9 +2825,9 @@ void llamar(){
                                           </radiogroup>
                                                            
                                         </row>
-                                        <row visible="false">
+                                        <row visible="true">
                                             <span style="float:right">   IP(*):</span>
-                                            <textbox cols="15" readonly="true" id="ip" />
+                                            <textbox onBlur='existeIp(self.value); if(!esIp(self.value)){alert("INGRESE UNA IP VÁLIDA");}' cols="15" readonly="true" id="ip" />
                                             <span style="float:right"> Autorizado a Inst(*):</span>
                                             <checkbox id="autorizado" disabled="true"  />
                                                            
