@@ -1,0 +1,527 @@
+<?page id="contratospage"?>
+<window id="contratosventana"  border="normal" >
+    <style>
+        .MyGridRowHeight tr.z-row td.z-row-inner  
+        {
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        //border-bottom: 1px solid #DDD;
+        border-bottom: none;
+ 
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px;
+        //overflow: hidden;
+        }
+    </style>
+    <zscript>   <![CDATA[
+    
+  import bean.EventDAO; 
+  import java.util.ArrayList; 
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import jcinform.persistencia.Facturasenviadas;
+  import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+  import jcinform.bean.generarFacturas;
+    import jcinform.bean.sources.*;
+import jcinform.bean.sources.clasestmp.Pendientes;
+
+  Session ses = Sessions.getCurrent();
+  //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+    Administrador adm = new Administrador();
+    static Contratos equi = new Contratos();
+    Permisos permiso = new Permisos();
+    Empleados usuarioActual = ses.getAttribute("user");
+   Empresa empresa = ses.getAttribute("empresa");
+    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+      generarFacturas gen = new generarFacturas();
+         String directorioReportes = empresa.getReportes();
+      
+      
+List cantonesList = adm.query("Select o from Canton as o ");
+List empleadosList = adm.query("Select o from Empleados as o ");
+List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
+  Bancos selBan = new Bancos(-1);
+         selBan.setNombre("[TODOS]");
+        bancos.add(0,selBan);
+
+  void facturasPendientes(){
+        try{
+        
+            List cuentas =  gen.buscarPagos(sucursalEmp.getSucursal(),cant.selectedItem.value,desde.value, hasta.value);
+            facturasDatos.getRows().getChildren().clear();
+            ArrayList contratosAnadidos = new ArrayList();
+            int i =0;
+           
+            BigDecimal total = new BigDecimal(0);
+                for (Iterator itna = cuentas.iterator(); itna.hasNext();) {
+                            Cxcobrar vec = (Cxcobrar) itna.next();
+                          
+                           Row row = new Row();
+                                   if(row == null){
+                                        row = new Row();
+                                   }
+                                Checkbox ch = new Checkbox("");   
+                                row.appendChild(ch);
+                                row.setValue(vec);//seteo cxcobrar
+                                
+                                row.appendChild(new Label(vec.getFactura().getNumero()+""));//factura
+                                
+                                SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
+                                Date d = vec.getFecha();
+                                row.appendChild(new Label(d1.format(d)+""));//fecha
+                                
+                                row.appendChild(new Label(vec.getFactura().getClientes()+"")); //cliente
+ 
+                                row.appendChild(new Label(vec.getHaber()+"")); //total
+
+                                row.appendChild(new Label(vec.getBanco() != null ? vec.getBanco().getNombre()+"": vec.getBancoban() != null ? vec.getBancoban().getNombre()+"" : ""));
+                                row.appendChild(new Label(vec.getBanco() != null ? vec.getNocuenta()+"": vec.getNocuentaban()+""));
+                                
+
+                            try{
+                                    filasFac.appendChild(row);
+                            }catch(Exception exs){
+                            System.out.println("NO SE AGREGÓ FILA POR ERROR: "+exs);
+                            }
+                }
+            valortotal.value = total;
+                   }catch(Exception e){
+                            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+                          
+                        }
+                
+ }
+                
+ void buscarSectores(Integer codigo){
+          bd.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o " + 
+        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+ sucursalEmp.getSucursal().getCodigo() +"'  order by o.numero" );
+        sect = new Listbox();
+        int a=0;
+            for (Iterator it = sect.getItems().iterator(); it.hasNext();) {
+                    sect.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+ ".- " + acceIt.getNombre()+" "));
+                      sect.appendChild(li);
+             }
+            a=0;
+            for (Iterator it = sect2.getItems().iterator(); it.hasNext();) {
+                    sect2.getItems().remove(a);
+                }
+
+
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
+                      sect2.appendChild(li);
+             }
+    } 
+    
+    
+    void seleccionarTodos(Checkbox estado,Integer tipo){
+                if(tipo == 0){
+                       List col = facturasDatos.getRows().getChildren();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        ((Checkbox) labels.get(0)).setChecked(estado.isChecked());
+                               }
+                 }else{
+                        List col = facturasDatosAsignados.getRows().getChildren();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        ((Checkbox) labels.get(0)).setChecked(estado.isChecked());
+                               }
+                 
+                 }
+    }
+    void generarFacturas(){
+ 
+                       List col = facturasDatos.getRows().getChildren();
+                       Sucursal suc = sucursalEmp.getSucursal();
+                       Integer num = numero.value;
+                       
+                       String vali = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
+                        List siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
+                        
+                            if(siExiste.size()>0){
+                                Messagebox.show("El # Inicial de la factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                numero.focus();
+                                return;        
+                            }
+                        String nofacturas="";
+                             for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                             String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
+                                             nofacturas += "'"+nn+"',";
+                                             num++;
+                                        }
+                               }
+                                        if(nofacturas.length()>0){
+                                             nofacturas = nofacturas.substring(0,nofacturas.length()-1);
+                                             siExiste = adm.query("Select o from Factura as o where o.numero in ("+nofacturas+") ");
+                        
+                                                        if(siExiste.size()>0){
+                                                        String existentes  = "";
+                                                                    for (Iterator itna = siExiste.iterator(); itna.hasNext();) {
+                                                                            Factura f = (Factura) itna.next();  
+                                                                            existentes += f.numero.substring(9)+" , ";
+
+                                                                    }
+                                                            Messagebox.show("Algunas # de Facturas ya se han Usado ...! \n"+existentes, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                            numero.focus();
+                                                            return;        
+                                                        }
+                                             
+                                         }
+                       Integer num2 = numero.value;
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                                Factura fac = adm. buscarClave(object.getValue(),Factura.class);
+                                                String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num2);
+                                                if(fac.getNumero() == null){
+                                                   fac.setNumero(nn);
+                                                  adm.actualizar(fac);
+                                                    num2++;
+                                                }
+                                        }
+                               }
+                               facturasPendientes();
+    }
+    
+      
+    String llenarCeros(String numero) {
+        
+        while (numero.length() < 7) {
+            numero = "0" + numero;
+        }        
+        return numero;
+        
+    }
+    
+    void anadirFilas(){
+    
+                     if(numeroinforme.value == null){
+                            Messagebox.show("Ingrese un Numero de Informe..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            empleados.focus();
+                            return;
+                       }
+                       List col = facturasDatos.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked() &&  !((Label) labels.get(2)).getValue().equals("")  ){
+                                            try{
+                                                  arr.add(object);
+                                              }catch(Exception ax){
+                                                System.out.println(""+ax);
+                                            }
+                                              
+                                        }
+                          }
+                          for (int i = 0; i < arr.size(); i++) {
+                                     Row object = (Row) arr.get(i);
+                                      filasFacAsignados.appendChild(object);
+                          }
+                          bancoSeleccionado.value = (bancosList.selectedItem.value).getNombre() +"";
+                               
+ }
+ void quitarFilas(){
+ 
+                       List col = facturasDatosAsignados.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                            try{
+                                                  arr.add(object);
+                                              }catch(Exception ax){
+                                                System.out.println(""+ax);
+                                            }
+                                              
+                                        }
+                          }
+                          for (int i = 0; i < arr.size(); i++) {
+                                     Row object = (Row) arr.get(i);
+                                      filasFac.appendChild(object);
+                          }
+                               
+ }
+
+
+  void guardarFilas(){
+                       List col = facturasDatosAsignados.getRows().getChildren();
+                       ArrayList arr  = new ArrayList();
+                       Date fechaAc = fecha.value;
+                       String fec = gen.convertiraString(fechaAc);
+                       
+                       //adm.ejecutaSqlNativo("Delete from Facturasenviadas where numero = '"+numeroinforme.value +"' and fecharegreso is null  ");
+
+                       List facturasLista = adm.queryNativo("Select o.factura from Facturasenviadas as o " +
+                            " where o.numero = '"+numeroinforme.value +"' and fecharegreso is null  ");
+
+                                     for (Iterator itfacturas = facturasLista.iterator(); itfacturas.hasNext();) {
+                                            Vector facturas1 = (Vector) itfacturas.next();
+                                        arr.add(facturas1.get(0));
+
+                                    }
+                                    Integer num = adm.getNuevaClave("Facturasenviadas", "numero");
+                                    numeroinforme.value = num;
+                           for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                            try{
+                                                  Integer facCodigo = object.getValue();
+                                                  Facturasenviadas facEnvi = new Facturasenviadas();
+                                                  facEnvi.setCodigo(adm.getNuevaClave("Facturasenviadas", "codigo"));
+                                                  facEnvi.setFactura(new Factura(facCodigo));
+                                                  facEnvi.setFecha(fechaAc);
+                                                  facEnvi.setNumero(num);
+                                                  facEnvi.setEmpleados(usuarioActual);
+                                                  facEnvi.setSaldo(new BigDecimal(labels.get(6).getValue()));
+                                                  facEnvi.setDebito(new BigDecimal(0));
+                                                  facEnvi.setTotal(new BigDecimal(0));
+                                                  facEnvi.setDescuento(new BigDecimal(0));
+                                                  facEnvi.setBancos(bancosList.selectedItem.value);
+                                                  if(!arr.contains(facCodigo))
+                                                       adm.guardar(facEnvi);
+                                              }catch(Exception ax){
+                                                System.out.println(".."+ax.getMessage());
+                                                System.out.println(".."+ax);
+                                            }
+
+                                        
+                          }
+generaArch.disabled = false;
+ }
+ 
+  public List buscarEnviadas(Sucursal suc, Integer numero) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        String quer = "Select x  from Facturasenviadas as x where x.numero= '" + numero+ "' and x.factura.sucursal.codigo = '"+suc.getCodigo()+"' ";
+        /* "SELECT fa.codigo, fa.numero, fa.fecha,  CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli  "
+                + " WHERE fa.codigo in ( Select x.factura from Facturasenviadas as x where x.numero= '" + numero+ "' "
+                + " )  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+                */
+        List deudas = adm.query(quer);
+        return deudas;
+    }
+   void facturasPendientesEmpleado(){
+        try{
+        //   bancoSeleccinoado.value = bancosList.selectedItem.value +"";
+            List facturasDatosAsignados2 =  buscarEnviadas(sucursalEmp.getSucursal(),new Integer(numeroinforme.value));
+                 if(facturasDatosAsignados2.size()>0){
+                    generaArch.disabled =false;
+                }
+            facturasDatosAsignados.getRows().getChildren().clear();
+            ArrayList contratosAnadidos = new ArrayList();
+            int i =0;
+                for (Iterator itna = facturasDatosAsignados2.iterator(); itna.hasNext();) {
+                            Facturasenviadas vec = (Facturasenviadas) itna.next();
+                           Row row = new Row();
+                                   if(row == null){
+                                        row = new Row();
+                                   }
+                                    Checkbox ch = new Checkbox("");
+                                    row.appendChild(ch);
+                                    
+                                        row.setValue(vec);
+                                        row.appendChild(new Label(vec.getFactura().getNumero()+""));
+                                        row.appendChild(new Label(vec.getFactura().getNumero().substring(9)+""));
+                                        SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
+                                        Date d = vec.getFecha();
+                                        row.appendChild(new Label(d1.format(d)+""));
+                                        row.appendChild(new Label(vec.getFactura().getClientes().getApellidos()+""+vec.getFactura().getClientes().getNombres()));
+                                        row.appendChild(new Label(vec.getFactura().getClientes().getDireccion()+""));
+                                        row.appendChild(new Label(vec.getSaldo()+""));
+                                        row.appendChild(new Label(vec.getBancos().getNombre()+""));
+                                        
+                                    
+                                        
+                                     
+                            filasFacAsignados.appendChild(row);
+                }
+
+                   }catch(Exception e){
+                            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            System.out.println("ERROR: "+e);
+
+                        }
+
+ }
+ 
+ void imprimirTodos(){
+            List col = facturasDatos.getRows().getChildren();
+            String codigos = "";
+                           for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                     List labels = object.getChildren();
+                                     if(((Checkbox) labels.get(0)).isChecked()){
+                                                if(!labels.get(1).equals("")){
+                                                      Integer facCodigo = object.getValue();
+                                                     codigos += facCodigo+",";
+                                                }
+                                     }
+                                                 
+                            }
+            if(codigos.length() >0){
+                codigos = codigos.substring(0,codigos.length()-1);
+                Map parameters = new HashMap();
+                parameters.put("empresa",empresa.getRazonsocial());
+                parameters.put("ruc",empresa.getRuc());
+                parameters.put("direccion",empresa.getDireccion());
+                parameters.put("telefono",empresa.getTelefono());
+                    List detalleFac = adm.query("Select o from Detalle as o " + 
+                    "where o.factura.codigo in (" + codigos + ") order by o.factura.numero  ");
+                    ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Detalle det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"factura.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+                
+            }
+                
+ 
+ }
+ void imprimirTodosEmpleado(){
+        generarCM cm = new generarCM();
+        List col = facturasDatosAsignados.getRows().getChildren();
+        byte[] data = cm.empezarGenerar(col,bancosList.selectedItem.value);
+       Date fec = adm.Date();   
+       String nombreArchivo = "NDE"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+"_01.txt"; 
+       if((bancosList.selectedItem.value).getNombre().toLowerCase().contains("bolivariano")){
+            nombreArchivo = "REC_BBOL"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+".BIZ"; 
+       }
+       Filedownload.save(data, "file", ""+nombreArchivo);
+         
+ }
+  ]]>
+    </zscript>
+    <div>
+      
+       
+                    <groupbox id="panel" mold="3d" width="100%">
+                        <hbox>
+                            <vbox >
+                                <grid>
+                                    <rows>
+                                        <row visible = "true" id="filacanton">
+                                            <span style="float:right"> Cantón(*):</span>
+                                            <bandbox  readonly="true"  id="bdCanton">
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox id="cant" width="250px"
+                                                                 onSelect="bdCanton.value=self.selectedItem.label;bdCanton.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                        
+                                                            <listitem forEach="${cantonesList}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
+
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
+                                        </row>
+                                        <row>
+                                            <span style="float:right"> Fechas:</span>
+                                            <span>
+                                                <datebox id="desde" format="dd/MM/yyyy" onCreate="self.value=new Date()"/>
+                                                
+                                                <datebox id="hasta" format="dd/MM/yyyy"  onCreate="self.value=new Date()"/>
+                                                  <button label="Buscar" onClick="facturasPendientes() "/>  
+
+                                            </span>
+                                        </row>
+                                      
+                                    </rows>
+                                </grid>
+                                <grid height="350px" width="700px"    fixedLayout="true"  id="facturasDatos" >
+                                    <columns>
+                                        <column  width="35px" >
+                                            <checkbox id="todos" label="Selección" onCheck="seleccionarTodos(self,0)" />
+                                        </column>
+                                        <column   label="Factura"/>
+                                        <column sort="auto"    width="68px" label="# Fecha"/>
+                                        <column sort="auto"    width="85px"   label="Cliente"/>
+                                        <column sort="auto" width="150px"   label="Valor"/>
+                                        <column sort="auto" width="150px"   label="Banco"/>
+                                        <column    width="45px"  label="No.Transferencia"/>
+                                        <column  width="45px" label="Banco"/>
+                                    </columns>
+                                    <rows id="filasFac">
+                                    </rows>
+                                    <foot style="background:#E1E1E1">
+                                        <footer/>
+                                        <footer/>
+                                        <footer/>
+                                  
+                                        <footer width="100px">
+                                            
+                                            <decimalbox format="#00.00" 
+                                            style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                        </footer>
+                                        <footer/>
+                                      
+                                        <footer/>
+                                                                                      
+                                    </foot>
+                                </grid>
+                            </vbox>
+                          
+                        </hbox>
+                 
+                  
+                    </groupbox>
+ 
+  
+        <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
+            <panelchildren>
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;" id="contratosCliente" width="100%">
+                    <listhead>
+                        <listheader label="Contra."/>
+                        <listheader label="Plan"/>
+                        <listheader label="Fecha"/>
+                        <listheader label="Estado"/>
+                    </listhead>
+                    <listitem forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.fecha}" />
+                    </listitem>
+                </listbox>
+                <button label="CERRAR" onClick="contratosPanel.visible = false"/>
+            </panelchildren>
+        </panel>
+    </div>
+</window>

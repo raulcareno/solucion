@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jcinform.bean.sources.ReporteCobranzasDataSource;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.Bancos;
 import jcinform.persistencia.Canton;
@@ -478,7 +479,37 @@ public class generarFacturas {
 
         return deudas;
     }
-
+  public List buscarPagos(Sucursal suc, Canton canton, Date desde, Date hasta) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+       String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+      
+        String complementoCanton = "  o.sector.canton.codigo  = '" + canton.getCodigo() + "'  ";
+        if (canton.getCodigo().equals("-1")) {
+            complementoCanton = "";
+        }
+        List<Contratos> contratos = adm.query("Select o from Contratos as o "
+                + "where "+complementoCanton
+                + " and o.formapago = 2 and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "
+                + " " );
+        String contraString = "";
+        for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
+            Contratos contratos1 = itContratos.next();
+            contraString = "" + contratos1.getCodigo() + "," + contraString + "";
+        }
+        if (contraString.length() > 0) {
+            contraString = contraString.substring(0, contraString.length() - 1);
+        }
+        String query = "Select o from Cxcobrar as o "
+                + " where o.factura.contratos.codigo in (" + contraString + ") "
+                + "and o.fecha between '"+desdestr+"'  and '"+hastastr+"' and o.haber > 0 order by o.fecha  ";
+        List<Cxcobrar> cuentas = adm.query(query); 
+//        for (Iterator<Cxcobrar> it = cuentas.iterator(); it.hasNext();) {
+//                Cxcobrar cxcobrar = it.next(); 
+//                
+//        }
+        return cuentas;
+    }
     //BUSCAR PARA ASIGNAR FACTURA 
     public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,String diapago2,Bancos bancoSel) {
         //seleccionar todos los que no tenga deuda en éste més o periodo

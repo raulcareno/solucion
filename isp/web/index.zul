@@ -214,6 +214,7 @@ void ingresarSoporte(Soporte sop){
                                     <menuitem image="/images/tarjeta.png" value="/registroFacturasDebito.zul"  label="Registrar Cobros Debitos" onClick='ingresar(self,"Registro de Cobros")' />
                                     <menuitem image="/images/calendario.png" value="/generarFacturas.zul"  label="Generación Facturas" onClick='ingresar(self,"Generacion Cobros")' />
                                     <menuitem image="/images/calendario.png" value="/anularFacturaExtra.zul"  label="Ingresar Factura Anulada" onClick='ingresar(self,"Generacion Cobros")' />
+                                    <menuitem image="/images/bancos.png" value="/generarArchivoCobranza.zul"  label="Generar Archivo Cobranza" onClick='ingresar(self,"Facturacion")' />
 
                                     <menuseparator />
                                     <menuitem  value="/planes.zul"    image="/images/planes.png" label="Planes de Internet" onClick='ingresar(self,"Planes")' />
