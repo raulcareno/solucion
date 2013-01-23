@@ -43,6 +43,13 @@ import java.text.SimpleDateFormat;
     Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
     Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+
+
+            if(empresa.getSolofactura()){
+                    facturar.visible = false;
+                    facturarlbl.visible = false;
+                    si.selected = true;
+            }
     
     
     
@@ -481,6 +488,10 @@ Boolean validar(){
             adm.actualizar(empa);
             
      }
+     
+     if(empresa.getSolofactura()){
+        si.selected = true;
+      }
      equi.setDireccionf(direccion.value);
     equi.setTelefonof(telefono.value);
     equi.setClientes(new Clientes(new Integer(codigocli.value)));
@@ -954,6 +965,13 @@ if(sihay==0){
         return permiso.verificarPermiso("Soporte",accion);
  }
  void nuevo(){
+ if(empresa.getSolofactura()){
+        si.selected = true;
+        si.visible = false;
+        no.visible = false;
+        
+         
+}
      genFactura.setChecked(false);
      telefono.value ="";
      direccion.value ="";
@@ -2660,11 +2678,23 @@ void llamar(){
                                             <span style="float:right">
                                                 <label style="font-weight:bold2" value=" Estado: " />
                                             </span>
+                                            <zscript>
+                                                void preguntar(){
+                                                if(empresa.getAplicasuspension()){
+                                                     int valor0 = Messagebox.show("Desea Asignar un valor por Suspensión?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                      if(valor0 == 16){
+                                                        alert("selecciono si");
+                                                     }
+                                                }
+                                                }
+                                                
+                                                
+                                                </zscript>
                                                                 
                                             <radiogroup id="estadoContrato" >
                                                 <radio disabled="true" id="eactivo" selected="true" value="Activo" label="Act." style="font-weight:bold2" />
                                                 <radio disabled="true"  id="ecortado"  onCheck="genFactura.disabled = false; seriebuscar.disabled = false;" value="Cortado"  label="Cort." style="font-weight:bold2" />
-                                                <radio disabled="true"  id="esuspendido" onCheck="genFactura.disabled = false; seriebuscar.disabled = false;"   value="Suspendido"  label="Susp." style="font-weight:bold2" />
+                                                <radio disabled="true"  id="esuspendido" onCheck="genFactura.disabled = false; seriebuscar.disabled = false; preguntar();"   value="Suspendido"  label="Susp." style="font-weight:bold2" />
                                                 <radio  disabled="true"  id="eterminado"  onCheck="genFactura.disabled = false; seriebuscar.disabled = false;" value="Terminado"  label="Term." style="font-weight:bold2" />
                                                 <radio  disabled="true" id="ependiente"  onCheck="genFactura.disabled = true; seriebuscar.disabled = true;" value="Pendiente"  label="Pend." style="font-weight:bold2" />
                                             </radiogroup>
@@ -2818,9 +2848,9 @@ void llamar(){
                                             <comboitem label="Fibra Óptica" value="Fibra Óptica" />
                                             <comboitem label="Medio Inalambrico" value="Medio Inalambrico" />
                                          </combobox>
-                                          <span style="float:right">   Facturar:</span>
+                                          <span style="float:right"> <label id="facturarlbl" value="Facturar:" />  </span>
                                            <radiogroup id="facturar" >
-                                            <radio   id="si" value="SI" label="SI" style="font-weight:bold2" />
+                                            <radio selected="true"   id="si" value="SI" label="SI" style="font-weight:bold2" />
                                             <radio  id="no"  value="NO"  label="NO" style="font-weight:bold2" />
                                           </radiogroup>
                                                            
@@ -2855,9 +2885,9 @@ void llamar(){
                                             </span>
                                             <span style="float:right">   Usuario:</span>
                                             <span style="float:right">   
-                                                <textbox cols="15" readonly="true"   id="usuario" />
+                                                <textbox cols="10" readonly="true"   id="usuario" />
                                                 Clave:
-                                                <textbox cols="15" readonly="true"   id="clave" />
+                                                <textbox cols="10" readonly="true"   id="clave" />
                                             </span>
                                         </row>
                                         <row spans="4">

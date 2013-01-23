@@ -8,14 +8,7 @@ package jcinform.persistencia;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -71,6 +64,18 @@ public class Empresa implements Serializable {
     private BigDecimal instalacion;
     @Column(name = "iva")
     private BigDecimal iva;
+    @Column(name = "mora")
+    private Integer mora;
+    @Column(name = "suspension")
+    private Integer suspension;
+    @Column(name = "aplicamora")
+    private Boolean aplicamora;
+    @Column(name = "aplicasuspension")
+    private Boolean aplicasuspension;
+    @Column(name = "solofactura")
+    private Boolean solofactura;
+     
+    
     @OneToMany(mappedBy = "empresa")
     private Collection<Sucursal> sucursalCollection;
    
@@ -249,6 +254,50 @@ public class Empresa implements Serializable {
         this.iva = iva;
     }
 
+    public Integer getMora() {
+        return mora;
+    }
+
+    public void setMora(Integer mora) {
+        this.mora = mora;
+    }
+
+    public Integer getSuspension() {
+        return suspension;
+    }
+
+    public void setSuspension(Integer suspension) {
+        this.suspension = suspension;
+    }
+
+    
+    public Boolean getAplicamora() {
+        return aplicamora;
+    }
+
+    public void setAplicamora(Boolean aplicamora) {
+        this.aplicamora = aplicamora;
+    }
+
+    public Boolean getAplicasuspension() {
+        return aplicasuspension;
+    }
+
+    public void setAplicasuspension(Boolean aplicasuspension) {
+        this.aplicasuspension = aplicasuspension;
+    }
+
+ 
+
+    public Boolean getSolofactura() {
+        return solofactura;
+    }
+
+    public void setSolofactura(Boolean solofactura) {
+        this.solofactura = solofactura;
+    }
+
+    
     
     public Collection<Sucursal> getSucursalCollection() {
         return sucursalCollection;

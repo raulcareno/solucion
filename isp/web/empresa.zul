@@ -1,10 +1,6 @@
- 
-<window  id="ventana"  border="normal"  onCreate='buscar("");' xmlns:a="http://www.zkoss.org/2005/zk/annotation">
-
-  
+<?page id="empresapage"?>
+<window  id="ventana"  border="normal"   xmlns:a="http://www.zkoss.org/2005/zk/annotation">
     <hbox>
-
-
         <grid align="center" width="100%">
             <rows>
                 <row>
@@ -126,7 +122,69 @@
                         </button>
                     </span>
                 </row>
-
+                 <row>
+                    <span  style="float:right"> Trabaja Solo Facturas(*):</span>
+                    <span>
+                        <a:bind checked="inobjeto.solofactura"/>
+                        <checkbox  id="solofactura" onChange="update();"/>
+                    </span>
+                </row>
+                <row>
+                    <span  style="float:right"> Aplica Mora a Retraso</span>
+                    <span>
+                        <a:bind checked="inobjeto.aplicamora"/>
+                        <checkbox  id="aplicamora" onChange="update();"/>
+                    </span>
+                </row>
+                <row>
+                    <span  style="float:right">  Producto Mora: </span>
+                    <span>
+                        <textbox  readonly="true"  cols="32"   id="equipo1" />
+                        <a:bind value="inobjeto.mora"/>
+                        <textbox id="codigoequi1" onChange="update();" style="background:white;border:0px;font-size:8px" cols="2" />
+                       <button label=""  id="buscarE" disabled="false" image="/images/auditoria.gif">
+                                <attribute name="onClick">{
+                                    final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("nuevo", true);
+                                    win.setTitle("Buscar Equipos");
+                                    win.setAttribute("equipo", 1);
+                                    win.doModal();
+                                    }                            
+                                </attribute>
+                       </button>
+                    </span>
+                </row>
+                <row>
+                    <span  style="float:right"> Aplica Suspensión</span>
+                    <span>
+                        <a:bind checked="inobjeto.aplicasuspension"/>
+                        <checkbox  id="aplicasuspension" onChange="update();"/>
+                        
+                    </span>
+                </row>
+                <row>
+                    <span  style="float:right">Producto Suspensión:</span>
+                    <span>
+                        <textbox  readonly="true"  cols="32"   id="equipo2" />
+                        <a:bind value="inobjeto.suspension"/>
+                        <textbox id="codigoequi2" onChange="update();"  style="background:white;border:0px;font-size:8px" cols="2" />
+                       <button label=""  id="buscarE2" disabled="false" image="/images/auditoria.gif">
+                                <attribute name="onClick">{
+                                    final Window win = (Window) Executions.createComponents("buscarEquipos.zul", null, null);
+                                    win.setMaximizable(true);
+                                    win.setClosable(true);
+                                    win.setAttribute("nuevo", true);
+                                    win.setTitle("Buscar Equipos");
+                                    win.setAttribute("equipo", 2);
+                                    win.doModal();
+                                    }                            
+                                </attribute>
+                       </button>
+                    </span>
+                        
+                </row>
             </rows>
         </grid>
         <grid>
@@ -175,20 +233,18 @@
   import org.zkoss.image.Image;
   import java.io.FileNotFoundException;
   import java.io.FileOutputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-    import java.io.InputStream;
+  import java.io.DataOutputStream;
+  import java.io.FileInputStream;
+  import java.io.InputStream;
   import java.io.IOException;
-    Administrador adm = new Administrador();
   
-
-   
+  
+  Administrador adm = new Administrador();
     Permisos permiso = new Permisos();
     //FUNCIONES
-
-            Session a = Sessions.getCurrent();
-            jcinform.persistencia.Empleados emp = a.getAttribute("user");
-            if(emp==null) Executions.sendRedirect("login.zul");
+    Session a = Sessions.getCurrent();
+    jcinform.persistencia.Empleados emp = a.getAttribute("user");
+    if(emp==null) Executions.sendRedirect("login.zul");
 
 
 void cargarEscudo(byte[] imageData){
@@ -204,6 +260,10 @@ void cargarVacio(){
     AnnotateDataBinder binder = new AnnotateDataBinder(ventana);
     binder.bindBean("inobjeto", inobjeto);
     binder.loadAll();
+    equipo1.value = (inobjeto.getMora()!=null?adm.buscarClave(inobjeto.getMora(),Equipos.class):"")+"";
+    equipo2.value = (inobjeto.getSuspension()!=null?adm.buscarClave(inobjeto.getSuspension(),Equipos.class):"")+"";
+    
+List equiposList = adm.query("Select o from Equipos as o ");
 
     void update() {
           binder.saveAll();
@@ -259,6 +319,12 @@ void estado(Boolean estado,Boolean modificar){
     return ;
  }
              org.zkoss.image.Image nueva = foto0.getContent();
+             if(equipo1.value != ""){
+                inobjeto.setMora(new Integer(codigoequi1.value));
+             }
+             if(equipo2.value != ""){
+                inobjeto.setSuspension(new Integer(codigoequi2.value));
+             }
  //           inobjeto.setEscudo(nueva.getByteData());
         inobjeto.setEmail(nueva.getFormat());
         if((!inobjeto.getRuc().equals(0)) ){
@@ -267,6 +333,8 @@ void estado(Boolean estado,Boolean modificar){
             inobjeto.setRuc(ruc.value);
              adm.guardar(inobjeto);
          }
+          a.removeAttribute("empresa");
+          a.setAttribute("empresa",inobjeto);
         org.zkoss.image.Image nueva = foto0.getContent();
          String  name =  inobjeto.getFotos()+""+inobjeto.getRuc()+"."+nueva.getFormat();
                 InputStream objin=nueva.getStreamData();
@@ -297,13 +365,7 @@ void estado(Boolean estado,Boolean modificar){
  void move(){
         binder.bindBean("inobjeto",(Empresa)datos.selectedItem.value);
         binder.loadAll();
-        /*
-            if(((Empresa)datos.selectedItem.value).getEscudo() != null){
-                    cargarEscudo(((Empresa)datos.selectedItem.value).getEscudo());
-            }else{
-                    cargarVacio();
-            }*/
-        modificar.disabled = false;
+         modificar.disabled = false;
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -329,25 +391,7 @@ void eliminar(){
     }
 }
    
-  void buscar(String p){
-        List empleadosEncontrados = adm.query("Select o from Empresa as o  ");
-        datos = new Listbox();
-        int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
-                }
-
-
-               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                      Empresa acceIt = (Empresa) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getRuc()+""));
-                      li.appendChild(new Listcell(acceIt.getRazonsocial() ));
-                      datos.appendChild(li);
-             }
-
-    }
+  
  
 
     </zscript>

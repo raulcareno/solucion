@@ -18,7 +18,7 @@
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Equipos as o where o.identificacion = 0");
+    List allEvents = adm.query("Select o from Equipos as o where o.nombre = '0' ");
     static Equipos empa = new Equipos();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Sector as o  ");
@@ -51,6 +51,7 @@ Integer equipo = 0;
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getNombre()+" "+acceIt.getModelo()+" "+acceIt.getMarcas().getNombre()));
+                      li.appendChild(new Listcell(acceIt.getPvp1()+" "));
                       //li.appendChild(new Listcell(acceIt.getMac()));
                       datos.appendChild(li);
              }
@@ -59,28 +60,19 @@ Integer equipo = 0;
  
 
 cargarCliente(Equipos cequipos){
-if(equipo.equals(1)){
-  equi = Path.getComponent("//contratospage/contratosventana/equipo1");
-  codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi1");
-  codiequi.value = cequipos.getCodigo()+"";
-  equi.value = cequipos.getNombre()+" "+cequipos.getModelo()+" "+cequipos.getMarcas().getNombre();
- }else if(equipo.equals(2)){
-  equi = Path.getComponent("//contratospage/contratosventana/equipo2");
-  codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi2");
-  codiequi.value = cequipos.getCodigo()+"";
-  equi.value = cequipos.getNombre()+" "+cequipos.getModelo()+" "+cequipos.getMarcas().getNombre();
- }else if(equipo.equals(3)){
-  equi = Path.getComponent("//contratospage/contratosventana/equipo3");
-  codiequi = Path.getComponent("//contratospage/contratosventana/codigoequi3");
-  codiequi.value = cequipos.getCodigo()+"";
-  equi.value = cequipos.getNombre()+" "+cequipos.getModelo()+" "+cequipos.getMarcas().getNombre();
- }
- 
-  
- 
- 
- 
- 
+         
+        if(equipo.equals(1)){
+            equi = Path.getComponent("//empresapage/ventana/equipo1");
+            codiequi = Path.getComponent("//empresapage/ventana/codigoequi1");
+            codiequi.value = cequipos.getCodigo()+"";
+            equi.value = cequipos.getNombre()+" "+cequipos.getModelo()+" "+cequipos.getMarcas().getNombre();
+        }else if(equipo.equals(2)){
+            equi = Path.getComponent("//empresapage/ventana/equipo2");
+            codiequi = Path.getComponent("//empresapage/ventana/codigoequi2");
+            codiequi.value = cequipos.getCodigo()+"";
+            equi.value = cequipos.getNombre()+" "+cequipos.getModelo()+" "+cequipos.getMarcas().getNombre();
+        }
+        
 
 }
 
@@ -123,6 +115,7 @@ if(equipo.equals(1)){
             try{
                     instanciadaContratos = crearEquipos.getAttribute("nuevo");
                     equipo = crearEquipos.getAttribute("equipo");
+                    buscarText.focus();
              }catch(Exception e){
                     instanciadaContratos = false;
                     equipo  =0;
