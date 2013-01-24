@@ -152,38 +152,38 @@ String codigo ="";
 //        int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
         // TODO code application logic here
         Administrador adm = new Administrador();
-        int f = 0;
-        if(f==0){
-            
-            List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = 3  "
-                    + " order by o.secuencia,o.paralelo.descripcion, o.descripcion ");
-            int contar = 1;
-                 int noMatricula = 1;
-             for (Iterator<Cursos> it = cursosList.iterator(); it.hasNext();) {
-                Cursos cursos = it.next();
-                 System.out.println(""+cursos);
-                 List<Matriculas> matri = adm.query("Select o from Matriculas as o "
-                         + " where o.curso.codigocur = '"+cursos.getCodigocur()+"' and o.estado in ('Matriculado') order by o.estudiante.apellido, o.estudiante.nombre ");
-                 
-                 for (Iterator<Matriculas> it1 = matri.iterator(); it1.hasNext();) {
-                     Matriculas matric = it1.next();
-                     matric.setNumero(noMatricula);
-                     matric.setFolio(contar);
-                     adm.actualizar(matric);
-                     System.out.println("matri:"+noMatricula+" folio: "+ contar+" " +matric);
-                     if(noMatricula%2==0){
-                         contar++; 
-                     }
-                     noMatricula++;
-                     
-                     //matric.getEstudiante().getCodigoest()
-                     
-                 }
-                
-            }
-                return;
-        }
-        String tipo = "COPIAR";
+//        int f = 0;
+//        if(f==0){
+//            
+//            List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = 3  "
+//                    + " order by o.secuencia,o.paralelo.descripcion, o.descripcion ");
+//            int contar = 1;
+//                 int noMatricula = 1;
+//             for (Iterator<Cursos> it = cursosList.iterator(); it.hasNext();) {
+//                Cursos cursos = it.next();
+//                 System.out.println(""+cursos);
+//                 List<Matriculas> matri = adm.query("Select o from Matriculas as o "
+//                         + " where o.curso.codigocur = '"+cursos.getCodigocur()+"' and o.estado in ('Matriculado') order by o.estudiante.apellido, o.estudiante.nombre ");
+//                 
+//                 for (Iterator<Matriculas> it1 = matri.iterator(); it1.hasNext();) {
+//                     Matriculas matric = it1.next();
+//                     matric.setNumero(noMatricula);
+//                     matric.setFolio(contar);
+//                     adm.actualizar(matric);
+//                     System.out.println("matri:"+noMatricula+" folio: "+ contar+" " +matric);
+//                     if(noMatricula%2==0){
+//                         contar++; 
+//                     }
+//                     noMatricula++;
+//                     
+//                     //matric.getEstudiante().getCodigoest()
+//                     
+//                 }
+//                
+//            }
+//                return;
+//        }
+        String tipo = "EMP";
         
         Permisos c = new Permisos();
         if (tipo.contains("COPIAR")) {
