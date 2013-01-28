@@ -197,7 +197,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         descuento = new javax.swing.JLabel();
         busquedaVacio = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
         btnAnadirRubrosVer = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         total4 = new javax.swing.JLabel();
@@ -746,11 +745,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel10.setText("Búsqueda: ");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(10, 60, 70, 14);
-
-        jButton2.setText("Historial");
-        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        getContentPane().add(jButton2);
-        jButton2.setBounds(500, 180, 100, 20);
 
         btnAnadirRubrosVer.setText("Añadir Rubros");
         btnAnadirRubrosVer.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -2074,6 +2068,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void btnAnadirRubrosVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirRubrosVerActionPerformed
         // TODO add your handling code here:
         if (btnAnadirRubrosVer.isSelected()) {
+            cargarRubros();
             panelAnadirRubros.setVisible(true);
         } else {
             panelAnadirRubros.setVisible(false);
@@ -2225,7 +2220,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JPanel frmActualizar;
     private javax.swing.JLabel iva;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
