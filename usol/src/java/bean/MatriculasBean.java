@@ -118,8 +118,8 @@ public class MatriculasBean {
     Auditar aud = new Auditar();
     ProcesadorImagenes p = new ProcesadorImagenes();
     private DualListModel<Materias> materias;
-    List<CarrerasMaterias> origen = new ArrayList<CarrerasMaterias>();
-    List<CarrerasMaterias> destino = new ArrayList<CarrerasMaterias>();
+    List<CarrerasMaterias> origen;
+    List<CarrerasMaterias> destino;
     List<Estudiantes> estudiantesListado = new ArrayList<Estudiantes>();
     Periodos per;
     Archivos arLibreta;
@@ -222,6 +222,9 @@ public class MatriculasBean {
 
 
         if (!validarSecuencia(obj)) {
+            if(destino == null){
+                destino = new ArrayList<CarrerasMaterias>();
+            }
             destino.add(obj);
             origen.remove(obj);
             sumarCreditos();
@@ -936,6 +939,8 @@ public class MatriculasBean {
                 buscarMateriasdeCarrera();
             }
         } catch (Exception e) {
+            System.out.println("erro en validar secuencia");
+            if(destino == null)
             buscarMateriasdeCarrera();
         }
 
