@@ -225,6 +225,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total16 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
+        jButton3 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
@@ -976,6 +977,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jScrollPane3);
         jScrollPane3.setBounds(10, 550, 600, 30);
 
+        jButton3.setText("imp");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3);
+        jButton3.setBounds(620, 80, 30, 23);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1394,9 +1404,21 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         codigoPariente.setText(factura.getIdParientes() + "");
         ruc.setText(factura.getIdentificacion());
+        if(ruc.getText().isEmpty()){
+            ruc.setText(es.getIdEstudiantes());
+        }
         nombre.setText(factura.getNombres());
+        if(nombre.getText().isEmpty()){
+            nombre.setText(es.getApellidoPaterno()+" "+es.getApellidoMaterno()+" "+es.getNombre());
+        }
         direccion.setText(factura.getDireccion());
+        if(direccion.getText().isEmpty()){
+            direccion.setText(es.getDireccion());
+        }
         telefono.setText(factura.getTelefonoTrabajo());
+        if(telefono.getText().isEmpty()){
+            telefono.setText(es.getTelefono());
+        }
         ruc1.setText(factura.getIdentificacion());
         nombre1.setText(factura.getNombres());
         direccion1.setText(factura.getDireccion());
@@ -1454,7 +1476,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             obj[0] = rub.get(0).getIdRubros();
             obj[1] = rubroCredito.getNombre();
             obj[2] = 1;
-            obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(1));
+            obj[3] = rub.get(0).getValor();
             obj[4] = rubroCredito.getNoaplica();
             obj[5] = "I";
             dtm.addRow(obj);
@@ -2158,6 +2180,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         frmActualizar.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        imprimir();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
@@ -2198,6 +2226,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel iva;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

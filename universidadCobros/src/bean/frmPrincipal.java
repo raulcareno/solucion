@@ -505,8 +505,7 @@ panelInscritos.setVisible(false);
         // TODO add your handling code here:
         if (cmbPeriodo.getSelectedIndex() > 0) {
             verificarUsuario();
-            LeerInscrito le = new LeerInscrito(this);
-            le.start();
+            
         } else {
             mensaje.setText("Seleccione un periodo...!");
         }
@@ -799,7 +798,8 @@ panelInscritos.setVisible(false);
             for (Iterator<Institucion> it = instituciones.iterator(); it.hasNext();) {
                 inst = it.next();
             }
-
+            LeerInscrito le = new LeerInscrito(this);
+                        le.start();
 
         } else {
 
