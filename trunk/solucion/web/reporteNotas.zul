@@ -506,7 +506,7 @@ void recalcular(){
                     report.setSrc(directorioReportes+"recordPrimeroQuinto.jasper");
             }else if(tipo.equals("NMAT")){
                     
-                    ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
+                    ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
                      parametros = (HashMap) arreglo.get(1);
                      //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
