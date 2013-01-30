@@ -219,14 +219,13 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
             String directorioReportes = insts.getReportes();
+            
+            if(tipo.equals("AM")){
                ArrayList arreglo = noti.notasdAportes(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sisevalCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
                      parametros = (HashMap) arreglo.get(1);
-                     
-
                     MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
                     try{
-                    
                     parametros.put("materia", mate.getMateria().getDescripcion());
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     parametros.put("titulo", "Notas Registradas");
@@ -236,6 +235,20 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
                     }
                     
                     report.setSrc(directorioReportes+"notasporAportes.jasper");
+
+               }else if(tipo.equals("TOT")){
+                             ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
+                                        datasource = (ReporteNotasDataSource) arreglo.get(0);
+                                        parametros = (HashMap) arreglo.get(1);
+                                        parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                                        MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
+                                        parametros.put("materia", mate.getMateria().getDescripcion());
+                                        parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                                        report.setSrc(directorioReportes+"notaspor.jasper");
+                                        parametros.put("titulo", titulo.value);
+
+                    }
+
 
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
