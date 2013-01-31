@@ -721,7 +721,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(factura);
-        factura.setBounds(470, 80, 150, 25);
+        factura.setBounds(470, 80, 120, 25);
 
         total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total6.setForeground(new java.awt.Color(51, 51, 51));
@@ -978,7 +978,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(jButton3);
-        jButton3.setBounds(620, 80, 30, 23);
+        jButton3.setBounds(590, 80, 30, 23);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1169,6 +1169,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             secuencial sec = new secuencial();
             Boolean tipoInscripcion = false;
             Boolean tipoMatricula = false;
+            Boolean tipoCredito = false;
             for (int i = 0; i < this.tFactura.getRowCount(); i++) {
                 Detalles det = new Detalles();
                 det.setIdDetalles(sec.generarClave());
@@ -1184,6 +1185,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 if (((String) tFactura.getValueAt(i, 5)).equals("M")) {
                     tipoMatricula = true;
                 }
+                if (((String) tFactura.getValueAt(i, 5)).equals("C")) {
+                    tipoCredito = true;
+                }
                 //CXC
 
             }
@@ -1195,6 +1199,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 actualMatricula.setPagada(true);
                 actualMatricula.setEstadoMat("M");
             }
+            if (tipoCredito){
+                actualMatricula.setConfirmada(true);
+            }
+            
+            
 
 
             if(actualMatricula.getIdMatriculas() != null)
@@ -1531,6 +1540,21 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 e.printStackTrace();
             }
         }
+        
+        if(ruc.getText().isEmpty()){
+            ruc.setText(es.getIdEstudiantes());
+        }
+        if(nombre.getText().isEmpty()){
+            nombre.setText(es.getApellidoPaterno()+" "+es.getApellidoMaterno()+" "+es.getNombre());
+        }
+ 
+        if(direccion.getText().isEmpty()){
+            direccion.setText(es.getDireccion());
+        }
+ 
+        if(telefono.getText().isEmpty()){
+            telefono.setText(es.getTelefono());
+        }
 
     }
 
@@ -1571,17 +1595,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             DefaultTableModel dtm2 = (DefaultTableModel) formasdePago.getModel();
             dtm2.getDataVector().removeAllElements();
 
-            if (actualMatricula.getPagada()) {
-                //limpiar();
+            /*
+             //limpiar();
                 tFactura.setModel(dtm);
                 formasdePago.setModel(dtm2);
                 sumar();
                 sumarPagos();
                 llenarFactura();
-                JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
+                //JOptionPane.showMessageDialog(this, "No tiene deudas pendientes", "JC INFORM", JOptionPane.ERROR_MESSAGE);
+                //return;
+             */
+            if(!actualMatricula.getPagada()){ 
             //no ha estado pagada
             if (chkMatricula.isSelected() || chkTodo.isSelected()) {
                 if (actualMatricula.getPagada() == false) {
@@ -1602,6 +1626,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     }
                 }
             }
+            }
+
+            if(!actualMatricula.getConfirmada()){
+            //BUSCA LOS RUBROS DE LOS CRÉDITOS SI NO HA PAGADO
             if (chkCreditos.isSelected() || chkTodo.isSelected()) {
 
                 //BUSCO LAS MATERIAS QUE ESTÁ TOMANDO PARA PROCEDER A FACTURAR LOS CRÉDITOS
@@ -1638,6 +1666,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             }
             tFactura.setModel(dtm);
+          }
             sumar();
 
         } else {
