@@ -300,7 +300,9 @@ public class notasEvaluacion extends Rows {
                                 }
                             });
                             //asdfsdfasd
-                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+simbolo.getDecimalSeparator()+"');");
+                            //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+simbolo.getDecimalSeparator()+"');");
+                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+ 
                             notaTexto.addEventListener("onOK", new EventListener() {
 
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {

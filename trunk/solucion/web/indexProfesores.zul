@@ -19,7 +19,9 @@
             }
             void ingresar(Listitem item ){
             try{
-                       
+               if(((String)item.getId()).contains("Chat")){
+                    return;
+               } 
             if(buscar("c" + (String)item.getId())){
             Tab newtb= new Tab(""+item.label);
             newtb.setSelected(true);
@@ -254,7 +256,17 @@
                                         <listitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                                         <listitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
                                         <listitem  id="Correo_Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                                        <listitem id="Chat" image="/images/chat.png"   label="Chat" value="/chat/chat.zul"/>
+                                        <listitem id="Chat" image="/images/chat.png"   label="Chat" >
+                                            <attribute name="onClick">{
+                                                final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                                                win.setClosable(true);
+                                                win.setTitle("Conversación");
+                                                win.setPosition("bottom,right");
+                                                win.doOverlapped();
+                                                }                            
+                                            </attribute>
+                                            
+                                        </listitem>
                                         <listitem id="Reportes_Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
                                         <listitem id="Reportes_Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                                         <listitem id="Registrar_Recomendacion"  label="Registro de Recomendaciones" image="/images/notas.png" value="/registrarRecomendacion.zul" />
@@ -264,8 +276,6 @@
                                         <listitem id="Dobe" image="/images/pensum.png"  label="Dobe" value="/dobe.zul" />
                                         <listitem/>
                                     </listbox>
-
-
                                 </tabpanel>
                             </tabpanels>
 
