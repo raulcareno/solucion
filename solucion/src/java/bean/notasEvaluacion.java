@@ -6,6 +6,7 @@ import java.awt.Robot;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -152,8 +153,8 @@ public class notasEvaluacion extends Rows {
         equ = adm.query("Select o from Equivalencias as o"
                 + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
                 + "and o.grupo = 'AP' ");
-
-
+        
+        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
         List nativo = adm.queryNativo(q);
         Row row = new Row();
         String Shabilitado = "color:black;font-weight:bold;width:27px;font:arial;font-size:11px;text-align:right;";
@@ -298,8 +299,8 @@ public class notasEvaluacion extends Rows {
 
                                 }
                             });
-
-                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            //asdfsdfasd
+                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+simbolo.getDecimalSeparator()+"');");
                             notaTexto.addEventListener("onOK", new EventListener() {
 
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
