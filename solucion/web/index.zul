@@ -367,7 +367,18 @@
                                     </menu>
                                     <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
                                     <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
-                          
+                                    
+                                    <menu  image="/images/chat.png" label="chat">
+                                        <attribute name="onClick">{
+                                            final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                                            win.setClosable(true);
+                                            win.setTitle("Conversación");
+                                            win.setPosition("bottom,right");
+                                            win.doOverlapped();
+                                            }                            
+                                        </attribute>
+                                    </menu>
+                        
                                 </menubar>
                             </panelchildren>
 
