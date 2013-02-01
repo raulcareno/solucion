@@ -4,9 +4,10 @@
  */
 package bean;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
 import java.util.List;
-import javax.smartcardio.Card;
 import jcinform.persistencia.Estudiantes;
 import jcinform.procesos.Administrador;
 
@@ -25,6 +26,18 @@ public class borrar {
 //Progressmeter p;
 //p.set
     public static void main(String[] args) {
+        
+        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
+    //simbolo.setDecimalSeparator('.');
+    
+        System.out.println("SEPARADOR: "+simbolo.getDecimalSeparator());
+    //simbolo.setGroupingSeparator(',');
+    
+    
+    /**
+      
+        DecimalFormat formateador = new DecimalFormat("###,###.##",simbolo);
+//break;
         
         Administrador adm = new Administrador();
         List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '1727351353' ");
@@ -60,6 +73,7 @@ public class borrar {
         } else {
         }
 
+     */
 //        resumen(new Cursos(134));
 //        Grid datos = new Grid();
 //        datos.getChildren().clear();
