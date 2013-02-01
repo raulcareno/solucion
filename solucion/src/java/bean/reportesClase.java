@@ -800,7 +800,12 @@ public class reportesClase {
 
         }
         nativo = null;
+        equivalenciasFaltas = null;
+        equivalencias = null;
+        equivalenciasFaltasSoloDias = null;
         ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        System.gc();
+        lisNotas = null;
         return ds;
 
     }
