@@ -164,9 +164,7 @@ guardando = true;
             Messagebox.show(resultado, "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
          }
    guardar1.disabled=false;
-   //guardar2.disabled=false;
    guardando = false;
-
 }
 
 void buscar2(Cursos cur){

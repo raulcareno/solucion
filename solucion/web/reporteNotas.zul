@@ -608,6 +608,10 @@ void recalcular(){
                     
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"cuadrofinal.jasper");
+            }else if(tipo.equals("CNF5")){
+                    
+                    datasource = noti.cuadrojuntas(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc(directorioReportes+"cuadrofinal.jasper");
             }else if(tipo.equals("CNF2")){
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"cuadrofinal1.jasper");
@@ -744,7 +748,7 @@ void recalcular(){
                 }
             }
             datasource = null;
-                parametros = null;
+            parametros = null;
 		}
 
 void campos(String valor){
@@ -970,7 +974,7 @@ void campos(String valor){
             curs.disabled = false;
             titulo.value= "Listado de Actas de Grado";
              filacursos.visible = true;
-        }else if(valor.equals("CNF") || valor.equals("CNF2") || valor.equals("CNF3") || valor.equals("CNF4") ){
+        }else if(valor.equals("CNF") || valor.equals("CNF5")  || valor.equals("CNF2") || valor.equals("CNF3") || valor.equals("CNF4") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Calificaciones";
@@ -1062,6 +1066,7 @@ void campos(String valor){
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" />
+                                    <listitem  id="CNF5" label="Cuadro Juntas x Aportes" value="CNF5" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
                                     <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
