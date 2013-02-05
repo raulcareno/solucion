@@ -173,7 +173,7 @@ public class notasEvaluacion extends Rows {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
                     notaTexto = new Decimalbox();
-                    notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
+                   // notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
                     if (vertical) {
                         notaTexto.setTabindex(kk);
                     }
@@ -282,6 +282,17 @@ public class notasEvaluacion extends Rows {
                                     try {
                                         Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
                                         if (valor > limite) {
+
+                                            ((Decimalbox) event.getTarget()).setFocus(true);
+                                            ((Decimalbox) event.getTarget()).focus();
+                                            ((Decimalbox) event.getTarget()).setValue(null);
+                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+//                                               Robot b = new Robot();
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);    
+
+                                        }else if (valor < 0) {
 
                                             ((Decimalbox) event.getTarget()).setFocus(true);
                                             ((Decimalbox) event.getTarget()).focus();
@@ -797,7 +808,7 @@ public class notasEvaluacion extends Rows {
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 notaTexto = new Decimalbox();
-                notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
+//                notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
 //                    notaTexto.setTabindex(j);
                 label3 = new Label();
 //                 label.setAttribute("onBlur", "alert(this)");

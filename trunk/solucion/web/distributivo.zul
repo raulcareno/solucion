@@ -205,6 +205,24 @@ void estado(Boolean estado,Boolean modificar){
 
     }
 
+ void setear(){
+               Rows filas001 = datos3.getRows();
+                List listadoMaterias = filas001.getChildren();
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                                  Empleados empSelec = profesSetear.selectedItem.value;
+                                            for (int i = 0; i <= ((Listbox)labels.get(3)).getItems().size(); i++) {
+                                                        Empleados tr0 = ((Empleados)((Listitem)((Listbox)labels.get(3)).getItems().get(i)).getValue());
+                                                        int primero = tr0.getCodigoemp();
+                                                        int segundo = empSelec.getCodigoemp();
+                                                        if(primero == segundo){
+                                                          ((Listbox)labels.get(3)).setSelectedItem((Listitem)((Listbox)labels.get(3)).getItems().get(i));
+                                                            break;
+                                                        }
+                                            }
+                   }
+    }
    Boolean verificar(String accion){
         return permiso.verificarPermiso("Aportes",accion);
 
@@ -996,52 +1014,7 @@ void guardarc(){
 
                    }
                    llenarGrid3(curs3.selectedItem.value);
-
-     /*
-
-        if((!mateProfe.getCodigomap().equals(0)) ){
-                adm.actualizar(mateProfe);
-
-                  try{
-                  if((mates.selectedItem.value).getCodigo().equals((matesAnterior.selectedItem.value).getCodigo())){
-                      String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
-                      " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
-                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
-                      " and materia = "+mateProfe.getMateria().getCodigo()+" ";
-                     adm.ejecutaSqlNativo(quera);
-                  }else{
-
-                    String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
-                          " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
-                          " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
-                          " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
-                        adm.ejecutaSqlNativo(quera);
-
-                  }
-                        //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
-                  }catch(Exception ae){
-                         System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
-                  }
-
-         }else{
-            List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+((Cursos)curs.selectedItem.value).getCodigocur()+"'  and o.materia.codigo = '"+((Global)mates.selectedItem.value).getCodigo()+"' ");
-                if(existe.size()>0){
-                    Messagebox.show("MATERIA YA ASIGNADA...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                    return;
-                }
-             mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
-             adm.guardar(mateProfe);
-
-         }
-                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                permiso.auditar("Distributivo","Guardar",""+mateProfe.getCurso()+" "+mateProfe.getMateria());
-                guardar.disabled=true;
-                agregar.disabled=false;
-                estado(true,false);
-                llenar(new MateriaProfesor(0));
-                buscar2(curs.selectedItem.value);
-                */
-
+ 
 
     }
 
@@ -1347,6 +1320,13 @@ void guardarc(){
                                 No. de Materias a Agregar
                                 <spinner value="3" constraint="no negative,no zero" id="nofilas3" />
                                 <button label="Agregar más Filas" onClick="llenarGrid23(nofilas3.value)"/>
+                                | Profesor 
+                                 <listbox mold="select"    id="profesSetear" width="320px">
+                                    <listitem selected="true"  forEach="${profesores}" value="${each}">
+                                        <listcell label="${each.apellidos} ${each.nombres}" />
+                                    </listitem>
+                                </listbox>
+                                <button label="Setear Profesor" onClick="setear()"/>
                             </span>
                         </row>
                     </rows>
