@@ -6253,11 +6253,11 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
-        List sistemas = adm.query("Select o from Sistemacalificacion as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+//        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+//                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+//        Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+//        List sistemas = adm.query("Select o from Sistemacalificacion as o "
+//                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
 
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis  = '" + sistema.getCodigosis() + "' "
@@ -6275,7 +6275,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
 
             for (Iterator<Equivalencias> itEquiva = equivalencias.iterator(); itEquiva.hasNext();) {
                 Equivalencias eqIt = itEquiva.next();
-                query += "COUNT(IF(" + notass.getNota() + " > (" + eqIt.getValorminimo() + ") AND " + notass.getNota() + " <= (" + eqIt.getValormaximo() + "),1,NULL)), cast(COUNT(IF(" + notass.getNota() + "> (" + eqIt.getValorminimo() + ") AND " + notass.getNota() + " <= (" + eqIt.getValormaximo() + "),1,NULL)) * 100 / COUNT(" + notass.getNota() + ") as decimal(9,2) ),";
+                query += "COUNT(IF(" + notass.getNota() + " >= (" + eqIt.getValorminimo() + ") AND " + notass.getNota() + " <= (" + eqIt.getValormaximo() + "),1,NULL)), cast(COUNT(IF(" + notass.getNota() + ">= (" + eqIt.getValorminimo() + ") AND " + notass.getNota() + " <= (" + eqIt.getValormaximo() + "),1,NULL)) * 100 / COUNT(" + notass.getNota() + ") as decimal(9,2) ),";
                 numeroEquivalencias++;
             }
             query += " COUNT(IF(mat.estado = 'Matriculado',1,NULL)),COUNT(IF(mat.estado != 'Matriculado',1,NULL)), AVG(" + notass.getNota() + ") ";
@@ -6301,7 +6301,9 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
             Vector vec = (Vector) itna.next();
             iVec++;
             EstadisticoPorcentajes est = new EstadisticoPorcentajes();
-
+            try {
+                
+           
             int em = 1;
             for (Iterator<Equivalencias> itEquiva = equivalencias.iterator(); itEquiva.hasNext();) {
                 Equivalencias eqIt = itEquiva.next();
@@ -6330,6 +6332,9 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                 lisNotas.add(est);
                 em++;
 
+            }
+             } catch (Exception e) {
+                 e.printStackTrace();
             }
 //                est = new  EstadisticoPorcentajes();
 //                est.setEquivalencia("Matriculados");
