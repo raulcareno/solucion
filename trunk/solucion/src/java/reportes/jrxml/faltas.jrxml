@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libreta" pageWidth="595" pageHeight="842" columnWidth="528" leftMargin="42" rightMargin="25" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="denominacion" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="nombre" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="periodo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="titulo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="profesor" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="materia" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pathSubRel2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["D:\\PROYECTOS\\ACADEMICO\\miapp\\src\\java\\reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="pathSubRel" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="slogan" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="eq1" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["."]]></defaultValueExpression>
+	</parameter>
+	<parameter name="eq2" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="eq3" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="eq4" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="eq5" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ran1" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran2" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran3" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran4" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran5" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ranf1" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ranf2" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ranf3" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ranf4" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ranf5" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="faltas" class="java.lang.Boolean"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="nota" class="java.math.BigDecimal"/>
+	<field name="sistema" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="sello" class="java.io.InputStream"/>
+	<field name="curso" class="java.lang.String"/>
+	<field name="matricula" class="java.lang.Integer"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="fotoestudiante" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="84" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-4" x="402" y="68" width="48" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[PERIODO:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-10" x="54" y="17" width="409" height="18"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nombre}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement key="textField-8" x="229" y="50" width="70" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image isUsingCache="true">
+				<reportElement key="image-1" x="-3" y="1" width="56" height="65" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+				<imageExpression class="java.io.InputStream"><![CDATA[$F{sello}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-1" x="43" y="66" width="360" height="16" isPrintWhenDetailOverflows="true"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{curso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" x="54" y="35" width="409" height="15"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{slogan}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="453" y="67" width="75" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-9" x="54" y="1" width="409" height="16" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{denominacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-1" x="0" y="67" width="48" height="16"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CURSO:]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="467" y="0" width="61" height="66"/>
+				<imageExpression class="java.lang.String"><![CDATA[$F{fotoestudiante}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="149" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="528" height="149"/>
+				<rowGroup name="estudiante" width="241" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{estudiante}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="241" height="16"/>
+								<box leftPadding="2" rightPadding="2"/>
+								<textElement textAlignment="Left" verticalAlignment="Top"/>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{estudiante}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="241" height="16"/>
+								<box leftPadding="2" rightPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Top"/>
+								<text><![CDATA[TOTALES: ]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="sistema" height="30" totalPosition="End" headerPosition="Stretch">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{sistema}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="28" height="30" isPrintWhenDetailOverflows="true"/>
+								<textElement verticalAlignment="Middle">
+									<font isBold="true" pdfFontName="Helvetica-Bold"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{sistema}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#005FB3" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="materia" height="30" totalPosition="End">
+					<bucket>
+						<bucketExpression class="java.lang.String"><![CDATA[$F{materia}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="28" height="30"/>
+								<textElement verticalAlignment="Middle">
+									<font isBold="true" pdfFontName="Helvetica-Bold"/>
+								</textElement>
+								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="notaMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
+				</measure>
+				<crosstabCell width="28" height="16">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="28" height="16"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="28" height="16" rowTotalGroup="estudiante">
+					<cellContents backcolor="#BFE1FF" mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="28" height="16"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="16" columnTotalGroup="sistema">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="16" rowTotalGroup="estudiante" columnTotalGroup="sistema">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="16" columnTotalGroup="materia">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="16" rowTotalGroup="estudiante" columnTotalGroup="materia">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

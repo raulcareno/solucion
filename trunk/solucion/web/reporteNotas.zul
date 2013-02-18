@@ -696,6 +696,9 @@ void recalcular(){
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
+            }else if(tipo.equals("CFAL")){
+                    datasource = noti.faltas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"faltas.jasper");
             }else if(tipo.equals("LIBQ")){
                    //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
 
@@ -837,7 +840,7 @@ void campos(String valor){
             filaaportes.visible = true;
             filamaterias.visible = true;
             
-        }else if(valor.equals("LIBF") || valor.equals("LIBQ")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
+        }else if(valor.equals("LIBF") || valor.equals("LIBQ")  || valor.equals("CFAL")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
@@ -1074,6 +1077,7 @@ void campos(String valor){
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CNF4" label="Cuadro Final(10)" value="CNF4" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
+                                    <listitem  id="CFAL" label="Cuadro de Faltas" value="CFAL"/>
                                     <listitem  id="linea0281222" label="============ ESTADISTICOS =============" value="linea2801222" />
                                     <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
                                     <listitem  id="PROC" label="Promedios x Materias y Curso " value="PROC" />

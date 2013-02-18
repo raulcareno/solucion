@@ -24,19 +24,23 @@
         <zscript>
 
             <![CDATA[
-            import jcinform.persistencia.Global;
-            import bean.EventDAO;
-            import java.util.ArrayList;
-            import jcinform.persistencia.*;
-            import bean.Permisos;
-            import jcinform.procesos.Administrador;
-            import javax.faces.context.FacesContext;
+import jcinform.persistencia.Global;
+import bean.EventDAO;
+import java.util.ArrayList;
+import jcinform.persistencia.*;
+import bean.Permisos;
+import jcinform.procesos.Administrador;
+import javax.faces.context.FacesContext;
   import bean.email;
             Administrador adm = new Administrador();
             Session ses = Sessions.getCurrent();
+                ses.removeAttribute("accesos");
+                ses.removeAttribute("user");
+                ses.removeAttribute("periodo");
+                ses.removeAttribute("userEstudiante");
 List instListado = adm.query("Select o from Institucion as o",0,1);
  Institucion instituto = instListado.get(0);
- 
+ //Executions.sendRedirect("/");
  System.out.println(inst+"");
 cargar(){
 foto0.setContent(new org.zkoss.image.AImage("logo_jcinform", instituto.getEscudo()));
