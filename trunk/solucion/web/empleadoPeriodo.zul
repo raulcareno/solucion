@@ -95,7 +95,7 @@ void modificar(){
              }
 
     //ANADO LOS QUE NO ESTAN EN ASIGNADOS -------------------------------------------------------
-        equivaEncontrados = adm.query("Select d from Empleados as d where d.codigoemp not in "+
+        equivaEncontrados = adm.query("Select d from Empleados as d where d.estado = true and d.codigoemp not in "+
         "(Select o.empleado.codigoemp from Empleadoperiodo as o where o.periodo.codigoper = '"+p.getCodigoper()+"' ) order by d.apellidos ");
         left = new Listbox();
         int a=0;
@@ -117,14 +117,19 @@ void modificar(){
    
     <panel  title="Seleccione un Periodo">
         <panelchildren>
-            <listbox  onOK="ingresar.focus()" onSelect="buscar((Periodo)self.selectedItem.value);"   width="435px"  id="periodo" mold="select">
+            <div>
+                <listbox  onOK="ingresar.focus()" onSelect="buscar((Periodo)self.selectedItem.value);"   width="435px"  id="periodo" mold="select">
                 <listitem label="- S E L E C C I O N E -" selected="true" value="-1"/>
                 <listitem forEach="${periodos}" value="${each}">
                     <listcell   label="${each.descripcion} ${each.institucion} - ${each.institucion.tipo} [${each.seccion}] " />
 
                 </listitem>
             </listbox>
+                Si no aparece el docente por favor activelo primero en el Módulo de Empleados y Active el ESTADO
+            </div>
+            
         </panelchildren>
+        
     </panel>
     <columnlayout>
         <columnchildren width="50%">
