@@ -1600,7 +1600,17 @@ public class ReportesClase {
                         inv.setTipo("AJUSTE");
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("P")) { //POR PRESTAMO TRANSITO
-                        inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        try {
+                            inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");    
+                        } catch (Exception e) {
+                            try {
+                                inv.setDocumento("N: "+series.getNodos().getNombre() + "");         
+                            System.out.println("prestado a nodo");
+                            } catch (Exception ex) {
+                                inv.setDocumento("N:");         
+                            }
+                            
+                        }
                         inv.setTipo("PRESTAMO");
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("V")) { //POR VENTA

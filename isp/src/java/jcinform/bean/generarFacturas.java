@@ -15,16 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.bean.sources.ReporteCobranzasDataSource;
 import jcinform.conexion.Administrador;
-import jcinform.persistencia.Bancos;
-import jcinform.persistencia.Canton;
-import jcinform.persistencia.Contratos;
-import jcinform.persistencia.Cxcobrar;
-import jcinform.persistencia.Detalle;
-import jcinform.persistencia.Empleados;
-import jcinform.persistencia.Factura;
-import jcinform.persistencia.Procesos;
-import jcinform.persistencia.Sector;
-import jcinform.persistencia.Sucursal;
+import jcinform.persistencia.*;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
 
@@ -40,29 +31,46 @@ public class generarFacturas {
         adm = new Administrador();
     }
 
-    public void generacionAutomatico(Sucursal suc) {
-        if (adm == null) {
-            adm = new Administrador();
-        }
-        Date fecha = adm.Date();
-        String fechaSql = suc.getCodigo() + "" + (fecha.getYear() + 1900) + (fecha.getMonth() + 1) + "";
-        List procesosList = adm.query("Select o from Procesos as o where o.fechastring = '" + fechaSql + "'  ");
-        if (procesosList.size() > 0) {
-            //Messagebox.show("Proceso ya realizado en éste mes", "Alerta", Messagebox.OK, Messagebox.INFORMATION);
-            System.out.println("Proceso para éste mes ya realizado");
-        } else {
-            Procesos pro = new Procesos(fechaSql);
-            pro.setFecha(fecha);
-            pro.setFechaejecutado(fecha);
-            pro.setEjecutado(true);
-            //pro.setProblemas(fechaSql);
-            adm.guardar(pro);
-            empezarGenerar(fecha, 0, suc);
-            System.out.println("SE EJECUTO PROCESO PARA FECHA" + fecha);
-        }
+    public void generacionAutomatico(final Sucursal suc) {
+
+        Thread cargar = new Thread() {
+
+            @Override
+            public void run() {
+                if (adm == null) {
+                    adm = new Administrador();
+                }
+                Date fecha = adm.Date();
+                String fechaSql = suc.getCodigo() + "" + (fecha.getYear() + 1900) + (fecha.getMonth() + 1) + "";
+                List procesosList = adm.query("Select o from Procesos as o where o.fechastring = '" + fechaSql + "'  ");
+                if (procesosList.size() > 0) {
+                    //Messagebox.show("Proceso ya realizado en éste mes", "Alerta", Messagebox.OK, Messagebox.INFORMATION);
+                    System.out.println("Proceso para éste mes ya realizado");
+                } else {
+                    System.out.println("INICIO EJECUTAR PROCESO: " + adm.Date());
+                    Procesos pro = new Procesos(fechaSql);
+                    pro.setFecha(fecha);
+                    pro.setFechaejecutado(fecha);
+                    pro.setEjecutado(true);
+                    //pro.setProblemas(fechaSql);
+
+                    empezarGenerar(fecha, 0, suc);
+                    System.out.println("FIN DEL PROCESO: " + adm.Date());
+                    try {
+                        adm.guardar(pro);
+                    } catch (Exception e) {
+                        System.out.println("" + e);
+                    }
+
+
+                }
+            }
+        };
+        cargar.start();
+
     }
 
-    public String empezarGenerar(Date fecha, Integer numero, Sucursal suc) {
+    public String empezarGenerar(Date fecha, Integer numero, Sucursal suc) { //GENERACION AUTOMATICA
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Date fecha2 = fecha;
         fecha2.setDate(1);
@@ -73,6 +81,17 @@ public class generarFacturas {
 //                if(existe.size()>0){
 //                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
 //                }
+
+        /*
+         *
+         * List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.fecha,
+         * fa.total, ((SUM(cx.debe) + SUM(cx.rtotal)) - SUM(cx.haber))
+         * saldo,fa.contratos, fa.numero,fa.emision FROM cxcobrar cx, factura fa
+         * " + " WHERE fa.clientes = "+codigocli.value+" " + " AND cx.factura =
+         * fa.codigo GROUP BY fa.codigo HAVING (SUM(cx.debe) - SUM(cx.haber)) >
+         * 0 order by fa.contratos, fa.fecha ");          *
+         */
+
         String query = "Select o.* from Contratos  as o "
                 + "where o.codigo not in (Select f.contratos from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
@@ -99,6 +118,29 @@ public class generarFacturas {
                 if (object.getFormapago().equals(3)) {
                     valor = valor.add(suc.getEmpresa().getInstalacion());
                 }
+                //ESTO LE VA A AÑADIR UN VALOR POR RECONEXION
+                Equipos equipoMora = null;
+                if (suc.getEmpresa().getAplicamora()) {
+                    try {
+                        equipoMora = ((Equipos) adm.buscarClave(suc.getEmpresa().getMora(), Equipos.class));
+                        List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total, "
+                                + " ((SUM(cx.debe) + SUM(cx.rtotal)) - SUM(cx.haber)) saldo,fa.contratos, fa.numero,fa.emision "
+                                + " FROM cxcobrar cx, factura  fa  "
+                                + " WHERE fa.contratos =  " + object.getCodigo() + "   "
+                                + " AND cx.factura = fa.codigo "
+                                + " GROUP BY fa.codigo   "
+                                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 ");
+                            if(facEncontradas.size()>0){
+
+                            }
+                    } catch (Exception e) {
+                        System.out.println("ERROR ASIGNADO VALOR DE MORA");
+                    }
+                    
+                }
+
+
+
                 fac.setSubtotal(valor.subtract(object.getDescuento()));
                 fac.setDescuento(new BigDecimal(0));
                 fac.setBaseiva(valor.subtract(object.getDescuento()));
@@ -449,15 +491,15 @@ public class generarFacturas {
     }
 
     //BUSCAR PARA ASIGNAR FACTURA 
-    public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago,String estado) {
+    public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago, String estado) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals("0")) {
             complemento = "";
         }
-        String compEstado = " and o.estado = '"+estado+"' ";
-        if(estado.equals("Todos")){
-             compEstado = "";
+        String compEstado = " and o.estado = '" + estado + "' ";
+        if (estado.equals("Todos")) {
+            compEstado = "";
         }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
                 + "where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " "
@@ -479,19 +521,20 @@ public class generarFacturas {
 
         return deudas;
     }
-  public List buscarPagos(Sucursal suc, Canton canton, Date desde, Date hasta) {
+
+    public List buscarPagos(Sucursal suc, Canton canton, Date desde, Date hasta) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-       String desdestr = convertiraString(desde) + "";
+        String desdestr = convertiraString(desde) + "";
         String hastastr = convertiraString(hasta) + "";
-      
+
         String complementoCanton = "  o.sector.canton.codigo  = '" + canton.getCodigo() + "'  ";
         if (canton.getCodigo().equals("-1")) {
             complementoCanton = "";
         }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
-                + "where "+complementoCanton
+                + "where " + complementoCanton
                 + " and o.formapago = 2 and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "
-                + " " );
+                + " ");
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
@@ -502,8 +545,8 @@ public class generarFacturas {
         }
         String query = "Select o from Cxcobrar as o "
                 + " where o.factura.contratos.codigo in (" + contraString + ") "
-                + "and o.fecha between '"+desdestr+"'  and '"+hastastr+"' and o.haber > 0 order by o.fecha  ";
-        List<Cxcobrar> cuentas = adm.query(query); 
+                + "and o.fecha between '" + desdestr + "'  and '" + hastastr + "' and o.haber > 0 order by o.fecha  ";
+        List<Cxcobrar> cuentas = adm.query(query);
 //        for (Iterator<Cxcobrar> it = cuentas.iterator(); it.hasNext();) {
 //                Cxcobrar cxcobrar = it.next(); 
 //                
@@ -511,7 +554,8 @@ public class generarFacturas {
         return cuentas;
     }
     //BUSCAR PARA ASIGNAR FACTURA 
-    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago,String diapago2,Bancos bancoSel) {
+
+    public List buscar(Sucursal suc, Canton canton, String formapago, String diapago, String diapago2, Bancos bancoSel) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals("0")) {
@@ -522,18 +566,18 @@ public class generarFacturas {
         if (canton.getCodigo().equals("-1")) {
             complementoCanton = "";
         }
-        
+
         String complementoBanco = "  and o.bancos.codigo = '" + bancoSel.getCodigo() + "'  ";
         if (bancoSel.getCodigo().equals(-1)) {
             complementoBanco = "";
         }
-        
-        String complementoDia = " and o.diapago >= "+diapago+" and o.diapago <= "+diapago2+" ";
+
+        String complementoDia = " and o.diapago >= " + diapago + " and o.diapago <= " + diapago2 + " ";
 //        if(anteriores){
 //            complementoDia = " and o.diapago <= "+diapago+" ";
 //        }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
-                + "where "+complementoCanton
+                + "where " + complementoCanton
                 + " and o.formapago = 2 and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  "
                 + " " + complemento + ""
                 + " " + complementoBanco
@@ -586,32 +630,28 @@ public class generarFacturas {
 
         return deudas;
     }
-    public List buscar(Sucursal suc, String tipoPlan,String dondepaga,Bancos banco) {
+
+    public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco) {
         /*
-          if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA
-            efe.checked = true;
-        }else if(equi.getFormapago().equals(2)){//POR DÉBITO BANCARIO
-            deb.checked = true;
-        }else if(equi.getFormapago().equals(3)){ //COBRA A DOMICIOLIO
-            cbr.checked = true;
-        } else {
-            efe.checked = true;
-        } 
+         * if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA efe.checked
+         * = true; }else if(equi.getFormapago().equals(2)){//POR DÉBITO BANCARIO
+         * deb.checked = true; }else if(equi.getFormapago().equals(3)){ //COBRA
+         * A DOMICIOLIO cbr.checked = true; } else { efe.checked = true; }
          */
-        
-        
+
+
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String compleDondePaga = " and o.formapago  = '" + dondepaga + "' ";
-        if(dondepaga.contains("0")){
-             compleDondePaga = " and o.formapago is not null ";
-        }else if(dondepaga.contains("2")){//ES POR DÉBITO
-             compleDondePaga = " and o.formapago   = '" + dondepaga + "'   and o.bancos.codigo = '"+banco.getCodigo()+"' ";
-             if(banco.getCodigo().equals(new Integer(0))){
-                compleDondePaga = " and o.formapago   = '" + dondepaga + "'  ";    
-             }
+        if (dondepaga.contains("0")) {
+            compleDondePaga = " and o.formapago is not null ";
+        } else if (dondepaga.contains("2")) {//ES POR DÉBITO
+            compleDondePaga = " and o.formapago   = '" + dondepaga + "'   and o.bancos.codigo = '" + banco.getCodigo() + "' ";
+            if (banco.getCodigo().equals(new Integer(0))) {
+                compleDondePaga = " and o.formapago   = '" + dondepaga + "'  ";
+            }
         }
         List contratos = adm.query("Select o.codigo from Contratos as o "
-                + "where o.plan.tipo = '"+tipoPlan+"' "+compleDondePaga+"  order by o.clientes.apellidos ");
+                + "where o.plan.tipo = '" + tipoPlan + "' " + compleDondePaga + "  order by o.clientes.apellidos ");
         String contraString = "";
         contraString = contratos.toString().replace("[", "").replace("]", "");
 //        for (Iterator itContratos = contratos.iterator(); itContratos.hasNext();) {
@@ -622,7 +662,7 @@ public class generarFacturas {
 //        if (contraString.length() > 0) {
 //            contraString = contraString.substring(0, contraString.length() - 1);
 //        }
-        
+
         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres),  fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo, c.serie3  "
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
                 + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
@@ -642,6 +682,7 @@ public class generarFacturas {
 
         return deudas;
     }
+
     public List buscar(Sucursal suc, Empleados emp, Date fecha) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String fec = convertiraString(fecha);
@@ -667,14 +708,14 @@ public class generarFacturas {
 
         return deudas;
     }
-    
+
     //BUSCA POR NUMERO DE INFORME BUSCO LAS FACTURAS ENVIADAS.
-  public List buscar(Sucursal suc, Integer numero) {
+    public List buscar(Sucursal suc, Integer numero) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-        
+
         String quer = "SELECT fa.codigo, fa.numero, fa.fecha,  CONCAT(cli.apellidos,' ',cli.nombres), c.direccion, fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo  "
                 + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli  "
-                + " WHERE fa.codigo in ( Select x.factura from Facturasenviadas as x where x.numero= '" + numero+ "' "
+                + " WHERE fa.codigo in ( Select x.factura from Facturasenviadas as x where x.numero= '" + numero + "' "
                 + " )  and c.codigo = fa.contratos  "
                 + "  AND cx.factura = fa.codigo "
                 + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "

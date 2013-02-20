@@ -218,7 +218,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                     SimpleDateFormat d1 = new SimpleDateFormat("MMM-yyyy");
                                     Date d = empf.getFactura().getFecha();
                                     row.appendChild(new Label(d1.format(d)+""));
-                                    row.appendChild(new Label(empf.getFactura().getClientes()+""));
+                                    row.appendChild(new Label("("+empf.getFactura().getContratos().getEstado().substring(0,1)+") "+ empf.getFactura().getClientes()));
                                     row.appendChild(new Label(empf.getSaldo()+""));
                                     
 
