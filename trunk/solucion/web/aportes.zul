@@ -239,6 +239,7 @@ void llenar(Sistemacalificacion empa){
     espromedio.checked = empa.getEspromedio();
     ensupletorio.checked = empa.getEnsupletorio();
     esequivalencia.checked = empa.getEsequivalencia();
+    sacapromedio.checked = empa.getConsulta();  //saca promedio en la libreta
     formula.value = empa.getFormula();
     formuladisciplina.value = empa.getFormuladisciplina();
     //formulafaltas.value = empa.getFormulafaltas();
@@ -311,6 +312,7 @@ conducta.readonly =estado;
 espromedio.disabled= estado;
 ensupletorio.disabled= estado;
 esequivalencia.disabled= estado;
+sacapromedio.disabled = estado;
 }
 
 
@@ -341,6 +343,7 @@ esequivalencia.disabled= estado;
         empa.setEspromedio(espromedio.checked);
         empa.setEnsupletorio(ensupletorio.checked);
         empa.setEsequivalencia(esequivalencia.checked);
+        empa.setConsulta(sacapromedio.checked); //saca promedio en la libreta
 
         empa.setOrden(orden.value);
         try{
@@ -636,14 +639,14 @@ if(formula1.equals("")){
                             <textbox id="abreviatura"  maxlength="10" cols="20" readonly="true"  /> 
                         </row>
                         <row> 
-                            <span style="float:right"> Pase de Notas(*):</span> 
+                            <span style="float:right"> Pase de Notas Prof.(*):</span> 
                             <span>Desde: 
                                 <datebox format="dd/MMM/yyyy" id="desde"/> Hasta:
                                 <datebox  format="dd/MMM/yyyy"  id="hasta"/>
                             </span>
                         </row>
                         <row> 
-                            <span style="float:right"> Pase de Secretaria(*):</span> 
+                            <span style="float:right"> Pase de Notas Secr.(*):</span> 
                             <span>Desde: 
                                 <datebox format="dd/MMM/yyyy" id="desdei"/> Hasta:
                                 <datebox  format="dd/MMM/yyyy"  id="hastai"/>
@@ -706,7 +709,7 @@ if(formula1.equals("")){
  
                         <row> 
                             <span style="float:right"> Trimestre:</span>
-
+                        <span>  
                             <listbox mold="select" id="trime" width="250px" onSelect="cargar(((Trimestres)self.selectedItem.value));">
                                 <listhead>
                                     <listheader label="Description"/>
@@ -716,7 +719,9 @@ if(formula1.equals("")){
 
                                 </listitem>
                             </listbox>
-		 
+                            <separator bar="true" orient="vertical" />
+                            <checkbox id="sacapromedio" label="No Calcula Promedio en Libreta"/> 
+                        </span>
 
                         </row>
                         <row>
