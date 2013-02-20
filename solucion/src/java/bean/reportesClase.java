@@ -3043,11 +3043,17 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                             if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                  
                                     coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                      if(((Sistemacalificacion) sistemas.get(ksis)).getConsulta()) {
+                                            coll.setNota("");
+                                      }
                                 
                             } else {
                                 if (val == 0.0) {
                                     coll.setNota("");
                                 }
+                                if(((Sistemacalificacion) sistemas.get(ksis)).getConsulta()) {
+                                            coll.setNota("");
+                                  }
                             }
                             promedioFinal = dos;
                             coll.setMateria(mate.getDescripcion());

@@ -315,6 +315,6 @@ Boolean verificar(String accion){
 
             <jasperreport id="report" />
 
-        </panelchildren>
+        </panelchildren> 
     </panel>
 </zk>
