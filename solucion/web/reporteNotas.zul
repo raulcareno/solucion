@@ -28,12 +28,25 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
 disciplina discipli = new disciplina();
 
 Empleados user = (Empleados)ses.getAttribute("user");
-    List cursos = null;
+    List cursos = new ArrayList();
     if(user.getTipo().equals("Interna")){
         cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia, o.especialidad.descripcion, o.paralelo.descripcion ");
     }else{
-        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " + 
+                " where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+           
+           List cursosAdicionales = adm.query("Select o.curso from EmpleadoCurso as o " +
+                " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' and o.curso.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+                 for(Iterator it = cursosAdicionales.iterator(); it.hasNext();) {
+                     Cursos object = (Cursos)it.next();
+                            if(!cursos.contains(object)){
+                                cursos.add(object);
+                            }
+                 }
+                
     }
+
+ 
     List especialidades = adm.query("SELECT o  FROM Global AS o WHERE o.grupo = 'ESP'");
     Global glob = new Global(-1);
     glob.setDescripcion("[Seleccione]");
