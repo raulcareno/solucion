@@ -3046,7 +3046,7 @@ void llamar(){
                                     </span>
                                        
                                 </groupbox>
-                                <grid id="productos">
+                                <grid id="productos" height="170px">
                                     <columns sizable="true">
                                         <column label="Cod." visible="false" width="5px" />
                                         <column label="Cant." width="5px" />

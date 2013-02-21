@@ -490,6 +490,38 @@ public class generarFacturas {
 
     }
 
+   
+     //BUSCAR FACTURAS EN CUENTAS POR COBRAR 
+    public List buscar(Sucursal suc,Date desde) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+         
+                String desdestr = convertiraString(desde) + "";
+        List<Contratos> contratos = adm.query("Select o from Contratos as o "
+                + "where  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " );
+        String contraString = "";
+        for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
+            Contratos contratos1 = itContratos.next();
+            contraString = "" + contratos1.getCodigo() + "," + contraString + "";
+        }
+        if (contraString.length() > 0) {
+            contraString = contraString.substring(0, contraString.length() - 1);
+        }
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres),  fa.total "
+                + " "
+                + " FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
+                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  "
+                + " AND cx.fecha between '"+desdestr+"' and '"+desdestr+"' AND cx.haber > 0 "
+                + " GROUP BY fa.codigo "
+                + "   "
+                + " order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        System.out.println(""+quer);
+        List deudas = adm.queryNativo(quer);
+
+        return deudas;
+    }
+
+    
     //BUSCAR PARA ASIGNAR FACTURA 
     public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago, String estado) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
