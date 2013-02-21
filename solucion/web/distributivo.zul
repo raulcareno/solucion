@@ -56,6 +56,9 @@
         Global selecm = new Global(-1);
         selecm.setDescripcion("[Seleccione]");
         materias.add(0,selecm);
+        
+      List materias2 = adm.query("Select o from Global as o where o.grupo = 'GRU' order by o.descripcion ");
+        materias2.add(0,selecm);  
 
     Object media = null;
  Session ses = Sessions.getCurrent();
@@ -106,6 +109,20 @@ void llenar(MateriaProfesor estudent){
                    }
 
         }
+        if(estudent.getGrupo() != null){
+
+              for (int i = 0; i <= matesg.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)matesg.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = estudent.getGrupo().getCodigo();
+                            if(primero == segundo){
+                                matesg.setSelectedItem((Listitem)matesg.getItems().get(i));
+                                break;
+                            }
+                   }
+                   
+        }
+        
         if(estudent.getEmpleado() != null){
                 for (int i = 0; i <= profes.getItems().size(); i++) {
                             Empleados tr0 = ((Empleados)((Listitem)profes.getItems().get(i)).getValue());
@@ -135,6 +152,7 @@ void estado(Boolean estado,Boolean modificar){
     ingcualitativo.disabled = estado;
     orden.readonly = estado;
     mates.disabled = estado;
+    matesg.disabled = estado;
     profes.disabled = estado;
     formula.readonly = estado;
 
@@ -159,6 +177,15 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setOpcional(opcional.checked); //ingresan disciplina
         matricula.setCuantitativa(cuantitativa.checked);
         matricula.setIngcualitativo(ingcualitativo.checked);
+        try{
+            if(matesg.selectedIndex > 0){
+                matricula.setGrupo(matesg.selectedItem.value);
+            }else{
+                matricula.setGrupo(null);
+            }
+        }catch(Exception erro){
+            System.out.println("SIN GRUPO ERROR AL GUARDAR");
+        }
 
         if((!matricula.getCodigomap().equals(0)) ){
                 adm.actualizar(matricula);
@@ -223,6 +250,24 @@ void estado(Boolean estado,Boolean modificar){
                                             }
                    }
     }
+     void setearP(){
+               Rows filas001 = datos3P.getRows();
+                List listadoMaterias = filas001.getChildren();
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                                  Empleados empSelec = profesSetearP.selectedItem.value;
+                                            for (int i = 0; i <= ((Listbox)labels.get(3)).getItems().size(); i++) {
+                                                        Empleados tr0 = ((Empleados)((Listitem)((Listbox)labels.get(3)).getItems().get(i)).getValue());
+                                                        int primero = tr0.getCodigoemp();
+                                                        int segundo = empSelec.getCodigoemp();
+                                                        if(primero == segundo){
+                                                          ((Listbox)labels.get(3)).setSelectedItem((Listitem)((Listbox)labels.get(3)).getItems().get(i));
+                                                            break;
+                                                        }
+                                            }
+                   }
+    }
    Boolean verificar(String accion){
         return permiso.verificarPermiso("Aportes",accion);
 
@@ -231,6 +276,7 @@ void estado(Boolean estado,Boolean modificar){
     if(verificar("Agregar")){
        guardar.disabled=false; llenar(new MateriaProfesor(0));estado(false,false);
        mates.setSelectedIndex(0);
+       matesg.setSelectedIndex(0);
         profes.setSelectedIndex(0);
 
     }else{
@@ -238,6 +284,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 }
  void move(){
+        matesg.setSelectedIndex(0);
         llenar((MateriaProfesor)datos.selectedItem.value);
         modificar.disabled = false;
         combo.value="";
@@ -282,6 +329,7 @@ void eliminar(){
 
 void buscar2(Cursos cur){
 mates.setSelectedIndex(0);
+matesg.setSelectedIndex(0);
 profes.setSelectedIndex(0);
 
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
@@ -430,6 +478,28 @@ Listbox llenarComboMaterias(Global mat){
                           li.appendChild(celda);
                             if(mat.getCodigo().equals(acceIt.getCodigo()))
                                 li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+            lista.setMold("select");
+             lista.setStyle("font-size:11px");
+        return lista;
+}
+Listbox llenarComboMateriasG(Global mat){
+        Listbox lista = new Listbox();
+        
+            for (Iterator it = materias2.iterator(); it.hasNext();) {
+                       Global acceIt = (Global) it.next();
+                        Listitem li = new Listitem();
+                          li.setValue(acceIt);
+                          Listcell celda = new Listcell(acceIt.getDescripcion()+"" );
+                      
+                          li.appendChild(celda);
+                          if(mat !=null){
+                            if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                li.setSelected(true);
+                                
+                           }
                           lista.appendChild(li);
 
             }
@@ -792,6 +862,81 @@ llenarGrid3(Cursos cur){
 
 }
 
+llenarGrid3P(Cursos cur){
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " +
+        " where o.curso.codigocur = '"+cur.getCodigocur() +"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
+        " order by o.orden");
+        datos2P = new Grid();
+                    filas3P.getChildren().clear();
+            if(empleadosEncontrados.size()>0){
+
+                       for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                              MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                                    Row row = new Row();
+                                    row.appendChild(new Label(""+acceIt.getCodigomap()));
+                                    Intbox tx = new Intbox(acceIt.getOrden());
+                                    row.appendChild(tx);
+                                   row.appendChild(llenarComboMaterias(acceIt.getMateria()));
+                                    Listbox listaC = llenarComboEmpleados(acceIt.getEmpleado());
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(acceIt.getCuantitativa());
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(acceIt.getMinisterio());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getOpcional());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getSeimprime());
+                                        row.appendChild(ch);
+                                        
+                                      ch = new Checkbox();
+                                        ch.setChecked(acceIt.getIngcualitativo());
+                                        row.appendChild(ch);   
+
+                                        
+                                        Textbox formu = new Textbox(acceIt.getFormula());
+                                        row.appendChild(formu);
+
+
+                                          Toolbarbutton aButton = new Toolbarbutton("ELIMINAR");
+                                            aButton.setId("CURP"+acceIt.getCodigomap());
+                                            //aButton.setImage("/images/eliminar.gif");
+                                            aButton.setStyle("font-size:9px");
+                                            aButton.addEventListener("onClick", new EventListener() {
+                                                public void onEvent(Event event) throws Exception {
+                                                            int valor = Messagebox.show("Seguro que deséa eliminar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                            if(valor == Messagebox.YES){
+                                                                if(verificar("Eliminar")){
+                                                                        eliminando3P(aButton.getId().replace("CURP",""));
+                                                                }else{
+                                                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                }
+                                                            }
+                                                }
+                                            });
+                                            row.appendChild(aButton);
+                                            
+                                            
+                                            row.appendChild(llenarComboMateriasG(acceIt.getGrupo()));
+
+
+
+                                    filas3P.appendChild(row);
+                       }
+          }else{
+
+          }
+
+
+}
+
 llenarGridCursos(Periodo periodoSelec){
 
         List cursosPeriodo = adm.query("Select o from Cursos as o " + 
@@ -880,6 +1025,22 @@ Listbox llenarComboCursosPeriodo(Cursos cursollega){
 
 
  }
+ void eliminando3P(Object clave){
+    try{
+            try{
+                  Integer id = new Integer(clave.toString());
+                  adm.eliminarObjeto(MateriaProfesor.class,id);
+                  llenarGrid3P(curs3P.selectedItem.value);
+            }catch(Exception e){
+                
+            }
+    }catch(Exception e){
+        System.out.println(e);
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+
+ }
 
 
 
@@ -919,6 +1080,52 @@ llenarGrid23(Integer n){
                                     Toolbarbutton aButton = new Toolbarbutton("_");
                                          row.appendChild(aButton);
                                     filas3.appendChild(row);
+                       }
+
+
+
+}
+
+llenarGrid23P(Integer n){
+
+        datos2P = new Grid();
+                    for (int i=0 ; i<n; i++) {
+                                    Row row = new Row();
+                                    row.appendChild(new Label("0"));
+                                         Intbox tx = new Intbox(0);
+                                        row.appendChild(tx);
+                                    Listbox lista = llenarComboMaterias(new Global(-1));
+                                    lista.setMold("select");
+                                    row.appendChild(lista);
+                                    Listbox listaC = llenarComboEmpleados(new Empleados(-1));
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(false);
+                                        row.appendChild(ch);
+
+                                
+                                     Textbox formu = new Textbox("");
+                                        row.appendChild(formu);
+                                    Toolbarbutton aButton = new Toolbarbutton("_");
+                                         row.appendChild(aButton);
+                                         Listbox lista2 = llenarComboMateriasG(new Global(-1));
+                                    lista2.setMold("select");
+                                    row.appendChild(lista2);
+                                         
+                                    filas3P.appendChild(row);
                        }
 
 
@@ -1019,6 +1226,61 @@ void guardarc(){
     }
 
 
+void guardarcP(){
+   Rows filas001 = datos3P.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                          
+                                    MateriaProfesor mateProfe = new MateriaProfesor();
+                                  mateProfe.setCodigomap(new Integer(((Label)labels.get(0)).value));
+
+                                  
+                                  Global matSelec = ((Listbox)labels.get(2)).selectedItem.value;
+                                  Empleados empSelec = ((Listbox)labels.get(3)).selectedItem.value;
+                                  Global grupoSelec = null;
+                                  if(((Listbox)labels.get(11)).selectedIndex >0){
+                                    grupoSelec = ((Listbox)labels.get(11)).selectedItem.value;
+                                  }  
+                                  
+                                  mateProfe.setEmpleado(empSelec);
+                                  mateProfe.setMateria(matSelec);
+                                  mateProfe.setGrupo(grupoSelec);
+                                  mateProfe.setCurso(curs3P.selectedItem.value);
+                                  mateProfe.setOrden((((Intbox)labels.get(1)).value));
+                                  mateProfe.setCuantitativa(((Checkbox)labels.get(4)).isChecked());
+                                  mateProfe.setMinisterio(((Checkbox)labels.get(5)).isChecked());
+                                  mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
+                                  mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
+                                  mateProfe.setIngcualitativo(((Checkbox)labels.get(8)).isChecked());
+                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  if((!mateProfe.getCodigomap().equals(0)) ){
+                                        if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            adm.actualizar(mateProfe);
+                                             String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', " +
+                                                " orden = '"+mateProfe.getOrden()+"', seimprime = "+ mateProfe.getSeimprime() +",  " +
+                                                " promedia = "+ mateProfe.getMinisterio()  +", cuantitativa = "+ mateProfe.getCuantitativa() +"  "+
+                                                " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                                                " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                                                adm.ejecutaSqlNativo(quera);
+                                        }
+                                  }else{
+
+                                    if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                            adm.guardar(mateProfe);
+                                        }
+                                  }
+
+                   }
+                   llenarGrid3P(curs3P.selectedItem.value);
+ 
+
+    }
+
+
     
 ]]>
     </zscript>
@@ -1027,6 +1289,7 @@ void guardarc(){
             <tab label="DISTRIBUTIVO POR CURSO" />
             <tab  image="/images/pensum.png" label="POR PROFESOR" />
             <tab  image="/images/cursos.png"  label="POR CURSO LINEAL" />
+            <tab  image="/images/cursos.png"  label="POR CURSO LINEAL INICIAL" />
             <tab  image="/images/pensum.png"  label="COPIAR DISTRIBUTIVO ANTERIOR" />
         
         </tabs>
@@ -1118,6 +1381,17 @@ void guardarc(){
 
                         <!--button  label="Verificar" visible="false" id="verificar"/-->
                             </span>
+                        </row>
+                        <row>
+                            <span style="float:right"> Grupo:
+                            </span><div> 
+                            <listbox id="matesg"  disabled="true" mold="select" width="320px" >
+                                    <listitem selected="true" forEach="${materias2}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
+                                    </listitem>
+                                </listbox>
+                                Opcional para Pre-Básica
+                                </div>
                         </row>
                     </rows>
                 </grid>
@@ -1327,6 +1601,62 @@ void guardarc(){
                                     </listitem>
                                 </listbox>
                                 <button label="Setear Profesor" onClick="setear()"/>
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+            </tabpanel>
+            <tabpanel>
+                <grid>
+
+                    <rows>
+                        <row>
+                            <span style="float:right"> Curso(*):
+                            </span>
+                            <span>
+                                <listbox  onSelect="llenarGrid3P(self.selectedItem.value)"  id="curs3P" mold="select"  width="420px">
+                                    <listitem    forEach="${cursos}" value="${each}">
+                                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                    </listitem>
+                                    <listitem selected="true"   value="-1">
+                                        <listcell label="[Seleccione]" />
+                                    </listitem>
+                                </listbox>
+                                <button image="/images/guardar.gif" id="guardarcP" label="Guardar"    onClick="guardarcP();"/>
+                            </span>
+                        </row>
+                        <row spans="2">
+                            <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="datos3P" >
+                                <columns>
+                                    <column  width="1px" label="Cod"/>
+                                    <column  width="15px" label="Orden"/>
+                                    <column  width="120px" label="Materia"/>
+                                    <column  width="120px" label="Empleado"/>
+                                    <column  width="15px" label="Cuant"/>
+                                    <column  width="15px" label="Prom"/>
+                                    <column  width="18px" label="Disc."/>
+                                    <column  width="15px" label="Impr"/>
+                                    <column  width="15px" label="Ing.Cual."/>
+                                    <column  width="30px" label="Formula"/>
+                                    <column  width="30px" label="Opción"/>
+                                    <column  width="30px" label="Grupo"/>
+                                </columns>
+                                <rows id="filas3P">
+                                </rows>
+                            </grid>
+                        </row>
+                        <row spans="2" style="background:yellow">
+                            <span>
+                                No. de Materias a Agregar
+                                <spinner value="3" constraint="no negative,no zero" id="nofilas3P" />
+                                <button label="Agregar más Filas" onClick="llenarGrid23P(nofilas3P.value)"/>
+                                | Profesor 
+                                 <listbox mold="select"    id="profesSetearP" width="320px">
+                                    <listitem selected="true"  forEach="${profesores}" value="${each}">
+                                        <listcell label="${each.apellidos} ${each.nombres}" />
+                                    </listitem>
+                                </listbox>
+                                <button label="Setear Profesor" onClick="setearP()"/>
                             </span>
                         </row>
                     </rows>
