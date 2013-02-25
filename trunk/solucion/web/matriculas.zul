@@ -496,6 +496,7 @@ void llenarRepresentante(Representante repren){
     apellidosre.value = repren.getApellidos();
     direccionre.value = repren.getDireccion();
     telefonore.value = repren.getTelefono();
+    celularre.value = repren.getCelular();
     emailre.value = repren.getEmail();
     nacionalidadr.value = repren.getNacionalidad();
     nacionalidadm.value = repren.getNacionalidad();
@@ -602,6 +603,7 @@ void estado(Boolean estado,Boolean modificar){
     apellidosre.readonly = estado;
     direccionre.readonly = estado;
     telefonore.readonly = estado;
+    celularre.readonly = estado;
     emailre.readonly = estado;
     institucion.readonly = estado;
 
@@ -671,6 +673,7 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setApellidos(apellidosre.value);
         representante0.setDireccion(direccionre.value);
         representante0.setTelefono(telefonore.value);
+        representante0.setCelular(celularre.value);
         representante0.setEmail(emailre.value);
         representante0.setNacionalidad(nacionalidadr.value);
 
@@ -2272,9 +2275,11 @@ public void quitarFila(String codigoBuscar){
                                         <row>
                                             <span > Teléfono:</span>
                                             <span> 
-                                            <textbox id="telefonore" maxlength="100" cols="13"  readonly="true"  />
+                                            <textbox id="telefonore" maxlength="100" cols="10"  readonly="true"  />
+                                            Celular
+                                            <textbox id="celularre" maxlength="100" cols="10"  readonly="true"  />
                                             Email:
-                                            <textbox id="emailre" maxlength="100" cols="35"  readonly="true"    />
+                                            <textbox id="emailre" maxlength="100" cols="20"  readonly="true"    />
                                             </span>
                                         </row>
                                         <row>
