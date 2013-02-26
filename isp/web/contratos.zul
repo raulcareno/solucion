@@ -46,8 +46,8 @@ import java.text.SimpleDateFormat;
 
 
             if(empresa.getSolofactura()){
-                    facturar.visible = false;
-                    facturarlbl.visible = false;
+                    //facturar.visible = false;
+                    //facturarlbl.visible = false;
                     si.selected = true;
             }
     
