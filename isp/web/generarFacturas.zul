@@ -415,7 +415,7 @@ void generarFacturas(){
     <grid  width="860px" >
         <rows>
             <row>
-                <groupbox mold="3d" width="400px">
+                <groupbox visible="false" mold="3d" width="400px">
                     <caption>1.- Generación de Deudas mensuales</caption>    
                 
                     FECHA DE EMISION: 

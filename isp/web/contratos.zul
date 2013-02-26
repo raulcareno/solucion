@@ -2885,9 +2885,9 @@ void llamar(){
                                             </span>
                                             <span style="float:right">   Usuario:</span>
                                             <span style="float:right">   
-                                                <textbox cols="10" readonly="true"   id="usuario" />
+                                                <textbox cols="7" readonly="true"   id="usuario" />
                                                 Clave:
-                                                <textbox cols="10" readonly="true"   id="clave" />
+                                                <textbox cols="5" readonly="true"   id="clave" />
                                             </span>
                                         </row>
                                         <row spans="4">
