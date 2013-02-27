@@ -4619,7 +4619,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
 
     }
 
-    public JRDataSource certificadodisciplina(Cursos curso, List<Matriculas> matri) {
+    public JRDataSource certificadodisciplina(Cursos curso, List<Matriculas> matri,Sistemacalificacion sistema) {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -4627,10 +4627,10 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
         List<Textos> textos = adm.query("Select o from Textos as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
-                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
-                + "and o.sistema.promediofinal = 'PF' ");
+                + "and o.sistema.codigosis = '"+sistema.getCodigosis()+"' ");
         try {
             if (notas.size() <= 0) {
                 Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -4713,6 +4713,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
             not.setAprovechamiento(aprovechamiento);
             not.setDisciplina(disciplina);
             not.setEstado(estadoEstudiante);
+            not.setDisciplinaAbreviatura(equivalencia(disciplina, equivalencias) + "");
             not.setCabeceraTexto(equivalencia2(disciplina, equivalencias) + "");
             not.setMatricula(matriculas1);
             listaMatriculados.add(not);

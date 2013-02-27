@@ -96,6 +96,7 @@ public String estudiante;
     
     public Double aprovechamiento;
     public Double disciplina;
+    public String disciplinaAbreviatura;
 
     public Double getAprovechamiento() {
         return aprovechamiento;
@@ -112,6 +113,15 @@ public String estudiante;
     public void setDisciplina(Double disciplina) {
         this.disciplina = disciplina;
     }
+
+    public String getDisciplinaAbreviatura() {
+        return disciplinaAbreviatura;
+    }
+
+    public void setDisciplinaAbreviatura(String disciplinaAbreviatura) {
+        this.disciplinaAbreviatura = disciplinaAbreviatura;
+    }
+    
     public String aprovechamientoLetras;
     public String disciplinaLetras;
 

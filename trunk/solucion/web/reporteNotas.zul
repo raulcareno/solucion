@@ -480,7 +480,10 @@ void recalcular(){
                     datasource = noti.promocion2(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"promocion2.jasper");
             }else if(tipo.equals("CERD")){
-                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
+            
+                    List matric = new ArrayList();
+                    matric.add(estudiantesCombo.getSelectedItem().getValue());
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),matric,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoconducta.jasper");
             }else if(tipo.equals("PCUR")){
                     datasource = noti.promediocurso(sistemasCombo.getSelectedItem().getValue());
@@ -891,6 +894,8 @@ void campos(String valor){
              filamodalidad.visible = true;
              filacursos.visible = true;
              filaestudiantes.visible = true;
+             filaaportes.visible = true;
+             sistemasCombo.disabled = false;
         }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3") || valor.equals("CCALP")){
              incluirfaltas.visible = true;
              incluirfaltasydias.visible = true;

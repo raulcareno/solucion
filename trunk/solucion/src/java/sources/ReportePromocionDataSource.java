@@ -179,6 +179,8 @@ public class ReportePromocionDataSource implements JRDataSource {
                 valor = nodo.getAprovechamiento();
             } else if ("disciplina".equals(fieldName)) {
                 valor = redondear(nodo.getDisciplina(),2).doubleValue();
+            } else if ("disciplinaAbreviatura".equals(fieldName)) {
+                valor = nodo.getDisciplinaAbreviatura();
             } else if ("letrasDisciplina".equals(fieldName)) {
                 valor = num.numeros(nodo.getDisciplina()).toUpperCase();
             } else if ("letrasDisciplina2".equals(fieldName)) {
@@ -288,7 +290,11 @@ public class ReportePromocionDataSource implements JRDataSource {
                 
             } else if ("equivaleDisciplina".equals(fieldName)) {
                 try {
-                    valor =  " "+devolverNombre(equ,nodo.getDisciplina()).getNombre();    
+                    if(nodo.getCabeceraTexto()!=null){
+                        valor =  " "+nodo.getCabeceraTexto();
+                    }else{
+                        valor =  " "+devolverNombre(equ,nodo.getDisciplina()).getNombre();
+                    }    
                 } catch (Exception e) {
                     valor = "";
                     System.out.println("erroren" + e);
