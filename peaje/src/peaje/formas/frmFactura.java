@@ -1795,6 +1795,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
             JasperReport masterReport = null;
             if (mensual) {
                 masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura2.jasper");
+            } else if(chkEsNotaVenta.isSelected()){
+                masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura4.jasper");
             } else {
                 masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura.jasper");
             }
