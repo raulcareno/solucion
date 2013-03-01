@@ -32,6 +32,50 @@
      bancos.add(0,banSel);
     Empresa empresa = ses.getAttribute("empresa"); 
     String directorioReportes = empresa.getReportes();
+    
+    
+    List cantones = adm.query("Select o from Canton as o  ");
+    Canton cantonTodos = new Canton(-1);
+    cantonTodos.setNombre("- TODOS - ");
+    cantones.add(0,cantonTodos);
+    
+    
+            void buscarSectores(Integer codigo){
+          bd.value = "";
+        List NodosEncontrados = adm.query("Select o from Sector as o " +
+        " where o.canton.codigo = '"+codigo+"'  " + 
+        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'   order by o.numero, o.nombre");
+        sectorList = new Listbox();
+        int a=0;
+            for (Iterator it = sectorList.getItems().iterator(); it.hasNext();) {
+                    sectorList.getItems().remove(a);
+                }
+                      Listitem liTodos = new Listitem();
+                      Sector todos = new Sector(-1);;
+                      liTodos.setValue(todos);
+                      liTodos.appendChild(new Listcell(" - TODOS - "));
+                      sectorList.appendChild(liTodos);
+               for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
+                      sectorList.appendChild(li);
+             }
+         sectorList2 = new Listbox();
+            int a=0;
+            for (Iterator it = sectorList2.getItems().iterator(); it.hasNext();) {
+                    sectorList2.getItems().remove(a);
+                }
+            for (Iterator it = NodosEncontrados.iterator(); it.hasNext();) {
+                      Sector acceIt = (Sector) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNumero()+".- "+acceIt.getNombre()+" "));
+                      sectorList2.appendChild(li);
+             }
+
+    }
     void generar(){
         generarFacturas gen = new generarFacturas();
                 //for(Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -78,9 +122,15 @@
         try{
           ban = bancosList.selectedItem.value;
         }catch(Exception am){
-            
         }
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),tipo.value,dondepaga.selectedItem.value+"",ban );
+        Sector sec = new Sector(-1);
+        try{
+            sec = sectorList.selectedItem.value;
+        }catch(Exception esec){
+        
+        }
+        //tipoGeneracion
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),tipo.value,dondepaga.selectedItem.value+"",ban,tipoGeneracion.selectedItem.value,sec);
             facturasDatos.getRows().getChildren().clear();
             if(facEncontradas == null){
                 return;
@@ -155,7 +205,7 @@ void generarFacturas(){
                        List col = facturasDatos.getRows().getChildren();
                        Sucursal suc = sucursalEmp.getSucursal();
                        Integer num = numero.value;
-                       Integer numR = numeroRec.value;
+                      
                        
                        String vali = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
                        List siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
@@ -166,15 +216,7 @@ void generarFacturas(){
                                 return;        
                             }
                            
-                           //VALIDAR SI EL RECIBO YA EXISTE
-                           vali = suc.getSerie1() + "" + suc.getSerie2() + "REC" + llenarCeros("" + numR);
-                            siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
-                        
-                            if(siExiste.size()>0){
-                                Messagebox.show("El # Inicial de la RECIBO ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                numeroRec.focus();
-                                return;        
-                            }
+                          
                             
                             if(num < suc.getDesde() || num > suc.getHasta()){
                                 Messagebox.show("El # de Autorización ya no sirve para el rango establecido, modifique en los datos de la Empresa ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -187,15 +229,11 @@ void generarFacturas(){
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
                                         if(((Checkbox) labels.get(0)).isChecked()){
-                                             if(labels.get(6).equals("SI")){
+                                            
                                                  String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
                                                  nofacturas += "'"+nn+"',";
                                                  num++;
-                                             }else{
-                                                 String nn2 = suc.getSerie1() + "" + suc.getSerie2() + "REC" + llenarCeros("" + numR);
-                                                 norecibos += "'"+nn2+"',";
-                                                 numR++;
-                                             }
+                                             
                                         }
                                }
                                         if(nofacturas.length()>0){
@@ -214,24 +252,9 @@ void generarFacturas(){
                                                         }
                                              
                                          }
-                                         if(norecibos.length()>0){
-                                             norecibos = norecibos.substring(0,norecibos.length()-1);
-                                             siExiste = adm.query("Select o from Factura as o where o.numero in ("+ norecibos +") ");
-                        
-                                                        if(siExiste.size()>0){
-                                                                String existentes  = "";
-                                                                    for (Iterator itna = siExiste.iterator(); itna.hasNext();) {
-                                                                            Factura f = (Factura) itna.next();  
-                                                                            existentes += f.numero.substring(9)+" , ";
-                                                                    }
-                                                            Messagebox.show("Algunas # de los RECIBOS ya se han Usado ...! \n"+existentes, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                                            numeroRec.focus();
-                                                            return;        
-                                                        }
-                                             
-                                         }
+                                      
                        Integer num2 = numero.value;
-                       Integer num3 = numeroRec.value;
+                     
                        facturasGeneradas = new ArrayList();
                               for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
@@ -240,16 +263,8 @@ void generarFacturas(){
                                                
                                                 Factura fac = adm. buscarClave(object.getValue(),Factura.class);
                                                 Boolean esFactura= false;
-                                                    try{
-                                                        if((fac.getContratos().getSerie3()+"").equals("SI")){
-                                                            esFactura= true;    
-                                                        }else{
-                                                            esFactura= false;    
-                                                        }
-                                                   }catch(Exception ab){
-                                                        esFactura= false;    
-                                                   }
-                                                if(esFactura){
+                                                  
+                                                
                                                     String nn = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num2);
                                                     if(fac.getNumero() == null){
                                                        fac.setNumero(nn);
@@ -260,20 +275,7 @@ void generarFacturas(){
                                                       facturasGeneradas.add(fac);
                                                         num2++;
                                                     }
-                                              }else{
-                                                
-                                                    String nn = suc.getSerie1() + "" + suc.getSerie2() + "REC" + llenarCeros("" + num3);
-                                                    if(fac.getNumero() == null){
-                                                       fac.setNumero(nn);
-                                                       fac.setAutorizacion(autorizacion.value);
-                                                       fac.setVencimiento(vencimiento.value);
-                                                       fac.setEmision(adm.Date());
-                                                      adm.actualizar(fac);
-                                                      facturasGeneradas.add(fac);
-                                                        num3++;
-                                                    }
                                               
-                                              }
                                         }
                                }
 
@@ -316,6 +318,113 @@ void generarFacturas(){
     }
     
     
+void generarRecibos(){
+ 
+                       List col = facturasDatos.getRows().getChildren();
+                       Sucursal suc = sucursalEmp.getSucursal();
+                          Integer numR = numeroRec.value;
+                       
+                                                                  
+                           //VALIDAR SI EL RECIBO YA EXISTE
+                           String  vali = suc.getSerie1() + "" + suc.getSerie2() + "REC" + llenarCeros("" + numR);
+                           List    siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
+                        
+                            if(siExiste.size()>0){
+                                Messagebox.show("El # Inicial de la RECIBO ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                numeroRec.focus();
+                                return;        
+                            }
+               
+                     
+                        String norecibos="";
+                             for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                                 String nn2 = suc.getSerie1() + "" + suc.getSerie2() + "REC" + llenarCeros("" + numR);
+                                                 norecibos += "'"+nn2+"',";
+                                                 numR++;
+                                            
+                                        }
+                               }
+                             
+                                         if(norecibos.length()>0){
+                                             norecibos = norecibos.substring(0,norecibos.length()-1);
+                                             siExiste = adm.query("Select o from Factura as o where o.numero in ("+ norecibos +") ");
+                        
+                                                        if(siExiste.size()>0){
+                                                                String existentes  = "";
+                                                                    for (Iterator itna = siExiste.iterator(); itna.hasNext();) {
+                                                                            Factura f = (Factura) itna.next();  
+                                                                            existentes += f.numero.substring(9)+" , ";
+                                                                    }
+                                                            Messagebox.show("Algunas # de los RECIBOS ya se han Usado ...! \n"+existentes, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                            numeroRec.focus();
+                                                            return;        
+                                                        }
+                                             
+                                         }
+                     
+                       Integer num3 = numeroRec.value;
+                       facturasGeneradas = new ArrayList();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        if(((Checkbox) labels.get(0)).isChecked()){
+                                               
+                                                Factura fac = adm. buscarClave(object.getValue(),Factura.class);
+                                                    String nn = suc.getSerie1() + "" + suc.getSerie2() + "REC" + llenarCeros("" + num3);
+                                                    if(fac.getNumero() == null){
+                                                       fac.setNumero(nn);
+                                                       fac.setAutorizacion(autorizacion.value);
+                                                       fac.setVencimiento(vencimiento.value);
+                                                       fac.setEmision(adm.Date());
+                                                      adm.actualizar(fac);
+                                                      facturasGeneradas.add(fac);
+                                                        num3++;
+                                                    }
+                                              
+                                               
+                                        }
+                               }
+
+                 try{              
+                               
+//VUELVO A LLENAR LAS FACTURAS EN ORDEN
+            facturasDatos.getRows().getChildren().clear();
+            int i =0;
+            BigDecimal total = new BigDecimal(0);
+                for (Iterator itna = facturasGeneradas.iterator(); itna.hasNext();) {
+                            Factura vec = (Factura) itna.next();
+                            Row row = new Row();
+                            if(row == null){
+                               row = new Row();
+                            }
+                            Checkbox ch = new Checkbox("");   
+                             ch.setChecked(true);
+                             row.appendChild(ch);
+                             row.setValue(vec.getCodigo());
+                             row.appendChild(new Label(dos+""));
+
+                             SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
+                             Date d =  vec.getFecha();
+                             row.appendChild(new Label(vec.getNumero().substring(6)+""));        
+                             row.appendChild(new Label(d1.format(d)+""));
+                             row.appendChild(new Label(vec.getClientes().getApellidos()+" "+ vec.getClientes().getNombres()));
+                             row.appendChild(new Label(vec.getTotal()+""));
+                             row.appendChild(new Label(vec.getTotal()+""));
+                             row.appendChild(new Label(vec.getContratos().getSerie3()+""));
+                             filasFac.appendChild(row);
+                }
+             }catch(Exception e){
+                            System.out.println("ERROR: "+e);
+             }
+
+
+                               
+                               
+                               
+    }
        String llenarCeros(String numero) {
         
         while (numero.length() < 7) {
@@ -415,20 +524,28 @@ void generarFacturas(){
     <grid  width="860px" >
         <rows>
             <row>
-                <groupbox visible="true" mold="3d" width="400px">
+                <groupbox visible="false" mold="3d" width="400px">
                     <caption>1.- Generación de Deudas mensuales</caption>    
                 
                     FECHA DE EMISION: 
                     <datebox id="fecha" format="MMM-yyyy" onCreate="self.value = adm.Date()"/>
                     <button label="GENERAR DEUDA PARA TODOS LOS CLIENTES" onClick="generar()"/>
                 </groupbox>
-                <groupbox id="gssb" mold="3d" width="400px">
-                    <caption> 2.- Asignación de No. de facturas</caption>    
+                <groupbox id="gssb" mold="3d" width="100%">
                     <grid>
                         <rows>
+                            <row style="background-color: #FFFF99" spans="4">
+                                <span > TIPO: 
+                                <radiogroup Id="tipoGeneracion" onCheck="">
+		      			<radio label="FACTURAS" onCheck="filaRecibos.visible = false;filaFacturas.visible = true; impfac.visible = true; imprec.visible = false; " selected="true" value="SI" />
+                                        <radio label="RECIBOS" onCheck="filaRecibos.visible = true;filaFacturas.visible = false; impfac.visible = false; imprec.visible = true; "  value="NO" />
+                                </radiogroup>
+                                </span>
+                                </row>
                             <row>
                                 <span > SELECCIONE UN PLAN: </span>
-                                <combobox  value="HOME" id="tipo">
+                                <combobox  value="TODOS" id="tipo">
+                                    <comboitem label="TODOS" />
                                     <comboitem label="HOME" />
                                     <comboitem label="BASICO" />
                                     <comboitem label="CORPORATIVO" />
@@ -441,16 +558,15 @@ void generarFacturas(){
                                 <span>
                                     <label style="font-weight:bold2" value=" Paga(*): " />
                                 </span>
+                                
                                 <radiogroup Id="dondepaga" onCheck="">
                                     <radio id="Tod" selected="true" value="0" onCheck="bd22.disabled=true;" label="Todos"/>
                                     <radio id="efe"  value="1" onCheck="bd22.disabled=true;" label="Ofic."/>
                                     <radio  id="cbr" value="3" onCheck="bd22.disabled=true; " label="Domic."/>
                                     <radio id="deb"   value="2" onCheck="bd22.disabled=false;  " label="Déb."/>
                                 </radiogroup>
-                                </row>
-                                <row>
                                 <span>
-                                    <label style="font-weight:bold2" value="Banco:" />
+                                <span style="float:right"> Banco:</span>
                                 </span>
                                 <bandbox disabled="true" readonly="true" width="100px"  id="bd22">
                                     <bandpopup>
@@ -468,7 +584,45 @@ void generarFacturas(){
                                         </vbox>
                                     </bandpopup>
                                 </bandbox>
+                                
+                                </row>
+                                <row>
+                                
                             </row>
+                             <row visible = "true" id="filacanton">
+                            <span style="float:right"> Cantón(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdCanton">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="cant" width="250px"
+                                                 onSelect='bdCanton.value=self.selectedItem.label;buscarSectores(((Canton)self.selectedItem.value).getCodigo());bdCanton.closeDropdown();bdSector.value = "" ;'>
+                        
+                                            <listitem forEach="${cantones}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+ 
+                            <span style="float:right"> Sector(*):</span>
+                            <bandbox  width="200px" readonly="true"  id="bdSector">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="sectorList" width="250px"
+                                                 onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();">
+                                 
+                                            <listitem forEach="${perfiles}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+
+                        </row>
                         </rows>
                         
                     </grid>
@@ -498,31 +652,24 @@ void generarFacturas(){
                     <caption>3.- Operaciones </caption>
                     <grid>
                         <rows>
-                            <row>
+                            <row id="filaFacturas">
                                 # Inicial de Factura
                                 <intbox id="numero" cols="8"  style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
                            
                                 No.Aut:
                                 <textbox maxlength="10" cols="10" id="autorizacion" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty: Ingrese el número Autorización de sus facturas" />
-                            </row>
-                            <row>
                                 Fec. Venc: 
                                 <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date(); " id="vencimiento" />
-                            
-                                <span></span>
-                                <span></span>
-                             
                             </row>
-                           
-                            <row>
+                           <row id="filaRecibos" visible="false">
                                 # Inicial de Recibo
-                                
                                 <intbox id="numeroRec" style="color:blue; text-align:center;font-size:14px;font-weight:bold" constraint="no empty,no zero: Ingrese el número inicial para continuar debe ser mayor a 0 y no blanco" />
-                                <span></span>
+                                </row>
+                            <row spans="6">
                                 <span>
-                                    <button label="Generar Facturas" image="/images/generar.png"  onClick="numero.getValue();numeroRec.getValue(); generarFacturas(); "/>
-                                    <button label="Imp.Facturas" image="/images/imprimir.gif" onClick="imprimirTodos()"/>
-                                    <button label="Imp.Recibos" image="/images/imprimir.gif" onClick="imprimirTodos2()"/>
+                                    <button label="ASIGNAR NUMEROS" image="/images/generar.png"  onClick="(filaRecibos.isVisible()? numeroRec.getValue():numero.getValue() ); (filaRecibos.isVisible()? generarRecibos(): generarFacturas())   "/>
+                                    <button label="IMPRIMIR" image="/images/imprimir.gif"  id="impfac" onClick="imprimirTodos()"/>
+                                    <button label="IMPRIMIR" image="/images/imprimir.gif" visible="false" id="imprec"  onClick="imprimirTodos2()"/>
                                     <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
                                         <bandpopup>
                                             <vbox>

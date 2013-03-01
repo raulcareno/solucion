@@ -10,14 +10,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jcinform.bean.sources.ReporteCobranzasDataSource;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Row;
 
 /**
  *
@@ -662,7 +661,7 @@ public class generarFacturas {
 
         return deudas;
     }
-
+//PARA LA PANTALLA GENERAR FACTURAS
     public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco) {
         /*
          * if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA efe.checked
@@ -684,6 +683,71 @@ public class generarFacturas {
         }
         List contratos = adm.query("Select o.codigo from Contratos as o "
                 + "where o.plan.tipo = '" + tipoPlan + "' " + compleDondePaga + "  order by o.clientes.apellidos ");
+        String contraString = "";
+        contraString = contratos.toString().replace("[", "").replace("]", "");
+//        for (Iterator itContratos = contratos.iterator(); itContratos.hasNext();) {
+//            Integer contratos1 = (Integer)itContratos.next();
+//            //contratos1.getBancos().getCodigo();
+//            contraString = "" + contratos1 + "," + contraString + "";
+//        }
+//        if (contraString.length() > 0) {
+//            contraString = contraString.substring(0, contraString.length() - 1);
+//        }
+
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres),  fa.total, (SUM(cx.debe) - SUM(cx.haber)) saldo, c.serie3  "
+                + "FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
+                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes "
+                + "and fa.sucursal = '" + suc.getCodigo() + "' and (fa.numero = '' or fa.numero is null) "
+                + " GROUP BY fa.codigo "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 "
+                + "order by cli.apellidos, fa.fecha ";
+        List deudas = null;
+        try {
+            deudas = adm.queryNativo(quer);
+        } catch (Exception e) {
+            System.out.println("ERRROR: " + e);
+            return null;
+        }
+        contratos = null;
+
+        return deudas;
+    }
+    
+    //PARA LA PANTALLA GENERAR FACTURAS 2 Y RECIBOS
+    public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco,String seFactura,Sector sect) {
+
+        String complementotipoPlan = "o.plan.tipo = '" + tipoPlan + "' ";
+        if(tipoPlan.equals("TODOS")){
+            complementotipoPlan = "o.plan.tipo like '%%' ";
+        } 
+        
+        String complementoSector = " and  o.sector.codigo  = '" + sect.getCodigo() + "'  ";
+        if (sect.getCodigo().equals(new Integer("-1"))) {
+            complementoSector = "";
+        }
+        String complementoFacturar = "";
+        if (seFactura.equals(new Integer("-1"))) {
+            complementoFacturar = "";
+        }else if (seFactura.equals("SI")) {
+            complementoFacturar = " and  o.serie3 = '" + seFactura + "'  ";
+        }else if (seFactura.equals("NO")) {
+            complementoFacturar = " and  o.serie3 = 'NO'  ";
+        }
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        String compleDondePaga = " and o.formapago  = '" + dondepaga + "' ";
+        if (dondepaga.contains("0")) {
+            compleDondePaga = " and o.formapago is not null ";
+        } else if (dondepaga.contains("2")) {//ES POR DÉBITO
+            compleDondePaga = " and o.formapago   = '" + dondepaga + "'   and o.bancos.codigo = '" + banco.getCodigo() + "' ";
+            if (banco.getCodigo().equals(new Integer(0))) {
+                compleDondePaga = " and o.formapago   = '" + dondepaga + "'  ";
+            }
+        }
+        String query = "Select o.codigo from Contratos as o "
+                + "where "+complementotipoPlan+" " + compleDondePaga + ""+ complementoSector+"  " +complementoFacturar
+                + "order by o.clientes.apellidos ";
+        List contratos = adm.query(query);
         String contraString = "";
         contraString = contratos.toString().replace("[", "").replace("]", "");
 //        for (Iterator itContratos = contratos.iterator(); itContratos.hasNext();) {
