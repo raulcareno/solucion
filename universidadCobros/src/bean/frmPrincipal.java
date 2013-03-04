@@ -62,6 +62,14 @@ panelInscritos.setVisible(false);
                     cmbPeriodo.addItem(gen);
 
                 }
+                try {
+                    adm.ejecutaSqlNativo("DELETE  FROM matriculas WHERE  fecha <= DATE_SUB(CURDATE(), INTERVAL 29 DAY) "
+                        + " AND (pagadainscripcion IS NULL OR pagadainscripcion = 0) "
+                        + " AND estado_mat = 'I'");
+                } catch (Exception e) { System.out.println("EN BORRAR INSCRITOS ANTERIORES: ");
+                    e.printStackTrace();
+                }
+                
 
                 periodosLista = null;
             }
@@ -273,23 +281,22 @@ panelInscritos.setVisible(false);
         frmCambiarClave.setBounds(150, 2, 320, 160);
         contenedor.add(frmCambiarClave, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        panelInscritos.setBackground(new java.awt.Color(153, 153, 153));
-        panelInscritos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estudiantes Inscritos Pendientes de Cobro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.blue));
+        panelInscritos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Estudiantes Inscritos Pendientes de Cobro", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, java.awt.Color.black));
         panelInscritos.setLayout(null);
 
         tablaInscritos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "..", "Estudiante"
+                "", "Estudiante", "Carrera"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -301,16 +308,22 @@ panelInscritos.setVisible(false);
                 tablaInscritosMouseClicked(evt);
             }
         });
+        tablaInscritos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tablaInscritosKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaInscritos);
-        tablaInscritos.getColumnModel().getColumn(0).setResizable(false);
         tablaInscritos.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tablaInscritos.getColumnModel().getColumn(0).setMaxWidth(0);
         tablaInscritos.getColumnModel().getColumn(1).setResizable(false);
         tablaInscritos.getColumnModel().getColumn(1).setPreferredWidth(220);
+        tablaInscritos.getColumnModel().getColumn(2).setResizable(false);
 
         panelInscritos.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 20, 270, 200);
+        jScrollPane1.setBounds(10, 20, 460, 200);
 
-        panelInscritos.setBounds(5, 5, 290, 230);
+        panelInscritos.setBounds(10, 5, 480, 230);
         contenedor.add(panelInscritos, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         getContentPane().add(contenedor, java.awt.BorderLayout.CENTER);
@@ -773,6 +786,47 @@ panelInscritos.setVisible(false);
             usu.show();
         }
     }//GEN-LAST:event_tablaInscritosMouseClicked
+
+    private void tablaInscritosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaInscritosKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            try {
+                Component[] componentes = contenedor.getComponents();
+                for (Component component : componentes) {
+                    System.out.println("" + component.getName());
+                    if ((component.getName() + "").equals("formaFacturas")) {
+                        System.out.println("LO ENCONTRE");
+                        ((frmFacturas) component).setEmpleadoActual(usuarioActual);
+                        ((frmFacturas) component).setPeriodoActual(periodoActual);
+                        ((frmFacturas) component).setVisible(true);
+                        ((frmFacturas) component).inst = inst;
+                        //((frmFacturas) component).EstudianteSeleccionado = new general("0", "");
+                        ((frmFacturas) component).btnNuevo.doClick();
+                        ((frmFacturas) component).EstudianteSeleccionado = new general(((Estudiantes) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 0)).getIdEstudiantes(), ((String) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 1)));
+                        ((frmFacturas) component).cargarRubros2(((frmFacturas) component).EstudianteSeleccionado);
+                        return;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR EN COMPONENTE" + e);
+            }
+
+            frmFacturas usu = new frmFacturas(adm);
+            usu.setSize(642, 630);
+            usu.setEmpleadoActual(usuarioActual);
+            usu.setPeriodoActual(periodoActual);
+            usu.setLocation(0, 0);
+            usu.inst = inst;
+            usu.btnNuevo.doClick();
+            usu.EstudianteSeleccionado = new general(((Estudiantes) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 0)).getIdEstudiantes(), ((String) tablaInscritos.getValueAt(tablaInscritos.getSelectedRow(), 1)));
+            usu.setName("formaFacturas");
+            usu.cargarRubros2(usu.EstudianteSeleccionado);
+            contenedor.add(usu);
+
+            usu.show();
+        }
+        
+    }//GEN-LAST:event_tablaInscritosKeyPressed
     private int intento = 0;
 
     public JLabel getIntentos() {

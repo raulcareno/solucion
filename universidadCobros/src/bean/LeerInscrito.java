@@ -33,9 +33,10 @@ public class LeerInscrito extends Thread {
                 if(matriculas.size()>0){
                  for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
                     Matriculas matriculas1 = it.next();
-                    Object obj[] = new Object[2];
+                    Object obj[] = new Object[3];
                     obj[0] = matriculas1.getIdEstudiantes();
                     obj[1] = matriculas1.getIdEstudiantes().getApellidoPaterno()+" "+ matriculas1.getIdEstudiantes().getApellidoMaterno()+" "+ matriculas1.getIdEstudiantes().getNombre();
+                    obj[2] = matriculas1.getIdCarreras().getNombre();
                     dtm.addRow(obj);
                 }
                  princip.tablaInscritos.setModel(dtm); 
