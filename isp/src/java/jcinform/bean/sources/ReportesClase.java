@@ -120,14 +120,19 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource clientesxestado(String estado, Integer formapago) {
+    public JRDataSource clientesxestado(String estado, Integer formapago,Date desde, Date hasta,Boolean todasFechas) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
-
+         String desdestr = convertiraString(desde) + " 00:00:01";
+        String hastastr = convertiraString(hasta) + " 23:59:59";
+        String complementoFechas = " and o.fechafinal between '"+desdestr+"' and '"+hastastr+"'  ";
+            if(todasFechas){
+                    complementoFechas = "";
+            }
         String formaPago = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals(0)) {
             formaPago = " and o.formapago in (0,1,2,3) ";
@@ -135,7 +140,7 @@ public class ReportesClase {
 
         List<Contratos> contra = adm.query("Select o from Contratos as o "
                 + " where o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + estadoComp + " " + formaPago
+                + estadoComp + " " + formaPago +" "+complementoFechas + " " 
                 + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();

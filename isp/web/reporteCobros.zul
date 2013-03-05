@@ -199,8 +199,10 @@ List nodos = adm.query("Select o from Nodos as o " +
                    
                    
             }else if(tipo.equals("PORESTADO")){
-                  datasource = reportes.clientesxestado(estadoContrato.selectedItem.value,new Integer(formapago.selectedItem.value));
+                  datasource = reportes.clientesxestado(estadoContrato.selectedItem.value,new Integer(formapago.selectedItem.value),desde.value,hasta.value,todasfechas.isChecked());
                   report.setSrc(directorioReportes+"listacontratosestado.jasper");
+                  
+                  
             }else if(tipo.equals("PORESTADOPLAN")){
                     Set items2 = planList.getSelectedItems();
                     List listPlanes = new ArrayList(items2);
@@ -554,6 +556,8 @@ void campos(String valor){
             titulo.value ="X Estado";
             filaestado.visible = true;
             filaformapago.visible = true;
+              filafechas.visible=true;
+              todasfechas.visible = true;
         }else if(valor.equals("PORESTADOPLAN")){
             titulo.value ="X Estado";
             filaestado.visible = true;

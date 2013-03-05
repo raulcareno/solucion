@@ -34,7 +34,7 @@
 import java.text.SimpleDateFormat;
   import jcinform.bean.generarFacturas;
 
-
+String estadoAnterior = "";
   Session ses = Sessions.getCurrent();
   //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
@@ -188,6 +188,7 @@ void llenar(Contratos  equi2){
     
 
         clave.value = equi.getClave();
+        estadoAnterior = equi.getEstado();
        if(equi.getEstado().equals("Activo")){
             eactivo.selected = true;
         }else if(equi.getEstado().equals("Suspendido")){
@@ -549,7 +550,11 @@ Boolean validar(){
     
         if((!equi.getCodigo().equals(0)) ){
             equi.setEmpleados(new Empleados(new Integer(registradoU.value)));//REGISTRADOR
+             if(!estadoAnterior.equals(estadoContrato.selectedItem.value)){
+               equi.setFechafinal(adm.Date());
+             }
              adm.actualizar(equi);
+             if(!estadoAnterior.equals(estadoContrato.selectedItem.value)){
                 permiso.auditar("Contratos","Actualizar",""+equi.getContrato()+" - "+equi.getClientes());
                 Historialcortes historia = new Historialcortes();
                 historia.setCodigo(adm.getNuevaClave("Historialcortes","codigo"));
@@ -558,6 +563,9 @@ Boolean validar(){
                 historia.setContratos(equi);
                 historia.setEmpleados(usuarioActual);
                 adm.guardar(historia);
+                
+              }
+             
          }else{
           //EN CASO DE Q VAYA A ACTUALIAR
              if(validarContrato(numerocontrato.value)){
@@ -571,6 +579,7 @@ Boolean validar(){
                 adm.guardar(equi);
                 permiso.auditar("Contratos","Guardar",""+equi.getContrato()+" - "+equi.getClientes());
          }
+          estadoAnterior= estadoContrato.selectedItem.value;
              
  if(facturadostotal.value > 0){//GENERO LA CABECERA DE COMPRA Y LOS DETALLLES CON LAS SERIES PARA
       Cabeceracompra cabeCompra = new Cabeceracompra();
@@ -965,6 +974,8 @@ if(sihay==0){
         return permiso.verificarPermiso("Soporte",accion);
  }
  void nuevo(){
+ estadoAnterior = "";
+ 
  if(empresa.getSolofactura()){
         si.selected = true;
         si.visible = false;
