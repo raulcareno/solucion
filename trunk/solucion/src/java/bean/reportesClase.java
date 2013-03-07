@@ -3014,7 +3014,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                             + "and notas.cuantitativa = false and notas.materia != 0 "
                             + "group by matricula  ";
                 }
-//                System.out.println("NOTAS DE promedio " + q);
+                System.out.println("NOTAS DE promedio " + q);
                 nativo = null;
                 nativo = adm.queryNativo(q);
                 for (Iterator itna = nativo.iterator(); itna.hasNext();) {
