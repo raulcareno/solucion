@@ -93,6 +93,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         dias2.setVisible(false);
         panelencontrados.setVisible(false);
         panelencontrados1.setVisible(false);
+        botonesVer.setVisible(false);
     }
 
     public frmFactura(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
@@ -128,6 +129,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             Date fefin = new Date();
             fefin.setMonth(f);
             hastaF.setDate(fefin);
+            botonesVer.setVisible(false);
 
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
@@ -264,17 +266,19 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jButton5 = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         observacion1 = new javax.swing.JTextArea();
+        botonesVer = new javax.swing.JPanel();
+        btnEliminar = new javax.swing.JButton();
+        btnMulta = new javax.swing.JButton();
+        btnAgregar2 = new javax.swing.JButton();
+        btnAgregar3 = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
-        btnMulta = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnAgregar2 = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         descuento = new javax.swing.JFormattedTextField();
         jLabel33 = new javax.swing.JLabel();
         btnAplicarDscto = new javax.swing.JButton();
-        btnAgregar3 = new javax.swing.JButton();
         chkEsNotaVenta = new javax.swing.JCheckBox();
+        verBot = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -444,7 +448,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel10.setBounds(10, 20, 290, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 690, 40);
+        jPanel3.setBounds(0, 0, 780, 40);
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -498,6 +502,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel7.setBounds(10, 10, 60, 14);
 
         noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        noTicket.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                noTicketFocusGained(evt);
+            }
+        });
         noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
@@ -722,7 +731,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jButton3.setBounds(210, 10, 30, 23);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(310, 10, 350, 160);
+        jPanel2.setBounds(310, 10, 360, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -797,6 +806,94 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.add(frmTarifa0);
         frmTarifa0.setBounds(10, 0, 270, 140);
 
+        botonesVer.setBackground(new java.awt.Color(204, 204, 204));
+        botonesVer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonesVer.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                botonesVerFocusLost(evt);
+            }
+        });
+        botonesVer.setLayout(new java.awt.GridLayout(4, 0));
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
+        btnEliminar.setText("Anular Tick.");
+        btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnEliminar.setOpaque(false);
+        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        botonesVer.add(btnEliminar);
+
+        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
+        btnMulta.setMnemonic('G');
+        btnMulta.setText("Multa");
+        btnMulta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnMulta.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnMulta.setOpaque(false);
+        btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnMulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMultaActionPerformed(evt);
+            }
+        });
+        btnMulta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnMultaKeyPressed(evt);
+            }
+        });
+        botonesVer.add(btnMulta);
+
+        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cero.png"))); // NOI18N
+        btnAgregar2.setMnemonic('G');
+        btnAgregar2.setText("Tarifa");
+        btnAgregar2.setActionCommand("Tarifa 0.0");
+        btnAgregar2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAgregar2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAgregar2.setOpaque(false);
+        btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar2ActionPerformed(evt);
+            }
+        });
+        btnAgregar2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar2KeyPressed(evt);
+            }
+        });
+        botonesVer.add(btnAgregar2);
+
+        btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/sello.png"))); // NOI18N
+        btnAgregar3.setMnemonic('G');
+        btnAgregar3.setText("Sellado");
+        btnAgregar3.setActionCommand("Tarifa 0.0");
+        btnAgregar3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAgregar3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAgregar3.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAgregar3.setOpaque(false);
+        btnAgregar3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar3ActionPerformed(evt);
+            }
+        });
+        btnAgregar3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar3KeyPressed(evt);
+            }
+        });
+        botonesVer.add(btnAgregar3);
+
+        jPanel4.add(botonesVer);
+        botonesVer.setBounds(140, 10, 90, 120);
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnAgregar.setMnemonic('G');
         btnAgregar.setText("Guardar");
@@ -815,7 +912,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(250, 130, 60, 50);
+        btnAgregar.setBounds(230, 130, 60, 50);
 
         total.setEditable(false);
         total.setBorder(null);
@@ -825,62 +922,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setCaretColor(new java.awt.Color(0, 204, 0));
         total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel4.add(total);
-        total.setBounds(170, 70, 200, 50);
-
-        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/perdida.png"))); // NOI18N
-        btnMulta.setMnemonic('G');
-        btnMulta.setText("Multa");
-        btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMulta.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnMulta.setOpaque(false);
-        btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnMulta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMultaActionPerformed(evt);
-            }
-        });
-        btnMulta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnMultaKeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnMulta);
-        btnMulta.setBounds(70, 130, 60, 50);
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
-        btnEliminar.setText("Anular");
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnEliminar.setOpaque(false);
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnEliminar);
-        btnEliminar.setBounds(10, 130, 60, 50);
-
-        btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cero.png"))); // NOI18N
-        btnAgregar2.setMnemonic('G');
-        btnAgregar2.setText("Tarifa");
-        btnAgregar2.setActionCommand("Tarifa 0.0");
-        btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar2.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAgregar2.setOpaque(false);
-        btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar2ActionPerformed(evt);
-            }
-        });
-        btnAgregar2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAgregar2KeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnAgregar2);
-        btnAgregar2.setBounds(130, 130, 60, 50);
+        total.setBounds(170, 70, 170, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -900,7 +942,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(310, 130, 60, 50);
+        btnSalir.setBounds(290, 130, 60, 50);
 
         descuento.setEditable(false);
         descuento.setBorder(null);
@@ -910,16 +952,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
         descuento.setCaretColor(new java.awt.Color(0, 204, 0));
         descuento.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jPanel4.add(descuento);
-        descuento.setBounds(260, 10, 110, 50);
+        descuento.setBounds(210, 10, 130, 50);
 
         jLabel33.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 0, 0));
         jLabel33.setLabelFor(total);
         jLabel33.setText("A PAGAR:");
         jPanel4.add(jLabel33);
-        jLabel33.setBounds(20, 80, 120, 30);
+        jLabel33.setBounds(50, 80, 120, 30);
 
-        btnAplicarDscto.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        btnAplicarDscto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnAplicarDscto.setForeground(new java.awt.Color(102, 102, 102));
         btnAplicarDscto.setText("Aplicar Dscto.:");
         btnAplicarDscto.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -929,37 +971,26 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAplicarDscto);
-        btnAplicarDscto.setBounds(10, 10, 160, 40);
-
-        btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/sello.png"))); // NOI18N
-        btnAgregar3.setMnemonic('G');
-        btnAgregar3.setText("Sellado");
-        btnAgregar3.setActionCommand("Tarifa 0.0");
-        btnAgregar3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar3.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAgregar3.setOpaque(false);
-        btnAgregar3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregar3ActionPerformed(evt);
-            }
-        });
-        btnAgregar3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAgregar3KeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnAgregar3);
-        btnAgregar3.setBounds(190, 130, 60, 50);
+        btnAplicarDscto.setBounds(10, 20, 130, 30);
 
         chkEsNotaVenta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chkEsNotaVenta.setForeground(new java.awt.Color(255, 51, 51));
         chkEsNotaVenta.setText("ES NOTA DE VENTA");
         jPanel4.add(chkEsNotaVenta);
-        chkEsNotaVenta.setBounds(10, 50, 160, 23);
+        chkEsNotaVenta.setBounds(10, 50, 140, 23);
+
+        verBot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arriba.png"))); // NOI18N
+        verBot.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/abajo.png"))); // NOI18N
+        verBot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verBotActionPerformed(evt);
+            }
+        });
+        jPanel4.add(verBot);
+        verBot.setBounds(170, 130, 60, 50);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(310, 170, 380, 190);
+        jPanel4.setBounds(310, 170, 360, 190);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
@@ -1150,7 +1181,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         productos.getColumnModel().getColumn(0).setHeaderValue("...");
 
         jPanel6.add(jScrollPane1);
-        jScrollPane1.setBounds(300, 50, 320, 120);
+        jScrollPane1.setBounds(300, 50, 350, 120);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel8.setLayout(null);
@@ -1264,7 +1295,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel32.setBounds(380, 30, 37, 14);
 
         jPanel6.add(jPanel8);
-        jPanel8.setBounds(20, 190, 590, 190);
+        jPanel8.setBounds(20, 190, 630, 190);
 
         cmbProductos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1272,7 +1303,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(cmbProductos);
-        cmbProductos.setBounds(300, 30, 200, 20);
+        cmbProductos.setBounds(300, 30, 240, 20);
 
         btnAnadirProducto.setText("Añadir");
         btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -1286,7 +1317,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(btnAnadirProducto);
-        btnAnadirProducto.setBounds(550, 30, 63, 20);
+        btnAnadirProducto.setBounds(590, 30, 63, 20);
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("1");
@@ -1297,7 +1328,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(txtCantidad);
-        txtCantidad.setBounds(500, 30, 50, 20);
+        txtCantidad.setBounds(540, 30, 50, 20);
 
         jLabel23.setText("Productos disponibles");
         jPanel6.add(jLabel23);
@@ -1305,7 +1336,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         jLabel24.setText("Cantidad");
         jPanel6.add(jLabel24);
-        jLabel24.setBounds(500, 10, 50, 14);
+        jLabel24.setBounds(540, 10, 50, 14);
 
         jLabel27.setForeground(new java.awt.Color(255, 51, 0));
         jLabel27.setText("Para QUITAR un elemento seleccione y presione SUPRIMIR");
@@ -1536,7 +1567,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane10.setBounds(20, 70, 340, 60);
 
         jPanel11.add(jPanel14);
-        jPanel14.setBounds(20, 180, 660, 190);
+        jPanel14.setBounds(20, 180, 650, 190);
 
         ticketsPendientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1571,7 +1602,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         ticketsPendientes.getColumnModel().getColumn(0).setPreferredWidth(1);
 
         jPanel11.add(jScrollPane11);
-        jScrollPane11.setBounds(310, 40, 370, 120);
+        jScrollPane11.setBounds(310, 40, 350, 120);
 
         jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("LISTA DE TICKETS SELLADOS");
@@ -1588,6 +1619,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+         botonesVer.setVisible(false);
+             verBot.setSelected(false);
         if (guardando == false) {
             guardando = true;
 
@@ -3055,6 +3088,8 @@ guardando = false;
 
     private void btnMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultaActionPerformed
         // TODO add your handling code here:
+        botonesVer.setVisible(false);
+             verBot.setSelected(false);
         if (guardando == false) {
             guardando = true;
 
@@ -3372,6 +3407,8 @@ guardando = false;
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             // TODO add your handling code here:
+             botonesVer.setVisible(false);
+             verBot.setSelected(false);
             Accesos permisos = null;
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
                     + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
@@ -3421,7 +3458,8 @@ guardando = false;
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
         // TODO add your handling code here:
 
-
+botonesVer.setVisible(false);
+             verBot.setSelected(false);
         try {
             // TODO add your handling code here:
             Accesos permisos = null;
@@ -3671,6 +3709,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
         // TODO add your handling code here:
+        botonesVer.setVisible(false);
+             verBot.setSelected(false);
         try {
             if (codigo.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese un Ticket y presione ENTER ...!", "", JOptionPane.ERROR_MESSAGE);
@@ -4114,7 +4154,30 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private void ticketsPendientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ticketsPendientesKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_ticketsPendientesKeyPressed
+
+    private void verBotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verBotActionPerformed
+        // TODO add your handling code here:e
+        if(verBot.isSelected()){
+            botonesVer.setVisible(true);
+            botonesVer.requestFocusInWindow();
+        }else{
+            botonesVer.setVisible(false);
+        }
+    }//GEN-LAST:event_verBotActionPerformed
+
+    private void botonesVerFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_botonesVerFocusLost
+        // TODO add your handling code here:
+//         botonesVer.setVisible(false);
+    }//GEN-LAST:event_botonesVerFocusLost
+
+    private void noTicketFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_noTicketFocusGained
+        // TODO add your handling code here:
+         botonesVer.setVisible(false);
+             verBot.setSelected(false);
+    }//GEN-LAST:event_noTicketFocusGained
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel botonesVer;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAgregar2;
@@ -4258,5 +4321,6 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JFormattedTextField txtSubtotal1;
     private javax.swing.JFormattedTextField txtTotal1;
     private javax.swing.JFormattedTextField txtTotal2;
+    private javax.swing.JToggleButton verBot;
     // End of variables declaration//GEN-END:variables
 }
