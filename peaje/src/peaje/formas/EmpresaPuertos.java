@@ -4,6 +4,8 @@
  */
 package peaje.formas;
 
+import java.util.Date;
+
 /**
  *
  * @author Familia Jadan Cahueñ
@@ -102,6 +104,8 @@ public class EmpresaPuertos {
     public String puertoBarras2;
     public String ipBarras1;
     public String ipBarras2;
+    public Date desde;
+    public Date hasta;
              
 
     public String getEntra1() {
@@ -704,6 +708,23 @@ public class EmpresaPuertos {
     public void setImprime2facturas(Boolean imprime2facturas) {
         this.imprime2facturas = imprime2facturas;
     }
+
+    public Date getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Date desde) {
+        this.desde = desde;
+    }
+
+    public Date getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Date hasta) {
+        this.hasta = hasta;
+    }
+    
              
      
 }

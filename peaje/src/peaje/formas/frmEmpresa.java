@@ -16,8 +16,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
 import xml.XMLEmpresa;
 //import hibernate.cargar.validaciones;
 
@@ -72,9 +76,39 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         llenarCombo();
         initComponents();
         this.setSize(615, 508);
-         
+      
         empresaObj = lo.empresaObj;
+        Date fecIni = null;
+        if(empresaObj.getDesde()!= null){
+                fecIni = empresaObj.getDesde();    
+        }else{
+            fecIni = new Date();
+            fecIni.setHours(0);
+            fecIni.setMinutes(1);
+            fecIni.setSeconds(1);
+        }
+        
+        Date fecFin = null;
+        if(empresaObj.getHasta()!= null){
+                fecFin = empresaObj.getHasta();    
+        }else{
+            fecFin = new Date();
+            fecFin.setHours(23);
+            fecFin.setMinutes(59);
+            fecFin.setSeconds(59);
+            
+        }
+   SpinnerDateModel sm = new SpinnerDateModel(fecIni, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner = new JSpinner(sm);
+            JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm:ss");
+            horaDesde2.setModel(sm);
+            horaDesde2.setEditor(de);
 
+            SpinnerDateModel sm2 = new SpinnerDateModel(fecFin, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner2 = new JSpinner(sm2);
+            JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm:ss");
+            horaHasta2.setModel(sm2);
+            horaHasta2.setEditor(de2);
         val = new validaciones();
         principal = lo;
         cmbTicket.removeAllItems();
@@ -371,6 +405,11 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbImpresora1 = new javax.swing.JComboBox();
         jLabel59 = new javax.swing.JLabel();
         cmbImpresoraNota = new javax.swing.JComboBox();
+        jPanel11 = new javax.swing.JPanel();
+        jLabel61 = new javax.swing.JLabel();
+        jLabel62 = new javax.swing.JLabel();
+        horaDesde2 = new javax.swing.JSpinner();
+        horaHasta2 = new javax.swing.JSpinner();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -1138,7 +1177,37 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel1.add(cmbImpresoraNota);
         cmbImpresoraNota.setBounds(140, 110, 240, 20);
 
-        jTabbedPane2.addTab("Impresoras", new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif")), jPanel1); // NOI18N
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso y salida"));
+        jPanel11.setLayout(null);
+
+        jLabel61.setText("Hasta: ");
+        jPanel11.add(jLabel61);
+        jLabel61.setBounds(140, 20, 40, 14);
+
+        jLabel62.setText("Desde:");
+        jPanel11.add(jLabel62);
+        jLabel62.setBounds(10, 20, 50, 14);
+
+        horaDesde2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesde2KeyPressed(evt);
+            }
+        });
+        jPanel11.add(horaDesde2);
+        horaDesde2.setBounds(50, 20, 80, 20);
+
+        horaHasta2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaHasta2KeyPressed(evt);
+            }
+        });
+        jPanel11.add(horaHasta2);
+        horaHasta2.setBounds(180, 20, 80, 20);
+
+        jPanel1.add(jPanel11);
+        jPanel11.setBounds(20, 140, 310, 48);
+
+        jTabbedPane2.addTab("Impresoras y Otros", new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif")), jPanel1); // NOI18N
 
         jPanel2.add(jTabbedPane2);
         jTabbedPane2.setBounds(10, 110, 410, 280);
@@ -1776,6 +1845,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setPuertoBarras2(puertoBarras2.getText());
                     empresaObj.setRetardoEntrada(retardoEntrada.getText());
                     empresaObj.setRetardoSalida(retardoSalida.getText());
+                    empresaObj.setDesde((Date)horaDesde2.getValue()); 
+                    empresaObj.setHasta((Date)horaHasta2.getValue());
                     try {
                         empresaObj.setMulta(new Double(multa.getText()));
                     } catch (Exception e) {
@@ -1832,7 +1903,16 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-
+// SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+//        JSpinner spinner = new JSpinner(sm);
+//        JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
+//
+//        horaDesde2.setModel(sm);
+//        horaDesde2.setEditor(de);
+        
+            
+        
+        
         if (grabar == false) {
             if (principal.permisos.getModificar()) {
                 if (codigo.getText().trim().isEmpty()) {
@@ -2325,6 +2405,14 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbImpresoraNotaKeyPressed
 
+    private void horaDesde2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesde2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaDesde2KeyPressed
+
+    private void horaHasta2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaHasta2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaHasta2KeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField barreras;
     private javax.swing.JButton btnAgregar;
@@ -2378,6 +2466,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JDialog formaEmpresa;
     private javax.swing.JFormattedTextField graciaentrada;
     private javax.swing.JFormattedTextField graciasalida;
+    private javax.swing.JSpinner horaDesde2;
+    private javax.swing.JSpinner horaHasta2;
     private javax.swing.JFormattedTextField ipBarras1;
     private javax.swing.JFormattedTextField ipBarras2;
     private javax.swing.JTextField iva;
@@ -2438,10 +2528,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

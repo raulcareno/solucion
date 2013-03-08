@@ -4,6 +4,8 @@
  */
 package peaje.formas;
 
+import java.util.Date;
+
 /**
  *
  * @author Familia Jadan Cahueñ
@@ -97,6 +99,8 @@ public class EmpresaPuertosStatic {
         public String puertatic;
         public String puertafac;
         public String barreras;
+        public Date desde;
+        public Date hasta;
    public String url;
    public String entra1;
    public String entra2;
@@ -699,6 +703,22 @@ public class EmpresaPuertosStatic {
 
     public void setImprime2facturas(Boolean imprime2facturas) {
         this.imprime2facturas = imprime2facturas;
+    }
+
+    public Date getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Date desde) {
+        this.desde = desde;
+    }
+
+    public Date getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Date hasta) {
+        this.hasta = hasta;
     }
         
     

@@ -5,12 +5,12 @@
 package hibernate;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -802,6 +802,11 @@ public class Empresa implements Serializable {
     @Transient
     public String retardoSalida="1";
     
+   @Transient
+    public Date desde;
+   @Transient
+    public Date hasta;
+    
     public Boolean getBloquearsalida() {
         return bloquearsalida;
     }
@@ -923,6 +928,22 @@ public class Empresa implements Serializable {
 
     public void setImpnota(String impnota) {
         this.impnota = impnota;
+    }
+
+    public Date getDesde() {
+        return desde;
+    }
+
+    public void setDesde(Date desde) {
+        this.desde = desde;
+    }
+
+    public Date getHasta() {
+        return hasta;
+    }
+
+    public void setHasta(Date hasta) {
+        this.hasta = hasta;
     }
 
     @Override

@@ -7,3 +7,17 @@ INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/19:26:05,OK
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/19:28:26,OK
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/19:29:25,OK
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/19:31:37,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:22:57,OK
+INFO peaje.formas.frmPrincipal,line 41,06.03.2013/20:36:54,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:37:12,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:38:16,OK
+INFO peaje.formas.frmPrincipal,line 41,06.03.2013/20:38:32,java.lang.IllegalArgumentException: value is null
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:41:23,OK
+INFO peaje.formas.frmPrincipal,line 41,06.03.2013/20:41:27,java.lang.IllegalArgumentException: value is null
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:42:15,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:46:29,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:49:37,OK
+INFO peaje.formas.frmPrincipal,line 41,06.03.2013/20:51:09,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:51:32,OK
+INFO peaje.formas.frmPrincipal,line 41,06.03.2013/20:53:44,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,06.03.2013/20:53:51,OK
