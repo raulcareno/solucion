@@ -239,6 +239,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         chInscrito = new javax.swing.JRadioButton();
         chNinguno = new javax.swing.JRadioButton();
         chRetirado = new javax.swing.JRadioButton();
+        jButton2 = new javax.swing.JButton();
 
         frmCarrerasVarias.setTitle("SELECCIONE UNA CARRERA A LA QUE DESEA COBRAR");
         frmCarrerasVarias.setAlwaysOnTop(true);
@@ -509,7 +510,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setText("Rubros");
         panelAnadirRubros.add(jLabel19);
-        jLabel19.setBounds(10, 2, 40, 14);
+        jLabel19.setBounds(10, 0, 40, 14);
 
         txtValorAgregar.setText(".");
         panelAnadirRubros.add(txtValorAgregar);
@@ -848,7 +849,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(btnAnadirRubrosVer);
-        btnAnadirRubrosVer.setBounds(490, 180, 130, 20);
+        btnAnadirRubrosVer.setBounds(530, 180, 100, 20);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "FORMAS DE PAGO:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
         jPanel2.setLayout(null);
@@ -1103,6 +1104,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         chRetirado.setText("Retirado");
         getContentPane().add(chRetirado);
         chRetirado.setBounds(240, 195, 80, 23);
+
+        jButton2.setText("Otra Matricula");
+        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2);
+        jButton2.setBounds(410, 180, 110, 19);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -2885,6 +2896,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             Integer cod = (Integer) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 0);
             String nom = (String) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 1);
+           List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
+                + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
+                + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "'  "
+               + "and o.idCarreras.idCarreras = '" + cod + "' ");
+            if(matriculaList.size()>0){
+                JOptionPane.showMessageDialog(this, "Estudiante Ya Matriculado, \n "
+                        + "enn la Carrera Seleccionada", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return; 
+            }
+            
+            
             carreraSeleccionada = new Carreras(cod);
             carreraSeleccionada.setNombre(nom);
             carrera.setText(carreraSeleccionada.getNombre());
@@ -2897,9 +2919,21 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 frmSeleccionCarreras.dispose();
             }
 
+            
         }
 
     }//GEN-LAST:event_variasCarreras1KeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        actualMatricula = new Matriculas();
+        llenarCarreras();
+        List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
+                actualMatricula.setIdCategoriasSociales(datos.get(0));
+                sumar();
+                tipoProceso = "NUEVA";
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JComboBox bancoA;
@@ -2946,6 +2980,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JDialog frmSeleccionCarreras;
     private javax.swing.JLabel iva;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
