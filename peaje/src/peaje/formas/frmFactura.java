@@ -2374,9 +2374,11 @@ guardando = false;
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
         //VERIFICO EL TIEMPO DE GRACIA SI ES QUE ESTÁ EN EL TIEMPO DE GRACIA
-        if (valorMinutos <= empresaObj.getGracia().intValue() && empresaObj.getGracia().intValue() > 0) {
-            BigDecimal descuento = buscar(valorMinutos);
-            aCobrar = aCobrar.subtract(descuento);
+        if(horas==0){
+            if (valorMinutos <= empresaObj.getGracia().intValue() && empresaObj.getGracia().intValue() > 0) {
+                BigDecimal descuento = buscar(valorMinutos);
+                aCobrar = aCobrar.subtract(descuento);
+            }
         }
 //        for (int a = 0; a < horas; a++) {
 //            aCobrar = aCobrar.add(buscar(60));
