@@ -721,6 +721,8 @@ public class Empresa implements Serializable {
     }
     
     @Transient
+    public Double valorMaximo = 0.0;
+    @Transient
     public Boolean ipcam = false;
 
     public Boolean getIpcam() {
@@ -945,6 +947,15 @@ public class Empresa implements Serializable {
     public void setHasta(Date hasta) {
         this.hasta = hasta;
     }
+
+    public Double getValorMaximo() {
+        return valorMaximo;
+    }
+
+    public void setValorMaximo(Double valorMaximo) {
+        this.valorMaximo = valorMaximo;
+    }
+    
 
     @Override
     public boolean equals(Object object) {

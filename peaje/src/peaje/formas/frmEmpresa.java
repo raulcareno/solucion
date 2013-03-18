@@ -115,6 +115,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbFactura.removeAllItems();
         cmbMulta.removeAllItems();
         barreras.setText(empresaObj.getBarreras());
+        valorMaximo.setText(empresaObj.getValorMaximo()+"");
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         for (int i = 0; i < services.length; i++) {
             cmbTicket.addItem(services[i].getName());
@@ -410,6 +411,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel62 = new javax.swing.JLabel();
         horaDesde2 = new javax.swing.JSpinner();
         horaHasta2 = new javax.swing.JSpinner();
+        valorMaximo = new javax.swing.JFormattedTextField();
+        jLabel60 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -1135,9 +1138,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jLabel20.setForeground(new java.awt.Color(0, 0, 153));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel20.setText("Impresora de Not.Vent.");
+        jLabel20.setText("Valor Máximo para Cobro diario:");
         jPanel1.add(jLabel20);
-        jLabel20.setBounds(10, 110, 120, 18);
+        jLabel20.setBounds(10, 190, 170, 18);
 
         jLabel37.setForeground(new java.awt.Color(0, 0, 153));
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1177,7 +1180,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel1.add(cmbImpresoraNota);
         cmbImpresoraNota.setBounds(140, 110, 240, 20);
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso y salida"));
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de Ingreso, Botón"));
         jPanel11.setLayout(null);
 
         jLabel61.setText("Hasta: ");
@@ -1206,6 +1209,22 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jPanel1.add(jPanel11);
         jPanel11.setBounds(20, 140, 310, 48);
+
+        valorMaximo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valorMaximo.setText("0");
+        valorMaximo.setToolTipText("");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.valorMaximo}"), valorMaximo, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jPanel1.add(valorMaximo);
+        valorMaximo.setBounds(190, 190, 90, 20);
+
+        jLabel60.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel60.setText("Impresora de Not.Vent.");
+        jPanel1.add(jLabel60);
+        jLabel60.setBounds(10, 110, 120, 18);
 
         jTabbedPane2.addTab("Impresoras y Otros", new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif")), jPanel1); // NOI18N
 
@@ -1847,6 +1866,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setRetardoSalida(retardoSalida.getText());
                     empresaObj.setDesde((Date)horaDesde2.getValue()); 
                     empresaObj.setHasta((Date)horaHasta2.getValue());
+                    empresaObj.setValorMaximo(new Double(valorMaximo.getText()));
                     try {
                         empresaObj.setMulta(new Double(multa.getText()));
                     } catch (Exception e) {
@@ -2528,6 +2548,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel60;
     private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel7;
@@ -2557,6 +2578,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox seabreticket;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField url;
+    private javax.swing.JFormattedTextField valorMaximo;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

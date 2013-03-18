@@ -558,6 +558,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         miBotonImagen = new javax.swing.JLabel();
         ultimoIngreso = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
         usuarioLogeado = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         botoninst = new javax.swing.JButton();
@@ -2554,6 +2555,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jButton11);
             jButton11.setBounds(750, 150, 10, 23);
 
+            jButton13.setText("jButton13");
+            jButton13.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton13ActionPerformed(evt);
+                }
+            });
+            panelIngreso.add(jButton13);
+            jButton13.setBounds(400, 3, 79, 30);
+
             panelIngreso.setBounds(0, 30, 790, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -3269,6 +3279,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setPuertoBarras2(emp.getPuertoBarras2());
         empresaObj.setRetardoEntrada(emp.getRetardoEntrada());
         empresaObj.setRetardoSalida(emp.getRetardoSalida());
+        empresaObj.setDesde(emp.getDesde());
+        empresaObj.setHasta(emp.getHasta());
+        empresaObj.setValorMaximo(emp.getValorMaximo());
 
     }
 
@@ -6918,6 +6931,18 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_imAvisoKeyPressed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+        CommPortIdentifier portId = null;
+        Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+                portId = (CommPortIdentifier) portList.nextElement();
+//                    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL){
+//                    
+//                    } 
+        LeerTarjeta E = new LeerTarjeta(portId, this);
+        E.serialEvent(null);
+    }//GEN-LAST:event_jButton13ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -7117,6 +7142,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -7256,7 +7282,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     public javax.swing.JFormattedTextField tarjetatxt;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JButton tempjButton13;
-    private javax.swing.JTextField tempnotarjetaTemp;
+    public javax.swing.JTextField tempnotarjetaTemp;
     private javax.swing.JComboBox temppuertoText;
     private javax.swing.JCheckBox todos;
     private javax.swing.JCheckBox todos1;

@@ -34,6 +34,7 @@ public class EmpresaPuertosStatic {
     public   EmpresaPuertosStatic() {
     }
         public Boolean webcam; public Boolean ipcam;
+        public Double valorMaximo; 
         public Boolean seabretic;
         public Boolean seabrefac;
         public String impticket;
@@ -719,6 +720,14 @@ public class EmpresaPuertosStatic {
 
     public void setHasta(Date hasta) {
         this.hasta = hasta;
+    }
+
+    public Double getValorMaximo() {
+        return valorMaximo;
+    }
+
+    public void setValorMaximo(Double valorMaximo) {
+        this.valorMaximo = valorMaximo;
     }
         
     

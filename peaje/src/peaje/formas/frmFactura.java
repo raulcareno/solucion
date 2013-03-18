@@ -2339,6 +2339,20 @@ guardando = false;
         Integer minutos = minutos0.intValue();
 
         Integer horas = minutos / 60;
+        BigDecimal aCobrar = new BigDecimal(0);
+        
+        //EMPIEZO A VERIRICAR
+        int noDias0 = 0;
+        if(empresaObj.getValorMaximo()>0){
+            //INCREMENTO EL VALOR POR DÍA Y SOLO SACO LO DE UN DÍA
+            while(horas > 24){ //VERIRICO SI SOBREPASA
+                horas = horas - 24;
+                minutos = minutos -1440;
+                aCobrar = aCobrar.add(new BigDecimal(empresaObj.getValorMaximo()));
+                 noDias0++;
+            }
+        }
+        
         if (minutos.intValue() < 0) {
             minutos = minutos * -1;
         }
@@ -2356,9 +2370,9 @@ guardando = false;
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
-        BigDecimal aCobrar = new BigDecimal(0);
+        
         aCobrar = aCobrar.add(buscar(minutos));
-
+        
         Float min = minutos / 60f;
         int indice = min.toString().indexOf(".");
         Float valorf = new Float("0" + min.toString().substring(indice));
@@ -2386,7 +2400,7 @@ guardando = false;
         try {
             int noDias = 0;
             noDias = (horas / 24);
-            dias1.setText(noDias + "");
+            dias1.setText((noDias+noDias0) + "");
         } catch (Exception e) {
             dias1.setText("0");
         }

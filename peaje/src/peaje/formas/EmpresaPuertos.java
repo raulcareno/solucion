@@ -106,6 +106,7 @@ public class EmpresaPuertos {
     public String ipBarras2;
     public Date desde;
     public Date hasta;
+    public Double valorMaximo;
              
 
     public String getEntra1() {
@@ -671,6 +672,14 @@ public class EmpresaPuertos {
 
     public void setPuertoBarras2(String puertoBarras2) {
         this.puertoBarras2 = puertoBarras2;
+    }
+
+    public Double getValorMaximo() {
+        return valorMaximo;
+    }
+
+    public void setValorMaximo(Double valorMaximo) {
+        this.valorMaximo = valorMaximo;
     }
 
    

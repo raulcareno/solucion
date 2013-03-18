@@ -4,6 +4,8 @@ import hibernate.Empresa;
 import hibernate.cargar.*;
 import java.io.*;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -122,6 +124,7 @@ public class XMLEmpresa {
     private static final String IMPRIME2FACTURAS = "IMPRIME2FACTURAS";
     private static final String DESDE = "DESDE";
     private static final String HASTA = "HASTA";
+    private static final String VALORMAXIMO = "VALORMAXIMO";
     // Variables
     private Document xmlDoc = null;
     private Element personal = null;
@@ -349,6 +352,9 @@ public class XMLEmpresa {
         item = xmlDoc.createElement(HASTA);
         item.appendChild(xmlDoc.createTextNode("1900-01-01 "+beanEmpresa.getHasta().getHours()+":"+beanEmpresa.getHasta().getMinutes()+":"+beanEmpresa.getHasta().getSeconds()));
         personal.appendChild(item);
+        item = xmlDoc.createElement(VALORMAXIMO);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getValorMaximo() + ""));
+        personal.appendChild(item);
 
         //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
 
@@ -504,6 +510,7 @@ public class XMLEmpresa {
         beanEmpleado.setRetardoSalida(emp.getRetardoSalida());
         beanEmpleado.setDesde(emp.getDesde());
         beanEmpleado.setHasta(emp.getHasta());
+        beanEmpleado.setValorMaximo(emp.getValorMaximo());
 
         beanEmpleado.setTrabajanotaventa(emp.getTrabajanotaventa());
         beanEmpleado.setImprime2facturas(emp.getImprime2facturas());
@@ -1086,13 +1093,34 @@ public class XMLEmpresa {
                     } catch (Exception parserConfigurationException) {
                         //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
-
+                    
                     try {
                         NodeList DESDEoutList = firstPersonElement.getElementsByTagName("DESDE");
                         Element DESDEoutElement = (Element) DESDEoutList.item(0);
                         NodeList DESDEoutAgeList = DESDEoutElement.getChildNodes();
-                        user.setDesde(new Date(((Node) DESDEoutAgeList.item(0)).getNodeValue().trim()));
+                        Date de = new Date();
+                        String tiempo  = (((Node) DESDEoutAgeList.item(0)).getNodeValue().trim().substring(10));
+                         StringTokenizer t = new StringTokenizer(tiempo, ":");
+                         int a = 0;
+                            de.setHours(0);
+                            de.setMinutes(0);
+                            de.setSeconds(0);
+                         for (StringTokenizer stringTokenizer = new StringTokenizer(tiempo,":"); stringTokenizer.hasMoreTokens();) {
+                            String token = stringTokenizer.nextToken();
+                            if(a == 0){
+                                de.setHours(new Integer(token.trim()));
+                            }else if(a == 1){
+                                de.setMinutes(new Integer(token.trim()));
+                            }else if(a == 2){
+                                    de.setSeconds(new Integer(token.trim()));
+                            }
+                            a++;
+                             System.out.println(""+token);
+                             
+                        }
+                        user.setDesde(de);
                     } catch (Exception parserConfigurationException) {
+                        System.out.println(""+parserConfigurationException);
                         //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
 
@@ -1100,7 +1128,38 @@ public class XMLEmpresa {
                         NodeList HastaoutList = firstPersonElement.getElementsByTagName("HASTA");
                         Element HastaoutElement = (Element) HastaoutList.item(0);
                         NodeList HastaoutAgeList = HastaoutElement.getChildNodes();
-                        user.setHasta(new Date(((Node) HastaoutAgeList.item(0)).getNodeValue().trim()));
+                        Date de = new Date();
+                        String tiempo  = (((Node) HastaoutAgeList.item(0)).getNodeValue().trim().substring(10));
+                         int a = 0;
+                            de.setHours(23);
+                            de.setMinutes(59);
+                            de.setSeconds(59);
+                         for (StringTokenizer stringTokenizer = new StringTokenizer(tiempo,":"); stringTokenizer.hasMoreTokens();) {
+                            String token = stringTokenizer.nextToken();
+                            if(a == 0){
+                                de.setHours(new Integer(token.trim()));
+                            }else if(a == 1){
+                                de.setMinutes(new Integer(token.trim()));
+                            }else if(a == 2){
+                                    de.setSeconds(new Integer(token.trim()));
+                            }
+                            a++;
+                             System.out.println(""+token);
+                             
+                        }
+                        user.setHasta(de);
+                        
+                    } catch (Exception parserConfigurationException) {
+                        System.out.println(""+parserConfigurationException);
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                                        
+                    try {
+                        NodeList VALORMAXIMOSoutList = firstPersonElement.getElementsByTagName("VALORMAXIMO");
+                        Element VALORMAXIMOSoutElement = (Element) VALORMAXIMOSoutList.item(0);
+                        NodeList VALORMAXIMOSoutAgeList = VALORMAXIMOSoutElement.getChildNodes();
+                        user.setValorMaximo(new Double(((Node) VALORMAXIMOSoutAgeList.item(0)).getNodeValue().trim()));
                     } catch (Exception parserConfigurationException) {
                         //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
