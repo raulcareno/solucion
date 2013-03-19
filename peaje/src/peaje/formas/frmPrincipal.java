@@ -939,7 +939,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jPanel2.add(btnIngresar);
         btnIngresar.setBounds(70, 90, 120, 40);
 
-        usuariot.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "geova", "operador" }));
         jPanel2.add(usuariot);
         usuariot.setBounds(140, 20, 130, 20);
 

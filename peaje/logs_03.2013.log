@@ -79,3 +79,34 @@ INFO peaje.formas.frmPrincipal,line 41,18.03.2013/12:44:17,javax.media.NoPlayerE
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/12:44:24,OK
 INFO peaje.formas.frmPrincipal,line 41,18.03.2013/12:47:06,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/12:47:14,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/12:51:53,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/19:31:14,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/19:31:21,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/19:32:07,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/19:32:16,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/19:40:04,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/19:50:07,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/19:50:38,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/19:58:10,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:08:25,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:08:48,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:10:12,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:16:54,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:17:07,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:22:02,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:25:25,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:28:13,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:28:31,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:31:37,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:31:45,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:39:40,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:42:32,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:42:45,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:49:45,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:54:28,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:56:35,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:56:45,OK
+INFO peaje.formas.frmPrincipal,line 41,18.03.2013/20:58:52,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/20:59:03,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/21:02:51,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.03.2013/21:25:03,OK

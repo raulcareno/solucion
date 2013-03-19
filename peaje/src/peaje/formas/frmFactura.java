@@ -260,6 +260,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
+        frmAnular = new javax.swing.JInternalFrame();
+        jLabel41 = new javax.swing.JLabel();
+        frmGuardarAnulado1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jLabel42 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
+        numeroIngresado = new javax.swing.JFormattedTextField();
+        codigoAdministrador = new javax.swing.JPasswordField();
+        cmbUsuarios = new javax.swing.JComboBox();
+        jLabel44 = new javax.swing.JLabel();
         frmTarifa0 = new javax.swing.JInternalFrame();
         jLabel29 = new javax.swing.JLabel();
         guardarTarifa0 = new javax.swing.JButton();
@@ -267,6 +277,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         observacion1 = new javax.swing.JTextArea();
         botonesVer = new javax.swing.JPanel();
+        btnAnularFactura = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnMulta = new javax.swing.JButton();
         btnAgregar2 = new javax.swing.JButton();
@@ -771,6 +782,54 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.add(frmEliminar);
         frmEliminar.setBounds(10, 0, 270, 140);
 
+        frmAnular.setTitle("Anular tickets");
+        frmAnular.setVisible(false);
+        frmAnular.getContentPane().setLayout(null);
+
+        jLabel41.setText("¿Desea Anular el presente FACTURA?");
+        frmAnular.getContentPane().add(jLabel41);
+        jLabel41.setBounds(20, 0, 220, 30);
+
+        frmGuardarAnulado1.setText("SI");
+        frmGuardarAnulado1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmGuardarAnulado1ActionPerformed(evt);
+            }
+        });
+        frmAnular.getContentPane().add(frmGuardarAnulado1);
+        frmGuardarAnulado1.setBounds(60, 110, 70, 30);
+
+        jButton4.setText("NO");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        frmAnular.getContentPane().add(jButton4);
+        jButton4.setBounds(140, 110, 60, 30);
+
+        jLabel42.setText("Usuario: ");
+        frmAnular.getContentPane().add(jLabel42);
+        jLabel42.setBounds(10, 60, 50, 14);
+
+        jLabel43.setText("# Factura: ");
+        frmAnular.getContentPane().add(jLabel43);
+        jLabel43.setBounds(10, 30, 90, 14);
+        frmAnular.getContentPane().add(numeroIngresado);
+        numeroIngresado.setBounds(70, 30, 120, 20);
+        frmAnular.getContentPane().add(codigoAdministrador);
+        codigoAdministrador.setBounds(60, 80, 210, 20);
+
+        frmAnular.getContentPane().add(cmbUsuarios);
+        cmbUsuarios.setBounds(60, 60, 210, 20);
+
+        jLabel44.setText("Clave:");
+        frmAnular.getContentPane().add(jLabel44);
+        jLabel44.setBounds(10, 80, 50, 14);
+
+        jPanel4.add(frmAnular);
+        frmAnular.setBounds(10, 0, 300, 180);
+
         frmTarifa0.setTitle("Anular tickets");
         frmTarifa0.getContentPane().setLayout(null);
 
@@ -813,7 +872,19 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 botonesVerFocusLost(evt);
             }
         });
-        botonesVer.setLayout(new java.awt.GridLayout(4, 0));
+        botonesVer.setLayout(new java.awt.GridLayout(5, 0));
+
+        btnAnularFactura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
+        btnAnularFactura.setText("Anular Fac.");
+        btnAnularFactura.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAnularFactura.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAnularFactura.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAnularFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnularFacturaActionPerformed(evt);
+            }
+        });
+        botonesVer.add(btnAnularFactura);
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/button_cancel.gif"))); // NOI18N
         btnEliminar.setText("Anular Tick.");
@@ -892,7 +963,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         botonesVer.add(btnAgregar3);
 
         jPanel4.add(botonesVer);
-        botonesVer.setBounds(140, 10, 90, 120);
+        botonesVer.setBounds(130, 0, 100, 130);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnAgregar.setMnemonic('G');
@@ -1619,8 +1690,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-         botonesVer.setVisible(false);
-             verBot.setSelected(false);
+        botonesVer.setVisible(false);
+        verBot.setSelected(false);
         if (guardando == false) {
             guardando = true;
 
@@ -1725,7 +1796,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         Thread.sleep(5000);
                         //CORDILLERA
-                        if(empresaObj.getImprime2facturas()){
+                        if (empresaObj.getImprime2facturas()) {
                             System.out.println("mando a imprimir otra vez");
                             imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         }
@@ -1768,11 +1839,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         System.out.println("ABRIO PUERTA: " + empresaObj.getPuertafac());
-                    } else {   
+                    } else {
                         //System.out.println("imprimo nuevo ticket");
                         //asdf    
                         //imprimirTicket(facActual.getCodigo(), emp);
-                            System.out.println("NO ABRE BARRERA POR DESHABILITACION EN FRMEMPRESA ");
+                        System.out.println("NO ABRE BARRERA POR DESHABILITACION EN FRMEMPRESA ");
                     }
 
 //                cargar.start();
@@ -1828,7 +1899,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             JasperReport masterReport = null;
             if (mensual) {
                 masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura2.jasper");
-            } else if(chkEsNotaVenta.isSelected()){
+            } else if (chkEsNotaVenta.isSelected()) {
                 masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura4.jasper");
             } else {
                 masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + separador + "reportes" + separador + "factura.jasper");
@@ -1879,7 +1950,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
              * Scan found services to see if anyone suits our needs
              */
             String impresora = emp.getImpfactura();
-            if(chkEsNotaVenta.isSelected()){
+            if (chkEsNotaVenta.isSelected()) {
                 impresora = emp.getImpnota();
             }
             for (int i = 0; i < services.length; i++) {
@@ -1967,7 +2038,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
              * Scan found services to see if anyone suits our needs
              */
             String impresora = emp.getImpfactura();
-             if(chkEsNotaVenta.isSelected()){
+            if (chkEsNotaVenta.isSelected()) {
                 impresora = emp.getImpnota();
             }
             for (int i = 0; i < services.length; i++) {
@@ -2276,7 +2347,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facNueva.setYasalio(false);
                         facNueva.setEsnota(chkEsNotaVenta.isSelected());
                         facNueva.setTarifa0(false);
-                        facNueva.setSellado(false); 
+                        facNueva.setSellado(false);
                         Boolean pasar = true;
                         Integer numero = new Integer(emp.getDocumentoticket()) + 1;
                         while (pasar) {
@@ -2295,8 +2366,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             }
 
                         }
-                        llenarFactura(facNueva); 
-guardando = false;
+                        llenarFactura(facNueva);
+                        guardando = false;
                     } catch (Exception ab) {
                     }
                 }
@@ -2340,19 +2411,19 @@ guardando = false;
 
         Integer horas = minutos / 60;
         BigDecimal aCobrar = new BigDecimal(0);
-        
+
         //EMPIEZO A VERIRICAR
         int noDias0 = 0;
-        if(empresaObj.getValorMaximo()>0){
+        if (empresaObj.getValorMaximo() > 0) {
             //INCREMENTO EL VALOR POR DÍA Y SOLO SACO LO DE UN DÍA
-            while(horas > 24){ //VERIRICO SI SOBREPASA
+            while (horas > 24) { //VERIRICO SI SOBREPASA
                 horas = horas - 24;
-                minutos = minutos -1440;
+                minutos = minutos - 1440;
                 aCobrar = aCobrar.add(new BigDecimal(empresaObj.getValorMaximo()));
-                 noDias0++;
+                noDias0++;
             }
         }
-        
+
         if (minutos.intValue() < 0) {
             minutos = minutos * -1;
         }
@@ -2370,9 +2441,9 @@ guardando = false;
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
-        
+
         aCobrar = aCobrar.add(buscar(minutos));
-        
+
         Float min = minutos / 60f;
         int indice = min.toString().indexOf(".");
         Float valorf = new Float("0" + min.toString().substring(indice));
@@ -2388,7 +2459,7 @@ guardando = false;
         tiempo.setDate(act);
         placa.setText(fac.getPlaca());
         //VERIFICO EL TIEMPO DE GRACIA SI ES QUE ESTÁ EN EL TIEMPO DE GRACIA
-        if(horas==0){
+        if (horas == 0) {
             if (valorMinutos <= empresaObj.getGracia().intValue() && empresaObj.getGracia().intValue() > 0) {
                 BigDecimal descuento = buscar(valorMinutos);
                 aCobrar = aCobrar.subtract(descuento);
@@ -2400,7 +2471,7 @@ guardando = false;
         try {
             int noDias = 0;
             noDias = (horas / 24);
-            dias1.setText((noDias+noDias0) + "");
+            dias1.setText((noDias + noDias0) + "");
         } catch (Exception e) {
             dias1.setText("0");
         }
@@ -2944,11 +3015,11 @@ guardando = false;
             /**
              * cordillera
              */
-             if(empresaObj.getImprime2facturas()){
-                            Thread.sleep(5000);
-                            System.out.println("mando a imprimir otra vez");
-                            imprimir(facActual.getCodigo(), emp, dia, true, cli);
-             }
+            if (empresaObj.getImprime2facturas()) {
+                Thread.sleep(5000);
+                System.out.println("mando a imprimir otra vez");
+                imprimir(facActual.getCodigo(), emp, dia, true, cli);
+            }
 
 
             //JOptionPane.showMessageDialog(this, "Registro Almacenado con éxito...!");
@@ -3105,7 +3176,7 @@ guardando = false;
     private void btnMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultaActionPerformed
         // TODO add your handling code here:
         botonesVer.setVisible(false);
-             verBot.setSelected(false);
+        verBot.setSelected(false);
         if (guardando == false) {
             guardando = true;
 
@@ -3423,8 +3494,8 @@ guardando = false;
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             // TODO add your handling code here:
-             botonesVer.setVisible(false);
-             verBot.setSelected(false);
+            botonesVer.setVisible(false);
+            verBot.setSelected(false);
             Accesos permisos = null;
             List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
                     + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
@@ -3474,8 +3545,8 @@ guardando = false;
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
         // TODO add your handling code here:
 
-botonesVer.setVisible(false);
-             verBot.setSelected(false);
+        botonesVer.setVisible(false);
+        verBot.setSelected(false);
         try {
             // TODO add your handling code here:
             Accesos permisos = null;
@@ -3726,7 +3797,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
         // TODO add your handling code here:
         botonesVer.setVisible(false);
-             verBot.setSelected(false);
+        verBot.setSelected(false);
         try {
             if (codigo.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese un Ticket y presione ENTER ...!", "", JOptionPane.ERROR_MESSAGE);
@@ -4173,10 +4244,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void verBotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verBotActionPerformed
         // TODO add your handling code here:e
-        if(verBot.isSelected()){
+        if (verBot.isSelected()) {
             botonesVer.setVisible(true);
             botonesVer.requestFocusInWindow();
-        }else{
+        } else {
             botonesVer.setVisible(false);
         }
     }//GEN-LAST:event_verBotActionPerformed
@@ -4188,10 +4259,251 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void noTicketFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_noTicketFocusGained
         // TODO add your handling code here:
-         botonesVer.setVisible(false);
-             verBot.setSelected(false);
+        botonesVer.setVisible(false);
+        verBot.setSelected(false);
     }//GEN-LAST:event_noTicketFocusGained
 
+    private void frmGuardarAnulado1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmGuardarAnulado1ActionPerformed
+        // TODO add your handling code here:
+        if (codigoAdministrador.getText().isEmpty() || numeroIngresado.getText().isEmpty()) {
+            numeroIngresado.requestFocusInWindow();
+            JOptionPane.showMessageDialog(this, "Ingrese el # de Factura\no\n "
+                    + "Ingrese la Clave de Administrador ...!", "", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Usuarios usuAnula = adm.ingresoSistema(cmbUsuarios.getSelectedItem().toString(), codigoAdministrador.getText());
+        if (usuAnula != null) {
+            try {
+                Date fechaActual =new Date();
+                String desde = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 00:01:01";
+                String hasta = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 23:59:59";
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o "
+                        + "  where o.numero = " + numeroIngresado.getText() + " "
+                        + " and o.anuladofac = false and o.anulado = false "
+                        + " and o.fechafin between '"+desde+"' and  '"+hasta+"' ");
+                    if(fac == null){
+                             JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido anulado...!", "", JOptionPane.ERROR_MESSAGE);
+                             codigoAdministrador.setText("");
+                             numeroIngresado.setText(""); 
+                             //frmAnular.setVisible(false);
+                            return; 
+                            
+                    }
+                Factura facNueva = new Factura();
+                facNueva.setFechaini(fac.getFechaini());
+                Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                facNueva.setPlaca("");
+                facNueva.setFechaini(fac.getFechaini());
+                facNueva.setFecha(fac.getFechaini());
+                facNueva.setAnulado(false);
+                facNueva.setFechafin(fac.getFechafin());
+                facNueva.setSubtotal(fac.getSubtotal());
+                facNueva.setIva(fac.getIva());
+                facNueva.setDescuento(fac.getDescuento());
+                facNueva.setTotal(fac.getTotal());
+                facNueva.setUsuario(principal.getUsuario());
+                facNueva.setClientes(null); 
+                facNueva.setDias(fac.getDias()); 
+                facNueva.setTiempo(fac.getTiempo()); 
+                facNueva.setObservacion("Anulo tick: "+fac.getTicket()+"fac: "+fac.getNumero());
+                facNueva.setNocontar(false);
+                facNueva.setAnuladofac(false);
+                facNueva.setNumero("");
+                facNueva.setYasalio(false);
+                facNueva.setEsnota(chkEsNotaVenta.isSelected());
+                facNueva.setTarifa0(false);
+                facNueva.setSellado(false);
+                Boolean pasar = true;
+                Integer numero = new Integer(emp.getDocumentoticket()) + 1;
+                while (pasar) {
+                    List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
+                    if (sihay.size() <= 0) {
+                        pasar = false;
+                        facNueva.setTicket("" + numero);
+                        emp.setDocumentoticket((numero) + "");
+                        adm.actualizar(emp);//GUARDO EMPRESA
+                        adm.guardar(facNueva); // GUARDO FACTURA
+                        noTicket.setText(numero + "");
+                        codigo.setText(facNueva.getCodigo() + "");
+                    } else {
+                        numero++;
+                    }
+
+                }
+                  Integer numeroFactura = new Integer(emp.getDocumentofac()) + 1;
+                        while (pasar) {
+                            List sihay = adm.query("Select o from Factura as o where o.numero = '" + numeroFactura + "'");
+                            if (sihay.size() <= 0) {
+                                pasar = false;
+                                facNueva.setNumero("" + numeroFactura);
+                                emp.setDocumentofac((numeroFactura) + "");
+                                adm.actualizar(emp);//GUARDO EMPRESA
+                                adm.actualizar(facNueva); // GUARDO FACTURA
+                            } else {
+                                numeroFactura++;
+                            }
+
+                        }
+                        fac.setAnulado(true);
+                        fac.setAnuladofac(true);
+                        fac.setUsuarioa(usuAnula); //FALTA CARGAR EL USUARIO QUE CARGÓ SU CLAVE
+                adm.actualizar(fac);//GUARDO EMPRESA
+                codigo.setText(facNueva.getCodigo()+"");
+                //llenarFactura(facNueva); 
+
+                /**
+                 * CARGO LOS DATOS
+                 */
+                ingreso.setDate(fac.getFechaini());
+                salida.setDate(new Date());
+                btnAgregar.requestFocusInWindow();
+
+
+                Date act = new Date();
+                dias.setVisible(true);
+                dias1.setVisible(true);
+                dias2.setVisible(true);
+
+                Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
+                Integer minutos = minutos0.intValue();
+
+                Integer horas = minutos / 60;
+                BigDecimal aCobrar = fac.getTotal();
+
+                //EMPIEZO A VERIRICAR
+                int noDias0 = 0;
+                if (empresaObj.getValorMaximo() > 0) {
+                    //INCREMENTO EL VALOR POR DÍA Y SOLO SACO LO DE UN DÍA
+                    while (horas > 24) { //VERIRICO SI SOBREPASA
+                        horas = horas - 24;
+                        minutos = minutos - 1440;
+                  
+                        noDias0++;
+                    }
+                }
+
+                if (minutos.intValue() < 0) {
+                    minutos = minutos * -1;
+                }
+                if (horas.intValue() < 0) {
+                    horas = horas * -1;
+//            horas += 24;
+                    dias.setVisible(true);
+                    dias1.setVisible(true);
+                    dias2.setVisible(true);
+                }
+                if (minutos.intValue() < 0) {
+                    horas = 0;
+                    minutos = 0;
+                    dias.setVisible(true);
+                    dias1.setVisible(true);
+                    dias2.setVisible(true);
+                }
+
+                 
+
+                Float min = minutos / 60f;
+                int indice = min.toString().indexOf(".");
+                Float valorf = new Float("0" + min.toString().substring(indice));
+                int valorMinutos = java.lang.Math.round((valorf * 60));
+                if (minutos.equals(60)) {
+                    valorMinutos = 60;
+                }
+                act.setHours(horas);
+                act.setMinutes(valorMinutos);
+                if (horas == 1 && valorMinutos == 60) {
+                    act.setMinutes(0);
+                }
+                tiempo.setDate(act);
+                placa.setText(fac.getPlaca());
+                //VERIFICO EL TIEMPO DE GRACIA SI ES QUE ESTÁ EN EL TIEMPO DE GRACIA
+                try {
+                    int noDias = 0;
+                    noDias = (horas / 24);
+                    dias1.setText((noDias + noDias0) + "");
+                } catch (Exception e) {
+                    dias1.setText("0");
+                }
+                total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
+                //codigo.setText(fac.getCodigo() + "");
+                //
+
+
+                guardando = false;
+            } catch (Exception ab) {
+                System.out.println(""+ab);
+                JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido ANULADO"
+                        + "\no\n"
+                        + "NO EXISTE "
+                        + "\no\n"
+                        + "NO CORRESPONDE A LA FECHA ACTUAL ...!", "", JOptionPane.ERROR_MESSAGE);
+                             codigoAdministrador.setText("");
+                             numeroIngresado.setText(""); 
+                             //frmAnular.setVisible(false);
+                             numeroIngresado.setText("");
+                             numeroIngresado.requestFocusInWindow();
+                            return; 
+            }
+            frmAnular.setVisible(false);
+            principal.auditar("Anula Factura", "No" + numeroIngresado.getText(), ""+cmbUsuarios.getSelectedItem());
+            usuAnula = null;
+        } else {
+            usuAnula = null;
+            JOptionPane.showMessageDialog(this, "La Contraseña ingresada está incorrecta...!", "", JOptionPane.ERROR_MESSAGE);
+            principal.auditar("Anula Factura", "No" + numeroIngresado.getText(), ""+cmbUsuarios.getSelectedItem());
+            frmAnular.setVisible(false);
+        }
+
+    }//GEN-LAST:event_frmGuardarAnulado1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        frmAnular.setVisible(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btnAnularFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularFacturaActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            botonesVer.setVisible(false);
+            verBot.setSelected(false);
+            Accesos permisos = null;
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
+                    + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
+            if (accesosL.size() > 0) {
+                permisos = accesosL.get(0);
+            } else {
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR FACTURAS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (permisos.getAgregar()) {
+                frmAnular.setVisible(true);
+                numeroIngresado.setText("");
+                codigoAdministrador.setText("");
+                numeroIngresado.requestFocusInWindow();
+                  try {
+ 
+                    List<Usuarios> uss = adm.query("Select o from Usuarios as o where o.global.nombre like '%admin%'");
+                    for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
+                        Usuarios usuarios = it.next();
+                        cmbUsuarios.addItem(usuarios.getUsuario());
+                    }
+                } catch (Exception e) {
+                    System.out.println("error en cargar usuarios: " + e);
+                }
+            } else {
+                System.out.println("NO TIENE PERMISOS");
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ANULAR TICKETS...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+    }//GEN-LAST:event_btnAnularFacturaActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botonesVer;
     private javax.swing.JButton btnAgregar;
@@ -4200,6 +4512,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton btnAgregar3;
     private javax.swing.JButton btnAgregar4;
     private javax.swing.JButton btnAnadirProducto;
+    private javax.swing.JButton btnAnularFactura;
     private javax.swing.JButton btnAplicarDscto;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnMulta;
@@ -4215,7 +4528,9 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JFormattedTextField cliente1;
     private javax.swing.JFormattedTextField cliente2;
     private javax.swing.JComboBox cmbProductos;
+    private javax.swing.JComboBox cmbUsuarios;
     public javax.swing.JFormattedTextField codigo;
+    private javax.swing.JPasswordField codigoAdministrador;
     private javax.swing.JFormattedTextField codigoBuscar;
     public javax.swing.JFormattedTextField descuento;
     private com.toedter.calendar.JDateChooser desdeF;
@@ -4230,8 +4545,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JList encontrados2;
     private javax.swing.JList encontrados3;
     private javax.swing.JDialog formaBusqueda;
+    private javax.swing.JInternalFrame frmAnular;
     private javax.swing.JInternalFrame frmEliminar;
     private javax.swing.JButton frmGuardarAnulado;
+    private javax.swing.JButton frmGuardarAnulado1;
     private javax.swing.JInternalFrame frmTarifa0;
     private javax.swing.JButton guardarTarifa0;
     private com.toedter.calendar.JDateChooser hastaF;
@@ -4241,6 +4558,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -4277,6 +4595,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -4313,6 +4635,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JFormattedTextField nombres2;
+    private javax.swing.JFormattedTextField numeroIngresado;
     private javax.swing.JTextArea observacion;
     private javax.swing.JTextArea observacion1;
     private javax.swing.JTextArea observacionF;

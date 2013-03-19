@@ -44,6 +44,8 @@ public class Factura implements Serializable {
     private String observacion;
     @Column(name = "anulado")
     private Boolean anulado;
+    @Column(name = "anuladofac")
+    private Boolean anuladofac;
     @Column(name = "tarifa0")
     private Boolean tarifa0;
     @Column(name = "ticket")
@@ -84,6 +86,9 @@ public class Factura implements Serializable {
     @JoinColumn(name = "usuarioc", referencedColumnName = "codigo")
     @ManyToOne
     private Usuarios usuarioc;
+    @JoinColumn(name = "usuarioa", referencedColumnName = "codigo")
+    @ManyToOne
+    private Usuarios usuarioa;
     @Column(name = "nocontar")
     private Boolean nocontar;
     @Column(name = "sellado")
@@ -294,6 +299,24 @@ public class Factura implements Serializable {
     public void setEsnota(Boolean esnota) {
         this.esnota = esnota;
     }
+
+    public Boolean getAnuladofac() {
+        return anuladofac;
+    }
+
+    public void setAnuladofac(Boolean anuladofac) {
+        this.anuladofac = anuladofac;
+    }
+
+    public Usuarios getUsuarioa() {
+        return usuarioa;
+    }
+
+    public void setUsuarioa(Usuarios usuarioa) {
+        this.usuarioa = usuarioa;
+    }
+    
+    
 //
 //    public Collection<Detalle> getDetalleCollection() {
 //        return detalleCollection;
