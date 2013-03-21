@@ -134,6 +134,9 @@ String llenarCeros(String numero){
              try{
                 cobrar.setBancoban(bancoban.selectedItem.value);
             }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
+            try{
+                cobrar.setBancodep(bancodep.selectedItem.value);
+            }catch(Exception e){System.out.println("NO HAY BANCOS SELECCIONADO");}
             
             cobrar.setFechatransferencia(fechatransferencia.value);
             cobrar.setFechacheque(fechacheque.value);

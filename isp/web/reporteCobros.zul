@@ -293,6 +293,9 @@ List nodos = adm.query("Select o from Nodos as o " +
                 }
                    
                     report.setSrc(directorioReportes+"cpclientescontador2.jasper");
+            }else  if(tipo.equals("COBROS4")){
+                        datasource = reportes.facturasCobradasContador2(desde.value, hasta.value);
+                    report.setSrc(directorioReportes+"reporteContabilidad.jasper");
             }else  if(tipo.equals("ARQUEO")){
                    datasource = reportes.reporteCaja(desde.value, hasta.value);
                     report.setSrc(directorioReportes+"rpcaja.jasper");
@@ -497,6 +500,10 @@ void campos(String valor){
             filacanton.visible=true;
             filasector.visible=true;    
             desde.value = fec;
+        }else if(valor.equals("COBROS4")){
+            titulo.value= "Cobros";
+            filafechas.visible=true;
+            desde.value = fec;
         }else if(valor.equals("ARQUEO") || valor.equals("ARQUEO2")){
             titulo.value= "Cobros Diarios";
             filafechas.visible=true;
@@ -664,6 +671,7 @@ void campos(String valor){
                                     <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
                                     <listitem id="COBROS2"  label="Cuenta Mensual para Contabilidad" value="COBROS2" />
                                     <listitem id="COBROS3"  label="Reporte Mensual para Contabilidad(SAFI)" value="COBROS3" />
+                                    <listitem id="COBROS4"  label="Reporte Cobros Mensual para Contabilidad(SAFI)" value="COBROS4" />
                                     <listitem id="FACEMI"  label="Reporte Facturas Emitidas" value="FACEMI" />
                                     <listitem id="ALDIA"  label="Reporte Clientes al Día" value="ALDIA" />
                                     <listitem disabled="true" label="" />

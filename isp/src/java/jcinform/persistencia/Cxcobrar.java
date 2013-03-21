@@ -100,6 +100,9 @@ public class Cxcobrar implements Serializable {
     @JoinColumn(name = "bancoche", referencedColumnName = "codigo")
     @ManyToOne
     private Bancos bancocheque;
+    @JoinColumn(name = "bancodep", referencedColumnName = "codigo")
+    @ManyToOne
+    private Bancos bancodep;
     @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
@@ -391,6 +394,14 @@ public class Cxcobrar implements Serializable {
 
     public void setTransferencia(BigDecimal transferencia) {
         this.transferencia = transferencia;
+    }
+
+    public Bancos getBancodep() {
+        return bancodep;
+    }
+
+    public void setBancodep(Bancos bancodep) {
+        this.bancodep = bancodep;
     }
 
     

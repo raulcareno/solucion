@@ -846,6 +846,20 @@ public class ReportesClase {
         return ds;
     }
 
+    public JRDataSource facturasCobradasContador2(Date desde, Date hasta) {
+        Administrador adm = new Administrador();
+        List detalles = new ArrayList();
+        String desdestr = convertiraString(desde);
+        String hastastr = convertiraString(hasta);
+            String sql = "SELECT o FROM Depositos as o "
+                    + " WHERE o.fecha between '" + desdestr + "' and '" + hastastr + "'  "
+                    + "ORDER BY o.fecha ";
+            //o.sucursal = '" + sucursal.getCodigo() + "' "                    + " AND 
+         detalles = adm.query(sql);
+        ReporteDepositosDataSource ds = new ReporteDepositosDataSource(detalles);
+        return ds;
+    }
+
     public JRDataSource facturasCobradasContador(Clientes cli, Date desde, Date hasta, Sector sec) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
