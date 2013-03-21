@@ -60,6 +60,38 @@ String llenarCeros(String numero){
   void guardar(){
   
   if(verificar("Agregar")){
+            if(deposito.value.doubleValue()>0){
+                    if(nocuenta.value.isEmpty()){
+                       Messagebox.show("Ingrese el No. de Depósito...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                       return;
+                    }
+                    //bancodep,bancocheque,bancotransferencia,bancoban
+                    if(bancodep.selectedItem == null){
+                       Messagebox.show("Seleccione el Banco del Depósito...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                       return;
+                    }
+            } 
+            if(transferencia.value.doubleValue()>0){
+                    if(notransferencia.value.isEmpty()){
+                    Messagebox.show("Ingrese el No. de Transferencia...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                    }
+                    if(bancotransferencia.selectedItem == null){
+                       Messagebox.show("Seleccione el Banco del Transferencia...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                       return;
+                    }
+            }
+            if(bancario.value.doubleValue()>0){
+                    if(nodeposito.value.isEmpty()){
+                    Messagebox.show("Ingrese el No. de Débito...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                    }
+                    if(bancoban.selectedItem == null){
+                       Messagebox.show("Seleccione el Banco del Débito...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                       return;
+                    }
+            }
+  
         BigDecimal total = efectivo.getValue().add(cheque.getValue()).add(deposito.getValue()).add(tarjeta.getValue()).add(descuento.getValue()).add(descuento.getValue()).add(transferencia.getValue()).add(bancario.getValue()).add(rtotal.getValue());
         if(total.compareTo(new BigDecimal(0)) == 0 ){
             Messagebox.show("Valor a pagar está en Cero  ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -160,11 +192,95 @@ String llenarCeros(String numero){
                                 System.out.println(""+ax.printStackTrace());
                             }
 
-                }else if(cobrar.getTarjeta().doubleValue()>0){
+                }
+                if(cobrar.getTransferencia().doubleValue()>0){
+                            try{
+                                Depositos dep = new Depositos(adm.getNuevaClave("Depositos", "codigo"));
+                                dep.setNodeposito(cobrar.getNocuenta());
+                                dep.setFactura(factu.getNumero().replace("FAC","00")+""); // char
+                                dep.setCxcobrar(cobrar.getCodigo()); //int
+                                dep.setFechacxc(creado);//date
+                                dep.setContable((bancotransferencia.selectedItem.value).getCuenta()); //char
+                                dep.setPago(cobrar.getTransferencia()); //decimal
+                                dep.setContrato(factu.getContratos().getContrato());//int
+                                dep.setFecha(creado);//date
+                                dep.setEmision(factu.getEmision());//date
+                                dep.setVence(factu.getVencimiento());//date
+                                dep.setDetalle(mes(factu.getFecha().getMonth()));//date
+                                dep.setCliente(factu.getContratos().getClientes()+"");//char
+                                dep.setRuc(factu.getContratos().getClientes().getIdentificacion()+"");//char
+                                dep.setMonto(factu.getTotal());//date 
+                                dep.setEmpleados(usuarioActual); //int
+                                Integer facturaCodigo = factu.getCodigo();
 
-                }else if(cobrar.getTransferencia().doubleValue()>0){
+                                List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
+                                        " where factura =  "+facturaCodigo+"  " + 
+                                        " and haber > 0 ");
+                                        Integer conteo = 0;
+                                if(pagosHechos.size()>0){
+                                        Integer val = new Integer(pagosHechos.get(0).toString().replace("[","").replace("]",""));
+                                        conteo = val;
+                                }
+                                List abonoCancela = adm.queryNativo("Select if((SUM(debe) - SUM(haber)) = 0,'CA','AB') from Cxcobrar " + 
+                                        " where factura =  "+facturaCodigo+"  ");
+                                String tipoCance = "AB";
+                                    if(abonoCancela.size()>0){
+                                        String val = (abonoCancela.get(0).toString().replace("[","").replace("]",""));
+                                        tipoCance = val;
+                                    }
+                                dep.setTipo(tipoCance); //char
+                                dep.setNopago(conteo);
+                                dep.setComentario(conteo+"");//char
+                                adm.guardar(dep);
 
-                }else if(cobrar.getBancario().doubleValue()>0){
+                            }catch(Exception ax){
+                                System.out.println(""+ax.printStackTrace());
+                            }
+
+                }
+                if(cobrar.getBancario().doubleValue()>0){
+                   try{
+                                Depositos dep = new Depositos(adm.getNuevaClave("Depositos", "codigo"));
+                                dep.setNodeposito(cobrar.getNocuenta());
+                                dep.setFactura(factu.getNumero().replace("FAC","00")+""); // char
+                                dep.setCxcobrar(cobrar.getCodigo()); //int
+                                dep.setFechacxc(creado);//date
+                                dep.setContable((bancoban.selectedItem.value).getCuenta()); //char
+                                dep.setPago(cobrar.getBancario()); //decimal
+                                dep.setContrato(factu.getContratos().getContrato());//int
+                                dep.setFecha(creado);//date
+                                dep.setEmision(factu.getEmision());//date
+                                dep.setVence(factu.getVencimiento());//date
+                                dep.setDetalle(mes(factu.getFecha().getMonth()));//date
+                                dep.setCliente(factu.getContratos().getClientes()+"");//char
+                                dep.setRuc(factu.getContratos().getClientes().getIdentificacion()+"");//char
+                                dep.setMonto(factu.getTotal());//date 
+                                dep.setEmpleados(usuarioActual); //int
+                                Integer facturaCodigo = factu.getCodigo();
+
+                                List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
+                                        " where factura =  "+facturaCodigo+"  " + 
+                                        " and haber > 0 ");
+                                        Integer conteo = 0;
+                                if(pagosHechos.size()>0){
+                                        Integer val = new Integer(pagosHechos.get(0).toString().replace("[","").replace("]",""));
+                                        conteo = val;
+                                }
+                                List abonoCancela = adm.queryNativo("Select if((SUM(debe) - SUM(haber)) = 0,'CA','AB') from Cxcobrar " + 
+                                        " where factura =  "+facturaCodigo+"  ");
+                                String tipoCance = "AB";
+                                    if(abonoCancela.size()>0){
+                                        String val = (abonoCancela.get(0).toString().replace("[","").replace("]",""));
+                                        tipoCance = val;
+                                    }
+                                dep.setTipo(tipoCance); //char
+                                dep.setNopago(conteo);
+                                dep.setComentario(conteo+"");//char
+                                adm.guardar(dep);
+
+                            }catch(Exception ax){
+                                System.out.println(""+ax.printStackTrace());
+                            }
 
                 }    
             if(codigodes.value > 0){
@@ -384,6 +500,38 @@ void validarNoTransferencia(){
     }
 }
 
+
+   public String mes(int mes) {
+        switch (mes) {
+            case 0:
+                return "Enero";
+            case 1:
+                return "Febrero";
+            case 2:
+                return "Marzo";
+            case 3:
+                return "Abril";
+            case 4:
+                return "Mayo";
+            case 5:
+                return "Junio";
+            case 6:
+                return "Julio";
+            case 7:
+                return "Agosto";
+            case 8:
+                return "Septiembre";
+            case 9:
+                return "Octubre";
+            case 10:
+                return "Noviembre";
+            case 11:
+                return "Diciembre";
+        }
+        return "";
+
+    }
+
 ]]>
         </zscript>
        
@@ -498,6 +646,7 @@ void validarNoTransferencia(){
                                         </row>
                                         <row>
                                             <label  style="font-weight:bold;"> </label>
+                                            <span>   </span>
                                             <bandbox  readonly="true" value="Banco" width="50px"  id="bdDeposito">
                                                     <bandpopup>
                                                         <vbox>
@@ -514,7 +663,6 @@ void validarNoTransferencia(){
                                                         </vbox>
                                                     </bandpopup>
                                                 </bandbox>
-                                            <span>   </span>
                                              
                                             <bandbox   readonly="true"   value="Banco" width="50px"  id="bd22">
                                                     <bandpopup>
