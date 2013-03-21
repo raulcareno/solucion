@@ -86,6 +86,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
   void guardarFilas(){
 
                        Date fechaAc = fecha.value;
+                       Date creado = adm.Date();
                        String fec = gen.convertiraString(fechaAc);
                        if(numeroinforme.value == null){
                             Messagebox.show("Ingrese un Número de Informe ..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -144,6 +145,54 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                     if(cobrar.getHaber().doubleValue()>0){
                                                             if(!((Checkbox)labels.get(8)).isDisabled()){
                                                                 adm.guardar(cobrar);
+                                                                    try{
+                                                                        Depositos dep = new Depositos(adm.getNuevaClave("Depositos", "codigo"));
+                                                                        dep.setNodeposito(empf.getNocuenta());
+                                                                        dep.setFactura(empf.getFactura().getNumero().replace("FAC","00")+""); // char
+                                                                        dep.setCxcobrar(cobrar.getCodigo()); //int
+                                                                        dep.setFechacxc(creado);//date
+                                                                        dep.setContable(empf.getBancos().getCuenta()); //char
+                                                                        dep.setPago(empf.getDebito()); //decimal
+                                                                        dep.setContrato(empf.getFactura().getContratos().getContrato());//int
+                                                                        dep.setFecha(creado);//date
+                                                                        dep.setEmision(empf.getFactura().getEmision());//date
+                                                                        dep.setVence(empf.getFactura().getVencimiento());//date
+                                                                        dep.setDetalle(mes(empf.getFactura().getFecha().getMonth()));//date
+                                                                        dep.setCliente(labels.get(2).getValue().substring(4)+"");//char
+                                                                        dep.setRuc(labels.get(9).getValue()+"");//char
+                                                                        dep.setMonto(empf.getFactura().getTotal());//date 
+
+                                                                        dep.setEmpleados(usuarioActual); //int
+                                                                        Integer facturaCodigo = empf.getFactura().getCodigo();
+
+                                                                        List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
+                                                                                " where factura =  "+facturaCodigo+"  " + 
+                                                                                " and haber > 0 ");
+                                                                                Integer conteo = 0;
+                                                                        if(pagosHechos.size()>0){
+                                                                                Integer val = new Integer(pagosHechos.get(0).toString().replace("[","").replace("]",""));
+                                                                                conteo = val;
+                                                                        }
+                                                                        List abonoCancela = adm.queryNativo("Select if((SUM(debe) - SUM(haber)) = 0,'CA','AB') from Cxcobrar " + 
+                                                                                " where factura =  "+facturaCodigo+"  ");
+                                                                                alert(abonoCancela+" "+facturaCodigo );
+                                                                      String tipoCance = "AB";
+                                                                            if(abonoCancela.size()>0){
+                                                                                String val = (abonoCancela.get(0).toString().replace("[","").replace("]",""));
+                                                                                tipoCance = val;
+                                                                            }
+                                                                            alert(tipoCance);
+                                                                        dep.setTipo(tipoCance); //char
+                                                                        dep.setNopago(conteo);
+                                                                        dep.setComentario(conteo+"");//char
+                                                                        adm.guardar(dep);
+
+                                                                    }catch(Exception ax){
+                                                                        System.out.println(""+ax.printStackTrace());
+                                                                    }
+                                                                
+                                                                
+                                                                
                                                             }
                                                     }
 
@@ -302,7 +351,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                     }
                             
                             row.appendChild(todo);
-
+                                row.appendChild(new Label(" "+empf.getFactura().getContratos().getClientes().getIdentificacion()));
                            
                             if(empf.getTotal().doubleValue()>0)
                                     si++;
@@ -341,6 +390,38 @@ sumaTotal();
                 
  
  }
+ 
+ 
+   public String mes(int mes) {
+        switch (mes) {
+            case 0:
+                return "Enero";
+            case 1:
+                return "Febrero";
+            case 2:
+                return "Marzo";
+            case 3:
+                return "Abril";
+            case 4:
+                return "Mayo";
+            case 5:
+                return "Junio";
+            case 6:
+                return "Julio";
+            case 7:
+                return "Agosto";
+            case 8:
+                return "Septiembre";
+            case 9:
+                return "Octubre";
+            case 10:
+                return "Noviembre";
+            case 11:
+                return "Diciembre";
+        }
+        return "";
+
+    }
   ]]>
     </zscript>
     <div>
@@ -393,6 +474,7 @@ sumaTotal();
                                             <!--checkbox id="todos2" label="Selección" onCheck="seleccionarTodos(self,0)" /-->
                                             Pagado
                                         </column>
+                                        <column  visible="false"  width="50px"  label="ruc"/>
 
                                     </columns>
                                     <rows id="filasFacAsignados">
