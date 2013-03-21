@@ -6,6 +6,7 @@ package jcinform.bean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -16,7 +17,7 @@ import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Button;
-import org.zkoss.zul.Row;
+import org.zkoss.zul.Label;
 
 /**
  *
@@ -490,7 +491,7 @@ public class generarFacturas {
     }
 
    
-     //BUSCAR FACTURAS EN CUENTAS POR COBRAR 
+     //BUSCAR FACTURAS EN CUENTAS POR COBRAR //cerrar día
     public List buscar(Sucursal suc,Date desde) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
          
@@ -505,14 +506,18 @@ public class generarFacturas {
         if (contraString.length() > 0) {
             contraString = contraString.substring(0, contraString.length() - 1);
         }
-        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, CONCAT(cli.apellidos,' ',cli.nombres),  fa.total, cx.haber, IF(fa.total = cx.haber, 'CANCELADO', 'ABONO'), "
-                + " cx.efectivo, cx.cheque, cx.deposito, cx.tarjeta, cx.transferencia, cx.bancario, "
-                + " cx.nocheque, cx.nocuenta, cx.notarjeta, cx.notransferencia, cx.nocuentaban   "
+        String quer = "SELECT fa.codigo, fa.numero, fa.fecha, "
+                + "IF(cli.razonsocial IS NULL OR cli.razonsocial ='' ,CONCAT(cli.apellidos,' ',cli.nombres),cli.razonsocial),  fa.total, cx.haber, "
+                + "IF(fa.total = cx.haber, 'CANCELADO', 'ABONO'), "
+                + " cx.efectivo, cx.cheque, cx.codigo, fa.contratos, fa.fecha, fa.vencimiento, cli.identificacion "
                 + " FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
-                + " WHERE fa.contratos in (" + contraString + ")  and c.codigo = fa.contratos  "
-                + "  AND cx.factura = fa.codigo  AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  "
+                + " WHERE (cx.efectivo > 0 OR cx.cheque >0) "
+                + "AND  fa.contratos in (" + contraString + ")  "
+                + "and c.codigo = fa.contratos  "
+                + "  AND cx.factura = fa.codigo  "
+                + "AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  "
                 + " AND cx.fecha between '"+desdestr+"' and '"+desdestr+"' AND cx.haber > 0 "
-                + " GROUP BY cx.codigo "
+                + " AND cx.codigo not in (Select cxcobrar from Depositos) GROUP BY cx.codigo "
                 + "   "
                 + " order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         System.out.println(""+quer);

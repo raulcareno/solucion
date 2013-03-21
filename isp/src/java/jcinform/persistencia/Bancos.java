@@ -32,6 +32,8 @@ public class Bancos implements Serializable {
     private String cod;
     @Column(name = "empresa")
     private String empresa;
+    @Column(name = "cuenta")
+    private String cuenta;
 
     public Bancos() {
     }
@@ -71,6 +73,15 @@ public class Bancos implements Serializable {
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
+
+    public String getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
+    }
+    
 
     
     @Override

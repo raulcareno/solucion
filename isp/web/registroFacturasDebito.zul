@@ -360,7 +360,7 @@ sumaTotal();
                                 <grid>
                                     <rows>
                                         <row>
-                                            <span style="float:right"> Ingrese un Número de Informe(*):</span>
+                                            <span style="float:right"> Ingrese un Número de Informe(*)..:</span>
                                             <span>
                                                 <textbox onOK="facturasPendientesEmpleado()" id="numeroinforme" />
                                                 <button label="Buscar" onClick="facturasPendientesEmpleado()"/>

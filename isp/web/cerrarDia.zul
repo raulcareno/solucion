@@ -47,7 +47,7 @@ import jcinform.bean.sources.clasestmp.Pendientes;
       
 List cantonesList = adm.query("Select o from Canton as o ");
 List empleadosList = adm.query("Select o from Empleados as o ");
-           
+List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
 
   void facturasPendientes(){
         try{
@@ -58,8 +58,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
             BigDecimal total = new BigDecimal(0);
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
-                          
-                           Row row = new Row();
+                            Row row = new Row();
                                    if(row == null){
                                         row = new Row();
                                    }
@@ -75,17 +74,18 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                 if(row == null){
                                     row = new Row();
                                    }
+                                   row.setValue(vec);
                                     if(dos instanceof Integer){
-                                             row.setValue(dos);
+                                             
                                              row.appendChild(new Label(dos+""));
-                                    }else if(dos instanceof Date){
-                                             SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
+                                    }else if(dos instanceof Date && j < 2){
+                                             SimpleDateFormat d1 = new SimpleDateFormat("dd-MMM-yyyy");
                                              Date d = (Date)dos;
                                              row.appendChild(new Label(d1.format(d)+""));
                                     }else{
                                         if(dos != null){
                                                 if(j==1){
-                                                        row.appendChild(new Label(dos.substring(9)+""));        
+                                                        row.appendChild(new Label(dos.replace("FAC","00")+""));        
                                                 }else{
                                                         row.appendChild(new Label(dos+""));
                                                 }
@@ -322,7 +322,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
  }
  void quitarFilas(){
  
-                       List col = facturasDatosAsignados.getRows().getChildren();
+                       List col = facturasDatos.getRows().getChildren();
                        ArrayList arr  = new ArrayList();
                        for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
@@ -345,140 +345,84 @@ List empleadosList = adm.query("Select o from Empleados as o ");
 
 
   void guardarFilas(){
-
-                       List col = facturasDatosAsignados.getRows().getChildren();
-                       ArrayList arr  = new ArrayList();
-                       Date fechaAc = fecha.value;
-                       String fec = gen.convertiraString(fechaAc);
-                       if(empleados.selectedItem == null){
-                            Messagebox.show("Seleccione un Empleado..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                            empleados.focus();
-                            return;
-                       }
-                       adm.ejecutaSqlNativo("Delete from Empleadosfacturas where DATE(fecha) = '"+fec +"' and empleados  = '"+((Empleados)empleados.selectedItem.value).getCodigo()+"' and fecharegreso is null  ");
-
-                       List facturasLista = adm.queryNativo("Select o.factura from Empleadosfacturas as o "
-                                         + "where o.empleados  = '"+((Empleados)empleados.selectedItem.value).getCodigo()+"'   "
-                                         + "and  DATE(o.fecha) = '"+fec+"'  ");
-
-                                     for (Iterator itfacturas = facturasLista.iterator(); itfacturas.hasNext();) {
-                                            Vector facturas1 = (Vector) itfacturas.next();
-                                        arr.add(facturas1.get(0));
-
-                                    }
+  
+        BigDecimal valor = valortotal.value;
+        if(valor.doubleValue()<=0){
+                Messagebox.show("Seleccione una o varias facturas para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return;
+        }
+        
+        if((bancosList.selectedItem.value+"").contains("-1")){
+                Messagebox.show("Seleccione un Banco...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                return;
+        }
+                       List col = facturasDatos.getRows().getChildren();
+                       String nodeDeposito = nodeposito.value;
+                       Date creado = adm.Date();
                            for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
                                             try{
-                                         
-                                                  Integer facCodigo = object.getValue();
-                                                  Empleadosfacturas empf = new Empleadosfacturas();
-                                                  empf.setFactura(new Factura(facCodigo));
-                                                  empf.setFecha(fechaAc);
-                                                  empf.setEmpleados(empleados.selectedItem.value);
-                                                  empf.setSaldo(new BigDecimal(labels.get(7).getValue()));
-                                                  empf.setEfectivo(new BigDecimal(0));
-                                                  empf.setDeposito(new BigDecimal(0));
-                                                  empf.setCheque(new BigDecimal(0));
-                                                  empf.setTarjeta(new BigDecimal(0));
-                                                  empf.setTotal(new BigDecimal(0));
-                                                  empf.setDescuento(new BigDecimal(0));
-                                                  if(!arr.contains(facCodigo))
-                                                    adm.guardar(empf);
+                                            if(((Checkbox) labels.get(0)).isChecked()){
+                                                    //Vector vec = (Vector) itna.next();
+                                                  Depositos dep = new Depositos(adm.getNuevaClave("Depositos", "codigo"));
+                                                  dep.setNodeposito(nodeDeposito);
+                                                  dep.setFactura((labels.get(2).getValue())+""); // char
+                                                  dep.setCxcobrar(new Integer(labels.get(10).getValue())); //int
+                                                  dep.setFechacxc(vencimiento.value);//date
+
+                                                  dep.setContable((bancosList.selectedItem.value).getCuenta()); //char
+                                                   
+                                                  dep.setPago(new BigDecimal(labels.get(6).getValue())); //decimal
+                                                  dep.setContrato(new Integer(labels.get(11).getValue()));//int
+                                                  dep.setFecha(creado);//date
+                                                  dep.setEmision(((Vector)object.getValue()).get(11));//date
+                                                  dep.setVence(((Vector)object.getValue()).get(12));//date
+                                                  
+                                                  dep.setDetalle(mes(((Date)((Vector)object.getValue()).get(2)).getMonth()));//date
+                                                  
+                                                  
+                                                  
+                                                  dep.setCliente(labels.get(4).getValue()+"");//char
+                                                  dep.setRuc(((Vector)object.getValue()).get(13)+"");//char
+                                                  dep.setMonto(new BigDecimal(labels.get(5).getValue()));//date 
+                                                    
+                                                  dep.setEmpleados(usuarioActual); //int
+                                                  Integer facturaCodigo = ((Vector)object.getValue()).get(0);
+                                                   
+                                                   List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
+                                                        " where factura =  "+facturaCodigo+"  " + 
+                                                        " and haber > 0 ");
+                                                        Integer conteo = 0;
+                                                   if(pagosHechos.size()>0){
+                                                        Integer val = new Integer(pagosHechos.get(0).toString().replace("[","").replace("]",""));
+                                                        conteo = val;
+                                                   }
+                                                   List abonoCancela = adm.queryNativo("Select if((SUM(debe) - SUM(haber)) = 0,'CA','AB') from Cxcobrar " + 
+                                                        " where factura =  "+facturaCodigo+"  ");
+                                                         String tipoCance = "CA";
+                                                    if(abonoCancela.size()>0){
+                                                        String val = (abonoCancela.get(0).toString().replace("[","").replace("]",""));
+                                                         tipoCance = val;
+                                                        }
+                                                  dep.setTipo(tipoCance); //char
+                                                  dep.setNopago(conteo);
+                                                  dep.setComentario(conteo+"");//char
+                                                     
+                                                   
+                                                  adm.guardar(dep);
+                                                  
+                                            }
                                               }catch(Exception ax){
-                                                System.out.println(""+ax.getMessage());
+                                                System.out.println(""+ax.printStackTrace());
                                             }
 
                                         
                           }
+                          facturasPendientes();
 
  }
-   void facturasPendientesEmpleado(){
-        try{
-            List facturasDatosAsignados2 =  gen.buscar(sucursalEmp.getSucursal());
-            facturasDatosAsignados.getRows().getChildren().clear();
-            ArrayList contratosAnadidos = new ArrayList();
-            int i =0;
-                for (Iterator itna = facturasDatosAsignados2.iterator(); itna.hasNext();) {
-                            Vector vec = (Vector) itna.next();
-
-                           Row row = new Row();
-                                   if(row == null){
-                                        row = new Row();
-                                   }
-                                Checkbox ch = new Checkbox("");
-
-                              row.appendChild(ch);
-
-                            for (int j = 0; j < vec.size(); j++) {
-                                Object dos = vec.get(j);
-                                if(row == null){
-                                    row = new Row();
-                                   }
-                                    if(dos instanceof Integer){
-                                             row.setValue(dos);
-                                             row.appendChild(new Label(dos+""));
-                                    }else if(dos instanceof Date){
-                                             SimpleDateFormat d1 = new SimpleDateFormat("dd-MM-yyyy");
-                                             Date d = (Date)dos;
-                                             row.appendChild(new Label(d1.format(d)+""));
-                                    }else{
-                                        if(dos != null){
-                                                if(j==1){
-                                                        row.appendChild(new Label(dos.substring(9)+""));
-                                                }else{
-                                                        row.appendChild(new Label(dos+""));
-                                                }
-
-                                        }else{
-                                            row.appendChild(new Label(""));
-                                       }
-                                    }
-                            }
-
-
-                              Button aButton = null;
-                            aButton = new Button("");
-                            aButton.setImage("/images/imprimir.gif");
-                            aButton.setId("emp"+vec.get(0));
-                            if( vec.get(1) == null)
-                                aButton.setDisabled(true);
-                            aButton.setAttribute("valor",vec.get(3));
-                            aButton.addEventListener("onClick", new EventListener() {
-                             public void onEvent(Event event) throws Exception {
-                               /* if(verificar3("Ingresar")){ */
-                                     Map parameters = new HashMap();
-                                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + aButton.getId().replace("emp","") + "'");
-                                    ArrayList detalles = new ArrayList();
-                                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
-                                        Detalle det = itAbono.next();
-                                         detalles.add(det);
-                                   }
-                                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
-                                   reportelocal.setSrc(directorioReportes+"factura.jasper");
-                                   reportelocal.setParameters(parameters);
-                                   reportelocal.setDatasource(ds);
-                                   reportelocal.setType("pdf");
-                                   impresion.selected = true;
-                                 /*}else{
-                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                    } */
-
-                              }
-                                });
-                              row.appendChild(aButton);
-
-                            filasFacAsignados.appendChild(row);
-                }
-
-                   }catch(Exception e){
-                            //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                            System.out.println("ERROR: "+e);
-
-                        }
-
- }
- 
+   
  void imprimirTodos(){
             List col = facturasDatos.getRows().getChildren();
             String codigos = "";
@@ -518,122 +462,33 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                 
  
  }
- void imprimirTodosEmpleado(){
-            List col = facturasDatosAsignados.getRows().getChildren();
-            ArrayList detalles = new ArrayList();
-            String codigos = "";
-                           for (int i = 0; i < col.size(); i++) {
-                                     Row object = (Row) col.get(i);
-                                     List labels = object.getChildren();
-                                         Integer facCodigo = object.getValue();
-                                         codigos += facCodigo+",";
-                            }
-            if(codigos.length() >0){
-                codigos = codigos.substring(0,codigos.length()-1);
-//--------------------------------------------------------------------------------------------
-            String quer = "SELECT fa.codigo, fa.fecha,max(cx.fecha), fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos,fa.clientes "
-                     + " FROM cxcobrar cx, factura  fa "   +
-                        " WHERE fa.codigo in ("+ codigos +")  " + 
-                        "  AND cx.factura = fa.codigo GROUP BY fa.codigo  "
-                     + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
-                     System.out.println(quer);
-            List facEncontradas =  adm.queryNativo(quer); 
-            System.out.println(""+quer);
-            if (facEncontradas.size() > 0) {
-                Pendientes pendi = null;
-                for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
-                    Vector vec = (Vector) itna.next();
-                    pendi = new Pendientes();
-                    Clientes cli = adm.buscarClave(vec.get(6),Clientes.class);
-                    pendi.setCliente(cli);
-                    pendi.setFactura("" + vec.get(0));
-                    Date d = (Date) vec.get(1);
-                    pendi.setFecha(d);
-                    Date d = (Date) vec.get(2);
-                    pendi.setFechapago(d);
-                    
-                    Contratos c = (Contratos) adm.buscarClave(vec.get(5), Contratos.class);
-                    pendi.setPlan(c.getPlan()+"");
-                    pendi.setContrato(""+vec.get(5));
-                     int ii = 0;
-                    pendi.setPlan("");
-                    int i = 1;
-                    List detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.get(0) + "'");
-                    for (Iterator it = detalleLocal.iterator(); it.hasNext();) {
-                        Detalle detalle = it.next();
-                        String pth = " / ";
-                        if (ii == 0) {
-                            pth = "("+mes(detalle.getFactura().getFecha().getMonth()) +")";
-                        }
-                        if (detalle.getEquipos() != null) {
-                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
-                        }
-                        if (detalle.getPlan() != null) {
-                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
-                        }
-                        ii++;
-                    }
-                    
-                    
-                    
-                    
-                    pendi.setDireccion(c.getDireccion());
-                    pendi.setTelefono(c.getTelefono()+" / "+c.getTelefonof());
-                    pendi.setTotal((BigDecimal) vec.get(3));
-                    pendi.setSaldo((BigDecimal) vec.get(4));
-                    detalles.add(pendi);
-                }
-
-            }
-        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);                
-                
-                
-                
-//-------------------------------------------------------------------------------------------------------
-                Map parameters = new HashMap();
-                parameters.put("empresa",empresa.getRazonsocial());
-                parameters.put("ruc",empresa.getRuc());
-                parameters.put("direccion",empresa.getDireccion());
-                parameters.put("telefono",empresa.getTelefono());    
-                parameters.put("empleados",empleados.selectedItem.value+"");    
-                parameters.put("desdeSector",bdSector.value+"");    
-                parameters.put("hastaSector",bdSector2.value+"");    
-                   reportelocal.setSrc(directorioReportes+"facturasempleado.jasper");
-                   reportelocal.setParameters(parameters);
-                   reportelocal.setDatasource(ds);
-                   reportelocal.setType("pdf");
-                   impresion.selected = true;
-                
-            }
-                
- 
- }
+  
    public String mes(int mes) {
         switch (mes) {
             case 0:
-                return "Ene";
+                return "Enero";
             case 1:
-                return "Feb";
+                return "Febrero";
             case 2:
-                return "Mar";
+                return "Marzo";
             case 3:
-                return "Abr";
+                return "Abril";
             case 4:
-                return "May";
+                return "Mayo";
             case 5:
-                return "Jun";
+                return "Junio";
             case 6:
-                return "Jul";
+                return "Julio";
             case 7:
-                return "Ago";
+                return "Agosto";
             case 8:
-                return "Sep";
+                return "Septiembre";
             case 9:
-                return "Oct";
+                return "Octubre";
             case 10:
-                return "Nov";
+                return "Noviembre";
             case 11:
-                return "Dic";
+                return "Diciembre";
         }
         return "";
 
@@ -642,87 +497,75 @@ List empleadosList = adm.query("Select o from Empleados as o ");
     </zscript>
     <div>
         <!--button label="MOSTRAR" id="mensaje"  onClick="llamar()" /-->
-
-        <tabbox width="100%"  >
-            <tabs>
-                <tab label="Facturas Pendientes" id="facturas" />
-                <tab id="impresion" label="Impresión" />
-            </tabs>
-            <tabpanels>
-                <tabpanel>
-       
                     <groupbox id="panel" mold="3d" width="100%">
                         <hbox>
                             <vbox >
                                 <grid>
                                     <rows>
                                         <row>
-                                            <button label="Buscar" onClick="facturasPendientes()"/>
-                                            Fecha: 
+                                            Fecha Pago: 
                                             <datebox format="dd/MM/yyyy"  onCreate="self.value = adm.Date(); " id="vencimiento" />
+                                            <button label="Buscar Pagos" onClick="facturasPendientes(); todos.checked = false;"/>
+                                            <separator orient="vertical" width="10px" bar="true"/>
+                                            <separator orient="vertical" width="10px" bar="true"/>
+                                            <separator orient="vertical" width="10px" bar="true"/>
+                                            Ingrese # Deposito
+                                            <textbox id="nodeposito"  constraint="no empty: Ingrese el No. de Depósito"  />
+                                            <span>
+                                                    <label style="font-weight:bold2" value="Banco:" />
+                                                </span>
+                                                
+                                                            <listbox  id="bancosList" width="250px" mold="select" >
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem selected="true"  value="-1" label="[SELECCIONE]"/>
+                                                                      
+                                                                <listitem forEach="${bancos}"  value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                 
+                                            Acción:
+                                            <button   label="Cerrar Cobros" image="/images/registrado.png" onClick="nodeposito.getValue(); guardarFilas(); "/>
                                         </row>
                                     </rows>
                                 </grid>
-                                <grid height="250px"     fixedLayout="true"  id="facturasDatos" >
+                                <grid height="400px"   width="99%"   fixedLayout="true"  id="facturasDatos" >
                                     <columns>
                                         <column  width="35px" >
-                                            <checkbox id="todos" label="Selección" onCheck="seleccionarTodos(self,0)" />
+                                            <checkbox id="todos" onCheck="seleccionarTodos(self,0);  sumar();" />
                                         </column>
-                                        <column visible="false"  label="Cod."/>
-                                        <column sort="auto" width="68px" label="# Fac."/>
-                                        <column sort="auto" width="85px" label="Fecha"/>
-                                        <column sort="auto" width="150px" label="Cliente "/>
-                                        <column label="Valor"/>
-                                        <column label="Cancelado"/>
-                                        <column label="Estado"/>
-                                        <column label="Efectivo"/>
-                                        <column label="Cheque"/>
-                                        <column label="Depósito"/>
-                                        <column label="Tarjeta"/>
-                                        <column label="Transferencia"/>
-                                        <column label="Débito"/>
-                                        <column label="#Cheque"/>
-                                        <column label="#Cuenta"/>
-                                        <column label="#Tarjeta"/>
-                                        <column label="#Transferencia"/>
-                                        <column label="#Débito"/>
+                                        <column visible="false" label="Cod."/>
+                                        <column width="128px" label="# Fac."/>
+                                        <column width="105px" label="Mes"/>
+                                        <column label="Cliente "/>
+                                        <column  width="68px"  label="Valor"/>
+                                        <column  width="68px" label="Cancelado"/>
+                                        <column width="68px"  label="Estado"/>
+                                        <column width="68px"  label="Efectivo"/>
+                                        <column width="68px"  label="Cheque"/>
+                                        <column visible = "false" width="68px"  label="CxcCodigo"/>
+                                        <column visible="false" label="contrato"/>
+                                        <column visible="false" label="fecha"/>
+                                        <column visible="false" label="vence"/>
+                                        <column visible="false"  width="6px"  label=" "/>
                                     </columns>
                                     <rows id="filasFac">
                                     </rows>
-                                    <foot style="background:#E1E1E1">
-                                        <footer/>
-                                        <footer/>
-                                        <footer/>
-                                        <footer/>
-                                        <footer/>
-                                        <footer width="10px">
-                                            
-                                            <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
-                                        </footer>
-                                        <footer/>
-                                                                                      
-                                    </foot>
                                 </grid>
+                                <span style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px">
+                                    Total: <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                </span>
+                                    
                                 <span>
-                                <button  orient="vertical"  label="CERRAR" image="/images/registrado.png" onClick="anadirFilas()"/>
+                                
                            </span>
                             </vbox>
                         </hbox>
                     </groupbox>
-                </tabpanel>
-                <tabpanel>
-                    <panel height="550px" style="margin-bottom:10px"
-                           title="Reporte" border="normal">
-                        <panelchildren>
-                            <jasperreport id="reportelocal" />
-                        </panelchildren>
-                    </panel>
-                
-                </tabpanel>
-            </tabpanels>
-            
-            
-        </tabbox>
+ 
         <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
             <panelchildren>
                 <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;" id="contratosCliente" width="100%">

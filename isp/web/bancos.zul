@@ -19,6 +19,7 @@
 void llenar(Bancos equi2){
    equi = equi2;
     nombre.value = equi.getNombre();
+    cuenta.value = equi.getCuenta();
     cod.value = equi.getCod();
     
 
@@ -30,6 +31,7 @@ void estado(Boolean estado,Boolean modificar){
         equi = (Bancos)datos.selectedItem.value;
     }
     nombre.readonly = estado;
+    cuenta.readonly = estado;
     cod.readonly = estado;
 
 }
@@ -41,6 +43,7 @@ void estado(Boolean estado,Boolean modificar){
             return;
     }
         equi.setNombre(nombre.value);
+        equi.setCuenta(cuenta.value);
         equi.setCod(cod.value);
         
         if((!equi.getCodigo().equals(0)) ){
@@ -137,6 +140,8 @@ equi.setBancos(g);
         <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />   </row>
         <row><span style="float:right"> Código(*):</span>
         <textbox id="cod"  maxlength="100" cols="40" readonly="true"   />   </row>
+        <row><span style="float:right"> Cta.Contable:</span>
+        <textbox id="cuenta"  maxlength="100" cols="40" readonly="true"   />   </row>
  </rows>
 </grid>
 <vbox>
