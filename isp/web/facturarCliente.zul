@@ -106,12 +106,67 @@ String llenarCeros(String numero){
             cobrar.setFechatransferencia(fechatransferencia.value);
             cobrar.setFechacheque(fechacheque.value);
             cobrar.setFechadeposito(fechadeposito.value);
-            
-            
             adm.guardar(cobrar);
             
-            
-   
+            Factura factu = adm.buscarClave(codigofac.value,Factura.class);
+            Date creado = adm.Date();
+            /**
+                    GUARDO LOS DEPOSITOS Y CLASIFICO SEGÚN LO QUE HA PAGADO
+                    deposito/nocuenta 
+                    transferencia/notransferencia 
+                    debito/nodeposito
+            **/
+                if(cobrar.getDeposito().doubleValue()>0){
+                            try{
+                                Depositos dep = new Depositos(adm.getNuevaClave("Depositos", "codigo"));
+                                dep.setNodeposito(cobrar.getNocuenta());
+                                dep.setFactura(factu.getNumero().replace("FAC","00")+""); // char
+                                dep.setCxcobrar(cobrar.getCodigo()); //int
+                                dep.setFechacxc(creado);//date
+                                dep.setContable((bancodep.selectedItem.value).getCuenta()); //char
+                                dep.setPago(cobrar.getDeposito()); //decimal
+                                dep.setContrato(factu.getContratos().getContrato());//int
+                                dep.setFecha(creado);//date
+                                dep.setEmision(factu.getEmision());//date
+                                dep.setVence(factu.getVencimiento());//date
+                                dep.setDetalle(mes(factu.getFecha().getMonth()));//date
+                                dep.setCliente(factu.getContratos().getClientes()+"");//char
+                                dep.setRuc(factu.getContratos().getClientes().getIdentificacion()+"");//char
+                                dep.setMonto(factu.getTotal());//date 
+                                dep.setEmpleados(usuarioActual); //int
+                                Integer facturaCodigo = factu.getCodigo();
+
+                                List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
+                                        " where factura =  "+facturaCodigo+"  " + 
+                                        " and haber > 0 ");
+                                        Integer conteo = 0;
+                                if(pagosHechos.size()>0){
+                                        Integer val = new Integer(pagosHechos.get(0).toString().replace("[","").replace("]",""));
+                                        conteo = val;
+                                }
+                                List abonoCancela = adm.queryNativo("Select if((SUM(debe) - SUM(haber)) = 0,'CA','AB') from Cxcobrar " + 
+                                        " where factura =  "+facturaCodigo+"  ");
+                                String tipoCance = "AB";
+                                    if(abonoCancela.size()>0){
+                                        String val = (abonoCancela.get(0).toString().replace("[","").replace("]",""));
+                                        tipoCance = val;
+                                    }
+                                dep.setTipo(tipoCance); //char
+                                dep.setNopago(conteo);
+                                dep.setComentario(conteo+"");//char
+                                adm.guardar(dep);
+
+                            }catch(Exception ax){
+                                System.out.println(""+ax.printStackTrace());
+                            }
+
+                }else if(cobrar.getTarjeta().doubleValue()>0){
+
+                }else if(cobrar.getTransferencia().doubleValue()>0){
+
+                }else if(cobrar.getBancario().doubleValue()>0){
+
+                }    
             if(codigodes.value > 0){
                 Descuentos des = adm.buscarClave(codigodes.value,Descuentos.class);
                 des.setAplicado(true);
@@ -443,7 +498,22 @@ void validarNoTransferencia(){
                                         </row>
                                         <row>
                                             <label  style="font-weight:bold;"> </label>
-                                            <span>   </span>
+                                            <bandbox  readonly="true" value="Banco" width="50px"  id="bdDeposito">
+                                                    <bandpopup>
+                                                        <vbox>
+                                                            <listbox  id="bancodep" width="250px"
+                                                                    onSelect="bdDeposito.value=self.selectedItem.label;bdDeposito.closeDropdown();">
+                                                                <listhead>
+                                                                    <listheader label="Seleccione un Banco"/>
+                                                                </listhead>
+                                                                <listitem forEach="${bancos}" value="${each}">
+                                                                    <listcell label="${each.nombre}" />
+
+                                                                </listitem>
+                                                            </listbox>
+                                                        </vbox>
+                                                    </bandpopup>
+                                                </bandbox>
                                             <span>   </span>
                                              
                                             <bandbox   readonly="true"   value="Banco" width="50px"  id="bd22">

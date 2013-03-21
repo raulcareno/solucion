@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteContabilidad.jrxml" language="groovy" pageWidth="2834" pageHeight="595" orientation="Landscape" columnWidth="2814" leftMargin="0" rightMargin="20" topMargin="0" bottomMargin="20" isIgnorePagination="true">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="1404"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM depositos]]>
+	</queryString>
+	<field name="codigo" class="java.lang.Integer"/>
+	<field name="cxcobrar" class="java.lang.Integer"/>
+	<field name="fechacxc" class="java.sql.Date"/>
+	<field name="nodeposito" class="java.lang.String"/>
+	<field name="factura" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="contable" class="java.lang.String"/>
+	<field name="detalle" class="java.lang.String"/>
+	<field name="pago" class="java.math.BigDecimal"/>
+	<field name="contrato" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="emision" class="java.sql.Date"/>
+	<field name="vence" class="java.sql.Date"/>
+	<field name="comentario" class="java.lang.String"/>
+	<field name="empleados" class="java.lang.Integer"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="ruc" class="java.lang.String"/>
+	<field name="monto" class="java.math.BigDecimal"/>
+	<field name="nopago" class="java.lang.Integer"/>
+	<variable name="secuencial" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{codigo}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="132" height="20"/>
+				<textElement/>
+				<text><![CDATA[CONTABLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="132" y="0" width="70" height="20"/>
+				<textElement/>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="0" width="112" height="20"/>
+				<textElement/>
+				<text><![CDATA[NUMERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[DETALLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[MONTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="514" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="614" y="0" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="653" y="0" width="86" height="20"/>
+				<textElement/>
+				<text><![CDATA[SECUENCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="739" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="839" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[CLAVE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="939" y="0" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[CLAVE1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="978" y="0" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[ZONA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1017" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[EMISION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1117" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[vence]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1217" y="0" width="148" height="20"/>
+				<textElement/>
+				<text><![CDATA[factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1365" y="0" width="641" height="20"/>
+				<textElement/>
+				<text><![CDATA[NOMBRE CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2006" y="0" width="150" height="20"/>
+				<textElement/>
+				<text><![CDATA[ruc]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2156" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[comentario]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="132" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{contable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="132" y="0" width="70" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="0" width="112" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nodeposito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="314" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{detalle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="514" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{pago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="614" y="0" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[CC]]></text>
+			</staticText>
+			<textField pattern="P00000">
+				<reportElement x="653" y="0" width="86" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{secuencial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="739" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fechacxc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="839" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{contrato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="939" y="0" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[03]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="978" y="0" width="39" height="20"/>
+				<textElement/>
+				<text><![CDATA[01]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="1017" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{emision}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="1117" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{vence}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1217" y="0" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1365" y="0" width="641" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2006" y="0" width="150" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ruc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2156" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{nopago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
