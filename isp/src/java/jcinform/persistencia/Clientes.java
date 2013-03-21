@@ -212,7 +212,19 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return apellidos+" "+nombres ;
+        try {
+            if(razonsocial!= null){
+                if(razonsocial.length()>1){
+                        return razonsocial;
+                }else{
+                        return apellidos+" "+nombres;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("error: clientes: tostring");
+        }
+        return apellidos+" "+nombres;
+        
     }
 
 }

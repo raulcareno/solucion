@@ -175,13 +175,11 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                                         }
                                                                         List abonoCancela = adm.queryNativo("Select if((SUM(debe) - SUM(haber)) = 0,'CA','AB') from Cxcobrar " + 
                                                                                 " where factura =  "+facturaCodigo+"  ");
-                                                                                alert(abonoCancela+" "+facturaCodigo );
                                                                       String tipoCance = "AB";
                                                                             if(abonoCancela.size()>0){
                                                                                 String val = (abonoCancela.get(0).toString().replace("[","").replace("]",""));
                                                                                 tipoCance = val;
                                                                             }
-                                                                            alert(tipoCance);
                                                                         dep.setTipo(tipoCance); //char
                                                                         dep.setNopago(conteo);
                                                                         dep.setComentario(conteo+"");//char
