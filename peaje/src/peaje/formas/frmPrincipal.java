@@ -97,7 +97,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     public static Empresa empresaObj;
     public static String in;
     public static String out;
-    hibernate.cargar.claves cl = new hibernate.cargar.claves();
+    static hibernate.cargar.claves cl = new hibernate.cargar.claves();
     String separador = File.separatorChar + "";
     static UsuarioActivo datosConecta;
     static Boolean mostrar = true;
@@ -151,10 +151,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //       
 //     
 //    }
-
     /**
      * Creates new form frmPrincipal
      */
+    boolean poseeAutologin = false;
+    Usuarios userAutologin = new Usuarios();
+
     public frmPrincipal() {
 //        super("frmPrincipal");
 //        this.addKeyListener(this);
@@ -246,6 +248,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
                         Usuarios usuarios = it.next();
                         usuariot.addItem(usuarios.getUsuario());
+                        if (usuarios.getNombres().contains("autologin")) {
+                            poseeAutologin = true;
+                            userAutologin = usuarios;
+                            usuariot.setSelectedItem(usuarios.getUsuario());
+                        }
+
 
                     }
                 } catch (Exception e) {
@@ -280,6 +288,23 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
 
         clave.requestFocusInWindow();
+        Thread cargar = new Thread() {
+            public void run() {
+                try {
+                    if (poseeAutologin) {
+                        empezarConteo();
+                    } else {
+                        System.out.println("si desea autologin cree en empleados un usuario autologin con clave 123");
+                    }
+
+                } catch (Exception ex) {
+                    System.out.println("CONTEO " + ex);
+
+                }
+            }
+        };
+        cargar.start();
+
 
     }
 
@@ -330,6 +355,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jButton9 = new javax.swing.JButton();
         btnIngresar = new javax.swing.JButton();
         usuariot = new javax.swing.JComboBox();
+        time = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -941,6 +967,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         jPanel2.add(usuariot);
         usuariot.setBounds(140, 20, 130, 20);
+
+        time.setText("<0>");
+        jPanel2.add(time);
+        time.setBounds(336, 130, 30, 14);
 
         frmIngresarSistema.getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 40, 380, 150);
@@ -2923,6 +2953,44 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             pack();
         }// </editor-fold>//GEN-END:initComponents
+    public Integer tiempo = 0;
+
+    public void empezarConteo() {
+        try {
+            while (tiempo < 10) {
+                Thread.sleep(1000);
+                Integer actual = new Integer(time.getText().replace("<", "").replace(">", ""));
+                tiempo++;
+                actual--;
+                time.setText("" + (actual));
+                System.out.println((new Date()) + "" + (tiempo));
+
+            }
+            if (tiempo == 10) {
+                if (poseeAutologin) {
+                    clave.setText(cl.desencriptar(userAutologin.getClave()));
+                    Thread cargar = new Thread() {
+                        public void run() {
+                            procesando.setVisible(true);
+                            btnIngresar.setEnabled(false);
+                            clave.setEditable(false);
+                            usuariot.setEditable(false);
+                            verificarUsuario();
+                            procesando.setVisible(false);
+                            btnIngresar.setEnabled(true);
+
+                        }
+                    };
+                    cargar.start();
+
+
+                }
+            }
+
+        } catch (InterruptedException ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     void iniciarPuertos() {
         try {
@@ -3987,10 +4055,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 if (facturas.size() > 0) {
 
                     try {
-                                Factura act = facturas.get(0);
+                        Factura act = facturas.get(0);
                         Date fechaFin = act.getFechafin();
                         Boolean yasalio = act.getYasalio();
-                        if(yasalio == null){
+                        if (yasalio == null) {
                             yasalio = false;
                         }
                         if (fechaFin == null) {
@@ -4002,13 +4070,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             if (minutos > empresaObj.getSalida()) {
                                 errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
-                            }else if (yasalio) {
+                            } else if (yasalio) {
                                 errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else {
                                 errores.setText("SALIDA OK ...!");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
-                        
+
                                 act.setYasalio(true);
                                 adm.actualizar(act);
                                 abrirPuerta(puertoViene);
@@ -4060,8 +4128,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         //Date fechaFin = facturas.get(0).getFechafin();
                         Factura act = facturas.get(0);
                         Date fechaFin = act.getFechafin();
-                          Boolean yasalio = act.getYasalio();
-                        if(yasalio == null){
+                        Boolean yasalio = act.getYasalio();
+                        if (yasalio == null) {
                             yasalio = false;
                         }
                         if (fechaFin == null) {
@@ -4073,11 +4141,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             if (minutos > empresaObj.getSalida()) {
                                 errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
-                            }else if (yasalio) {
+                            } else if (yasalio) {
                                 errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else {
-                                 act.setYasalio(true);
+                                act.setYasalio(true);
                                 adm.actualizar(act);
                                 errores.setText("SALIDA OK ...!");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
@@ -4698,8 +4766,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 return;
             }
 
-            
-              try {
+
+            try {
                 Component[] componentes = contenedor.getComponents();
                 for (Component component : componentes) {
                     System.out.println("" + component.getName());
@@ -4723,16 +4791,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //            usu.show();
 //            usu.noTicket.requestFocusInWindow();
 //            
-                    frmEmpresa usu = new frmEmpresa(this, true, this, adm);
-                    usu.setSize(462, 615);
-                    usu.setLocation(0, 0);
-                    usu.setLocation(0, 0);
-                    usu.setName("formaEmpresa");
-                    contenedor.add(usu);
+            frmEmpresa usu = new frmEmpresa(this, true, this, adm);
+            usu.setSize(462, 615);
+            usu.setLocation(0, 0);
+            usu.setLocation(0, 0);
+            usu.setName("formaEmpresa");
+            contenedor.add(usu);
 
-                    usu.show();
-                    contenedor.requestFocus();
-                   
+            usu.show();
+            contenedor.requestFocus();
+
 
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -4883,7 +4951,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             usu.noTicket.requestFocusInWindow();
 
 
-            
+
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -6935,7 +7003,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         // TODO add your handling code here:
         CommPortIdentifier portId = null;
         Enumeration portList = CommPortIdentifier.getPortIdentifiers();
-                portId = (CommPortIdentifier) portList.nextElement();
+        portId = (CommPortIdentifier) portList.nextElement();
 //                    if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL){
 //                    
 //                    } 
@@ -7283,6 +7351,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton tempjButton13;
     public javax.swing.JTextField tempnotarjetaTemp;
     private javax.swing.JComboBox temppuertoText;
+    private static javax.swing.JLabel time;
     private javax.swing.JCheckBox todos;
     private javax.swing.JCheckBox todos1;
     private javax.swing.JCheckBox todos2;
