@@ -1903,7 +1903,7 @@ public class reportesClase {
             String q = "Select round(avg (" + query + "),3) valor, est.apellido ,est.nombre  "
                     + "from notas, materia_profesor, matriculas mat, estudiantes est "
                     + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
-                    + "AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                    + "  AND notas.materia > 0 AND  notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                     + "and matricula in (select codigomat from matriculas where   estado in ('Matriculado','Recibir Pase')  and    curso  =  '" + curso.getCodigocur() + "'  )"
                     + "and notas.disciplina = false and notas.promedia = true  GROUP BY notas.matricula "
                     + "order by 1 desc limit 3";
@@ -2388,6 +2388,8 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalencias2 = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
 //Sistemacalificacion sd;
 //sd.getTrimestre().getCodigotrim();
@@ -2447,7 +2449,12 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
-                        nota.setNota(equivalencia(dos, equivalencias));
+                        
+                                if(mprofesor.getMateria().getCodigo().equals(new Integer(0))){
+                                    nota.setNota(equivalencia(dos, equivalencias2));
+                                }else{
+                                    nota.setNota(equivalencia(dos, equivalencias));
+                                }
                     } else {
                         nota.setNota(val.toString());
 //                        aprovecha+=val;
