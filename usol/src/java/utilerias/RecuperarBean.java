@@ -4,7 +4,6 @@
  */
 package utilerias;
 
-import bean.Utilerias;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,12 +22,11 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import jcinform.persistencia.Aspirantes;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Matriculas;
+import jcinform.persistencia.Parametros;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
 
@@ -46,36 +44,36 @@ public class RecuperarBean {
     public Institucion institucion;
     public String cedula;
     public Administrador adm;
+
     /**
      * Creates a new instance of RecuperarBean
      */
     public RecuperarBean() {
-            mensaje = "";
-            correos = "";
-            adm = new Administrador(); 
-         try {
-                List<Institucion> user = adm.query("Select o from Institucion as o ");    
-                institucion = user.get(0);
+        mensaje = "";
+        correos = "";
+        adm = new Administrador();
+        try {
+            List<Institucion> user = adm.query("Select o from Institucion as o ");
+            institucion = user.get(0);
         } catch (Exception e) {
-             System.out.println("recuperarBean, NO EXISTEN INSTITUCION");
+            System.out.println("recuperarBean, NO EXISTEN INSTITUCION");
         }
-            
+
     }
-    
 
     public String recuperarClave() {
         claves val = new claves();
-                   FacesContext context = FacesContext.getCurrentInstance();
-         Empleados emp;
-         try {
-         emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.idEmpleados = '" + cedula + "' ");   
+        FacesContext context = FacesContext.getCurrentInstance();
+        Empleados emp;
+        try {
+            emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.idEmpleados = '" + cedula + "' ");
         } catch (Exception e) {
             emp = null;
         }
-         
-        
+
+
         if (emp != null) {
-             mensaje = "<html><p> <b> Su usuario es: </b>" + emp.getUsuario() + "<p> "
+            mensaje = "<html><p> <b> Su usuario es: </b>" + emp.getUsuario() + "<p> "
                     + "<b> Su password es:</b> " + val.desencriptar(emp.getClave()) + " <p> "
                     + "Le recordamos que debe cambiar su clave periodicamente para su mayor seguridad"
                     + "<p>."
@@ -84,7 +82,7 @@ public class RecuperarBean {
                     + "<br/>"
                     + "LA ADMINISTRACION "
                     + "<p>"
-                    + "<br/>" 
+                    + "<br/>"
                     + "<p>"
                     + "<br/>"
                     + "<p>"
@@ -94,55 +92,65 @@ public class RecuperarBean {
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
-             try {
-            System.out.println(""+emp.getEmail().trim()+ mensaje+
-                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre()+ 
-                    institucion.getEmail()+ 
-                    institucion.getClave()+ 
-                    institucion.getSmtp()+ 
-                    institucion.getPuerto()+
-                    institucion.getAutorizacion()+
-                    institucion.getStar());                  
+            try {
+                System.out.println("" + emp.getEmail().trim() + mensaje
+                        + "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre()
+                        + institucion.getEmail()
+                        + institucion.getClave()
+                        + institucion.getSmtp()
+                        + institucion.getPuerto()
+                        + institucion.getAutorizacion()
+                        + institucion.getStar());
             } catch (Exception e) {
-                 System.out.println("error: "+e.getMessage());
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ud. no tiene registrado un email en su cuenta...!","Ud. no tiene registrado un email en su cuenta...!"));
+                System.out.println("error: " + e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ud. no tiene registrado un email en su cuenta...!", "Ud. no tiene registrado un email en su cuenta...!"));
                 return "no";
             }
-            
-            Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
-                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(),institucion.getAutorizacion(),institucion.getStar());
- 
- 
+            ArrayList matriculas = new ArrayList();
+            matriculas.add(emp.getEmail().trim());
+
+            Boolean estado = EnviarAutenticacion.RecuperarClave(matriculas, mensaje,
+                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(), institucion.getAutorizacion(), institucion.getStar());
+
+
             if (estado) {
-                
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso","Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso"));
+
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha enviado un email a: " + emp.getEmail() + " con sus datos para el ingreso", "Se ha enviado un email a: " + emp.getEmail() + " con sus datos para el ingreso"));
                 return "[OK] " + emp.getEmail();
             } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha enviado el email...!","No se ha enviado el email...!"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha enviado el email...!", "No se ha enviado el email...!"));
                 return "no";
 
             }
 
         } else {
-                                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha encontrado el estudiante con la cédula ingresada...!","No se ha encontrado el estudiante con la cédula ingresada...!"));
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha encontrado el estudiante con la cédula ingresada...!", "No se ha encontrado el estudiante con la cédula ingresada...!"));
             return "no";
         }
     }
-     
+
     public String confirmarAspirante(String cedula) {
-            claves val = new claves();
-                   FacesContext context = FacesContext.getCurrentInstance();
-         Aspirantes emp;
-         try {
-         emp = (Aspirantes) adm.querySimple("Select o from Aspirantes as o where o.idAspirantes= '" + cedula + "' ");   
+        claves val = new claves();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Aspirantes emp;
+
+        Parametros pa = null;
+        try {
+            pa = (Parametros) adm.querySimple("Select o from Parametros as o where o.variable = 'EMAILASPIRANTES' ");
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }
+
+        try {
+            emp = (Aspirantes) adm.querySimple("Select o from Aspirantes as o where o.idAspirantes= '" + cedula + "' ");
         } catch (Exception e) {
             emp = null;
         }
-         
-        
+
+
         if (emp != null) {
-             mensaje = "<html><p> Gracias  " + emp.getNombres() + " "
-                     + " por confiar en nosotros. </b></p> <p>Nos estaremos comunicando contigo <p> "
+            mensaje = "<html><p> Gracias  " + emp.getNombres() + " "
+                    + " por confiar en nosotros. </b></p> <p>Nos estaremos comunicando contigo <p> "
                     + " "
                     + "<p>."
                     + "<p>"
@@ -150,7 +158,7 @@ public class RecuperarBean {
                     + "<br/>"
                     + "LA ADMINISTRACION "
                     + "<p>"
-                    + "<br/>" 
+                    + "<br/>"
                     + "<p>"
                     + "<br/>"
                     + "<p>"
@@ -160,33 +168,55 @@ public class RecuperarBean {
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
-             try {
-            System.out.println(""+emp.getEmail().trim()+ mensaje+
-                    "PRE-INSCRIPCION " + emp.getNombres()+ 
-                    institucion.getEmail()+ 
-                    institucion.getClave()+ 
-                    institucion.getSmtp()+ 
-                    institucion.getPuerto()+
-                    institucion.getAutorizacion()+
-                    institucion.getStar());                  
+            try {
+                System.out.println("" + emp.getEmail().trim() + mensaje
+                        + "PRE-INSCRIPCION " + emp.getNombres()
+                        + institucion.getEmail()
+                        + institucion.getClave()
+                        + institucion.getSmtp()
+                        + institucion.getPuerto()
+                        + institucion.getAutorizacion()
+                        + institucion.getStar());
             } catch (Exception e) {
-                 System.out.println("error: "+e.getMessage());
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ud. no tiene registrado un email en su cuenta...!","Ud. no tiene registrado un email en su cuenta...!"));
+                System.out.println("error: " + e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ud. no tiene registrado un email en su cuenta...!", "Ud. no tiene registrado un email en su cuenta...!"));
                 return "no";
             }
+                String correos = "" + emp.getEmail().trim()+";"+(pa!=null? pa.getVCaracter():"");
+                ArrayList matriculados2 = new ArrayList();
+                correos = correos + ";" + pa.getVCaracter();
+                StringTokenizer tokens = new StringTokenizer(correos, ";");
             
-            Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
-                    "PRE-INSCRIPCION " + emp.getNombres(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(),institucion.getAutorizacion(),institucion.getStar());
+                int i = 0;
+                int k = 1;
+                while (tokens.hasMoreTokens()) {
+                    String str = tokens.nextToken();
+                    str = str.replace(" ", "");
+                    if (!str.equals("") && str.contains("@")) {
+                        if (!matriculados2.contains(str)) {
+                            if (validaEmail(str.replace(" ", ""))) {
+                                matriculados2.add(str.replace(" ", ""));
+                                System.out.println("" + str);
+                                k++;
+                            }
+                        }
+
+
+                    }
+                    i++;
+                }
+                System.out.println("enviado a: (" + k + ") emails");
  
- 
+            Boolean estado = EnviarAutenticacion.RecuperarClave(matriculados2, mensaje,
+                    "PRE-INSCRIPCION " + emp.getNombres(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(), institucion.getAutorizacion(), institucion.getStar());
+
+
             if (estado) {
-                
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso","Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso"));
 //                return "[OK] " + emp.getEmail();
             } else {
 //                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha enviado el email...!","No se ha enviado el email...!"));
 //                return "no";
-
             }
             return "ok";
 
@@ -195,19 +225,20 @@ public class RecuperarBean {
             return "no";
         }
     }
+
     public String recuperarClave(String cedula) {
-            claves val = new claves();
-                   FacesContext context = FacesContext.getCurrentInstance();
-         Empleados emp;
-         try {
-         emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.idEmpleados = '" + cedula + "' ");   
+        claves val = new claves();
+        FacesContext context = FacesContext.getCurrentInstance();
+        Empleados emp;
+        try {
+            emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.idEmpleados = '" + cedula + "' ");
         } catch (Exception e) {
             emp = null;
         }
-         
-        
+
+
         if (emp != null) {
-             mensaje = "<html><p> <b> Su usuario es: </b>" + emp.getUsuario() + "<p> "
+            mensaje = "<html><p> <b> Su usuario es: </b>" + emp.getUsuario() + "<p> "
                     + "<b> Su password es:</b> " + val.desencriptar(emp.getClave()) + " <p> "
                     + "Le recordamos que debe cambiar su clave periodicamente para su mayor seguridad"
                     + "<p>."
@@ -216,7 +247,7 @@ public class RecuperarBean {
                     + "<br/>"
                     + "LA ADMINISTRACION "
                     + "<p>"
-                    + "<br/>" 
+                    + "<br/>"
                     + "<p>"
                     + "<br/>"
                     + "<p>"
@@ -226,37 +257,39 @@ public class RecuperarBean {
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
-             try {
-            System.out.println(""+emp.getEmail().trim()+ mensaje+
-                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre()+ 
-                    institucion.getEmail()+ 
-                    institucion.getClave()+ 
-                    institucion.getSmtp()+ 
-                    institucion.getPuerto()+
-                    institucion.getAutorizacion()+
-                    institucion.getStar());                  
+            try {
+                System.out.println("" + emp.getEmail().trim() + mensaje
+                        + "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre()
+                        + institucion.getEmail()
+                        + institucion.getClave()
+                        + institucion.getSmtp()
+                        + institucion.getPuerto()
+                        + institucion.getAutorizacion()
+                        + institucion.getStar());
             } catch (Exception e) {
-                 System.out.println("error: "+e.getMessage());
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"Ud. no tiene registrado un email en su cuenta...!","Ud. no tiene registrado un email en su cuenta...!"));
+                System.out.println("error: " + e.getMessage());
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ud. no tiene registrado un email en su cuenta...!", "Ud. no tiene registrado un email en su cuenta...!"));
                 return "no";
             }
-            
-            Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
-                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(),institucion.getAutorizacion(),institucion.getStar());
- 
- 
+            ArrayList matriculas = new ArrayList();
+            matriculas.add(emp.getEmail().trim());
+
+            Boolean estado = EnviarAutenticacion.RecuperarClave(matriculas, mensaje,
+                    "RECUPERACION DE CLAVE " + emp.getApellidoPaterno() + " " + emp.getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(), institucion.getAutorizacion(), institucion.getStar());
+
+
             if (estado) {
-                
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso","Se ha enviado un email a: "+emp.getEmail()+" con sus datos para el ingreso"));
+
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha enviado un email a: " + emp.getEmail() + " con sus datos para el ingreso", "Se ha enviado un email a: " + emp.getEmail() + " con sus datos para el ingreso"));
                 return "[OK] " + emp.getEmail();
             } else {
-                    FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha enviado el email...!","No se ha enviado el email...!"));
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha enviado el email...!", "No se ha enviado el email...!"));
                 return "no";
 
             }
 
         } else {
-                                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR,"No se ha encontrado el estudiante con la cédula ingresada...!","No se ha encontrado el estudiante con la cédula ingresada...!"));
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se ha encontrado el estudiante con la cédula ingresada...!", "No se ha encontrado el estudiante con la cédula ingresada...!"));
             return "no";
         }
     }
@@ -271,7 +304,7 @@ public class RecuperarBean {
 
         Matriculas matriculaNo = llista.get(0);
         if (matriculaNo != null) {
-            
+
             mensaje = "<html><p> <b> Su usuario es: </b>" + matriculaNo.getIdEstudiantes().getUsuario() + "<p> "
                     + "<b> Su password es:</b> " + val.desencriptar(matriculaNo.getIdEstudiantes().getClave()) + " <p> "
                     + "Le recordamos que debe cambiar su clave periodicamente para su mayor seguridad"
@@ -291,8 +324,10 @@ public class RecuperarBean {
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
-            Boolean estado = EnviarAutenticacion.RecuperarClave(matriculaNo.getIdEstudiantes().getEmail().trim(), mensaje,
-                    "RECUPERACION DE CLAVE " + matriculaNo.getIdEstudiantes().getApellidoPaterno() + " " + matriculaNo.getIdEstudiantes().getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(),institucion.getAutorizacion(),institucion.getStar());
+            ArrayList matriculas = new ArrayList();
+            matriculas.add(matriculaNo.getIdEstudiantes().getEmail().trim());
+            Boolean estado = EnviarAutenticacion.RecuperarClave(matriculas, mensaje,
+                    "RECUPERACION DE CLAVE " + matriculaNo.getIdEstudiantes().getApellidoPaterno() + " " + matriculaNo.getIdEstudiantes().getNombre(), institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(), institucion.getAutorizacion(), institucion.getStar());
             if (estado) {
                 return "[OK] " + matriculaNo.getIdEstudiantes().getEmail();
             } else {
@@ -304,9 +339,6 @@ public class RecuperarBean {
             return "no";
         }
     }
-
-    
-     
 
     private boolean validaEmail(String strText) {
         int iSw = 0;
@@ -332,8 +364,8 @@ public class RecuperarBean {
 //        Cursos obj = curso;
         try {
             Administrador adm = new Administrador();
-             
- 
+
+
             String ip = institucion.getIp();
             mensaje = mensaje.replace("/solucion", "http://" + ip + "/solucion");
             String direcciones = correos;
@@ -348,7 +380,7 @@ public class RecuperarBean {
                     if (!matriculados2.contains(str)) {
                         if (validaEmail(str.replace(" ", ""))) {
                             matriculados2.add(str.replace(" ", ""));
-                            System.out.println(""+str);
+                            System.out.println("" + str);
                             k++;
                         }
                     }
@@ -357,9 +389,9 @@ public class RecuperarBean {
                 }
                 i++;
             }
-            System.out.println("enviado a: ("+k+") emails");
+            System.out.println("enviado a: (" + k + ") emails");
             if (matriculados2.size() > 0) {
-                EnviarAutenticacion.EnviarCorreo(matriculados2, mensaje, tema, institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(), empleado.getEmail(),institucion.getAutorizacion(),institucion.getStar());
+                EnviarAutenticacion.EnviarCorreo(matriculados2, mensaje, tema, institucion.getEmail(), institucion.getClave(), institucion.getSmtp(), institucion.getPuerto(), empleado.getEmail(), institucion.getAutorizacion(), institucion.getStar());
             }
         } catch (Exception e) {
             System.out.println("" + e);
@@ -406,7 +438,8 @@ public class RecuperarBean {
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }
-  protected UIComponent findComponent(UIComponent c, String id) {
+
+    protected UIComponent findComponent(UIComponent c, String id) {
         if (id.equals(c.getId())) {
             return c;
         }
@@ -419,12 +452,11 @@ public class RecuperarBean {
         }
         return null;
     }
-
-    
 }
+
 class EnviarAutenticacion {
 
-    public static Boolean RecuperarClave(String email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto,Boolean autorizacion, Boolean star) {
+    public static Boolean RecuperarClave(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, Boolean autorizacion, Boolean star) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="jcinform@gmail.com";
         String from = emailInstitucion;
@@ -432,14 +464,23 @@ class EnviarAutenticacion {
         Properties prop = new Properties();
         prop.put("mail.host", host.trim());
         prop.setProperty("mail.smtp.port", puerto.trim());
-        prop.setProperty("mail.smtp.starttls.enable", ""+star);
-        prop.put("mail.smtp.auth", ""+autorizacion);
+        prop.setProperty("mail.smtp.starttls.enable", "" + star);
+        prop.put("mail.smtp.auth", "" + autorizacion);
         try {
             SMTPAutenticacion auth = new SMTPAutenticacion(emailInstitucion, clave);
             Session session = Session.getInstance(prop, auth);
-            InternetAddress[] emailsA = new InternetAddress[1];
+            
+            InternetAddress[] emailsA = new InternetAddress[email.size()];
             int i = 0;
-            emailsA[i] = new InternetAddress(email + "");
+            for (Iterator it = email.iterator(); it.hasNext();) {
+                String object = (String) it.next();
+                String to = object.replace(" ", "");
+                emailsA[i] = new InternetAddress(to + "");
+                i++;
+            }
+//            InternetAddress[] emailsA = new InternetAddress[1];
+//            int i = 0;
+//            emailsA[i] = new InternetAddress(email + "");
             System.out.println("***********************" + emailInstitucion);
             Message msg = getTraerMensaje(session, tema, emailsA, mensaje, emailInstitucion, emailInstitucion);
             Transport.send(msg);
@@ -452,7 +493,7 @@ class EnviarAutenticacion {
 
     }
 
-    public static void EnviarCorreo(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, String respuestaA,Boolean autorizacion, Boolean star) {
+    public static void EnviarCorreo(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, String respuestaA, Boolean autorizacion, Boolean star) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -460,8 +501,8 @@ class EnviarAutenticacion {
         Properties prop = new Properties();
         prop.put("mail.host", host.trim());
         prop.setProperty("mail.smtp.port", puerto.trim());
-        prop.setProperty("mail.smtp.starttls.enable", ""+star);
-        prop.put("mail.smtp.auth", ""+autorizacion);
+        prop.setProperty("mail.smtp.starttls.enable", "" + star);
+        prop.put("mail.smtp.auth", "" + autorizacion);
         try {
             SMTPAutenticacion auth = new SMTPAutenticacion(emailInstitucion, clave);
             Session session = Session.getInstance(prop, auth);
@@ -548,8 +589,6 @@ class SMTPAutenticacion extends javax.mail.Authenticator {
     public void setUser(String user) {
         this.user = user;
     }
-    
-   
 }
 
 class ExceptionManager {
@@ -560,7 +599,6 @@ class ExceptionManager {
         e.printStackTrace(System.out);
     }
 }
-
 //    public void enviarEmailInscripcion(String direcciones, String codigo) {
 //        Cursos obj = curso;
 //        try {

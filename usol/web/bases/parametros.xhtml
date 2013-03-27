@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" >
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+
+                <p:panel id="registro"  style="width: 600px;" header="Parametros Globales">
+                    <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
+                    <!--p:message for="form" /-->
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                        <h:outputText value="NOMBRE" />  
+                        <p:inputText value="#{parametrosBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="VARIABLE" />  
+                        <p:inputText value="#{parametrosBean.object.variable}" id="variable"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="V.NUMÉRICO" />  
+                        <p:inputText value="#{parametrosBean.object.VNumerico}" id="vNumerico"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="V.CARACTER" />  
+                        <p:inputText value="#{parametrosBean.object.VCaracter}" id="vCaracter"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="V.FECHA" />  
+                        <p:calendar value="#{parametrosBean.object.VFecha}" id="vFecha"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <h:outputText value="V.LOGICO" />  
+                        <p:selectBooleanButton value="#{parametrosBean.object.VLogico}" onLabel="SI" offLabel="NO" id="vLogico"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        
+                        <h:outputText value="TIPO" />  
+                        <p:selectOneRadio id="tipo" value="#{parametrosBean.object.tipo}">  
+                                <f:selectItem itemLabel="Númérico"  itemValue="N" />  
+                                <f:selectItem itemLabel="Caracter" itemValue="C" />  
+                                <f:selectItem itemLabel="Lógico" itemValue="L" />  
+                                <f:selectItem itemLabel="Fecha" itemValue="F" />  
+                            </p:selectOneRadio>  
+                        
+                        <p:inputText  value="#{parametrosBean.object.idParametros}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
+
+                    </h:panelGrid>  
+                    <h:panelGrid columns="4">
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:pais"   action="#{parametrosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{parametrosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        </p:commandButton> 
+                        
+                    </h:panelGrid>
+                </p:panel>
+                <p:panel  style="width: 600px;">
+                    <h:panelGrid  columns="4">
+
+                    <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
+                    <p:inputText id="textoBuscar" value="#{parametrosBean.textoBuscar}" style="font-weight:bold"/>  
+                    <p:commandButton id="buscar" value="Buscar" update="pais" actionListener="#{parametrosBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+
+                </h:panelGrid>
+                </p:panel>
+                
+                <p:dataTable style="width:600px;" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  id="pais" var="obj" value="#{parametrosBean.model}">  
+                    <p:column headerText="ID" style="width:10%">  
+                        <h:outputText value="#{obj.idParametros}" />  
+                    </p:column>  
+                    <p:column headerText="NOMBRE" style="width:80%">  
+                        <h:outputText value="#{obj.nombre}" />  
+                    </p:column>  
+                    <p:column style="width:10%">  
+                        <h:panelGrid style="border-color: transparent;" columns="2">
+
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{parametrosBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+
+                            </p:commandButton>  
+                            <p:commandButton id="eliminarButton" actionListener="#{parametrosBean.eliminar(obj)}"  update=":form"   icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+
+                            </p:commandButton>  
+                        </h:panelGrid>
+
+                    </p:column>  
+
+                </p:dataTable>  
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

@@ -310,7 +310,7 @@ public class LoginBean {
         verificarPermisoReporte("Matriculas", "ingresar_matriculas.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Empleados", "ingresar_empleados.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Inscripciones", "ingresar_inscripciones.jspx", "ingresar", true, "ADMINISTRACION");
-        verificarPermisoReporte("Orientacion", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION");
+        verificarPermisoReporte("BienestarEstudiantil", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION");
         verificarPermisoReporte("Aspirantes", "ingresar_listaAspirantes.jspx", "ingresar", true, "ADMINISTRACION");
 
 
@@ -345,6 +345,7 @@ public class LoginBean {
         verificarPermisoReporte("Perfiles", "ingresar_perfiles.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Periodos", "ingresar_periodos.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Provincia", "ingresar_provincia.jspx", "ingresar", true, "PARAMETROS");
+        verificarPermisoReporte("Parametros", "ingresar_parametros.jspx", "ingresar", true, "PARAMETROS");
 
         verificarPermisoReporte("RangosIngresos", "ingresar_rangosIngresos.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("TipoMateria", "ingresar_tipomateria.jspx", "ingresar", true, "PARAMETROS");
