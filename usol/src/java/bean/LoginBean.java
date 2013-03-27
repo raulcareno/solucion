@@ -327,7 +327,7 @@ public class LoginBean {
         verificarPermisoReporte("SistemaNotas", "ingresar_sistemaNotas.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("Registro de Notas", "ingresar_notas.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("Reg. de Notas Docentes", "ingresar_notasProfesores.jspx", "ingresar", true, "NOTAS");
-        verificarPermisoReporte("Convalidaciones", "ingresar_notasConvalidacioens.jspx", "ingresar", true, "NOTAS");
+        verificarPermisoReporte("Convalidaciones", "ingresar_notasConvalidaciones.jspx", "ingresar", true, "NOTAS");
 
 
         verificarPermisoReporte("Rubros", "ingresar_rubros.jspx", "ingresar", true, "PAGOS");
