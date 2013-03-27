@@ -25,6 +25,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import jcinform.persistencia.Aulas;
 import jcinform.persistencia.Carreras;
+import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Horarios;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
@@ -48,7 +49,7 @@ import utilerias.secuencial;
  */
 @ManagedBean
 @SessionScoped
-public class NotasBean implements Serializable {
+public class NotasBeanConvalidaciones implements Serializable {
 
     /**
      * Creates a new instance of NotasBean
@@ -63,7 +64,7 @@ public class NotasBean implements Serializable {
     Auditar aud = new Auditar();
     Periodos per = null;
 
-    public NotasBean() {
+    public NotasBeanConvalidaciones() {
 //        super();
         FacesContext context = FacesContext.getCurrentInstance();
         per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
@@ -79,7 +80,7 @@ public class NotasBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
             } catch (IOException ex) {
-                java.util.logging.Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
+                java.util.logging.Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -340,7 +341,7 @@ public class NotasBean implements Serializable {
                     notaIngresada.setIdMaterias(materiasSeleccionada);
                     notaIngresada.setConvalidad(false);
                     notaIngresada.setEstado("");
-                    notaIngresada.setEstadoNot(false);
+                    notaIngresada.setEstadoNot(true);
                     notaIngresada.setEquivalencia("");
                     //notaIngresada.setSistemaNotas(asiprofesor.getOrden());
                     //notaIngresada.setNotFecha(new Date());
@@ -380,7 +381,7 @@ public class NotasBean implements Serializable {
                 } catch (EvalError ex) {
 
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "NO SE HA GRABADO LOS REGISTROS\\n ERROR: " + ex));
-                    Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, ex);
                     return;
                 }
 
@@ -389,7 +390,7 @@ public class NotasBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));
             //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
         } catch (EvalError ex) {
-            Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        try {
 //            object.setIdNotas(secuencial.generarClave());
@@ -422,7 +423,7 @@ public class NotasBean implements Serializable {
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Eliminado...!"));
         } catch (Exception e) {
             //log.error("eliminarAction() {} ", e.getMessage());
-            java.util.logging.Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, e);
             context.addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
         return null;
@@ -452,9 +453,12 @@ public class NotasBean implements Serializable {
             //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             List<Materias> materiasListado = new ArrayList<Materias>();
             List<SelectItem> items = new ArrayList<SelectItem>();
+            Empleados empleadoAc = (Empleados) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+ 
             materiasListado = adm.query("Select distinct o.idMaterias from Horarios as o "
                     + " where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
-                    + " and o.idCarreras.idCarreras = '"+carrerasSeleccionada.getIdCarreras()+"'  "
+                    + " and o.idCarreras.idCarreras = '"+carrerasSeleccionada.getIdCarreras()+"' "
+                    + " and o.idEmpleados.idEmpleados = '"+empleadoAc.getIdEmpleados()+"'  "
                     + " order by o.idMaterias.nombre ");
             if (materiasListado.size() > 0) {
                 Materias objSel = new Materias(0);
@@ -559,7 +563,7 @@ public class NotasBean implements Serializable {
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }
@@ -578,7 +582,7 @@ public class NotasBean implements Serializable {
             setModel(model);
 
         } catch (Exception e) {
-            java.util.logging.Logger.getLogger(NotasBean.class.getName()).log(Level.SEVERE, null, e);
+            java.util.logging.Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
         }
     }

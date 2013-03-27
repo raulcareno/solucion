@@ -316,6 +316,7 @@ public class LoginBean {
 
         verificarPermisoReporte("Aulas", "ingresar_aulas.jspx", "ingresar", true, "HORARIOS");
         verificarPermisoReporte("Horarios", "ingresar_horarios.jspx", "ingresar", true, "HORARIOS");
+        verificarPermisoReporte("Horarios Docentes", "ingresar_horariosProfesores.jspx", "ingresar", true, "HORARIOS");
         verificarPermisoReporte("Horas", "ingresar_horas.jspx", "ingresar", true, "HORARIOS");
 
 
@@ -325,6 +326,7 @@ public class LoginBean {
         verificarPermisoReporte("SecuenciaMaterias", "ingresar_carrerasMateriasSecuencia.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("SistemaNotas", "ingresar_sistemaNotas.jspx", "ingresar", true, "NOTAS");
         verificarPermisoReporte("Registro de Notas", "ingresar_notas.jspx", "ingresar", true, "NOTAS");
+        verificarPermisoReporte("Reg. de Notas Docentes", "ingresar_notasConvalidaciones.jspx", "ingresar", true, "NOTAS");
 
 
         verificarPermisoReporte("Rubros", "ingresar_rubros.jspx", "ingresar", true, "PAGOS");
@@ -363,9 +365,11 @@ public class LoginBean {
                 context.addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "El nombre de Usuario o Contraseña están incorrectas...!", "El nombre de Usuario o Contraseña están incorrectas...!"));
                 return null;
             } else {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 generar();
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("user");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("accesos");
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 List<Accesos> accesosList = adm.query("Select o from Accesos as o "
                         + " where o.idPerfiles.idPerfiles = '" + user.getIdPerfiles().getIdPerfiles() + "' "
                         + " and o.ingresar = true order by o.variable ");
@@ -414,7 +418,6 @@ public class LoginBean {
 
                 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("accesos", accesosList);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 periodoSeleccionado = (Periodos) adm.buscarClave(periodoSeleccionado.getIdPeriodos(), Periodos.class);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
 
@@ -445,7 +448,7 @@ public class LoginBean {
             //String encodeURL = context.getExternalContext().encodeResourceURL(url);
             //context.getExternalContext().redirect(encodeURL);
         } catch (Exception e) {
-            //log.error("loginAction() ERROR " + e);
+            e.printStackTrace();
         } finally {
             context.responseComplete();
         }
