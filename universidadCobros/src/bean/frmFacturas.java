@@ -1359,7 +1359,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             if (actualMatricula.getIdMatriculas() != null) {
                 try {
-                    if (actualMatricula.getNumero() == null) {
+                    if (actualMatricula.getNumero() == null && tipoMatricula) {
                         actualMatricula.setNumero(adm.getNuevaClave("Matriculas", "numero"));
                     }
                 } catch (Exception e) {
@@ -2688,12 +2688,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void formasdePagoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formasdePagoKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_DELETE) {
+            faltan.setText("0.00");
+            faltan.setText(total.getText());
             int fil = formasdePago.getSelectedRow();
             DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
             dtm.removeRow(fil);
             formasdePago.setModel(dtm);
             this.sumarPagos();
             this.sumar();
+            
         }
     }//GEN-LAST:event_formasdePagoKeyPressed
 
