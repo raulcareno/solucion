@@ -154,10 +154,9 @@ void ingresoSistemas(){
         Messagebox.show("Seleccione un periodo...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
     }
-
+    
     Institucion inst = (Institucion) adm.buscarClave(new Integer(1), Institucion.class);
-    String bas = inst.getIniciales().substring(1,inst.getIniciales().length());
-     
+
             Empleados user = adm.ingresoSistema(usuario.value, clave.value);
             if(user != null){
                     Periodo perio = (Periodo)periodo.selectedItem.value;
