@@ -45,6 +45,7 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.ImageIcon;
+import org.joda.time.DateTime;
 import sources.FacturaDetalleSource;
 
 import sources.FacturaSource;
@@ -2334,12 +2335,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     try {
                         //CREO UNA NUEVA FACTURA CON UN DETERMINADO NÚMERO DE TICKET 
                         Factura facNueva = new Factura();
-                        facNueva.setFechaini(fac.getFechafin());
+//                        facNueva.setFechaini(fac.getFechafin());
                         Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
 
                         facNueva.setPlaca("");
                         facNueva.setFechaini(fac.getFechafin());
-                        facNueva.setFecha(fac.getFechafin());
+                        facNueva.setFecha(fac.getFechafin()); 
                         facNueva.setAnulado(false);
                         facNueva.setUsuario(principal.getUsuario());
                         facNueva.setNocontar(false);
@@ -2366,7 +2367,27 @@ public class frmFactura extends javax.swing.JInternalFrame {
                             }
 
                         }
+                        DateTime dt = new DateTime(fac.getFechafin());
+                        
+                        DateTime tiempoDespuesGracia = dt.minusMinutes(emp.getGracia()); 
+                        if((minutosEntreSalidayActual+emp.getGracia())<60){
+                            facNueva.setFechaini(tiempoDespuesGracia.toDate()); 
+                            facNueva.setFecha(tiempoDespuesGracia.toDate());
+                        }
                         llenarFactura(facNueva);
+                        
+                        DateTime dt0 = new DateTime(facNueva.getFechaini());
+                        DateTime tiempoDespuesGracia0 = dt0.plusMinutes(emp.getGracia()); 
+                        if((minutosEntreSalidayActual+emp.getGracia())<60){
+                            facNueva.setFechaini(tiempoDespuesGracia0.toDate()); 
+                            ingreso.setDate(facNueva.getFechaini());
+                            DateTime dt2 = new DateTime(tiempo.getDate());
+                        DateTime tiempoDespuesGracia2 = dt2.minusMinutes(emp.getGracia()); 
+                         tiempo.setDate(tiempoDespuesGracia2.toDate()); 
+                        }
+                        
+                        
+                        
                         guardando = false;
                     } catch (Exception ab) {
                     }
