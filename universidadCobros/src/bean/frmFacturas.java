@@ -140,6 +140,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         frmSeleccionCarreras = new javax.swing.JDialog();
         jScrollPane5 = new javax.swing.JScrollPane();
         variasCarreras1 = new javax.swing.JTable();
+        anularFacturaForm = new javax.swing.JDialog();
+        numeroFacturaAnula = new javax.swing.JFormattedTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        btnAnularFactura = new javax.swing.JButton();
+        btnSalirAnula = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        observacionAnula = new javax.swing.JTextArea();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         encontrados1 = new javax.swing.JList();
@@ -321,6 +329,72 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         frmSeleccionCarreras.getContentPane().add(jScrollPane5, java.awt.BorderLayout.CENTER);
 
+        anularFacturaForm.setTitle("Anular Factura");
+        anularFacturaForm.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+
+        numeroFacturaAnula.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                numeroFacturaAnulaFocusLost(evt);
+            }
+        });
+
+        jLabel22.setText("Ingrese el # de Factura");
+
+        jLabel23.setText("Motivo de Anulación: ");
+
+        btnAnularFactura.setText("Anular");
+        btnAnularFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnularFacturaActionPerformed(evt);
+            }
+        });
+
+        btnSalirAnula.setText("Salir");
+        btnSalirAnula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirAnulaActionPerformed(evt);
+            }
+        });
+
+        observacionAnula.setColumns(20);
+        observacionAnula.setRows(5);
+        jScrollPane6.setViewportView(observacionAnula);
+
+        javax.swing.GroupLayout anularFacturaFormLayout = new javax.swing.GroupLayout(anularFacturaForm.getContentPane());
+        anularFacturaForm.getContentPane().setLayout(anularFacturaFormLayout);
+        anularFacturaFormLayout.setHorizontalGroup(
+            anularFacturaFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(anularFacturaFormLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(anularFacturaFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel22)
+                    .addComponent(numeroFacturaAnula)
+                    .addComponent(jLabel23)
+                    .addGroup(anularFacturaFormLayout.createSequentialGroup()
+                        .addComponent(btnAnularFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(btnSalirAnula, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6))
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+        anularFacturaFormLayout.setVerticalGroup(
+            anularFacturaFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(anularFacturaFormLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel22)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(numeroFacturaAnula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(anularFacturaFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalirAnula)
+                    .addComponent(btnAnularFactura))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
         setBackground(new java.awt.Color(236, 246, 255));
         setTitle("Facturación");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rubros.gif"))); // NOI18N
@@ -476,7 +550,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
         btnEliminar.setText("Anular");
-        btnEliminar.setEnabled(false);
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1266,6 +1339,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            if (tFactura.getRowCount() <= 0) {
+                JOptionPane.showMessageDialog(this, "DEBE INGRESAR ALGUN RUBRO...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             Facturas cab = new Facturas();
 //                secuencial sec = new secuencial();
             inst = (Institucion) adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
@@ -1425,7 +1503,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-// TODO add your handling code here:
+        // TODO add your handling code here:
+        anularFacturaForm.setSize(290, 283);
+        anularFacturaForm.setLocationByPlatform(true);
+        anularFacturaForm.show();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -1557,35 +1638,62 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
         Parientes factura = new Parientes();
-        if (es.getIdParientes().getTipoRepresentante().equals("F")) {
-            factura = es.getIdParientes();
-        } else if (es.getParIdParientes().getTipoRepresentante().equals("F")) {
-            factura = es.getParIdParientes();
-        } else if (es.getParIdParientes2().getTipoRepresentante().equals("F")) {
-            factura = es.getParIdParientes2();
-        }
-        codigoPariente.setText(factura.getIdParientes() + "");
-        ruc.setText(factura.getIdentificacion());
-        if (ruc.getText().isEmpty()) {
-            ruc.setText(es.getIdEstudiantes());
-        }
-        nombre.setText(factura.getNombres());
-        if (nombre.getText().isEmpty()) {
-            nombre.setText(es.getApellidoPaterno() + " " + es.getApellidoMaterno() + " " + es.getNombre());
-        }
-        direccion.setText(factura.getDireccion());
-        if (direccion.getText().isEmpty()) {
-            direccion.setText(es.getDireccion());
-        }
-        telefono.setText(factura.getTelefonoTrabajo());
-        if (telefono.getText().isEmpty()) {
-            telefono.setText(es.getTelefono());
-        }
-        ruc1.setText(factura.getIdentificacion());
-        nombre1.setText(factura.getNombres());
-        direccion1.setText(factura.getDireccion());
-        telefono1.setText(factura.getTelefonoTrabajo());
+        factura.setIdentificacion("");
+        factura.setApellidos("");
+        factura.setNombres("");
+        factura.setDireccion("");
+        factura.setTelefonoCasa("");
+        factura.setTelefonoTrabajo("");
+        factura.setLugarTrabajo("");
+        factura.setTipoRepresentante("");
+        factura.setEstado("");
+        
+        try {
 
+            if (es.getIdParientes().getTipoRepresentante().equals("F")) {
+                factura = es.getIdParientes();
+            } else if (es.getParIdParientes().getTipoRepresentante().equals("F")) {
+                factura = es.getParIdParientes();
+            } else if (es.getParIdParientes2().getTipoRepresentante().equals("F")) {
+                factura = es.getParIdParientes2();
+            }
+        } catch (Exception e) {
+            System.out.println("no existen parientes ");
+            e.printStackTrace();
+        }
+        try {
+            try {
+                codigoPariente.setText(factura.getIdParientes() + "");    
+            } catch (Exception e) {
+                codigoPariente.setText("");
+            }
+            
+            ruc.setText(factura.getIdentificacion());
+            if (ruc.getText().isEmpty()) {
+                ruc.setText(es.getIdEstudiantes());
+            }
+            nombre.setText(factura.getNombres());
+            if (nombre.getText().isEmpty()) {
+                nombre.setText(es.getApellidoPaterno() + " " + es.getApellidoMaterno() + " " + es.getNombre());
+            }
+            direccion.setText(factura.getDireccion());
+            if (direccion.getText().isEmpty()) {
+                direccion.setText(es.getDireccion());
+            }
+            telefono.setText(factura.getTelefonoTrabajo());
+            if (telefono.getText().isEmpty()) {
+                telefono.setText(es.getTelefono());
+            }
+            ruc1.setText(factura.getIdentificacion());
+            nombre1.setText(factura.getNombres());
+            direccion1.setText(factura.getDireccion());
+            telefono1.setText(factura.getTelefonoTrabajo());
+        } catch (Exception e) {
+            System.out.println(""+e);
+            e.printStackTrace();
+            
+        }
+        
         List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' and o.estadoMat = 'I' ");
@@ -2696,7 +2804,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             formasdePago.setModel(dtm);
             this.sumarPagos();
             this.sumar();
-            
+
         }
     }//GEN-LAST:event_formasdePagoKeyPressed
 
@@ -2866,7 +2974,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             dobleMatricula = true;
             frmCarrerasVarias.dispose();
             buscarInscripcion(EstudianteSeleccionado);
-            
+
         }
     }//GEN-LAST:event_variasCarrerasKeyPressed
 
@@ -2899,17 +3007,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (evt.getKeyCode() == evt.VK_ENTER) {
             Integer cod = (Integer) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 0);
             String nom = (String) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 1);
-           List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
-                + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "'  "
-               + "and o.idCarreras.idCarreras = '" + cod + "' ");
-            if(matriculaList.size()>0){
+            List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
+                    + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
+                    + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "'  "
+                    + "and o.idCarreras.idCarreras = '" + cod + "' ");
+            if (matriculaList.size() > 0) {
                 JOptionPane.showMessageDialog(this, "Estudiante Ya Matriculado, \n "
                         + "enn la Carrera Seleccionada", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return; 
+                return;
             }
-            
-            
+
+
             carreraSeleccionada = new Carreras(cod);
             carreraSeleccionada.setNombre(nom);
             carrera.setText(carreraSeleccionada.getNombre());
@@ -2922,7 +3030,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 frmSeleccionCarreras.dispose();
             }
 
-            
+
         }
 
     }//GEN-LAST:event_variasCarreras1KeyPressed
@@ -2932,22 +3040,69 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         actualMatricula = new Matriculas();
         llenarCarreras();
         List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
-                actualMatricula.setIdCategoriasSociales(datos.get(0));
-                sumar();
-                tipoProceso = "NUEVA";
+        actualMatricula.setIdCategoriasSociales(datos.get(0));
+        sumar();
+        tipoProceso = "NUEVA";
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void btnAnularFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnularFacturaActionPerformed
+        // TODO add your handling code here:
+        if (numeroFacturaAnula.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese un # de Factura...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (observacionAnula.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese el Motivo porqué ANULA la factura...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        inst = (Institucion) adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
+        String fac = (inst.getSerie1() + "FC" + numeroFacturaAnula.getText());
+        Facturas facAc = (Facturas) adm.buscarClave(fac, Facturas.class);
+        if (facAc == null) {
+            JOptionPane.showMessageDialog(this, "NO EXISTE EL # de Factura...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            facAc.setAnulado(true);
+            facAc.setObservacion(observacionAnula.getText());
+            adm.actualizar(facAc);
+            List<Cxcobrar> cuentasCobradas = adm.query("Select o from Cxcobrar as o where o.idFacturas.idFacturas = '" + fac + "'  ");
+            for (Iterator<Cxcobrar> it = cuentasCobradas.iterator(); it.hasNext();) {
+                Cxcobrar cxcobrar = it.next();
+                cxcobrar.setAnulado(true);
+                adm.actualizar(cxcobrar);
+            }
+            anularFacturaForm.dispose();
+        }
+
+    }//GEN-LAST:event_btnAnularFacturaActionPerformed
+
+    private void btnSalirAnulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirAnulaActionPerformed
+        // TODO add your handling code here:
+        anularFacturaForm.dispose();
+    }//GEN-LAST:event_btnSalirAnulaActionPerformed
+
+    private void numeroFacturaAnulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_numeroFacturaAnulaFocusLost
+        // TODO add your handling code here:
+        String codigo = numeroFacturaAnula.getText() + "";
+        while (codigo.length() < 7) {
+            codigo = "0" + codigo;
+        }
+        numeroFacturaAnula.setText("" + codigo);
+    }//GEN-LAST:event_numeroFacturaAnulaFocusLost
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
+    private javax.swing.JDialog anularFacturaForm;
     private javax.swing.JComboBox bancoA;
     private javax.swing.JButton btnAnadir;
     private javax.swing.JToggleButton btnAnadirRubrosVer;
+    private javax.swing.JButton btnAnularFactura;
     private javax.swing.JButton btnCerrarAnadirRubros;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardarCerra;
     private javax.swing.JButton btnModificar;
     public javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnSalirAnula;
     private javax.swing.JFormattedTextField buscarApellido;
     private javax.swing.JPanel busquedaVacio;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -3000,6 +3155,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -3014,10 +3171,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JLabel nombre;
     private javax.swing.JFormattedTextField nombre1;
+    private javax.swing.JFormattedTextField numeroFacturaAnula;
     private javax.swing.JTextArea observacion;
+    private javax.swing.JTextArea observacionAnula;
     private javax.swing.JPanel panelAnadirRubros;
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JFormattedTextField referenciaA;
