@@ -469,6 +469,7 @@ public class InscripcionesBean {
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nombre y Cedula ya MATRICULADOS, búsquelos primero si desea editarlos...!", "Nombre y Cedula ya MATRICULADOS, busquelos primero si desea editarlos...!"));
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
         } else {
@@ -483,6 +484,7 @@ public class InscripcionesBean {
 //                inicializar();
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
+                e.printStackTrace();
                 java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
             }
