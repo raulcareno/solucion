@@ -43,7 +43,7 @@ Cursos selec = new Cursos(-1);
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
 void buscar2(Cursos cur){
     String tipo = reporte.getSelectedItem().getValue();
-   if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP7") || tipo.equals("LREP2") || tipo.equals("LREP3") ){
+   if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP7") || tipo.equals("CEREP") || tipo.equals("LREP2") || tipo.equals("LREP3") ){
             filaestudiantes.visible = false;
             estudiantesCombo.disabled = true;
            return;
@@ -878,7 +878,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     
                 	Set items2 = estudiantesCombo.getSelectedItems();
 
-                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")   && !tipo.equals("LREP7")  && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") && !tipo.equals("LREP3") ) {
+                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")  && !tipo.equals("CEREP")   && !tipo.equals("LREP7")  && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") && !tipo.equals("LREP3") ) {
                             Messagebox.show("NO HA SELECCIONADO NINGÚN ESTUDIANTE...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             return;
 						} else {
@@ -939,6 +939,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"certificadoConstancia.jasper");
+            }else if(tipo.equals("CEREP")){
+                    datasource = certificados(listadoCursos,"CEREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"celulares.jasper");
             }else if(tipo.equals("CP")){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1222,6 +1226,9 @@ void campos(String valor){
         if(valor.equals("LREP2")  || valor.equals("LINSF") || valor.equals("RET") ){
             filaestudiantes.visible = false;
         }
+        if(valor.equals("CEREP")){
+            filaestudiantes.visible = false;
+        }
         
         
       if(valor.equals("LREL2") ||valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
@@ -1274,7 +1281,9 @@ void campos(String valor){
             titulo.value = "Correos";
         if(valor.equals("LREP"))
             titulo.value = "Lista de Representantes";
-        if(valor.equals("LCAS"))
+       if(valor.equals("CEREP"))
+            titulo.value = "Lista de Representantes";
+         if(valor.equals("LCAS"))
             titulo.value = "Listado de Estudiantes";
        if(valor.equals("LCA"))
             titulo.value = "Listado de Estudiantes";
@@ -1376,6 +1385,7 @@ void campos(String valor){
                                 <listitem  id="LFEC" label="Estudiantes por Fecha y Edad (Años Cumplidos)" value="LFEC"/>
                                 <listitem  id="LCED" label="Estudiantes con Cédula de Identidad" value="LCED"/>
                                 <listitem  id="LDAT" label="Estudiantes con Datos" value="LDAT"/>
+                                <listitem  id="CEREP" label="Celulares Representantes" value="CEREP"/>
                                 
                                 <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 <listitem  id="LNUEV" label="Estudiantes Nuevos" value="LNUEV"/>
@@ -1568,6 +1578,7 @@ void campos(String valor){
             LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             LREP2.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             LREP3.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            CEREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
             LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
             LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
