@@ -134,7 +134,7 @@
 
 
                                 <c:forEach var="i" begin="0" end="#{horariosBean.totalHoras-1}" step="1" varStatus ="status">
-                                    <h:outputText  value="#{horariosBean.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{horariosBean.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
+                                    <h:outputText  value="#{horariosBean.horas.get(i).getDesdeHor().toLocaleString().substring(11)} - #{horariosBean.horas.get(i).getHastaHor().toLocaleString().substring(11)}" />             
                                     <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
 
                                         <p:panel  id="f#{i}c#{j}" styleClass="panelGrande">  
