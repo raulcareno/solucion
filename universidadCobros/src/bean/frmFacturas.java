@@ -1044,6 +1044,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 tipoAItemStateChanged(evt);
             }
         });
+        tipoA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tipoAActionPerformed(evt);
+            }
+        });
         jPanel2.add(tipoA);
         tipoA.setBounds(10, 40, 110, 28);
 
@@ -2769,6 +2774,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         BigDecimal to = new BigDecimal(total.getText());
         BigDecimal co = new BigDecimal(totalCobros.getText());
         faltan.setText("" + (to.subtract(co)));
+        if (comprobarAntesAnadir()) {
+            //JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            anadir.setEnabled(false);
+            tipoA.setEnabled(false); 
+        }else{
+            anadir.setEnabled(true); 
+            tipoA.setEnabled(true); 
+        }
+        
 
     }//GEN-LAST:event_anadirActionPerformed
 
@@ -2804,7 +2818,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             formasdePago.setModel(dtm);
             this.sumarPagos();
             this.sumar();
-
+                BigDecimal to = new BigDecimal(total.getText());
+                BigDecimal co = new BigDecimal(totalCobros.getText());
+                faltan.setText("" + (to.subtract(co)));
+                    if (comprobarAntesAnadir()) {
+                        //JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                        anadir.setEnabled(false); 
+                        tipoA.setEnabled(false); 
+                    }else{
+                        anadir.setEnabled(true); 
+                        tipoA.setEnabled(true); 
+                    }
         }
     }//GEN-LAST:event_formasdePagoKeyPressed
 
@@ -2825,7 +2849,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
         if (cabe != null) {
             JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
-            factura.setText("");
+            //factura.setText("");
             factura.requestFocusInWindow();
         }
 
@@ -3062,6 +3086,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "NO EXISTE EL # de Factura...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
+            if(facAc.getAnulado()){
+                JOptionPane.showMessageDialog(this, "Factura ya ANULADA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             facAc.setAnulado(true);
             facAc.setObservacion(observacionAnula.getText());
             adm.actualizar(facAc);
@@ -3089,6 +3117,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         numeroFacturaAnula.setText("" + codigo);
     }//GEN-LAST:event_numeroFacturaAnulaFocusLost
+
+    private void tipoAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tipoAActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JDialog anularFacturaForm;
