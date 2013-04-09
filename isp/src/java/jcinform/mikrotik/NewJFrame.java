@@ -40,6 +40,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         datos = new javax.swing.JFormattedTextField();
         datos1 = new javax.swing.JFormattedTextField();
+        datos2 = new javax.swing.JFormattedTextField();
+        datos3 = new javax.swing.JFormattedTextField();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
@@ -52,25 +54,33 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        datos.setText("/ppp/secret/add");
+        datos.setText("/ip/firewall/address-list/add");
 
-        datos1.setText("=name=1234 password=123 profile=HOME-VIP");
+        datos1.setText("=list=clientes_conectados");
+
+        datos2.setText("=address=10.1.1.56");
+
+        datos3.setText("=comment=geovannyborrar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(datos1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(datos)
+                        .addComponent(datos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(23, 23, 23))))
-            .addComponent(datos1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(datos2, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jButton1)))
+                        .addGap(21, 21, 21))
+                    .addComponent(datos3, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,9 +89,13 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addComponent(datos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(datos1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
+                .addGap(12, 12, 12)
+                .addComponent(datos2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(datos3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(jButton1)
-                .addGap(135, 135, 135))
+                .addGap(45, 45, 45))
         );
 
         pack();
@@ -89,7 +103,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        llamar(datos.getText(),datos1.getText());
+        llamar(datos.getText(),datos1.getText(),datos2.getText(),datos3.getText());
         
     }//GEN-LAST:event_jButton1ActionPerformed
   public void salida(String a){
@@ -107,7 +121,7 @@ public class NewJFrame extends javax.swing.JFrame {
    private WriteCommand writeCommand = null;
    private Thread listener = null;
    LinkedBlockingQueue queue = new LinkedBlockingQueue(40);
-    public void llamar(String datos,String datos2){
+    public void llamar(String datos,String datos2,String datos3,String datos4){
         try {
 //            InetAddress ia = InetAddress.getByName("186.5.68.17");
 //            Socket sock = new Socket("186.5.68.17", 8728);
@@ -124,7 +138,7 @@ public class NewJFrame extends javax.swing.JFrame {
 ////           } else {
 ////               System.out.println("Desc");
 ////           }
-               ApiConn ret = new ApiConn("186.5.68.17", 8728);
+               ApiConn ret = new ApiConn("186.5.68.10", 8728);
           if (!ret.isConnected()) {
               ret.start();
               
@@ -132,7 +146,7 @@ public class NewJFrame extends javax.swing.JFrame {
               try {
                   ret.join();
                   if (ret.isConnected()) {
-                      String mbs = "mbomega";
+                      String mbs = "sari77";
                       char[]  pas  = mbs.toCharArray();
                       ret.login("mb", pas);
                   }else{
@@ -146,14 +160,19 @@ public class NewJFrame extends javax.swing.JFrame {
           //ret.sendCommand("/ip/address/print");
           Thread.sleep(1000);
             System.out.println("*********************************************");
+            ///ppp/secret/add
+            //=name=1234 password=123 profile=HOME-VIP
           //ret.sendCommand("/user/active/listen");
           //ret.sendCommand("ip route print");
           //ret.sendCommand(datos);
           //ret.sendCommand(datos2);
-          ret.sendCommand("/ppp/secret/add");
-          ret.sendCommand("=name=1234");
-          ret.sendCommand("=password=123");
-          ret.sendCommand("=profile=HOME-VIP");
+//          ret.sendCommand("/ppp/secret/add");
+//          ret.sendCommand("=name=1234");
+//          ret.sendCommand("=password=123");
+//          ret.sendCommand("=profile=HOME-VIP");
+          ret.sendCommand(datos+"\n"+datos2+"\n"+datos3+"\n"+datos4);
+          //ret.sendCommand(datos2);
+          //ret.sendCommand(datos3);
              //ret.sendCommand("ppp secret add name=1234 password=123 profile=HOME-VIP");
           
           
@@ -207,6 +226,8 @@ public class NewJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField datos;
     private javax.swing.JFormattedTextField datos1;
+    private javax.swing.JFormattedTextField datos2;
+    private javax.swing.JFormattedTextField datos3;
     private javax.swing.JButton jButton1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     // End of variables declaration//GEN-END:variables

@@ -217,7 +217,8 @@ List nodos = adm.query("Select o from Nodos as o " +
                    report.setSrc(directorioReportes+"listacontratosletras.jasper");
                    
             }else if(tipo.equals("EQUIPOSPORSECTORCLILETRA")){
-                  datasource = reportes.equiposclientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
+
+                  datasource = reportes.equiposclientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value,nodosList.selectedItem.value);
                    report.setSrc(directorioReportes+"listacontratosletrasequipos.jasper");
                    
             }else if(tipo.equals("INVNORMAL")){
@@ -585,6 +586,7 @@ void campos(String valor){
             filasector2.visible=true;
             filaletras.visible=true;
             filaestado.visible=true;
+             filanodos.visible = true;
         }else{
             titulo.value= " ";
         }

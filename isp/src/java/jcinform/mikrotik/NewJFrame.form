@@ -29,21 +29,27 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="datos1" alignment="0" pref="400" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="datos" max="32767" attributes="0"/>
+                      <Component id="datos" pref="0" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="datos2" pref="369" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="datos3" alignment="0" pref="390" max="32767" attributes="0"/>
               </Group>
           </Group>
-          <Component id="datos1" alignment="0" pref="400" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -53,9 +59,13 @@
               <Component id="datos" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="datos1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Component id="datos2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="datos3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -71,12 +81,22 @@
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="datos">
       <Properties>
-        <Property name="text" type="java.lang.String" value="/ppp/secret/add"/>
+        <Property name="text" type="java.lang.String" value="/ip/firewall/address-list/add"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="datos1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="=name=1234 password=123 profile=HOME-VIP"/>
+        <Property name="text" type="java.lang.String" value="=list=clientes_conectados"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="datos2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="=address=10.1.1.56"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="datos3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="=comment=geovannyborrar"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -12,25 +12,28 @@ import java.util.logging.Logger;
  * @author inform
  */
 public class T3apiView {
-
+ 
     /**
      * @param args the command line arguments
      */
     public static void llamar(){
-            ApiConn ret = new ApiConn("192.168.88.1", 8728);
+            ApiConn ret = new ApiConn("186.5.68.82", 8728);
        if (!ret.isConnected()) {
            ret.start();
            try {
                ret.join();
                if (ret.isConnected()) {
-                   ret.login("admin", new char[0]);
+                   String mbs = "apomega77";
+                      char[]  pas  = mbs.toCharArray();
+                   ret.login("mb",pas);
                }
            } catch (InterruptedException ex) {
                Logger.getLogger(T3apiView.class.getName()).log(Level.SEVERE, null, ex);
                return;
            }
        }
-       ret.sendCommand("/ip/address/print");
+       //ret.sendCommand("/ip/address/print");
+       ret.sendCommand("ip firewall address-list add list=clientes_conectados address=10.1.1.57 comment=geova");
        
 //       DataReceiver dataRec = new DataReceiver(ret, this);
 //       dataRec.start();

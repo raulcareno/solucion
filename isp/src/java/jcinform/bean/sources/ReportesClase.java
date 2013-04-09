@@ -175,9 +175,18 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado) {
+    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado,Nodos nodo) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
+         String complementoNodo = " and  o.contratos.radios.nodos.codigo = '" + nodo.getCodigo() + "' ";
+        if (nodo.getCodigo().equals(new Integer(-1))) {
+            complementoNodo = "";
+        }
+         String complementoNodo2 = " and  o.radios.nodos.codigo = '" + nodo.getCodigo() + "' ";
+        if (nodo.getCodigo().equals(new Integer(-1))) {
+            complementoNodo = "";
+        }
+        
         String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
                 + " and substring(o.contratos.clientes.apellidos,1,1) <= '" + letrafin + "' ";
         String complemento2 = " and substring(o.clientes.apellidos,1,1) >= '" + letraini + "' "
@@ -192,7 +201,7 @@ public class ReportesClase {
         String codigosContratos = "";
         List<Series> contra = adm.query("Select o from Series as o "
                 + "where o.contratos.sector.numero "
-                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento
+                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento +" "+ complementoNodo
                 + "and o.estado = 'P' "
                 + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + " " + estadoString
@@ -214,7 +223,7 @@ public class ReportesClase {
                     + " and  o.sector.numero "
                     + " between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento2
                     + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " " + estadoString2
+                    + " " + estadoString2+ " "+complementoNodo2
                     + "order by o.clientes.apellidos");
 
             for (Iterator<Contratos> it = contra2.iterator(); it.hasNext();) {
