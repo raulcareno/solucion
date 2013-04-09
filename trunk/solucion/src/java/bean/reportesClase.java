@@ -4211,12 +4211,35 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
 //        List<Nota> lisNotas = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
         if (matri.getCodigomat().equals(-2)) {
+            String codigoMatriculasPerdidos = "";
+             for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                Matriculas matriculaA = it.next();
+               codigoMatriculasPerdidos += matriculaA.getCodigomat()+",";
+            }
+             String complemPerdidos = "";
+             if(codigoMatriculasPerdidos.length()>0){
+                 codigoMatriculasPerdidos = codigoMatriculasPerdidos.substring(0,codigoMatriculasPerdidos.length()-1);
+                  complemPerdidos = " and o.codigomat not in ("+codigoMatriculasPerdidos+")";
+             }
+            
             matriculas = adm.query("Select o from Matriculas as o "
                     + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
-                    + " and o.estado in  ('Matriculado','Recibir Pase')  "
+                    + " and o.estado in  ('Matriculado','Recibir Pase')  "+ complemPerdidos
                     + " order by o.estudiante.apellido ");
         } else {
-            matriculas.add(matri);
+            for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                Matriculas matriculaA = it.next();
+                if (matri.getCodigomat().equals(matriculaA.getCodigomat())) {
+                    try {
+                        Messagebox.show("EL ESTUDIANTE " + matri.getEstudiante() + " ESTA REPROBADO, ESCOJA OTRO ESTUDIANTE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                        return null;
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    matriculas.add(matri);
+                }
+            }
         }
         for (Matriculas matriculas1 : matriculas) {
             String cabe1 = cabecera;
@@ -4472,10 +4495,12 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                     } catch (InterruptedException ex) {
                         Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }else{
+                    matriculas.add(matri);
                 }
             }
 
-            matriculas.add(matri);
+            
         }
         for (Matriculas matriculas1 : matriculas) {
             String cabe1 = cabecera;
