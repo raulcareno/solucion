@@ -3571,11 +3571,13 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
+                + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' "
+                + " and o.trimestre.codigotrim = '"+sistema.getTrimestre().getCodigotrim()+"' order by o.orden ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.orden <=  '" + sistema.getOrden() + "'"
-                + " and o.sistema.seimprime = true  order by o.sistema.orden ");
+                + " and o.sistema.seimprime = true  "
+                + " and o.sistema.trimestre.codigotrim = '"+sistema.getTrimestre().getCodigotrim()+"'   order by o.sistema.orden ");
         if (notas.size() <= 0) {
             try {
                 Messagebox.show("No hay nada que imprimir...! \n Revise en la pantalla Aportes si existen notas a imprimir", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
