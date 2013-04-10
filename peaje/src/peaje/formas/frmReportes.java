@@ -387,16 +387,24 @@ public class frmReportes extends javax.swing.JInternalFrame {
             System.out.println("QUERY: " + query);
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-
-            List<Factura> fac = adm.queryNativo(query, Factura.class);
-            ArrayList detalle = new ArrayList();
-            for (Iterator<Factura> it = fac.iterator(); it.hasNext();) {
-                Factura factura = it.next();
-//                if (cmbTipoReporte.getSelectedIndex() > 0) {
-//                    factura.setFecha(factura.getFechafin());
-//                }
-                detalle.add(factura);
+            String codigos = "";
+            List codigosFacturas = adm.queryNativo(query);
+            for (Iterator it = codigosFacturas.iterator(); it.hasNext();) {
+                Object object = it.next();
+                codigos += object + ",";
             }
+ArrayList detalle = new ArrayList();
+            if (codigosFacturas.size() > 0) {
+                codigos = codigos.substring(0, codigos.length() - 1);
+                List<Factura> fac = adm.query("Select o from Factura as o where o.codigo in (" + codigos + ") "
+                        + "  order by o.clientes.nombres, o.fechaini ");
+                
+                for (Iterator<Factura> it = fac.iterator(); it.hasNext();) {
+                    Factura factura = it.next();
+                    detalle.add(factura);
+                }
+            }   
+
             FacturaSource ds = new FacturaSource(detalle);
             Map parametros = new HashMap();
             parametros.put("empresa", emp.getRazon());
@@ -1024,13 +1032,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
             query = "Select o from Factura as o"
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
-                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL)   ";
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL) and o.total > 0   ";
             if (cmbUsuarios.getSelectedIndex() > 0) {
                 query = "Select o from Factura as o"
                         + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                         + " and o.fechafin is not null and o.numero is not null  "
                         + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
-                        + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL)   ";
+                        + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL)  and o.total > 0  ";
             }
 
             dirreporte = ubicacionDirectorio + "reportes" + separador + "facturasdiarias.jasper";
@@ -1171,13 +1179,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
             if (cmbUsuarios.getSelectedIndex() > 0) {
                 complemento = " and  f.usuarioc = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "' ";
             }
-            query = "SELECT * FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
+            query = "SELECT f.codigo FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
                     + " AND t.tarjeta = f.tarjeta AND f.fecha BETWEEN '" + convertiraString(desde.getDate()) + "' "
                     + "AND  '" + convertiraString(hasta.getDate()) + "'  "
                     + complemento
                     + "ORDER BY c.nombres ";
             if (cmbClientes.getSelectedIndex() > 0) {
-                query = "SELECT * FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
+                query = "SELECT f.codigo FROM Factura f, Tarjetas t, Clientes c WHERE  t.cliente = c.codigo "
                         + " AND t.tarjeta = f.tarjeta AND "
                         + "f.fecha BETWEEN '" + convertiraString(desde.getDate()) + "' "
                         + "AND  '" + convertiraString(hasta.getDate()) + "' "

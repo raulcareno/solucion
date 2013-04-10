@@ -1779,20 +1779,23 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     //adm.actualizar(emp);
 
                     Boolean pasar = true;
-                    Integer numero = new Integer(emp.getDocumentofac()) + 1;
-                    while (pasar) {
-                        List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
-                        if (sihay.size() <= 0) {
-                            pasar = false;
-                            facActual.setNumero("" + numero);
-                            emp.setDocumentofac((numero) + "");
-                            adm.actualizar(emp);//GUARDO EMPRESA
-                            adm.actualizar(facActual); // GUARDO FACTURA
-                        } else {
-                            numero++;
-                        }
+                    if (facActual.getTotal().doubleValue() > 0) {
+                        Integer numero = new Integer(emp.getDocumentofac()) + 1;
+                        while (pasar) {
+                            List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
+                            if (sihay.size() <= 0) {
+                                pasar = false;
+                                facActual.setNumero("" + numero);
+                                emp.setDocumentofac((numero) + "");
+                                adm.actualizar(emp);//GUARDO EMPRESA
+                                adm.actualizar(facActual); // GUARDO FACTURA
+                            } else {
+                                numero++;
+                            }
 
+                        }
                     }
+
                     if (facActual.getTotal().doubleValue() > 0) {
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         Thread.sleep(5000);
@@ -1917,6 +1920,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     Factura fac1 = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + detalle1.getFactura().getCodigo() + " ");
                     observacion = fac1.getObservacion();
                     detalle1.setFactura(fac1);
+                    System.out.println("SUBTOTAL: "+ detalle1.getSubtotal());
                     detalle.add(detalle1);
                 }
                 ds = new FacturaDetalleSource(detalle);
@@ -1937,6 +1941,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             parametros.put("direccion", cli.getDireccion());
             parametros.put("telefono", cli.getTelefono());
             parametros.put("placa", placa.getText());
+            parametros.put("usuario", principal.usuarioActual.getNombres());
             parametros.put("observacion", observacion);
             parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
 
@@ -2027,6 +2032,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             parametros.put("observacion", observacion);
             parametros.put("notickets", ticketsPendientes.getRowCount() + "");
             parametros.put("dias", (dias > 0 ? dias + " Dias" : ""));
+            parametros.put("usuario", principal.usuarioActual.getNombres());
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             PrinterJob job = PrinterJob.getPrinterJob();
@@ -2340,7 +2346,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
                         facNueva.setPlaca("");
                         facNueva.setFechaini(fac.getFechafin());
-                        facNueva.setFecha(fac.getFechafin()); 
+                        facNueva.setFecha(fac.getFechafin());
                         facNueva.setAnulado(false);
                         facNueva.setUsuario(principal.getUsuario());
                         facNueva.setNocontar(false);
@@ -2368,27 +2374,26 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
                         }
                         DateTime dt = new DateTime(fac.getFechafin());
-                        
-                        DateTime tiempoDespuesGracia = dt.minusMinutes(emp.getGracia()); 
-                        if((minutosEntreSalidayActual+emp.getGracia())<60){
-                            facNueva.setFechaini(tiempoDespuesGracia.toDate()); 
+
+                        DateTime tiempoDespuesGracia = dt.minusMinutes(emp.getGracia());
+                        if ((minutosEntreSalidayActual + emp.getGracia()) < 60) {
+                            facNueva.setFechaini(tiempoDespuesGracia.toDate());
                             facNueva.setFecha(tiempoDespuesGracia.toDate());
                         }
                         llenarFactura(facNueva);
-                        
+
                         DateTime dt0 = new DateTime(facNueva.getFechaini());
-                        DateTime tiempoDespuesGracia0 = dt0.plusMinutes(emp.getGracia()); 
-                        if((minutosEntreSalidayActual+emp.getGracia())<60){
-                            facNueva.setFechaini(tiempoDespuesGracia0.toDate()); 
+                        DateTime tiempoDespuesGracia0 = dt0.plusMinutes(emp.getGracia());
+                        if ((minutosEntreSalidayActual + emp.getGracia()) < 60) {
+                            facNueva.setFechaini(tiempoDespuesGracia0.toDate());
                             ingreso.setDate(facNueva.getFechaini());
                             DateTime dt2 = new DateTime(tiempo.getDate());
-                        DateTime tiempoDespuesGracia2 = dt2.minusMinutes(emp.getGracia()); 
-                         tiempo.setDate(tiempoDespuesGracia2.toDate()); 
+                            DateTime tiempoDespuesGracia2 = dt2.minusMinutes(emp.getGracia());
+                            tiempo.setDate(tiempoDespuesGracia2.toDate());
                         }
-                        
-                        
-                        
                         guardando = false;
+                        System.out.println("imprimo nuevo ticket por sobrepasar tiempo");
+                        imprimirTicket(facNueva.getCodigo(), emp);
                     } catch (Exception ab) {
                     }
                 }
@@ -3027,6 +3032,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 det.setCantidad((Integer) productos.getValueAt(i, 1));
                 det.setDetalle((String) productos.getValueAt(i, 2));
                 det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
+                System.out.println("A CARGAR: "+(BigDecimal) productos.getValueAt(i, 3));
                 det.setIva(det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100)));
                 det.setTotal(det.getSubtotal().add(det.getIva()));
                 det.setFactura(facActual);
@@ -3099,7 +3105,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             obj[0] = asigRub.getCodigo();
             obj[1] = Integer.parseInt(txtCantidad.getText());
             obj[2] = asigRub.getDescripcion();
-            obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText()));
+            obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText())).setScale(2, RoundingMode.HALF_UP) ; 
             dtm.addRow(obj);
             productos.setModel(dtm);
             sumar();
@@ -3420,6 +3426,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             parametros.put("empresa", emp.getRazon());
             parametros.put("direccion", emp.getDireccion());
             parametros.put("telefono", emp.getTelefonos());
+            parametros.put("usuario", principal.usuarioActual.getNombres());
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             PrinterJob job = PrinterJob.getPrinterJob();
             /* Create an array of PrintServices */
@@ -4296,21 +4303,21 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         Usuarios usuAnula = adm.ingresoSistema(cmbUsuarios.getSelectedItem().toString(), codigoAdministrador.getText());
         if (usuAnula != null) {
             try {
-                Date fechaActual =new Date();
-                String desde = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 00:01:01";
-                String hasta = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 23:59:59";
+                Date fechaActual = new Date();
+                String desde = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 00:01:01";
+                String hasta = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 23:59:59";
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o "
                         + "  where o.numero = " + numeroIngresado.getText() + " "
                         + " and o.anuladofac = false and o.anulado = false "
-                        + " and o.fechafin between '"+desde+"' and  '"+hasta+"' ");
-                    if(fac == null){
-                             JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido anulado...!", "", JOptionPane.ERROR_MESSAGE);
-                             codigoAdministrador.setText("");
-                             numeroIngresado.setText(""); 
-                             //frmAnular.setVisible(false);
-                            return; 
-                            
-                    }
+                        + " and o.fechafin between '" + desde + "' and  '" + hasta + "' ");
+                if (fac == null) {
+                    JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido anulado...!", "", JOptionPane.ERROR_MESSAGE);
+                    codigoAdministrador.setText("");
+                    numeroIngresado.setText("");
+                    //frmAnular.setVisible(false);
+                    return;
+
+                }
                 Factura facNueva = new Factura();
                 facNueva.setFechaini(fac.getFechaini());
                 Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
@@ -4324,10 +4331,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 facNueva.setDescuento(fac.getDescuento());
                 facNueva.setTotal(fac.getTotal());
                 facNueva.setUsuario(principal.getUsuario());
-                facNueva.setClientes(null); 
-                facNueva.setDias(fac.getDias()); 
-                facNueva.setTiempo(fac.getTiempo()); 
-                facNueva.setObservacion("Anulo tick: "+fac.getTicket()+"fac: "+fac.getNumero());
+                facNueva.setClientes(null);
+                facNueva.setDias(fac.getDias());
+                facNueva.setTiempo(fac.getTiempo());
+                facNueva.setObservacion("Anulo tick: " + fac.getTicket() + "fac: " + fac.getNumero());
                 facNueva.setNocontar(false);
                 facNueva.setAnuladofac(false);
                 facNueva.setNumero("");
@@ -4352,25 +4359,25 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                     }
 
                 }
-                  Integer numeroFactura = new Integer(emp.getDocumentofac()) + 1;
-                        while (pasar) {
-                            List sihay = adm.query("Select o from Factura as o where o.numero = '" + numeroFactura + "'");
-                            if (sihay.size() <= 0) {
-                                pasar = false;
-                                facNueva.setNumero("" + numeroFactura);
-                                emp.setDocumentofac((numeroFactura) + "");
-                                adm.actualizar(emp);//GUARDO EMPRESA
-                                adm.actualizar(facNueva); // GUARDO FACTURA
-                            } else {
-                                numeroFactura++;
-                            }
+                Integer numeroFactura = new Integer(emp.getDocumentofac()) + 1;
+                while (pasar) {
+                    List sihay = adm.query("Select o from Factura as o where o.numero = '" + numeroFactura + "'");
+                    if (sihay.size() <= 0) {
+                        pasar = false;
+                        facNueva.setNumero("" + numeroFactura);
+                        emp.setDocumentofac((numeroFactura) + "");
+                        adm.actualizar(emp);//GUARDO EMPRESA
+                        adm.actualizar(facNueva); // GUARDO FACTURA
+                    } else {
+                        numeroFactura++;
+                    }
 
-                        }
-                        fac.setAnulado(true);
-                        fac.setAnuladofac(true);
-                        fac.setUsuarioa(usuAnula); //FALTA CARGAR EL USUARIO QUE CARGÓ SU CLAVE
+                }
+                fac.setAnulado(true);
+                fac.setAnuladofac(true);
+                fac.setUsuarioa(usuAnula); //FALTA CARGAR EL USUARIO QUE CARGÓ SU CLAVE
                 adm.actualizar(fac);//GUARDO EMPRESA
-                codigo.setText(facNueva.getCodigo()+"");
+                codigo.setText(facNueva.getCodigo() + "");
                 //llenarFactura(facNueva); 
 
                 /**
@@ -4399,7 +4406,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                     while (horas > 24) { //VERIRICO SI SOBREPASA
                         horas = horas - 24;
                         minutos = minutos - 1440;
-                  
+
                         noDias0++;
                     }
                 }
@@ -4422,7 +4429,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                     dias2.setVisible(true);
                 }
 
-                 
+
 
                 Float min = minutos / 60f;
                 int indice = min.toString().indexOf(".");
@@ -4453,26 +4460,26 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
                 guardando = false;
             } catch (Exception ab) {
-                System.out.println(""+ab);
+                System.out.println("" + ab);
                 JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido ANULADO"
                         + "\no\n"
                         + "NO EXISTE "
                         + "\no\n"
                         + "NO CORRESPONDE A LA FECHA ACTUAL ...!", "", JOptionPane.ERROR_MESSAGE);
-                             codigoAdministrador.setText("");
-                             numeroIngresado.setText(""); 
-                             //frmAnular.setVisible(false);
-                             numeroIngresado.setText("");
-                             numeroIngresado.requestFocusInWindow();
-                            return; 
+                codigoAdministrador.setText("");
+                numeroIngresado.setText("");
+                //frmAnular.setVisible(false);
+                numeroIngresado.setText("");
+                numeroIngresado.requestFocusInWindow();
+                return;
             }
             frmAnular.setVisible(false);
-            principal.auditar("Anula Factura", "No" + numeroIngresado.getText(), ""+cmbUsuarios.getSelectedItem());
+            principal.auditar("Anula Factura", "No" + numeroIngresado.getText(), "" + cmbUsuarios.getSelectedItem());
             usuAnula = null;
         } else {
             usuAnula = null;
             JOptionPane.showMessageDialog(this, "La Contraseña ingresada está incorrecta...!", "", JOptionPane.ERROR_MESSAGE);
-            principal.auditar("Anula Factura", "No" + numeroIngresado.getText(), ""+cmbUsuarios.getSelectedItem());
+            principal.auditar("Anula Factura", "No" + numeroIngresado.getText(), "" + cmbUsuarios.getSelectedItem());
             frmAnular.setVisible(false);
         }
 
@@ -4503,8 +4510,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 numeroIngresado.setText("");
                 codigoAdministrador.setText("");
                 numeroIngresado.requestFocusInWindow();
-                  try {
- 
+                try {
+
                     List<Usuarios> uss = adm.query("Select o from Usuarios as o where o.global.nombre like '%admin%'");
                     for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
                         Usuarios usuarios = it.next();
