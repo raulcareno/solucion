@@ -2629,7 +2629,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
         String q = "Select codigomap, mat.codigomat,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
-                + "and notas.promedia = true and notas.disciplina = false  and materia_profesor.cuantitativa = true  and materia_profesor.seimprime = true  "
+                + "and notas.promedia = true and notas.disciplina = false   and materia_profesor.seimprime = true  "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 

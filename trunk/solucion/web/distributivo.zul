@@ -1492,7 +1492,7 @@ void guardarcP(){
                 <vbox>
                     <hbox>
                         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  
-                        onClick='if(validar(curs.selectedItem.value,formula.value)) guardar();'/>
+                        onClick="guardar();"/>
                         <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                         <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                         <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
