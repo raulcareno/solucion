@@ -509,7 +509,7 @@ public class generarFacturas {
         String quer = "SELECT fa.codigo, fa.numero, fa.fecha, "
                 + "IF(cli.razonsocial IS NULL OR cli.razonsocial ='' ,CONCAT(cli.apellidos,' ',cli.nombres),cli.razonsocial),  fa.total, cx.haber, "
                 + "IF(fa.total = cx.haber, 'CANCELADO', 'ABONO'), "
-                + " cx.efectivo, cx.cheque, cx.codigo,  c.contrato, fa.fecha, fa.vencimiento, cli.identificacion "
+                + " cx.efectivo, cx.cheque, cx.codigo,  c.contrato, fa.fecha, fa.vencimiento, cli.identificacion , cx.rtotal "
                 + " FROM cxcobrar cx, factura  fa, contratos c, clientes cli "
                 + " WHERE (cx.efectivo > 0 OR cx.cheque >0) "
                 + "AND  fa.contratos in (" + contraString + ")  "

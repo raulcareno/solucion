@@ -858,8 +858,8 @@ public class ReportesClase {
     public JRDataSource facturasCobradasContador2(Date desde, Date hasta) {
         Administrador adm = new Administrador();
         List detalles = new ArrayList();
-        String desdestr = convertiraString(desde);
-        String hastastr = convertiraString(hasta);
+        String desdestr = convertiraString(desde)+" 00:00:01";
+        String hastastr = convertiraString(hasta)+" 23:59:59";
             String sql = "SELECT o FROM Depositos as o "
                     + " WHERE o.fecha between '" + desdestr + "' and '" + hastastr + "'  "
                     + "ORDER BY o.fecha ";

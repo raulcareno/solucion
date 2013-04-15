@@ -56,6 +56,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
             BigDecimal total = new BigDecimal(0);
+            BigDecimal rtotal = new BigDecimal(0);
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
                             Row row = new Row();
@@ -71,8 +72,8 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                 row.appendChild(ch);
                             for (int j = 0; j < vec.size(); j++) {
                                 Object dos = vec.get(j);
-                                if(row == null){
-                                    row = new Row();
+                                    if(row == null){
+                                        row = new Row();
                                    }
                                    row.setValue(vec);
                                     if(dos instanceof Integer){
@@ -89,52 +90,13 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                                 }else{
                                                         row.appendChild(new Label(dos+""));
                                                 }
-                                            
                                         }else{
                                             row.appendChild(new Label(""));
                                        }
                                     }
                             }
-                            //BigDecimal val = ((BigDecimal) vec.get(5));
-                            //total = total.add(val);
 
-                              Button aButton = null;
-                            aButton = new Button("");
-                            aButton.setImage("/images/imprimir.gif");
-                            aButton.setId(""+vec.get(0));
-                            if( vec.get(1) == null)
-                                aButton.setDisabled(true);
-                            aButton.setAttribute("valor",vec.get(3));
-                            aButton.addEventListener("onClick", new EventListener() {
-                             public void onEvent(Event event) throws Exception {
-                                
-                                     Map parameters = new HashMap();
-                                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + aButton.getId() + "'");
-                                    ArrayList detalles = new ArrayList();
-                                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
-                                        Detalle det = itAbono.next();
-                                         detalles.add(det);
-                                   }
-                                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
-                                   reportelocal.setSrc(directorioReportes+"factura.jasper");
-                                   reportelocal.setParameters(parameters);
-                                   reportelocal.setDatasource(ds);
-                                   reportelocal.setType("pdf");
-                                   impresion.selected = true;
-                                    /*final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
-                                    win.setMaximizable(true);
-                                    win.setClosable(true);
-                                    win.setAttribute("reporte",reportelocal);
-                                    win.setTitle("Reporte");
-                                    win.doModal(); */
-                                 /*}else{
-                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                    } */
-
-                              }
-                                });
-                             // row.appendChild(aButton);
-                            try{
+                        try{
                                     filasFac.appendChild(row);
                             }catch(Exception exs){
                             System.out.println("NO SE AGREGÓ FILA POR ERROR: "+exs);
@@ -185,6 +147,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
     
     void sumar(){
                 BigDecimal total = new BigDecimal(0);                
+                BigDecimal rtotal = new BigDecimal(0);                
                        List col = facturasDatos.getRows().getChildren();
                               for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
@@ -192,9 +155,16 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         if(((Checkbox) labels.get(0)).isChecked()){
                                             BigDecimal val = new BigDecimal(labels.get(6).getValue());
                                             total = total.add(val);
+                                            
+                                            BigDecimal val = new BigDecimal(labels.get(15).getValue());
+                                            rtotal = rtotal.add(val);
+                                          
                                         }
+                                        
                                }
-                         valortotal.value = total;
+                         subtotaltotal.value = total;
+                         rvalortotal.value = rtotal;
+                         valortotal.value = subtotaltotal.value.subtract(rvalortotal.value);
  }
     
     void seleccionarTodos(Checkbox estado,Integer tipo){
@@ -544,19 +514,22 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                         <column  width="68px"  label="Valor"/>
                                         <column  width="68px" label="Cancelado"/>
                                         <column width="68px"  label="Estado"/>
-                                        <column width="68px"  label="Efectivo"/>
-                                        <column width="68px"  label="Cheque"/>
+                                        <column width="68px" sort="auto"    label="Efectivo"/>
+                                        <column width="68px" sort="auto"    label="Cheque"/>
                                         <column visible = "false" width="68px"  label="CxcCodigo"/>
                                         <column visible="false" label="contrato"/>
                                         <column visible="false" label="fecha"/>
-                                        <column visible="false" label="vence"/>
-                                        <column visible="false"  width="6px"  label=" "/>
+                                        <column visible="true" label="vence"/>
+                                        <column visible="true"  width="6px"  label=" "/>
+                                        <column  width="68px" label="Retenido"/>
                                     </columns>
                                     <rows id="filasFac">
                                     </rows>
                                 </grid>
                                 <span style="text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px">
-                                    Total: <decimalbox format="#00.00"  style="float:right;text-align:right;font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
+                                  SubTotal: <decimalbox format="#00.00"  style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="subtotaltotal"  value="0.0"  readonly="true"   />    
+                                  Retenido: <decimalbox format="#00.00"  style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="rvalortotal"  value="0.0"  readonly="true"   />    
+                                  Total: <decimalbox format="#00.00"  style="font:14px;font-weight:bold;background:#E1E1E1;border:0px" id="valortotal"  value="0.0"  readonly="true"   />    
                                 </span>
                                     
                                 <span>
