@@ -185,7 +185,7 @@ void cambiarEstado(Estudiantes user){
        
         Session a = Sessions.getCurrent();
         Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
-/*
+ 
      if(!periEst.getAplico()){
                 Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
                 win34.setVisible(true);
@@ -195,7 +195,7 @@ void cambiarEstado(Estudiantes user){
                todo.visible = false;
 
        }
-       */
+        
        Include inc = (Include) xcontents;
        inc.setSrc("/blanco_1.zul");
       

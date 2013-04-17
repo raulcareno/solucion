@@ -566,6 +566,7 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
             return ds;
 
 }
+
 public JRDataSource listadoMatriculas(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
     String curso =  "";
     String matricula = "";
@@ -605,6 +606,43 @@ public JRDataSource listadoMatriculas(ArrayList listadodeCursos,String tipo,Arra
                 JRDataSource ds = null;
                  
                       ds = new ReporteActaDataSource(detalle);
+            return ds;
+
+}
+
+public JRDataSource listadoComentarios(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
+    String curso =  "";
+    String matricula = "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+        if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      for(Iterator itE = listadoEstudiantes.iterator(); itE.hasNext();) {
+            Matriculas elem2 = (Matriculas) itE.next();
+            matricula  +=""+elem2.getCodigomat()+",";
+      }
+      
+      if(matricula.length()>0){
+         matricula = matricula.substring(0,matricula.length()-1);
+      }
+
+              Administrador adm = new Administrador();
+              Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                    query  = "SELECT o FROM Comentarios as o " + 
+                     " where o.matricula.codigomat in ("+matricula+")  " + 
+                     "  ORDER BY  o.matricula.estudiante.apellido,o.matricula.estudiante.nombre,o.fecha ";
+                     System.out.println(query);
+            List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Comentarios elem = (Comentarios) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteComentariosDataSource(detalle);
             return ds;
 
 }
@@ -951,6 +989,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = listadoMatriculas(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"certificadohistoriaactual.jasper");
+            }else if(tipo.equals("COMEN")){
+                    datasource = listadoComentarios(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"comentarios.jasper");
             }else if(tipo.equals("CAP")){
                     datasource = listadoMatriculas(listadoCursos,"LREP",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1408,6 +1450,7 @@ void campos(String valor){
                                 <listitem  id="INS99" label="Listado de Pre-aprobados(Solo Claves)" value="INS99" />
                                 <listitem  id="INS8" label="Listado de NO-aprobados " value="INS8" />
                                 <listitem  id="LCLA33" label="Claves de Inscritos para Matriculación" value="LCLA33"/>
+                                <listitem  id="COMEN" label="Reporte de Comentarios" value="COMEN"/>
                                 <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
                                 
                             </listbox>
