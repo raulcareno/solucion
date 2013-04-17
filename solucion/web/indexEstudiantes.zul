@@ -41,10 +41,10 @@ Session a = Sessions.getCurrent();
                                     " Acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
      }
- /*else if(!emp.getAplico()){
+ else if(!emp.getAplico()){
         Messagebox.show("Su REPRESENTANTE debe Aplicar la Encuesta y luego podrá revisar sus servicios..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
-     }*/
+     }
         Include inc = (Include) xcontents;
         inc.setSrc(valor);
  }
@@ -138,41 +138,42 @@ Session a = Sessions.getCurrent();
     </zscript>
     <north style="background-image: url(./images/cabefondo1.png)"  size="15%" >
          
-    <div>
+        <div>
             <hbox    spacing="0">
                    
  
 
-  <image  border="15px"  style="padding:0 10px; margin:5px; padding:0" height="75px" id="foto0" />
+                <image  border="15px"  style="padding:0 10px; margin:5px; padding:0" height="75px" id="foto0" />
                 <toolbar  style="background:transparent;border:0px"  id="tb" sclass="vista" height="20px" >
                     <vbox>
-                    <label style="font-size:15px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.nombre} " />
-                    <label style="font-size:15px;color:white;font-weight:bold;" value="  ${sessionScope.userEstudiante.apellido} " />
+                        <label style="font-size:15px;color:white;font-weight:bold;" value="${sessionScope.userEstudiante.nombre} " />
+                        <label style="font-size:15px;color:white;font-weight:bold;" value="  ${sessionScope.userEstudiante.apellido} " />
 
-                    <label style="font-size:12px;color:white;font-weight:bold;"
-					value="Dir.: ${sessionScope.userEstudiante.direccion}" />
-                    <label style="  font-size:12px;color:white;font-weight:bold;"
-					value="Email: ${sessionScope.userEstudiante.mail}" />
+                        <label style="font-size:12px;color:white;font-weight:bold;"
+                           value="Dir.: ${sessionScope.userEstudiante.direccion}" />
+                        <label style="  font-size:12px;color:white;font-weight:bold;"
+                           value="Email: ${sessionScope.userEstudiante.mail}" />
                     </vbox>
                 </toolbar>
                     
-                        <fisheyebar orient="horizontal" id="fsb"   
-			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="98" itemMaxWidth="118">
-                            <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
-                            <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
-                            <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveEstudiante.zul")' />
-                            <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
-                            <fisheye image="/images/comentario1.png" onClick='ingresar("/comentariosEstudiantes.zul")' />
-                            <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
-                            <fisheye image="/images/pendientes.png" onClick='ingresarSin("/pendientesEstudiantes.zul")' />
-                            <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
-                            <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
-                            <fisheye image="/images/salida.png" onClick="salir()" />
+                <fisheyebar orient="horizontal" id="fsb"   
+                                    attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="98" itemMaxWidth="118">
+                    <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
+                    <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
+                    <fisheye image="/images/cambioclave.png" onClick='ingresar("/cambioClaveEstudiante.zul")' />
+                    <fisheye image="/images/correo.png" onClick='ingresar("/correos/comunicadoEstudianteIndex.zul")' />
+                    <fisheye image="/images/comentario1.png" onClick='ingresar("/comentariosEstudiantes.zul")' />
+                    <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
+                    <fisheye image="/images/pendientes.png" onClick='ingresarSin("/pendientesEstudiantes.zul")' />
+                    <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
+                    <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
+                    <fisheye image="/images/salida.png" onClick="salir()" />
 
-                        </fisheyebar>
+                </fisheyebar>
 
 
-</hbox></div>
+            </hbox>
+        </div>
 
 
     </north>
@@ -184,11 +185,11 @@ Session a = Sessions.getCurrent();
 
 
     </center>
-<zscript>
-          Include inc = (Include) xcontents;
-         inc.setSrc("/blanco_1.zul");
+    <zscript>
+        Include inc = (Include) xcontents;
+        inc.setSrc("/blanco_1.zul");
 
-</zscript>
+    </zscript>
 
 </borderlayout>
  
