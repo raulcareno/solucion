@@ -150,7 +150,7 @@ void cambiarEstado(Estudiantes user){
                         
 
                 <fisheyebar orient="horizontal" id="fsb"
-			attachEdge="top" itemWidth="90" itemHeight="90" itemMaxHeight="98" itemMaxWidth="118">
+			attachEdge="top" itemWidth="85" itemHeight="85" itemMaxHeight="98" itemMaxWidth="118">
                     <fisheye image="/images/estudiantes.png" onClick='ingresar("/estudiantesRepresentante_1.zul")' />
                     <fisheye image="/images/miscursos.png" onClick='ingresar("/cursosEstudiantes.zul")' />
                     <fisheye image="/images/calendarioacademico.png"  onClick='ingresar("/calendar_1.zul")' />
@@ -160,11 +160,10 @@ void cambiarEstado(Estudiantes user){
                     <fisheye image="/images/comentario1.png"  onClick='ingresar("/comentariosEstudiantes.zul")'  />
                     <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
                     <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
-                    
-                    
+                   
                     
 
-                    <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
+                    <fisheye image="/images/actualizarDatos.png" onClick='ingresar("/actualizarDatos.zul")' />
                     <fisheye image="/images/salida.png" onClick="salir()" />
                 </fisheyebar>
             </hbox>
@@ -197,7 +196,7 @@ void cambiarEstado(Estudiantes user){
        }
         
        Include inc = (Include) xcontents;
-       inc.setSrc("/blanco_1.zul");
+       inc.setSrc("/ayudaFuera.zul");
       
     </zscript>
 
