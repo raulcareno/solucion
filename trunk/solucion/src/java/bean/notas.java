@@ -21,7 +21,7 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -75,6 +75,7 @@ public class notas extends Rows {
 //         Label l;
 //         Row row;
 //         row.getZIndex()
+     
     }
 
     public Boolean verificar(String formula, List<Notanotas> notas) {
