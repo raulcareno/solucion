@@ -67,16 +67,17 @@ cargar(){
 
                          }else  if(pregunta.getTipopregunta().equals("om")){//ou, om, vf
 
-                             rw = new Row();
+                             
                             for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                            rw = new Row();
                                 Detallepregunta dpregunta = (Detallepregunta) itp.next();
                                 System.out.println(""+dpregunta.getOpcion());
                                 Checkbox r = new Checkbox(""+dpregunta.getOpcion());
                                 r.setId(""+dpregunta.getCodigo());
-                                r.setLabel(""+dpregunta.getValor());
                                 rw.appendChild(r);
+                                filaEncuesta.appendChild(rw);
                             }
-                            filaEncuesta.appendChild(rw);
+                           
                          }
 
               }
@@ -140,13 +141,18 @@ error2i.visible = false;
       //adm.ejecutaSql("Delete from Respuestasencuesta where detallepregunta.pregunta.pregunta.encuesta =  ");
       List col =  lista.getRows().getChildren();
       String tipoDato = "";
+      alert(col.size()+" tamañao de filas");
+      
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
+                   // alert("fila: "+i);
                     if(object.getId().contains("ou") || object.getId().contains("om") || object.getId().contains("vf")){
                         tipoDato = object.getId();
-
+            
                     }else{
+   
                         if(tipoDato.contains("ou") || tipoDato.contains("vf")){
+                
                             List labels = object.getChildren();
                             if(((Radiogroup) labels.get(0)).getSelectedItem() != null){
                                 Radio rad = ((Radiogroup) labels.get(0)).getSelectedItem();
@@ -165,8 +171,28 @@ error2i.visible = false;
                                 error2i.visible = true;
                                 break;
                              }
-                        }else if(tipoDato.equals("om")){
-                            List labels = object.getChildren();
+                        }else if(tipoDato.contains("om")){
+                                      List labels = object.getChildren();
+                                      String valor = "0";
+                              if(((Checkbox) labels.get(0)).isChecked()){
+                                    valor = "1";
+                                }else{
+                                    valor = "0";
+                                }
+                                Checkbox rad = ((Checkbox) labels.get(0));
+                                System.out.println("ABC"+rad.getId());
+                                alert("ABC"+rad.getId());
+                                Respuestasencuesta respuestap = new Respuestasencuesta();
+                                Detallepregunta det = new Detallepregunta(new Integer(rad.getId()));
+                                respuestap.setDetallepregunta(det);
+                                respuestap.setRespuesta1(valor);
+                                respuestap.setMatricula(matri);
+                                try{
+                                 adm.guardar(respuestap);
+                                }catch(Exception repe){
+                                    System.out.println(repe);
+                                }
+                            
                         }
                     }
              }

@@ -73,7 +73,7 @@ ArrayList grid = null;
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
         List<MateriaProfesor> mprofe = adm.query("Select o from MateriaProfesor as o "
-                + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' "
+                + " where o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.materia.codigo > 1 "
                 + "order by o.curso.secuencia, o.curso.paralelo.descripcion, o.formula ASC, o.orden ");
         System.out.println("INICIO DEL PROCESO: "+new Date());
         int cursoActual = 0;
