@@ -5,7 +5,7 @@
     <grid align="center">
         <rows>
             <row  style="background:transparent" spans="4">
-               <span><image height="60px"   width="60px" src="/images/ayuda.png"/> <label style="font-size:17px;color:blue;font-weight:bold;" value="INFORMACIÓN ACERCA DE EL MENÚ DE OPCIONES" /></span>
+               <span>  <label style="font-size:17px;color:blue;font-weight:bold;" value="INFORMACIÓN ACERCA DE EL MENÚ DE OPCIONES" /></span>
             </row>
             <row style="background:transparent">
                 <image height="60px"   width="60px" src="/images/miscursos.png"/>
@@ -32,12 +32,17 @@
                 <image height="60px"   width="60px" src="/images/salida.png"/>
                 <label style="font-size:12px;color:black;font-weight:bold;" value=" Salir de forma segura del sistema." />
             </row>
+            <row style="background:transparent">
+                <image height="60px"   width="60px" src="/images/actualizarDatos.png"  />
+                <label style="font-size:12px;color:black;font-weight:bold;" value=" Actualiza la información de padres de familia, representantes y estudiantes" />
+ 
+            </row>
 
 
 
         </rows>
     </grid>
-        
+        <image style="position:absolute;top:400px;left:73%" height="70px" id="img21" src="/images/about.jpg"/>
         
         
         <!--image src="/images/salida.png"/><label style="font-size:12px;color:black;font-weight:bold;" value=" Salir de mi sistema." /-->

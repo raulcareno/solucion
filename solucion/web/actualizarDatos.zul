@@ -4,7 +4,7 @@
     <style>
 .estil{
 	height:100%;
-    background-image: url(./images/fondo.jpg);
+//    background-image: url(./images/fondo.jpg);
     background-repeat: repeat-y;
     background-repeat: repeat-x;
 }
@@ -184,9 +184,7 @@ void llenar(Estudiantes estudent){
         discapacidad.checked = estudent.getDiscapacidad();
     }
     tipodiscapacidad.value = estudent.getTipodiscapacidad();
-    if(estudent.getCambio() != null){
-        cambioe.checked = estudent.getCambio();
-    }
+    
     if(estudent.getEstado() != null){
         estadoe.checked = estudent.getEstado();
     }
@@ -305,9 +303,7 @@ void llenarRepresentante(Representante repren){
 
     usuarior.value = repren.getUsuario();
     claver.value = permiso.decriptar(repren.getClave());
-     if(repren.getCambio() != null){
-        cambior.checked = repren.getCambio();
-    }
+     
     if(repren.getEstado() != null){
         estador.checked = repren.getEstado();
     }
@@ -411,6 +407,7 @@ void estado(Boolean estado,Boolean modificar){
 
   
         representante0.setCodigorep(codigore.value);
+        representante0 = adm.buscarClave(codigore.value,Representante.class);
         representante0.setIdentificacionrepre(cedulare.value);
         representante0.setNombres(nombresre.value);
         representante0.setApellidos(apellidosre.value);
@@ -444,7 +441,6 @@ void estado(Boolean estado,Boolean modificar){
         representante0.setOcupacionmadre(ocupacionma.value);
         representante0.setUsuario(usuarior.value);
         representante0.setClave(permiso.encriptar(claver.value));
-        representante0.setCambio(cambior.checked);
         representante0.setEstado(estador.checked);
         
          Boolean repreNuevo = false;
@@ -460,8 +456,11 @@ void estado(Boolean estado,Boolean modificar){
 
  
  //GUARDO EL ESTUDIANTE
+        
         estudent.setRepresentante(representante0);
+        
         estudent.setCodigoest(codigo.value);
+        estudent = adm.buscarClave(codigo.value,Estudiantes.class);
         estudent.setCedula(""+cedula.value);
         estudent.setNombre(nombres.value);
         estudent.setApellido(apellidos.value);
@@ -496,8 +495,6 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setInternet(internet.checked);
         estudent.setCodigo(codigoclave.value);
         estudent.setMatriculado(true);
-        estudent.setCambio(cambio.checked);
-        estudent.setEstado(estado.checked);
   
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
@@ -507,63 +504,8 @@ void estado(Boolean estado,Boolean modificar){
             adm.guardar(estudent);
             estuNuevo = true;
          }
-/*
-//GUARDAR MATRICULA
-        matricula.setCodigomat(codigomat.value);
-        matricula.setEstudiante(estudent);
-        matricula.setObservacion("Matricula por Internet "+ new Date().toLocaleString());
-        matricula.setFechamat(new Date());
-        matricula.setCurso(curso.selectedItem.value);
-        matricula.setNumero(numero.value);
-        matricula.setEstado("Matriculado");
-        matricula.setNuevo(nuevo.checked);
-        matricula.setRepite(repite.checked);
-        matricula.setInstitucion(institucion.value);
-
-        try{
-            matricula.setBeca(0.0);
-            matricula.setOtros(0.0);
-        }catch(Exception ea){}
-
-         if(matricula.getEstado().equals("Inscrito")){
-            matricula.setNumero(0);
-         }
-
-           // org.zkoss.image.Image nueva = foto0.getContent();
-
-           // matricula.setFoto(nueva.getByteData());
-            matricula.setFolio(folio.value);
-
-
-
-        if((!matricula.getCodigomat().equals(0)) ){
-
-                if(matricula.getNumero().equals(0)){
-                    matricula.setNumero(nuevaMatricula());
-                }
-                adm.actualizar(matricula);
-
-         }else{
-
-                if(matricula.getEstado().equals("Matriculado")){
-                    if(matricula.getNumero().equals(0)){
-                        matricula.setNumero(nuevaMatricula());
-                        numero.value = matricula.getNumero();
-                    }
-                    if(folio.value == "" || folio.value == null ){
-                        matricula.setFolio(matricula.getNumero());
-                        folio.value = matricula.getNumero();
-                    }
-
-                }else{
-                    matricula.setNumero(0);
-                }
-                 Integer matri = adm.getNuevaClave("Matriculas","codigomat");
-             matricula.setCodigomat(matri);
-             adm.guardar(matricula);
-             codigomat.value = matri;
-         }
-*/
+        ses.removeAttribute("userEstudiante");
+        ses.setAttribute("userEstudiante",estudent);
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         principales.detach();
         btnguardar.disabled=true;
@@ -809,7 +751,7 @@ boolean validarRepresentante(){
                                     <span style="float:right"> Nombres
                                         <span style="color:blue;weight:bold"> (*)</span>:
                                     </span>
-                                    <textbox id="nombres"  maxlength="60" cols="40"    />
+                                    <textbox readonly="true" id="nombres"  maxlength="60" cols="40"    />
                                 </row>
 
                                 <row>
@@ -817,7 +759,7 @@ boolean validarRepresentante(){
                                     <span style="float:right"> Apellidos
                                         <span style="color:blue"> (*)</span>:
                                     </span>
-                                    <textbox id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
+                                    <textbox readonly="true"  id="apellidos" onBlur="generarClave(false);"  maxlength="60" cols="40"   />
                                 </row>
                                 <row>
 
