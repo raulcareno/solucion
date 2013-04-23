@@ -79,13 +79,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         adm = adm1;
         this.initComponents();
 
-        frmActualizar.setVisible(false);
+        frmActualizarDatosFactura.dispose();;
         panelencontrados1.setVisible(false);
         codigoPariente.setVisible(false);
         cargarBancos();
         separador = File.separator;
         editarDatos.setEnabled(false);
-        panelAnadirRubros.setVisible(false);
+        frmAnadirRubros.dispose();
         cargarRubros();
         cmbPorcentaje.setVisible(false);
     }
@@ -132,10 +132,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
-        frmCarrerasVarias = new javax.swing.JDialog();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        variasCarreras = new javax.swing.JTable();
-        jLabel21 = new javax.swing.JLabel();
         estadoMatricula = new javax.swing.ButtonGroup();
         frmSeleccionCarreras = new javax.swing.JDialog();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -148,10 +144,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         btnSalirAnula = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         observacionAnula = new javax.swing.JTextArea();
-        panelencontrados1 = new javax.swing.JPanel();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        encontrados1 = new javax.swing.JList();
-        frmActualizar = new javax.swing.JPanel();
+        frmActualizarDatosFactura = new javax.swing.JDialog();
+        panelActualizar = new javax.swing.JPanel();
         ruc1 = new javax.swing.JFormattedTextField();
         nombre1 = new javax.swing.JFormattedTextField();
         direccion1 = new javax.swing.JFormattedTextField();
@@ -162,11 +156,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
         btnGuardarCerra = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        btnNuevo = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        frmAnadirRubros = new javax.swing.JDialog();
         panelAnadirRubros = new javax.swing.JPanel();
         cmbRubros = new javax.swing.JComboBox();
         jLabel18 = new javax.swing.JLabel();
@@ -174,19 +164,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         txtValorAgregar = new javax.swing.JFormattedTextField();
         btnAnadir = new javax.swing.JButton();
         btnCerrarAnadirRubros = new javax.swing.JButton();
+        panelencontrados1 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        encontrados1 = new javax.swing.JList();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        variasCarreras = new javax.swing.JTable();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tFactura = new javax.swing.JTable();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         telefono = new javax.swing.JLabel();
-        carrera = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         editarDatos = new javax.swing.JButton();
         buscarApellido = new javax.swing.JFormattedTextField();
-        jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         ruc = new javax.swing.JLabel();
         nombre = new javax.swing.JLabel();
@@ -212,9 +202,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         factura = new javax.swing.JFormattedTextField();
         total6 = new javax.swing.JLabel();
         descuento = new javax.swing.JLabel();
-        busquedaVacio = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        btnAnadirRubrosVer = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         total4 = new javax.swing.JLabel();
         descuento2 = new javax.swing.JLabel();
@@ -242,55 +230,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         observacion = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
-        jLabel20 = new javax.swing.JLabel();
-        chMatriculado = new javax.swing.JRadioButton();
-        chInscrito = new javax.swing.JRadioButton();
-        chNinguno = new javax.swing.JRadioButton();
-        chRetirado = new javax.swing.JRadioButton();
+        jLabel1 = new javax.swing.JLabel();
+        btnNuevo = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-
-        frmCarrerasVarias.setTitle("SELECCIONE UNA CARRERA A LA QUE DESEA COBRAR");
-        frmCarrerasVarias.setAlwaysOnTop(true);
-        frmCarrerasVarias.setModal(true);
-
-        variasCarreras.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "", "Carrera", "Periodo"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        variasCarreras.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                variasCarrerasMouseClicked(evt);
-            }
-        });
-        variasCarreras.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                variasCarrerasKeyPressed(evt);
-            }
-        });
-        jScrollPane4.setViewportView(variasCarreras);
-        variasCarreras.getColumnModel().getColumn(0).setMaxWidth(0);
-        variasCarreras.getColumnModel().getColumn(2).setResizable(false);
-        variasCarreras.getColumnModel().getColumn(2).setPreferredWidth(50);
-
-        frmCarrerasVarias.getContentPane().add(jScrollPane4, java.awt.BorderLayout.CENTER);
-
-        jLabel21.setText("Al parecer el Estudiante ha sido matriculado anteriormente en 2 carreras");
-        frmCarrerasVarias.getContentPane().add(jLabel21, java.awt.BorderLayout.PAGE_START);
+        btnAnadirRubrosVer = new javax.swing.JToggleButton();
+        carreraSeleccionadaLabel = new javax.swing.JLabel();
 
         frmSeleccionCarreras.setTitle("Seleccione la CARRERA a Matricular o Inscribir");
         frmSeleccionCarreras.setModal(true);
@@ -395,42 +342,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 .addContainerGap(36, Short.MAX_VALUE))
         );
 
-        setBackground(new java.awt.Color(236, 246, 255));
-        setTitle("Facturación");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rubros.gif"))); // NOI18N
-        getContentPane().setLayout(null);
+        frmActualizarDatosFactura.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        frmActualizarDatosFactura.setUndecorated(true);
+        frmActualizarDatosFactura.getContentPane().setLayout(null);
 
-        panelencontrados1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
-        panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelencontrados1.setLayout(null);
-
-        encontrados1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Estudiantes..." };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        encontrados1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        encontrados1.setAlignmentX(0.2F);
-        encontrados1.setVisibleRowCount(10);
-        encontrados1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                encontrados1MouseClicked(evt);
-            }
-        });
-        encontrados1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                encontrados1KeyPressed(evt);
-            }
-        });
-        jScrollPane8.setViewportView(encontrados1);
-
-        panelencontrados1.add(jScrollPane8);
-        jScrollPane8.setBounds(10, 10, 260, 70);
-
-        getContentPane().add(panelencontrados1);
-        panelencontrados1.setBounds(90, 75, 280, 90);
-
-        frmActualizar.setLayout(null);
+        panelActualizar.setBackground(new java.awt.Color(204, 204, 255));
+        panelActualizar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelActualizar.setLayout(null);
 
         ruc1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         ruc1.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -443,7 +361,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 ruc1KeyPressed(evt);
             }
         });
-        frmActualizar.add(ruc1);
+        panelActualizar.add(ruc1);
         ruc1.setBounds(79, 10, 110, 20);
 
         nombre1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -452,7 +370,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 nombre1KeyPressed(evt);
             }
         });
-        frmActualizar.add(nombre1);
+        panelActualizar.add(nombre1);
         nombre1.setBounds(79, 30, 220, 20);
 
         direccion1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -461,7 +379,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 direccion1KeyPressed(evt);
             }
         });
-        frmActualizar.add(direccion1);
+        panelActualizar.add(direccion1);
         direccion1.setBounds(79, 50, 220, 20);
 
         telefono1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -470,23 +388,23 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 telefono1KeyPressed(evt);
             }
         });
-        frmActualizar.add(telefono1);
+        panelActualizar.add(telefono1);
         telefono1.setBounds(79, 70, 170, 20);
 
         jLabel11.setText("RUC: ");
-        frmActualizar.add(jLabel11);
+        panelActualizar.add(jLabel11);
         jLabel11.setBounds(10, 10, 80, 14);
 
         jLabel12.setText("NOMBRES: ");
-        frmActualizar.add(jLabel12);
+        panelActualizar.add(jLabel12);
         jLabel12.setBounds(10, 30, 80, 14);
 
         jLabel13.setText("DIRECCIÓN:");
-        frmActualizar.add(jLabel13);
+        panelActualizar.add(jLabel13);
         jLabel13.setBounds(10, 50, 80, 14);
 
         jLabel14.setText("TELÉFONO:");
-        frmActualizar.add(jLabel14);
+        panelActualizar.add(jLabel14);
         jLabel14.setBounds(10, 70, 80, 14);
 
         btnGuardarCerra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
@@ -496,71 +414,23 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 btnGuardarCerraActionPerformed(evt);
             }
         });
-        frmActualizar.add(btnGuardarCerra);
-        btnGuardarCerra.setBounds(80, 92, 133, 23);
+        panelActualizar.add(btnGuardarCerra);
+        btnGuardarCerra.setBounds(30, 100, 140, 30);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
         jButton1.setText("Cerrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        frmActualizar.add(jButton1);
-        jButton1.setBounds(220, 92, 80, 23);
+        panelActualizar.add(jButton1);
+        jButton1.setBounds(180, 100, 110, 30);
 
-        getContentPane().add(frmActualizar);
-        frmActualizar.setBounds(60, 70, 310, 120);
+        frmActualizarDatosFactura.getContentPane().add(panelActualizar);
+        panelActualizar.setBounds(10, 10, 320, 140);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel1.setLayout(null);
-
-        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif"))); // NOI18N
-        btnNuevo.setText("Nuevo");
-        btnNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnNuevo);
-        btnNuevo.setBounds(10, 5, 105, 30);
-
-        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif"))); // NOI18N
-        btnModificar.setText("Modificar");
-        btnModificar.setEnabled(false);
-        btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnModificar);
-        btnModificar.setBounds(120, 5, 110, 30);
-
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
-        btnSalir.setText("Salir");
-        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnSalir);
-        btnSalir.setBounds(360, 5, 105, 30);
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
-        btnEliminar.setText("Anular");
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnEliminar);
-        btnEliminar.setBounds(240, 5, 105, 30);
-
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 0, 610, 40);
+        frmAnadirRubros.setModal(true);
 
         panelAnadirRubros.setBackground(new java.awt.Color(255, 204, 102));
         panelAnadirRubros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -607,13 +477,100 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         panelAnadirRubros.add(btnCerrarAnadirRubros);
         btnCerrarAnadirRubros.setBounds(120, 80, 100, 23);
 
-        getContentPane().add(panelAnadirRubros);
-        panelAnadirRubros.setBounds(420, 200, 230, 110);
+        javax.swing.GroupLayout frmAnadirRubrosLayout = new javax.swing.GroupLayout(frmAnadirRubros.getContentPane());
+        frmAnadirRubros.getContentPane().setLayout(frmAnadirRubrosLayout);
+        frmAnadirRubrosLayout.setHorizontalGroup(
+            frmAnadirRubrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frmAnadirRubrosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelAnadirRubros, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        frmAnadirRubrosLayout.setVerticalGroup(
+            frmAnadirRubrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frmAnadirRubrosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelAnadirRubros, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        setBackground(new java.awt.Color(236, 246, 255));
+        setTitle("Facturación");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rubros.gif"))); // NOI18N
+        getContentPane().setLayout(null);
+
+        panelencontrados1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
+        panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelencontrados1.setLayout(null);
+
+        encontrados1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Estudiantes..." };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        encontrados1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        encontrados1.setAlignmentX(0.2F);
+        encontrados1.setVisibleRowCount(10);
+        encontrados1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encontrados1MouseClicked(evt);
+            }
+        });
+        encontrados1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                encontrados1KeyPressed(evt);
+            }
+        });
+        jScrollPane8.setViewportView(encontrados1);
+
+        panelencontrados1.add(jScrollPane8);
+        jScrollPane8.setBounds(10, 10, 260, 80);
+
+        getContentPane().add(panelencontrados1);
+        panelencontrados1.setBounds(90, 50, 280, 100);
+
+        variasCarreras.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "", "Carrera", "Periodo", "Estado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        variasCarreras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                variasCarrerasMouseClicked(evt);
+            }
+        });
+        variasCarreras.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                variasCarrerasKeyPressed(evt);
+            }
+        });
+        jScrollPane4.setViewportView(variasCarreras);
+        variasCarreras.getColumnModel().getColumn(0).setMaxWidth(0);
+        variasCarreras.getColumnModel().getColumn(1).setPreferredWidth(260);
+        variasCarreras.getColumnModel().getColumn(2).setPreferredWidth(50);
+        variasCarreras.getColumnModel().getColumn(3).setPreferredWidth(10);
+
+        getContentPane().add(jScrollPane4);
+        jScrollPane4.setBounds(22, 142, 700, 80);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel17.setText("Digite un apellido");
         getContentPane().add(jLabel17);
-        jLabel17.setBounds(380, 60, 180, 14);
+        jLabel17.setBounds(370, 30, 110, 20);
 
         tFactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -667,36 +624,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tFactura.getColumnModel().getColumn(5).setPreferredWidth(15);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(20, 220, 580, 120);
-
-        jDateChooser1.setDate(new Date());
-        getContentPane().add(jDateChooser1);
-        jDateChooser1.setBounds(460, 150, 140, 26);
-
-        jLabel1.setText("Fecha: ");
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(410, 150, 50, 30);
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Búsqueda: ");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(20, 54, 70, 20);
+        jScrollPane1.setBounds(20, 240, 700, 120);
 
         telefono.setText(".");
         getContentPane().add(telefono);
-        telefono.setBounds(90, 140, 140, 14);
-
-        carrera.setText(".");
-        getContentPane().add(carrera);
-        carrera.setBounds(90, 160, 300, 40);
+        telefono.setBounds(460, 100, 140, 14);
 
         jLabel5.setText("NOMBRES: ");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(10, 100, 80, 14);
+        jLabel5.setBounds(20, 80, 80, 14);
 
         jLabel6.setText("DIRECCIÓN:");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(10, 120, 80, 14);
+        jLabel6.setBounds(20, 100, 80, 14);
 
         editarDatos.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         editarDatos.setText("EDITAR");
@@ -707,7 +647,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(editarDatos);
-        editarDatos.setBounds(230, 80, 70, 23);
+        editarDatos.setBounds(250, 60, 70, 23);
 
         buscarApellido.setEnabled(false);
         buscarApellido.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -725,66 +665,61 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(buscarApellido);
-        buscarApellido.setBounds(90, 55, 280, 21);
-
-        jLabel7.setBackground(new java.awt.Color(153, 153, 153));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        getContentPane().add(jLabel7);
-        jLabel7.setBounds(10, 60, 610, 20);
+        buscarApellido.setBounds(90, 33, 280, 20);
 
         jLabel9.setText("RUC: ");
         getContentPane().add(jLabel9);
-        jLabel9.setBounds(10, 80, 80, 14);
+        jLabel9.setBounds(20, 60, 80, 14);
 
         ruc.setText(".");
         getContentPane().add(ruc);
-        ruc.setBounds(90, 80, 140, 14);
+        ruc.setBounds(110, 60, 140, 14);
 
         nombre.setText(".");
         getContentPane().add(nombre);
-        nombre.setBounds(90, 100, 230, 14);
+        nombre.setBounds(110, 80, 230, 14);
 
         direccion.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         direccion.setText(". ");
         getContentPane().add(direccion);
-        direccion.setBounds(90, 120, 320, 13);
+        direccion.setBounds(110, 100, 280, 13);
         getContentPane().add(codigoPariente);
-        codigoPariente.setBounds(130, 180, 20, 20);
+        codigoPariente.setBounds(710, 30, 20, 20);
 
         subtotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         subtotal.setForeground(new java.awt.Color(51, 51, 51));
         subtotal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         subtotal.setText("00.00");
         getContentPane().add(subtotal);
-        subtotal.setBounds(100, 340, 70, 30);
+        subtotal.setBounds(100, 360, 70, 30);
 
         total1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total1.setForeground(new java.awt.Color(51, 51, 51));
         total1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total1.setText("TOTAL:");
         getContentPane().add(total1);
-        total1.setBounds(440, 340, 50, 30);
+        total1.setBounds(550, 360, 50, 30);
 
         iva.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         iva.setForeground(new java.awt.Color(51, 51, 51));
         iva.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         iva.setText("00.00");
         getContentPane().add(iva);
-        iva.setBounds(380, 340, 60, 30);
+        iva.setBounds(420, 360, 60, 30);
 
         total.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         total.setForeground(new java.awt.Color(0, 51, 153));
         total.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total.setText("00.00");
         getContentPane().add(total);
-        total.setBounds(490, 340, 110, 30);
+        total.setBounds(600, 360, 110, 30);
 
         total5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total5.setForeground(new java.awt.Color(51, 51, 51));
         total5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total5.setText("IVA:");
         getContentPane().add(total5);
-        total5.setBounds(290, 340, 80, 30);
+        total5.setBounds(330, 360, 80, 30);
 
         buttonGroup1.add(chkTodo);
         chkTodo.setSelected(true);
@@ -800,55 +735,56 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkTodo);
-        chkTodo.setBounds(390, 110, 70, 23);
+        chkTodo.setBounds(450, 75, 70, 20);
 
         buttonGroup1.add(chkMatricula);
-        chkMatricula.setText("Matricula");
+        chkMatricula.setText("Solo Matricula");
         chkMatricula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkMatriculaActionPerformed(evt);
             }
         });
         getContentPane().add(chkMatricula);
-        chkMatricula.setBounds(460, 110, 80, 23);
+        chkMatricula.setBounds(520, 75, 100, 20);
 
         buttonGroup1.add(chkCreditos);
-        chkCreditos.setText("Créditos");
+        chkCreditos.setText("Solo Créditos");
         chkCreditos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkCreditosActionPerformed(evt);
             }
         });
         getContentPane().add(chkCreditos);
-        chkCreditos.setBounds(540, 110, 80, 23);
+        chkCreditos.setBounds(620, 75, 120, 20);
 
         jLabel15.setText("TELÉFONO:");
         getContentPane().add(jLabel15);
-        jLabel15.setBounds(10, 140, 80, 14);
+        jLabel15.setBounds(370, 100, 80, 14);
 
-        jLabel16.setText("ESTADO:");
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel16.setText("COBRAR: ");
         getContentPane().add(jLabel16);
-        jLabel16.setBounds(10, 200, 60, 14);
+        jLabel16.setBounds(370, 80, 70, 14);
 
         categoriaSocial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         categoriaSocial.setForeground(new java.awt.Color(51, 51, 51));
         categoriaSocial.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         categoriaSocial.setText("A");
         getContentPane().add(categoriaSocial);
-        categoriaSocial.setBounds(310, 140, 20, 15);
+        categoriaSocial.setBounds(690, 100, 30, 15);
 
         total7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total7.setForeground(new java.awt.Color(51, 51, 51));
         total7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total7.setText("Dscto.");
         getContentPane().add(total7);
-        total7.setBounds(180, 340, 50, 30);
+        total7.setBounds(210, 360, 50, 30);
 
         total8.setForeground(new java.awt.Color(51, 51, 51));
         total8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         total8.setText("CATEGORÍA:");
         getContentPane().add(total8);
-        total8.setBounds(240, 140, 80, 14);
+        total8.setBounds(610, 100, 80, 14);
 
         buttonGroup2.add(chkNuevo);
         chkNuevo.setSelected(true);
@@ -859,7 +795,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkNuevo);
-        chkNuevo.setBounds(460, 130, 70, 23);
+        chkNuevo.setBounds(460, 50, 70, 20);
 
         buttonGroup2.add(chkAntiguo);
         chkAntiguo.setText("Antiguo");
@@ -869,15 +805,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(chkAntiguo);
-        chkAntiguo.setBounds(540, 130, 80, 23);
+        chkAntiguo.setBounds(530, 50, 80, 20);
 
-        jLabel3.setText("Estudiante:");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("ESTUDIANTE: ");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(400, 130, 70, 20);
+        jLabel3.setBounds(370, 55, 90, 20);
 
         jLabel4.setText("Factura:");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(410, 80, 60, 14);
+        jLabel4.setBounds(540, 30, 60, 24);
 
         factura.setText("0000000");
         factura.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -889,40 +826,26 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(factura);
-        factura.setBounds(470, 80, 120, 25);
+        factura.setBounds(590, 30, 90, 24);
 
         total6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total6.setForeground(new java.awt.Color(51, 51, 51));
         total6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total6.setText("Subtotal:");
         getContentPane().add(total6);
-        total6.setBounds(20, 340, 80, 30);
+        total6.setBounds(20, 360, 80, 30);
 
         descuento.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         descuento.setForeground(new java.awt.Color(204, 51, 0));
         descuento.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         descuento.setText("00.00");
         getContentPane().add(descuento);
-        descuento.setBounds(230, 340, 60, 30);
-
-        busquedaVacio.setBackground(new java.awt.Color(204, 204, 204));
-        getContentPane().add(busquedaVacio);
-        busquedaVacio.setBounds(10, 50, 610, 30);
+        descuento.setBounds(260, 360, 60, 30);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Búsqueda: ");
         getContentPane().add(jLabel10);
-        jLabel10.setBounds(10, 60, 70, 14);
-
-        btnAnadirRubrosVer.setText("Añadir Rubros");
-        btnAnadirRubrosVer.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAnadirRubrosVer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnadirRubrosVerActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnAnadirRubrosVer);
-        btnAnadirRubrosVer.setBounds(530, 180, 100, 20);
+        jLabel10.setBounds(10, 33, 70, 20);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "FORMAS DE PAGO:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
         jPanel2.setLayout(null);
@@ -932,7 +855,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total4.setText("Confirmado");
         jPanel2.add(total4);
-        total4.setBounds(430, 20, 80, 20);
+        total4.setBounds(550, 20, 80, 20);
 
         descuento2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         descuento2.setForeground(new java.awt.Color(204, 51, 0));
@@ -962,7 +885,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(fechaA);
-        fechaA.setBounds(330, 40, 130, 28);
+        fechaA.setBounds(430, 40, 130, 28);
 
         referenciaA.setEnabled(false);
         referenciaA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
@@ -972,7 +895,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(referenciaA);
-        referenciaA.setBounds(260, 40, 70, 28);
+        referenciaA.setBounds(360, 40, 70, 28);
 
         bancoA.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         bancoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pichincha", " " }));
@@ -983,25 +906,25 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(bancoA);
-        bancoA.setBounds(180, 40, 80, 28);
+        bancoA.setBounds(180, 40, 180, 28);
 
         total10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total10.setForeground(new java.awt.Color(51, 51, 51));
         total10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total10.setText("Banco");
         jPanel2.add(total10);
-        total10.setBounds(190, 20, 60, 20);
+        total10.setBounds(180, 20, 60, 20);
 
         total11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total11.setForeground(new java.awt.Color(51, 51, 51));
         total11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total11.setText("Referencia");
         jPanel2.add(total11);
-        total11.setBounds(260, 20, 70, 20);
+        total11.setBounds(360, 20, 70, 20);
 
         confirmadoA.setEnabled(false);
         jPanel2.add(confirmadoA);
-        confirmadoA.setBounds(460, 40, 30, 28);
+        confirmadoA.setBounds(570, 40, 30, 28);
 
         anadir.setText("Añadir");
         anadir.setToolTipText("");
@@ -1013,7 +936,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(anadir);
-        anadir.setBounds(500, 40, 90, 28);
+        anadir.setBounds(600, 40, 90, 28);
 
         cmbPorcentaje.setForeground(new java.awt.Color(0, 0, 153));
         cmbPorcentaje.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "%", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100" }));
@@ -1083,14 +1006,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(formasdePago);
 
         jPanel2.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 70, 580, 90);
+        jScrollPane2.setBounds(10, 70, 680, 90);
 
         totalCobros.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         totalCobros.setForeground(new java.awt.Color(0, 51, 153));
         totalCobros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         totalCobros.setText("00.00");
         jPanel2.add(totalCobros);
-        totalCobros.setBounds(200, 160, 90, 30);
+        totalCobros.setBounds(250, 160, 90, 30);
 
         total3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total3.setForeground(new java.awt.Color(51, 51, 51));
@@ -1104,33 +1027,33 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total13.setText("FALTAN: ");
         jPanel2.add(total13);
-        total13.setBounds(300, 160, 60, 30);
+        total13.setBounds(380, 160, 60, 30);
 
         jLabel8.setForeground(new java.awt.Color(153, 0, 51));
         jLabel8.setText("Presione SUPR para quitar");
         jPanel2.add(jLabel8);
-        jLabel8.setBounds(470, 160, 160, 20);
+        jLabel8.setBounds(550, 160, 160, 20);
 
         total14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total14.setForeground(new java.awt.Color(51, 51, 51));
         total14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         total14.setText("Fecha Cheque");
         jPanel2.add(total14);
-        total14.setBounds(330, 20, 110, 20);
+        total14.setBounds(430, 20, 110, 20);
 
         total15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         total15.setForeground(new java.awt.Color(51, 51, 51));
         total15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         total15.setText("A COBRAR:");
         jPanel2.add(total15);
-        total15.setBounds(120, 160, 80, 30);
+        total15.setBounds(170, 160, 80, 30);
 
         faltan.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         faltan.setForeground(new java.awt.Color(204, 0, 0));
         faltan.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         faltan.setText("00.00");
         jPanel2.add(faltan);
-        faltan.setBounds(360, 160, 90, 30);
+        faltan.setBounds(440, 160, 90, 30);
 
         total16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total16.setForeground(new java.awt.Color(51, 51, 51));
@@ -1140,14 +1063,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         total16.setBounds(10, 20, 50, 20);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(10, 370, 600, 200);
+        jPanel2.setBounds(10, 390, 720, 200);
 
         observacion.setColumns(20);
         observacion.setRows(5);
         jScrollPane3.setViewportView(observacion);
 
         getContentPane().add(jScrollPane3);
-        jScrollPane3.setBounds(10, 570, 600, 30);
+        jScrollPane3.setBounds(10, 600, 700, 30);
 
         jButton3.setText("imp");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -1156,32 +1079,57 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(jButton3);
-        jButton3.setBounds(590, 80, 30, 23);
+        jButton3.setBounds(680, 30, 30, 24);
 
-        jLabel20.setText("CARRERA:");
-        getContentPane().add(jLabel20);
-        jLabel20.setBounds(10, 160, 80, 14);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Matriculas o Inscripciones ");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(20, 120, 190, 20);
 
-        estadoMatricula.add(chMatriculado);
-        chMatriculado.setText("Matriculado");
-        getContentPane().add(chMatriculado);
-        chMatriculado.setBounds(60, 195, 90, 23);
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/new.gif"))); // NOI18N
+        btnNuevo.setText("Nuevo");
+        btnNuevo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnNuevo);
+        btnNuevo.setBounds(10, 0, 105, 30);
 
-        estadoMatricula.add(chInscrito);
-        chInscrito.setText("Inscrito");
-        getContentPane().add(chInscrito);
-        chInscrito.setBounds(160, 195, 80, 23);
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/modificar.gif"))); // NOI18N
+        btnModificar.setText("Modificar");
+        btnModificar.setEnabled(false);
+        btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnModificar);
+        btnModificar.setBounds(120, 0, 110, 30);
 
-        estadoMatricula.add(chNinguno);
-        chNinguno.setSelected(true);
-        chNinguno.setText("Ninguno");
-        getContentPane().add(chNinguno);
-        chNinguno.setBounds(320, 195, 93, 23);
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancel.gif"))); // NOI18N
+        btnEliminar.setText("Anular");
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(240, 0, 105, 30);
 
-        estadoMatricula.add(chRetirado);
-        chRetirado.setText("Retirado");
-        getContentPane().add(chRetirado);
-        chRetirado.setBounds(240, 195, 80, 23);
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
+        btnSalir.setText("Salir");
+        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSalir);
+        btnSalir.setBounds(360, 0, 105, 30);
 
         jButton2.setText("Otra Matricula");
         jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -1191,7 +1139,22 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(jButton2);
-        jButton2.setBounds(410, 180, 110, 19);
+        jButton2.setBounds(470, 0, 110, 30);
+
+        btnAnadirRubrosVer.setText("Añadir Rubros");
+        btnAnadirRubrosVer.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnAnadirRubrosVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirRubrosVerActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAnadirRubrosVer);
+        btnAnadirRubrosVer.setBounds(590, 0, 110, 30);
+
+        carreraSeleccionadaLabel.setForeground(new java.awt.Color(0, 0, 204));
+        carreraSeleccionadaLabel.setText("Carrera Seleccionada");
+        getContentPane().add(carreraSeleccionadaLabel);
+        carreraSeleccionadaLabel.setBounds(200, 120, 420, 20);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1214,7 +1177,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         nombre1.setText("");
         direccion1.setText("");
         telefono1.setText("");
-        frmActualizar.setVisible(false);
+        frmActualizarDatosFactura.dispose();
         this.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
     public void llenarFactura() {
@@ -1312,7 +1275,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         nombre.setText(".");
         direccion.setText(".");
         telefono.setText(".");
-        carrera.setText(".");
+        //carrera.setText(".");
         ruc1.setText("");
         nombre1.setText("");
         direccion1.setText("");
@@ -1345,6 +1308,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 return;
             }
 
+            String codigo = factura.getText() + "";
+            while (codigo.length() < 7) {
+                codigo = "0" + codigo;
+            }
+            factura.setText("" + codigo);
+
+            String abuscar = "" + inst.getSerie1() + "FC" + factura.getText();
+            Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
+            if (cabe != null) {
+                JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
+                //factura.setText("");
+                factura.requestFocusInWindow();
+            }
             if (tFactura.getRowCount() <= 0) {
                 JOptionPane.showMessageDialog(this, "DEBE INGRESAR ALGUN RUBRO...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -1501,6 +1477,32 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.btnModificar.setEnabled(false);
             grabar = false;
             modificar = false;
+            
+            try {
+                buscarInscripcion(EstudianteSeleccionado);
+            if (carreraSeleccionada != null) {
+                DefaultTableModel dtm3 = (DefaultTableModel) variasCarreras.getModel();
+                dtm3.getDataVector().removeAllElements();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+                Object[] obj = new Object[5];
+                obj[0] = carreraSeleccionada;
+                obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
+                String fechaI = sdf.format(periodoActual.getFechaInicio());
+                String fechaF = sdf.format(periodoActual.getFechaFin());
+                obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
+                obj[3] = ""+(actualMatricula.getEstadoMat().equals("M")?"Matriculado":(actualMatricula.getEstadoMat().equals("I")?"Inscrito":(actualMatricula.getEstadoMat().equals("A")?"Admitido":"-")));
+                dtm3.addRow(obj);
+                variasCarreras.setModel(dtm3);
+                chkTodo.setSelected(true); 
+                tFactura.repaint();
+                variasCarreras.repaint();
+                
+            }
+
+            } catch (Exception e) {
+                System.out.println("ERROR: "+e);
+            }
+            
         }
 
 
@@ -1528,7 +1530,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             modificar = true;
             grabar = true;
         } else {
-            frmActualizar.setVisible(false);
+            frmActualizarDatosFactura.dispose();
             ruc1.setText("");
             nombre1.setText("");
             direccion1.setText("");
@@ -1652,7 +1654,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         factura.setLugarTrabajo("");
         factura.setTipoRepresentante("");
         factura.setEstado("");
-        
+
         try {
 
             if (es.getIdParientes().getTipoRepresentante().equals("F")) {
@@ -1668,11 +1670,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
         try {
             try {
-                codigoPariente.setText(factura.getIdParientes() + "");    
+                codigoPariente.setText(factura.getIdParientes() + "");
             } catch (Exception e) {
                 codigoPariente.setText("");
             }
-            
+
             ruc.setText(factura.getIdentificacion());
             if (ruc.getText().isEmpty()) {
                 ruc.setText(es.getIdEstudiantes());
@@ -1694,11 +1696,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             direccion1.setText(factura.getDireccion());
             telefono1.setText(factura.getTelefonoTrabajo());
         } catch (Exception e) {
-            System.out.println(""+e);
+            System.out.println("" + e);
             e.printStackTrace();
-            
+
         }
-        
+
         List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' and o.estadoMat = 'I' ");
@@ -1711,7 +1713,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (matriculaList.size() > 0) {
 
             actualMatricula = matriculaList.get(0);
-            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
+//            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
             categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
@@ -1721,15 +1723,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             if (actualMatricula.getPagada() == null) {
                 actualMatricula.setPagada(false);
             }
-            if (actualMatricula.getEstadoMat().equals("M")) {
-                chMatriculado.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("I")) {
-                chInscrito.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("R")) {
-                chRetirado.setSelected(true);
-            } else {
-                chNinguno.setSelected(true);
-            }
+//            if (actualMatricula.getEstadoMat().equals("M")) {
+//                chMatriculado.setSelected(true);
+//            } else if (actualMatricula.getEstadoMat().equals("I")) {
+//                chInscrito.setSelected(true);
+//            } else if (actualMatricula.getEstadoMat().equals("R")) {
+//                chRetirado.setSelected(true);
+//            } 
             DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
             dtm.getDataVector().removeAllElements();
             DefaultTableModel dtm2 = (DefaultTableModel) formasdePago.getModel();
@@ -1990,19 +1990,20 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (matriculaList.size() > 0) { //BUSCO SI TIENE O NO INSCRIPCION
             //VERIFICO SI ES QUE ESTÁ MATRICULADO
             actualMatricula = matriculaList.get(0);
-            if (actualMatricula.getEstadoMat().equals("M")) {
-                chMatriculado.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("I")) {
-                chInscrito.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("R")) {
-                chRetirado.setSelected(true);
-            } else {
-                chNinguno.setSelected(true);
-            }
             carreraSeleccionada = actualMatricula.getIdCarreras();
-            carrera.setText(actualMatricula.getIdCarreras().getNombre());
             if (actualMatricula.getEstadoMat().equals("I")) {
                 tipoProceso = "INSCRITO";
+                boolean siPago = verificarSiPagoMatricula();
+                if (!siPago) {
+                    buscarRubrosDeMatricula();
+                }
+                boolean siPagoC = verificarSiPagoCreditos();
+                if (!siPagoC) {
+                    buscarRubrosDeCreditos();
+                }
+                sumar();
+            }else if (actualMatricula.getEstadoMat().equals("A")) {
+                tipoProceso = "ADMITIDO";
                 boolean siPago = verificarSiPagoMatricula();
                 if (!siPago) {
                     buscarRubrosDeMatricula();
@@ -2024,7 +2025,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 }
                 sumar();
             }
-
         } else {
             //tengo que preguntar solo
             int val = JOptionPane.showConfirmDialog(this, "¿Al parecer no se Encuentra Inscrito o Matriculado, "
@@ -2131,7 +2131,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (matriculaList.size() > 0) {
 
             actualMatricula = matriculaList.get(0);
-            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
+//            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
             categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
@@ -2143,15 +2143,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
 
 
-            if (actualMatricula.getEstadoMat().equals("M")) {
-                chMatriculado.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("I")) {
-                chInscrito.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("R")) {
-                chRetirado.setSelected(true);
-            } else {
-                chNinguno.setSelected(true);
-            }
+//            if (actualMatricula.getEstadoMat().equals("M")) {
+//                chMatriculado.setSelected(true);
+//            } else if (actualMatricula.getEstadoMat().equals("I")) {
+//                chInscrito.setSelected(true);
+//            } else if (actualMatricula.getEstadoMat().equals("R")) {
+//                chRetirado.setSelected(true);
+//            }  
 
             DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
             dtm.getDataVector().removeAllElements();
@@ -2262,7 +2260,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (matriculaList.size() > 0) {
 
             actualMatricula = matriculaList.get(0);
-            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
+//            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
             categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
@@ -2272,15 +2270,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             if (actualMatricula.getPagada() == null) {
                 actualMatricula.setPagada(false);
             }
-            if (actualMatricula.getEstadoMat().equals("M")) {
-                chMatriculado.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("I")) {
-                chInscrito.setSelected(true);
-            } else if (actualMatricula.getEstadoMat().equals("R")) {
-                chRetirado.setSelected(true);
-            } else {
-                chNinguno.setSelected(true);
-            }
+//            if (actualMatricula.getEstadoMat().equals("M")) {
+//                chMatriculado.setSelected(true);
+//            } else if (actualMatricula.getEstadoMat().equals("I")) {
+//                chInscrito.setSelected(true);
+//            } else if (actualMatricula.getEstadoMat().equals("R")) {
+//                chRetirado.setSelected(true);
+//            }  
 
             DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
             dtm.getDataVector().removeAllElements();
@@ -2392,6 +2388,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     void funcionBuscar() {
         limpiar();
+        DefaultTableModel dtm = (DefaultTableModel) variasCarreras.getModel();
+        dtm.getDataVector().removeAllElements();
+        variasCarreras.setModel(dtm);
+        variasCarreras.clearSelection();
         this.panelencontrados1.setVisible(false);
         EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
         //CARGO DATOS BÁSICOS A PANTALLA
@@ -2410,9 +2410,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
             List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
                     + " where o.idEstudiantes.idEstudiantes = '" + EstudianteSeleccionado.getCodigoString() + "' "
-                    + " and o.idPeriodos.idPeriodos = '" + periodoUltimo + "' ");
-            DefaultTableModel dtm = (DefaultTableModel) variasCarreras.getModel();
-            dtm.getDataVector().removeAllElements();
+                    + " and o.idPeriodos.idPeriodos = " + periodoUltimo + " ");
+            DefaultTableModel dtm2 = (DefaultTableModel) variasCarreras.getModel();
+            dtm2.getDataVector().removeAllElements();
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
             for (Iterator<Matriculas> it = matriculaList.iterator(); it.hasNext();) {
                 Matriculas carr = it.next();
@@ -2422,22 +2422,43 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 String fechaI = sdf.format(carr.getIdPeriodos().getFechaInicio());
                 String fechaF = sdf.format(carr.getIdPeriodos().getFechaFin());
                 obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
-                dtm.addRow(obj);
+                obj[3] = ""+(carr.getEstadoMat().equals("M")?"Matriculado":(carr.getEstadoMat().equals("I")?"Inscrito":(carr.getEstadoMat().equals("A")?"Admitido":"-")));
+//                  if (((String) tFactura.getValueAt(i, 5)).equals("I")) {
+//                    tipoInscripcion = true;
+//                }
+//                if (((String) tFactura.getValueAt(i, 5)).equals("M")) {
+//                    tipoMatricula = true;
+//                }
+//                if (((String) tFactura.getValueAt(i, 5)).equals("C")) {
+                dtm2.addRow(obj);
             }
-            variasCarreras.setModel(dtm);
-            frmCarrerasVarias.setSize(500, 300);
-            frmCarrerasVarias.setLocationByPlatform(true);
-            frmCarrerasVarias.show();
+            variasCarreras.setModel(dtm2);
+
             return;
         } else {
             buscarInscripcion(EstudianteSeleccionado);
+            if (carreraSeleccionada != null) {
+                DefaultTableModel dtm3 = (DefaultTableModel) variasCarreras.getModel();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+                Object[] obj = new Object[5];
+                obj[0] = carreraSeleccionada;
+                obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
+                String fechaI = sdf.format(periodoActual.getFechaInicio());
+                String fechaF = sdf.format(periodoActual.getFechaFin());
+                obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
+                obj[3] = ""+(actualMatricula.getEstadoMat().equals("M")?"Matriculado":(actualMatricula.getEstadoMat().equals("I")?"Inscrito":(actualMatricula.getEstadoMat().equals("A")?"Admitido":"-")));
+                dtm3.addRow(obj);
+                variasCarreras.setModel(dtm3);
+                carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre()); 
+            }
+
         }
         buscarApellido.setText("");
         faltan.setText(total.getText());
     }
     private void encontrados1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados1KeyPressed
         // TODO add your handling code here:
-        frmCarrerasVarias.dispose();
+
         if (evt.getKeyCode() == evt.VK_ENTER) {
 
             funcionBuscar();
@@ -2524,14 +2545,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             nombre.setText(nombre1.getText());
             direccion.setText(direccion1.getText());
             telefono.setText(telefono1.getText());
-            frmActualizar.setVisible(false);
+            frmActualizarDatosFactura.dispose();
+
         } else {
             adm.actualizar(par);
             ruc.setText(ruc1.getText());
             nombre.setText(nombre1.getText());
             direccion.setText(direccion1.getText());
             telefono.setText(telefono1.getText());
-            frmActualizar.setVisible(false);
+            frmActualizarDatosFactura.dispose();
         }
 
 
@@ -2539,8 +2561,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void editarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarDatosActionPerformed
         // TODO add your handling code here:
-
-        frmActualizar.setVisible(true);
+        frmActualizarDatosFactura.setSize(345, 195);
+        frmActualizarDatosFactura.setLocationByPlatform(true);
+        frmActualizarDatosFactura.show();
         ruc1.requestFocusInWindow();
     }//GEN-LAST:event_editarDatosActionPerformed
 
@@ -2581,12 +2604,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         //general fac = (general) this.encontrados1.getSelectedValue();
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
+        BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
     }//GEN-LAST:event_chkTodoActionPerformed
 
     private void chkMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatriculaActionPerformed
         // TODO add your handling code here:
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
+        BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
     }//GEN-LAST:event_chkMatriculaActionPerformed
 
     private void chkCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditosActionPerformed
@@ -2594,6 +2623,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         //general fac = (general) this.encontrados1.getSelectedValue();
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
+        BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
     }//GEN-LAST:event_chkCreditosActionPerformed
 
     private void chkNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNuevoActionPerformed
@@ -2777,12 +2809,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (comprobarAntesAnadir()) {
             //JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
             anadir.setEnabled(false);
-            tipoA.setEnabled(false); 
-        }else{
-            anadir.setEnabled(true); 
-            tipoA.setEnabled(true); 
+            tipoA.setEnabled(false);
+        } else {
+            anadir.setEnabled(true);
+            tipoA.setEnabled(true);
         }
-        
+
 
     }//GEN-LAST:event_anadirActionPerformed
 
@@ -2818,17 +2850,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             formasdePago.setModel(dtm);
             this.sumarPagos();
             this.sumar();
-                BigDecimal to = new BigDecimal(total.getText());
-                BigDecimal co = new BigDecimal(totalCobros.getText());
-                faltan.setText("" + (to.subtract(co)));
-                    if (comprobarAntesAnadir()) {
-                        //JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                        anadir.setEnabled(false); 
-                        tipoA.setEnabled(false); 
-                    }else{
-                        anadir.setEnabled(true); 
-                        tipoA.setEnabled(true); 
-                    }
+            BigDecimal to = new BigDecimal(total.getText());
+            BigDecimal co = new BigDecimal(totalCobros.getText());
+            faltan.setText("" + (to.subtract(co)));
+            if (comprobarAntesAnadir()) {
+                //JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                anadir.setEnabled(false);
+                tipoA.setEnabled(false);
+            } else {
+                anadir.setEnabled(true);
+                tipoA.setEnabled(true);
+            }
         }
     }//GEN-LAST:event_formasdePagoKeyPressed
 
@@ -2839,25 +2871,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_facturaFocusLost
         // TODO add your handling code here:
-        String codigo = factura.getText() + "";
-        while (codigo.length() < 7) {
-            codigo = "0" + codigo;
-        }
-        factura.setText("" + codigo);
-
-        String abuscar = "" + inst.getSerie1() + "FC" + factura.getText();
-        Facturas cabe = (Facturas) adm.buscarClave(abuscar, Facturas.class);
-        if (cabe != null) {
-            JOptionPane.showMessageDialog(this, "NÚMERO DE FACTURA YA EXISTE, CAMBIE DE NÚMERO...!");
-            //factura.setText("");
-            factura.requestFocusInWindow();
-        }
-
     }//GEN-LAST:event_facturaFocusLost
 
     private void btnCerrarAnadirRubrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarAnadirRubrosActionPerformed
         // TODO add your handling code here:
-        panelAnadirRubros.setVisible(false);
+        frmAnadirRubros.dispose();
         btnAnadirRubrosVer.setSelected(false);
     }//GEN-LAST:event_btnCerrarAnadirRubrosActionPerformed
 
@@ -2865,9 +2883,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (btnAnadirRubrosVer.isSelected()) {
             cargarRubros();
-            panelAnadirRubros.setVisible(true);
+            frmAnadirRubros.show();
         } else {
-            panelAnadirRubros.setVisible(false);
+            frmAnadirRubros.dispose();
         }
     }//GEN-LAST:event_btnAnadirRubrosVerActionPerformed
 
@@ -2898,7 +2916,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             dtm.addRow(obj);
             tFactura.setModel(dtm);
-            panelAnadirRubros.setVisible(false);
+            frmAnadirRubros.dispose();
             btnAnadirRubrosVer.setSelected(false);
 
             sumarPagos();
@@ -2916,6 +2934,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             tFactura.setModel(dtm);
             this.sumar();
             this.sumarPagos();
+            BigDecimal to = new BigDecimal(total.getText());
+            BigDecimal co = new BigDecimal(totalCobros.getText());
+            faltan.setText("" + (to.subtract(co)));
 
         }
     }//GEN-LAST:event_tFacturaKeyPressed
@@ -2969,7 +2990,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        frmActualizar.setVisible(false);
+        frmActualizarDatosFactura.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -2979,27 +3000,31 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void variasCarrerasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_variasCarrerasMouseClicked
         // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            //cargarRubros(EstudianteSeleccionado, (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0));
-            carreraSeleccionada = (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0);
-            carrera.setText(carreraSeleccionada.getNombre());
-            dobleMatricula = true;
-            buscarInscripcion(EstudianteSeleccionado);
-            frmCarrerasVarias.dispose();
-        }
+//        if (evt.getClickCount() == 2) {
+        //cargarRubros(EstudianteSeleccionado, (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0));
+         DefaultTableModel dtm3 = (DefaultTableModel) tFactura.getModel();
+         dtm3.getDataVector().removeAllElements();
+         tFactura.setModel(dtm3); 
+        carreraSeleccionada = (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0);
+        carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
+        dobleMatricula = true;
+        buscarInscripcion(EstudianteSeleccionado);
+        //variasCarreras.clearSelection();
+
+        //      }
     }//GEN-LAST:event_variasCarrerasMouseClicked
     Carreras carreraSeleccionada;
     private void variasCarrerasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_variasCarrerasKeyPressed
         // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            //cargarRubros(EstudianteSeleccionado, (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0));
-            carreraSeleccionada = (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0);
-            carrera.setText(carreraSeleccionada.getNombre());
-            dobleMatricula = true;
-            frmCarrerasVarias.dispose();
-            buscarInscripcion(EstudianteSeleccionado);
+        //  if (evt.getKeyCode() == evt.VK_ENTER) {
+        //cargarRubros(EstudianteSeleccionado, (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0));
+//        carreraSeleccionada = (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0);
+////            carrera.setText(carreraSeleccionada.getNombre());
+//        dobleMatricula = true;
+//
+//        buscarInscripcion(EstudianteSeleccionado);
 
-        }
+        //}
     }//GEN-LAST:event_variasCarrerasKeyPressed
 
     private void cmbPorcentajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPorcentajeActionPerformed
@@ -3013,7 +3038,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             String nom = (String) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 1);
             carreraSeleccionada = new Carreras(cod);
             carreraSeleccionada.setNombre(nom);
-            carrera.setText(carreraSeleccionada.getNombre());
+//            carrera.setText(carreraSeleccionada.getNombre());
             buscarRubrosDeMatricula();
             if (tFactura.getRowCount() <= 0) {
                 JOptionPane.showMessageDialog(this, "Seleccione otra carrera, \n la "
@@ -3022,6 +3047,22 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 tipoProceso = ".";
                 frmSeleccionCarreras.dispose();
             }
+            DefaultTableModel dtm = (DefaultTableModel) variasCarreras.getModel();
+            //dtm.getDataVector().removeAllElements();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+            Object[] obj = new Object[5];
+            obj[0] = carreraSeleccionada.getIdCarreras();
+            obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
+            String fechaI = sdf.format(periodoActual.getFechaInicio());
+            String fechaF = sdf.format(periodoActual.getFechaFin());
+            obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
+            obj[3] = "-";
+            dtm.addRow(obj);
+            variasCarreras.setModel(dtm);
+            carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
+        BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
 
         }
     }//GEN-LAST:event_variasCarreras1MouseClicked
@@ -3044,7 +3085,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             carreraSeleccionada = new Carreras(cod);
             carreraSeleccionada.setNombre(nom);
-            carrera.setText(carreraSeleccionada.getNombre());
+//            carrera.setText(carreraSeleccionada.getNombre());
             buscarRubrosDeMatricula();
             if (tFactura.getRowCount() <= 0) {
                 JOptionPane.showMessageDialog(this, "Seleccione otra carrera, \n la "
@@ -3053,7 +3094,22 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 tipoProceso = ".";
                 frmSeleccionCarreras.dispose();
             }
-
+            DefaultTableModel dtm = (DefaultTableModel) variasCarreras.getModel();
+            //dtm.getDataVector().removeAllElements();
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+            Object[] obj = new Object[5];
+            obj[0] = carreraSeleccionada;
+            obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
+            String fechaI = sdf.format(periodoActual.getFechaInicio());
+            String fechaF = sdf.format(periodoActual.getFechaFin());
+            obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
+            obj[3] = "-";
+            dtm.addRow(obj);
+            variasCarreras.setModel(dtm);
+            carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
+            BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
 
         }
 
@@ -3086,9 +3142,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "NO EXISTE EL # de Factura...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
-            if(facAc.getAnulado()){
-                JOptionPane.showMessageDialog(this, "Factura ya ANULADA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return;
+            if(facAc.getAnulado()!=null){
+                if (facAc.getAnulado()) {
+                    JOptionPane.showMessageDialog(this, "Factura ya ANULADA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
             }
             facAc.setAnulado(true);
             facAc.setObservacion(observacionAnula.getText());
@@ -3100,6 +3158,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 adm.actualizar(cxcobrar);
             }
             anularFacturaForm.dispose();
+            
         }
 
     }//GEN-LAST:event_btnAnularFacturaActionPerformed
@@ -3121,7 +3180,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void tipoAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoAActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tipoAActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JDialog anularFacturaForm;
@@ -3137,15 +3195,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalirAnula;
     private javax.swing.JFormattedTextField buscarApellido;
-    private javax.swing.JPanel busquedaVacio;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JLabel carrera;
+    private javax.swing.JLabel carreraSeleccionadaLabel;
     private javax.swing.JLabel categoriaSocial;
-    private javax.swing.JRadioButton chInscrito;
-    private javax.swing.JRadioButton chMatriculado;
-    private javax.swing.JRadioButton chNinguno;
-    private javax.swing.JRadioButton chRetirado;
     private javax.swing.JRadioButton chkAntiguo;
     private javax.swing.JRadioButton chkCreditos;
     private javax.swing.JRadioButton chkMatricula;
@@ -3166,14 +3219,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel faltan;
     private com.toedter.calendar.JDateChooser fechaA;
     private javax.swing.JTable formasdePago;
-    private javax.swing.JPanel frmActualizar;
-    private javax.swing.JDialog frmCarrerasVarias;
+    private javax.swing.JDialog frmActualizarDatosFactura;
+    private javax.swing.JDialog frmAnadirRubros;
     private javax.swing.JDialog frmSeleccionCarreras;
     private javax.swing.JLabel iva;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3185,19 +3237,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -3211,6 +3258,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField numeroFacturaAnula;
     private javax.swing.JTextArea observacion;
     private javax.swing.JTextArea observacionAnula;
+    private javax.swing.JPanel panelActualizar;
     private javax.swing.JPanel panelAnadirRubros;
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JFormattedTextField referenciaA;
