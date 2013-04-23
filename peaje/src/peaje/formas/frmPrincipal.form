@@ -3227,10 +3227,10 @@
                 </Component>
                 <Component class="javax.swing.JFormattedTextField" name="tarjetatxt">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="null"/>
                     </Property>
-                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="0" green="0" red="ff" type="rgb"/>
                     </Property>
@@ -3607,7 +3607,6 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel32" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="contenedor2" alignment="0" pref="180" max="32767" attributes="0"/>
                           <Component id="contenedor3" alignment="0" pref="180" max="32767" attributes="0"/>
                           <Component id="contenedor1" alignment="1" pref="180" max="32767" attributes="0"/>
@@ -3624,9 +3623,7 @@
                       <Component id="contenedor2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="contenedor3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jLabel32" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="73" max="32767" attributes="0"/>
+                      <EmptySpace pref="158" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -3943,17 +3940,6 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JLabel" name="jLabel32">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/images_botones/ico.png"/>
-                </Property>
-                <Property name="horizontalTextPosition" type="int" value="4"/>
-              </Properties>
-              <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jLabel32KeyPressed"/>
-              </Events>
-            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

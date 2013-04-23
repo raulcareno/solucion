@@ -393,6 +393,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         graciasalida = new javax.swing.JFormattedTextField();
         chktrabajanotaventa = new javax.swing.JCheckBox();
         chkImprime2facturas = new javax.swing.JCheckBox();
+        chkReimprime = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         cmbTicket = new javax.swing.JComboBox();
@@ -1061,6 +1062,15 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel6.add(chkImprime2facturas);
         chkImprime2facturas.setBounds(10, 190, 190, 20);
         chkImprime2facturas.getAccessibleContext().setAccessibleDescription("");
+
+        chkReimprime.setText("Reimprimir Facturas");
+        chkReimprime.setToolTipText("Cuando NO se tiene facturas con papel químico");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.reimprimir}"), chkReimprime, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        jPanel6.add(chkReimprime);
+        chkReimprime.setBounds(230, 190, 160, 20);
 
         jTabbedPane2.addTab("Configuraciones", new javax.swing.ImageIcon(getClass().getResource("/images/admin1.gif")), jPanel6); // NOI18N
 
@@ -2449,6 +2459,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkBloquearSalida;
     private javax.swing.JCheckBox chkImprime2facturas;
     private javax.swing.JCheckBox chkIpcam;
+    private javax.swing.JCheckBox chkReimprime;
     private javax.swing.JCheckBox chkWebcam;
     private javax.swing.JCheckBox chktrabajanotaventa;
     private javax.swing.JComboBox cmbEntrada1;

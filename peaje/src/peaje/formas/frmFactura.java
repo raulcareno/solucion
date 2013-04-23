@@ -2401,6 +2401,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
 
 //                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
+            if(empresaObj.getReimprimir()){
             int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
                     "JCINFORM",
                     JOptionPane.YES_NO_CANCEL_OPTION,
@@ -2421,6 +2422,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
             noTicket.setText("");
             noTicket.requestFocusInWindow();
             return;
+            }else{
+                JOptionPane.showMessageDialog(this, "EL TICKET YA HA SIDO FACTURADO");
+                noTicket.setText("");
+                noTicket.requestFocusInWindow();
+                return;
+            }
+            
         }
         ingreso.setDate(fac.getFechaini());
         salida.setDate(new Date());

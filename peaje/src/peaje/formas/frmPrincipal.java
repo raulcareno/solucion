@@ -613,7 +613,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnAcerca = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
-        jLabel32 = new javax.swing.JLabel();
 
         buscarClientes.setLocationByPlatform(true);
         buscarClientes.getContentPane().setLayout(null);
@@ -2458,8 +2457,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(imAviso);
             imAviso.setBounds(540, 50, 210, 210);
 
-            tarjetatxt.setBorder(null);
             tarjetatxt.setEditable(false);
+            tarjetatxt.setBorder(null);
             tarjetatxt.setForeground(new java.awt.Color(255, 0, 0));
             tarjetatxt.setText(".");
             tarjetatxt.setValue(new String(""));
@@ -2901,14 +2900,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             contenedor3.getContentPane().add(jToolBar3);
 
-            jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
-            jLabel32.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-            jLabel32.addKeyListener(new java.awt.event.KeyAdapter() {
-                public void keyPressed(java.awt.event.KeyEvent evt) {
-                    jLabel32KeyPressed(evt);
-                }
-            });
-
             javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
             jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
             jXTaskPaneContainer1Layout.setHorizontalGroup(
@@ -2916,7 +2907,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel32)
                         .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                         .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                         .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
@@ -2930,9 +2920,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jLabel32)
-                    .addContainerGap(73, Short.MAX_VALUE))
+                    .addContainerGap(158, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -6222,11 +6210,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_contenedor3KeyPressed
 
-    private void jLabel32KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel32KeyPressed
-        // TODO add your handling code here:
-        tecla(evt.getKeyCode());
-    }//GEN-LAST:event_jLabel32KeyPressed
-
     private void usuarioLogeadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuarioLogeadoKeyPressed
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
@@ -7220,7 +7203,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;

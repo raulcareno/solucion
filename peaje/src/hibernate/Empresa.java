@@ -158,6 +158,8 @@ public class Empresa implements Serializable {
     private String puerta13;
     @Column(name = "puerta14")
     private String puerta14;
+    @Column(name = "reimprimir")
+    private Boolean reimprimir;
 
     public Empresa() {
     }
@@ -954,6 +956,14 @@ public class Empresa implements Serializable {
 
     public void setValorMaximo(Double valorMaximo) {
         this.valorMaximo = valorMaximo;
+    }
+
+    public Boolean getReimprimir() {
+        return reimprimir;
+    }
+
+    public void setReimprimir(Boolean reimprimir) {
+        this.reimprimir = reimprimir;
     }
     
 

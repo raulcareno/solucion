@@ -1070,6 +1070,20 @@
                         </Constraint>
                       </Constraints>
                     </Component>
+                    <Component class="javax.swing.JCheckBox" name="chkReimprime">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Reimprimir Facturas"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Cuando NO se tiene facturas con papel qu&#xed;mico"/>
+                      </Properties>
+                      <BindingProperties>
+                        <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.reimprimir}" target="chkReimprime" targetPath="selected" updateStrategy="0" immediately="false"/>
+                      </BindingProperties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                          <AbsoluteConstraints x="230" y="190" width="160" height="20"/>
+                        </Constraint>
+                      </Constraints>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel1">
