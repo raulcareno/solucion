@@ -1477,32 +1477,32 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.btnModificar.setEnabled(false);
             grabar = false;
             modificar = false;
-            
-            try {
-                buscarInscripcion(EstudianteSeleccionado);
-            if (carreraSeleccionada != null) {
-                DefaultTableModel dtm3 = (DefaultTableModel) variasCarreras.getModel();
-                dtm3.getDataVector().removeAllElements();
-                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
-                Object[] obj = new Object[5];
-                obj[0] = carreraSeleccionada;
-                obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
-                String fechaI = sdf.format(periodoActual.getFechaInicio());
-                String fechaF = sdf.format(periodoActual.getFechaFin());
-                obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
-                obj[3] = ""+(actualMatricula.getEstadoMat().equals("M")?"Matriculado":(actualMatricula.getEstadoMat().equals("I")?"Inscrito":(actualMatricula.getEstadoMat().equals("A")?"Admitido":"-")));
-                dtm3.addRow(obj);
-                variasCarreras.setModel(dtm3);
-                chkTodo.setSelected(true); 
-                tFactura.repaint();
-                variasCarreras.repaint();
-                
-            }
 
-            } catch (Exception e) {
-                System.out.println("ERROR: "+e);
-            }
-            
+//            try {
+//                buscarInscripcion(EstudianteSeleccionado);
+//            if (carreraSeleccionada != null) {
+//                DefaultTableModel dtm3 = (DefaultTableModel) variasCarreras.getModel();
+//                dtm3.getDataVector().removeAllElements();
+//                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+//                Object[] obj = new Object[5];
+//                obj[0] = carreraSeleccionada;
+//                obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
+//                String fechaI = sdf.format(periodoActual.getFechaInicio());
+//                String fechaF = sdf.format(periodoActual.getFechaFin());
+//                obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
+//                obj[3] = ""+(actualMatricula.getEstadoMat().equals("M")?"Matriculado":(actualMatricula.getEstadoMat().equals("I")?"Inscrito":(actualMatricula.getEstadoMat().equals("A")?"Admitido":"-")));
+//                dtm3.addRow(obj);
+//                variasCarreras.setModel(dtm3);
+//                chkTodo.setSelected(true); 
+//                tFactura.repaint();
+//                variasCarreras.repaint();
+//                
+//            }
+//
+//            } catch (Exception e) {
+//                System.out.println("ERROR: "+e);
+//            }
+
         }
 
 
@@ -1884,6 +1884,24 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 if (rub.size() > 0) {
                     rubroCredito = rub.get(0);
                 }//no existe el crédito
+
+                //BUSCO LOS CRÉDITOS QUE YA PAGO
+                int noCreditosPagados = 0;
+                try {
+                    List<Detalles> detalle = adm.query("Select o from Detalles as o "
+                            + " where o.idFacturas.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' "
+                            + " and o.idRubros.idRubros in (" + rubroCredito.getIdRubros() + ")");
+
+                    for (Iterator<Detalles> it = detalle.iterator(); it.hasNext();) {
+                        Detalles detalles = it.next();
+                        noCreditosPagados += detalles.getCantidad();
+                    }
+                } catch (Exception e) {
+                    noCreditosPagados = 0;
+                }
+
+                creditos = creditos - noCreditosPagados;
+
                 Object[] obj = new Object[20];
                 obj[0] = rubroCredito.getIdRubros();
                 obj[1] = rubroCredito.getNombre();
@@ -1927,6 +1945,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private boolean verificarSiPagoCreditos() {
         Rubros rubroCredito = null;
+        boolean pagadoTodo = false;
         List<Rubros> rub = adm.query("Select o from Rubros as o where o.eselcredito = true ");
         if (rub.size() > 0) {
             rubroCredito = rub.get(0);
@@ -1937,14 +1956,43 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             detalle = adm.query("Select o from Detalles as o "
                     + " where o.idFacturas.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' "
                     + " and o.idRubros.idRubros in (" + rubroCredito.getIdRubros() + ")");
+            int noCreditosPagados = 0;
+            for (Iterator<Detalles> it = detalle.iterator(); it.hasNext();) {
+                Detalles detalles = it.next();
+                noCreditosPagados += detalles.getCantidad();
+            }
+            List<MateriasMatricula> rubrosCreditos = adm.query("Select o from MateriasMatricula as o "
+                    + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' ");
+            int creditosAsignados = 0;
+            for (Iterator<MateriasMatricula> it = rubrosCreditos.iterator(); it.hasNext();) {
+                MateriasMatricula materiasMatricula = it.next();
+                List<CarrerasMaterias> noCreditos = adm.query("SELECT o FROM CarrerasMaterias as o "
+                        + " WHERE o.idCarreras.idCarreras = " + materiasMatricula.getIdMatriculas().getIdCarreras().getIdCarreras() + " "
+                        + " AND o.idMaterias.idMaterias = '" + materiasMatricula.getIdMaterias().getIdMaterias() + "' ");
+                if (noCreditos.size() > 0) {
+                    CarrerasMaterias carM = noCreditos.get(0);
+                    creditosAsignados += carM.getNumeroCreditos();
+                }
+
+            }
+            if (noCreditosPagados == creditosAsignados) {
+                pagadoTodo = true;
+            } else {
+                pagadoTodo = false;
+            }
+            // AQUI DEBO COMPARAR LA CANTIDAD DE RUBROS PAGADA ES IGUAL A LA CANTIDAD DE RUBROS QUE TIENE ASIGNADOS
+            //CASO CONTRARIO TOCARÁ SACAR LA DIFERENCIA Y COBRAR 
+            //(CANTIDAD DE RUBROS)
         } catch (Exception e) {
             e.printStackTrace();
+            pagadoTodo = false;
         }
-        if (detalle.size() > 0) {
-            return true; //ya pagó
-        } else {
-            return false; //aun no paga
-        }
+        return pagadoTodo;
+//        if (detalle.size() > 0) {
+//            return true; //ya pagó
+//        } else {
+//            return false; //aun no paga
+//        }
 
     }
 
@@ -2002,7 +2050,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     buscarRubrosDeCreditos();
                 }
                 sumar();
-            }else if (actualMatricula.getEstadoMat().equals("A")) {
+            } else if (actualMatricula.getEstadoMat().equals("A")) {
                 tipoProceso = "ADMITIDO";
                 boolean siPago = verificarSiPagoMatricula();
                 if (!siPago) {
@@ -2422,7 +2470,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 String fechaI = sdf.format(carr.getIdPeriodos().getFechaInicio());
                 String fechaF = sdf.format(carr.getIdPeriodos().getFechaFin());
                 obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
-                obj[3] = ""+(carr.getEstadoMat().equals("M")?"Matriculado":(carr.getEstadoMat().equals("I")?"Inscrito":(carr.getEstadoMat().equals("A")?"Admitido":"-")));
+                obj[3] = "" + (carr.getEstadoMat().equals("M") ? "Matriculado" : (carr.getEstadoMat().equals("I") ? "Inscrito" : (carr.getEstadoMat().equals("A") ? "Admitido" : "-")));
 //                  if (((String) tFactura.getValueAt(i, 5)).equals("I")) {
 //                    tipoInscripcion = true;
 //                }
@@ -2446,10 +2494,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 String fechaI = sdf.format(periodoActual.getFechaInicio());
                 String fechaF = sdf.format(periodoActual.getFechaFin());
                 obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
-                obj[3] = ""+(actualMatricula.getEstadoMat().equals("M")?"Matriculado":(actualMatricula.getEstadoMat().equals("I")?"Inscrito":(actualMatricula.getEstadoMat().equals("A")?"Admitido":"-")));
+                obj[3] = "" + (actualMatricula.getEstadoMat().equals("M") ? "Matriculado" : (actualMatricula.getEstadoMat().equals("I") ? "Inscrito" : (actualMatricula.getEstadoMat().equals("A") ? "Admitido" : "-")));
                 dtm3.addRow(obj);
                 variasCarreras.setModel(dtm3);
-                carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre()); 
+                carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
             }
 
         }
@@ -3002,14 +3050,20 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 //        if (evt.getClickCount() == 2) {
         //cargarRubros(EstudianteSeleccionado, (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0));
-         DefaultTableModel dtm3 = (DefaultTableModel) tFactura.getModel();
-         dtm3.getDataVector().removeAllElements();
-         tFactura.setModel(dtm3); 
+        DefaultTableModel dtm3 = (DefaultTableModel) tFactura.getModel();
+        dtm3.getDataVector().removeAllElements();
+        tFactura.setModel(dtm3);
         carreraSeleccionada = (Carreras) variasCarreras.getValueAt(variasCarreras.getSelectedRow(), 0);
         carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
         dobleMatricula = true;
         buscarInscripcion(EstudianteSeleccionado);
         //variasCarreras.clearSelection();
+        tFactura.repaint();
+        sumarPagos();
+        sumar();
+        BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
 
         //      }
     }//GEN-LAST:event_variasCarrerasMouseClicked
@@ -3023,7 +3077,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 //        dobleMatricula = true;
 //
 //        buscarInscripcion(EstudianteSeleccionado);
-
         //}
     }//GEN-LAST:event_variasCarrerasKeyPressed
 
@@ -3060,9 +3113,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             dtm.addRow(obj);
             variasCarreras.setModel(dtm);
             carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
-        BigDecimal to = new BigDecimal(total.getText());
-        BigDecimal co = new BigDecimal(totalCobros.getText());
-        faltan.setText("" + (to.subtract(co)));
+            BigDecimal to = new BigDecimal(total.getText());
+            BigDecimal co = new BigDecimal(totalCobros.getText());
+            faltan.setText("" + (to.subtract(co)));
 
         }
     }//GEN-LAST:event_variasCarreras1MouseClicked
@@ -3108,8 +3161,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             variasCarreras.setModel(dtm);
             carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
             BigDecimal to = new BigDecimal(total.getText());
-        BigDecimal co = new BigDecimal(totalCobros.getText());
-        faltan.setText("" + (to.subtract(co)));
+            BigDecimal co = new BigDecimal(totalCobros.getText());
+            faltan.setText("" + (to.subtract(co)));
 
         }
 
@@ -3142,7 +3195,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "NO EXISTE EL # de Factura...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
-            if(facAc.getAnulado()!=null){
+            if (facAc.getAnulado() != null) {
                 if (facAc.getAnulado()) {
                     JOptionPane.showMessageDialog(this, "Factura ya ANULADA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                     return;
@@ -3158,7 +3211,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 adm.actualizar(cxcobrar);
             }
             anularFacturaForm.dispose();
-            
+
         }
 
     }//GEN-LAST:event_btnAnularFacturaActionPerformed
