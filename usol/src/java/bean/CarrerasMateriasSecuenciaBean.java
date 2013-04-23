@@ -117,6 +117,8 @@ public class CarrerasMateriasSecuenciaBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
 
         } catch (Exception e) {
+            System.out.println("ERROR EN MALLA:");
+            e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
 

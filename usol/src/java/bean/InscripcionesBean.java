@@ -460,7 +460,7 @@ public class InscripcionesBean {
             try {
                 if (adm.existe("Matriculas", "idEstudiantes", object.getIdEstudiantes(), "idPeriodos", object.getIdPeriodos(), "").size() <= 0) {
                     object.setIdMatriculas(adm.getNuevaClave("Matriculas", "idMatriculas"));
-                    object.setNumero(nuevaMatricula());
+                    //object.setNumero(nuevaMatricula());
                     adm.guardar(object);
                     aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdMatriculas() + "");
 //                    inicializar();
