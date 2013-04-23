@@ -236,8 +236,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        btnAnadirRubrosVer = new javax.swing.JToggleButton();
         carreraSeleccionadaLabel = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         frmSeleccionCarreras.setTitle("Seleccione la CARRERA a Matricular o Inscribir");
         frmSeleccionCarreras.setModal(true);
@@ -431,6 +431,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         panelActualizar.setBounds(10, 10, 320, 140);
 
         frmAnadirRubros.setModal(true);
+        frmAnadirRubros.setUndecorated(true);
 
         panelAnadirRubros.setBackground(new java.awt.Color(255, 204, 102));
         panelAnadirRubros.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -484,14 +485,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             .addGroup(frmAnadirRubrosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelAnadirRubros, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         frmAnadirRubrosLayout.setVerticalGroup(
             frmAnadirRubrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(frmAnadirRubrosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelAnadirRubros, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         setBackground(new java.awt.Color(236, 246, 255));
@@ -574,20 +575,20 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         tFactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Nombre", "Cantidad", "Valor", "S.D.", "TIPO"
+                "Código", "Nombre", "Cantidad", "V.U.", "TOTAL", "S.D.", "TIPO", "Códigos"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -619,9 +620,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tFactura.getColumnModel().getColumn(1).setPreferredWidth(200);
         tFactura.getColumnModel().getColumn(2).setResizable(false);
         tFactura.getColumnModel().getColumn(2).setPreferredWidth(0);
-        tFactura.getColumnModel().getColumn(3).setResizable(false);
-        tFactura.getColumnModel().getColumn(4).setPreferredWidth(15);
+        tFactura.getColumnModel().getColumn(4).setResizable(false);
         tFactura.getColumnModel().getColumn(5).setPreferredWidth(15);
+        tFactura.getColumnModel().getColumn(6).setPreferredWidth(15);
+        tFactura.getColumnModel().getColumn(7).setPreferredWidth(0);
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(20, 240, 700, 120);
@@ -1141,20 +1143,19 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jButton2);
         jButton2.setBounds(470, 0, 110, 30);
 
-        btnAnadirRubrosVer.setText("Añadir Rubros");
-        btnAnadirRubrosVer.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAnadirRubrosVer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnadirRubrosVerActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnAnadirRubrosVer);
-        btnAnadirRubrosVer.setBounds(590, 0, 110, 30);
-
         carreraSeleccionadaLabel.setForeground(new java.awt.Color(0, 0, 204));
         carreraSeleccionadaLabel.setText("Carrera Seleccionada");
         getContentPane().add(carreraSeleccionadaLabel);
         carreraSeleccionadaLabel.setBounds(200, 120, 420, 20);
+
+        jButton4.setText("Añadir Rubros");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton4);
+        jButton4.setBounds(590, 0, 120, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1388,15 +1389,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 det.setCantidad((Integer) tFactura.getValueAt(i, 2));
                 det.setIdRubros(new Rubros((Integer) tFactura.getValueAt(i, 0)));
                 det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
-                det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 3)));
+                det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 4)));
                 adm.guardar(det);
-                if (((String) tFactura.getValueAt(i, 5)).equals("I")) {
+                if (((String) tFactura.getValueAt(i, 6)).equals("I")) {
                     tipoInscripcion = true;
                 }
-                if (((String) tFactura.getValueAt(i, 5)).equals("M")) {
+                if (((String) tFactura.getValueAt(i, 6)).equals("M")) {
                     tipoMatricula = true;
                 }
-                if (((String) tFactura.getValueAt(i, 5)).equals("C")) {
+                if (((String) tFactura.getValueAt(i, 6)).equals("C")) {
                     tipoCredito = true;
                 }
                 //CXC
@@ -1566,7 +1567,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tipoA.setEnabled(false);
         BigDecimal totalCalc = new BigDecimal(0);
         for (int i = 0; i < filas; i++) {
-            totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 3));
+            totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 4));
         }
         this.subtotal.setText(totalCalc + "");
         if (totalCalc.doubleValue() > 0) {
@@ -1861,57 +1862,60 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         //BUSCA LOS RUBROS DE LOS CRÉDITOS SI NO HA PAGADO
         DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
         //dtm.getDataVector().removeAllElements();
+        Rubros rubroCredito = null;
+        List<Rubros> rub = adm.query("Select o from Rubros as o where o.eselcredito = true ");
+        if (rub.size() > 0) {
+                    rubroCredito = rub.get(0);
+        }//no existe el crédito
+        
         if (chkCreditos.isSelected() || chkTodo.isSelected()) {
-
             //BUSCO LAS MATERIAS QUE ESTÁ TOMANDO PARA PROCEDER A FACTURAR LOS CRÉDITOS
-            List<MateriasMatricula> rubrosCreditos = adm.query("Select o from MateriasMatricula as o "
-                    + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' ");
+            List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
+                    + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' and (o.pagado = false or o.pagado is null ) "
+                    + "order by o.idMaterias.especial desc ");
             int creditos = 0;
-            for (Iterator<MateriasMatricula> it = rubrosCreditos.iterator(); it.hasNext();) {
+            BigDecimal valorCreditosEspeciales = new BigDecimal(0); 
+            BigDecimal valorCreditos = new BigDecimal(0); 
+            int creditosEspeciales = 0;
+            String codigosActualizar = "";
+            for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
                 MateriasMatricula materiasMatricula = it.next();
                 List<CarrerasMaterias> noCreditos = adm.query("SELECT o FROM CarrerasMaterias as o "
                         + " WHERE o.idCarreras.idCarreras = " + materiasMatricula.getIdMatriculas().getIdCarreras().getIdCarreras() + " "
                         + " AND o.idMaterias.idMaterias = '" + materiasMatricula.getIdMaterias().getIdMaterias() + "' ");
                 if (noCreditos.size() > 0) {
                     CarrerasMaterias carM = noCreditos.get(0);
-                    creditos += carM.getNumeroCreditos();
-                }
-
-            }
-            if (creditos > 0) {
-                Rubros rubroCredito = null;
-                List<Rubros> rub = adm.query("Select o from Rubros as o where o.eselcredito = true ");
-                if (rub.size() > 0) {
-                    rubroCredito = rub.get(0);
-                }//no existe el crédito
-
-                //BUSCO LOS CRÉDITOS QUE YA PAGO
-                int noCreditosPagados = 0;
-                try {
-                    List<Detalles> detalle = adm.query("Select o from Detalles as o "
-                            + " where o.idFacturas.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' "
-                            + " and o.idRubros.idRubros in (" + rubroCredito.getIdRubros() + ")");
-
-                    for (Iterator<Detalles> it = detalle.iterator(); it.hasNext();) {
-                        Detalles detalles = it.next();
-                        noCreditosPagados += detalles.getCantidad();
+                    if(materiasMatricula.getIdMaterias().getEspecial()){
+                       valorCreditosEspeciales = valorCreditosEspeciales.add(new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito()));
+                        creditosEspeciales += carM.getNumeroCreditos();
+                        Object[] obj = new Object[20];
+                        obj[0] = rubroCredito.getIdRubros();
+                        obj[1] = ""+carM.getIdMaterias().getNombre();
+                        obj[2] = carM.getNumeroCreditos();
+                        obj[3] = carM.getIdMaterias().getCredito();
+                        obj[4] = new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito());
+                        obj[5] = rubroCredito.getNoaplica();
+                        obj[6] = "C";
+                        obj[7] = carM.getIdMaterias().getIdMaterias()+"";
+                        dtm.addRow(obj);
+                    }else{
+//                        valorCreditos = valorCreditos.add(new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito()));
+                        //valorCreditos = valorCreditos.add(actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(carM.getNumeroCreditos())));
+                        creditos += carM.getNumeroCreditos();
+                        codigosActualizar += carM.getIdMaterias().getIdMaterias()+",";
                     }
-                } catch (Exception e) {
-                    noCreditosPagados = 0;
                 }
-
-                creditos = creditos - noCreditosPagados;
-
-                Object[] obj = new Object[20];
-                obj[0] = rubroCredito.getIdRubros();
-                obj[1] = rubroCredito.getNombre();
-                obj[2] = creditos;
-                obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
-                obj[4] = rubroCredito.getNoaplica();
-                obj[5] = "C";
-                dtm.addRow(obj);
-
             }
+                    Object[] obj = new Object[20];
+                        obj[0] = rubroCredito.getIdRubros();
+                        obj[1] = rubroCredito.getNombre();
+                        obj[2] = creditos;
+                        obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito();
+                        obj[4] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                        obj[5] = rubroCredito.getNoaplica();
+                        obj[6] = "C";
+                        obj[7] = ""+codigosActualizar;
+                        dtm.addRow(obj);
 
         }
         tFactura.setModel(dtm);
@@ -1932,8 +1936,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 obj[1] = elem.getIdRubros().getNombre();
                 obj[2] = 1;
                 obj[3] = (chkNuevo.isSelected() ? elem.getValorNueva() : elem.getValorAntigua());
-                obj[4] = elem.getIdRubros().getNoaplica();
-                obj[5] = "M";
+                obj[4] = (chkNuevo.isSelected() ? elem.getValorNueva() : elem.getValorAntigua());
+                obj[5] = elem.getIdRubros().getNoaplica();
+                obj[6] = "M";
+                obj[7] = "CODIGOS";
                 dtm.addRow(obj);
             }
 
@@ -1988,6 +1994,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             pagadoTodo = false;
         }
         return pagadoTodo;
+        
 //        if (detalle.size() > 0) {
 //            return true; //ya pagó
 //        } else {
@@ -2124,10 +2131,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
      * chkTodo.isSelected()) {
      *
      * //BUSCO LAS MATERIAS QUE ESTÁ TOMANDO PARA PROCEDER A FACTURAR LOS
-     * CRÉDITOS List<MateriasMatricula> rubrosCreditos = adm.query("Select o
+     * CRÉDITOS List<MateriasMatricula> materiasTomadas = adm.query("Select o
      * from MateriasMatricula as o " + " where o.idMatriculas.idMatriculas = '"
      * + actualMatricula.getIdMatriculas() + "' "); int creditos = 0; for
-     * (Iterator<MateriasMatricula> it = rubrosCreditos.iterator();
+     * (Iterator<MateriasMatricula> it = materiasTomadas.iterator();
      * it.hasNext();) { MateriasMatricula materiasMatricula = it.next();
      * List<CarrerasMaterias> noCreditos = adm.query("SELECT o FROM
      * CarrerasMaterias as o " + " WHERE o.idCarreras.idCarreras = " +
@@ -2356,8 +2363,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                             obj[1] = elem.getIdRubros().getNombre();
                             obj[2] = 1;
                             obj[3] = (chkNuevo.isSelected() ? elem.getValorNueva() : elem.getValorAntigua());
-                            obj[4] = elem.getIdRubros().getNoaplica();
-                            obj[5] = "M";
+                            obj[4] = (chkNuevo.isSelected() ? elem.getValorNueva() : elem.getValorAntigua());
+                            obj[5] = elem.getIdRubros().getNoaplica();
+                            obj[6] = "M";
+                            obj[7] = "CODIGOS";
                             dtm.addRow(obj);
                         }
                     }
@@ -2393,9 +2402,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         obj[0] = rubroCredito.getIdRubros();
                         obj[1] = rubroCredito.getNombre();
                         obj[2] = creditos;
-                        obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
-                        obj[4] = rubroCredito.getNoaplica();
-                        obj[5] = "C";
+                        obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito();
+                        obj[4] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                        obj[5] = rubroCredito.getNoaplica();
+                        obj[6] = "C";
+                        obj[5] = "CODIGOS";
                         dtm.addRow(obj);
 
                     }
@@ -2508,7 +2519,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         if (evt.getKeyCode() == evt.VK_ENTER) {
-
+        
             funcionBuscar();
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
             this.buscarApellido.requestFocusInWindow();
@@ -2650,9 +2661,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void chkTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTodoActionPerformed
         // TODO add your handling code here:
         //general fac = (general) this.encontrados1.getSelectedValue();
-       DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
-       dtm.getDataVector().removeAllElements();
-       tFactura.setModel(dtm); 
+        DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
+        dtm.getDataVector().removeAllElements();
+        tFactura.setModel(dtm);
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
         BigDecimal to = new BigDecimal(total.getText());
@@ -2663,8 +2674,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void chkMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatriculaActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
-       dtm.getDataVector().removeAllElements();
-       tFactura.setModel(dtm); 
+        dtm.getDataVector().removeAllElements();
+        tFactura.setModel(dtm);
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
         BigDecimal to = new BigDecimal(total.getText());
@@ -2676,8 +2687,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //general fac = (general) this.encontrados1.getSelectedValue();
         DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
-       dtm.getDataVector().removeAllElements();
-       tFactura.setModel(dtm); 
+        dtm.getDataVector().removeAllElements();
+        tFactura.setModel(dtm);
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
         BigDecimal to = new BigDecimal(total.getText());
@@ -2933,18 +2944,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void btnCerrarAnadirRubrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarAnadirRubrosActionPerformed
         // TODO add your handling code here:
         frmAnadirRubros.dispose();
-        btnAnadirRubrosVer.setSelected(false);
+         
     }//GEN-LAST:event_btnCerrarAnadirRubrosActionPerformed
-
-    private void btnAnadirRubrosVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirRubrosVerActionPerformed
-        // TODO add your handling code here:
-        if (btnAnadirRubrosVer.isSelected()) {
-            cargarRubros();
-            frmAnadirRubros.show();
-        } else {
-            frmAnadirRubros.dispose();
-        }
-    }//GEN-LAST:event_btnAnadirRubrosVerActionPerformed
 
     private void cmbRubrosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRubrosItemStateChanged
         // TODO add your handling code here:
@@ -2974,7 +2975,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             dtm.addRow(obj);
             tFactura.setModel(dtm);
             frmAnadirRubros.dispose();
-            btnAnadirRubrosVer.setSelected(false);
+ 
 
             sumarPagos();
             faltan.setText(total.getText());
@@ -3242,12 +3243,20 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void tipoAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoAActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tipoAActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        cargarRubros();
+        frmAnadirRubros.setLocationByPlatform(true);
+        frmAnadirRubros.setSize(270, 147);
+        frmAnadirRubros.show();
+
+    }//GEN-LAST:event_jButton4ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JDialog anularFacturaForm;
     private javax.swing.JComboBox bancoA;
     private javax.swing.JButton btnAnadir;
-    private javax.swing.JToggleButton btnAnadirRubrosVer;
     private javax.swing.JButton btnAnularFactura;
     private javax.swing.JButton btnCerrarAnadirRubros;
     private javax.swing.JButton btnEliminar;
@@ -3288,6 +3297,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
