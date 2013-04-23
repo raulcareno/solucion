@@ -15,113 +15,17 @@
                <body onload=" activar(true); ">
                 
         <script type="text/javascript">
-                    function handleDrop(event, ui) {
-                        var droppedCar = ui.draggable;
-
-                        droppedCar.fadeOut('fast');
-                    }
-                    
+                     
                     function activar(estado){
- 
-                        document.getElementById('CedulaIdentidad').disabled = estado;
-                        document.getElementById('ApellidoPaterno').disabled = estado;
-                        document.getElementById('ApellidoMaterno').disabled = estado;
-                        document.getElementById('nombre').disabled = estado;
-                        document.getElementById('sexo:0').disabled = estado;
-                        document.getElementById('sexo:1').disabled = estado;
-                        document.getElementById('telefono').disabled = estado;
-                        document.getElementById('Direccion').disabled = estado;
-                        document.getElementById('UsuarioE').disabled = estado;
-                        document.getElementById('Email').disabled = estado;
-                        document.getElementById('FechaNacimiento_input').disabled = estado;
-                        document.getElementById('Clave2E').disabled = estado;
-                        document.getElementById('ClaveE').disabled = estado;
-                        document.getElementById('pais').disabled = estado;
-                        document.getElementById('subirLibreta').disabled = estado;
-                        document.getElementById('subirLibreta').disabled = estado;
-                        document.getElementById('subirTitulo').disabled = estado;
-                        document.getElementById('subirCedula').disabled = estado;
-                        document.getElementById('carrera_input').disabled = estado;
-                        document.getElementById('carrera_label').disabled = estado;
-                        document.getElementById('NumeroMatricula').disabled = estado;
-                        document.getElementById('FechaMatricula_input').disabled = estado;
-                        //document.getElementById('CategoriasSociales').disabled = estado;
-                        //document.getElementById('CategoriasSociales:0').disabled = estado;
-                        //document.getElementById('CategoriasSociales:1').disabled = estado;
-                        //document.getElementById('CategoriasSociales:2').disabled = estado;
-                        document.getElementById('EstadoMatricula').disabled = estado;
-                        document.getElementById('Confirmada_input').disabled = estado;
-                        document.getElementById('AnioGraduado').disabled = estado;
-                        document.getElementById('ColegioGraduado').disabled = estado;
-                        document.getElementById('TitulosSuperiores').disabled = estado;
-                        document.getElementById('traePadre').disabled = estado;
-                        document.getElementById('traeMadre').disabled = estado;
-                        document.getElementById('traeEstudiante').disabled = estado;
-                        document.getElementById('IdentificacionFactura').disabled = estado;
-                        document.getElementById('NombresFactura').disabled = estado;
-                        document.getElementById('TelefonoTrabajoFactura').disabled = estado;
-                        document.getElementById('DireccionFactura').disabled = estado;
-                        
-                              
-                        
-                        //document.getElementById('CedulaIdentidad').style.background = "blue";  
-                        
-                        
-                         document.getElementById('CedulaIdentidad').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('ApellidoPaterno').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('ApellidoMaterno').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('nombre').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('sexo').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('sexo:0').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('sexo:1').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('telefono').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('Direccion').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('UsuarioE').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('Email').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('FechaNacimiento_input').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('Clave2E').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('ClaveE').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('pais').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('subirLibreta').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('subirLibreta').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('subirTitulo').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('subirCedula').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('carrera_input').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('carrera_label').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('NumeroMatricula').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('FechaMatricula_input').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('CategoriasSociales').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('EstadoMatricula').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('Confirmada_input').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('AnioGraduado').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('ColegioGraduado').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('TitulosSuperiores').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('CedulaIdentidad').style.backgroundColor = '#E9E9E9';
-                         document.getElementById('traePadre').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('traeMadre').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('traeEstudiante').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('IdentificacionFactura').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('NombresFactura').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('TelefonoTrabajoFactura').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('DireccionFactura').style.backgroundColor = '#E9E9E9';
-                         document.getElementById('CategoriasSociales').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('CategoriasSociales:0').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('CategoriasSociales:1').style.backgroundColor = '#E9E9E9';
-                        document.getElementById('CategoriasSociales:2').style.backgroundColor = '#E9E9E9';
+     
+                   
+                     
 
                         
                     }
                 </script>
             <h:form prependId="false" id="form">
-                <script type="text/javascript">
-                    function handleDrop(event, ui) {
-                        var droppedCar = ui.draggable;
-
-                        droppedCar.fadeOut('fast');
-                    }
-                </script>
                 <script src="locales.js" type="text/javascript"/>
-
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                 <!--p:message for="form" /-->
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
@@ -157,57 +61,49 @@
                         <h:panelGrid columns="5" cellpadding="-1" style="margin:0 auto;">  
 
                             <h:outputText value="CEDULA IDENTIDAD.: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.idEstudiantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;">
-                                <p:ajax event="blur" listener="#{orientacionBean.buscarCedula}"  update=":form"  />
-                            </p:inputText>  
+                            <h:inputText value="#{orientacionBean.estudiante.idEstudiantes}" disabled="true"  id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;"/>
                             <p:spacer width="10"/>
-
+                            
                             <h:outputText value="APELLIDO PATERNO: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:inputText value="#{orientacionBean.estudiante.apellidoPaterno}" disabled="true"  id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="APELLIDO MATERNO: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.apellidoMaterno}" id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:inputText value="#{orientacionBean.estudiante.apellidoMaterno}" disabled="true"  id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <p:spacer width="10"/>
-                            <h:outputText value="NOMBRE: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.nombre}"   id="nombre"  maxlength="100" size="35"  style="font-weight:bold;">
-                                <p:ajax event="blur" listener="#{orientacionBean.generarClaveyUsuario}"  process="@this ApellidoPaterno ApellidoMaterno CedulaIdentidad" update=":form"  />
-                            </p:inputText>  
-
+                            <h:outputText  value="NOMBRE: " />  
+                            <h:inputText value="#{orientacionBean.estudiante.nombre}"  disabled="true"   id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>
                             <h:outputText value="SEXO: " />  
-                            <p:selectOneRadio id="sexo" value="#{orientacionBean.estudiante.sexo}">  
+                            <p:selectOneRadio id="sexo" disabled="true" value="#{orientacionBean.estudiante.sexo}">  
                                 <f:selectItem itemLabel="MASCULINO"  itemValue="M" />  
                                 <f:selectItem itemLabel="FEMENINO" itemValue="F" />  
                             </p:selectOneRadio>  
                             <p:spacer width="10"/>
-                            <h:outputText value="TELEFONO: " />   
-                            <p:inputText value="#{orientacionBean.estudiante.telefono}" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:outputText value="TELEFONO: " />  
+                            <h:inputText value="#{orientacionBean.estudiante.telefono}"  disabled="true" id="telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="DIRECCIÓN: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.direccion}" id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:inputText value="#{orientacionBean.estudiante.direccion}" disabled="true"  id="Direccion"   maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <p:spacer width="10"/>
 
                             <h:outputText value="EMAIL: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.email}" id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:inputText value="#{orientacionBean.estudiante.email}" disabled="true"  id="Email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="USUARIO: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.usuario}"  autocomplete="false"  id="UsuarioE"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <h:inputText value="#{orientacionBean.estudiante.usuario}" disabled="true"   autocomplete="false"  id="UsuarioE"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <p:spacer width="10"/>
                             <h:outputText value="CLAVE: " />  
-                            <p:password  value="#{orientacionBean.estudiante.clave}" autocomplete="false"  requiredMessage="No coincidena las contraseñas" match="Clave2E" redisplay="true"  feedback="true" promptLabel="Por favor ingrese una clave" goodLabel="Buena" strongLabel="Fuerte" weakLabel="Débil" id="ClaveE"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{orientacionBean.estudiante.clave}"  disabled="true" autocomplete="false"  requiredMessage="No coinciden las contraseñas" match="Clave2E" redisplay="true"  feedback="true" promptLabel="Por favor ingrese una clave" goodLabel="Buena" strongLabel="Fuerte" weakLabel="Débil" id="ClaveE"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="FECHA NACIMIENTO: " />  
-                            <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{orientacionBean.estudiante.fechaNacimiento}" id="FechaNacimiento"   maxlength="100" size="28"  style="font-weight:bold;"/>  
-                            <p:spacer width="10"/>
+                            <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true"  value="#{orientacionBean.estudiante.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
+                            <p:spacer width="10"/> 
                             <h:outputText value="CONFIRMAR CLAVE: " />  
-                            <p:password  value="#{orientacionBean.clave2}" redisplay="true"  autocomplete="false"  id="Clave2E"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{orientacionBean.clave2}" redisplay="true"  disabled="true"   requiredMessage="No coincidena las contraseñas"   autocomplete="false"  id="Clave2E"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="PAIS NACIMIENTO: " /> 
-                            <p:selectOneMenu   id="pais" label="pais"  style="width:170px"  value="#{orientacionBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
-                                <f:selectItems value="#{orientacionBean.selectedItemPais}" var="ob"  itemValue="#{ob}"/>  
-                                <p:ajax event="change" listener="#{orientacionBean.buscarProvincia()}"  update="provincia" />  
-                            </p:selectOneMenu>  
+                            <h:inputText id="pais" label="pais"  style="width:170px" disabled="true" value="#{orientacionBean.paisSeleccionado.nombre}" />
                             <p:spacer width="10"/>
-                            <p:commandLink   disabled="true"  update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
+                            <p:commandLink update="fileSubirLibreta" onclick="modalSubirLibreta.show()"  id="subirLibreta">
                                 <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />Subir Lib.Militar
                             </p:commandLink>
                             <h:panelGrid id="panelLibreta"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
@@ -238,12 +134,10 @@
 
 
                             <h:outputText value="PROVINCIA  NACIMIENTO: " /> 
-                            <p:selectOneMenu  id="provincia" label="provincia" style="width:170px"   value="#{orientacionBean.provinciaSeleccionado}" effect="fade" converter="ConvProvincia">  
-                                <f:selectItems value="#{orientacionBean.provinciasEncontradas}" var="ob2"  itemValue="#{ob2}"/>  
-                                <p:ajax event="change" listener="#{orientacionBean.buscarCanton()}"  update="canton" />  
-                            </p:selectOneMenu>  
+                            <h:inputText disabled="true" id="provincia" label="provincia" style="width:170px"   value="#{orientacionBean.provinciaSeleccionado.nombre}" />  
+                                   
                             <p:spacer width="10"/>
-                            <p:commandLink  disabled="true"  update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
+                            <p:commandLink update="fileSubirTitulo" onclick="modalSubirTitulo.show()"  id="subirTitulo">
                                 <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />Subir Título 
                             </p:commandLink>
                             <h:panelGrid id="panelTitulo"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
@@ -273,11 +167,9 @@
                             </h:panelGrid>
 
                             <h:outputText value="CANTON NACIMIENTO: " /> 
-                            <p:selectOneMenu immediate="true" id="canton"  style="width:170px"  label="canton"  value="#{orientacionBean.cantonSeleccionado}" effect="fade" converter="ConvCanton">  
-                                <f:selectItems value="#{orientacionBean.cantonesEncontradas}" var="ob3"  itemValue="#{ob3}"/>  
-                            </p:selectOneMenu> 
+                            <h:inputText disabled="true"  id="canton"  style="width:170px"  label="canton"  value="#{orientacionBean.cantonSeleccionado.nombre}" /> 
                             <p:spacer width="10"/>
-                            <p:commandLink   disabled="true" update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
+                            <p:commandLink update="fileSubirCedula" onclick="modalSubirCedula.show()"  id="subirCedula">
                                 <p:graphicImage value="#{pageContext.contextPath}/images/subir.png" />Subir Cédula
                             </p:commandLink>
                             <h:panelGrid id="panelCedula"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
@@ -305,7 +197,7 @@
 
 
                             </h:panelGrid>
-                        </h:panelGrid>   
+                        </h:panelGrid>  
                         <h:panelGrid   cellpadding="-1" style="margin:0 auto;" columns="1"> 
                             <p:graphicImage id="logoSubido2" style="border:2px;border-color: #919396"  width="70"
                                             height="120" rendered="#{not empty orientacionBean.foto1}"
@@ -339,42 +231,47 @@
 
                         </h:panelGrid>
                     </h:panelGrid>
-
+                                                    <h:inputHidden value="#{orientacionBean.estudiante.idEstudiantes}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.apellidoPaterno}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.apellidoMaterno}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.nombre}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.sexo}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.telefono}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.email}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.usuario}" /> 
+                            <h:inputHidden value="#{orientacionBean.estudiante.clave}" /> 
                 </p:fieldset>
-                <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS DE MATRICULA">
+                <p:fieldset rendered="true" toggleable="false" toggleSpeed="500" legend="DATOS DE MATRICULA">
 
 
                     <h:panelGrid columns="4" cellpadding="-1" style="margin:0 ;">
 
                         <h:outputText value="CARRERA: " />     
 
-                        <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{orientacionBean.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
-                            <f:selectItems value="#{orientacionBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
-                            <p:ajax event="change"  process="@this carrera" listener="#{orientacionBean.buscarMateriasdeCarrera}" update=":form"/>
-                        </p:selectOneMenu>    
+                        <h:inputText id="carrera" label="carrera"  style="width:360px"  value="#{orientacionBean.carreraSeleccionado.nombre}" />
                         <h:outputText value="No. MATRICULA: " />  
-                        <p:inputText value="#{orientacionBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
+                        <p:inputText disabled="true"  value="#{orientacionBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
                     </h:panelGrid> 
                     <h:panelGrid columns="5" cellpadding="-1" style="margin:0 ;">
 
                         <h:outputText value="FECHA MATRICULA: " />  
-                        <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{orientacionBean.object.fecha}" id="FechaMatricula"   maxlength="100" size="28"  style="font-weight:bold;"/>  
+                        <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{orientacionBean.object.fecha}" id="FechaMatricula" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
                         <p:spacer width="10"/>
                         <h:outputText value="CATEGORÍA: " />  
-                        <p:selectOneRadio id="CategoriasSociales" label="CategoriasSociales"  value="#{orientacionBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales">  
+                        <p:selectOneRadio  id="CategoriasSociales" label="CategoriasSociales"  value="#{orientacionBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales">  
                             <f:selectItems value="#{orientacionBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
                         </p:selectOneRadio>
 
                         <h:outputText value="ESTADO: " />  
-                        <p:selectOneRadio id="EstadoMatricula" label="EstadoMatricula"  value="#{orientacionBean.object.estadoMat}">  
-                            <f:selectItem itemLabel="INSCRITO"  itemValue="I" />      
-                            <f:selectItem itemLabel="MATRICULADO"  itemValue="M" />  
-                            <f:selectItem itemLabel="RETIRADO" itemValue="R" />  
+                        <p:selectOneRadio disabled="true" id="EstadoMatricula" label="EstadoMatricula"  value="#{orientacionBean.object.estadoMat}">  
+                            <f:selectItem   itemLabel="INSCRITO"  itemValue="I" />      
+                            <f:selectItem   itemLabel="MATRICULADO"  itemValue="M" />  
+                            <f:selectItem   itemLabel="RETIRADO" itemValue="R" />  
 
                         </p:selectOneRadio> 
                         <p:spacer width="10"/>
                         <h:outputText value="CONFIRMADA: " />  
-                        <p:selectBooleanCheckbox value="#{orientacionBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  
+                        <p:selectBooleanCheckbox disabled="true" value="#{orientacionBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  
                         <h:outputText value="ANIO GRADUACIÓN: " />  
                         <p:inputText value="#{orientacionBean.estudiante.anioGraduado}" id="AnioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <p:spacer width="10"/>
@@ -382,10 +279,18 @@
                         <p:inputText value="#{orientacionBean.estudiante.colegioGraduado}" id="ColegioGraduado"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <h:outputText value="TITULOS SUPERIORES: " />  
                         <p:inputText value="#{orientacionBean.estudiante.titulosSuperiores}" id="TitulosSuperiores"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-
+                        <p:spacer width="10"/>
+                        <h:outputText value="TIPO DE COLEGIO: " />  
+                        <p:selectOneMenu  style="width:170px"   value="#{orientacionBean.estudiante.tipoColegio}" id="TipoColegio"  >
+                            <f:selectItem itemLabel="Seleccione" itemValue="" />  
+                            <f:selectItem itemLabel="FISCAL" itemValue="FISCAL" />  
+                            <f:selectItem itemLabel="FISCOMISIONAL" itemValue="FISCOMISIONAL" />   
+                            <f:selectItem itemLabel="PARTICULAR" itemValue="PARTICULAR" />  
+                            <f:selectItem itemLabel="MUNICIPAL" itemValue="MUNICIPAL" />  
+                        </p:selectOneMenu>  
 
                     </h:panelGrid>
-                    <p:panelGrid id="panelMaterias" columns="2">
+                    <p:panelGrid rendered="false" id="panelMaterias" columns="2">
                         <p:dataTable  scrollable="true" scrollHeight="150"   id="asignadas" var="materia" value="#{orientacionBean.destino}">  
                             <p:column width="150" headerText="MATRICULADO EN">  
                                 <h:outputText value="#{materia.idMaterias.nombre}" />  
@@ -400,7 +305,7 @@
                                   <h:outputText value="#{materia.numeroCreditos}" />  
                             </p:column>  
                             <p:column  width="18"  headerText="&gt;">  
-                                <p:commandButton   disabled="true" actionListener="#{orientacionBean.quitar(materia)}" update=":form" icon="ui-icon-seek-next">  
+                                <p:commandButton   actionListener="#{orientacionBean.quitar(materia)}" update=":form" icon="ui-icon-seek-next">  
                                 </p:commandButton>  
                             </p:column>  
                             <f:facet name="footer">  
@@ -408,9 +313,9 @@
                                 <h:outputText style="font-size: 11px" value="# de Créditos asignados:  #{orientacionBean.noCreditos}" />  
                             </f:facet>  
                         </p:dataTable>  
-                        <p:dataTable rendered="false" scrollable="true"   scrollRows="20"  scrollHeight="150"  var="car" id="disponibles" value="#{orientacionBean.origen}" >  
+                        <p:dataTable  scrollable="true"   scrollRows="20"  scrollHeight="150"  var="car" id="disponibles" value="#{orientacionBean.origen}" >  
                             <p:column  width="18"  headerText="&lt;">  
-                                <p:commandButton  disabled="true"  actionListener="#{orientacionBean.anadir(car)}" update=":form" icon="ui-icon-seek-prev">  
+                                <p:commandButton   actionListener="#{orientacionBean.anadir(car)}" update=":form" icon="ui-icon-seek-prev">  
                                 </p:commandButton>  
                             </p:column> 
                             <p:column  width="150"  headerText="MATERIAS DISPONIBLES">  
@@ -478,10 +383,10 @@
                     </p:fieldset>
                     <p:fieldset  toggleable="false" toggleSpeed="500" legend="DATOS PARA FACTURA">
                         <h:panelGrid columns="2" id="datosFactura" cellpadding="-1" style="margin:0 auto;">  
-                            <p:commandButton update="datosFactura"  id="traePadre" action="#{orientacionBean.copiarPadre()}" value="TRAER PADRE" />
+                            <p:commandButton update="datosFactura" action="#{orientacionBean.copiarPadre()}" value="TRAER PADRE" />
                             <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">       
-                                <p:commandButton update="datosFactura" id="traeMadre"  action="#{orientacionBean.copiarMadre()}"  value="TRAER MADRE" />
-                                <p:commandButton  update="datosFactura" id="traeEstudiante"  action="#{orientacionBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
+                                <p:commandButton update="datosFactura"  action="#{orientacionBean.copiarMadre()}"  value="TRAER MADRE" />
+                                <p:commandButton  update="datosFactura" action="#{orientacionBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
                             </h:panelGrid>     
                             <h:outputText value="CED o RUC: " />  
                             <p:inputText value="#{orientacionBean.pariente1.identificacion}" id="IdentificacionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
@@ -504,7 +409,7 @@
                             <h:outputText value="DIRECCION: " />  
                             <p:inputText value="#{orientacionBean.estudiante.direccionEmpresa}" id="DireccionEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="TELEFONO: " />  
-                            <p:inputText value="#{orientacionBean.estudiante.telefono}" id="Telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{orientacionBean.estudiante.telefonoEmpresa}" id="Telefono"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="HORARIO: " />  
                             <p:inputText value="#{orientacionBean.estudiante.horarioEmpresa}" id="HorarioEmpresa"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="OBSERVACION: " />  
@@ -517,6 +422,7 @@
                 </h:panelGrid>
                 <p:fieldset   toggleable="false" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
                     <h:panelGrid columns="5" cellpadding="-1" style="margin:0">  
+                                                <p:spacer width="10"/>
                         <h:outputText value="TIPO DE VIVIENDA: " />  
                         <p:selectOneMenu   style="width:170px"   value="#{orientacionBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
@@ -526,15 +432,7 @@
                             <f:selectItem itemLabel="PROPIA" itemValue="PROPIA" />  
                             <f:selectItem itemLabel="RENTADA" itemValue="RENTADA" />  
                         </p:selectOneMenu>  
-                        <p:spacer width="10"/>
-                        <h:outputText value="TIPO DE COLEGIO: " />  
-                        <p:selectOneMenu  style="width:170px"   value="#{orientacionBean.estudiante.tipoColegio}" id="TipoColegio"  >
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />  
-                            <f:selectItem itemLabel="FISCAL" itemValue="FISCAL" />  
-                            <f:selectItem itemLabel="FISCOMISIONAL" itemValue="FISCOMISIONAL" />   
-                            <f:selectItem itemLabel="PARTICULAR" itemValue="PARTICULAR" />  
-                            <f:selectItem itemLabel="MUNICIPAL" itemValue="MUNICIPAL" />  
-                        </p:selectOneMenu>  
+
                         <h:outputText value="FUENTE DE INGRESOS: " />  
                         <p:selectOneMenu  style="width:170px"   value="#{orientacionBean.estudiante.fuenteIngresos}" id="FuenteIngresos">  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
@@ -601,7 +499,6 @@
 
                     </h:panelGrid>
                 </p:fieldset>
-
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{orientacionBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
                     <p:splitButton  value="PDF" ajax="false"  actionListener="#{orientacionBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
