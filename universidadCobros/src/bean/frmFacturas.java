@@ -2650,6 +2650,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void chkTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTodoActionPerformed
         // TODO add your handling code here:
         //general fac = (general) this.encontrados1.getSelectedValue();
+       DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
+       dtm.getDataVector().removeAllElements();
+       tFactura.setModel(dtm); 
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
         BigDecimal to = new BigDecimal(total.getText());
@@ -2659,6 +2662,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void chkMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMatriculaActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
+       dtm.getDataVector().removeAllElements();
+       tFactura.setModel(dtm); 
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
         BigDecimal to = new BigDecimal(total.getText());
@@ -2669,6 +2675,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void chkCreditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCreditosActionPerformed
         // TODO add your handling code here:
         //general fac = (general) this.encontrados1.getSelectedValue();
+        DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
+       dtm.getDataVector().removeAllElements();
+       tFactura.setModel(dtm); 
         buscarInscripcion(EstudianteSeleccionado);
         tFactura.repaint();
         BigDecimal to = new BigDecimal(total.getText());
