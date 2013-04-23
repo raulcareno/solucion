@@ -24,8 +24,15 @@
                         
                         <h:outputText value="NOMBRE" />  
                         <p:inputText value="#{materiasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        
                         <h:outputText value="ESTADO" />  
                         <p:selectBooleanCheckbox value="#{materiasBean.object.activa}" id="Estado"  style="font-weight:bold;"/>  
+                        
+                        <h:outputText value="ESPECIAL" />  
+                        <p:selectBooleanCheckbox value="#{materiasBean.object.especial}" id="Especial"  style="font-weight:bold;"/>  
+                        
+                        <h:outputText value="VALOR CRÉDITO: " />  
+                        <p:inputText value="#{materiasBean.object.credito}" id="ValorCredito"  maxlength="10" size="35"  style="font-weight:bold;"/>  
 
                         <p:inputText  value="#{materiasBean.object.idMaterias}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 
