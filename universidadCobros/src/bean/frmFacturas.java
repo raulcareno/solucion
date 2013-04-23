@@ -524,10 +524,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jScrollPane8.setViewportView(encontrados1);
 
         panelencontrados1.add(jScrollPane8);
-        jScrollPane8.setBounds(10, 10, 260, 80);
+        jScrollPane8.setBounds(10, 10, 260, 70);
 
         getContentPane().add(panelencontrados1);
-        panelencontrados1.setBounds(90, 50, 280, 100);
+        panelencontrados1.setBounds(90, 56, 280, 90);
 
         variasCarreras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -665,7 +665,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
         });
         getContentPane().add(buscarApellido);
-        buscarApellido.setBounds(90, 33, 280, 20);
+        buscarApellido.setBounds(90, 33, 280, 25);
 
         jLabel9.setText("RUC: ");
         getContentPane().add(jLabel9);
