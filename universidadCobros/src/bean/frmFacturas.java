@@ -1750,7 +1750,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             actualMatricula = matriculaList.get(0);
 //            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
-            categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
+            categoriaSocial.setText("" + actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
 
@@ -1812,7 +1812,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }
 
     void llenarDatos() {
-
+        try {
+            categoriaSocial.setText("" + es.getIdCategoriasSociales().getNombre());
+        } catch (Exception e) {
+        }
         try {
             if (es.getIdParientes().getTipoRepresentante().equals("F")) {
                 actualPariente = es.getIdParientes();
@@ -1935,7 +1938,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         dtm.addRow(obj);
                     } else {
 //                        valorCreditos = valorCreditos.add(new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito()));
-                        //valorCreditos = valorCreditos.add(actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(carM.getNumeroCreditos())));
+                        //valorCreditos = valorCreditos.add(actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(carM.getNumeroCreditos())));
                         creditos += carM.getNumeroCreditos();
                         codigosActualizar += carM.getIdMaterias().getIdMaterias() + ",";
                     }
@@ -1946,8 +1949,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 obj[0] = rubroCredito.getIdRubros();
                 obj[1] = rubroCredito.getNombre();
                 obj[2] = creditos;
-                obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito();
-                obj[4] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                obj[3] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito();
+                obj[4] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
                 obj[5] = rubroCredito.getNoaplica();
                 obj[6] = "C";
                 obj[7] = "" + codigosActualizar;
@@ -2124,7 +2127,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             if (val == 0) {
                 llenarCarreras();
                 List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
-                actualMatricula.setIdCategoriasSociales(datos.get(0));
+                actualMatricula.getIdEstudiantes().setIdCategoriasSociales(datos.get(0));
                 sumar();
                 tipoProceso = "NUEVA";
                 //buscarRubrosDeMatricula();
@@ -2150,7 +2153,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
      * actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " +
      * actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html>
      * "); categoriaSocial.setText("" +
-     * actualMatricula.getIdCategoriasSociales().getNombre()); //VERIFICO SI ES
+     * actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getNombre()); //VERIFICO SI ES
      * QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL
      * ESTADO A LA MATRICULA Y NO PAGUE // List<Facturas> facturaLista =
      * adm.query("Select o from Detalles");
@@ -2186,7 +2189,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
      * (rub.size() > 0) { rubroCredito = rub.get(0); }//no existe el crédito
      * Object[] obj = new Object[20]; obj[0] = rubroCredito.getIdRubros();
      * obj[1] = rubroCredito.getNombre(); obj[2] = creditos; obj[3] =
-     * actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new
+     * actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new
      * BigDecimal(creditos)); obj[4] = rubroCredito.getNoaplica(); obj[5] = "C";
      * dtm.addRow(obj);
      *
@@ -2223,7 +2226,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             actualMatricula = matriculaList.get(0);
 //            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
-            categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
+            categoriaSocial.setText("" + actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
 
@@ -2309,7 +2312,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         obj[0] = rubroCredito.getIdRubros();
                         obj[1] = rubroCredito.getNombre();
                         obj[2] = creditos;
-                        obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                        obj[3] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
                         obj[4] = rubroCredito.getNoaplica();
                         obj[5] = "C";
                         dtm.addRow(obj);
@@ -2352,7 +2355,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
             actualMatricula = matriculaList.get(0);
 //            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
-            categoriaSocial.setText("" + actualMatricula.getIdCategoriasSociales().getNombre());
+            categoriaSocial.setText("" + actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getNombre());
             //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
 //            List<Facturas> facturaLista = adm.query("Select o from Detalles");
 
@@ -2438,8 +2441,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         obj[0] = rubroCredito.getIdRubros();
                         obj[1] = rubroCredito.getNombre();
                         obj[2] = creditos;
-                        obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito();
-                        obj[4] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                        obj[3] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito();
+                        obj[4] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
                         obj[5] = rubroCredito.getNoaplica();
                         obj[6] = "C";
                         obj[5] = "CODIGOS";
@@ -3038,8 +3041,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         int filas = tFactura.getRowCount();
         BigDecimal totalCalc = new BigDecimal(0);
         for (int i = 0; i < filas; i++) {
-            if (tFactura.getValueAt(i, 5).toString().contains(tipo)) {
-                totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 3));
+            if (tFactura.getValueAt(i, 6).toString().contains(tipo)) {
+                totalCalc = totalCalc.add((BigDecimal) tFactura.getValueAt(i, 4));
             }
         }
         return totalCalc;
@@ -3049,12 +3052,12 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if (cmbPorcentaje.getSelectedIndex() > 0) {
             if (tipoA.getSelectedItem().toString().contains("Ayuda")) {
-                BigDecimal totalMatriculas = sumarSegun("C");
+                BigDecimal totalMatriculas = sumarSegun("M");
                 BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
                 valorA.setText(descontar + "");
 
             } else if (tipoA.getSelectedItem().toString().contains("Beca")) {
-                BigDecimal totalMatriculas = sumarSegun("M");
+                BigDecimal totalMatriculas = sumarSegun("C");
                 BigDecimal descontar = new BigDecimal(cmbPorcentaje.getSelectedItem().toString()).multiply(totalMatriculas).divide(new BigDecimal(100));
                 valorA.setText(descontar + "");
             }
@@ -3235,7 +3238,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         actualMatricula = new Matriculas();
         llenarCarreras();
         List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
-        actualMatricula.setIdCategoriasSociales(datos.get(0));
+        actualMatricula.getIdEstudiantes().setIdCategoriasSociales(datos.get(0));
         sumar();
         tipoProceso = "NUEVA";
     }//GEN-LAST:event_jButton2ActionPerformed
