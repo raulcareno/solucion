@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -1382,6 +1383,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             Boolean tipoInscripcion = false;
             Boolean tipoMatricula = false;
             Boolean tipoCredito = false;
+            String codigosActualizar ="";
             for (int i = 0; i < this.tFactura.getRowCount(); i++) {
                 Detalles det = new Detalles();
                 det.setIdDetalles(sec.generarClave());
@@ -1390,6 +1392,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 det.setIdRubros(new Rubros((Integer) tFactura.getValueAt(i, 0)));
                 det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
                 det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 4)));
+                det.setObservacion(tFactura.getValueAt(i, 7)+"");
                 adm.guardar(det);
                 if (((String) tFactura.getValueAt(i, 6)).equals("I")) {
                     tipoInscripcion = true;
@@ -1400,9 +1403,41 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 if (((String) tFactura.getValueAt(i, 6)).equals("C")) {
                     tipoCredito = true;
                 }
+                if(!(tFactura.getValueAt(i, 7)+" ").contains("COD")){
+                 codigosActualizar +=tFactura.getValueAt(i, 7)+",";
+                }
                 //CXC
-
             }
+            try {
+                String nuevosCodigosActualizar = "";
+                 StringTokenizer tokens=new StringTokenizer(codigosActualizar,",");
+                 
+                    while(tokens.hasMoreTokens()){
+                        String str=tokens.nextToken();
+                        if(!str.equals(" ") && !str.toUpperCase().contains("COD") ){
+                         nuevosCodigosActualizar += str+",";
+                        }
+                        
+                    }
+                    if(nuevosCodigosActualizar.length()>0){
+                    nuevosCodigosActualizar = nuevosCodigosActualizar.substring(0, nuevosCodigosActualizar.length()-1);
+                    }
+                 List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
+                        + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "'"
+                        + " and (o.pagado = false or o.pagado is null ) "
+                        + " and o.idMaterias.idMaterias in ("+nuevosCodigosActualizar+")  ");
+                 for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
+                        MateriasMatricula materiasMatricula = it.next();
+                        materiasMatricula.setPagado(true); 
+                        adm.actualizar(materiasMatricula); 
+
+                } 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+               
+            // 65 +","
+            // 116,129,80,102,117,
             if (tipoInscripcion) {
                 actualMatricula.setPagadainscripcion(true);
                 actualMatricula.setEstadoMat("I");
@@ -1906,6 +1941,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     }
                 }
             }
+            if(creditos >0){
                     Object[] obj = new Object[20];
                         obj[0] = rubroCredito.getIdRubros();
                         obj[1] = rubroCredito.getNombre();
@@ -1916,7 +1952,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         obj[6] = "C";
                         obj[7] = ""+codigosActualizar;
                         dtm.addRow(obj);
-
+        }
         }
         tFactura.setModel(dtm);
     }
