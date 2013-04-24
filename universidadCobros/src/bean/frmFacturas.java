@@ -1383,7 +1383,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             Boolean tipoInscripcion = false;
             Boolean tipoMatricula = false;
             Boolean tipoCredito = false;
-            String codigosActualizar ="";
+            String codigosActualizar = "";
             for (int i = 0; i < this.tFactura.getRowCount(); i++) {
                 Detalles det = new Detalles();
                 det.setIdDetalles(sec.generarClave());
@@ -1392,7 +1392,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 det.setIdRubros(new Rubros((Integer) tFactura.getValueAt(i, 0)));
                 det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
                 det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 4)));
-                det.setObservacion(tFactura.getValueAt(i, 7)+"");
+                det.setObservacion(tFactura.getValueAt(i, 7) + "");
                 adm.guardar(det);
                 if (((String) tFactura.getValueAt(i, 6)).equals("I")) {
                     tipoInscripcion = true;
@@ -1403,39 +1403,39 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 if (((String) tFactura.getValueAt(i, 6)).equals("C")) {
                     tipoCredito = true;
                 }
-                if(!(tFactura.getValueAt(i, 7)+" ").contains("COD")){
-                 codigosActualizar +=tFactura.getValueAt(i, 7)+",";
+                if (!(tFactura.getValueAt(i, 7) + " ").contains("COD")) {
+                    codigosActualizar += tFactura.getValueAt(i, 7) + ",";
                 }
                 //CXC
             }
             try {
                 String nuevosCodigosActualizar = "";
-                 StringTokenizer tokens=new StringTokenizer(codigosActualizar,",");
-                 
-                    while(tokens.hasMoreTokens()){
-                        String str=tokens.nextToken();
-                        if(!str.equals(" ") && !str.toUpperCase().contains("COD") ){
-                         nuevosCodigosActualizar += str+",";
-                        }
-                        
-                    }
-                    if(nuevosCodigosActualizar.length()>0){
-                    nuevosCodigosActualizar = nuevosCodigosActualizar.substring(0, nuevosCodigosActualizar.length()-1);
-                    }
-                 List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
-                        + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "'"
-                        + " and (o.pagado = false or o.pagado is null ) "
-                        + " and o.idMaterias.idMaterias in ("+nuevosCodigosActualizar+")  ");
-                 for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
-                        MateriasMatricula materiasMatricula = it.next();
-                        materiasMatricula.setPagado(true); 
-                        adm.actualizar(materiasMatricula); 
+                StringTokenizer tokens = new StringTokenizer(codigosActualizar, ",");
 
-                } 
+                while (tokens.hasMoreTokens()) {
+                    String str = tokens.nextToken();
+                    if (!str.equals(" ") && !str.toUpperCase().contains("COD")) {
+                        nuevosCodigosActualizar += str + ",";
+                    }
+
+                }
+                if (nuevosCodigosActualizar.length() > 0) {
+                    nuevosCodigosActualizar = nuevosCodigosActualizar.substring(0, nuevosCodigosActualizar.length() - 1);
+                }
+                List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
+                        + " where o.idMatriculas. idMatriculas = '" + actualMatricula.getIdMatriculas() + "'"
+                        + " and (o.pagado = false or o.pagado is null ) "
+                        + " and o.idMaterias.idMaterias in (" + nuevosCodigosActualizar + ")  ");
+                for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
+                    MateriasMatricula materiasMatricula = it.next();
+                    materiasMatricula.setPagado(true);
+                    adm.actualizar(materiasMatricula);
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-               
+
             // 65 +","
             // 116,129,80,102,117,
             if (tipoInscripcion) {
@@ -1900,17 +1900,17 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         Rubros rubroCredito = null;
         List<Rubros> rub = adm.query("Select o from Rubros as o where o.eselcredito = true ");
         if (rub.size() > 0) {
-                    rubroCredito = rub.get(0);
+            rubroCredito = rub.get(0);
         }//no existe el crédito
-        
+
         if (chkCreditos.isSelected() || chkTodo.isSelected()) {
             //BUSCO LAS MATERIAS QUE ESTÁ TOMANDO PARA PROCEDER A FACTURAR LOS CRÉDITOS
             List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
                     + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' and (o.pagado = false or o.pagado is null ) "
                     + "order by o.idMaterias.especial desc ");
             int creditos = 0;
-            BigDecimal valorCreditosEspeciales = new BigDecimal(0); 
-            BigDecimal valorCreditos = new BigDecimal(0); 
+            BigDecimal valorCreditosEspeciales = new BigDecimal(0);
+            BigDecimal valorCreditos = new BigDecimal(0);
             int creditosEspeciales = 0;
             String codigosActualizar = "";
             for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
@@ -1920,39 +1920,39 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         + " AND o.idMaterias.idMaterias = '" + materiasMatricula.getIdMaterias().getIdMaterias() + "' ");
                 if (noCreditos.size() > 0) {
                     CarrerasMaterias carM = noCreditos.get(0);
-                    if(materiasMatricula.getIdMaterias().getEspecial()){
-                       valorCreditosEspeciales = valorCreditosEspeciales.add(new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito()));
+                    if (materiasMatricula.getIdMaterias().getEspecial()) {
+                        valorCreditosEspeciales = valorCreditosEspeciales.add(new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito()));
                         creditosEspeciales += carM.getNumeroCreditos();
                         Object[] obj = new Object[20];
                         obj[0] = rubroCredito.getIdRubros();
-                        obj[1] = ""+carM.getIdMaterias().getNombre();
+                        obj[1] = "" + carM.getIdMaterias().getNombre();
                         obj[2] = carM.getNumeroCreditos();
                         obj[3] = carM.getIdMaterias().getCredito();
                         obj[4] = new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito());
                         obj[5] = rubroCredito.getNoaplica();
                         obj[6] = "C";
-                        obj[7] = carM.getIdMaterias().getIdMaterias()+"";
+                        obj[7] = carM.getIdMaterias().getIdMaterias() + "";
                         dtm.addRow(obj);
-                    }else{
+                    } else {
 //                        valorCreditos = valorCreditos.add(new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito()));
                         //valorCreditos = valorCreditos.add(actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(carM.getNumeroCreditos())));
                         creditos += carM.getNumeroCreditos();
-                        codigosActualizar += carM.getIdMaterias().getIdMaterias()+",";
+                        codigosActualizar += carM.getIdMaterias().getIdMaterias() + ",";
                     }
                 }
             }
-            if(creditos >0){
-                    Object[] obj = new Object[20];
-                        obj[0] = rubroCredito.getIdRubros();
-                        obj[1] = rubroCredito.getNombre();
-                        obj[2] = creditos;
-                        obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito();
-                        obj[4] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
-                        obj[5] = rubroCredito.getNoaplica();
-                        obj[6] = "C";
-                        obj[7] = ""+codigosActualizar;
-                        dtm.addRow(obj);
-        }
+            if (creditos > 0) {
+                Object[] obj = new Object[20];
+                obj[0] = rubroCredito.getIdRubros();
+                obj[1] = rubroCredito.getNombre();
+                obj[2] = creditos;
+                obj[3] = actualMatricula.getIdCategoriasSociales().getValorCredito();
+                obj[4] = actualMatricula.getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                obj[5] = rubroCredito.getNoaplica();
+                obj[6] = "C";
+                obj[7] = "" + codigosActualizar;
+                dtm.addRow(obj);
+            }
         }
         tFactura.setModel(dtm);
     }
@@ -2030,7 +2030,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             pagadoTodo = false;
         }
         return pagadoTodo;
-        
+
 //        if (detalle.size() > 0) {
 //            return true; //ya pagó
 //        } else {
@@ -2555,7 +2555,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         if (evt.getKeyCode() == evt.VK_ENTER) {
-        
+
             funcionBuscar();
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
             this.buscarApellido.requestFocusInWindow();
@@ -2980,7 +2980,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void btnCerrarAnadirRubrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarAnadirRubrosActionPerformed
         // TODO add your handling code here:
         frmAnadirRubros.dispose();
-         
+
     }//GEN-LAST:event_btnCerrarAnadirRubrosActionPerformed
 
     private void cmbRubrosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRubrosItemStateChanged
@@ -3011,7 +3011,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             dtm.addRow(obj);
             tFactura.setModel(dtm);
             frmAnadirRubros.dispose();
- 
+
 
             sumarPagos();
             faltan.setText(total.getText());
@@ -3256,6 +3256,30 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 cxcobrar.setAnulado(true);
                 adm.actualizar(cxcobrar);
             }
+
+            List<Detalles> deallesCobradas = adm.query("Select o from Detalles as o where o.idFacturas.idFacturas = '" + fac + "'  ");
+            for (Iterator<Detalles> it = deallesCobradas.iterator(); it.hasNext();) {
+                Detalles detalles = it.next();
+                if (!detalles.getObservacion().toUpperCase().contains("COD")) {
+                    String codigo = detalles.getObservacion();
+                    if (codigo.length() > 0) {
+                        if(codigo.contains(",")){
+                            codigo = codigo.substring(0, codigo.length() - 1);
+                        }
+                        List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
+                                + " where o.idMatriculas. idMatriculas = '" + facAc.getIdMatriculas().getIdMatriculas() + "'"
+                                + " and o.idMaterias.idMaterias in (" + codigo + ")  ");
+                        for (Iterator<MateriasMatricula> it1 = materiasTomadas.iterator(); it1.hasNext();) {
+                            MateriasMatricula materiasMatricula = it1.next();
+                            materiasMatricula.setPagado(false);
+                            adm.actualizar(materiasMatricula);
+                        }
+                    }
+
+                }
+
+            }
+
             anularFacturaForm.dispose();
 
         }
