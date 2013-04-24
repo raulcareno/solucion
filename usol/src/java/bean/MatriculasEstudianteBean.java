@@ -154,7 +154,7 @@ public class MatriculasEstudianteBean {
                         object = matriculas;
                     }
                     carreraSeleccionado = object.getIdCarreras();
-                    categoriaSeleccionado = object.getIdCategoriasSociales();
+                    categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
                     object.setIdMatriculas(0);
                 }
             } else {
@@ -308,6 +308,7 @@ public class MatriculasEstudianteBean {
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
         estudiante.setIdCanton(cantonSeleccionado);
         estudiante.setFoto(imagen);
+        estudiante.setIdCategoriasSociales(categoriaSeleccionado);
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
             adm.guardar(estudiante);
@@ -362,7 +363,7 @@ public class MatriculasEstudianteBean {
         }
 
         object.setIdPeriodos(per);
-        object.setIdCategoriasSociales(categoriaSeleccionado);
+        
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
@@ -639,7 +640,7 @@ public class MatriculasEstudianteBean {
         if (matriculasListado.size() > 0) {
             object = matriculasListado.get(0);
             carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdCategoriasSociales();
+            categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
         }
     }
 

@@ -279,7 +279,7 @@ public class MatriculasBean2 {
            
         object.setIdEstudiantes(estudiante);
         object.setIdPeriodos(per);
-        object.setIdCategoriasSociales(categoriaSeleccionado);
+        estudiante.setIdCategoriasSociales(categoriaSeleccionado);
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
@@ -984,7 +984,7 @@ public class MatriculasBean2 {
     public String seleccionar(Matriculas obj) {
             object = obj;
             carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdCategoriasSociales();
+            categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
             buscarMateriasMatricula(object);
             if (object.getEstadoMat().equals("I") && (object.getPagadainscripcion() == null || object.getPagadainscripcion() == false)) {
                 FacesContext context = FacesContext.getCurrentInstance();
@@ -1005,7 +1005,7 @@ List<Matriculas> matriculasListado = new ArrayList<Matriculas>();
             if (matriculasListado.size() > 0) {
                 object = matriculasListado.get(0);
                 carreraSeleccionado = object.getIdCarreras();
-                categoriaSeleccionado = object.getIdCategoriasSociales();
+                categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
                 buscarMateriasMatricula(object);
                 if (object.getEstadoMat().equals("I") && (object.getPagadainscripcion() == null || object.getPagadainscripcion() == false)) {
                     FacesContext context = FacesContext.getCurrentInstance();

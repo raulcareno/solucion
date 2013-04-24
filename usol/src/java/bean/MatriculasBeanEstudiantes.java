@@ -201,7 +201,7 @@ public class MatriculasBeanEstudiantes {
 
                     carreraSeleccionado = object.getIdCarreras();
                     
-                    categoriaSeleccionado = object.getIdCategoriasSociales();
+                    categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
                     object.setIdMatriculas(0);
                     buscarMateriasMatricula(object);
                 }
@@ -425,7 +425,7 @@ public class MatriculasBeanEstudiantes {
         estudiante.setIdParientes(pariente1);
         estudiante.setParIdParientes(pariente2);
         estudiante.setParIdParientes2(pariente3);
-
+        estudiante.setIdCategoriasSociales(categoriaSeleccionado);
 
         //ESTUDIANTES EMPIEZO A GUARDAR O ACTUALIZAR
         if (adm.existe("Estudiantes", "idEstudiantes", estudiante.getIdEstudiantes()).size() <= 0) {
@@ -494,7 +494,7 @@ public class MatriculasBeanEstudiantes {
 
         object.setIdEstudiantes(estudiante);
         object.setIdPeriodos(per);
-        object.setIdCategoriasSociales(categoriaSeleccionado);
+        
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
@@ -1159,7 +1159,7 @@ public class MatriculasBeanEstudiantes {
         if (matriculasListado.size() > 0) {
             object = matriculasListado.get(0);
             carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdCategoriasSociales();
+            categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
             buscarMateriasMatricula(object);
 
         } else {
