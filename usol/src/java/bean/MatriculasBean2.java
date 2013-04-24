@@ -318,8 +318,14 @@ public class MatriculasBean2 {
             }
 
         }
+        
+         List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
+                        + " where o.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "'"
+                        + " and o.pagado  = true ");
+         
+         
         //GUARDO LAS MATERIAS DE LA MATRICULA
-        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' ");
+        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' and (pagado is null or pagado = false) ");
         for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
             CarrerasMaterias carrerasMaterias = it.next();
             MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
@@ -327,7 +333,15 @@ public class MatriculasBean2 {
             matMat.setIdMatriculas(object);
             //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
             matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat);
+            int  noEstaPagada = 0;
+            for (Iterator<MateriasMatricula> matePagada = materiasTomadas.iterator(); matePagada.hasNext();) {
+                MateriasMatricula materiasMatricula1 = matePagada.next();
+                        if(materiasMatricula1.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())){
+                            noEstaPagada++;
+                        }
+            }
+            if(noEstaPagada ==0)
+                adm.guardar(matMat);
 
         }
  

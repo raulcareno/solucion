@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="https://declaraciones.sri.gov.ec/facturacion-internet/consultas/publico/ruc-datos1.jspa" uri="src/conf/xml-resources/web-service-references/ruc-datos1/wsdl/declaraciones.sri.gov.ec/facturacion-internet/consultas/publico/ruc-datos1.jspa"/>
+    <system systemId="http://merlyna.com/merlyna/abc/webserviceSRI-RegistroCivil.php" uri="src/conf/xml-resources/web-service-references/webserviceSRI-RegistroCivil/wsdl/merlyna.com/merlyna/abc/webserviceSRI-RegistroCivil.php"/>
+</catalog>
