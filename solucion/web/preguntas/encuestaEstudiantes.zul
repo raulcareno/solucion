@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+    <window onCreate="buscar()"  border="normal" >
+        <zscript>
+<![CDATA[
+   
+  import bean.EventDAO;
+  import java.util.ArrayList;
+    import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import java.math.BigDecimal;
+  Administrador adm = new Administrador();
+    Permisos permiso = new Permisos();
+Encuestar enc = adm.buscarClave(new Integer(1), Encuestar.class);
+
+cargar(){
+       
+       List preguntas = adm.query("Select o from Preguntar as o where o.encuestar.codigo = '"+enc.getCodigo()+"' order by o.orden " );
+       //justificacion1.value = enc.getJustificacion();
+       filaEncuestar.getChildren().clear();
+       codigo.value = enc.getCodigo();
+       nombreencuesta.value = enc.getNombreencuesta();
+       objetivo.value = enc.getObjetivo();
+       objetivo1.value = enc.getObjetivo();
+            for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                      System.out.println(""+pregunta.getTipopregunta());
+                        List detalles = adm.query("Select o from Detallepreguntar as o where o.preguntar.codigo = '"+pregunta.getCodigo()+"' order by o.secuencia ");
+                        Row rw = new Row();
+                        Label lab= new Label(pregunta.getOrden()+".-"+pregunta.getPregunta());
+                        lab.setStyle("color:blue;font-size;13px;font-weight:bold");
+                        rw.setSpans("2");
+                        rw.appendChild(lab);
+                        
+                         Button aButton = null;
+                            aButton = new Button("Eliminar");//"Cobrar"
+                            aButton.setImage("/images/eliminar.gif");
+                            aButton.setId(""+pregunta.getCodigo());
+                            
+                            aButton.addEventListener("onClick", new EventListener() {
+                             public void onEvent(Event event) throws Exception {
+                               //if(verificar3("Ingresar")){
+                                     eliminarPregunta(new Integer(aButton.getId()));
+                                     cargar();
+                                 //}else{
+                                   //         Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                    //}  
+                               
+                              }
+                                });
+                            rw.appendChild(aButton);    
+                        filaEncuestar.appendChild(rw);
+                        
+                        if(pregunta.getTipopregunta().equals("ou")){ //ouopcion unica, (opcionmultiple), om, vf
+                            Radiogroup radio= new Radiogroup();
+                            radio.setOrient("vertical");
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepreguntar dpregunta = (Detallepreguntar) itp.next();
+                                Radio r = new Radio(""+dpregunta.getOpcion());
+                              //  r.setId(""+dpregunta.getCodigo());
+                                radio.appendChild(r);
+                            }
+                            //rw.appendChild(new Image("/images/espacio.png"));
+                            rw.appendChild(radio);
+                            filaEncuestar.appendChild(rw);
+                            
+                         }else  if(pregunta.getTipopregunta().equals("vf")){//ou, om, vf
+                            Radiogroup radio= new Radiogroup();
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepreguntar dpregunta = (Detallepreguntar) itp.next();
+
+                                Radio r = new Radio(""+dpregunta.getOpcion());
+                              //  r.setId(""+dpregunta.getCodigo());
+                                radio.appendChild(r);
+                            }
+                            rw.appendChild(radio);
+                            filaEncuestar.appendChild(rw);
+
+                         }else  if(pregunta.getTipopregunta().equals("om")){//ou, om, vf
+                             
+                             rw = new Row();
+                            for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                Detallepreguntar dpregunta = (Detallepreguntar) itp.next();
+                                System.out.println(""+dpregunta.getOpcion());
+                                Checkbox r = new Checkbox(""+dpregunta.getOpcion());
+                              //  r.setId(""+dpregunta.getCodigo());
+                                rw.appendChild(r);
+                            }
+                            filaEncuestar.appendChild(rw);
+                         }
+
+              }
+llenar(enc);
+}
+
+
+  void buscar(){
+        List empleadosEncontrados = adm.query("Select o from Encuestar as o  ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Encuestar acceIt = (Encuestar) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getNombreencuesta()+""));
+                      li.appendChild(new Listcell(acceIt.getObjetivo()+" "));
+                      li.appendChild(new Listcell(acceIt.getInicio().toLocaleString()+""));
+                      li.appendChild(new Listcell(acceIt.getFin().toLocaleString()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+llenarGrid(int numero,String tipo){
+    filas.getChildren().clear();
+    noopciones.disabled = false;
+            for(int i = 0; i< numero; i++){
+                    Row row = new Row();
+                        if(tipo.equals("vf") && i == 0 ){
+                            Textbox t = new Textbox("SI");
+                            t.setCols(60);
+                            row.appendChild(t);
+                            row.appendChild(new Doublebox(1));
+                            noopciones.disabled = true;
+                        }else if(tipo.equals("vf") && i == 1 ){
+                            Textbox t = new Textbox("NO");
+                            t.setCols(60);
+                            row.appendChild(t);
+                            row.appendChild(new Doublebox(0));
+                            noopciones.disabled = true;
+                        }else{
+                            Textbox t = new Textbox(""+(i+1)+".- ");
+                            t.setCols(60);
+                            row.appendChild(t);
+                            row.appendChild(new Doublebox(1));
+                        }
+                        
+                    
+                    filas.appendChild(row);
+            }
+}
+            void cargarGrid(String tipo){
+                noopciones.visible = false;
+                int  numero = noopciones.value;
+                if(tipo.equals("vf")){
+                        llenarGrid(2,tipo);
+                }else if(tipo.equals("ou")){
+                        noopciones.visible = true;
+                        llenarGrid(numero,tipo);
+                }else if(tipo.equals("om")){
+                        noopciones.visible = true;
+                        llenarGrid(numero,tipo);
+                }
+            }
+ void estado(Boolean estado){
+
+    nombreencuesta.readonly = estado;
+    justificacion.readonly = estado;
+    objetivo.readonly = estado;
+    desde.disabled = estado;
+    hasta.disabled = estado;
+   
+
+}
+void estado2(Boolean estado){
+
+ 
+    pregunta.readonly = estado;
+    orden.disabled = estado;
+    tipopregunta.disabled = estado;
+    noopciones.disabled = estado;
+
+}
+
+void llenar(Encuestar enc){
+codigo.value = enc.getCodigo();
+    nombreencuesta.value=enc.getNombreencuesta();
+    objetivo.value=enc.getObjetivo();
+    desde.value = enc.getInicio();
+    hasta.value = enc.getFin();
+    pregunta.value="";
+    orden.value = 1;
+    noopciones.value = 1;
+
+ }
+
+ Boolean verificar(String accion){
+        //return bean.Permisos.verificarPermiso("Globales",accion);
+        return true;
+ }
+  void move(){
+        llenar((Encuestar)datos.selectedItem.value);
+        enc = ((Encuestar)datos.selectedItem.value);
+        modificar.disabled = false;
+        registro.setSelected(true);
+        seleccionada.value = ""+((Encuestar)datos.selectedItem.value).getNombreencuesta();
+        cargar();
+  }
+ void nuevo(){
+    if(verificar("Agregar")){
+        guardar.disabled=false;
+        llenar(new Encuestar(0));
+        estado(false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void nuevo2(){
+    if(verificar("Agregar")){
+        guardarPregunta.disabled=false;
+        estado2(false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+void guardar(){
+    if(nombreencuesta.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+    Encuestar enc = new Encuestar();
+    enc.setNombreencuesta(nombreencuesta.value);
+    enc.setObjetivo(objetivo.value);
+    enc.setInicio(desde.value);
+    enc.setFin(hasta.value);
+    enc.setCodigo(codigo.value);
+    if(!codigo.value.equals(0)){
+        adm.actualizar(enc);
+    }else{
+        enc.setCodigo(adm.getNuevaClave("Encuestar","codigo"));
+        adm.guardar(enc);
+    }
+    guardar2.disabled = true;
+    modificar2.disabled = false;
+    llenar(new Encuestar(0));
+  Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            
+
+
+ }
+
+
+void guardarPregunta(){
+    if(nombreencuesta.value.equals("")){
+            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            return;
+    }
+    Encuestar enc = new Encuestar();
+    enc.setNombreencuesta(nombreencuesta.value);
+    enc.setObjetivo(objetivo.value);
+    enc.setInicio(desde.value);
+    enc.setFin(hasta.value);
+    enc.setCodigo(codigo.value);
+    codigo.value = enc.getCodigo();
+            Preguntar pre = new Preguntar();
+            pre.setPregunta(pregunta.value);
+            pre.setEncuestar(enc);
+            pre.setOrden(orden.value);
+            pre.setNoopciones(noopciones.value);
+            pre.setTipopregunta(tipopregunta.selectedItem.value);
+            pre.setCodigo(adm.getNuevaClave("Preguntar","codigo"));
+            adm.guardar(pre);
+
+             
+             List col = opciones.getRows().getChildren();
+             for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                    Detallepreguntar det = new Detallepreguntar();
+                     det.setCodigo(adm.getNuevaClave("Detallepreguntar","codigo"));
+                     det.setPreguntar(pre);
+                     det.setSecuencia((i+1));
+                     List labels = object.getChildren();
+                     det.setOpcion(((Textbox) labels.get(0)).getValue());
+                     det.setValor(((Doublebox) labels.get(1)).getValue());
+                     adm.guardar(det);
+             }
+
+    llenarGrid(noopciones.value,tipopregunta.selectedItem.value);
+    pregunta.value="";
+    orden.value = orden.value + 1;
+    noopciones.value = 1;
+    cargar();
+                    
+
+
+ }
+ 
+ void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             enc = (Encuestar)datos.selectedItem.value;
+             adm.eliminarObjeto(Encuestar.class, enc.getCodigo());
+             permiso.auditar("Encuestar","Eliminar",""+enc.getNombreencuesta());
+             datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Encuestar(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void eliminarPregunta(Integer preguntaEliminar){
+  if(verificar("Eliminar")){
+        try{
+             adm.ejecutaSql("Delete from Detallepreguntar where preguntar.codigo = '"+preguntaEliminar+"' ");
+             adm.eliminarObjeto(Preguntar.class, preguntaEliminar);
+             permiso.auditar("Pregunta Eliminar","Eliminar",""+preguntaEliminar);
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+void modificar(){
+  if(verificar("Modificar")){
+       guardar2.disabled=false; estado(false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+  ]]>
+        </zscript>
+        <tabbox width="100%">
+            <tabs>
+                <tab id="registro" label="Encuestas" />
+                <tab id="busqueda" label="Pregunta" />
+            </tabs>
+            <tabpanels>
+                <tabpanel>
+                    <grid width="100%">
+                        <rows>
+                            <row>
+                                <span style="float:right"> Nombre Encuestar(*):
+                                    <intbox id="codigo" visible="false" readonly="true" value="0" />
+                                </span>
+                                <textbox id="nombreencuesta"  rows="3"  cols="50" readonly="true"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> Objetivo(*):</span>
+                                <textbox id="objetivo"  rows="3" cols="50" readonly="true"   />
+                            </row>
+                            <row>
+                                <span style="float:right"> Habilitada Desde(*):</span>
+                                <span>
+                                    <datebox id="desde"   readonly="true"   />
+                                    Hasta(*):
+                                    <datebox id="hasta"   readonly="true"   />
+                                </span>
+                            </row>
+                            <row>
+                                <span></span>
+                                <span>
+                                    <button image="/images/guardar.gif" id="guardar2" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                                    <button  image="/images/nuevo.gif" id="agregar2" label="Agregar" onClick="nuevo(); guardar2.disabled = false;" />
+                                    <button  image="/images/editar.gif" id="modificar2"  label="Modificar" disabled="false"  onClick="modificar()"/>
+                                    <button  image="/images/eliminar.gif" id="eliminar2"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                                </span>
+                            </row>
+                            <row spans="2">
+                                <listbox mold="paging" rows="20" pageSize="20"  onSelect="move();eliminar2.disabled=false;guardar2.disabled=true; " id="datos" width="100%">
+                                    <listhead>
+                                        <listheader label="Encuesta"/>
+                                        <listheader label="Objetivo"/>
+                                        <listheader label="Inicio"/>
+                                        <listheader label="Fin"/>
+                                     
+
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigoemp}" />
+                                        <listcell label="${each.apellidos}" />
+                                        <listcell label="${each.direccion}" />
+                                    </listitem>
+                                </listbox>
+                            </row>
+                        </rows>
+                    </grid>
+                </tabpanel>
+                <tabpanel>
+                      
+                    <grid>
+                        <rows>
+                            <row>
+                                 
+                                <grid>
+                                    <rows>
+                                        <row>
+                                            <span></span>
+                                            <label id="seleccionada" value="PREGUNTA SELECCIONADA" />
+                                        </row>
+                                        <row>
+                                            <span  style="float:right"> No.Preg.:</span>
+                                            <spinner  disabled="true"  value="1" constraint="no negative,no zero" cols="1" id="orden"/>
+                                        </row>
+                                        <row>
+                                            <span  style="float:right"> Pregunta:</span>
+                                            <textbox id="pregunta" cols="50"  readonly="true"   />
+                                        </row>
+                                       
+                                        <row>
+                                            <span style="float:right"> Tipo Preguntar(*):</span>
+                                            <span>
+                                                <listbox disabled="true" mold="select" onSelect='if(self.selectedItem.value.equals("vf")) llenarGrid(2,"vf"); else llenarGrid(0,"");'  id="tipopregunta"  >
+                                                    <listitem value="vacio" selected="true" label="SELECCIONE" />
+                                                    <listitem value="vf" label="Verdadero o Falso" />
+                                                    <listitem value="ou" label="Opción Única" />
+                                                    <listitem value="om" label="Opción Múltiple" />
+                                                </listbox>
+
+                                               
+                                            </span>
+                                        </row>
+                                        <row>
+                                            No.Opciones(*):
+                                            <spinner value="1"  disabled="true"  constraint="no negative,no zero" id="noopciones"
+                                                     onChanging="if (event.value.length() > 0 &amp;&amp; Integer.parseInt(event.value) > 0) llenarGrid(Integer.parseInt(event.value),tipopregunta.selectedItem.value);" />
+                                        </row>
+                     
+                                    </rows>
+
+                                </grid>
+
+                                <grid height="150px" id="opciones">
+                                    <columns sizable="true">
+                                        <column label="Opción" />
+                                        <column label="Valor" />
+                                    </columns>
+                                    <rows id="filas">
+                                    </rows>
+                                </grid>
+       
+                            </row>
+                        </rows>
+                    </grid>
+
+
+                                       
+                  
+                    <vbox>
+                        <hbox>
+                            <button image="/images/guardar.gif" id="guardarPregunta" label="Guardar Pregunta"  disabled="true"  onClick="guardarPregunta();"/>
+                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo2();" />
+
+                        </hbox>
+                    </vbox>
+                      
+                          
+                         
+                    <grid   id="lista">
+                        <rows id="filaEncuestar">
+                        </rows>
+                    </grid>
+                      
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+	
+     
+
+    </window>
+</zk>
