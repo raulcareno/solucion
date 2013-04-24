@@ -4046,7 +4046,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
                             Integer minutos = minutos0.intValue();
                             if (minutos > empresaObj.getSalida()) {
-                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!</html>");
+                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. "+act.getTicket()+" </html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else if (yasalio) {
                                 errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
@@ -4117,7 +4117,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
                             Integer minutos = minutos0.intValue();
                             if (minutos > empresaObj.getSalida()) {
-                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!</html>");
+                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. "+act.getTicket()+" </html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else if (yasalio) {
                                 errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");

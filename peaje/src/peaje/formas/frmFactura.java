@@ -449,7 +449,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Facturación de Tickets ..::..");
+        jLabel8.setText("Cobro de Tickets ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
@@ -1681,7 +1681,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel11.add(jLabel2);
         jLabel2.setBounds(310, 20, 150, 14);
 
-        jTabbedPane1.addTab("FACTURAR SELLADOS", jPanel11);
+        jTabbedPane1.addTab("COBRAR SELLADOS", jPanel11);
 
         getContentPane().add(jTabbedPane1);
         jTabbedPane1.setBounds(10, 42, 700, 420);
