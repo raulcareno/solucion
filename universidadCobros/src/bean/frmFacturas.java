@@ -3135,6 +3135,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
             Integer cod = (Integer) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 0);
             String nom = (String) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 1);
+
+            List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
+                    + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
+                    + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "'  "
+                    + "and o.idCarreras.idCarreras = '" + cod + "' ");
+            if (matriculaList.size() > 0) {
+                JOptionPane.showMessageDialog(this, "Estudiante Ya Matriculado, \n "
+                        + "enn la Carrera Seleccionada", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+
             carreraSeleccionada = new Carreras(cod);
             carreraSeleccionada.setNombre(nom);
 //            carrera.setText(carreraSeleccionada.getNombre());
@@ -3159,6 +3171,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             dtm.addRow(obj);
             variasCarreras.setModel(dtm);
             carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
+            sumar();
+            sumarPagos();
             BigDecimal to = new BigDecimal(total.getText());
             BigDecimal co = new BigDecimal(totalCobros.getText());
             faltan.setText("" + (to.subtract(co)));
@@ -3206,6 +3220,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             dtm.addRow(obj);
             variasCarreras.setModel(dtm);
             carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
+            sumar();
+            sumarPagos();
             BigDecimal to = new BigDecimal(total.getText());
             BigDecimal co = new BigDecimal(totalCobros.getText());
             faltan.setText("" + (to.subtract(co)));
