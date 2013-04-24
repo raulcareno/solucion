@@ -1,0 +1,103 @@
+  
+<borderlayout>
+    <north  size="7%" flex="true" maxsize="250" >
+        <div>Saludos, su opinión es importante para nosotros, por favor ayudenos calificando a sus Docentes.</div>
+    </north>
+    <west title="SELECCIONE UN DOCENTE" size="25%" flex="true" maxsize="250" splittable="true" collapsible="true">
+        <div>
+            <grid width="100%" >
+                <rows>
+                    <row spans="2">
+                        <listbox id="busquedaList" height="400px" onSelect="vio(self.selectedItem.value);" >
+                            <listhead sizable="true">
+                          
+                                   
+                            </listhead>
+                        </listbox>
+                    </row>
+                </rows>
+            </grid>
+        
+            <zscript>
+        <![CDATA[
+
+    import bean.EventDAO;
+    import java.util.ArrayList;
+    import jcinform.persistencia.*;
+    import java.util.Iterator;
+    import java.util.UUID;
+    import jcinform.procesos.Administrador;
+    import bean.Permisos;
+    import bean.pendientes;
+    import java.text.SimpleDateFormat;
+
+    //globales
+    Global global = new Global();
+    EventDAO evtdao = new EventDAO();
+    List perfiles = evtdao.perfiles();
+    Permisos permiso = new Permisos();
+    Administrador adm = new Administrador();
+    String archivo = null;
+    byte[] data = null;
+    Session ses = Sessions.getCurrent();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+
+        Estudiantes user = ses.getAttribute("userEstudiante");
+        Permisos permiso = new Permisos();
+        
+        
+     List matricula = adm.query("Select o from Matriculas as o " +
+           " where o.estudiante.codigoest =  '"+user.getCodigoest()+"' order by o.curso.codigocur desc");
+        Matriculas matri = (Matriculas)matricula.get(0);
+    List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur ='"+matri.getCurso().getCodigocur()+"'  ");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
+                busquedaList.getItems().remove(a);
+            }
+
+            for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                Listitem li = new Listitem();
+                li.setValue(acceIt);
+                li.appendChild(new Listcell(acceIt.getEmpleado()+""));
+                busquedaList.appendChild(li);
+            }
+
+
+
+    vio(MateriaProfesor com){
+            busquedaList.clearSelection();
+            Include inc = (Include) datosEncuesta;
+            inc.setSrc("/vacio.zul");
+            ses.removeAttribute("seleccionadoProfesor");
+            List resp = adm.query("Select o from Respuestasencuestar as o " + 
+                          " WHERE o.empleado.codigoemp = '"+com.getEmpleado().getCodigoemp()+"' " + 
+                          " and o.matricula.codigomat = '"+matri.getCodigomat()+"' ");
+                          if(resp.size()>0){
+                            alert("Docente ya calificado...!");
+                            return;
+                          }
+                          resp = null;
+                ses.setAttribute("seleccionadoProfesor",com);
+                inc.setSrc("/preguntas/evaluacionEstudiante.zul");
+                return;
+
+
+            
+    }
+
+
+        ]]>
+            </zscript>
+        </div>
+    </west>
+             
+    <center border="none" flex="true">
+        <div >
+             <include style="padding:3px;" width="99%" id="datosEncuesta" src="${requestScope.contentSrc}"/>
+              
+        </div>
+    </center>
+</borderlayout>

@@ -34,14 +34,17 @@ Session a = Sessions.getCurrent();
  }
 
  void ingresar(String valor){
+  Include inc = (Include) xcontents;
+        inc.setSrc("/preguntas/profesoresEstudiantes.zul");
+        return;
+        
     cambiarEstado(emp);
      if(emp.getPendientes() || emp.getBloquear()){
             Messagebox.show("Proceso bloqueado por la Administración por: " + 
                                     " FALTA DE DOCUMENTOS o SALDOS PENDIENTES.  " + 
                                     " Acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
-     }
- else if(!emp.getAplico()){
+     }else if(!emp.getAplico()){
         Messagebox.show("Su REPRESENTANTE debe Aplicar la Encuesta y luego podrá revisar sus servicios..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         return;
      }
