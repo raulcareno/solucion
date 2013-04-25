@@ -56,6 +56,9 @@ public class ReporteDataSource implements JRDataSource{
             valor = nodo.getIdFacturas().getIdMatriculas().getIdEstudiantes().getApellidoPaterno()+" "+nodo.getIdFacturas().getIdMatriculas().getIdEstudiantes().getNombre();
         }else if ("rubro".equals(campo.getName())) {
             valor = nodo.getIdRubros().getNombre();
+            if(nodo.getIdMaterias()!=null){
+                valor = nodo.getIdMaterias().getNombre()+"-Créditos";
+            }
         }else if ("valor".equals(campo.getName())) {
             valor = nodo.getValorTotal();
         }else if ("numero".equals(campo.getName())) {

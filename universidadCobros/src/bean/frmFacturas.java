@@ -31,6 +31,7 @@ import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Facturas;
 import jcinform.persistencia.Institucion;
+import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Parametros;
@@ -1256,6 +1257,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             JasperViewer viewer = new JasperViewer(masterPrint, false);
 //            if (vistaprevia.isSelected()) {
+                viewer.setLocation(0, 0);
                 viewer.show();
 //            } else {
             try {
@@ -1403,6 +1405,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 det.setIdFacturas(cab);
                 det.setCantidad((Integer) tFactura.getValueAt(i, 2));
                 det.setIdRubros(new Rubros((Integer) tFactura.getValueAt(i, 0)));
+                if (!(tFactura.getValueAt(i, 7) + " ").contains("COD")) {
+                    String valCod = (tFactura.getValueAt(i, 7) + "").replaceFirst(",", "");
+                    if(!valCod.contains(",")){
+                        det.setIdMaterias(new Materias(new Integer(valCod))); 
+                    }
+                }else{
+                    det.setIdMaterias(null);
+                }
                 det.setValorUnitario((BigDecimal) tFactura.getValueAt(i, 3));
                 det.setValorTotal(((BigDecimal) tFactura.getValueAt(i, 4)));
                 det.setObservacion(tFactura.getValueAt(i, 7) + "");
