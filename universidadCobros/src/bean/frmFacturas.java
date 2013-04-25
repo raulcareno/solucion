@@ -2113,16 +2113,23 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             actualMatricula = matriculaList.get(0);
             carreraSeleccionada = actualMatricula.getIdCarreras();
             if (actualMatricula.getEstadoMat().equals("I")) {
-                tipoProceso = "INSCRITO";
-                boolean siPago = verificarSiPagoMatricula();
-                if (!siPago) {
-                    buscarRubrosDeMatricula();
-                }
-                boolean siPagoC = verificarSiPagoCreditos();
-                if (!siPagoC) {
-                    buscarRubrosDeCreditos();
-                }
-                sumar();
+                JOptionPane.showMessageDialog(this, "El Estudiante no está Admitido, comuniquese con Admisiones....!", "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION);
+                return;
+//                tipoProceso = "INSCRITO";
+//                boolean siPago = verificarSiPagoMatricula();
+//                if (!siPago) {
+//                    int val = JOptionPane.showConfirmDialog(this, "¿Al parecer NO está ADMITIDO, "
+//                                + " \n Desea Matricular al Estudiante?", "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION);
+//                    System.out.println("VALOR" + val);
+//                    if (val == 0) {
+//                            buscarRubrosDeMatricula();
+//                    }
+//                }
+//                boolean siPagoC = verificarSiPagoCreditos();
+//                if (!siPagoC) {
+//                    buscarRubrosDeCreditos();
+//                }
+//                sumar();
             } else if (actualMatricula.getEstadoMat().equals("A")) {
                 tipoProceso = "ADMITIDO";
                 boolean siPago = verificarSiPagoMatricula();
