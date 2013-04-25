@@ -142,6 +142,8 @@ public class NotasBean implements Serializable {
             ArrayList notaAnadir = new ArrayList();
             Boolean estadoNota = false;
             Double notaVerifica = 0.0;
+            int estadoAsistencia = 0;
+            int estadoNota2 = 0;
             for (a = 0; a < vec.length; a++) {
                 SistemaNotas tnota = sistemas.get(x);
                 NotasIngresar n = new NotasIngresar();
@@ -150,13 +152,30 @@ public class NotasBean implements Serializable {
                     n.setNombre(aprobado(rangos, notaVerifica)); 
                     n.setTexto(true);
                     n.setNota(null);
-                    if (n.getNombre().contains("A")) {
-                        n.setNombre("APROBADO");
-                        n.setColorEstado("blue");
-                    }else{
-                        n.setNombre("REPROBADO");
-                        n.setColorEstado("red");
-                    }
+                    
+                    /**
+                     * AQUI EMPIEZO LA NUEVA VALIDACION
+                     */
+                  
+                        String estadoFinalNota = "R";
+                        if(estadoNota2 == 0 && estadoAsistencia ==0){
+                               estadoFinalNota = "A"; 
+                        }
+                         
+                        if (estadoFinalNota.equals("A")) {
+                            n.setNombre("APROBADO");
+                            n.setColorEstado("blue");
+                        }else{
+                            n.setNombre("REPROBADO");
+                            n.setColorEstado("red");
+                        }
+//                    if (n.getNombre().contains("A")) {
+//                        n.setNombre("APROBADO");
+//                        n.setColorEstado("blue");
+//                    }else{
+//                        n.setNombre("REPROBADO");
+//                        n.setColorEstado("red");
+//                    }
                     System.out.println("NOTAveri: "+notaVerifica);
                     n.setAncho(12);
                 }else if (a == 2) {
@@ -224,6 +243,19 @@ public class NotasBean implements Serializable {
                     if(tnota.getEsnota()){
                         notaVerifica = n.getNota();
                     }
+                      if(tnota.getEsnota()){
+                            String estado = aprobado(rangos, redondear(object.doubleValue(), 2));
+                            if(!estado.equals("A")){
+                                estadoNota2++;
+                            }
+                        }
+                        if(tnota.getEsasistencia()){
+                            if(redondear(object.doubleValue(), 2) < 70){
+                                estadoAsistencia++;
+                            }
+                             
+                        }
+                    
                     if (tnota.getEsgpa()) {
                         n.setNombre(gpa(rangos,n.getNota())+"");
                         n.setTexto(true);
@@ -326,6 +358,7 @@ public class NotasBean implements Serializable {
 //            String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " + "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' ";
 //            adm.ejecutaSql(del);
             inter.eval(redondear);
+            
             for (int i = 0; i < listaNotas.size(); i++) {
                 try {
                     ArrayList labels = (ArrayList) listaNotas.get(i);
@@ -344,10 +377,13 @@ public class NotasBean implements Serializable {
                     notaIngresada.setEquivalencia("");
                     //notaIngresada.setSistemaNotas(asiprofesor.getOrden());
                     //notaIngresada.setNotFecha(new Date());
+                    int estadoAsistencia = 0;
+                    int estadoNota = 0;
                     inter.set("nota", notaIngresada);
                     for (int j = 2; j < labels.size()-1; j++) {
                         NotasIngresar object1 = (NotasIngresar) labels.get(j);
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
+                        SistemaNotas sisActual = notas.get(j - 2);
                         formula = formula.replace("no","nota.getNo");//EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
@@ -364,6 +400,23 @@ public class NotasBean implements Serializable {
                         if(notas.get(j - 2).getEsnota()){
                             inter.eval("nota.setEstado(\"" + aprobado(rangos, valor) + " \");");
                         }
+                        if(sisActual.getEsnota()){
+                            String estado = aprobado(rangos, valor);
+                            if(!estado.equals("A")){
+                                estadoNota++;
+                            }
+                        }
+                        if(sisActual.getEsasistencia()){
+                            if(valor < 70){
+                                estadoAsistencia++;
+                            }
+                             
+                        }
+                        String estadoFinalNota = "R";
+                        if(estadoNota == 0 && estadoAsistencia ==0){
+                               estadoFinalNota = "A"; 
+                        }
+                        inter.eval("nota.setEstado(\"" + estadoFinalNota + " \");");
                     }
                     notaIngresada = (Notas) inter.get("nota");
 //                    String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " +
