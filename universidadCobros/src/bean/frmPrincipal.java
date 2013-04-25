@@ -772,7 +772,7 @@ panelInscritos.setVisible(false);
             }
 
             frmFacturas usu = new frmFacturas(adm);
-            usu.setSize(642, 630);
+            usu.setSize(768, 678);
             usu.setEmpleadoActual(usuarioActual);
             usu.setPeriodoActual(periodoActual);
             usu.setLocation(0, 0);

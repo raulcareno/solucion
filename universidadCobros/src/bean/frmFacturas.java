@@ -45,6 +45,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import sources.ReporteDataSource;
 import util.WorkingDirectory;
 import util.general;
@@ -1240,17 +1241,29 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
             parametros.put("observacion", observacion.getText() + "");
             parametros.put("usuario", empleadoActual.getApellidoPaterno() + " " + empleadoActual.getNombre());
+            
+            List<Cxcobrar> formasPago = adm.query("Select o from Cxcobrar as o "
+                    + " where o.idFacturas.idFacturas = '"+obj.getIdFacturas()+"' and o.haber > 0 ");
+            int i = 1;
+            for (Iterator<Cxcobrar> it = formasPago.iterator(); it.hasNext();) {
+                Cxcobrar cxcobrar = it.next();
+                parametros.put("forma"+i, cxcobrar.getTipopago() + "");
+                parametros.put("referencia"+i, cxcobrar.getReferencia() + "");
+                parametros.put("valor"+i, cxcobrar.getTotal());
+                i++;
+            }
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
-//            JasperViewer viewer = new JasperViewer(masterPrint, false);
+            JasperViewer viewer = new JasperViewer(masterPrint, false);
 //            if (vistaprevia.isSelected()) {
-//                viewer.show();
+                viewer.show();
 //            } else {
             try {
                 JasperPrintManager.printPage(masterPrint, 0, true);
             } catch (JRException ex) {
                 ex.printStackTrace();
             }
+            viewer.dispose();
 //            }
         } catch (JRException ex) {
             ex.printStackTrace();
@@ -1740,32 +1753,31 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' and o.estadoMat = 'I' ");
-
-
         if (parametrosList == null) {
             parametrosList = adm.query("Select o from Parametros as o "
                     + " where o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "' ");
         }
         if (matriculaList.size() > 0) {
-
             actualMatricula = matriculaList.get(0);
-//            carrera.setText("<html>" + actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getIdEscuela().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdJornada().getNombre() + " " + " " + actualMatricula.getIdCarreras().getIdModalidad().getNombre() + " </html> ");
             categoriaSocial.setText("" + actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getNombre());
-            //VERIFICO SI ES QUE HA PAGADO UNO O VARIOS DE ESTOS RUBROS PARA PROCEDER A CAMBIARLE EL ESTADO A LA MATRICULA Y NO PAGUE 
-//            List<Facturas> facturaLista = adm.query("Select o from Detalles");
-
             //tengo que verificar si el estado esta null o false y le cargo los rubros que se encuetnra en matricula
             //de acuerdo a la carrera y al perido actual buscando en rbrosMatriculasPeriodo
             if (actualMatricula.getPagada() == null) {
                 actualMatricula.setPagada(false);
             }
-//            if (actualMatricula.getEstadoMat().equals("M")) {
-//                chMatriculado.setSelected(true);
-//            } else if (actualMatricula.getEstadoMat().equals("I")) {
-//                chInscrito.setSelected(true);
-//            } else if (actualMatricula.getEstadoMat().equals("R")) {
-//                chRetirado.setSelected(true);
-//            } 
+        DefaultTableModel dtm5 = (DefaultTableModel) this.variasCarreras.getModel();
+        dtm5.getDataVector().removeAllElements();
+                Object[] obj5 = new Object[10];
+                obj5[0] = actualMatricula.getIdCarreras();
+                obj5[1] = actualMatricula.getIdCarreras().getNombre() + " " + actualMatricula.getIdCarreras().getEstado();
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
+                String fechaI = sdf.format(actualMatricula.getIdPeriodos().getFechaInicio());
+                String fechaF = sdf.format(actualMatricula.getIdPeriodos().getFechaFin());
+                obj5[2] = " | " + fechaI + "-" + fechaF + " |  ";
+                obj5[3] = "" + (actualMatricula.getEstadoMat().equals("M") ? "Matriculado" : (actualMatricula.getEstadoMat().equals("I") ? "Inscrito" : (actualMatricula.getEstadoMat().equals("A") ? "Admitido" : "-")));
+                dtm5.addRow(obj5);
+            variasCarreras.setModel(dtm5);
+            
             DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
             dtm.getDataVector().removeAllElements();
             DefaultTableModel dtm2 = (DefaultTableModel) formasdePago.getModel();
@@ -1796,13 +1808,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             obj[1] = rubroCredito.getNombre();
             obj[2] = 1;
             obj[3] = rub.get(0).getValor();
-            obj[4] = rubroCredito.getNoaplica();
-            obj[5] = "I";
+            obj[4] = rub.get(0).getValor();
+            obj[5] = rubroCredito.getNoaplica();
+            obj[6] = "I";
+            obj[7] = "CODIGOS";
             dtm.addRow(obj);
 
 
             tFactura.setModel(dtm);
             sumar();
+              BigDecimal to = new BigDecimal(total.getText());
+        BigDecimal co = new BigDecimal(totalCobros.getText());
+        faltan.setText("" + (to.subtract(co)));
 
         } else {
             JOptionPane.showMessageDialog(this, "Estudiante no se encuentra matriculado", "JC INFORM", JOptionPane.ERROR_MESSAGE);
@@ -2842,7 +2859,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }
     private void anadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anadirActionPerformed
         // TODO add your handling code here:
-
+        if (tipoA.getSelectedItem().toString().contains("Ayuda")|| tipoA.getSelectedItem().toString().contains("Beca")) {
+            if (cmbPorcentaje.getSelectedItem().toString().contains("%")) {
+             JOptionPane.showMessageDialog(this, "Seleccione el Porcentaje del descuento...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);   
+             cmbPorcentaje.requestFocusInWindow();
+                return;
+            }
+        }
+            
         DefaultTableModel dtm = (DefaultTableModel) formasdePago.getModel();
         //dtm.getDataVector().removeAllElements();
         if (valorA.getText().isEmpty()) {
