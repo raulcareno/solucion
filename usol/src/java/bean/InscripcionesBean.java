@@ -261,7 +261,7 @@ public class InscripcionesBean {
      * Graba el registro asociado al objeto que
      */
     public String guardar() {
-        object.setEstadoMat("I");
+        //object.setEstadoMat("I");
         object.setConfirmada(false);
         object.setPagada(false);
 
@@ -624,7 +624,7 @@ public class InscripcionesBean {
             apellido = apellido.trim();
             estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
                     + " where o.idEstudiantes.apellidoPaterno like '%" + apellido + "%' "
-                    + " and o.estadoMat = 'I' order by o.idEstudiantes.apellidoPaterno ", 0, 10);
+                    + " and (o.estadoMat = 'I' or o.estadoMat = 'A' ) order by o.idEstudiantes.apellidoPaterno ", 0, 10);
             return estudiantesListado;
 
 
