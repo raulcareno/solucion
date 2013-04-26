@@ -279,6 +279,83 @@ public class generarFacturas {
         return "OK";
     }
 
+    public String anadirMora(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES individual
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        if (!suc.getEmpresa().getAplicamora()) {
+            return "";
+        }
+        Administrador adm = new Administrador();
+        Date fecha2 = con.getFecha();
+        fecha2.setDate(1);
+        con = (Contratos) adm.buscarClave(con.getCodigo(), Contratos.class);
+
+        try {
+
+            Contratos object = con;
+            Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            //fac.setNumero(suc.getSerie1()+""+suc.getSerie2()+"FAC"+llenarCeros(""+numero)+"");
+            fac.setNumero(null);
+            fac.setEstado(true);
+            fac.setContratos(con);
+            fac.setClientes(object.getClientes());
+            fac.setFecha(fecha2);
+            fac.setSucursal(suc);
+            if (object.getDescuento() == null) {
+                object.setDescuento(BigDecimal.ZERO);
+            }
+
+            Equipos eqValorMora = (Equipos) adm.querySimple("Select o from Equipos as o where o.codigo = '"+suc.getEmpresa().getMora()+"' ");
+
+            BigDecimal valor = new BigDecimal(redondear(eqValorMora.getPvp1().doubleValue(), 2));
+//            if (object.getFormapago().equals(3)) {
+//                valor = valor.add(suc.getEmpresa().getInstalacion());
+//            }
+            fac.setDescuento(BigDecimal.ZERO);
+            fac.setSubtotal(valor.subtract(object.getDescuento()));
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(valor.subtract(object.getDescuento()));
+            fac.setPorcentajeiva(suc.getEmpresa().getIva());
+            fac.setValoriva((valor).subtract(object.getDescuento()).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
+            fac.setTotal(fac.getValoriva().add(fac.getSubtotal()));
+            adm.guardar(fac);
+            Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+            det.setTotal(valor.subtract(object.getDescuento()));
+            //det.setPlan(object.getPlan());
+            det.setEquipos(eqValorMora);
+            det.setCantidad(1);
+            det.setMes(fecha2.getMonth() + 1);
+            det.setAnio(fecha2.getYear() + 1900);
+            det.setDescripcion("generadamora");
+            det.setFactura(fac);
+            adm.guardar(det);
+            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+            cuenta.setDebe(fac.getTotal());
+            cuenta.setHaber(BigDecimal.ZERO);
+            cuenta.setDeposito(BigDecimal.ZERO);
+            cuenta.setCheque(BigDecimal.ZERO);
+            cuenta.setEfectivo(BigDecimal.ZERO);
+            cuenta.setDescuento(BigDecimal.ZERO);
+            cuenta.setTransferencia(BigDecimal.ZERO);
+            cuenta.setRtotal(BigDecimal.ZERO);
+            cuenta.setFactura(fac);
+            cuenta.setFecha(fecha2);
+            cuenta.setNotarjeta("");
+            cuenta.setNocheque("");
+            cuenta.setTotal(fac.getTotal());
+            adm.guardar(cuenta);
+
+        } catch (Exception e) {
+            System.out.println("" + e);
+            System.out.println("DUPLICADO: " + e.hashCode());
+            Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, e);
+            return e.hashCode() + "";
+        }
+        //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
+
+        //generar en facturas con el número y también en cxc.
+
+        return "OK";
+    }
     public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES individual
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Administrador adm = new Administrador();

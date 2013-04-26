@@ -563,6 +563,14 @@ Boolean validar(){
                 historia.setContratos(equi);
                 historia.setEmpleados(usuarioActual);
                 adm.guardar(historia);
+                if(empresa.getAplicamora()){
+                    if((estadoContrato.selectedItem.value).contains("Corta")){
+                        int valor0 = Messagebox.show("¿Desea Añadir un valor por Mora?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                            if(valor0 == 16){
+                                gen.anadirMora(sucursalEmp.getSucursal(),equi);
+                            }
+                    }
+               }
                 
               }
              
