@@ -141,7 +141,7 @@ error2i.visible = false;
       //adm.ejecutaSql("Delete from Respuestasencuesta where detallepregunta.pregunta.pregunta.encuesta =  ");
       List col =  lista.getRows().getChildren();
       String tipoDato = "";
-      alert(col.size()+" tamañao de filas");
+     // alert(col.size()+" tamañao de filas");
       
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
@@ -181,7 +181,7 @@ error2i.visible = false;
                                 }
                                 Checkbox rad = ((Checkbox) labels.get(0));
                                 System.out.println("ABC"+rad.getId());
-                                alert("ABC"+rad.getId());
+                                //alert("ABC"+rad.getId());
                                 Respuestasencuesta respuestap = new Respuestasencuesta();
                                 Detallepregunta det = new Detallepregunta(new Integer(rad.getId()));
                                 respuestap.setDetallepregunta(det);
