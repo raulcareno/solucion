@@ -1037,6 +1037,14 @@ void estado(Boolean estado,Boolean modificar){
              }
              adm.guardar(matricula);
              codigomat.value = matri;
+             try{
+                matriculasBean mati0 = new matriculasBean();
+                mati0.generarRubrosAnual(matricula.getCurso(), matricula); 
+             }catch(Exception erra){
+                System.out.println("ERROR EN GENERA RUBROS ANUALES: "+erra);
+             
+             }
+           
          }
 
           llenar(estudent);

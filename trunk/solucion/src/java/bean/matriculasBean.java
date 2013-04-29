@@ -7,8 +7,7 @@ import java.io.FileWriter;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Vector;
-import jcinform.persistencia.Matriculas;
-import jcinform.persistencia.Periodo;
+import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 
 public class matriculasBean {
@@ -32,13 +31,37 @@ public class matriculasBean {
 
 //        Filedownload.save(sb.toString().getBytes(), "application/vnd.ms-excel", "auditoria.csv");
 //        }
+    public void generarRubrosAnual(Cursos cursoActual, Matriculas mat) {
+        if (mat.getEstado().equals("Matriculado")) {
+            List<Asignadosproductos> rubros = adm.query("Select o from Asignadosproductos as o "
+                    + "where o.curso.codigocur = '" + cursoActual.getCodigocur() + "'");
+            for (Iterator<Asignadosproductos> irRubros = rubros.iterator(); irRubros.hasNext();) {
+                Asignadosproductos aRub = irRubros.next();
+                Asignados asig = new Asignados();
+                Integer valo = adm.getNuevaClave("Asignados", "codigorub");
+                asig.setCodigorub(valo);
+                asig.setAnio(aRub.getFechai().getYear() + 1900);
+                asig.setMatricula(mat);
+                asig.setEstado(true);
+                asig.setFechai(aRub.getFechai());
+                asig.setGrabaiva(aRub.getProductos().getGrabaiva()); 
+                asig.setMes(aRub.getMeses());
+                asig.setProducto(aRub.getProductos());
+                asig.setValor(aRub.getProductos().getPrecio().doubleValue());
+                asig.setBeca((mat.getBeca() == null?0.0:(aRub.getProductos().getPrecio().doubleValue()*mat.getBeca()/100))); //porcentaje a aplicar en todos los rubros
+                asig.setOtros((mat.getOtros() == null?0.0:mat.getOtros())); //descuento
+                adm.guardar(asig);
+            }
+        }
+    }
+
     public void generar(Periodo periodo) {
 
         FileWriter fichero = null;
         PrintWriter pw = null;
         try {
-            
-            String nombre = periodo.getInstitucion().getFotos()+"/base/"+periodo.getDescripcion()+".csv";
+
+            String nombre = periodo.getInstitucion().getFotos() + "/base/" + periodo.getDescripcion() + ".csv";
             //nombre = "F:/datos.csv";
             fichero = new FileWriter(nombre);
 
@@ -47,7 +70,7 @@ public class matriculasBean {
                     + "rep.dirfactura, rep.telfactura,cur.codigocur, CONCAT(cur.descripcion,' ', espe.descripcion,' ',par.descripcion),per.descripcion "
                     + " FROM estudiantes est, matriculas mat, cursos cur, representante rep, periodo per, GLOBAL espe, GLOBAL par "
                     + " WHERE mat.estudiante = est.codigoest  AND rep.codigorep = est.representante "
-                    + " AND per.codigoper = cur.periodo AND espe.codigo = cur.especialidad AND par.codigo = cur.paralelo and per.descripcion like '%"+periodo.getDescripcion()+"%' "
+                    + " AND per.codigoper = cur.periodo AND espe.codigo = cur.especialidad AND par.codigo = cur.paralelo and per.descripcion like '%" + periodo.getDescripcion() + "%' "
                     + "  AND mat.curso = cur.codigocur order by cur.descripcion");
             String s = ";\t";
             StringBuffer sb = new StringBuffer();
