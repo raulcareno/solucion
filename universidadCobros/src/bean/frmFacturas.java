@@ -3049,8 +3049,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             obj[1] = gen.getDescripcion();
             obj[2] = 1;
             obj[3] = new BigDecimal(txtValorAgregar.getText());
-            obj[4] = gen.getVerdadero();
-            obj[5] = "N";
+            obj[4] = new BigDecimal(txtValorAgregar.getText());
+            obj[5] = gen.getVerdadero();
+            obj[6] = "N";
+            obj[7] = "CODIGOS";
 
             dtm.addRow(obj);
             tFactura.setModel(dtm);
