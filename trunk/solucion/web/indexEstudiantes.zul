@@ -34,10 +34,6 @@ Session a = Sessions.getCurrent();
  }
 
  void ingresar(String valor){
-  Include inc = (Include) xcontents;
-        inc.setSrc("/preguntas/profesoresEstudiantes.zul");
-        return;
-        
     cambiarEstado(emp);
      if(emp.getPendientes() || emp.getBloquear()){
             Messagebox.show("Proceso bloqueado por la Administración por: " + 
@@ -169,7 +165,7 @@ Session a = Sessions.getCurrent();
                     <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
                     <fisheye image="/images/pendientes.png" onClick='ingresarSin("/pendientesEstudiantes.zul")' />
                     <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
-                    <fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' />
+                    <!--fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' /-->
                     <fisheye image="/images/salida.png" onClick="salir()" />
 
                 </fisheyebar>
@@ -191,6 +187,22 @@ Session a = Sessions.getCurrent();
     <zscript>
         Include inc = (Include) xcontents;
         inc.setSrc("/blanco_1.zul");
+        
+            Session a = Sessions.getCurrent();
+    Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+    Date desde = adm.Date();
+    String fechaActual = (desde.getYear()+1900) +"-"+ (desde.getMonth()+1)+"-"+ (desde.getDate());
+    List encuestasList  = adm.query("SELECT o FROM Encuestar AS o WHERE '"+fechaActual+"' between o.inicio and o.fin  ");
+    
+    if(encuestasList.size()>0){
+          Encuestar enc = encuestasList.get(0);
+           inc.setSrc("/preguntas/profesoresEstudiantes.zul");
+           fsb.visible = false; //oculto el fish
+    }
+
+        
+         
+        
 
     </zscript>
 
