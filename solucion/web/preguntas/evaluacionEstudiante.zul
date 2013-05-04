@@ -18,11 +18,14 @@
             Representante peri =  (Representante) a.getAttribute("userRepresentante");
             Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
               MateriaProfesor profeSelec = a.getAttribute("seleccionadoProfesor");
+              Encuestar enc  = a.getAttribute("encuestaActual");
 
 
 cargar(){
-docente.value =profeSelec.getEmpleado()+"";
-       Encuestar enc = adm.buscarClave(new Integer(2), Encuestar.class);
+try{
+
+    docente.value =profeSelec.getEmpleado()+"";
+        
        List preguntas = adm.query("Select o from Preguntar as o where o.encuestar.codigo = '"+enc.getCodigo()+"' order by o.orden " );
        objetivo1.value = enc.getObjetivo();
             for (Iterator it = preguntas.iterator(); it.hasNext();) {
@@ -82,6 +85,9 @@ docente.value =profeSelec.getEmpleado()+"";
 
               }
 
+}catch(Exception erro1){
+    erro1.printStackTrace();
+}
 }
 
 Boolean validar(){
@@ -180,7 +186,6 @@ error2i.visible = false;
                                 }
                                 Checkbox rad = ((Checkbox) labels.get(0));
                                 System.out.println("ABC"+rad.getId());
-                                alert("ABC"+rad.getId());
                                 Respuestasencuestar respuestap = new Respuestasencuestar();
                                 Detallepreguntar det = new Detallepreguntar(new Integer(rad.getId()));
                                 respuestap.setDetallepreguntar(det);
@@ -199,7 +204,12 @@ error2i.visible = false;
               periEst.setAplico(true);
               adm.actualizar(periEst);
               a.setAttribute("userEstudiante",periEst);
-
+                Encuestarprofesor enProf = new Encuestarprofesor();
+                enProf.setEmpleado(profeSelec.getEmpleado());
+                enProf.setMatricula(matri);
+                enProf.setEncuestar(enc);
+                adm.guardar(enProf);
+                
              //Executions.sendRedirect("/indexRepresentantes.zul");
             guardando = false;
             //listadoPreguntars.visible = false;

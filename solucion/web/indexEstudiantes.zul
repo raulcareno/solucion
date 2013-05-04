@@ -185,6 +185,9 @@ Session a = Sessions.getCurrent();
 
     </center>
     <zscript>
+        
+        <![CDATA[
+        
         Include inc = (Include) xcontents;
         inc.setSrc("/blanco_1.zul");
         
@@ -193,9 +196,24 @@ Session a = Sessions.getCurrent();
     Date desde = adm.Date();
     String fechaActual = (desde.getYear()+1900) +"-"+ (desde.getMonth()+1)+"-"+ (desde.getDate());
     List encuestasList  = adm.query("SELECT o FROM Encuestar AS o WHERE '"+fechaActual+"' between o.inicio and o.fin  ");
-    
+
     if(encuestasList.size()>0){
-          Encuestar enc = encuestasList.get(0);
+       Encuestar enc = encuestasList.get(0);
+       List matricula = adm.query("Select o from Matriculas as o " +
+            " where o.estudiante.codigoest =  '"+periEst.getCodigoest()+"' order by o.curso.codigocur desc");    
+       Matriculas matri = (Matriculas)matricula.get(0);
+       List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+            " where o.curso.codigocur ='"+matri.getCurso().getCodigocur()+"' " + 
+            " and o.empleado.codigoemp not in (Select a.empleado.codigoemp from Encuestarprofesor as a " + 
+            " where a.encuestar.codigo = '"+enc.getCodigo()+"' )  ");
+ 
+            if(empleadosEncontrados.size()<=0){
+                fsb.visible = true; //oculto el fish
+                return;
+            }
+       
+            a.removeAttribute("encuestaActual");
+            a.setAttribute("encuestaActual",enc);
            inc.setSrc("/preguntas/profesoresEstudiantes.zul");
            fsb.visible = false; //oculto el fish
     }
@@ -203,6 +221,8 @@ Session a = Sessions.getCurrent();
         
          
         
+
+]]>
 
     </zscript>
 
