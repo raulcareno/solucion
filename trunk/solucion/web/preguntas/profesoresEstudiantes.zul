@@ -1,6 +1,6 @@
   
-<borderlayout>
-    <north  size="7%" flex="true" maxsize="250" >
+<borderlayout onCreate="cargarValidar()">
+    <north style="background-color:#33CC66 ;color:white;" size="7%" flex="true" maxsize="250" >
         <div>Saludos, su opinión es importante para nosotros, por favor ayudenos calificando a sus Docentes.</div>
     </north>
     <west title="SELECCIONE UN DOCENTE" size="25%" flex="true" maxsize="250" splittable="true" collapsible="true">
@@ -14,6 +14,9 @@
                                    
                             </listhead>
                         </listbox>
+                    </row>
+                    <row spans="2">
+                        <button label="He Finalizado" onClick="cargarValidar()"/>
                     </row>
                 </rows>
             </grid>
@@ -41,20 +44,27 @@
     byte[] data = null;
     Session ses = Sessions.getCurrent();
     Periodo periodo = (Periodo) ses.getAttribute("periodo");
-
+        Encuestar enc = ses.getAttribute("encuestaActual");
         Estudiantes user = ses.getAttribute("userEstudiante");
         Permisos permiso = new Permisos();
-        
-        
-     List matricula = adm.query("Select o from Matriculas as o " +
+        Matriculas matri = new Matriculas();
+ cargarValidar(){
+   List matricula = adm.query("Select o from Matriculas as o " +
            " where o.estudiante.codigoest =  '"+user.getCodigoest()+"' order by o.curso.codigocur desc");
-        Matriculas matri = (Matriculas)matricula.get(0);
+         matri = (Matriculas)matricula.get(0);
     List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
-        " where o.curso.codigocur ='"+matri.getCurso().getCodigocur()+"'  ");
+            " where o.curso.codigocur ='"+matri.getCurso().getCodigocur()+"' " + 
+            " and o.empleado.codigoemp not in (Select a.empleado.codigoemp from Encuestarprofesor as a " + 
+            " where a.encuestar.codigo = '"+enc.getCodigo()+"' )  ");
+
         datos = new Listbox();
         int a=0;
             for (Iterator it = busquedaList.getItems().iterator(); it.hasNext();) {
                 busquedaList.getItems().remove(a);
+            }
+            if(empleadosEncontrados.size()<=0){
+                Executions.sendRedirect("indexEstudiantes.zul");
+                return;
             }
 
             for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
@@ -66,8 +76,10 @@
             }
 
 
-
+}
     vio(MateriaProfesor com){
+    try{
+    
             busquedaList.clearSelection();
             Include inc = (Include) datosEncuesta;
             inc.setSrc("/vacio.zul");
@@ -76,14 +88,20 @@
                           " WHERE o.empleado.codigoemp = '"+com.getEmpleado().getCodigoemp()+"' " + 
                           " and o.matricula.codigomat = '"+matri.getCodigomat()+"' ");
                           if(resp.size()>0){
+                          cargarValidar();
                             alert("Docente ya calificado...!");
+                            
                             return;
                           }
                           resp = null;
                 ses.setAttribute("seleccionadoProfesor",com);
                 inc.setSrc("/preguntas/evaluacionEstudiante.zul");
+                cargarValidar();
                 return;
-
+}catch(Exception er){
+System.out.println("e..."+er);
+    er.printStackTrace();
+    }
 
             
     }
