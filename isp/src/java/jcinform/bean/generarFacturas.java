@@ -285,8 +285,8 @@ public class generarFacturas {
             return "";
         }
         Administrador adm = new Administrador();
-        Date fecha2 = con.getFecha();
-        fecha2.setDate(1);
+        Date fecha2 = adm.Date();
+        //fecha2.setDate(1);
         con = (Contratos) adm.buscarClave(con.getCodigo(), Contratos.class);
 
         try {

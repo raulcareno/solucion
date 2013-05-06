@@ -1512,6 +1512,29 @@ void verificarCedula(String valor){
                                 s.appendChild(aButton);
                               //row.appendChild(aButton);
                               
+                           Integer valFac = new Integer(vec.get(0)+"");
+                            List detalles = adm.query("Select o from Detalle as o where o.factura.codigo = '"+valFac+"' ");
+                            String detaString = "";
+                            for (int k = 0; k < detalles.size(); k++) {
+                                    if(k==0){
+                                            Detalle det = detalles.get(k);
+                                            if(det.getPlan()!=null){
+                                               detaString +=det.getPlan()+"";    
+                                            }else{
+                                               detaString +=det.getEquipos()+"";    
+                                            }
+                                    }else{
+                                            Detalle det = detalles.get(k);
+                                            if(det.getPlan()!=null){
+                                               detaString +=det.getPlan()+",";    
+                                            }else{
+                                               detaString +=det.getEquipos()+",";    
+                                            }
+                                    }
+                                
+                            }
+                            
+                           row.appendChild(new Label(detaString+""));
                             Button aButtonDes = null;
                             aButtonDes = new Button("");//"Descuento"
                             aButtonDes.setImage("/images/descuento.png");
@@ -1584,6 +1607,7 @@ void verificarCedula(String valor){
                                 });
                                 s.appendChild(aButtonEli);
                               //row.appendChild(aButtonEli);
+                              
                             row.appendChild(s);
                             filasFac.appendChild(row);
                 }
@@ -3135,6 +3159,7 @@ void llamar(){
                             <column  width="150px"  label="No.Factura"/>
                             <column   label="Emitida"/>
                             <column   width="50px"  label="Dsctos"/>
+                            <column   width="250px"  label="Detalle"/>
                             <column  width="150px"  label="Acciones"/>
                         </columns>
                         <rows id="filasFac">
