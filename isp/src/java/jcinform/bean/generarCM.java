@@ -91,6 +91,47 @@ public class generarCM {
                     writer.newLine(); // Esto es un salto de linea
                 }
 
+            } else if (banco.getNombre().toLowerCase().contains("internaci")) {
+
+                for (Iterator it = datos.iterator(); it.hasNext();) {
+                    Row object = (Row) it.next();
+                    //Facturasenviadas fac = (Facturasenviadas) adm.buscarClave(new Integer(((Facturasenviadas)object.getValue()).getCodigo(), Facturasenviadas.class);
+                    Facturasenviadas fac = (Facturasenviadas) object.getValue();
+                    String factura = fac.getFactura().getNumero().replace("FAC", "-");
+                    factura = factura.substring(0, 3) + "-" + factura.substring(3, 6) + "-00" + factura.substring(7, factura.length());
+                    String valor = fac.getSaldo() + "";
+                    String base = (fac.getSaldo().divide(new BigDecimal(1.12), 2, RoundingMode.HALF_UP)) + "";//BASE IVA TOCARÍA SACAR LA BASE IVA DE LO QUE SE ENVIARÍA
+                    try {
+
+                        valor = valor.replace(",", "").replace(".", "");
+                        while (valor.length() < 11) {
+                            valor = "0" + valor;
+                        }
+                    } catch (Exception e) {
+                    }
+                    try {
+
+                        base = base.replace(",", "").replace(".", "");
+                        while (base.length() < 13) {
+                            base = "0" + base;
+                        }
+                    } catch (Exception e) {
+                    }
+                    writer.write("CO" // cobro
+                            + "\t" + fac.getFactura().getContratos().getContrato() // no de contrato
+                            + "\tUSD" // moneda
+                            + "\t" + valor // valor adeudado
+                            + "\tCTA"
+                            + "\t" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "AHO" : "CTE") // tipo de cuenta aho, cTE
+                            + "\t" + fac.getFactura().getContratos().getNocuenta() // cuenta del banco
+                            + "\tMENSUALIDAD " + mes(fac.getFecha().getMonth()) + "" + (fac.getFecha().getYear() + 1900) // descripcion nuestra
+                            + "\t" + fac.getFactura().getContratos().getClientes().getTipoidentificacion() // tipo de documento
+                            + "\t" + fac.getFactura().getContratos().getClientes().getIdentificacion().replace("-", "") // cedula
+                            + "\t" + ((fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()).length() > 41 ? (fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()).substring(0, 41) : (fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres())) // nombres cliente
+                            + "\t" + base //base del iva
+                            + "\t32"); // numero de autorización
+                    writer.newLine(); // Esto es un salto de linea
+                }
             } else if (banco.getNombre().toLowerCase().contains("guayaquil")) {
 
 

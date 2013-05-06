@@ -861,8 +861,8 @@ public class ReportesClase {
         String desdestr = convertiraString(desde)+" 00:00:01";
         String hastastr = convertiraString(hasta)+" 23:59:59";
             String sql = "SELECT o FROM Depositos as o "
-                    + " WHERE o.fecha between '" + desdestr + "' and '" + hastastr + "'  "
-                    + "ORDER BY o.fecha ";
+                    + " WHERE o.fechacxc between '" + desdestr + "' and '" + hastastr + "'  "
+                    + "ORDER BY o.fechacxc ";
             //o.sucursal = '" + sucursal.getCodigo() + "' "                    + " AND 
          detalles = adm.query(sql);
         ReporteDepositosDataSource ds = new ReporteDepositosDataSource(detalles);
