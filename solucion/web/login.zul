@@ -79,7 +79,7 @@ error.visible = false;
               servicionestudiantes.visible = true;
                 // cargo los periodos que tienen
  List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' " + 
-            " order by o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion ");
+            " order by  o.periodo.descripcion desc,  o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion ");
              if(user.getCodigoemp().equals(-1)){
                   equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
              }
