@@ -1455,9 +1455,9 @@ void campos(String valor){
                                 
                             </listbox>
                         </row>
-                         <row  id="filaverificada" visible="false" style="background:transparent;border:0px" >
+                        <row  id="filaverificada" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Con Información Verificada: </span>
-                             <checkbox id="verificada" />
+                            <checkbox id="verificada" />
                         </row>
                         <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Desde:</span>
@@ -1467,28 +1467,32 @@ void campos(String valor){
                                 <datebox  format="dd/MM/yyyy" id="hasta"/>
                             </span>
                         </row>
-                        <row  id="filacurso" visible="false" style="background:transparent;border:0px" >
-                            <span style="float:right"> Curso:</span>
+                        <row spans="2">
+                            <hbox>
+                                <vbox id="filacurso" visible="false">
+                                    <span style="font-weight:bold"> Curso:</span>
                             <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
-                            <listbox id="curs" onSelect="try{buscar2(((Cursos)self.selectedItem.value));}catch(Exception ex){filaestudiantes.visible = false;}" width="450px" height="200px"  multiple="true" checkmark="true">
-                                <listhead>
-                                    <listheader label="Seleccionar Todos"/> </listhead>
-                                <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
-                            </listbox>
+                                        <listbox id="curs" onSelect="try{buscar2(((Cursos)self.selectedItem.value));}catch(Exception ex){filaestudiantes.visible = false;}" width="450px" height="200px"  multiple="true" checkmark="true">
+                                            <listhead>
+                                                <listheader label="Seleccionar Todos"/> </listhead>
+                                            <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                                        </listbox>
+                                </vbox>
+                                <vbox id="filaestudiantes"  visible="false">
+                                    <span style="font-weight:bold"> Estudiantes: </span>
+
+                                        <listbox id="estudiantesCombo"  width="450px" height="200px"  multiple="true" checkmark="true" >
+                                            <listhead>
+                                                <listheader label="Todos los Estudiantes"/> </listhead>
+                                            <listitem forEach="${estudiantes}" value="${each}">
+                                                <listcell label="${each.apellidos}" />
+                                            </listitem>
+                                        </listbox>
+
+                                </vbox>
+                            </hbox>
                         </row>
-                        <row    id="filaestudiantes"  visible="false" style="background:transparent;border:0px" >
-                            <span style="float:right"> Estudiantes: </span>
-
-                            <listbox id="estudiantesCombo"  width="450px" height="200px"  multiple="true" checkmark="true" >
-                                <listhead>
-                                    <listheader label="Todos los Estudiantes"/> </listhead>
-                                <listitem forEach="${estudiantes}" value="${each}">
-                                    <listcell label="${each.apellidos}" />
-                                </listitem>
-                            </listbox>
-
-
-                        </row>
+ 
                         <row  id="filatitulo" style="background:transparent;border:0px" >
                             <span style="float:right"> Titulo: </span>
                             <div>
@@ -1504,7 +1508,7 @@ void campos(String valor){
                                                     <listitem value="rtf">
                                                         <listcell  image="/images/word.gif" label="Word" />
                                                     </listitem>
-                                                     <listitem value="xls">
+                                                    <listitem value="xls">
                                                         <listcell  image="/images/excel.gif"  label="Excel(Múlt.Hoja)" />
                                                     </listitem>
                                                     <listitem value="xlsm">
@@ -1539,13 +1543,13 @@ void campos(String valor){
                 <zscript>
                     public void aumentar(){
                     String tamanio = report.height.replace("px","").replace("%","");
-                       Integer t = new Integer(tamanio);
-                       report.height = (t+100)+"px";
+                    Integer t = new Integer(tamanio);
+                    report.height = (t+100)+"px";
                     }
                     public void reducir(){
                     String tamanio = report.height.replace("px","").replace("%","");
-                       Integer t = new Integer(tamanio);
-                       report.height = (t-100)+"px";
+                    Integer t = new Integer(tamanio);
+                    report.height = (t-100)+"px";
                     }
 
                 </zscript>
@@ -1555,9 +1559,9 @@ void campos(String valor){
                         <row   spans="2">
                             <span>
                                 <button  image="/images/eliminar.gif" id="cerrar" label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
-
                                 <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
                                 <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                                <button label="Refrescar Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
                             </span>
                         </row>
 
@@ -1583,13 +1587,13 @@ void campos(String valor){
             Permisos per = new Permisos();
             void cargando(){
 
- for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
-                 Listitem object = (Listitem)it.next();
-                 String valor = object.getValue();
-                 String labe = object.getLabel();
-                    object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
-                }
-/*
+            for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+            Listitem object = (Listitem)it.next();
+            String valor = object.getValue();
+            String labe = object.getLabel();
+            object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
+            }
+            /*
             CM.visible = per.verificarPermisoReporte("CM", "Ingresar");
             CM2.visible = per.verificarPermisoReporte("CM2", "Ingresar");
             AM.visible = per.verificarPermisoReporte("AM", "Ingresar");

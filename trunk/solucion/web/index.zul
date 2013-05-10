@@ -129,19 +129,20 @@
             if(user != null){
             //cargo los periodos que tienen
             List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o " + 
-            " where o.empleado.codigoemp = '"+user.getCodigoemp()+"'   order by o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion  ");
+            " where o.empleado.codigoemp = '"+user.getCodigoemp()+"' " + 
+             "  order by o.periodo.descripcion desc, o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion  ");
             if(user.getCodigoemp().equals(-1)){
-            equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+                equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
             }
             if(equivaEncontrados.size()>0){
-            Empleadoperiodo p = new Empleadoperiodo();
-            Periodo per = new Periodo(-1);
-            Institucion ins = new Institucion(-1);
-            ins.setTipo("");
-            per.setDescripcion("[Seleccione]");
-            p.setPeriodo(per);
-            Global g = new Global();
-            g.setDescripcion("");
+                Empleadoperiodo p = new Empleadoperiodo();
+                Periodo per = new Periodo(-1);
+                Institucion ins = new Institucion(-1);
+                ins.setTipo("");
+                per.setDescripcion("[Seleccione]");
+                p.setPeriodo(per);
+                Global g = new Global();
+                g.setDescripcion("");
 
             ins.setDenominacion("");
             ins.setNombre("");
