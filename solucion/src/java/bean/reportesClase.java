@@ -186,7 +186,7 @@ public class reportesClase {
                     nota.setMatricula(matriculaNo);
                     nota.setContador(cont);
                     nota.setNota(val);
-                    if (materia.getMateria().getCodigo().equals(new Integer(0)) || !materia.getCuantitativa()) {
+                    if (!materia.getCuantitativa()) {
                         nota.setNota(equivalencia(dos, equivalencias));
                     }
 
