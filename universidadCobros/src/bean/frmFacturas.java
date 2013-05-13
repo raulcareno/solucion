@@ -821,7 +821,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(jLabel4);
         jLabel4.setBounds(540, 30, 60, 24);
 
-        factura.setText("0000000");
         factura.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 facturaFocusGained(evt);
@@ -1186,9 +1185,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
     public void llenarFactura() {
         inst = (Institucion) adm.buscarClave(inst.getIdInstitucion(), Institucion.class);
-        Long valor = Long.parseLong(inst.getFactura1()) + 1;
-        String asFac = String.format("%07d", valor);
-        this.factura.setText("" + asFac);
+        this.factura.setText("");
+        //Long valor = Long.parseLong(inst.getFactura1()) + 1;
+        //String asFac = String.format("%07d", valor);
+        //this.factura.setText("" + asFac);
 
     }
 
@@ -1324,11 +1324,27 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "DEBE INGRESAR COMO SE VA A \n PAGAR LA PRESENTE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+           if (factura.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "INGRESE UN # DE FACTURA...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                factura.requestFocusInWindow();
+                return;
+            }
+            try {
+                Long val = Long.parseLong(factura.getText());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "INGRESE UN # DE FACTURA VALIDO...!", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                factura.requestFocusInWindow();
+                factura.selectAll();
+                return;
+            }
+                
+             
 
             String codigo = factura.getText() + "";
             while (codigo.length() < 7) {
                 codigo = "0" + codigo;
             }
+            
             factura.setText("" + codigo);
 
             String abuscar = "" + inst.getSerie1() + "FC" + factura.getText();
@@ -3019,6 +3035,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     private void facturaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_facturaFocusLost
         // TODO add your handling code here:
+        Long valor = Long.parseLong(factura.getText());
+        String asFac = String.format("%07d", valor);
+        this.factura.setText("" + asFac);
     }//GEN-LAST:event_facturaFocusLost
 
     private void btnCerrarAnadirRubrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarAnadirRubrosActionPerformed

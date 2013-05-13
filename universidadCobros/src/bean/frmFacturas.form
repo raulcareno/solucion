@@ -1078,9 +1078,6 @@
       </Constraints>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="factura">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="0000000"/>
-      </Properties>
       <Events>
         <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="facturaFocusGained"/>
         <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="facturaFocusLost"/>
