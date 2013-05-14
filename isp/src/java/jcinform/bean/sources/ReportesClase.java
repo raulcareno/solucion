@@ -205,7 +205,7 @@ public class ReportesClase {
                 + "and o.estado = 'P' "
                 + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + " " + estadoString
-                + "order by o.contratos.clientes.apellidos");
+                + "order by  o.contratos.radios.nodos.nombre, o.contratos.radios.nombre, o.contratos.clientes.apellidos");
 
         for (Iterator<Series> it = contra.iterator(); it.hasNext();) {
             Series ser = it.next();
@@ -224,7 +224,7 @@ public class ReportesClase {
                     + " between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento2
                     + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
                     + " " + estadoString2+ " "+complementoNodo2
-                    + "order by o.clientes.apellidos");
+                    + "order by o.radios.nodos.nombre, o.radios.nombre, o.clientes.apellidos");
 
             for (Iterator<Contratos> it = contra2.iterator(); it.hasNext();) {
                 Contratos contratos = it.next();
