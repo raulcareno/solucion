@@ -47,7 +47,7 @@
             + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  order by o.secuencia,o.paralelo.descripcion, o.descripcion  ");
             System.out.println("ENTRO VACIO");
    }
-   List profesores = adm.query("Select o from Empleados as o where o.estado = true order by o.apellidos ");
+   List profesores = adm.query("Select o from Empleados as o  order by o.apellidos ");
         Empleados selecp = new Empleados(-1);
         selecp.setApellidos("[Seleccione]");
         selecp.setNombres("");

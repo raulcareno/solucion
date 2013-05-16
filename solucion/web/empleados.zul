@@ -417,7 +417,7 @@ empa.setPerfil(g);
 
                                 <span style="float:right"> Fecha Ingreso:</span>
                                 <span > <datebox id="ingreso"  disabled="true"  />
-                                 Fecha Nacimineto:
+                                 Fecha Nacimiento:
                                 <datebox id="fechanacimiento"  disabled="true"  />
                                 </span>
                                 <span style="float:right"> Años de Servicio:</span>
