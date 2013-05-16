@@ -8,7 +8,7 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="Crosstab Data Text" isDefault="false" hAlign="Center"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
 	<parameter name="denominacion" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="nombre" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="periodo" class="java.lang.String" isForPrompting="false"/>
@@ -20,10 +20,10 @@
 	<parameter name="eq2" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="eq3" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="eq4" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="ran1" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="ran2" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="ran3" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="ran4" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ran1" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran2" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran3" class="java.lang.Double" isForPrompting="false"/>
+	<parameter name="ran4" class="java.lang.Double" isForPrompting="false"/>
 	<parameter name="val1" class="java.lang.Long" isForPrompting="false"/>
 	<parameter name="val2" class="java.lang.Long" isForPrompting="false"/>
 	<parameter name="val3" class="java.lang.Long" isForPrompting="false"/>
@@ -33,7 +33,7 @@
 	<parameter name="por3" class="java.lang.Double" isForPrompting="false"/>
 	<parameter name="por4" class="java.lang.Double" isForPrompting="false"/>
 	<parameter name="eq5" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="ran5" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ran5" class="java.lang.Double" isForPrompting="false"/>
 	<parameter name="val5" class="java.lang.Long" isForPrompting="false"/>
 	<parameter name="por5" class="java.lang.Double" isForPrompting="false"/>
 	<field name="curso" class="java.lang.String"/>
@@ -402,7 +402,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{ran1}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{ran1}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" positionType="Float" x="50" y="126" width="49" height="12" isRemoveLineWhenBlank="true"/>
@@ -415,7 +415,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{ran2}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{ran2}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" positionType="Float" x="50" y="150" width="49" height="12" isRemoveLineWhenBlank="true"/>
@@ -428,7 +428,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{ran4}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{ran4}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement key="textField" positionType="Float" x="50" y="138" width="49" height="12" isRemoveLineWhenBlank="true"/>
@@ -441,7 +441,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{ran3}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{ran3}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField" positionType="Float" mode="Transparent" x="99" y="114" width="21" height="12" isRemoveLineWhenBlank="true"/>
@@ -571,7 +571,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{ran5}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$P{ran5}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-16" positionType="Float" mode="Transparent" x="99" y="162" width="21" height="12" isRemoveLineWhenBlank="true"/>

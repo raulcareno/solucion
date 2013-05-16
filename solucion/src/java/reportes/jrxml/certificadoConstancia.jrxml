@@ -175,7 +175,7 @@
 				<textElement textAlignment="Justified" lineSpacing="1_1_2">
 					<font fontName="Arial" size="12" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["La documentación del estudiante "+$F{estudiante}+", del "+$F{curso}+", que a la presente fecha se encontraba en los Archivos del Pensionado Escuela Borja № 2, es entregada a su representante en el siguiente orden:"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["La documentación del estudiante "+$F{estudiante}+", del "+$F{curso}+", que a la presente fecha se encontraba en los Archivos de la "+$P{denominacion} +" "+$P{nombre} +", es entregada a su representante en el siguiente orden:"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="31" y="221" width="231" height="20"/>

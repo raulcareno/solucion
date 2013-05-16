@@ -218,7 +218,7 @@
 				<textElement textAlignment="Justified" lineSpacing="1_1_2">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["A petición "+ ($F{genero}.equals("Masculino")?"del interesado":"de la interesada") +"  y para los fines que crea convenientes, la Dirección de la ESCUELA BORJA № 2, tiene a bien certificar que "+ ($F{genero}.equals("Masculino")?"el estudiante":"la estudiante") +" : "]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["A petición "+ ($F{genero}.equals("Masculino")?"del interesado":"de la interesada") +"  y para los fines que crea convenientes, la Dirección de la "+$P{denominacion} +" "+$P{nombre} +", tiene a bien certificar que "+ ($F{genero}.equals("Masculino")?"el estudiante":"la estudiante") +" : "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="324" y="116" width="100" height="20" forecolor="#FFFFFF"/>
