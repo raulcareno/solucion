@@ -36,8 +36,37 @@ Empleados user = (Empleados)ses.getAttribute("user");
 
 Cursos selec = new Cursos(-1);
  
-//if(user.getTipo().equals("Interna"))
-    //cursos.add(todos);
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+
+ }
+
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+Sistemacalificacion stodos0 = new Sistemacalificacion(-1);
+stodos0.setNombre("[Seleccione]");
+sistemas.add(0,stodos0);
 
 
 List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
@@ -961,13 +990,13 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     }catch(Exception exs){}
                     
             }else if(tipo.equals("CD")){
-                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoconducta.jasper");
             }else if(tipo.equals("CA")){
-                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoaprovechamiento.jasper");
             }else if(tipo.equals("CAD")){
-                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes);
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoaprovydisc.jasper");
             }else if(tipo.equals("CM2")){
                     datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
@@ -1241,6 +1270,7 @@ void campos(String valor){
     filacurso.visible=true;
      filatitulo.visible=true;
      filafechas.visible = false;
+     filaaportes.visible = false;
                 filaverificada.visible = false;   
         if(valor.equals("INS2")){
             titulo.value = "Listado de Inscritos por Internet";
@@ -1364,7 +1394,9 @@ void campos(String valor){
            filacurso.visible = true;
            //filaestudiantes.visible = false;
         }
-
+           if(valor.equals("CA") || valor.equals("CD") || valor.equals("CAD") ){
+                filaaportes.visible = true;
+        }
         
 
 
@@ -1472,27 +1504,36 @@ void campos(String valor){
                                 <vbox id="filacurso" visible="false">
                                     <span style="font-weight:bold"> Curso:</span>
                             <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
-                                        <listbox id="curs" onSelect="try{buscar2(((Cursos)self.selectedItem.value));}catch(Exception ex){filaestudiantes.visible = false;}" width="450px" height="200px"  multiple="true" checkmark="true">
-                                            <listhead>
-                                                <listheader label="Seleccionar Todos"/> </listhead>
-                                            <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
-                                        </listbox>
+                                    <listbox id="curs" onSelect="try{buscar2(((Cursos)self.selectedItem.value));}catch(Exception ex){filaestudiantes.visible = false;}" width="450px" height="200px"  multiple="true" checkmark="true">
+                                        <listhead>
+                                            <listheader label="Seleccionar Todos"/> </listhead>
+                                        <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                                    </listbox>
+                                        
                                 </vbox>
                                 <vbox id="filaestudiantes"  visible="false">
                                     <span style="font-weight:bold"> Estudiantes: </span>
 
-                                        <listbox id="estudiantesCombo"  width="450px" height="200px"  multiple="true" checkmark="true" >
-                                            <listhead>
-                                                <listheader label="Todos los Estudiantes"/> </listhead>
-                                            <listitem forEach="${estudiantes}" value="${each}">
-                                                <listcell label="${each.apellidos}" />
-                                            </listitem>
-                                        </listbox>
+                                    <listbox id="estudiantesCombo"  width="450px" height="200px"  multiple="true" checkmark="true" >
+                                        <listhead>
+                                            <listheader label="Todos los Estudiantes"/> </listhead>
+                                        <listitem forEach="${estudiantes}" value="${each}">
+                                            <listcell label="${each.apellidos}" />
+                                        </listitem>
+                                    </listbox>
 
                                 </vbox>
                             </hbox>
                         </row>
- 
+                        <row   id="filaaportes" visible="false"   style="background:transparent;border:0px" >
+                            <span style="float:right"> Aporte: </span>
+
+                            <listbox id="sistemasCombo" width="450px"  mold="select" >
+                                <listitem  forEach="${sistemas}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+                        </row>
                         <row  id="filatitulo" style="background:transparent;border:0px" >
                             <span style="float:right"> Titulo: </span>
                             <div>

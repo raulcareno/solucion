@@ -50,9 +50,9 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="81" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<staticText>
-				<reportElement x="20" y="61" width="197" height="20"/>
+				<reportElement x="20" y="100" width="197" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -66,7 +66,7 @@
 				<text><![CDATA[ESTUDIANTES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="217" y="61" width="35" height="20"/>
+				<reportElement x="217" y="100" width="35" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -77,10 +77,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ap. 1]]></text>
+				<text><![CDATA[8vo.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="252" y="61" width="35" height="20"/>
+				<reportElement x="252" y="100" width="35" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -91,10 +91,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ap. 2]]></text>
+				<text><![CDATA[9no.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="287" y="61" width="35" height="20"/>
+				<reportElement x="287" y="100" width="35" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -105,10 +105,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ap. 3]]></text>
+				<text><![CDATA[10mo.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="322" y="61" width="35" height="20"/>
+				<reportElement x="322" y="100" width="35" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -119,10 +119,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ap. 4]]></text>
+				<text><![CDATA[1ero.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="357" y="61" width="35" height="20"/>
+				<reportElement x="357" y="100" width="35" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -133,10 +133,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ap. 5]]></text>
+				<text><![CDATA[2do.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="392" y="61" width="35" height="20"/>
+				<reportElement x="392" y="100" width="35" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -147,94 +147,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Ap. 6]]></text>
+				<text><![CDATA[3ro.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="427" y="61" width="34" height="20" backcolor="#F5F5F5"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Prom.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="496" y="61" width="35" height="20"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Disc.2]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="636" y="61" width="35" height="20"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Disc.6]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="531" y="61" width="35" height="20"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Disc.3]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="461" y="61" width="35" height="20"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Disc.1]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="566" y="61" width="35" height="20"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Disc.4]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="671" y="61" width="34" height="20" backcolor="#F5F5F5"/>
+				<reportElement mode="Opaque" x="427" y="100" width="34" height="20" backcolor="#F5F5F5"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -248,7 +164,7 @@
 				<text><![CDATA[Prom.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="601" y="61" width="35" height="20"/>
+				<reportElement mode="Opaque" x="671" y="100" width="34" height="20" backcolor="#F5F5F5"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -259,10 +175,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Disc.5]]></text>
+				<text><![CDATA[Prom.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="-5" y="61" width="25" height="20"/>
+				<reportElement x="-5" y="100" width="25" height="20"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -292,6 +208,118 @@
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{curso}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="636" y="100" width="35" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[3ro.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="566" y="100" width="35" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[1ero.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="601" y="100" width="35" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[2do.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="531" y="100" width="35" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[10mo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="461" y="100" width="35" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[8vo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="100" width="35" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[9no.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="80" width="244" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[APROVECHAMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="461" y="80" width="244" height="20"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DISCIPLINA]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>

@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -69,7 +69,7 @@
 					<textElement textAlignment="Justified" lineSpacing="1_1_2">
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA["A petición "+ ($F{genero}.equals("Masculino")?"del interesado":"de la interesada") +"  y para los fines que crea convenientes, la Dirección de la ESCUELA BORJA № 2, tiene a bien certificar que "+ ($F{genero}.equals("Masculino")?"el estudiante":"la estudiante") +" : "]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA["A petición "+ ($F{genero}.equals("Masculino")?"del interesado":"de la interesada") +"  y para los fines que crea convenientes, la Dirección de la "+$P{denominacion} +" "+$P{nombre} +", tiene a bien certificar que "+ ($F{genero}.equals("Masculino")?"el estudiante":"la estudiante") +" : "]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
 					<reportElement key="textField" x="1" y="184" width="424" height="19"/>

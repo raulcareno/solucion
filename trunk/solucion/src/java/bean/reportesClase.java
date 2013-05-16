@@ -1409,6 +1409,11 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
+        Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
+        Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
 //Sistemacalificacion sd;
 //sd.getTrimestre().getCodigotrim();
 
@@ -1509,14 +1514,15 @@ public class reportesClase {
                     //int tamaSistema = sistemas.size() - 1;
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
-                        if (val < 25) {
+                        if (val < sumaPierde  && validaConPromedioGeneral) {
                             obs = "Pierde";
-                        } else if (val < 40) {
+                        } else if (val < sumaAprueba) {
                             obs = "Sup.";
                         }
                         sumatoria = val;
                     } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
-                        if (sumatoria < 40) {
+                        if(validaConPromedioGeneral){
+                        if (sumatoria < sumaAprueba) { 
                             try {
                                 Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
                                 if (val < valor && val > 0.0) {
@@ -1532,6 +1538,7 @@ public class reportesClase {
                         } else {
                             obs = "";
                         }
+                    }
                     }
                     if (sn == false && val == 0 && nota.getSistema().getRequerida() == true) {
                         sn = true;
@@ -1788,7 +1795,8 @@ public class reportesClase {
         String q = "SELECT round(avg (" + query + "),2),mat.curso FROM notas, matriculas mat "
                 + "WHERE  notas.matricula = mat.codigomat AND notas.promedia = TRUE   "
                 + " AND notas.matricula IN (SELECT codigomat FROM matriculas "
-                + "WHERE  curso  IN (SELECT codigocur FROM cursos WHERE periodo = '" + periodo.getCodigoper() + "' )  )  "
+                + "WHERE  curso  IN (SELECT codigocur FROM cursos WHERE periodo = '" + periodo.getCodigoper() + "' ) "
+                + " AND  estado in ('Matriculado','Recibir Pase','Emitir Pase','Retirado')  )  "
                 + " AND notas.disciplina = FALSE   "
                 + " AND notas.promedia = TRUE  "
                 + " AND notas.seimprime = TRUE  "
@@ -4667,7 +4675,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                 + "and o.sistema.codigosis = '"+sistema.getCodigosis()+"' ");
         try {
             if (notas.size() <= 0) {
-                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                Messagebox.show("Seleccione el primero el APORTE \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                 return null;
             }
         } catch (InterruptedException ex) {
@@ -5894,12 +5902,12 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
             Nota n1 = new Nota();
             n1.setCurso(cursoLlega);
             n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(1), Estudiantes.class));
-            n1.setP1(new BigDecimal(vec.get(2) + ""));
-            n1.setP2(new BigDecimal(vec.get(3) + ""));
-            n1.setP3(new BigDecimal(vec.get(4) + ""));
-            n1.setP4(new BigDecimal(vec.get(5) + ""));
-            n1.setP5(new BigDecimal(vec.get(6) + ""));
-            n1.setP6(new BigDecimal(vec.get(7) + ""));
+            n1.setP1(new BigDecimal(vec.get(2)==null?"0":vec.get(2)+""));
+            n1.setP2(new BigDecimal(vec.get(3)==null?"0":vec.get(3)+""));
+            n1.setP3(new BigDecimal(vec.get(4)==null?"0":vec.get(4)+""));
+            n1.setP4(new BigDecimal(vec.get(5)==null?"0":vec.get(5)+""));
+            n1.setP5(new BigDecimal(vec.get(6)==null?"0":vec.get(6)+""));
+            n1.setP6(new BigDecimal(vec.get(7)==null?"0":vec.get(7)+""));
             try {
                 n1.setPromedio2((promedio(n1.getP1(), n1.getP2(), n1.getP3(), n1.getP4(), n1.getP5(), n1.getP6())));
             } catch (Exception e) {
@@ -6012,10 +6020,10 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
             Vector vec = (Vector) itna.next();
             Nota n1 = new Nota();
             //n1.setCurso(cursoLlega);
-            n1.setP1(new BigDecimal(vec.get(0) + ""));
-            n1.setD1(new BigDecimal(vec.get(1) + ""));
-            n1.setP2(new BigDecimal(vec.get(2) + ""));
-            n1.setD2(new BigDecimal(vec.get(3) + ""));
+            n1.setP1(new BigDecimal(vec.get(0)==null?"0":vec.get(0)+""));
+            n1.setD1(new BigDecimal(vec.get(1)==null?"0":vec.get(1)+""));
+            n1.setP2(new BigDecimal(vec.get(2)==null?"0":vec.get(2)+""));
+            n1.setD2(new BigDecimal(vec.get(3)==null?"0":vec.get(3)+""));
             n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(4), Estudiantes.class));
             try {
                 List<Cursos> matri = adm.query("Select o.curso from Matriculas as o  "
@@ -6024,7 +6032,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                 n1.setCurso(matri.get(0));
             } catch (Exception e) {
             }
-            n1.setP3(new BigDecimal(vec.get(5) + ""));
+            n1.setP3(new BigDecimal(vec.get(5)==null?"0":vec.get(5)+""));
             listaResultados.add(n1);
 
         }
@@ -6067,10 +6075,10 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
             Vector vec = (Vector) itna.next();
             Nota n1 = new Nota();
             //n1.setCurso(cursoLlega);
-            n1.setP1(new BigDecimal(vec.get(0) + ""));
-            n1.setD1(new BigDecimal(vec.get(1) + ""));
-            n1.setP2(new BigDecimal(vec.get(2) + ""));
-            n1.setD2(new BigDecimal(vec.get(3) + ""));
+            n1.setP1(new BigDecimal(vec.get(0)==null?"0":vec.get(0)+""));
+            n1.setD1(new BigDecimal(vec.get(1)==null?"0":vec.get(1)+""));
+            n1.setP2(new BigDecimal(vec.get(2)==null?"0":vec.get(2)+""));
+            n1.setD2(new BigDecimal(vec.get(3)==null?"0":vec.get(3)+""));
             n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(4), Estudiantes.class));
             try {
                 List<Cursos> matri = adm.query("Select o.curso from Matriculas as o  "
@@ -6079,7 +6087,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
                 n1.setCurso(matri.get(0));
             } catch (Exception e) {
             }
-            n1.setP3(new BigDecimal(vec.get(5) + ""));
+            n1.setP3(new BigDecimal(vec.get(5)==null?"0":vec.get(5)+""));
             listaResultados.add(n1);
 
         }

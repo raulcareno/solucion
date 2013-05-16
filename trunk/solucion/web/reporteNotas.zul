@@ -267,7 +267,7 @@ public JRDataSource profesores(){
       Session ses = Sessions.getCurrent();
       Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList detalle = new ArrayList();
-        List hoy = adm.query("SELECT mat FROM Empleados AS mat " +
+        List hoy = adm.query("SELECT mat FROM Empleados AS mat where mat.estado =true" +
                 "  order by mat.apellidos");
         for (Iterator it = hoy.iterator(); it.hasNext();) {
             Empleados elem = (Empleados) it.next();
