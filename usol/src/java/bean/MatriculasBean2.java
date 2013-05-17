@@ -267,6 +267,10 @@ public class MatriculasBean2 {
      */
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
+        if (!object.getEstadoMat().equals("M")) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Estudiante NO matriculado...!", ""));
+            return null;
+        }
         if (estudiante.getIdEstudiantes().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la IDENTIFICACIÓN del Estudiante", ""));
             return null;
