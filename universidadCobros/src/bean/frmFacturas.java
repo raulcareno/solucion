@@ -964,7 +964,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jPanel2.add(valorLabel);
         valorLabel.setBounds(120, 20, 60, 20);
 
-        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Tarjeta", "Transferencia", "Beca", "Ayuda Financiera", " " }));
+        tipoA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione:", "Efectivo", "Cheque", "Debito", "Deposito", "Tarjeta", "Transferencia", "Beca", "Ayuda Financiera", " " }));
         tipoA.setEnabled(false);
         tipoA.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {

@@ -1467,16 +1467,17 @@
         <Component class="javax.swing.JComboBox" name="tipoA">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="9">
+              <StringArray count="10">
                 <StringItem index="0" value="Seleccione:"/>
                 <StringItem index="1" value="Efectivo"/>
                 <StringItem index="2" value="Cheque"/>
                 <StringItem index="3" value="Debito"/>
-                <StringItem index="4" value="Tarjeta"/>
-                <StringItem index="5" value="Transferencia"/>
-                <StringItem index="6" value="Beca"/>
-                <StringItem index="7" value="Ayuda Financiera"/>
-                <StringItem index="8" value=" "/>
+                <StringItem index="4" value="Deposito"/>
+                <StringItem index="5" value="Tarjeta"/>
+                <StringItem index="6" value="Transferencia"/>
+                <StringItem index="7" value="Beca"/>
+                <StringItem index="8" value="Ayuda Financiera"/>
+                <StringItem index="9" value=" "/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
