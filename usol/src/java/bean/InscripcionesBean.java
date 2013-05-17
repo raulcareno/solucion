@@ -629,6 +629,11 @@ public class InscripcionesBean {
             estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
                     + " where o.idEstudiantes.apellidoPaterno like '%" + apellido + "%' "
                     + " and (o.estadoMat = 'I' or o.estadoMat = 'A' ) order by o.idEstudiantes.apellidoPaterno ", 0, 10);
+            if(estudiantesListado.size()<=0){
+                estudiantesListado = adm.query("Select o from Estudiantes as o "
+                        + " where o.apellidoPaterno like '%" + apellido + "%' "
+                        + "  order by o.apellidoPaterno ", 0, 10);
+            }
             return estudiantesListado;
 
 
@@ -648,6 +653,11 @@ public class InscripcionesBean {
             estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
                     + " where o.idEstudiantes.idEstudiantes like '%" + cedula + "%' "
                     + "  and o.estadoMat = 'I' order by o.idEstudiantes.idEstudiantes ", 0, 10);
+            if(estudiantesListado.size()<=0){
+                estudiantesListado = adm.query("Select o from Estudiantes as o "
+                        + " where o.idEstudiantes like '%" + cedula + "%' "
+                        + "  order by o.apellidoPaterno ", 0, 10);
+            }
             return estudiantesListado;
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
