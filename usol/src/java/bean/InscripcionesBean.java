@@ -33,6 +33,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import jcinform.persistencia.Archivos;
+import jcinform.persistencia.Autos;
 import jcinform.persistencia.Canton;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.CarrerasMaterias;
@@ -43,6 +44,7 @@ import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Notas;
+import jcinform.persistencia.OtrosIngresos;
 import jcinform.persistencia.Pais;
 import jcinform.persistencia.Parametros;
 import jcinform.persistencia.Parientes;
@@ -53,6 +55,8 @@ import jcinform.persistencia.RangosGpa;
 import jcinform.persistencia.RangosIngresos;
 import jcinform.persistencia.SecuenciaDeMaterias;
 import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
+import jcinform.persistencia.TipoTarjeta;
+import jcinform.persistencia.TipoVivienda;
 import jcinform.persistencia.Titulos;
 import jcinform.procesos.Administrador;
 import jcinform.procesos.claves;
@@ -1506,6 +1510,96 @@ public class InscripcionesBean {
                 } else {
                     //RangosIngresos obj = new RangosIngresos(0);
                     items.add(new SelectItem("-", "NO EXISTEN CARRERAS"));
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+    public List<SelectItem> getSelectedItemOtrosIngresos() {
+        try {
+            List<OtrosIngresos> divisionPoliticas = new ArrayList<OtrosIngresos>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                divisionPoliticas = adm.query("Select o from OtrosIngresos as o "
+                        + "  order by o.idOtrosIngresos ");
+                if (divisionPoliticas.size() > 0) {
+                    for (OtrosIngresos obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj,obj.getNombre()));
+                    }
+                } else {
+                    items.add(new SelectItem(new OtrosIngresos(), "NO EXISTEN OTROS INGRESOS"));
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+    
+        public List<SelectItem> getSelectedItemAutos() {
+        try {
+            List<Autos> divisionPoliticas = new ArrayList<Autos>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                divisionPoliticas = adm.query("Select o from Autos as o "
+                        + "  order by o.idAutos ");
+                if (divisionPoliticas.size() > 0) {
+                    for (Autos obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj,obj.getNombre()));
+                    }
+                } else {
+                    items.add(new SelectItem(new Autos(), "NO EXISTEN TIPOS DE AUTOS"));
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+        
+            public List<SelectItem> getSelectedItemTipoVivienda() {
+        try {
+            List<TipoVivienda> divisionPoliticas = new ArrayList<TipoVivienda>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                divisionPoliticas = adm.query("Select o from TipoVivienda as o "
+                        + "  order by o.idTipoVivienda ");
+                if (divisionPoliticas.size() > 0) {
+                    for (TipoVivienda obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj,obj.getNombre()));
+                    }
+                } else {
+                    items.add(new SelectItem(new TipoVivienda(), "NO EXISTEN TIPO DE VIVIENDA"));
+                }
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+                public List<SelectItem> getSelectedItemTipoTarjeta() {
+        try {
+            List<TipoTarjeta> divisionPoliticas = new ArrayList<TipoTarjeta>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                divisionPoliticas = adm.query("Select o from TipoTarjeta as o "
+                        + "  order by o.idTipoTarjeta ");
+                if (divisionPoliticas.size() > 0) {
+                    for (TipoTarjeta obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj,obj.getNombre()));
+                    }
+                } else {
+                    items.add(new SelectItem(new TipoTarjeta(), "NO HA CREADO TARJETAS"));
                 }
             }
             return items;

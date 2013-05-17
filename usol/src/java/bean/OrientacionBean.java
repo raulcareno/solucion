@@ -4,6 +4,8 @@
  */
 package bean;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -126,6 +128,7 @@ public class OrientacionBean {
     Archivos arTitulo;
     Archivos arCedula;
     List<RangosGpa> rangos;
+
     public OrientacionBean() {
         //super();
         if (adm == null) {
@@ -425,10 +428,10 @@ public class OrientacionBean {
             estudiante.setCopiaCedula(true);
         }
 
-        
+
         object.setIdEstudiantes(estudiante);
         object.setIdPeriodos(per);
-        
+
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
@@ -476,10 +479,10 @@ public class OrientacionBean {
             matMat.setIdMatriculas(object);
             //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
             matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat); 
-            
+            adm.guardar(matMat);
+
         }
-        
+
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
     }
@@ -665,8 +668,8 @@ public class OrientacionBean {
 
     }
 
-     public String generarUsuarioSiVacio(String apellido1,String apellido2, String nombre) {
-        String usuario = apellido1.substring(0,2)+""+apellido2.substring(0,2)+""+nombre.substring(0,3);
+    public String generarUsuarioSiVacio(String apellido1, String apellido2, String nombre) {
+        String usuario = apellido1.substring(0, 2) + "" + apellido2.substring(0, 2) + "" + nombre.substring(0, 3);
         return usuario.toUpperCase();
     }
 
@@ -681,7 +684,7 @@ public class OrientacionBean {
         return clave;
 
     }
-    
+
     public void buscarCedula() {
 
         String cedula2 = estudiante.getIdEstudiantes();
@@ -733,7 +736,7 @@ public class OrientacionBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-              try {
+        try {
             estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             clave2 = estudiante.getClave();
@@ -742,8 +745,8 @@ public class OrientacionBean {
             estudiante.setClave(generarClaveSiVacio());
             clave2 = estudiante.getClave();
         }
-        
-        
+
+
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
@@ -790,7 +793,7 @@ public class OrientacionBean {
     }
 
     protected void buscarMateriasMatricula(Matriculas mat) {
-        if(!object.getIdMatriculas().equals(new Integer(0))){
+        if (!object.getIdMatriculas().equals(new Integer(0))) {
             destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
                     + " WHERE c.id_Materias in "
                     + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
@@ -804,17 +807,17 @@ public class OrientacionBean {
 
             }
             sumarCreditos();
-        }else{
-                destino = new ArrayList<CarrerasMaterias>();
-                origen = adm.query("Select m from CarrerasMaterias as m  "
+        } else {
+            destino = new ArrayList<CarrerasMaterias>();
+            origen = adm.query("Select m from CarrerasMaterias as m  "
                     + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
-                for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-                    CarrerasMaterias destItem = it.next();
-                    origen.remove(destItem);
+            for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+                CarrerasMaterias destItem = it.next();
+                origen.remove(destItem);
 
-                }
-                sumarCreditos();
-        
+            }
+            sumarCreditos();
+
         }
     }
     public int noCreditos = 0;
@@ -919,16 +922,16 @@ public class OrientacionBean {
     public boolean validarSecuencia(CarrerasMaterias materiaAanadir) {
 
         //ESTE METODO DEBE INICIALIZARSE CADA VEZ QUE CAMBIO DE ESPECIALDIAD
-                        try {
-                            CarrerasMaterias tmp = anadidasArray[0][0];
-                            if (tmp.getIdCarrerasMaterias().equals(null)) {
-                                buscarMateriasdeCarrera();                     
-                            }
-                        } catch (Exception e) {
-                            buscarMateriasdeCarrera();                
-                        }
-        
-        
+        try {
+            CarrerasMaterias tmp = anadidasArray[0][0];
+            if (tmp.getIdCarrerasMaterias().equals(null)) {
+                buscarMateriasdeCarrera();
+            }
+        } catch (Exception e) {
+            buscarMateriasdeCarrera();
+        }
+
+
 
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -981,8 +984,8 @@ public class OrientacionBean {
         for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
             SecuenciaDeMateriasAdicionales secM = it.next();
             if (secM.getFilacolumna().equals(idSeleccionado)) {
- 
-                 List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
+
+                List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
                         + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + secM.getIdCarrerasMaterias().getIdMaterias().getIdMaterias() + "' "
                         + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
                 if (notasEncontradas.size() > 0) {
@@ -997,18 +1000,18 @@ public class OrientacionBean {
                     requeridas += " || " + secM.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secM.getIdCarrerasMaterias().getIdMaterias().getNombre();
                 }
 
-                
+
 
             }
 
         }
-        if(requeridas.length()>0){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
-        return true;
-        }else{
-        return false;
+        if (requeridas.length() > 0) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
+            return true;
+        } else {
+            return false;
         }
-        
+
 
     }
     List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
@@ -1036,7 +1039,7 @@ public class OrientacionBean {
 
     public void buscarMateriasdeCarrera() {
         try {
-             buscarMateriasMatricula(object);
+            buscarMateriasMatricula(object);
             llenarArreglo();
             listaMaterias = adm.query("Select o from CarrerasMaterias as o "
                     + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
@@ -1112,27 +1115,99 @@ public class OrientacionBean {
         }
     }
 
+    public String calcularCategoria(Estudiantes estu) {
+
+        List NoActualMatricula = adm.query("Select o from Parametros as o "
+                + "where o.variable = 'FORMULA' ");
+
+        if (NoActualMatricula.size() <= 0) {
+            System.out.println("FALTA PARAMETRO formula EN PARAMETROS ");
+        }
+        Parametros parametros = (Parametros) NoActualMatricula.get(0);
+        if (parametros == null) {
+            parametros.setVCaracter("");
+        }
+        Double autos = 0d;
+        Double otrosIngresos = 0d;
+        Double tipoVivienda = 0d;
+        Double tipoTarjeta = 0d;
+        Double ingresos = 0d;
+        try {
+            autos = estu.getIdAutos().getValor().doubleValue();
+        } catch (Exception e) {
+        }
+        try {
+            otrosIngresos = estu.getIdOtrosIngresos().getValor().doubleValue();
+        } catch (Exception e) {
+        }
+        try {
+            tipoVivienda = estu.getIdTipoVivienda().getValor().doubleValue();
+        } catch (Exception e) {
+        }
+        try {
+            tipoTarjeta = estu.getIdTipoTarjeta().getValor().doubleValue();
+        } catch (Exception e) {
+        }
+        try {
+            ingresos = new BigDecimal(estu.getMontoIngresos()).doubleValue();
+        } catch (Exception e) {
+        }
+
+        Interpreter in = new Interpreter();
+        String resultado = "A";
+
+        try {
+            String formula = "(autos+otrosIngresos+tipoVivienda+tipoTarjeta+ingresos<=40?\"C\":autos+otrosIngresos+tipoVivienda+tipoTarjeta+ingresos<=69?\"B\":\"A\")";
+            if (!parametros.getVCaracter().equals("")) {
+                formula = parametros.getVCaracter();
+            }
+            in.eval("Double autos = " + autos + " ");
+            in.eval("Double otrosIngresos = " + otrosIngresos + " ");
+            in.eval("Double tipoVivienda = " + tipoVivienda + " ");
+            in.eval("Double tipoTarjeta = " + tipoTarjeta + " ");
+            in.eval("Double ingresos = " + ingresos + " ");
+            in.eval("String resultado = " + formula + " ");
+            resultado = (String) in.get("resultado");
+            System.out.println("VALOR: "+(autos+otrosIngresos+tipoVivienda+tipoTarjeta+ingresos));
+            //String letra = (resultado<=40?"C":resultado<=69?"B":"A"); 
+
+        } catch (EvalError ex) {
+            Logger.getLogger(OrientacionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+
+    }
+
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
-                + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
+                + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
         if (matriculasListado.size() > 0) {
             object = matriculasListado.get(0);
             carreraSeleccionado = object.getIdCarreras();
+            //REALIZO EL CALCULO DE LA CATEGORIA SOCIAL 
             categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
+            List<CategoriasSociales> listaCategorias = adm.query("Select o from CategoriasSociales as o ");
+            String letraCat = calcularCategoria(estudiante);
+            for (Iterator<CategoriasSociales> it = listaCategorias.iterator(); it.hasNext();) {
+                CategoriasSociales categoriasSociales = it.next();
+                if (categoriasSociales.getNombre().equals(letraCat)) {
+                    categoriaSeleccionado = categoriasSociales;
+                }
+            }
+            if (categoriaSeleccionado == null) {
+                categoriaSeleccionado = listaCategorias.get(0);
+            }
+            buscarMateriasMatricula(object);
+        } else {
+            carreraSeleccionado = new Carreras(0);
+            object = new Matriculas(0);
             buscarMateriasMatricula(object);
 
-        }else{
-            carreraSeleccionado = new Carreras(0);
-            object = new Matriculas(0); 
-            buscarMateriasMatricula(object);
-        
         }
     }
 
     public void handleSelect(SelectEvent event) {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
-
         imagen = estudiante.getFoto();
         pariente1 = new Parientes();
         pariente2 = new Parientes();
@@ -1196,7 +1271,7 @@ public class OrientacionBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-               try {
+        try {
             estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             clave2 = estudiante.getClave();
@@ -1205,10 +1280,10 @@ public class OrientacionBean {
             estudiante.setClave(generarClaveSiVacio());
             clave2 = estudiante.getClave();
         }
-        
-        
-        
-        
+
+
+
+
         buscarMatricula(estudiante);
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {

@@ -353,6 +353,10 @@ public class LoginBean {
         verificarPermisoReporte("RangosIngresos", "ingresar_rangosIngresos.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("TipoMateria", "ingresar_tipomateria.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Titulos", "ingresar_titulos.jspx", "ingresar", true, "PARAMETROS");
+        verificarPermisoReporte("Autos", "ingresar_autos.jspx", "ingresar", true, "PARAMETROS");
+        verificarPermisoReporte("TipoTarjeta", "ingresar_tipoTarjeta.jspx", "ingresar", true, "PARAMETROS");
+        verificarPermisoReporte("TipoVivienda", "ingresar_tipoVivienda.jspx", "ingresar", true, "PARAMETROS");
+        verificarPermisoReporte("OtrosIngresos", "ingresar_otrosIngresos.jspx", "ingresar", true, "PARAMETROS");
 
     }
 

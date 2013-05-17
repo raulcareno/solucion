@@ -423,17 +423,12 @@
                 </h:panelGrid>
                 <p:fieldset   toggleable="false" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
                     <h:panelGrid columns="5" cellpadding="-1" style="margin:0">  
-                                                <p:spacer width="10"/>
-                        <h:outputText value="TIPO DE VIVIENDA: " />  
-                        <p:selectOneMenu   style="width:170px"   value="#{inscripcionesBean.estudiante.tipoVivienda}" id="TipoVivienda" >  
-                            <f:selectItem itemLabel="Seleccione" itemValue="" />  
-                            <f:selectItem itemLabel="ARRENDADA" itemValue="ARRENDADA" />  
-                            <f:selectItem itemLabel="ANTICRESIS" itemValue="ANTICRESIS" />   
-                            <f:selectItem itemLabel="CEDIDA" itemValue="CEDIDA" />  
-                            <f:selectItem itemLabel="PROPIA" itemValue="PROPIA" />  
-                            <f:selectItem itemLabel="RENTADA" itemValue="RENTADA" />  
-                        </p:selectOneMenu>  
 
+                        <h:outputText value="TIPO DE VIVIENDA: " />  
+                        <p:selectOneMenu  style="width:170px"  converter="ConvTipoVivienda"  value="#{inscripcionesBean.estudiante.idTipoVivienda}" id="TipoVivienda">  
+                            <f:selectItems value="#{inscripcionesBean.selectedItemTipoVivienda}"  var="ob33"  itemValue="#{ob33}" />  
+                        </p:selectOneMenu> 
+                          <p:spacer width="10"/>
                         <h:outputText value="FUENTE DE INGRESOS: " />  
                         <p:selectOneMenu  style="width:170px"   value="#{inscripcionesBean.estudiante.fuenteIngresos}" id="FuenteIngresos">  
                             <f:selectItem itemLabel="Seleccione" itemValue="" />  
@@ -442,24 +437,15 @@
                             <f:selectItem itemLabel="COMERCIANTE" itemValue="COMERCIANTE" />  
                             <f:selectItem itemLabel="INFORMAL" itemValue="INFORMAL" />  
                         </p:selectOneMenu>  
-                        <p:spacer width="10"/>
+                        
                         <h:outputText value="MONTO DE INGRESOS: " />  
                         <p:selectOneMenu   style="width:170px"  value="#{inscripcionesBean.estudiante.montoIngresos}" id="MontoIngresos">  
                             <f:selectItems value="#{inscripcionesBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu>  
-                        <h:outputText value="OTROS INGRESOS: " />  
-                        <p:selectOneMenu  style="width:170px"   value="#{inscripcionesBean.estudiante.otrosIngresos}" id="OtrosIngresos">  
-                            <f:selectItem itemLabel="NO TIENE" itemValue="" />  
-                            <f:selectItem itemLabel="ARRIENDOS" itemValue="ARRIENDOS" />  
-                            <f:selectItem itemLabel="PENSIONES JUBILARES" itemValue="PENSIONES JUBILARES" />   
-                            <f:selectItem itemLabel="REMESAS DEL EXTERIOR" itemValue="REMESAS DEL EXTERIOR" />  
-                            <f:selectItem itemLabel="OTROS INGRESOS" itemValue="OTROS INGRESOS" />  
-                            <f:selectItem itemLabel="PENSIONES JUDICIALES" itemValue="PENSIONES JUDICIALES" />  
-                        </p:selectOneMenu> 
                         <p:spacer width="10"/>
-                        <h:outputText value="MONTO OTROS INGRESOS: " />  
-                        <p:selectOneMenu  style="width:170px"   value="#{inscripcionesBean.estudiante.montoOtrosIngresos}" id="MontoOtrosIngresos">  
-                            <f:selectItems value="#{inscripcionesBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
+                        <h:outputText value="OTROS INGRESOS: " />  
+                        <p:selectOneMenu  style="width:170px"  converter="ConvOtrosIngresos"  value="#{inscripcionesBean.estudiante.idOtrosIngresos}" id="MontoOtrosIngresos">  
+                            <f:selectItems value="#{inscripcionesBean.selectedItemOtrosIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu> 
                         <h:outputText value="MONTO DE EGRESOS: " />  
                         <p:selectOneMenu  style="width:170px"   value="#{inscripcionesBean.estudiante.montoEgresos}" id="MontoEgresos">  
@@ -476,10 +462,14 @@
                             <f:selectItem itemLabel="OTROS" itemValue="OTROS" />  
                         </p:selectOneMenu> 
                         <h:outputText value="POSEE TARJETAS DE CRÉDITO: " />  
-                        <p:selectBooleanButton value="#{inscripcionesBean.estudiante.tarjetasCredito}"   id="TarjetaCredito"  onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close"/>  
+                        <p:selectOneMenu  style="width:170px"  converter="ConvTipoTarjeta"  value="#{inscripcionesBean.estudiante.idTipoTarjeta}" id="TarjetaCredito">  
+                           <f:selectItems value="#{inscripcionesBean.selectedItemTipoTarjeta}"  var="ob33"  itemValue="#{ob33}" />  
+                        </p:selectOneMenu> 
                         <p:spacer width="10"/>
                         <h:outputText value="POSEE VEHÍCULO: " />  
-                        <p:selectBooleanButton  value="#{inscripcionesBean.estudiante.vehiculo}" id="PoseeVehiculo"   onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close"/>  
+                         <p:selectOneMenu  style="width:170px"  converter="ConvAutos"  value="#{inscripcionesBean.estudiante.idAutos}" id="PoseeVehiculo">  
+                            <f:selectItems value="#{inscripcionesBean.selectedItemAutos}"  var="ob33"  itemValue="#{ob33}" />  
+                        </p:selectOneMenu> 
                         <h:outputText value="COMO PAGA: " />  
                         <p:selectOneMenu   style="width:170px"   value="#{inscripcionesBean.estudiante.formaPago}" id="ComoPaga"   >  
                             <f:selectItem itemLabel="NO TIENE" itemValue="" />  
