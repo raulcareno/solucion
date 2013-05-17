@@ -941,6 +941,7 @@ ArrayList detalle = new ArrayList();
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                     + " AND (o.tarifa0 = false OR o.tarifa0 IS NULL) "
                     + " and (o.sellado = false OR o.sellado IS NULL) ";
             if (cmbUsuarios.getSelectedIndex() > 0) {
@@ -948,7 +949,9 @@ ArrayList detalle = new ArrayList();
                         + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                         + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
                         + " and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                        + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) and (o.sellado = false OR o.sellado IS NULL)  ";
+                        + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                        + " and (o.sellado = false OR o.sellado IS NULL)  ";
             }
             dirreporte = ubicacionDirectorio + "reportes" + separador + "ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
@@ -1002,6 +1005,7 @@ ArrayList detalle = new ArrayList();
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
                     + "AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                     + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
                     + "and (o.sellado = false OR o.sellado IS NULL)  ";
             if (cmbUsuarios.getSelectedIndex() > 0) {
@@ -1010,6 +1014,7 @@ ArrayList detalle = new ArrayList();
                         + " and o.fechafin is not null and o.numero is not null  "
                         + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
                         + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                         + "and (o.tarifa0 = false OR o.tarifa0 IS NULL)  "
                         + "and (o.sellado = false OR o.sellado IS NULL)  ";
             }
@@ -1032,13 +1037,17 @@ ArrayList detalle = new ArrayList();
             query = "Select o from Factura as o"
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.numero is not null  "
-                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL) and o.total > 0   ";
+                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + "and (o.sellado = false OR o.sellado IS NULL) and o.total > 0   ";
             if (cmbUsuarios.getSelectedIndex() > 0) {
                 query = "Select o from Factura as o"
                         + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                         + " and o.fechafin is not null and o.numero is not null  "
                         + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
-                        + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  and (o.sellado = false OR o.sellado IS NULL)  and o.total > 0  ";
+                        + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                        + "and (o.sellado = false OR o.sellado IS NULL)  and o.total > 0  ";
             }
 
             dirreporte = ubicacionDirectorio + "reportes" + separador + "facturasdiarias.jasper";
@@ -1051,6 +1060,7 @@ ArrayList detalle = new ArrayList();
                     + "and o.fechafin is not null "
                     + "and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                     + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
                     + "and (o.sellado = false OR o.sellado IS NULL)  ";
             System.out.println("SOLO TICKETS: " + query);
@@ -1060,6 +1070,7 @@ ArrayList detalle = new ArrayList();
                         + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                         + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
                         + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                         + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
                         + "and (o.sellado = false OR o.sellado IS NULL)  ";
             }
@@ -1074,6 +1085,7 @@ ArrayList detalle = new ArrayList();
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null  and o.ticket is null and o.tarjetas is null "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                     + " AND (o.tarifa0 = false OR o.tarifa0 IS NULL) "
                     + " and (o.sellado = false OR o.sellado IS NULL) ";
             System.out.println("SOLO TARJETAS: " + query);
@@ -1086,13 +1098,16 @@ ArrayList detalle = new ArrayList();
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin is not null and o.descuento > 0 "
                     + "and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
-                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
+                    + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + " ";
             System.out.println("SOLO TICKETS: " + query);
             if (cmbUsuarios.getSelectedIndex() > 0) {
                 query = "Select o from Factura as o"
                         + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.descuento > 0  "
                         + " and o.fechafin is not null and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                         + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                         + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  ";
             }
 
@@ -1125,13 +1140,14 @@ ArrayList detalle = new ArrayList();
                     + " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                     + "and o.fechafin.fechafin is not null and o.sellado = true "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
-                    + " AND ";
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  ";
             System.out.println("SOLO TICKETS: " + query);
             if (cmbClientes.getSelectedIndex() > 0) {
                 query = "Select o from Cxcobrar as o"
                         + " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
                         + "and o.fechafin.fechafin is not null and o.sellado = true "
                         + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                         + " AND o.clientes.codigo = '" + ((Clientes) cmbClientes.getSelectedItem()).getCodigo() + "'";
             }
 
@@ -1144,6 +1160,7 @@ ArrayList detalle = new ArrayList();
             query = "Select date(o.fechafin),sum(o.total) from Factura as o"
                     + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + " AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
                     + " and o.fechafin is not null  "
                     + " and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
                     + " and (o.sellado = false OR o.sellado IS NULL)  "
@@ -1218,6 +1235,7 @@ ArrayList detalle = new ArrayList();
             query = "SELECT placa, total, COUNT(*), SUM(total) FROM factura  "
                     + "WHERE fechafin BETWEEN '" + desde2 + "' AND  '" + hasta2 + "'  "
                     + "AND (anulado IS NULL  OR anulado = FALSE) "
+                    + "AND (anuladofac IS NULL  OR anuladofac = FALSE) "
                     + "and (tarifa0 = false OR tarifa0 IS NULL) "
                     + "and (sellado = false OR sellado IS NULL)  "
                     + " GROUP BY placa ";
