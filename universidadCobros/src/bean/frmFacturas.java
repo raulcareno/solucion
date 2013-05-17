@@ -1380,7 +1380,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     actualMatricula.setIdPeriodos(periodoActual);
                     actualMatricula.setEstadoMat("I");
                     actualMatricula.setFecha(adm.Date());
-                    actualMatricula.setNumero(adm.getNuevaClave("Matriculas", "numero"));
+                    //actualMatricula.setNumero(adm.getNuevaClave("Matriculas", "numero"));
                     adm.guardar(actualMatricula);
                     cab.setIdMatriculas(actualMatricula);
                 }
@@ -1494,9 +1494,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             if (actualMatricula.getIdMatriculas() != null) {
                 try {
                     if (actualMatricula.getNumero() == null && tipoMatricula) {
-                        actualMatricula.setNumero(adm.getNuevaClave("Matriculas", "numero"));
+                        if(carreraSeleccionada.getMaestria()){
+                            actualMatricula.setNumero(nuevoNumero("MAESTRIA"));
+                        }else{
+                            actualMatricula.setNumero(nuevoNumero("MATRICULA"));
+                        }
+                        
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 adm.actualizar(actualMatricula);
@@ -1584,6 +1590,51 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
+    public int nuevoNumero(String tipo){
+        List<Parametros> parametrosList2 = null;
+        if (parametrosList2 == null) {
+            parametrosList2 = adm.query("Select o from Parametros as o where o.nombre like '%matricula%' "
+                    + "  ");
+        }
+        Parametros parUltimo= null;
+        Integer valUltimo = 0;
+        if(tipo.equals("MATRICULA")){
+             parUltimo = regresaVariableParametrosDecimalParametro("MATRICULA", parametrosList2);
+             valUltimo = parUltimo.getVNumerico().intValue();
+        }else if(tipo.equals("MAESTRIA")){
+             parUltimo = regresaVariableParametrosDecimalParametro("MAESTRIA", parametrosList2);
+             valUltimo = parUltimo.getVNumerico().intValue();
+        } 
+        if(parUltimo == null){
+            valUltimo =0;
+            if(tipo.equals("MATRICULA")){
+                    parUltimo = new Parametros(adm.getNuevaClave("Parametros", "idParametros"));
+                    parUltimo.setNombre("# Actual de Matricula"); 
+                    parUltimo.setVNumerico(new BigDecimal(0));  
+                    parUltimo.setVariable("MATRICULA");
+            }else if(tipo.equals("MAESTRIA")){
+                    parUltimo = new Parametros(adm.getNuevaClave("Parametros", "idParametros"));
+                    parUltimo.setNombre("# Actual de Matricula Maestria"); 
+                    parUltimo.setVNumerico(new BigDecimal(0));  
+                    parUltimo.setVariable("MAESTRIA");
+                    
+            }       
+            adm.guardar(parUltimo); 
+        } 
+        boolean noExiste = true;
+        while(noExiste){
+            List resultados = adm.query("Select o from Matriculas as o "
+                    + " where o.numero = "+valUltimo+" and o.idCarreras.maestria = "+(tipo.contains("MAESTRIA")?true:false)+" ");
+            if(resultados.size()<=0){
+                parUltimo.setVNumerico(new BigDecimal(valUltimo));
+                adm.actualizar(parUltimo);
+                noExiste = false;
+            }else{
+                valUltimo++;
+            }
+        }
+        return valUltimo;
+    }
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
         anularFacturaForm.setSize(290, 283);
@@ -1700,6 +1751,15 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         }
 
         return new BigDecimal(0);
+    }
+      public Parametros regresaVariableParametrosDecimalParametro(String variable, List<Parametros> textos) {
+        for (Iterator<Parametros> it = textos.iterator(); it.hasNext();) {
+            Parametros textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1;
+            }
+        }
+         return null;
     }
 
     public Boolean regresaVariableParametrosLogico(String variable, List<Parametros> textos) {
