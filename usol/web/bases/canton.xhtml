@@ -37,8 +37,8 @@
 
                     </h:panelGrid>  
                     <h:panelGrid columns="4">
-                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:canton"   action="#{cantonBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{cantonBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:canton"   action="#{cantonBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{cantonBean.limpiar()}" icon="nuevo" title="Nuevo">  
                         </p:commandButton> 
 
                     </h:panelGrid>
@@ -48,7 +48,7 @@
 
                         <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
                         <p:inputText id="textoBuscar" value="#{cantonBean.textoBuscar}" style="font-weight:bold"/>  
-                        <p:commandButton id="buscar" value="Buscar" update="canton" actionListener="#{cantonBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+                        <p:commandButton id="buscar" value="Buscar" update="canton" actionListener="#{cantonBean.buscar()}"  icon="buscar" title="Buscar"/>  
 
                     </h:panelGrid>
                 </p:panel>
@@ -67,10 +67,10 @@
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
 
-                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{cantonBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{cantonBean.editarAction(obj)}" icon="editar" title="Editar">  
 
                             </p:commandButton>  
-                            <p:commandButton id="eliminarButton" actionListener="#{cantonBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+                            <p:commandButton id="eliminarButton" actionListener="#{cantonBean.eliminar(obj)}"  update=":form"  icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
 
                             </p:commandButton>  
                         </h:panelGrid>

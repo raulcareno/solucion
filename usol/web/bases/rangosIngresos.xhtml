@@ -31,8 +31,8 @@
 
                     </h:panelGrid>  
                     <h:panelGrid columns="4">
-                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:rangosGpa"   action="#{rangosIngresosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{rangosIngresosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:rangosGpa"   action="#{rangosIngresosBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{rangosIngresosBean.limpiar()}" icon="nuevo" title="Nuevo">  
                         </p:commandButton> 
 
                     </h:panelGrid>
@@ -42,7 +42,7 @@
 
                         <h:outputLabel for="textoBuscar" style="font-weight: bold" value="Nombre:" />
                         <p:inputText id="textoBuscar" value="#{rangosIngresosBean.textoBuscar}" style="font-weight:bold"/>  
-                        <p:commandButton id="buscar" value="Buscar" update="rangosGpa" actionListener="#{rangosIngresosBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+                        <p:commandButton id="buscar" value="Buscar" update="rangosGpa" actionListener="#{rangosIngresosBean.buscar()}"  icon="buscar" title="Buscar"/>  
 
                     </h:panelGrid>
                 </p:panel>
@@ -57,9 +57,9 @@
 
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
-                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{rangosIngresosBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{rangosIngresosBean.editarAction(obj)}" icon="editar" title="Editar">  
                             </p:commandButton>  
-                            <p:commandButton id="eliminarButton" actionListener="#{rangosIngresosBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+                            <p:commandButton id="eliminarButton" actionListener="#{rangosIngresosBean.eliminar(obj)}"  update=":form"  icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
                             </p:commandButton>  
                         </h:panelGrid>
                     </p:column>  

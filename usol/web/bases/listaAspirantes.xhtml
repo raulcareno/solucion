@@ -101,7 +101,7 @@
                                 
                         <h:panelGrid columns="4">
                             <p:commandButton  value="CERRAR"  id="guardar" action="#{aspirantesBean.buscar()}"
-                                              update=":form:materias"  onsuccess="carDialog.hide()"  icon="ui-icon-disk" title="Guardar"/>  
+                                              update=":form:materias"  onsuccess="carDialog.hide()"  icon="guardar" title="Guardar"/>  
                         </h:panelGrid> 
                     </p:fieldset>
                 </p:dialog>
@@ -123,7 +123,7 @@
                         <h:panelGrid style="border-color: transparent;" columns="2">
                             <p:commandButton  id="editarButton"  label="VER INFO." value="VER INFO." 
                                               actionListener="#{aspirantesBean.editarAction(obj)}" 
-                                              icon="ui-icon-pencil"  update=":form:datosForma" onsuccess="carDialog.show()" title="Editar">
+                                              icon="editar"  update=":form:datosForma" onsuccess="carDialog.show()" title="Editar">
                              
                             </p:commandButton>
                         </h:panelGrid>

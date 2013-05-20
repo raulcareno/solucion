@@ -24,7 +24,7 @@
                         <p:selectOneMenu id="empleados" label="empleados" converter="ConvEmpleados" value="#{auditoriaBean.empleado}"   effect="fade"  >
                             <f:selectItems value="#{auditoriaBean.selectedItemEmpleados}" var="ob2"  itemValue="#{ob2}"></f:selectItems>
                         </p:selectOneMenu>
-                        <p:commandButton id="buscar" value="Buscar" update="auditoria" actionListener="#{auditoriaBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+                        <p:commandButton id="buscar" value="Buscar" update="auditoria" actionListener="#{auditoriaBean.buscar()}"  icon="buscar" title="Buscar"/>  
                     </h:panelGrid>
                 </p:panel>
 

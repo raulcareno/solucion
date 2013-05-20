@@ -125,7 +125,7 @@
                                     </p:column>  
                                     <p:column style="width:10%">  
                                         <p:commandButton id="eliminarButton" actionListener="#{carrerasMateriasSecuenciaBean.eliminar(obj)}"  
-                                                         update=":form"   icon="ui-icon-trash"  
+                                                         update=":form"   icon="eliminar"  
                                                          onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" 
                                                          title="Eliminar"/>  
                                     </p:column>  
@@ -1854,7 +1854,7 @@
                         </p:commandButton>  
                         <p:commandButton  value="Guardar"  id="guardar"  
                                           action="#{carrerasMateriasSecuenciaBean.guardar()}"  
-                                          icon="ui-icon-disk" title="Guardar"/>  
+                                          icon="guardar" title="Guardar"/>  
 
                     </h:panelGrid>
                 </p:panel>

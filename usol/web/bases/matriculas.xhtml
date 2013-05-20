@@ -154,8 +154,8 @@
                 </p:fieldset>
 
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean2.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                    <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasBean2.limpiar()}" icon="ui-icon-document" title="Nuevo"/>
+                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean2.guardar()}"  icon="guardar" title="Guardar"/>  
+                    <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasBean2.limpiar()}" icon="nuevo" title="Nuevo"/>
                     <p:splitButton  value="PDF" ajax="false"  actionListener="#{matriculasBean2.fichaMatricula('PDF')}"   icon="ui-icon-print">  
                         <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean2.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
                         <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean2.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  

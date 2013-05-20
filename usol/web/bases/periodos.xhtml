@@ -39,8 +39,8 @@
 
                     </h:panelGrid>  
                     <h:panelGrid columns="4">
-                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:pais"   action="#{periodosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{periodosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                        <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:pais"   action="#{periodosBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                        <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{periodosBean.limpiar()}" icon="nuevo" title="Nuevo">  
                         </p:commandButton> 
                         
                     </h:panelGrid>
@@ -49,7 +49,7 @@
                     <h:panelGrid  columns="4">
 
                     
-                    <p:commandButton id="buscar" value="Buscar" update="pais" actionListener="#{periodosBean.buscar()}"  icon="ui-icon-search" title="Buscar"/>  
+                    <p:commandButton id="buscar" value="Buscar" update="pais" actionListener="#{periodosBean.buscar()}"  icon="buscar" title="Buscar"/>  
 
                 </h:panelGrid>
                 </p:panel>
@@ -77,10 +77,10 @@
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
 
-                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{periodosBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+                            <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{periodosBean.editarAction(obj)}" icon="editar" title="Editar">  
 
                             </p:commandButton>  
-                            <p:commandButton id="eliminarButton" actionListener="#{periodosBean.eliminar(obj)}"  update=":form"   icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+                            <p:commandButton id="eliminarButton" actionListener="#{periodosBean.eliminar(obj)}"  update=":form"   icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
 
                             </p:commandButton>  
                         </h:panelGrid>

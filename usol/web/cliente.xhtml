@@ -23,7 +23,7 @@
                     <p:inputText value="#{paisBean.selectedPais.nombre}" style="font-weight:bold"/>  
                 </h:panelGrid>  
                 <h:panelGrid columns="4">
-                    <p:commandButton value="Guardar"  id="guardar" update=":form:pais" icon="ui-icon-disk" title="Guardar">  
+                    <p:commandButton value="Guardar"  id="guardar" update=":form:pais" icon="guardar" title="Guardar">  
                         <f:setPropertyActionListener value="#{obj}" target="#{paisBean.selectedPais}" />  
                     </p:commandButton> 
                     <p:commandButton value="Nuevo"  id="nuevo" update=":form:pais" icon="ui-icon-save" title="Nuevo">  
@@ -38,7 +38,7 @@
                  
                  <h:outputLabel for="textoBuscar" value="Ingrese un Texto:" />
                 <p:inputText id="textoBuscar" value="#{paisBean.selectedPais.nombre}" style="font-weight:bold"/>  
-                <p:commandButton id="buscar" value="Buscar" update=":form:pais" actionListener="#{paisBean.cargarDataModel()}"  icon="ui-icon-search" title="Editar">  
+                <p:commandButton id="buscar" value="Buscar" update=":form:pais" actionListener="#{paisBean.cargarDataModel()}"  icon="buscar" title="Editar">  
                         <f:setPropertyActionListener value="#{obj}" target="#{paisBean.selectedPais}" />  
                </p:commandButton>  
             </h:panelGrid>

@@ -236,10 +236,10 @@
                                 <p:column style="width:10%">  
                                     <h:panelGrid style="border-color: transparent;" columns="2">
 
-                                        <p:commandButton  id="editarButton" update=":form:RegistroInformacion"  actionListener="#{empleadosBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar">  
+                                        <p:commandButton  id="editarButton" update=":form:RegistroInformacion"  actionListener="#{empleadosBean.editarAction(obj)}" icon="editar" title="Editar">  
 
                                         </p:commandButton>  
-                                        <p:commandButton id="eliminarButton" actionListener="#{empleadosBean.eliminar(obj)}"  update=":form"  icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+                                        <p:commandButton id="eliminarButton" actionListener="#{empleadosBean.eliminar(obj)}"  update=":form"  icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
 
                                         </p:commandButton>  
                                     </h:panelGrid>
@@ -253,8 +253,8 @@
                 </p:tabView>
 
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form:RegistroInformacion :form:RegistroInformacion:empleados"   action="#{empleadosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                    <p:commandButton value="Limpiar"  id="limpiar" update=":form:RegistroInformacion" actionListener="#{empleadosBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                    <p:commandButton  value="Guardar"  id="guardar"  update=":form:RegistroInformacion :form:RegistroInformacion:empleados"   action="#{empleadosBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                    <p:commandButton value="Limpiar"  id="limpiar" update=":form:RegistroInformacion" actionListener="#{empleadosBean.limpiar()}" icon="nuevo" title="Nuevo">  
                     </p:commandButton> 
                 </h:panelGrid>
 

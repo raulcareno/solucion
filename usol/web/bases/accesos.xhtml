@@ -30,9 +30,9 @@
                             <f:selectItem itemValue="PAGOS" itemLabel="PAGOS"/>
                             <f:selectItem itemValue="NOTAS" itemLabel="NOTAS"/>
                         </h:selectOneMenu>
-                        <p:commandButton id="buscar" value="Buscar" update="accesosList guardar" actionListener="#{accesosBean.cargarDataModel()}"  icon="ui-icon-search" title="Buscar"/>      
+                        <p:commandButton id="buscar" value="Buscar" update="accesosList guardar" actionListener="#{accesosBean.cargarDataModel()}"  icon="buscar" title="Buscar"/>      
                         <h:panelGrid id="guardar"  style="border: none">
-                                <p:commandButton  rendered="#{accesosBean.model.size()>0}"   value="Guardar"  update="accesosList"   action="#{accesosBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
+                                <p:commandButton  rendered="#{accesosBean.model.size()>0}"   value="Guardar"  update="accesosList"   action="#{accesosBean.guardar()}"  icon="guardar" title="Guardar"/>  
                         </h:panelGrid>
                         
 

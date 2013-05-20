@@ -1,0 +1,17 @@
+ 
+.guardar{
+    background-image: url('../images/guardar.gif') !important;
+}
+.eliminar{
+    background-image: url('../images/delete.gif') !important;
+}
+.editar{
+    background-image: url('../images/editar.gif') !important;
+}
+.buscar{
+    background-image: url('../images/buscar.gif') !important;
+}
+.nuevo{
+    background-image: url('../images/nuevo.gif') !important;
+}
+

@@ -20,8 +20,8 @@
                             <p:column headerText="APORTES QUE SE INGRESAN" style="width:10%">  
                                 <p:panelGrid columns="3">
                                     <h:outputText value="#{obj.nombre} #{obj.nota}" />  
-                                    <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{sistemaNotasBean.editarAction(obj)}" icon="ui-icon-pencil" title="Editar"/>  
-                                    <p:commandButton id="eliminarButton"  update=":form:display"  actionListener="#{sistemaNotasBean.eliminar(obj)}"   icon="ui-icon-trash"  onclick="if(!confirm('Seguro que desea eliminar el registro, puede causar pérdida de notas?')) { return false;}" title="Eliminar">  
+                                    <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{sistemaNotasBean.editarAction(obj)}" icon="editar" title="Editar"/>  
+                                    <p:commandButton id="eliminarButton"  update=":form:display"  actionListener="#{sistemaNotasBean.eliminar(obj)}"   icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro, puede causar pérdida de notas?')) { return false;}" title="Eliminar">  
                                     </p:commandButton>  
                                 </p:panelGrid>
                             </p:column>  
@@ -63,8 +63,8 @@
                             <p:inputText  value="#{sistemaNotasBean.object.idSistemaNotas}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
                         </h:panelGrid>  
                         <h:panelGrid columns="4">
-                            <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:modalidad"   action="#{sistemaNotasBean.guardar()}"  icon="ui-icon-disk" title="Guardar"/>  
-                            <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{sistemaNotasBean.limpiar()}" icon="ui-icon-document" title="Nuevo">  
+                            <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:modalidad"   action="#{sistemaNotasBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                            <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{sistemaNotasBean.limpiar()}" icon="nuevo" title="Nuevo">  
                             </p:commandButton> 
 
                         </h:panelGrid>
