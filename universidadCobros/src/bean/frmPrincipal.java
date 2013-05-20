@@ -50,7 +50,7 @@ panelInscritos.setVisible(false);
         Thread cargar = new Thread() {
             public void run() {
                 adm = new Administrador();
-                List<Periodos> periodosLista = adm.query("Select o from Periodos as o where o.activo = true");
+                List<Periodos> periodosLista = adm.query("Select o from Periodos as o where o.activo = true or o.proximo = true");
                 cmbPeriodo.removeAllItems();
                 general gen = new general(-1, " - SELECCIONE -");
                 cmbPeriodo.addItem(gen);
@@ -58,7 +58,7 @@ panelInscritos.setVisible(false);
 
                 for (Iterator<Periodos> it = periodosLista.iterator(); it.hasNext();) {
                     Periodos periodos = it.next();
-                    gen = new general(periodos.getIdPeriodos(), sdf.format(periodos.getFechaInicio()) + " - " + sdf.format(periodos.getFechaFin()));
+                    gen = new general(periodos.getIdPeriodos(), sdf.format(periodos.getFechaInicio()).toUpperCase() + " - " + sdf.format(periodos.getFechaFin()).toUpperCase()+" "+(periodos.getProximo()?"PROXIMO":""));
                     cmbPeriodo.addItem(gen);
 
                 }
@@ -156,12 +156,12 @@ panelInscritos.setVisible(false);
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/login.png"))); // NOI18N
         frmLogin.add(jLabel1);
-        jLabel1.setBounds(0, 0, 351, 60);
+        jLabel1.setBounds(0, 0, 351, 40);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Periodo: ");
         frmLogin.add(jLabel4);
-        jLabel4.setBounds(10, 120, 80, 25);
+        jLabel4.setBounds(10, 90, 80, 25);
 
         usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,7 +174,7 @@ panelInscritos.setVisible(false);
             }
         });
         frmLogin.add(usuario);
-        usuario.setBounds(90, 67, 230, 25);
+        usuario.setBounds(90, 40, 230, 25);
 
         contrasena.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -182,12 +182,12 @@ panelInscritos.setVisible(false);
             }
         });
         frmLogin.add(contrasena);
-        contrasena.setBounds(90, 93, 230, 25);
+        contrasena.setBounds(90, 65, 230, 25);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Contraseña: ");
         frmLogin.add(jLabel3);
-        jLabel3.setBounds(0, 90, 90, 25);
+        jLabel3.setBounds(0, 60, 90, 25);
 
         ingresarSistema.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         ingresarSistema.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/encrypted.gif"))); // NOI18N
@@ -199,7 +199,7 @@ panelInscritos.setVisible(false);
             }
         });
         frmLogin.add(ingresarSistema);
-        ingresarSistema.setBounds(220, 120, 100, 25);
+        ingresarSistema.setBounds(90, 120, 100, 25);
 
         intentos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         intentos.setText("...");
@@ -217,12 +217,12 @@ panelInscritos.setVisible(false);
             }
         });
         frmLogin.add(cmbPeriodo);
-        cmbPeriodo.setBounds(90, 120, 130, 24);
+        cmbPeriodo.setBounds(90, 90, 230, 24);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Usuario: ");
         frmLogin.add(jLabel8);
-        jLabel8.setBounds(10, 70, 80, 20);
+        jLabel8.setBounds(10, 40, 80, 20);
 
         frmLogin.setBounds(20, 20, 350, 170);
         contenedor.add(frmLogin, javax.swing.JLayeredPane.DEFAULT_LAYER);
