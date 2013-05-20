@@ -226,7 +226,7 @@ error2i.visible = false;
                 <label visible="false" id="objetivo1" />
                 <label style="font-weight:bold;font-size:15px" id="docente" />
 
-                <grid    id="lista">
+                <grid    id="lista"  height="400px">
                     <rows id="filaEncuestar">
                     </rows>
                 </grid>
