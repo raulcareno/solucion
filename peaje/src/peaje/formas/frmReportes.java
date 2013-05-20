@@ -217,7 +217,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         cmbTipoReporte.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Cobros Tickest y Tarjetas (200)", "Cobros de Tickets (201)", "Cobros de Tarjetas (202)", "Cobros con Descuentos(203)", "Cobros Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (306) ", "Numero de Aperturas Manuales(307) ", "Detalle de Facturas(308) ", "Clientes con Tarjetas(309) " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Tickets Cobrados con Valor Cero (107)", "Cobros Tickest y Tarjetas (200)", "Cobros de Tickets (201)", "Cobros de Tarjetas (202)", "Cobros con Descuentos(203)", "Cobros Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (306) ", "Numero de Aperturas Manuales(307) ", "Detalle de Cobros(308) ", "Clientes con Tarjetas(309) " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -1025,6 +1025,27 @@ ArrayList detalle = new ArrayList();
             tickets(dirreporte, query, titulo);
 
             //} else if (cmbTipoReporte.getSelectedIndex() == 2) {//PUESTO OCUPADOS
+        } else if (cmbTipoReporte.getSelectedItem().toString().contains("(107)")) { //TICKEST COBRADOS CON VALOR CERO
+            query = "Select o from Factura as o"
+                    + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                    + "and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                    + "  AND (o.anulado IS NULL  OR o.anulado = FALSE)  "
+                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + " AND (o.tarifa0 = false OR o.tarifa0 IS NULL) "
+                    + " and (o.sellado = false OR o.sellado IS NULL) and o.total <= 0";
+            if (cmbUsuarios.getSelectedIndex() > 0) {
+                query = "Select o from Factura as o"
+                        + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
+                        + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
+                        + " and   o.fechafin is not null  and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
+                        + "  AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                        + " and (o.sellado = false OR o.sellado IS NULL)  and o.total <= 0 ";
+            }
+            dirreporte = ubicacionDirectorio + "reportes" + separador + "ticketscobrados.jasper";
+            titulo = "Tickest Cobrados";
+            tickets(dirreporte, query, titulo);
+
         } else if (cmbTipoReporte.getSelectedItem().toString().contains("(305)")) { //PUESTOS OCUPADOS
             query = "Select o from Factura as o"
                     + " where o.placa = 'xxxxxx..'";
