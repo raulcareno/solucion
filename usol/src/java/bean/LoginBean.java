@@ -333,6 +333,11 @@ public class LoginBean {
         verificarPermisoReporte("Rubros", "ingresar_rubros.jspx", "ingresar", true, "PAGOS");
         verificarPermisoReporte("CategoriasSociales", "ingresar_categoriasSociales.jspx", "ingresar", true, "PAGOS");
         verificarPermisoReporte("Bancos", "ingresar_bancos.jspx", "ingresar", true, "PAGOS");
+        verificarPermisoReporte("Autos", "ingresar_autos.jspx", "ingresar", true, "PAGOS");
+        verificarPermisoReporte("TipoTarjeta", "ingresar_tipoTarjeta.jspx", "ingresar", true, "PAGOS");
+        verificarPermisoReporte("TipoVivienda", "ingresar_tipoVivienda.jspx", "ingresar", true, "PAGOS");
+        verificarPermisoReporte("OtrosIngresos", "ingresar_otrosIngresos.jspx", "ingresar", true, "PAGOS");
+        verificarPermisoReporte("RangosIngresos", "ingresar_rangosIngresos.jspx", "ingresar", true, "PAGOS");
 
         verificarPermisoReporte("Jornada", "ingresar_jornada.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Canton", "ingresar_canton.jspx", "ingresar", true, "PARAMETROS");
@@ -350,13 +355,10 @@ public class LoginBean {
         verificarPermisoReporte("Provincia", "ingresar_provincia.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Parametros", "ingresar_parametros.jspx", "ingresar", true, "PARAMETROS");
 
-        verificarPermisoReporte("RangosIngresos", "ingresar_rangosIngresos.jspx", "ingresar", true, "PARAMETROS");
+        
         verificarPermisoReporte("TipoMateria", "ingresar_tipomateria.jspx", "ingresar", true, "PARAMETROS");
         verificarPermisoReporte("Titulos", "ingresar_titulos.jspx", "ingresar", true, "PARAMETROS");
-        verificarPermisoReporte("Autos", "ingresar_autos.jspx", "ingresar", true, "PARAMETROS");
-        verificarPermisoReporte("TipoTarjeta", "ingresar_tipoTarjeta.jspx", "ingresar", true, "PARAMETROS");
-        verificarPermisoReporte("TipoVivienda", "ingresar_tipoVivienda.jspx", "ingresar", true, "PARAMETROS");
-        verificarPermisoReporte("OtrosIngresos", "ingresar_otrosIngresos.jspx", "ingresar", true, "PARAMETROS");
+        
 
     }
 
