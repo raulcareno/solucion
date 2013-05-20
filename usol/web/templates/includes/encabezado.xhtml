@@ -44,6 +44,7 @@
 
                         <h:outputText style="font-weight: bold;font-size: 10px;color:black" value="| ACTIVO" rendered="#{periodo.activo  and  not empty periodo }"/>
                         <h:outputText style="font-weight: bold;font-size: 10px;color:red" value="| CERRADO" rendered="#{!periodo.activo  and  not empty periodo}"/>
+                        <h:outputText style="font-weight: bold;font-size: 10px;color:blue" value="| PROXIMO" rendered="#{periodo.proximo  and  not empty periodo}"/>
 
 
                     </h:panelGrid>    

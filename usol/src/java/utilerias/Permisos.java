@@ -64,17 +64,17 @@ Periodos periodoAc = (Periodos) FacesContext.getCurrentInstance().getExternalCon
                 if (accion.equals("ingresar")) {
                     return accesos.getIngresar();
                 } else if (accion.equals("agregar")) {
-                      if (!periodoAc.getActivo()) {
+                      if (!periodoAc.getActivo() && !periodoAc.getProximo()) {
                         return false;
                     }
                     return accesos.getAgregar();
                 } else if (accion.equals("modificar")) {
-                      if (!periodoAc.getActivo()) {
+                      if (!periodoAc.getActivo() && !periodoAc.getProximo()) {
                         return false;
                     }
                     return accesos.getModificar();
                 } else if (accion.equals("eliminar")) {
-                      if (!periodoAc.getActivo()) {
+                      if (!periodoAc.getActivo() && !periodoAc.getProximo()) {
                         return false;
                     }
                     return accesos.getEliminar();

@@ -80,21 +80,21 @@ public class LoginBean {
 
     public List<SelectItem> getSelectedItemPeriodos() {
         try {
-            List<Periodos> divisionPoliticas = new ArrayList<Periodos>();
+            List<Periodos> periodosListados = new ArrayList<Periodos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
 
-            divisionPoliticas = adm.query("Select o from Periodos as o order by o.orden, o.fechaInicio ");
-            if (divisionPoliticas.size() > 0) {
+            periodosListados = adm.query("Select o from Periodos as o order by o.orden, o.fechaInicio ");
+            if (periodosListados.size() > 0) {
 //                        Periodos objSel = new Periodos(0);
 //                        items.add(new SelectItem(objSel, "SELECCIONE UN PERIODO"));
                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
 
-                for (Periodos obj : divisionPoliticas) {
+                for (Periodos obj : periodosListados) {
                     String fechaI = sdf.format(obj.getFechaInicio());
                     String fechaF = sdf.format(obj.getFechaFin());
-                    items.add(new SelectItem(obj, " | " + fechaI + "-" + fechaF + " | " + (obj.getActivo() ? "Activo" : "Inactivo")));
+                    items.add(new SelectItem(obj, " | " + fechaI + "-" + fechaF + " | " + (obj.getActivo() ? "Activo" : "Inactivo") +" " +  (obj.getProximo() ? "PROXIMO" : "")));
                 }
-                divisionPoliticas = null;
+                periodosListados = null;
             } else {
                 Periodos obj = new Periodos(0);
                 items.add(new SelectItem(obj, "NO PUEDE INGRESAR NO EXISTEN PERIODOS"));
