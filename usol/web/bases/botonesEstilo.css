@@ -1,17 +1,54 @@
- 
-.guardar{
-    background-image: url('../images/guardar.gif') !important;
-}
-.eliminar{
-    background-image: url('../images/delete.gif') !important;
-}
-.editar{
-    background-image: url('../images/editar.gif') !important;
-}
-.buscar{
-    background-image: url('../images/buscar.gif') !important;
-}
-.nuevo{
-    background-image: url('../images/nuevo.gif') !important;
-}
+
+    .guardar{
+        background-image: url('../images/guardar.png') !important;
+    }
+    .eliminar{
+        background-image: url('../images/delete.png') !important;
+    }
+    .editar{
+        background-image: url('../images/editar.png') !important;
+    }
+    .buscar{
+        background-image: url('../images/buscar.gif') !important;
+    }
+    .nuevo{
+        background-image: url('../images/nuevo.png') !important;
+    }
+    /* estas son las imagenes del menu*/
+
+    .administracion{
+        background-image: url('../images/administracion.png') !important;
+    }
+    .pagos{
+        background-image: url('../images/pagos.gif') !important;
+    }
+    .horarios{
+        background-image: url('../images/calendario.gif') !important;
+    }
+
+    .notas{
+        background-image: url('../images/notas.png') !important;
+    }
+
+    .cambiarclave{
+        background-image: url('../images/usr.png') !important;
+    }
+
+
+    .salir{
+        background-image: url('../images/salir.gif') !important;
+    }
+
+    .inicio{
+        background-image: url('../images/inicio.png') !important;
+    }
+
+    .parametros{
+        background-image: url('../images/parametros.png') !important;
+    }
+
+    .login{
+        background-image: url('../images/login.png') !important;  
+       
+    }
 

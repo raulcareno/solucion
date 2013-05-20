@@ -11,40 +11,40 @@
             <p:toolbar  style=" height: 20px; margin: -1px 0px 0px 0px">  
                 <p:toolbarGroup  style="margin: -7px 0px 0px 0px" align="left">
                     <p:menubar style="background-color: transparent;border: 0px" >  
-                        <p:menuitem value="Inicio" url="/index.jspx" icon="ui-icon-home" />  
-                        <p:submenu  rendered="#{sessionScope.admin}"  label="Administración" icon="ui-icon-document">
+                        <p:menuitem value="Inicio" url="/index.jspx" icon="inicio" />  
+                        <p:submenu  rendered="#{sessionScope.admin}"  label="Administración" icon="administracion">
                             <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('ADMINIS')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
                             </c:forEach>
                             <p:menuitem      value="Reportes" url="/bases/reportesEstudiantes.jspx" icon="ui-icon-carat-1-e"  />  
                         </p:submenu>
                             
-                        <p:submenu  rendered="#{sessionScope.para}"  label="Parametros Sistema" icon="ui-icon-document">  
+                        <p:submenu  rendered="#{sessionScope.para}"  label="Parametros Sistema" icon="parametros">  
                              <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('PARAMETR')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
                             </c:forEach>
                             <p:separator />  
                         </p:submenu>  
 
-                        <p:submenu  rendered="#{sessionScope.pago}" label="Pagos" icon="ui-icon-pencil">  
+                        <p:submenu  rendered="#{sessionScope.pago}" label="Pagos" icon="pagos">  
                             <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('PAGO')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
                             </c:forEach>
                         </p:submenu>  
-                        <p:submenu rendered="#{sessionScope.hora}" label="Horarios" icon="ui-icon-pencil">  
+                        <p:submenu rendered="#{sessionScope.hora}" label="Horarios" icon="horarios">  
                               <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('HORA')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
                             </c:forEach>
                         </p:submenu>  
-                         <p:submenu rendered="#{sessionScope.nota}" label="Notas" icon="ui-icon-pencil">  
+                         <p:submenu rendered="#{sessionScope.nota}" label="Notas" icon="notas">  
                             <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('NOTA')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="ui-icon-carat-1-e"  />  
                             </c:forEach>
                                           
                         </p:submenu>  
 
-                        <p:menuitem value="Cambiar Clave"  url="/bases/cambiarClave.jspx"  icon="ui-icon-person" />  
-                        <p:menuitem value="Salir"  actionListener="#{loginBean.cerrarSesion()}"  icon="ui-icon-close" />  
+                        <p:menuitem value="Cambiar Clave"  url="/bases/cambiarClave.jspx"  icon="cambiarclave" />  
+                        <p:menuitem value="Salir"  actionListener="#{loginBean.cerrarSesion()}"  icon="salir" />  
                     </p:menubar>  
 
                 </p:toolbarGroup>
