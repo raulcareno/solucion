@@ -14,22 +14,50 @@
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
                 <script src="locales.js" type="text/javascript"/>
-                <h:panelGrid width="100%"  columns="2">
-                    <p:panelGrid columns="1" style="vertical-align: top;width:300px;height: 360px" >
-                        <p:dataTable style="vertical-align: top; width:300px;height: 300px"  id="modalidad" var="obj" value="#{sistemaNotasBean.model}">  
-                            <p:column headerText="APORTES QUE SE INGRESAN" style="width:10%">  
-                                <p:panelGrid columns="3">
-                                    <h:outputText value="#{obj.nombre} #{obj.nota}" />  
-                                    <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{sistemaNotasBean.editarAction(obj)}" icon="editar" title="Editar"/>  
-                                    <p:commandButton id="eliminarButton"  update=":form:display"  actionListener="#{sistemaNotasBean.eliminar(obj)}"   icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro, puede causar pérdida de notas?')) { return false;}" title="Eliminar">  
-                                    </p:commandButton>  
-                                </p:panelGrid>
-                            </p:column>  
-                        </p:dataTable>  
-                    </p:panelGrid>
-                    <p:panel id="registro"  style="width: 400px;" header="MODIFICAR/REGISTRO DE APORTES">
+
+                <h:panelGrid width="100%"  columns="1">
+<p:dataTable    id="modalidad" var="obj" value="#{sistemaNotasBean.model}">  
+
+                        <p:column headerText="NOTA" style="width:80%">  
+                            <h:outputText value="#{obj.nombre}" />  
+                        </p:column>  
+                        <p:column headerText="Habil Desde-Hasta" style="width:80%">  
+                            <h:outputText value="#{obj.fechai.toLocaleString().substring(0,11)} - #{obj.fechaf.toLocaleString().substring(0,11) }" />  
+                             
+                        </p:column>  
+                        <p:column headerText="ES GPA">  
+                            <h:outputText value="#{obj.esgpa?'SI':''}" />  
+                        </p:column>  
+                        <p:column headerText="ES NOTA">  
+                            <h:outputText value="#{obj.esnota?'SI':''}" />  
+                        </p:column> 
+                        <p:column headerText="SE IMPRI.">  
+                            <h:outputText value="#{obj.seimprime?'SI':''}" />  
+                        </p:column> 
+                        <p:column headerText="ES ASIST.">  
+                            <h:outputText value="#{obj.esasistencia?'SI':''}" />  
+                        </p:column> 
+                        <p:column headerText="ES EQUIV.">  
+                            <h:outputText value="#{obj.esexamen?'SI':''}" />  
+                        </p:column> 
+                        <p:column headerText="variable">  
+                            <h:outputText value="#{obj.nota}" />  
+                        </p:column>  
+                        <p:column style="width:10%">  
+                            <h:panelGrid style="border-color: transparent;" columns="2">
+                                <p:commandButton  id="editarButton" update=":form:display"  actionListener="#{sistemaNotasBean.editarAction(obj)}" icon="editar" title="Editar">  
+                                </p:commandButton>  
+                                <p:commandButton id="eliminarButton" actionListener="#{sistemaNotasBean.eliminar(obj)}"  update=":form"   icon="eliminar"  onclick="if(!confirm('Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar">  
+
+                                </p:commandButton>  
+                            </h:panelGrid>
+
+                        </p:column>  
+
+                    </p:dataTable>
+                    <p:panel id="registro"  header="MODIFICAR/REGISTRO DE APORTES">
                         <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
-                        <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
+                        <h:panelGrid id="display" columns="4" cellpadding="4" style="margin:0 auto;">  
                             <h:outputText value="NOMBRE" />  
                             <p:inputText value="#{sistemaNotasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="ABREVIATURA" />  
@@ -37,13 +65,12 @@
                             <h:outputText value="FORMULA" />  
                             <p:inputText value="#{sistemaNotasBean.object.formula}" id="formula"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="ES ASISTENCIA" />  
-                            <h:panelGrid columns="3">
+                            <h:panelGrid columns="10">
                                 <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esasistencia}" id="esasistencia"   style="font-weight:bold;"/>  
 
                                 <h:outputText value="ES GPA" />  
                                 <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esgpa}" id="esgpa"   style="font-weight:bold;"/>  
-                            </h:panelGrid>
-                            <h:outputText value="ES NOTA" />  
+                                <h:outputText value="ES NOTA" />  
                             <h:panelGrid columns="3">
                                 <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.esnota}" id="esnota"   style="font-weight:bold;"/>  
 
@@ -53,6 +80,8 @@
                             <h:outputText value="SE IMPRIME" />  
                             <p:selectBooleanCheckbox value="#{sistemaNotasBean.object.seimprime}" id="seimprime"   style="font-weight:bold;"/>  
 
+                            </h:panelGrid>
+                            
                             <h:outputText value="DESDE" />  
                             <p:calendar value="#{sistemaNotasBean.object.fechai}"   locale="es" pattern="dd/MM/yyyy HH:mm"  navigator="true"  showOn="button" />
                             <h:outputText value="HASTA" />  
@@ -63,13 +92,14 @@
                             <p:inputText  value="#{sistemaNotasBean.object.idSistemaNotas}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
                         </h:panelGrid>  
                         <h:panelGrid columns="4">
+                            <p:spacer/><p:spacer/>
                             <p:commandButton  value="Guardar"  id="guardar"  update=":form:display :form:modalidad"   action="#{sistemaNotasBean.guardar()}"  icon="guardar" title="Guardar"/>  
                             <p:commandButton value="Limpiar"  id="limpiar" update=":form:display" actionListener="#{sistemaNotasBean.limpiar()}" icon="nuevo" title="Nuevo">  
                             </p:commandButton> 
 
                         </h:panelGrid>
                     </p:panel>
-
+                    
                 </h:panelGrid>
 
 

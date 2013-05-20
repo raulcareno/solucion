@@ -83,7 +83,7 @@ Registro de Notas
                         <h:outputText styleClass="textos3" value="MATERIA >> " /> 
                         <h:selectOneMenu id="materias"   label="materias" converter="ConvMaterias" value="#{notasBeanConvalidaciones.materiasSeleccionada}">
                             <f:selectItems value="#{notasBeanConvalidaciones.selectedItemMaterias}"></f:selectItems>
-                            <p:ajax event="change" process="materias"/>
+                            <p:ajax event="change" process="@this" listener="#{notasBeanConvalidaciones.buscarNotas()}" update="datosNotas"  />
                         </h:selectOneMenu>
                         <p:spacer />
                         <h:outputText styleClass="textos3" value="ESTUDIANTE >> " /> 
