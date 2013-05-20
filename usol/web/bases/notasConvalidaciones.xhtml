@@ -73,19 +73,25 @@ Registro de Notas
                 <p:panel id="registro"  style="width: 100%;" header="Registro de Notas">
                     <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <!--p:messages id="messages" showDetail="false" autoUpdate="true" /--> 
-                    <h:panelGrid columns="6">
+                    <h:panelGrid columns="3">
                         <h:outputText styleClass="textos3" value="CARRERA >> " /> 
-                        <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{notasBeanConvalidaciones.carrerasSeleccionada}" rendered="true">
+                        <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{notasBeanConvalidaciones.carrerasSeleccionada}" >
                             <f:selectItems value="#{notasBeanConvalidaciones.selectedItemCarreras}"></f:selectItems>
-                            <p:ajax event="change"    update="materias"/>
+                            <p:ajax event="change"    update="materias matriculas"/>
                         </h:selectOneMenu>
-                        
+                        <p:spacer />
                         <h:outputText styleClass="textos3" value="MATERIA >> " /> 
-                        <h:selectOneMenu id="materias"   label="materias" converter="ConvMaterias" value="#{notasBeanConvalidaciones.materiasSeleccionada}" rendered="true">
+                        <h:selectOneMenu id="materias"   label="materias" converter="ConvMaterias" value="#{notasBeanConvalidaciones.materiasSeleccionada}">
                             <f:selectItems value="#{notasBeanConvalidaciones.selectedItemMaterias}"></f:selectItems>
-                            <p:ajax event="change"   listener="#{notasBeanConvalidaciones.buscarNotas()}"   update="datosNotas"/>
+                            <p:ajax event="change" process="materias"/>
                         </h:selectOneMenu>
-
+                        <p:spacer />
+                        <h:outputText styleClass="textos3" value="ESTUDIANTE >> " /> 
+                        <h:selectOneMenu id="matriculas"   label="matriculas" converter="ConvMatriculas" value="#{notasBeanConvalidaciones.matriculasSeleccionada}">
+                            <f:selectItems value="#{notasBeanConvalidaciones.selectedItemMatriculas}"></f:selectItems>
+                            <p:ajax event="change" process="@this" listener="#{notasBeanConvalidaciones.buscarNotas()}" update="datosNotas"  />
+                        </h:selectOneMenu> 
+                       
                     </h:panelGrid>
 
                     <h:panelGrid columns="#{notasBeanConvalidaciones.cabeceras.size()+3}" id="datos">

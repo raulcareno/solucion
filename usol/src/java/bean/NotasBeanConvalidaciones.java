@@ -58,6 +58,7 @@ public class NotasBeanConvalidaciones implements Serializable {
     protected List<Notas> model;
     public String textoBuscar;
     protected Materias materiasSeleccionada;
+    protected Matriculas matriculasSeleccionada;
     protected Carreras carrerasSeleccionada= new Carreras(0); 
     Permisos permisos;
     Auditar aud = new Auditar();
@@ -123,13 +124,13 @@ public class NotasBeanConvalidaciones implements Serializable {
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
-        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',"
-                + "estudiantes.nombre),  " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
-                + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '" + materiasSeleccionada.getIdMaterias() + "'   "
-                + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
-                + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas      "
-                + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '" + per.getIdPeriodos() + "'  AND matricula.id_carreras =  '" + carrerasSeleccionada.getIdCarreras() + "' "
-                + "   ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
+        String   q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',estudiantes.nombre), "
+                + "nota1,nota2,nota3,nota4,  notas.estado    FROM   Matriculas matricula   "
+                + "LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes  "
+                + "LEFT JOIN Notas notas ON   notas.id_matriculas = matricula.id_matriculas      "
+                + "WHERE   matricula.id_periodos = '" + per.getIdPeriodos() + "'  AND matricula.id_carreras =  '" + carrerasSeleccionada.getIdCarreras() + "' "
+                + "AND matricula.id_matriculas = '"+matriculasSeleccionada.getIdMatriculas()+"'  "
+                + "ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         Date fechaActual = adm.Date();
@@ -197,19 +198,19 @@ public class NotasBeanConvalidaciones implements Serializable {
 //                        inicial = new DateMidnight(tnota.getFechasi());
 //                        finale = new DateMidnight(tnota.getFechasf());
 //                    }
-
-                    if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                        n.setEstado(false);//habilito la notaIngresada
-                        n.setColor("white");
-                    } else {
-                        n.setEstado(true);// deshabilita la notaIngresada
-                        n.setColor("#E9E7E2");
-                    }
-                    if (estadoNota) {
-                        n.setEstado(estadoNota);
-                        n.setColor("#E9E7E2");
-
-                    }
+//
+//                    if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+//                        n.setEstado(true);//habilito la notaIngresada AQUI CAMBIE DE FALSE A TRUE
+//                        n.setColor("white");
+//                    } else {
+//                        n.setEstado(true);// deshabilita la notaIngresada
+//                        n.setColor("#E9E7E2");
+//                    }
+//                    if (estadoNota) {
+//                        n.setEstado(estadoNota);
+//                        n.setColor("#E9E7E2");
+//
+//                    }
 
                     Double object = (Double) vec[a];
                     if (object == null) {
@@ -342,6 +343,7 @@ public class NotasBeanConvalidaciones implements Serializable {
                     notaIngresada.setEstado("");
                     notaIngresada.setEstadoNot(true);
                     notaIngresada.setEquivalencia("");
+                    notaIngresada.setConvalidad(true);
                     //notaIngresada.setSistemaNotas(asiprofesor.getOrden());
                     //notaIngresada.setNotFecha(new Date());
                     inter.set("nota", notaIngresada);
@@ -450,21 +452,54 @@ public class NotasBeanConvalidaciones implements Serializable {
     public List<SelectItem> getSelectedItemMaterias() {
         try {
             //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
-            List<Materias> materiasListado = new ArrayList<Materias>();
+            List<Horarios> materiasListado = new ArrayList<Horarios>();
             List<SelectItem> items = new ArrayList<SelectItem>();
-            materiasListado = adm.query("Select distinct o.idMaterias from Horarios as o "
+            materiasListado = adm.query("Select o from Horarios as o "
                     + " where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
                     + " and o.idCarreras.idCarreras = '"+carrerasSeleccionada.getIdCarreras()+"'  "
-                    + " order by o.idMaterias.nombre ");
+                    + " order by o.idNiveles.secuencia asc, o.idMaterias.nombre ");
+            ArrayList agregados = new ArrayList();
             if (materiasListado.size() > 0) {
                 Materias objSel = new Materias(0);
                 items.add(new SelectItem(objSel, "Seleccione..."));
-                for (Materias obj : materiasListado) {
-                    items.add(new SelectItem(obj, obj.getNombre()));
+                for (Horarios obj : materiasListado) {
+                    if(!agregados.contains(obj.getIdMaterias().getIdMaterias()) ){
+                        items.add(new SelectItem(obj.getIdMaterias(),obj.getIdNiveles().getNombre()+" | "+ obj.getIdMaterias().getNombre()+" "));
+                    }
+                    agregados.add(obj.getIdMaterias().getIdMaterias()); 
                 }
             } else {
                 Materias obj = new Materias(0);
-                items.add(new SelectItem(obj, "NO EXISTEN NIVELES"));
+                items.add(new SelectItem(obj, "SELECCIONE UNA CARRERA"));
+            }
+
+
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(Horarios.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
+
+    public List<SelectItem> getSelectedItemMatriculas() {
+        try {
+            //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+            List<Matriculas> materiasListado = new ArrayList<Matriculas>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            materiasListado = adm.query("Select o from Matriculas as o "
+                    + " where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
+                    + " and o.idCarreras.idCarreras = '"+carrerasSeleccionada.getIdCarreras()+"' and o.estadoMat = 'M'  "
+                    + " order by o.idEstudiantes.apellidoPaterno ");
+            ArrayList agregados = new ArrayList();
+            if (materiasListado.size() > 0) {
+                Matriculas objSel = new Matriculas(0);
+                items.add(new SelectItem(objSel, "Seleccione..."));
+                for (Matriculas obj : materiasListado) {
+                        items.add(new SelectItem(obj,obj.getIdEstudiantes().getApellidoPaterno()+" "+obj.getIdEstudiantes().getApellidoMaterno()+" "+obj.getIdEstudiantes().getNombre()));
+                }
+            } else {
+                Matriculas obj = new Matriculas(0);
+                items.add(new SelectItem(obj, "SELECCIONE UNA CARRERA"));
             }
 
 
@@ -681,6 +716,15 @@ public class NotasBeanConvalidaciones implements Serializable {
     public void setCarrerasSeleccionada(Carreras carrerasSeleccionada) {
         this.carrerasSeleccionada = carrerasSeleccionada;
     }
+
+    public Matriculas getMatriculasSeleccionada() {
+        return matriculasSeleccionada;
+    }
+
+    public void setMatriculasSeleccionada(Matriculas matriculasSeleccionada) {
+        this.matriculasSeleccionada = matriculasSeleccionada;
+    }
+    
     
     
 }

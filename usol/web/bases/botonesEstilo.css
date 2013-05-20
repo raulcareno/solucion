@@ -52,3 +52,20 @@
        
     }
 
+    .celeste {
+        background-image: url('../images/guion_celeste.png') !important;  
+       
+    }
+    .celeste2 {
+        background-image: url('../images/guion_celeste2.png') !important;  
+    }
+    .naranja {
+        background-image: url('../images/guion_naranja.png') !important;  
+    }
+    .naranja2 {
+        background-image: url('../images/guion_naranja2.png') !important;  
+    }
+    .negro {
+        background-image: url('../images/guion_negro.png') !important;  
+    } 
+
