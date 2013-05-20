@@ -388,6 +388,9 @@ public class NotasBeanConvalidaciones implements Serializable {
                 }
 
             }
+            matriculasSeleccionada = (Matriculas)adm.buscarClave(matriculasSeleccionada.getIdMatriculas(),Matriculas.class);
+            materiasSeleccionada = (Materias) adm.buscarClave(materiasSeleccionada.getIdMaterias(),Materias.class);
+            aud.auditar(adm,"Convalidaciones", "guardar", ""+materiasSeleccionada.getNombre(), matriculasSeleccionada.getNumero()+" "+matriculasSeleccionada.getIdEstudiantes().getApellidoPaterno()+" "+matriculasSeleccionada.getIdEstudiantes().getNombre());
             buscarNotas();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));
             //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");
