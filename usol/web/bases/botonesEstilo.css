@@ -68,4 +68,10 @@
     .negro {
         background-image: url('../images/guion_negro.png') !important;  
     } 
+     .enviar{
+        background-image: url('../images/enviar.png') !important;
+    }
+    .imprimir{
+        background-image: url('../images/imprimir.gif') !important;
+    }
 

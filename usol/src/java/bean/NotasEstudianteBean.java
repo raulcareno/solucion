@@ -147,13 +147,13 @@ FacesContext context = FacesContext.getCurrentInstance();
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
-        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, notas.id_materias, " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
+        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, mm.id_materias, " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
                 + "ON matricula.id_matriculas = mm.id_matriculas    "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
                 + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas      "
                 + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_matriculas = '" + mat.getIdMatriculas() + "'     "
                 + "   ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
-//        System.out.println("" + q);
+        System.out.println("" + q);
         List nativo = adm.queryNativo(q);
         Date fechaActual = adm.Date();
         DateMidnight actual = new DateMidnight(fechaActual);

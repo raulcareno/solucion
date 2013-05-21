@@ -159,7 +159,7 @@ public class LoginBean {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("menu");
             
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/estudiante/loginEstudiantes.jspx");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./loginEstudiante.jspx");
             
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);

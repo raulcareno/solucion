@@ -6,30 +6,47 @@
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core" >
-         <ui:define name="title">
+    <ui:define name="title">
 
     </ui:define>    
     <ui:define name="datos">
-        
+
         <h:head>
             <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-            <title>Ingreso al Sistema</title>
+            <title>Envio de Correos</title>
         </h:head>
         <h:body >
             <div    >
                 <h:form prependId="false"  id="loginEstudiante" enctype="multipart/form-data">
+                    <p:growl id="growl" showDetail="true" sticky="true" /> 
                     <h:panelGrid columns="2" style="margin-top:10px">
-                        <h:outputText value="Para"/>
-                        <h:inputText value="....."/>
+                        <h:outputText value=""/>
+                        <h:inputText   id="asunto"  value="#{enviarCorreoEstudiantes.tema}" style="width: 400px;font-size: 24px;font-family: sans-serif;"/>
+                        <h:outputText value=""/>
+                        <p:autoComplete panelStyle="font-size:11px" id="destinatarios"  
+                                        value="#{enviarCorreoEstudiantes.selectedEmpleados}"  
+                                        completeMethod="#{enviarCorreoEstudiantes.completeEmpleados}"  
+                                        var="p" itemLabel="#{p.apellidoPaterno} #{p.nombre}" itemValue="#{p}" 
+                                        converter="ConvEmpleados"  multiple="true" >  
+                            <p:column style="width:50%;text-align:center">  
+                                #{p.apellidoPaterno} #{p.nombre}
+                            </p:column>  
+                            <p:column style="width:50%">  
+                                #{p.email}
+                            </p:column>  
+                        </p:autoComplete>
+                        <p:spacer/>
+                        <h:outputText style="font-size: 10px; color: #993300" value="Digite el apellido del Docente, y seleccione, solo puede enviar correos a los Docentes de la Universidad."/>
+                <p:watermark for="asunto" value="Agregar un Asunto(Tema)" />  
+                <p:watermark for="destinatarios" value="Ingrese los Destinatarios" />  
                     </h:panelGrid>
-                        
-                    <p:editor id="editor"  width="600"/>  
+
+                    <p:editor id="editor" value="#{enviarCorreoEstudiantes.mensaje}"  width="600"/>  
 
                     <h:panelGrid columns="2" style="margin-top:10px">  
-                        <p:commandButton id="submitButton" value="Enviar" update="display" oncomplete="dlg.show()"  
-                                         icon="ui-icon-disk" />  
-                        <p:commandButton id="clearButton" type="Limpiar" value="Clear" onclick="editor.clear()"  
-                                         icon="ui-icon-close" />  
+ 
+                        <p:commandButton  value="Enviar" actionListener="#{enviarCorreoEstudiantes.enviarEmail()}" icon="enviar" ajax="false" />  
+                         
                     </h:panelGrid>  
 
                     <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade" modal="true">  
