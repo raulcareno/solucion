@@ -489,7 +489,7 @@ void recalcular(){
                     datasource = noti.promediocurso(sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"promedioporcurso.jasper");
             }else if(tipo.equals("MEJ")){
-                    datasource = noti.mejoresporcurso(sistemasCombo.getSelectedItem().getValue());
+                    datasource = noti.mejoresporcurso(sistemasCombo.getSelectedItem().getValue(),numeroEstudiantes2.value);
                     report.setSrc(directorioReportes+"mejoresporcurso.jasper");
             }else if(tipo.equals("MEJ2")){
                     datasource = noti.mejoresporcurso2(sistemasCombo.getSelectedItem().getValue());
@@ -792,6 +792,7 @@ void campos(String valor){
      incluirfaltas.visible = false;
      incluirfaltasydias.visible = false;
      incluirpromedio.visible = false;
+     numeroEstudiantes.visible = false;
         if(valor.equals("DIS")){
             curs.disabled = false;
             filacursos.visible = true;
@@ -835,6 +836,7 @@ void campos(String valor){
              titulo.value= "Mejores por Curso";
              sistemasCombo.disabled = false;
              filaaportes.visible = true;
+             numeroEstudiantes.visible = true;
         }else if(valor.equals("MEJ2")){
              titulo.value= "Estudiantes con bajo rendimiento por Curso";
              sistemasCombo.disabled = false;
@@ -1287,6 +1289,11 @@ void campos(String valor){
                                     <listcell label="${each.nombre}" />
                                 </listitem>
                             </listbox>
+                        </row>
+                    <row   id="numeroEstudiantes" visible="false"  style="background:transparent;border:0px" >
+                            <span style="float:right"> # de Estudiantes </span>
+ 
+                            <intbox id="numeroEstudiantes2" value="10" cols="5" /> 
                         </row>
 
                         <row  style="background:transparent;border:0px">

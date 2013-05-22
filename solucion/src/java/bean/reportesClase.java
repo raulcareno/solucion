@@ -1877,7 +1877,7 @@ public class reportesClase {
     }
 
     //Promedio por curso
-    public JRDataSource mejoresporcurso(Sistemacalificacion sistema) {
+    public JRDataSource mejoresporcurso(Sistemacalificacion sistema,Integer numeroEstudiantes) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -1904,7 +1904,9 @@ public class reportesClase {
         for (int i = 0; i < sistemas.size(); i++) {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
-        List<Cursos> cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '" + sistema.getPeriodo().getCodigoper() + "' ");
+        List<Cursos> cursos = adm.query("Select o from Cursos as o "
+                + " where o.periodo.codigoper = '" + sistema.getPeriodo().getCodigoper() + "'"
+                + " order by o.secuencia, o.paralelo.descripcion  ");
         List<Nota> lisNotas = new ArrayList();
         for (Iterator<Cursos> it = cursos.iterator(); it.hasNext();) {
             Cursos curso = it.next();
@@ -1914,7 +1916,7 @@ public class reportesClase {
                     + "  AND notas.materia > 0 AND  notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                     + "and matricula in (select codigomat from matriculas where   estado in ('Matriculado','Recibir Pase')  and    curso  =  '" + curso.getCodigocur() + "'  )"
                     + "and notas.disciplina = false and notas.promedia = true  GROUP BY notas.matricula "
-                    + "order by 1 desc limit 3";
+                    + "order by 1 desc limit  "+numeroEstudiantes+" ";
             System.out.println("" + q);
             List nativo = adm.queryNativo(q);
 
