@@ -306,6 +306,21 @@ public class NotasBeanConvalidaciones implements Serializable {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));
             return;
         }
+        List<MateriasMatricula> materiaMatriculaListado =  adm.query("Select o from MateriasMatricula as o "
+                + " where o.idMaterias.idMaterias = '"+materiasSeleccionada.getIdMaterias()+"' "
+                + " and o.idMatriculas.idMatriculas = '"+matriculasSeleccionada.getIdMatriculas()+"'  ");
+            matriculasSeleccionada = (Matriculas) adm.buscarClave(matriculasSeleccionada.getIdMatriculas(), Matriculas.class);
+            materiasSeleccionada = (Materias) adm.buscarClave(materiasSeleccionada.getIdMaterias(), Materias.class);
+        if(materiaMatriculaListado.size()<=0){
+            MateriasMatricula mNueva = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
+            mNueva.setIdMaterias(materiasSeleccionada);
+            mNueva.setIdMatriculas(matriculasSeleccionada);
+            mNueva.setPagado(true); 
+            mNueva.setNumeroMatricula(matriculasSeleccionada.getNumero()); 
+            adm.guardar(mNueva);
+        }
+         
+        
 
         try {
             System.out.println("INICIO GUARDAR NOTAS : " + new Date());
@@ -415,8 +430,7 @@ public class NotasBeanConvalidaciones implements Serializable {
                 }
 
             }
-            matriculasSeleccionada = (Matriculas) adm.buscarClave(matriculasSeleccionada.getIdMatriculas(), Matriculas.class);
-            materiasSeleccionada = (Materias) adm.buscarClave(materiasSeleccionada.getIdMaterias(), Materias.class);
+            
             aud.auditar(adm, "Convalidaciones", "guardar", "" + materiasSeleccionada.getNombre(), matriculasSeleccionada.getNumero() + " " + matriculasSeleccionada.getIdEstudiantes().getApellidoPaterno() + " " + matriculasSeleccionada.getIdEstudiantes().getNombre());
             buscarNotas();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));
