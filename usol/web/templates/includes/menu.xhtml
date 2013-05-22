@@ -6,7 +6,11 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core" >
 
     <h:panelGroup>
-
+        <style>
+            ul.ui-menu-child{
+                width: 250px !important;
+            }
+        </style>
         <h:form id="formMenuH">
             <p:toolbar  style=" height: 20px; margin: -1px 0px 0px 0px">  
                 <p:toolbarGroup  style="margin: -7px 0px 0px 0px" align="left">
@@ -18,9 +22,9 @@
                             </c:forEach>
                             <p:menuitem      value="Reportes" url="/bases/reportesEstudiantes.jspx" icon="ui-icon-carat-1-e"  />  
                         </p:submenu>
-                            
+
                         <p:submenu  rendered="#{sessionScope.para}"  label="Parametros Sistema" icon="parametros">  
-                             <c:forEach items="#{sessionScope.accesos}" var="i" >
+                            <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('PARAMETR')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="negro"  />  
                             </c:forEach>
                             <p:separator />  
@@ -32,15 +36,15 @@
                             </c:forEach>
                         </p:submenu>  
                         <p:submenu rendered="#{sessionScope.hora}" label="Horarios" icon="horarios">  
-                              <c:forEach items="#{sessionScope.accesos}" var="i" >
+                            <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('HORA')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="celeste2"  />  
                             </c:forEach>
                         </p:submenu>  
-                         <p:submenu rendered="#{sessionScope.nota}" label="Notas" icon="notas">  
+                        <p:submenu rendered="#{sessionScope.nota}" label="Notas" icon="notas">  
                             <c:forEach items="#{sessionScope.accesos}" var="i" >
                                 <p:menuitem rendered="#{i.getModulo().contains('NOTA')}" value="#{i.getVariable()}" url="/bases/#{i.getNombre()}" icon="celeste"  />  
                             </c:forEach>
-                                          
+
                         </p:submenu>  
 
                         <p:menuitem value="Cambiar Clave"  url="/bases/cambiarClave.jspx"  icon="cambiarclave" />  
@@ -48,23 +52,23 @@
                     </p:menubar>  
 
                 </p:toolbarGroup>
-               
+
             </p:toolbar>
             <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
-              
+
             <p:dialog modal="false" position="right" widgetVar="statusDialog" header="Estado..."   
-                    draggable="false" closable="false">  
+                      draggable="false" closable="false">  
                 <p:graphicImage width="110" value="/images/procesando.gif" />  
             </p:dialog> 
-              <!--p:ajaxStatus style="width:24px;height:24px;position:fixed;right:80px;bottom:100px">  
-                        <f:facet name="start">  
-                            <p:graphicImage width="110" value="/images/procesando.gif" />  
-                        </f:facet>  
+            <!--p:ajaxStatus style="width:24px;height:24px;position:fixed;right:80px;bottom:100px">  
+                      <f:facet name="start">  
+                          <p:graphicImage width="110" value="/images/procesando.gif" />  
+                      </f:facet>  
 
-                        <f:facet name="complete">  
-                            <h:outputText value="" />  
-                        </f:facet>  
-                    </p:ajaxStatus--> 
+                      <f:facet name="complete">  
+                          <h:outputText value="" />  
+                      </f:facet>  
+                  </p:ajaxStatus--> 
 
         </h:form>
     </h:panelGroup>
