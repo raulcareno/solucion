@@ -102,6 +102,20 @@ FacesContext context = FacesContext.getCurrentInstance();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
         return null;
     }
+    public String fechaActual;
+
+    public String getFechaActual() {
+        Date fecha = adm.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
+        return sdf.format(fecha);
+    }
+
+    public void setFechaActual(String fechaActual) {
+        this.fechaActual = fechaActual;
+    }
+    
+    
+    
     public String cedula;
 
     public String getCedula() {
@@ -141,13 +155,25 @@ FacesContext context = FacesContext.getCurrentInstance();
         sisEstado.setSeimprime(false); 
         sisEstado.setNota("");
         sistemas.add(sisEstado); 
+        
+        SistemaNotas sisConvalidado = new SistemaNotas(-2);
+        sisConvalidado.setAbreviatura("CONVALIDADA");
+        sisConvalidado.setEsgpa(false);
+        sisConvalidado.setEsexamen(false);
+        sisConvalidado.setEsnota(false);
+        sisConvalidado.setEsasistencia(false);
+        sisConvalidado.setSeimprime(false); 
+        sisConvalidado.setNota("");
+        sistemas.add(sisConvalidado); 
+        
         String query = "";
         for (SistemaNotas notass : sistemas) {
             query += notass.getNota() + ",";
         }
-        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        query = query.substring(0, query.length() - 2).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
-        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, mm.id_materias, " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
+        String q = "SELECT matricula.estado_mat, matricula.id_matriculas, mm.id_materias, " + query + "  notas.estado, notas.convalidad  "
+                + " FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
                 + "ON matricula.id_matriculas = mm.id_matriculas    "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
                 + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas      "
@@ -157,6 +183,8 @@ FacesContext context = FacesContext.getCurrentInstance();
         List nativo = adm.queryNativo(q);
         Date fechaActual = adm.Date();
         DateMidnight actual = new DateMidnight(fechaActual);
+         int estadoAsistencia = 0;
+            int estadoNota2 = 0;
         int xy = 0;
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Object[] vec = (Object[]) itna.next();
@@ -168,19 +196,58 @@ FacesContext context = FacesContext.getCurrentInstance();
             for (a = 0; a < vec.length; a++) {
                 SistemaNotas tnota = sistemas.get(x);
                 NotasIngresar n = new NotasIngresar();
-                if (a == vec.length-1) {
+                if (a == vec.length-2) { 
 //                    String object = (String) vec[a];
                     n.setNombre(aprobado(rangos, notaVerifica)); 
                     n.setTexto(true);
                     n.setNota(null);
-                    if (n.getNombre().contains("A")) {
-                        n.setNombre("APROBADO");
-                        n.setColorEstado("blue");
-                    }else{
-                        n.setNombre("REPROBADO");
-                        n.setColorEstado("red");
-                    }
+                    /**
+                     * AQUI EMPIEZO LA NUEVA VALIDACION
+                     */
+                  
+                        String estadoFinalNota = "R";
+                        if(estadoNota2 == 0 && estadoAsistencia ==0){
+                               estadoFinalNota = "A"; 
+                               
+                        }else{
+                            Boolean object = (Boolean) vec[a+1];
+                                if(object==null){
+                                    object =false;
+                                }
+                               if(object){
+                                   estadoFinalNota = "A";
+                               }  else{
+                                       estadoFinalNota = "R";
+                               }
+                        }
+                         
+                        if (estadoFinalNota.equals("A")) {
+                            n.setNombre("APROBADO");
+                            n.setColorEstado("blue");
+                        }else{
+                            n.setNombre("REPROBADO");
+                            n.setColorEstado("red");
+                        }
+//                    if (n.getNombre().contains("A")) {
+//                        n.setNombre("APROBADO");
+//                        n.setColorEstado("blue");
+//                    }else{
+//                        n.setNombre("REPROBADO");
+//                        n.setColorEstado("red");
+//                    }
                     System.out.println("NOTAveri: "+notaVerifica);
+                    n.setAncho(12);
+                }else if (a == vec.length-1) {
+                    Boolean object = (Boolean) vec[a];
+                    if(object==null){
+                        object =false;
+                    }
+                    n.setNombre(object?"SI":""); 
+                    n.setTexto(true);
+                    n.setNota(null);
+                    /**
+                     * AQUI EMPIEZO LA NUEVA VALIDACION
+                     */
                     n.setAncho(12);
                 }else if (a == 2) {
                     Integer idMat = (Integer) vec[a];
@@ -237,6 +304,19 @@ FacesContext context = FacesContext.getCurrentInstance();
                     if(tnota.getEsnota()){
                         notaVerifica = n.getNota();
                     }
+                    
+                      if(tnota.getEsnota()){
+                            String estado = aprobado(rangos, redondear(object.doubleValue(), 2));
+                            if(!estado.equals("A")){
+                                estadoNota2++;
+                            }
+                        }
+                        if(tnota.getEsasistencia()){
+                            if(redondear(object.doubleValue(), 2) < 70){
+                                estadoAsistencia++;
+                            }
+                             
+                        }
                     if (tnota.getEsgpa()) {
                         n.setNombre(gpa(rangos,n.getNota())+"");
                         n.setTexto(true);
