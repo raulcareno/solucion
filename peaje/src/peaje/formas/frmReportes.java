@@ -217,7 +217,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         cmbTipoReporte.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmbTipoReporte.setMaximumRowCount(12);
-        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Tickets Cobrados con Valor Cero (107)", "Cobros Tickest y Tarjetas (200)", "Cobros de Tickets (201)", "Cobros de Tarjetas (202)", "Cobros con Descuentos(203)", "Cobros Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (306) ", "Numero de Aperturas Manuales(307) ", "Detalle de Cobros(308) ", "Clientes con Tarjetas(309) " }));
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Tickets por cobrar  (101)", "Tickets cobrados (102)", "Tickets Anulados (103)", "Tickets Tarifa 0 (104)", "Fotos de Vehiculos (105)", "CIERRE DE CAJA (106)", "Tickets Cobrados con Valor Cero (107)", "Total Diario (108)", "Cobros Tickest y Tarjetas (200)", "Cobros de Tickets (201)", "Cobros de Tarjetas (202)", "Cobros con Descuentos(203)", "Cobros Pendientes de COBRO(204)", "Consolidado por Mes (300)", "Consolidado x fechas (301)", "Clientes mas frecuentes (302)", "Listado clientes (303)", "No. de Ingresos x Cliente (304)", "Puestos ocupados (305) ", "Tarjetas Ocupadas(Dentro del Parqu.) (306) ", "Numero de Aperturas Manuales(307) ", "Detalle de Cobros(308) ", "Clientes con Tarjetas(309) " }));
         cmbTipoReporte.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbTipoReporteItemStateChanged(evt);
@@ -360,7 +360,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                .addComponent(panelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -393,17 +393,17 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 Object object = it.next();
                 codigos += object + ",";
             }
-ArrayList detalle = new ArrayList();
+            ArrayList detalle = new ArrayList();
             if (codigosFacturas.size() > 0) {
                 codigos = codigos.substring(0, codigos.length() - 1);
                 List<Factura> fac = adm.query("Select o from Factura as o where o.codigo in (" + codigos + ") "
                         + "  order by o.clientes.nombres, o.fechaini ");
-                
+
                 for (Iterator<Factura> it = fac.iterator(); it.hasNext();) {
                     Factura factura = it.next();
                     detalle.add(factura);
                 }
-            }   
+            }
 
             FacturaSource ds = new FacturaSource(detalle);
             Map parametros = new HashMap();
@@ -550,6 +550,82 @@ ArrayList detalle = new ArrayList();
             parametros.put("ubicacion", dirreporte);
             parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    
+    public void totalDiario(String dirreporte, String query, String titulo,String totalIngresos) {
+        try {
+
+            System.out.println("QUERY: " + query);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+
+            List fac = adm.queryNativo(query);
+            ArrayList detalle = new ArrayList();
+            Map parametros = new HashMap();
+            for (Iterator it = fac.iterator(); it.hasNext();) {
+                Object[] object = (Object[])it.next();
+                if(object[0].toString().contains("COBRA")) {
+                    parametros.put("cobrados", new Long(object[1].toString()).intValue());        
+                    parametros.put("cobrados_1", new BigDecimal(object[2].toString()).doubleValue());       
+                }else if(object[0].toString().contains("TARIFA")) {
+                    parametros.put("tarifa0", new Long(object[1].toString()).intValue());        
+                    parametros.put("tarifa0_1", new BigDecimal(object[2].toString()).doubleValue());       
+                }else if(object[0].toString().contains("SELLADO")) {
+                    parametros.put("sellados", new Long(object[1].toString()).intValue());        
+                    parametros.put("sellados_1", new BigDecimal(object[2].toString()).doubleValue());       
+                }else if(object[0].toString().contains("TCK")) {
+                    parametros.put("anulados", new Long(object[1].toString()).intValue());        
+                    parametros.put("anulados_1", new BigDecimal(object[2].toString()).doubleValue());       
+                }else if(object[0].toString().contains("FAC")) {
+                    parametros.put("facturasAnuladas", new Long(object[1].toString()).intValue());        
+                 } 
+            }
+            
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("total", new Integer(totalIngresos));
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+            
+            
+            
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+
+            dirreporte = ubicacionDirectorio + separador + "fotos" + separador;
+            parametros.put("ubicacion", dirreporte);
+            parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
+
+            Date des = desde.getDate();
+            Date has = desde.getDate();
+            des.setHours(desdehora2.getDate().getHours());
+            des.setMinutes(desdehora2.getDate().getMinutes());
+            des.setSeconds(desdehora2.getDate().getSeconds());
+            has.setHours(hastahora2.getDate().getHours());
+            has.setMinutes(hastahora2.getDate().getMinutes());
+            has.setSeconds(hastahora2.getDate().getSeconds());
+            parametros.put("desde", des);
+            parametros.put("hasta", has);
+ 
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros);
             JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
             panelReportes.removeAll();
             reporte.repaint();
@@ -1045,6 +1121,38 @@ ArrayList detalle = new ArrayList();
             dirreporte = ubicacionDirectorio + "reportes" + separador + "ticketscobrados.jasper";
             titulo = "Tickest Cobrados";
             tickets(dirreporte, query, titulo);
+
+        } else if (cmbTipoReporte.getSelectedItem().toString().contains("(108)")) {
+            try {
+                //TICKEST COBRADOS
+
+                query = " SELECT "
+                        + " IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'COBRADO',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 1),'SELLADO',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = TRUE) AND (sellado = 0 OR sellado IS NULL),'TARIFA 0',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = TRUE) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'FAC.ANULADA',IF((anulado = TRUE) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'TCK.ANULADO','' ) ) ) ) )  "
+                        + ",  COUNT(*), SUM(total),o.anulado,o.anuladofac, o.tarifa0, o.sellado "
+                        + "FROM Factura AS o "
+                        + "  WHERE o.fechafin BETWEEN  '" + desde2 + "' and '" + hasta2 + "'  "
+                        + "  AND   o.fechafin IS NOT NULL  AND (o.ticket IS NOT NULL OR o.placa LIKE '%NO CLIENTE%')  "
+                        + "  GROUP BY o.anulado, o.anuladofac, o.tarifa0, o.sellado ";
+
+                List totalIngresos = adm.queryNativo("SELECT COUNT(*) FROM Factura AS o  WHERE o.fechaini  BETWEEN  '" + desde2 + "' and '" + hasta2 + "'    "
+                        + "AND (o.ticket IS NOT NULL OR o.placa LIKE '%NO CLIENTE%') ");
+                    String total = totalIngresos.toString().replace("[", "").replace("]", "");
+                if (cmbUsuarios.getSelectedIndex() > 0) {
+                    query = " SELECT "
+                            + " IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'COBRADO',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 1),'SELLADO',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = TRUE) AND (sellado = 0 OR sellado IS NULL),'TARIFA 0',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = TRUE) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'FAC.ANULADA',IF((anulado = TRUE) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'TCK.ANULADO','' ) ) ) ) ), "
+                            + " COUNT(*), SUM(total),o.anulado,o.anuladofac, o.tarifa0, o.sellado  "
+                            + " FROM Factura AS o "
+                            + "  WHERE o.fechafin BETWEEN  '" + desde2 + "' and '" + hasta2 + "'  "
+                            + "  and o.usuarioc = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
+                            + "  AND   o.fechafin IS NOT NULL  AND (o.ticket IS NOT NULL OR o.placa LIKE '%NO CLIENTE%')  "
+                            + "  GROUP BY o.anulado, o.anuladofac, o.tarifa0, o.sellado ";
+                }
+                dirreporte = ubicacionDirectorio + "reportes" + separador + "totalDiario.jasper";
+                titulo = "Tickest Cobrados";
+                totalDiario(dirreporte, query, titulo,total);
+            } catch (Exception ex) {
+                Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         } else if (cmbTipoReporte.getSelectedItem().toString().contains("(305)")) { //PUESTOS OCUPADOS
             query = "Select o from Factura as o"
