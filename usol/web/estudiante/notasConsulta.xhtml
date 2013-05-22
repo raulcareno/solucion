@@ -9,10 +9,9 @@
                 xmlns:f="http://java.sun.com/jsf/core" 
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:define name="title">
-        Registro de Notas
+        Consulta de Notas
     </ui:define>    
     <ui:define name="datos">
-        <h:panelGrid  width="100%" id="busqueda" >
             <h:form  prependId="false" id="form">
                 <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/bases/tablaEstilo.css" />
                 <script type="text/javascript" src="funciones.js">
@@ -74,8 +73,7 @@
                 <p:panel id="registro"  style="width: 100%;"  >
                     <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <!--p:messages id="messages" showDetail="false" autoUpdate="true" /--> 
-                    <p:toolbar styleClass="cabe" style=" margin: 0px 0px 0px 0px;width: 100%" >  
-                        <p:toolbarGroup  style="width: 100%" align="right">
+                     
                             <h:panelGrid style="background-color:transparent;border-color: transparent;"  columns="2">
                                 <p:graphicImage width="120" style=" margin: 0px 0px 0px 0px;" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />    
                                 <h:panelGrid style="background-color:transparent;border-color: transparent;"  columns="3">
@@ -84,15 +82,13 @@
                                     <h:outputText style="font-weight: bold;font-size: 11px"  value="#{periodo.fechaInicio.toLocaleString()}"/>
                                     <h:outputText style="font-weight: bold;font-size: 11px"  value=""/>
                                      
-                                    <h:outputLabel style="font-size: 10px" value="Estudiante: #{user.apellidoPaterno} #{user.nombre}"/>
+                                    <h:outputLabel style="font-size: 11px" value="Estudiante: #{user.apellidoPaterno} #{user.nombre}"/>
                                     <h:outputText style="font-weight: bold;font-size: 11px"  value=""/>
- 
-                                    <h:outputLabel style="font-size: 10px" value=" Carrera: #{sessionScope.matricula.idCarreras.nombre}"/>
+                                    <h:outputText style="font-weight: bold;font-size: 11px"  value=""/>
+                                    <h:outputLabel style="font-size: 11px" value=" Carrera: #{sessionScope.matricula.idCarreras.nombre}"/>
                                 </h:panelGrid>   
                             </h:panelGrid>
-
-                        </p:toolbarGroup>
-                    </p:toolbar>
+ 
                     <h:panelGrid   width="100%"  columns="6">
                         <p:spacer width="10"/> 
                     </h:panelGrid>
@@ -153,7 +149,6 @@
 
             </h:form>
 
-
-        </h:panelGrid>
+ 
     </ui:define>
 </ui:composition>
