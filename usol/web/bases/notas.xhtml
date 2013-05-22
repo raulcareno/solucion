@@ -77,7 +77,7 @@ Registro de Notas
                         <h:outputText styleClass="textos3" value="CARRERA >> " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{notasBean.carrerasSeleccionada}" rendered="true">
                             <f:selectItems value="#{notasBean.selectedItemCarreras}"></f:selectItems>
-                            <p:ajax event="change"    update="materias"/>
+                            <p:ajax event="change"    update="materias datosNotas"   listener="#{notasBean.limpiarNotas()}"  />
                         </h:selectOneMenu>
                         
                         <h:outputText styleClass="textos3" value="MATERIA >> " /> 

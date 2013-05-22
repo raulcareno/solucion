@@ -84,6 +84,11 @@ public class NotasBeanProfesores implements Serializable {
             }
         }
     }
+   public String limpiarNotas() {
+        listaNotas = new ArrayList();
+        materiasSeleccionada   = new Materias(0);
+        return null;
+    }
 
     public String editarAction(Notas obj) {
         inicializar();
@@ -386,6 +391,9 @@ public class NotasBeanProfesores implements Serializable {
                 }
 
             }
+                    carrerasSeleccionada = (Carreras) adm.buscarClave(carrerasSeleccionada.getIdCarreras(), Carreras.class);
+                    materiasSeleccionada = (Materias) adm.buscarClave(materiasSeleccionada.getIdMaterias(), Materias.class);
+                    aud.auditar(adm, "Notas", "guardar", "" + materiasSeleccionada.getNombre(),carrerasSeleccionada.getNombre());
             buscarNotas();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_INFO, "Información", "Registro Almacenado con éxito...!"));
             //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", object.getIdNotas() + "");

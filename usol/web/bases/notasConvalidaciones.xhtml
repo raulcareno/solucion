@@ -77,7 +77,7 @@ Registro de Notas
                         <h:outputText styleClass="textos3" value="CARRERA >> " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{notasBeanConvalidaciones.carrerasSeleccionada}" >
                             <f:selectItems value="#{notasBeanConvalidaciones.selectedItemCarreras}"></f:selectItems>
-                            <p:ajax event="change"    update="materias matriculas"/>
+                            <p:ajax event="change"    update="materias matriculas datosNotas"  listener="#{notasBeanConvalidaciones.limpiarNotas()}" />
                         </h:selectOneMenu>
                         <p:spacer />
                         <h:outputText styleClass="textos3" value="MATERIA >> " /> 

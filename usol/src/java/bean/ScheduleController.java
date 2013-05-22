@@ -84,7 +84,7 @@ public class ScheduleController {
     }
 
     public void onDateSelect(DateSelectEvent selectEvent) {
-        event = new DefaultScheduleEvent(Math.random() + "", selectEvent.getDate(), selectEvent.getDate());
+        event = new DefaultScheduleEvent("", selectEvent.getDate(), selectEvent.getDate());
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {

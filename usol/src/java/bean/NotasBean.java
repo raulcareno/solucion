@@ -100,7 +100,11 @@ public class NotasBean implements Serializable {
     List listaNotas;
     List cabeceras = null;
 
- 
+ public String limpiarNotas() {
+    listaNotas = new ArrayList();  
+    materiasSeleccionada   = new Materias(0);
+     return null;
+ }
     public String buscarNotas() {
         boolean interno = true;
         listaNotas = new ArrayList();
@@ -127,8 +131,10 @@ public class NotasBean implements Serializable {
                 + "estudiantes.nombre),  " + query + "  notas.estado   FROM  Materias_matricula mm  LEFT JOIN Matriculas matricula  "
                 + "ON matricula.id_matriculas = mm.id_matriculas AND mm.id_materias = '" + materiasSeleccionada.getIdMaterias() + "'   "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes   "
-                + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas      "
-                + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '" + per.getIdPeriodos() + "'  AND matricula.id_carreras =  '" + carrerasSeleccionada.getIdCarreras() + "' "
+                + " LEFT JOIN Notas notas ON mm.id_materias = notas.id_materias and  notas.id_matriculas = mm.id_matriculas    "
+                + "  WHERE  matricula.estado_mat IN ('M','P','R') AND matricula.id_periodos = '" + per.getIdPeriodos() + "'  "
+                + " AND matricula.id_carreras =  '" + carrerasSeleccionada.getIdCarreras() + "' "
+                + " and (notas.convalidad is null or notas.convalidad =false)  "
                 + "   ORDER BY estudiantes.apellido_paterno, estudiantes.apellido_materno, estudiantes.nombre";
         System.out.println("" + q);
         List nativo = adm.queryNativo(q);
@@ -358,7 +364,7 @@ public class NotasBean implements Serializable {
 //            String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " + "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' ";
 //            adm.ejecutaSql(del);
             inter.eval(redondear);
-            
+            Double gpaValor = new Double(0);
             for (int i = 0; i < listaNotas.size(); i++) {
                 try {
                     ArrayList labels = (ArrayList) listaNotas.get(i);
@@ -428,7 +434,9 @@ public class NotasBean implements Serializable {
                     adm.ejecutaSql(del);
                     
                     adm.guardar(notaIngresada);
-
+                    carrerasSeleccionada = (Carreras) adm.buscarClave(carrerasSeleccionada.getIdCarreras(), Carreras.class);
+                    materiasSeleccionada = (Materias) adm.buscarClave(materiasSeleccionada.getIdMaterias(), Materias.class);
+                    aud.auditar(adm, "Notas", "guardar", "" + materiasSeleccionada.getNombre(),carrerasSeleccionada.getNombre());
                     //adm.crearAcaNotas(acaNotas);
                 } catch (EvalError ex) {
 
