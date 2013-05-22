@@ -263,14 +263,14 @@ public class NotasBean implements Serializable {
                         }
                     
                     if (tnota.getEsgpa()) {
-                        n.setNombre(gpa(rangos,n.getNota())+"");
+                        n.setNombre(gpa(rangos,notaVerifica)+"");
                         n.setTexto(true);
                         n.setAncho(10); 
                         n.setColorEstado("black");
                         n.setNota(null);
                     }
                     if (tnota.getEsexamen()) {
-                        n.setNombre(equivalencia(rangos,n.getNota())+"");
+                        n.setNombre(equivalencia(rangos,notaVerifica)+"");
                         n.setTexto(true);
                         n.setNota(null);
                         n.setColorEstado("black");
@@ -364,7 +364,7 @@ public class NotasBean implements Serializable {
 //            String del = "Delete from AcaNotas where matCodigo.curCodigo.curCodigo = '" + this.asiprofesor.getCurCodigo().getCurCodigo() + "' " + "and asiCodigo.asiCodigo = '" + asiprofesor.getAsiCodigo().getAsiCodigo() + "' ";
 //            adm.ejecutaSql(del);
             inter.eval(redondear);
-            Double gpaValor = new Double(0);
+            Double notaVerifica = 0.0;
             for (int i = 0; i < listaNotas.size(); i++) {
                 try {
                     ArrayList labels = (ArrayList) listaNotas.get(i);
@@ -394,19 +394,41 @@ public class NotasBean implements Serializable {
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());
-                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(object1.getNota(), 2) + ");");
-                        inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + redondear(object1.getNota(), 2) + ";");
-                        if (!formula.isEmpty()) {
-                            inter.eval("nota.set" + (uno + toda) + "((" + formula + "));");
-                            inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + formula + ";");
+                        
+                        if(sisActual.getEsgpa()){
+                            inter.eval("nota.set" + (uno + toda) + "(" + gpa(rangos, redondear(notaVerifica, 2)) + ");");
+                            inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + gpa(rangos, redondear(notaVerifica, 2)) + ";");
+                        }else if(sisActual.getEsexamen()){ //es equivalencia A,B,C,D, E,
+                            notaIngresada.setEquivalencia(equivalencia(rangos, redondear(notaVerifica, 2)));
+                            inter.eval("nota.setEquivalencia(" +( "\"" + notaIngresada.getEquivalencia()+"\"")+ ");");
+                            inter.eval("nota.set" + (uno + toda) + "(" + gpa(rangos, redondear(notaVerifica, 2)) + ");");
+                            inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + gpa(rangos, redondear(notaVerifica, 2)) + ";");
+                            
+                        }else {
+                            inter.eval("nota.set" + (uno + toda) + "(" + redondear(object1.getNota(), 2) + ");");
+                            inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + redondear(object1.getNota(), 2) + ";");
+                            if (!formula.isEmpty()) {
+                                inter.eval("nota.set" + (uno + toda) + "((" + formula + "));");
+                                inter.eval("Double N" + notas.get(j - 2).getIdSistemaNotas() + " = " + formula + ";");
+                            }
                         }
+                        
+                        
                         Double valor = (Double) inter.get("nota." + (uno + toda) + "");
 //                    System.out.println("NOTA: "+valor);
-                        object1.setNota(redondear(valor.doubleValue(), 2));
+                        //object1.setNota(redondear(valor.doubleValue(), 2));
+                        
                         if(notas.get(j - 2).getEsnota()){
                             inter.eval("nota.setEstado(\"" + aprobado(rangos, valor) + " \");");
+                            notaVerifica = valor;
                         }
                         if(sisActual.getEsnota()){
+                            String estado = aprobado(rangos, valor);
+                            if(!estado.equals("A")){
+                                estadoNota++;
+                            }
+                        }
+                        if(sisActual.getEsgpa()){
                             String estado = aprobado(rangos, valor);
                             if(!estado.equals("A")){
                                 estadoNota++;

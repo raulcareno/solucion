@@ -318,14 +318,14 @@ FacesContext context = FacesContext.getCurrentInstance();
                              
                         }
                     if (tnota.getEsgpa()) {
-                        n.setNombre(gpa(rangos,n.getNota())+"");
+                        n.setNombre(gpa(rangos,notaVerifica)+"");
                         n.setTexto(true);
                         n.setAncho(10); 
                         n.setColorEstado("black");
                         n.setNota(null);
                     }
                     if (tnota.getEsexamen()) {
-                        n.setNombre(equivalencia(rangos,n.getNota())+"");
+                        n.setNombre(equivalencia(rangos,notaVerifica)+"");
                         n.setTexto(true);
                         n.setNota(null);
                         n.setColorEstado("black");
