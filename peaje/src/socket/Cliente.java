@@ -8,7 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Cliente extends JFrame {
-
+ 
     private JTextField campoIntroducir;
     private JTextArea areaPantalla;
     private ObjectOutputStream salida;
