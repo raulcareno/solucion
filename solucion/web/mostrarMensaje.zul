@@ -1,6 +1,7 @@
 
-<window title="COMUNICADOS" mode="overlapped" id="listaMensajes" onCreate="buscar()" width="500px" >
-
+<window border="normal" title="COMUNICADOS" mode="overlapped"
+id="listaMensajes" maximizable="true" closable="true" onCreate="buscar()" width="600px" height="500px" >
+ 
     <zscript>
             <![CDATA[
         
@@ -37,6 +38,11 @@
         }
         if(empleadosEncontrados.size()>0){
             nombres.value = mensa;
+            
+            String a = "<span height=100px>";
+
+ String b = "</span>";
+            valorNuevo.content = a+ mensa+b;
         }else{
             listaMensajes.detach();
         }
@@ -45,11 +51,10 @@
  
 ]]>
     </zscript>
- 
- 
-
-    <fckeditor   customConfigurationsPath="/myconfig.js"   toolbarSet="Ninguno"   id="nombres" />
-
+     
+        <html    id="valorNuevo" >
+        </html>
+  
     <button onClick="listaMensajes.detach()" style="font-size:17px;"  image="/images/exit.gif"   label="CERRAR" />
  
 </window>
