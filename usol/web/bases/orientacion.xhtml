@@ -438,7 +438,7 @@
                         </p:selectOneMenu>  
                         
                         <h:outputText value="MONTO DE INGRESOS: " />  
-                        <p:selectOneMenu   style="width:170px"  value="#{orientacionBean.estudiante.montoIngresos}" id="MontoIngresos">  
+                        <p:selectOneMenu   style="width:170px"  converter="ConvRangosIngresos"  value="#{orientacionBean.estudiante.idRangosIngresos}" id="MontoIngresos">  
                             <f:selectItems value="#{orientacionBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu>  
                         <p:spacer width="10"/>
@@ -447,7 +447,7 @@
                             <f:selectItems value="#{orientacionBean.selectedItemOtrosIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu> 
                         <h:outputText value="MONTO DE EGRESOS: " />  
-                        <p:selectOneMenu  style="width:170px"   value="#{orientacionBean.estudiante.montoEgresos}" id="MontoEgresos">  
+                        <p:selectOneMenu  style="width:170px"  converter="ConvRangosIngresos"   value="#{orientacionBean.estudiante.idRangosIngresos2}" id="MontoEgresos">  
                             <f:selectItems value="#{orientacionBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu> 
                         <p:spacer width="10"/>

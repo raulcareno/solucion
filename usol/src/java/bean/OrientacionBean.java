@@ -1227,6 +1227,7 @@ public class OrientacionBean {
         Double tipoVivienda = 0d;
         Double tipoTarjeta = 0d;
         Double ingresos = 0d;
+        Double egresos = 0d;
         try {
             autos = estu.getIdAutos().getValor().doubleValue();
         } catch (Exception e) {
@@ -1244,7 +1245,11 @@ public class OrientacionBean {
         } catch (Exception e) {
         }
         try {
-            ingresos = new BigDecimal(estu.getMontoIngresos()).doubleValue();
+            ingresos = estu.getIdRangosIngresos().getValor().doubleValue();
+        } catch (Exception e) {
+        }
+        try {
+            egresos = estu.getIdRangosIngresos2().getValor().doubleValue();
         } catch (Exception e) {
         }
 
@@ -1261,6 +1266,7 @@ public class OrientacionBean {
             in.eval("Double tipoVivienda = " + tipoVivienda + " ");
             in.eval("Double tipoTarjeta = " + tipoTarjeta + " ");
             in.eval("Double ingresos = " + ingresos + " ");
+            in.eval("Double egresos = " + egresos + " ");
             in.eval("String resultado = " + formula + " ");
             resultado = (String) in.get("resultado");
             System.out.println("VALOR: "+(autos+otrosIngresos+tipoVivienda+tipoTarjeta+ingresos));
@@ -1613,17 +1619,17 @@ public class OrientacionBean {
             List<RangosIngresos> divisionPoliticas = new ArrayList<RangosIngresos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
-                divisionPoliticas = adm.query("Select o from RangosIngresos as o "
-                        + "  order by o.rangoInicial ");
+                divisionPoliticas = adm.queryNativo("Select o.* from Rangos_Ingresos as o "
+                        + "  order by cast(o.rango_Inicial AS INTEGER) ",RangosIngresos.class);
                 if (divisionPoliticas.size() > 0) {
                     //RangosIngresos objSel = new RangosIngresos(0);
-                    items.add(new SelectItem("-", "Seleccione..."));
+//                    items.add(new SelectItem("-", "Seleccione..."));
                     for (RangosIngresos obj : divisionPoliticas) {
-                        items.add(new SelectItem(obj.getRangoInicial() + "-" + obj.getRangoFinal(), obj.getRangoInicial() + "-" + obj.getRangoFinal()));
+                        items.add(new SelectItem(obj,obj.getRangoInicial() + "-" + obj.getRangoFinal(), obj.getRangoInicial() + "-" + obj.getRangoFinal()));
                     }
                 } else {
                     //RangosIngresos obj = new RangosIngresos(0);
-                    items.add(new SelectItem("-", "NO EXISTEN CARRERAS"));
+                    items.add(new SelectItem("-", "NO EXISTEN PARAMETROS EN INGRESOS"));
                 }
             }
             return items;
