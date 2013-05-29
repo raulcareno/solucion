@@ -1510,7 +1510,7 @@ public class InscripcionesBean {
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
                 divisionPoliticas = adm.queryNativo("Select o.* from Rangos_Ingresos as o "
-                        + "  order by cast(o.rango_Inicial AS INTEGER) ",RangosIngresos.class);
+                        + "  order by o.valor ",RangosIngresos.class);
                 if (divisionPoliticas.size() > 0) {
                     //RangosIngresos objSel = new RangosIngresos(0);
 //                    items.add(new SelectItem("-", "Seleccione..."));

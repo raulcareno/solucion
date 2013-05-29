@@ -22,7 +22,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.media.Player;
 import jcinform.persistencia.Aspirantes;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
