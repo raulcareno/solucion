@@ -53,6 +53,66 @@ public class reportesClase {
 
         return ds;
     }
+      public JRDataSource evaluacionProfesores(Cursos curso, Empleados empleado) {
+        Administrador adm = new Administrador();
+        String query = "SELECT mat FROM Respuestasencuestar AS mat "
+                + "WHERE mat.empleado.codigoemp = '" + empleado.getCodigoemp() + "' "
+                + "order by mat.empleado.apellidos, mat.empleado.nombres,"
+                + " mat.matricula.curso.secuencia, "
+                + " mat.matricula.curso.descripcion,"
+                + " mat.matricula.curso.paralelo.descripcion,  "
+                + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
+        if(empleado.getCodigoemp().equals(-2) || empleado.getCodigoemp().equals(-1)  ){
+            query = "SELECT mat FROM Respuestasencuestar AS mat "
+                + "  "
+                + "order by mat.empleado.apellidos, mat.empleado.nombres,"
+                + " mat.matricula.curso.secuencia, "
+                + " mat.matricula.curso.descripcion,"
+                + " mat.matricula.curso.paralelo.descripcion,  "
+                + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
+        }
+//        Session ses = Sessions.getCurrent();
+//        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        List hoy = adm.query(query);
+
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Respuestasencuestar elem = (Respuestasencuestar) it.next();
+            detalle.add(elem);
+        }
+        ReporteEvaluacionDataSourcer ds = new ReporteEvaluacionDataSourcer(detalle);
+
+
+        return ds;
+    }
+ public JRDataSource evaluacionProfesoresResumido(Cursos curso, Empleados empleado) {
+        Administrador adm = new Administrador();
+        String query = "SELECT mat FROM Respuestasencuestar AS mat "
+                + "WHERE mat.empleado.codigoemp = '" + empleado.getCodigoemp() + "' "
+                + "order by mat.empleado.apellidos, mat.empleado.nombres,"
+ 
+                + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
+        if(empleado.getCodigoemp().equals(-2) || empleado.getCodigoemp().equals(-1)  ){
+            query = "SELECT mat FROM Respuestasencuestar AS mat "
+                + "  "
+                + "order by mat.empleado.apellidos, mat.empleado.nombres,"
+ 
+                + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
+        }
+//        Session ses = Sessions.getCurrent();
+//        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        List hoy = adm.query(query);
+
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Respuestasencuestar elem = (Respuestasencuestar) it.next();
+            detalle.add(elem);
+        }
+        ReporteEvaluacionDataSourcer ds = new ReporteEvaluacionDataSourcer(detalle);
+
+
+        return ds;
+    }
 
     public JRDataSource distributivo() {
         Administrador adm = new Administrador();
@@ -5789,7 +5849,50 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
 
 
     }
+  public JRDataSource resumenGrupalProfesores() {
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Cursos> lisCursos = new ArrayList<Cursos>();
+        lisCursos = adm.queryNativo("Select o.* from Cursos as o where o.periodo = '" + periodo.getCodigoper() + "'  "
+                + "group by o.secuencia order by o.secuencia ", Cursos.class);
+        List<Preguntar> preg = adm.query("Select o from Preguntar as o  "
+                + "order by o.orden ");
+        ArrayList listaResultados = new ArrayList();
+        for (Iterator<Cursos> itCursos = lisCursos.iterator(); itCursos.hasNext();) {
+            Cursos curso = itCursos.next();
+            int i = 1;
+            for (Iterator<Preguntar> it = preg.iterator(); it.hasNext();) {
+                Preguntar pregunta = it.next();
+                List<Detallepreguntar> detall = adm.query("Select o from Detallepreguntar as o "
+                        + "where o.preguntar.codigo = '" + pregunta.getCodigo() + "' order by o.secuencia ");
+                int a = 1;
+                for (Iterator<Detallepreguntar> it1 = detall.iterator(); it1.hasNext();) {
+                    Detallepreguntar detallepregunta = it1.next();
+//                rep.setId(i);
+                    ResumenClase rep = new ResumenClase();
+                    rep.setCurso(curso.getDescripcion() + " ");
+                    rep.setPregunta(i + ".- " + pregunta.getPregunta());
+                    rep.setRespuesta(detallepregunta.getOpcion());
+                    Object respuestas = adm.querySimple("Select count(o) from Respuestasencuestar as o "
+                            + "where o.detallepreguntar.codigo = '" + detallepregunta.getCodigo() + "' "
+                            + "and o.matricula.curso.secuencia  = '" + curso.getSecuencia() + "' ");
+                    Long valor = (Long) respuestas;
+                    int val = valor.intValue();
+                    rep.setValor(val);
+                    listaResultados.add(rep);
+                    a++;
+                }
+                i++;
+            }
+        }
 
+
+        ReporteResumenDataSource ds = new ReporteResumenDataSource(listaResultados);
+        return ds;
+
+
+    }
     public JRDataSource recordporcurso(Cursos cursoLlega) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();

@@ -27,6 +27,13 @@ Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 disciplina discipli = new disciplina();
 
+ List listaEmpleados = adm.query("Select o from Empleados as o " + 
+                    "  order by o.apellidos ");
+    Empleados empSel = new Empleados(-1);
+    empSel.setApellidos("[Seleccione]");
+    empSel.setNombres("");
+    listaEmpleados.add(0,empSel);
+
 Empleados user = (Empleados)ses.getAttribute("user");
     List cursos = new ArrayList();
     if(user.getTipo().equals("Interna")){
@@ -98,16 +105,16 @@ List materias = adm.query("Select o from Global as o where o.grupo = 'zz' ");
 void buscar2(Cursos cur){
 
             if(estudiantesCombo.disabled==false){
-                    List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
+                    List matriculasEncontradas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
                     estudiantesCombo.getChildren().clear();
                     Matriculas matri = new Matriculas(-1);
                     Estudiantes es = new Estudiantes(-1);
                     es.setApellido("[Seleccione]");
                     es.setNombre("");
                     matri.setEstudiante(es);
-                    empleadosEncontrados.add(0,matri);
+                    matriculasEncontradas.add(0,matri);
                         
-                           for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                           for (Iterator it = matriculasEncontradas.iterator(); it.hasNext();) {
                                   Matriculas estudent = (Matriculas) it.next();
                                     Listitem item = new Listitem();
                                     item.setValue(estudent);
@@ -159,7 +166,7 @@ materiasCombo.setSelectedIndex(0);
            }else if(tipo.equals("AG2") || tipo.equals("CAG2")){
                 comple = " and o.suspenso = true ";
            }
-        List empleadosEncontrados = adm.query("Select o from Matriculas as o " + 
+        List matriculasEncontradas = adm.query("Select o from Matriculas as o " + 
                     " where o.curso.especialidad.codigo = '"+cur.getCodigo()+"' "+
                     " "+ comple +" "+
                     " and o.curso.periodo.codigoper = '"+ periodo.getCodigoper()+"' "+
@@ -172,9 +179,9 @@ materiasCombo.setSelectedIndex(0);
                     es.setApellido("[Seleccione]");
                     es.setNombre("");
         matri.setEstudiante(es);
-        empleadosEncontrados.add(0,matri);
+        matriculasEncontradas.add(0,matri);
         
-                         for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                         for (Iterator it = matriculasEncontradas.iterator(); it.hasNext();) {
                                   Matriculas estudent = (Matriculas) it.next();
                                     Listitem item = new Listitem();
                                     item.setValue(estudent);
@@ -185,7 +192,7 @@ materiasCombo.setSelectedIndex(0);
                             matri.setEstudiante(es);
                                     Listitem item = new Listitem();
                                     item.setValue(matri);
-                                    item.appendChild(new Listcell("[TODOS] [- - "+empleadosEncontrados.size()+" - - ]" ));
+                                    item.appendChild(new Listcell("[TODOS] [- - "+matriculasEncontradas.size()+" - - ]" ));
                                     estudiantesCombo.appendChild(item);
     }
 
@@ -461,6 +468,15 @@ void recalcular(){
             }else if(tipo.equals("ENC6")){
                     datasource = noti.resumenGrupal();
                     report.setSrc(directorioReportes+"resumenEncuestaGraficas.jasper");
+            }else if(tipo.equals("ENCP1")){
+                    datasource = noti.resumenGrupalProfesores();
+                    report.setSrc(directorioReportes+"resumenEncuesta.jasper");
+            }else if(tipo.equals("ENCP2")){
+                    datasource = noti.evaluacionProfesores(curs.selectedItem.value, empleadosList.selectedItem.value);
+                    report.setSrc(directorioReportes+"evaluacionPrincipalProfes.jasper");
+            }else if(tipo.equals("ENCP3")){
+                    datasource = noti.evaluacionProfesoresResumido(curs.selectedItem.value, empleadosList.selectedItem.value);
+                    report.setSrc(directorioReportes+"evaluacionPrincipalProfesResumido.jasper");
             }else if(tipo.equals("DIS2")){
                     datasource = distributivo2();
                     report.setSrc(directorioReportes+"firmascuadrocalificaciones.jasper");
@@ -792,6 +808,7 @@ void campos(String valor){
      incluirfaltas.visible = false;
      incluirfaltasydias.visible = false;
      incluirpromedio.visible = false;
+     filaempleados.visible = false;
      numeroEstudiantes.visible = false;
         if(valor.equals("DIS")){
             curs.disabled = false;
@@ -832,6 +849,12 @@ void campos(String valor){
              filacursos.visible = true;
         }else if(valor.equals("ENC5") || valor.equals("ENC6")){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
+        }else if(valor.equals("ENCP2")){
+             titulo.value= "RESULTADO DE LA EVALUACION";
+             filaempleados.visible = true;
+        }else if(valor.equals("ENCP3")){
+             titulo.value= "RESULTADO DE LA EVALUACION";
+             filaempleados.visible = true;
         }else if(valor.equals("MEJ")){
              titulo.value= "Mejores por Curso";
              sistemasCombo.disabled = false;
@@ -1145,6 +1168,10 @@ void campos(String valor){
                                     <listitem  id="ENC4" label="Resumen y Resultados de Encuesta(GRAFICAS)" value="ENC4"/>
                                     <listitem  id="ENC5" label="Resumen y Resultados de Encuesta por Sección" value="ENC5"/>
                                     <listitem  id="ENC6" label="Resumen y Resultados de Encuesta por Sección(GRAFICAS)" value="ENC6"/>
+                                    <listitem  id="linea564" label="========= ENCUESTAS DOCENTES ================" value="linea" />
+                                    <listitem  id="ENCP1" label="Resultados x Curso y Pregunta" value="ENCP1"/> 
+                                    <listitem  id="ENCP2" label="Resultados por Docente" value="ENCP2"/>
+                                    <listitem  id="ENCP3" label="Resultados por Docente Resumido" value="ENCP3"/>
          <!--listitem  label="Mejor egresado(*)" value="CDIS"/>
         <listitem label="Cuadro juntas de curso(*)" value="CDIS"/>
         <listitem label="Cuadro de Supletorios(*)" value="CDIS"/>
@@ -1226,7 +1253,14 @@ void campos(String valor){
                                 </rows>
                             </grid>
                         </row>
-
+                        <row id="filaempleados" style="background:transparent;border:0px">
+                            <span style="float:right"> Curso:</span>
+                            <span>
+                                <listbox id="empleadosList" width="450px"  mold="select" >
+                                    <listitem   forEach="${listaEmpleados}" value="${each}" label="${each.apellidos} ${each.nombres}"/>
+                                </listbox>
+                            </span>
+                        </row>
 
                         <row id="filacursos" style="background:transparent;border:0px">
                             <span style="float:right"> Curso:</span>
@@ -1391,6 +1425,7 @@ void campos(String valor){
             filamodalidad.visible = false;
             filamaterias.visible = false;
             filaaportes.visible = false;
+            filaempleados.visible = false;
     
             for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
             Listitem object = (Listitem)it.next();

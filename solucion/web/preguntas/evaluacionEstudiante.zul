@@ -39,7 +39,9 @@ try{
                         rw.setId(pregunta.getCodigo()+""+pregunta.getTipopregunta());
                         rw.appendChild(lab);
                         filaEncuestar.appendChild(rw);
+                        System.out.println(pregunta.getTipopregunta());
                         if(pregunta.getTipopregunta().equals("ou")){ //ouopcion unica, (opcionmultiple), om, vf
+                        
                             Radiogroup radio= new Radiogroup();
                             radio.setOrient("vertical");
                              rw = new Row();

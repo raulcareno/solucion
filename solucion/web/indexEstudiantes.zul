@@ -205,7 +205,7 @@ Session a = Sessions.getCurrent();
        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
             " where o.curso.codigocur ='"+matri.getCurso().getCodigocur()+"' " + 
             " and o.empleado.codigoemp not in (Select a.empleado.codigoemp from Encuestarprofesor as a " + 
-            " where a.encuestar.codigo = '"+enc.getCodigo()+"' )  ");
+            " where a.encuestar.codigo = '"+enc.getCodigo()+"' and a.matricula.codigomat = '"+matri.getCodigomat()+"'  )   ");
  
             if(empleadosEncontrados.size()<=0){
                 fsb.visible = true; //oculto el fish
