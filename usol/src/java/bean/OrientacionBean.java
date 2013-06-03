@@ -1278,7 +1278,7 @@ public class OrientacionBean {
         return resultado;
 
     }
-
+ 
     protected void buscarMatricula(Estudiantes estudiante) {
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
