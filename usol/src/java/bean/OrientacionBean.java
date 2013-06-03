@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,7 +81,7 @@ import utilerias.Permisos;
 @ManagedBean
 @ViewScoped
 //@RequestScoped
-public class OrientacionBean {
+public class OrientacionBean implements Serializable{
 
     /**
      * Creates a new instance of MatriculasBean
