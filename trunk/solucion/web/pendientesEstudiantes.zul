@@ -66,7 +66,7 @@ Estudiantes user =  (Estudiantes)ses.getAttribute("userEstudiante");
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getProducto()+""));
                       li.appendChild(new Listcell(d1.format(d)+""));
-                      li.appendChild(new Listcell(acceIt.getValor()+""));
+                      li.appendChild(new Listcell((acceIt.getValor()-acceIt.getOtros())+""));
                       datos.appendChild(li);
              }
 
