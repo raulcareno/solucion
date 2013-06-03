@@ -490,7 +490,7 @@
                     </h:panelGrid>
                 </p:fieldset>
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{orientacionBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                    <p:commandButton  value="Guardar"  id="guardar" ajax="false"   update=":form"   action="#{orientacionBean.guardar()}"  icon="guardar" title="Guardar"/>  
                     <p:splitButton  value="PDF" ajax="false"  actionListener="#{orientacionBean.fichaMatricula('PDF')}"   icon="ui-icon-print">  
                         <p:menuitem value="EXCEL" ajax="false" actionListener="#{orientacionBean.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
                         <p:menuitem value="WORD" ajax="false" actionListener="#{orientacionBean.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
