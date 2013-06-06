@@ -6,6 +6,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui"
+               xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:f="http://java.sun.com/jsf/core" >
     <ui:define name="title">
 
@@ -25,7 +26,7 @@
                         <h:outputText value="HASTA" />  
                         <p:spinner  value="#{rangosIngresosBean.object.rangoFinal}" id="HASTA"  maxlength="100" size="10"  style="font-weight:bold;"/>  
                         <h:outputText value="VALOR" />  
-                        <p:inputText value="#{rangosIngresosBean.object.valor}" id="VALOR"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                        <pe:inputNumber value="#{rangosIngresosBean.object.valor}" id="VALOR"  maxlength="100"  style="font-weight:bold;"/>  
 
                         <p:inputText  value="#{rangosIngresosBean.object.idRangosIngresos}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 

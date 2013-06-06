@@ -441,7 +441,9 @@ public class LoginBean {
 //            inicializar();
         } catch (Exception e) {
             //FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "datosform").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.toString(), bundle.getString("msg.iniciarSesion.error")));
-            //log.error("loginAction() ERROR " + e);
+            context = FacesContext.getCurrentInstance();
+            context.addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "El nombre de Usuario o Contraseña están incorrectas...!", "El nombre de Usuario o Contraseña están incorrectas...!"));
+        //   FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "login").getClientId(), new FacesMessage("El nombre de Usuario o Contraseña están incorrectas...!"));
             return null;
         }
         usuario = "";
