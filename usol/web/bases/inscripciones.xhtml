@@ -46,7 +46,7 @@
                                 </h:panelGrid>  
                             </f:facet>  
                         </p:autoComplete>  
-
+                        <h:outputLabel value="#{inscripcionesBean.admitido}"  style="color:blue;font-size: 15px"/>  
 
                     </h:panelGrid>  
                 </p:panel>  
@@ -263,13 +263,22 @@
                             <f:selectItems value="#{inscripcionesBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
                         </p:selectOneRadio>
 
-                        <h:outputText value="ESTADO: " />  
-                        <p:selectOneRadio   id="EstadoMatricula" label="EstadoMatricula"  value="#{inscripcionesBean.object.estadoMat}">  
-                            <f:selectItem   itemLabel="INSCRITO"  itemValue="I" />      
-                            <!--f:selectItem   itemLabel="MATRICULADO"  itemValue="M" /-->  
-                            <f:selectItem   itemLabel="ADMINITIDO" itemValue="A" />  
+                        <h:outputText value="ESTADO: " />    
+                        <h:panelGrid rendered="#{inscripcionesBean.object.estadoMat == 'M' || inscripcionesBean.object.estadoMat == 'A' }">
+                            <h:outputText value="MATRICULADO" rendered="#{inscripcionesBean.object.estadoMat == 'M'}"  style="color:blue; font-size: 14px; font-weight: bold" />
+                            <h:outputText value="ADMITIDO" rendered="#{inscripcionesBean.object.estadoMat == 'A'}" style="color:green; font-size: 14px; font-weight: bold"  />
 
+                         <h:inputHidden value="#{inscripcionesBean.object.estadoMat}" /> 
+                        </h:panelGrid>
+                        
+                        <h:panelGrid rendered="#{inscripcionesBean.object.estadoMat == 'I'}" >
+                            <p:selectOneRadio  id="EstadoMatricula" label="EstadoMatricula"  value="#{inscripcionesBean.object.estadoMat}">  
+                            <f:selectItem itemLabel="INSCRITO"  itemValue="I" />      
+                            <!--f:selectItem  itemLabel="MATRICULADO"  itemValue="M" /-->  
+                            <f:selectItem itemLabel="ADMITIDO" itemValue="A" />  
                         </p:selectOneRadio> 
+                        </h:panelGrid>
+                      
                         <p:spacer width="10"/>
                         <h:outputText value="CONFIRMADA: " />  
                         <p:selectBooleanCheckbox disabled="true" value="#{inscripcionesBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  

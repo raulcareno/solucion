@@ -263,12 +263,12 @@
                         </p:selectOneRadio>
 
                         <h:outputText value="ESTADO: " />  
-                        <p:selectOneRadio disabled="true" id="EstadoMatricula" label="EstadoMatricula"  value="#{orientacionBean.object.estadoMat}">  
-                            <f:selectItem   itemLabel="INSCRITO"  itemValue="I" />      
-                            <f:selectItem   itemLabel="MATRICULADO"  itemValue="M" />  
-                            <f:selectItem   itemLabel="ADMITIDO" itemValue="A" />  
-
-                        </p:selectOneRadio> 
+                         <h:panelGrid >
+                            <h:outputText value="MATRICULADO" rendered="#{orientacionBean.object.estadoMat == 'M'}"  style="color:blue; font-size: 14px; font-weight: bold" />
+                            <h:outputText value="ADMITIDO" rendered="#{orientacionBean.object.estadoMat == 'A'}" style="color:green; font-size: 14px; font-weight: bold"  />
+                            <h:outputText value="INSCRITO" rendered="#{orientacionBean.object.estadoMat == 'I'}" style="color:red; font-size: 14px; font-weight: bold"  />
+                         <h:inputHidden value="#{orientacionBean.object.estadoMat}" /> 
+                        </h:panelGrid>
                         <p:spacer width="10"/>
                         <h:outputText value="CONFIRMADA: " />  
                         <p:selectBooleanCheckbox disabled="true" value="#{orientacionBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  

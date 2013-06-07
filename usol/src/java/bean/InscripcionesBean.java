@@ -130,6 +130,7 @@ public class InscripcionesBean {
     Archivos arTitulo;
     Archivos arCedula;
     List<RangosGpa> rangos; 
+    public String admitido;
     
     public InscripcionesBean() {
         //super();
@@ -1147,11 +1148,19 @@ public class InscripcionesBean {
     }
 
       protected Boolean buscarMatricula(Estudiantes estudiante) {
+          admitido = "";
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
-                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat in ('M','I') ");
+                + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat in ('M','I','A') ");
          if (matriculasListado.size() > 0) {
             object = matriculasListado.get(0);
+//            if(object.getEstadoMat().equals("A")){
+//                 admitido = "ADMITIDO";
+//                 carreraSeleccionado = new Carreras(0);
+//                 object = new Matriculas(0); 
+//                 buscarMateriasMatricula(object);
+//                 return false; //MATRICULADO     
+//            }
             carreraSeleccionado = object.getIdCarreras();
             categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
             buscarMateriasMatricula(object);
@@ -2215,4 +2224,14 @@ public class InscripcionesBean {
     public void setNoCreditos(int noCreditos) {
         this.noCreditos = noCreditos;
     }
+
+    public String getAdmitido() {
+        return admitido;
+    }
+
+    public void setAdmitido(String admitido) {
+        this.admitido = admitido;
+    }
+    
+    
 }
