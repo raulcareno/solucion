@@ -228,6 +228,7 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     parametros.put("titulo", "Notas Registradas");
                     parametros.put("aporte",((Sistemacalificacion)sisevalCombo.selectedItem.value).getNombre());
+                    parametros.put("trimestre",((Sistemacalificacion)sisevalCombo.selectedItem.value).getTrimestre().getDescripcion());
                     }catch(Exception ab){
                         System.out.println("erro "+ab);
                     }
