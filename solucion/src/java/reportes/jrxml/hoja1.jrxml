@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hoja" pageWidth="453" pageHeight="708" whenNoDataType="BlankPage" columnWidth="453" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="76"/>
+	<parameter name="nombre" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="denominacion" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoest" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="111" splitType="Stretch">
+			<staticText>
+				<reportElement x="84" y="18" width="363" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLUB LIGA DEPORTIVA UNIVERSITARIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="70" width="363" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Teléfonos: (02) 2351081 – (02) 2351057 (02) 2352235]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="86" width="363" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[QUITO – ECUADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="54" width="363" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Manuel Córdova Galarza Km. 11 ½ Urb. La Pampa, junto al Club de LDU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="95" width="454" height="16"/>
+				<box>
+					<bottomPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="38" width="363" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Unidad Educativa "El Colegio de Liga"]]></text>
+			</staticText>
+			<image isUsingCache="true" onErrorType="Blank">
+				<reportElement key="image-1" x="2" y="18" width="89" height="83" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression class="java.lang.String"><![CDATA[]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<elementGroup/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="683" splitType="Stretch">
+			<staticText>
+				<reportElement x="39" y="52" width="408" height="215" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[1)	Cumplir con todo lo establecido en el Código De Convivencia de la UNIDAD EDUCATIVA “EL COLEGIO DE LIGA”, que se encuentre vigente, debidamente aprobado por la autoridad competente;
+2)	Responder  financieramente, y pagar por todos los daños y perjuicios, ocasionados por “La/El Estudiante” a todos los bienes muebles e inmuebles de “La Institución Educativa”, así como también a los daños y perjuicios de bienes muebles e inmuebles de terceros, ocasionados por “La/El Estudiante dentro del periodo de prestación del servicio de educación, dentro o fuera de las instalaciones de “La Institución Educativa”;
+3)	Aceptar y Cumplir con todas las cláusulas establecidas en el presente contrato; y,
+4)	Pagar dentro de los plazos establecidos las obligaciones económicas adquiridas con “La Insti-tución Educativa” en el presente contrato.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="12" width="444" height="40" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[TERCERA: Obligaciones De La/El Cliente o Representante Legal.- Además de las obligaciones que se establece en el ordenamiento jurídico ecuatoriano, La/El Cliente, se obliga a lo siguiente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="298" width="408" height="170" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[1)	Cumplir con todo lo establecido en el Código De Convivencia, que se encuentre vigente, de-bidamente aprobado por la autoridad competente;
+2)	Actualizar, reformar y modificar su Proyecto Educativo Institucional (PEI), con la finalidad de alcanzar el cumplimiento del 100% de los estándares de calidad de conformidad con la categoría en la que se encuentre “La Institución Educativa”; y,
+3)	Educar a “La/El Estudiante” con los conocimientos del nivel respectivo establecido dentro del currículo educativo nacional.
+4)	Cumplir con el perfil de salida del Estudiante establecido en la Ley Orgánica de Educación Intercultural.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="267" width="444" height="43" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[CUARTA: Obligaciones De La Institución Educativa.- Además de las obligaciones que se establece en el ordenamiento jurídico ecuatoriano, La Institución Educativa, se obliga a lo siguiente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="665" width="453" height="18"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Pág. 2 de 5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="468" width="444" height="104" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[QUINTA: De los Costos De Las Pensiones Y Matrículas.- La Institución se compromete a cobrar los valores establecidos, por la Junta Distrital Reguladora de Pensiones Y Matrículas de la Educación Particular Y Fiscomisional, que se encuentren vigentes para el periodo escolar 2013 -2014. La/El Cliente declara haber sido debidamente informada(o) por personal de “La Institución Educativa” previo al proceso de matriculación y por lo tanto acepta todos estos costos. ]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

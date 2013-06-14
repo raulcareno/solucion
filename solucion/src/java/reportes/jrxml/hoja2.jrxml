@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hoja" pageWidth="453" pageHeight="708" whenNoDataType="BlankPage" columnWidth="453" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="305"/>
+	<parameter name="nombre" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="denominacion" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigoest" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="111" splitType="Stretch">
+			<staticText>
+				<reportElement x="84" y="18" width="363" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CLUB LIGA DEPORTIVA UNIVERSITARIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="70" width="363" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Teléfonos: (02) 2351081 – (02) 2351057 (02) 2352235]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="86" width="363" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[QUITO – ECUADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="54" width="363" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Manuel Córdova Galarza Km. 11 ½ Urb. La Pampa, junto al Club de LDU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="95" width="454" height="16"/>
+				<box>
+					<bottomPen lineWidth="1.25"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="38" width="363" height="16"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Unidad Educativa "El Colegio de Liga"]]></text>
+			</staticText>
+			<image isUsingCache="true" onErrorType="Blank">
+				<reportElement key="image-1" x="2" y="18" width="89" height="83" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression class="java.lang.String"><![CDATA[]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<elementGroup/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="708" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="12" width="444" height="73" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[SEXTA: Periodo de Matriculas Ordinarias.- El periodo de  matrículas ordinarias será el comprendido entre el 19 de agosto del 2013 y el 31 de agosto del 2013. Sin embargo “La Institución Educativa” se compromete a brindar las facilidades a La/El Cliente que desee voluntariamente, iniciar el proceso de matriculación de La/El estudiante, previo al 19 de agosto del 2013.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="88" width="444" height="100" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[SÉPTIMA: El Periodo De Matrículas Extraordinarias.- El periodo de matrículas extraordinarias será a partir del 02 de septiembre del 2013 hasta el 01 de octubre del 2013. La matrícula extraordinaria tendrá un recargo del veinte por ciento (20%), sobre el valor de la matrícula ordinaria, de conformi-dad con lo que se establece en el artículo 20 segundo inciso del Reglamento Para Regulación De Costo De Educación Particular]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="690" width="453" height="18"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Pág. 3 de 5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="200" width="444" height="180" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[OCTAVA: Del Periodo De Pago De Pensiones.- El pago de las pensiones deberá realizarse, del pri-mero al quinto día de cada mes. “La Institución Educativa” parar aquellos clientes que presenten inconvenientes financieros o de liquidez concederá un periodo de gracia o prorroga de diez días. Si el pago no se ha realizado y efectivizado dentro del periodo de gracia, es decir hasta el día 15 de cada mes, esto convertirá la obligación, en una obligación de plazo vencido. Se deberán cancelar doce pensiones netas en el periodo escolar, que serán prorrateadas a diez meses como dispone la Ley Orgánica de Educación Intercultural Y Su Reglamento. La primera pensión prorrateada se pagará junto a la matrícula durante el periodo de matriculación ordinaria, es decir hasta el 31 de agosto del 2013. Se pagarán diez pensiones prorrateadas en el periodo escolar 2013 – 2014.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="385" width="444" height="196" isPrintWhenDetailOverflows="true"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2">
+					<font fontName="Calibri" size="11" isBold="false" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[NOVENA: Del Servicio De Transporte y Alimentación.- “La Institución Educativa” proporcionará el servicio de transporte y alimentación para La/El Cliente que lo solicite. El usuario del servicio de transporte será La/El estudiante matriculada(o), siempre y cuando “La Institución Educativa”, haya aceptado que puede cumplir con ese recorrido. Para la suspensión de estos servicios, La/El cliente deberá presentar una carta dirigida a la Jefatura Administrativa del Colegio, con por lo menos menos quince (15) días de anticipación antes de finalizar el mes; en esta carta se deberá solicitar la suspensión del servicio y explicar los motivos de la suspensión. La Institución Educativa informa a La/El Cliente, que la utilización parcial o total de los servicios de transporte y/ alimentación por parte de los estudiantes, cuyos representantes legales no los hayan solicitado expresamente, generará la obligación de cancelar el valor correspondiente.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
