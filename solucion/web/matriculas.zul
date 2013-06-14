@@ -253,6 +253,12 @@ void llenar(Estudiantes estudent){
             if(estudent.getTransporte()!=null){
                 transporte.checked = estudent.getTransporte();
             }
+            if(estudent.getIda()!=null){
+                ida.checked = estudent.getIda();
+            }
+            if(estudent.getVuelta()!=null){
+                vuelta.checked = estudent.getVuelta();
+            }
             if(estudent.getAsegurado()!=null){
                 asegurado.checked = estudent.getAsegurado();
             }
@@ -594,6 +600,8 @@ void estado(Boolean estado,Boolean modificar){
     adventista.disabled= estado;
     nuevo.disabled = estado;
     transporte.disabled = estado;
+    ida.disabled = estado;
+    vuelta.disabled = estado;
     asegurado.disabled = estado;
     aseguradora.readonly = estado;
     //repite.disabled = estado;
@@ -733,6 +741,8 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setEstado(true);
         estudent.setAdventista(adventista.checked);
         estudent.setTransporte(transporte.checked);
+        estudent.setIda(ida.checked);
+        estudent.setVuelta(vuelta.checked);
         estudent.setNobus(nobus.value);
         estudent.setAseguradora(aseguradora.value);
         estudent.setAsegurado(asegurado.checked);
@@ -1448,8 +1458,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("secretaria", insts.getSecretaria());
             parametros.put("rectora", insts.getRector());
+            parametros.put("fechaFormat", insts.getRector());
             JRDataSource datasource = null;
             String directorioReportes = insts.getReportes();
+            parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
              
             if(tipo.equals("CM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
@@ -1459,12 +1471,21 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     report.setSrc(directorioReportes+"certificadoMatricula2.jasper");
                     parametros.put("titulo", "Certificado de Matricula");
+            }else if(tipo.equals("CONT")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    report.setSrc(directorioReportes+"contratoMatricula.jasper");
+                    parametros.put("titulo", "Contrato de Prestación de Servicios de Educación");
             } else if(tipo.equals("AM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
                     report.setSrc(directorioReportes+"actaMatricula.jasper");
 
             } else if(tipo.equals("CL")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    parametros.put("titulo", "Acta de Matricula");
+                    report.setSrc(directorioReportes+"clavePersonalCompleto.jasper");
+
+            } else if(tipo.equals("CR")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     parametros.put("titulo", "Acta de Matricula");
                     report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
@@ -1564,14 +1585,23 @@ public void quitarFila(String codigoBuscar){
             <button image="/images/guardar.gif" id="guardar3" label="Guardar"  disabled="true"  onClick="guardar();"/>
             <button  image="/images/nuevo.gif" id="agregar3" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
             <button  image="/images/editar.gif" id="modificar3"  label="Modificar" disabled="true" onClick="modificar()"/>
-            <button  image="/images/imprimir.gif" id="acta3"  label="Acta" disabled="true"  onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
-            <button  image="/images/imprimir.gif" id="acta8"  label="Ficha Ins." disabled="true"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
-            <button  image="/images/imprimir.gif" id="certificado3"  label="Certificado" disabled="true"  onClick='showReport("CM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
-            <button  image="/images/imprimir.gif" id="certificado23"  label="Certificado2" disabled="true"  onClick='showReport("CM2"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
-            <button  image="/images/imprimir.gif" id="claveprint3"  label="Clave" disabled="true"  onClick='showReport("CL"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
-            <button  image="/images/imprimir.gif" id="carnetprint3"  label="Carnét" disabled="false"  onClick='showReport("CAR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
-            <button  image="/images/imprimir.gif" id="carnetprintm3"  label="Carnét M." disabled="false"  onClick='showReport("CARM");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
             <button  image="/images/eliminar.gif" id="eliminar3"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
+              <menubar autodrop="true" id="menubar" >
+   
+                                    <menu image="/images/imprimir.gif"   label="IMPRIMIR" ><!--ADMINISTRACION-->
+                                        <menupopup   >
+                                            <menuitem image="/images/imprimir.gif" id="acta3"  label="Acta"    onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+                                            <menuitem image="/images/imprimir.gif" id="acta8"  label="Ficha Inscripción"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+                                            <menuitem image="/images/imprimir.gif" id="certificado3"  label="Certificado(Modelo 1)"  onClick='showReport("CM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif" id="certificado23"  label="Certificado(Modelo 2)"    onClick='showReport("CM2"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+                                            <menuitem image="/images/imprimir.gif" id="claveprint3"  label="Clave Estudiante"  onClick='showReport("CL"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif" id="claveprint5"  label="Clave Representante"   onClick='showReport("CR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif" id="carnetprint3"  label="Carnét Local"    onClick='showReport("CAR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif" id="carnetprintm3"  label="Carnét Ministerio"  onClick='showReport("CARM");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif" id="contrato"  label="Contrato Matricula"  onClick='showReport("CONT");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                        </menupopup>
+                                    </menu>
+                                    </menubar>
         </hbox>
     </vbox>
     <vbox id="contenido" >
@@ -2154,8 +2184,10 @@ public void quitarFila(String codigoBuscar){
                                             <span style="float:right">Toma Transporte:</span>
 
                                             <span>
-                                                <checkbox id="transporte" disabled="true"/>
-                                                <textbox id="nobus" maxlength="100" cols="40" readonly="true"  />
+                                                <checkbox id="transporte" onCheck="vuelta.disabled = (self.checked? false: true);  ida.disabled = (self.checked? false: true) " disabled="true"/>
+                                                <textbox id="nobus" maxlength="100" cols="20" readonly="true"  />
+                                                Ida:<checkbox id="ida" disabled="true"/>
+                                                Vuelta:<checkbox id="vuelta" disabled="true"/>
                                             </span>
                                         </row>
                                         <row>
@@ -2475,19 +2507,28 @@ public void quitarFila(String codigoBuscar){
              
     </vbox>
 
-    <vbox id="botones2">
+    <vbox  id="botones2">
         <hbox>
             <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
             <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
             <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true" onClick="modificar()"/>
-            <button  image="/images/imprimir.gif" id="acta"  label="Acta" disabled="true"  onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  '/>
-            <button  image="/images/imprimir.gif" id="acta9"  label="Ficha Ins." disabled="true"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  '/>
-            <button  image="/images/imprimir.gif" id="certificado"  label="Certificado" disabled="true"  onClick='showReport("CM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  ' />
-            <button  image="/images/imprimir.gif" id="certificado2"  label="Certificado2" disabled="true"  onClick='showReport("CM2"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  '/>
-            <button  image="/images/imprimir.gif" id="claveprint"  label="Clave" disabled="true"  onClick='showReport("CL"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  ' />
-            <button  image="/images/imprimir.gif" id="carnetprint"  label="Carnét" disabled="false"  onClick='showReport("CAR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false;separador.visible=false;  ' />
-            <button  image="/images/imprimir.gif" id="carnetprintm"  label="Carnét M." disabled="false"  onClick='showReport("CARM");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
             <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
+            <menubar autodrop="true" id="menubar5" >
+   
+                                    <menu image="/images/imprimir.gif"   label="IMPRIMIR" ><!--ADMINISTRACION-->
+                                        <menupopup   >
+                                            <menuitem image="/images/imprimir.gif"  label="Acta"    onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+                                            <menuitem image="/images/imprimir.gif"  label="Ficha Inscripción"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+                                            <menuitem image="/images/imprimir.gif"  label="Certificado(Modelo 1)"  onClick='showReport("CM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif"  label="Certificado(Modelo 2)"    onClick='showReport("CM2"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+                                            <menuitem image="/images/imprimir.gif"    label="Clave Estudiante"  onClick='showReport("CL"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif"  label="Clave Representante"   onClick='showReport("CR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif"  label="Carnét Local"    onClick='showReport("CAR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif"  label="Carnét Ministerio"  onClick='showReport("CARM");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif"   label="Contrato Matricula"  onClick='showReport("CONT");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                        </menupopup>
+                                    </menu>
+                                    </menubar>
         </hbox>
     </vbox>
     <vbox >
