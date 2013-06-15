@@ -147,7 +147,7 @@ public class ReporteActaDataSource implements JRDataSource {
 
                 }
 
-                String f = " día " + fecha.getDay() + " del mes de " + mes + " del año " + (fecha.getYear() + 1900) + "";
+                String f = " día " + fecha.getDate() + " del mes de " + mes + " del año " + (fecha.getYear() + 1900) + "";
                 valor = f;
             } else if ("padre".equals(fieldName)) {
                 valor = nodo.getEstudiante().getRepresentante().getApepadre() + " " + nodo.getEstudiante().getRepresentante().getNompadre();

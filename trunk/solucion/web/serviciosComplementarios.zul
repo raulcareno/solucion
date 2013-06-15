@@ -529,37 +529,19 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
       Administrador adm = new Administrador();
       Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        ArrayList detalle = new ArrayList();
-        String query = "SELECT mat FROM Matriculas AS mat " +
-                "WHERE  mat.estado like '%Matriculado%' " +
-                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
-                if(tipo.equals("INS")){
-                    query = "SELECT mat FROM Matriculas AS mat " +
-                        "WHERE  mat.estado like '%Inscrito%' " +
-                         "and mat.codigomat = '" + matricula.getCodigomat() + "' "; 
-                }
-        List hoy = adm.query(query);
-        for (Iterator it = hoy.iterator(); it.hasNext();) {
-            Matriculas elem = (Matriculas) it.next();
-            
+        List detalle = new ArrayList();
             String queryS = "SELECT o FROM ServiciosComplementarios as o " + 
             " WHERE o.matricula.codigomat  =  '" + matricula.getCodigomat() + "'  and o.si = true ";
             List empleadosectorList = adm.query(queryS);
-            ArrayList servicios = new ArrayList();
+            System.out.println("**********************************************************");
             int i = 0;
                 for (Iterator itna = empleadosectorList.iterator(); itna.hasNext();) {
                     ServiciosComplementarios vec = (ServiciosComplementarios) itna.next();
-                    elem = vec.getMatricula();
-                    elem.setProducto(vec.getProducto().getDescripcion());
-                    elem.setPrecio(vec.getProducto().getPrecio());
-                    elem.setObservacion2(vec.getProducto().getObservacion());
-                    elem.setProCodigo(vec.getProducto().getCodigo()+"");
-                    elem.setCodigomat(i);
-                    i++;
-                    detalle.add(elem);
+                    detalle.add(vec);
                 }
-            
-        }
+
+           
+             
         
          
         JRDataSource ds = null;
@@ -813,7 +795,7 @@ public void quitarFila(String codigoBuscar){
     <vbox>
         <separator id="separador" height="40px"> </separator>
     </vbox>
-    <panel height="800px" visible="false"  id="contenidoReporte">
+    <panel height="600px" visible="false"  id="contenidoReporte">
         <toolbar align="center">
             <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
                     onClick="contenidoReporte.visible=false; contenido.visible=true; botones1.visible=true; botones2.visible=true; separador.visible=true;  "/>
