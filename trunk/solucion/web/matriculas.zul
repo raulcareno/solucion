@@ -202,6 +202,8 @@ void llenar(Estudiantes estudent){
     usuario.value = estudent.getUsuario();
     nobus.value = estudent.getNobus();
     aseguradora.value = estudent.getAseguradora();
+    recorrido.value = estudent.getRecorrido();
+    sector.value = estudent.getSector();
             provincia.value = estudent.getProvincia();
             canton.value = estudent.getCanton();
             lugarnacimiento.value = estudent.getLugarnacimiento();
@@ -253,12 +255,35 @@ void llenar(Estudiantes estudent){
             if(estudent.getTransporte()!=null){
                 transporte.checked = estudent.getTransporte();
             }
+            if(estudent.getTarjeta()!=null){
+                tarjeta.checked = estudent.getTarjeta();
+            }
             if(estudent.getIda()!=null){
                 ida.checked = estudent.getIda();
             }
             if(estudent.getVuelta()!=null){
                 vuelta.checked = estudent.getVuelta();
             }
+            if(estudent.getAlimentacion()!=null){
+                alimentacion.checked = estudent.getAlimentacion();
+            }
+            if(estudent.getLunes()!=null){
+                lunes.checked = estudent.getLunes();
+            }
+            if(estudent.getMartes()!=null){
+                martes.checked = estudent.getMartes();
+            }
+            if(estudent.getMiercoles()!=null){
+                miercoles.checked = estudent.getMiercoles();
+            }
+            if(estudent.getJueves()!=null){
+                jueves.checked = estudent.getJueves();
+            }
+            if(estudent.getViernes()!=null){
+                viernes.checked = estudent.getViernes();
+            }
+             
+            
             if(estudent.getAsegurado()!=null){
                 asegurado.checked = estudent.getAsegurado();
             }
@@ -600,8 +625,17 @@ void estado(Boolean estado,Boolean modificar){
     adventista.disabled= estado;
     nuevo.disabled = estado;
     transporte.disabled = estado;
+    tarjeta.disabled = estado;
     ida.disabled = estado;
     vuelta.disabled = estado;
+    alimentacion.disabled = estado;
+    lunes.disabled = estado;
+    martes.disabled = estado;
+    miercoles.disabled = estado;
+    jueves.disabled = estado;
+    viernes.disabled = estado;
+    recorrido.readonly = estado;
+    sector.readonly = estado;
     asegurado.disabled = estado;
     aseguradora.readonly = estado;
     //repite.disabled = estado;
@@ -741,6 +775,26 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setEstado(true);
         estudent.setAdventista(adventista.checked);
         estudent.setTransporte(transporte.checked);
+        estudent.setTarjeta(tarjeta.checked);
+        estudent.setAlimentacion(alimentacion.checked);
+        if(alimentacion.checked){
+            estudent.setLunes(lunes.checked);
+            estudent.setMartes(martes.checked);
+            estudent.setMiercoles(miercoles.checked);
+            estudent.setJueves(jueves.checked);
+            estudent.setViernes(viernes.checked);
+        
+        }else{
+            estudent.setLunes(false);lunes.checked=false;
+            estudent.setMartes(false);martes.checked=false;
+            estudent.setMiercoles(false); miercoles.checked=false;
+            estudent.setJueves(false); jueves.checked = false;
+            estudent.setViernes(false); viernes.checked = false;
+        }
+        estudent.setRecorrido(recorrido.value);
+        estudent.setSector(sector.value);
+        
+        
         estudent.setIda(ida.checked);
         estudent.setVuelta(vuelta.checked);
         estudent.setNobus(nobus.value);
@@ -1586,9 +1640,9 @@ public void quitarFila(String codigoBuscar){
             <button  image="/images/nuevo.gif" id="agregar3" label="Agregar" onClick='cargandoFoto = false;combo.value="";nuevo();'  />
             <button  image="/images/editar.gif" id="modificar3"  label="Modificar" disabled="true" onClick="modificar()"/>
             <button  image="/images/eliminar.gif" id="eliminar3"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
-              <menubar autodrop="true" id="menubar" >
+              <menubar autodrop="true"  id="menubar" >
    
-                                    <menu image="/images/imprimir.gif"   label="IMPRIMIR" ><!--ADMINISTRACION-->
+                                    <menu image="/images/imprimir.gif" style="background-color:#FFFFCC"  label="IMPRIMIR" ><!--ADMINISTRACION-->
                                         <menupopup   >
                                             <menuitem image="/images/imprimir.gif" id="acta3"  label="Acta"    onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
                                             <menuitem image="/images/imprimir.gif" id="acta8"  label="Ficha Inscripción"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
@@ -1807,9 +1861,16 @@ public void quitarFila(String codigoBuscar){
                                         
                                             <span>
                                                 <textbox  cols="10" id="lugarnacimiento"  />
-                                                <span style="color:blue;weight:bold">    
+                                               
+                                            </span>
+                                        
+                                         
+                                        </row>
+                                         <row>
+                                            <span style="color:blue;weight:bold">    
                                                     Nacionalidad(*)
                                                 </span>
+                                            <span>
                                                 <textbox cols="10" id="nacionalidad"  />
                                             </span>
                                         
@@ -2185,9 +2246,33 @@ public void quitarFila(String codigoBuscar){
 
                                             <span>
                                                 <checkbox id="transporte" onCheck="vuelta.disabled = (self.checked? false: true);  ida.disabled = (self.checked? false: true) " disabled="true"/>
-                                                <textbox id="nobus" maxlength="100" cols="20" readonly="true"  />
+                                                Sector.:<textbox id="sector" maxlength="100" cols="7" readonly="true"  />
+                                                No.Recorr.:<textbox id="recorrido" maxlength="100" cols="7" readonly="true"  />
+                                                
+                                                
+                                            </span>
+                                        </row>
+                                          <row>
+                                            <span style="float:right">Transporte:</span>
+                                            <span>
                                                 Ida:<checkbox id="ida" disabled="true"/>
                                                 Vuelta:<checkbox id="vuelta" disabled="true"/>
+                                                 Obs:<textbox id="nobus" maxlength="100" cols="15" readonly="true"  />
+                                                
+                                            </span>
+                                        </row>
+                                         <row>
+                                            <span style="float:right">Toma Alimentación:</span>
+
+                                            <span>
+                                                <checkbox id="alimentacion" onCheck=" lunes.disabled = (self.checked? false: true);  martes.disabled = (self.checked? false: true); miercoles.disabled = (self.checked? false: true); jueves.disabled = (self.checked? false: true); viernes.disabled = (self.checked? false: true); " disabled="true"/>
+                                                Días   
+                                                 Lun: <checkbox id="lunes" disabled="true"/>
+                                                 Mar: <checkbox id="martes" disabled="true"/>
+                                                 Mie: <checkbox id="miercoles" disabled="true"/>
+                                                 Jue: <checkbox id="jueves" disabled="true"/>
+                                                 Vie: <checkbox id="viernes" disabled="true"/>
+
                                             </span>
                                         </row>
                                         <row>
@@ -2197,6 +2282,7 @@ public void quitarFila(String codigoBuscar){
 
                                                 Otros Dsctos:
                                                 <decimalbox id="otros" format="###.##"   maxlength="5" cols="10" readonly="true"  /> USD
+                                                  Entregada Tarj: <checkbox id="tarjeta" disabled="true"/>
                                             </span>
                                         </row>
                                         <row>
@@ -2210,7 +2296,7 @@ public void quitarFila(String codigoBuscar){
                                         </row>
                                         <row>
                                             <span style="float:right"> Observación:</span>
-                                            <textbox rows="2" id="observacion" cols="65"  readonly="true"  />
+                                            <textbox rows="1" id="observacion" cols="65"  readonly="true"  />
                                         </row>
           <row>
 
@@ -2515,7 +2601,7 @@ public void quitarFila(String codigoBuscar){
             <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar(Matricula)" disabled="true"  onClick="eliminar();"/>
             <menubar autodrop="true" id="menubar5" >
    
-                                    <menu image="/images/imprimir.gif"   label="IMPRIMIR" ><!--ADMINISTRACION-->
+                                    <menu image="/images/imprimir.gif"  style="background-color:#FFFFCC"    label="IMPRIMIR" ><!--ADMINISTRACION-->
                                         <menupopup   >
                                             <menuitem image="/images/imprimir.gif"  label="Acta"    onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
                                             <menuitem image="/images/imprimir.gif"  label="Ficha Inscripción"  onClick='showReport("INS"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>

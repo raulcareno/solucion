@@ -299,6 +299,8 @@
                                             <menuseparator></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Encuesta" label="Encuesta" image="/images/encuesta.png"   value="/encuesta.zul" />
                                             <menuitem onClick="ingresar(self)" id="EncuestaEstudiantes" label="Encuesta Estudiantes" image="/images/encuesta.png"   value="/preguntas/encuestaEstudiantes.zul" />
+                                            <menuitem onClick="ingresar(self)" id="ServiciosComplementarios" label="Servicios Complementarios"   image="/images/sorteo.png"      value="/serviciosComplementarios.zul" />
+                                            <menuitem onClick="ingresar(self)" id="Productos" label="Productos"   image="/images/s.png"      value="/productos.zul" />
                                         </menupopup>
                                     </menu>
                                     <menu  image="/images/barra.png"  label="Notas" ><!--NOTAS-->
@@ -502,8 +504,8 @@
             Evaluadores.visible = per.verificarPermisoReporte("PlanificacionEvaluadores","PlanificacionEvaluadores", "Ingresar",true,"VARIOS");
             Planificacion.visible = per.verificarPermisoReporte("Planificacion","Planificacion", "Ingresar",true,"VARIOS");
             SeguimientoPlanificacion.visible = per.verificarPermisoReporte("SeguimientoPlanificacion","SeguimientoPlanificacion", "Ingresar",true,"VARIOS");
-            
-   
+            ServiciosComplementarios.visible = per.verificarPermisoReporte("ServiciosComplementarios","ServiciosComplementarios", "Ingresar",true,"MATRICULAS");
+            Productos.visible = per.verificarPermisoReporte("Productos","Productos", "Ingresar",true,"MATRICULAS");
 
             }
         </zscript>

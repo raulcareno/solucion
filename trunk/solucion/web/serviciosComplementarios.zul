@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?page title="Administrador Educativo"?>
+<?page id="matriculapageSERVICIOSCOMPLEMENTARIOS"?>
+ 
+
+<window id="principales"  >
+    <style>
+        .MyGridRowHeight tr.z-row td.z-row-inner  
+        {
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        border-bottom: 1px solid #DDD;
+ 
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px 0px 0px 0px ;
+        //overflow: hidden;
+        }
+    </style>
+    <zscript>
+            <![CDATA[
+    import jcinform.persistencia.Global;
+    import bean.EventDAO;
+    import java.util.ArrayList;
+    import jcinform.persistencia.*;
+    import jcinform.procesos.Administrador;
+    import bean.Permisos;
+    import bean.*;
+    import java.io.FileNotFoundException;
+    import java.io.FileOutputStream;
+    import java.io.DataOutputStream;
+    import java.io.FileInputStream;
+    import java.io.InputStream;
+    import java.io.IOException;
+    import java.util.logging.Level;
+    import java.util.logging.Logger;
+    import java.util.Vector;
+    import bean.matriculasBean;
+    import sources.CustomDataSource;
+    import net.sf.jasperreports.engine.JRDataSource;
+    import sources.*;
+    import bean.notas;
+    import java.math.BigDecimal;
+    import bean.notas;
+    import jcinform.persistencia.*;
+    import jcinform.procesos.Administrador;
+    import miniaturas.*;
+    import java.util.Date;
+    import org.joda.time.DateMidnight;
+    import org.zkoss.zul.Listbox;
+
+    CrearMiniaturas mini = new CrearMiniaturas();
+    Boolean cargandoFoto = false;
+    Boolean guardando = false;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
+    static Estudiantes estudent = new Estudiantes();
+    static Representante representante0 = new Representante();
+    static Matriculas matricula = new Matriculas();
+    Session ses = Sessions.getCurrent();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    Permisos permiso = new Permisos();
+    Empleados user =  (Empleados)ses.getAttribute("user");
+
+
+    List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
+        " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' and o.curso.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    System.out.println("NUMERO DE CURSOS: "+cursos);
+
+   if(cursos.size()<=0){
+             cursos = adm.query("Select o from Cursos as o "
+            + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  ");
+            System.out.println("ENTRO VACIO");
+   }
+    Object media = null;
+
+
+        //FUNCIONES
+        void cargarFoto(byte[] imageData){
+          foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+        }
+      
+       Integer nuevaMatricula() {
+       Administrador adm = new Administrador();
+
+        List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
+                "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
+        ParametrosGlobales parametros = new ParametrosGlobales();
+        if(NoActualMatricula.size()<=0){
+            alert("Falta copiar los parámetros a este Año Lectivo");
+        }
+        parametros = (ParametrosGlobales) NoActualMatricula.get(0);
+        int noMatri = 0;
+        Double decs = parametros.getNvalor();
+        Long val = java.lang.Math.round(decs);
+        noMatri = Integer.valueOf(val.toString());
+        noMatri += 1;
+        List  numeroYa = adm.query("Select o from Matriculas as o " +
+                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "and o.numero = '" + noMatri + "'");
+        if (numeroYa.size() > 0) {
+            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
+                    "where o.curso.periodo.codigoper= '" + periodo.getCodigoper() + "'"  );
+            parametros.setNvalor(new Double(nClave + 1));
+            adm.actualizar(parametros);
+            return nClave + 1;
+        } else {
+            parametros.setNvalor(new Double(noMatri));
+            adm.actualizar(parametros);
+            return noMatri;
+        }
+    }
+
+    void generarClave(Boolean boton){
+    try{
+    String uss = usuario.value;
+    if(boton==false){
+        if(uss.trim() != ""){
+                return;
+        }
+    }
+        String user ="";
+        String caracter="";
+        caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
+        String caracterNumeros="09876543210987654321098765432109876543210987654321";
+        int numero_caracteres=5;
+        int total=caracter.length();
+        String  clave2="";
+        for(int a=0;a<numero_caracteres;a++){
+            clave2+=caracterNumeros.charAt(((Double)(total*Math.random())).intValue());
+        }
+
+            clave.value = clave2.toUpperCase();
+             caracter=""+apellidos.value.trim().replace(" ","");
+            caracter+="JC"+nombres.value.trim().replace(" ","");
+            numero_caracteres=5;
+            total=caracter.length();
+            caracter = caracter.replace("Ñ", "").replace("Á", "").replace("É", "").replace("Í", "").replace("Ó", "").replace("Ú", "").replace("-", "");
+            user ="";
+            for(int a=0;a<numero_caracteres;a++){
+                user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+            }
+            usuario.value = user.toUpperCase();
+            }catch(Exception e){
+            System.out.println("ERROR EN GENERAR CLAVE"+e);
+            }
+    }
+       void generarClaveRep(Boolean boton){
+    try{
+    String uss = usuarior.value;
+    if(boton==false){
+        if(uss.trim() != ""){
+                return;
+        }
+    }
+        String user ="";
+        String caracter="";
+        String caracterNumeros="0987654321098765432109876543210987654321";
+        caracter+="JCQWERTYUIOPASDFGHJKLZXCVBNM";
+        int numero_caracteres=5;
+        int total=caracter.length();
+        String  clave2="";
+        for(int a=0;a<numero_caracteres;a++){
+            clave2+=caracterNumeros.charAt(((Double)(total*Math.random())).intValue());
+        }
+
+            claver.value = clave2.toUpperCase();
+             caracter=""+apellidosre.value.trim().replace(" ","");
+            caracter+="JC"+nombresre.value.trim().replace(" ","");
+            numero_caracteres=6;
+            total=caracter.length();
+            user ="";
+            caracter = caracter.replace("Ñ", "").replace("Á", "").replace("É", "").replace("Í", "").replace("Ó", "").replace("Ú", "").replace("-", "");
+            for(int a=0;a<numero_caracteres;a++){
+                user+=caracter.charAt(((Double)(total*Math.random())).intValue());
+            }
+            usuarior.value = user.toUpperCase();
+            }catch(Exception e){
+            System.out.println("ERROR EN GENERAR CLAVE"+e);
+            }
+    }
+
+void llenar(Estudiantes estudent){
+    codigo.value = estudent.getCodigoest();
+    cedula.value = estudent.getCedula();
+    nombres.value = estudent.getNombre()+" "+estudent.getApellido();
+     
+    aseguradora.value = estudent.getAseguradora();
+    recorrido.value = estudent.getRecorrido();
+    sector.value = estudent.getSector();
+            if(estudent.getTransporte()!=null){
+                transporte.checked = estudent.getTransporte();
+            }
+            if(estudent.getIda()!=null){
+                ida.checked = estudent.getIda();
+            }
+            if(estudent.getVuelta()!=null){
+                vuelta.checked = estudent.getVuelta();
+            }
+            if(estudent.getAlimentacion()!=null){
+                alimentacion.checked = estudent.getAlimentacion();
+            }
+            if(estudent.getLunes()!=null){
+                lunes.checked = estudent.getLunes();
+            }
+            if(estudent.getMartes()!=null){
+                martes.checked = estudent.getMartes();
+            }
+            if(estudent.getMiercoles()!=null){
+                miercoles.checked = estudent.getMiercoles();
+            }
+            if(estudent.getJueves()!=null){
+                jueves.checked = estudent.getJueves();
+            }
+            if(estudent.getViernes()!=null){
+                viernes.checked = estudent.getViernes();
+            }
+             
+            
+            if(estudent.getAsegurado()!=null){
+                asegurado.checked = estudent.getAsegurado();
+            }
+         
+  
+
+List matricula = adm.query("Select o from Matriculas as o where o.estudiante.codigoest = '"+estudent.getCodigoest()+"' "
++ " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
+    if(matricula.size()>0)
+    {
+        llenarMatricula(matricula.get(0));
+        filas.addRow(matricula.get(0));
+        /* modificar.disabled = true;
+        for(Iterator it = cursos.iterator(); it.hasNext();){
+            Cursos cur = it.next();
+            if(cur.getCodigocur().equals(matricula.get(0).getCurso().getCodigocur()))
+                modificar.disabled = false;
+        }
+        */
+        
+    }else{
+        llenarMatricula(new Matriculas(0));
+        numero.value = 0;
+//        Messagebox.show("No se encuentra Inscrito ni Matriculado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    }
+}
+ 
+ 
+
+ 
+
+void llenarMatricula(Matriculas matri){
+         
+         codigomat.value =matri.getCodigomat();
+         accion.value = matri.getEstado();
+         observacion.value = matri.getObservacion();
+         
+            if(matri.getCurso() != null){
+             try{
+                      for (int i = 0; i <= curso.getItems().size(); i++) {
+                                    Cursos tr0 = ((Cursos)((Listitem)curso.getItems().get(i)).getValue());
+                                    int primero = tr0.getCodigocur();
+                                    int segundo = matri.getCurso().getCodigocur();
+                                    if(primero == segundo){
+                                        curso.setSelectedItem((Listitem)curso.getItems().get(i));
+                                        bd1.value = matri.getCurso().getDescripcion()+" "+ matri.getCurso().getEspecialidad()+" "+ matri.getCurso().getParalelo();
+                                        break;
+                                    }
+                           }
+                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
+
+
+            }
+          
+}
+
+ 
+ 
+ 
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            estudent = (Estudiantes)datos.selectedItem.value;
+        }
+ 
+
+}
+
+
+ void guardar(){
+ if(guardando)
+        return;
+ guardando = true;
+ try{
+           
+
+//GUARDAR MATRICULA
+        Matriculas matricula = new Matriculas(codigomat.value);
+        servicios nso = new servicios();
+        servicios r = (servicios) datos.getRows();
+        String resultado = nso.guardar(r.getChildren(),matricula);
+        if(resultado.equals("ok")){
+            permiso.auditar("serviciosComplementarios","Guardar",""+codigomat.value);
+            Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+         }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+         }
+        }catch(Exception e){
+          Logger.getLogger("serviciosComplementarios ").log(Level.SEVERE, null, e);
+        }
+    guardando = false;
+}
+
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("Matricular",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       try{
+        cod1.value = 0; nom1.value =""; par1.value = ""; cel1.value = ""; con1.value="";
+        cod2.value = 0;nom2.value =""; par2.value = ""; cel2.value = ""; con2.value="";
+        cod3.value = 0;nom3.value =""; par3.value = ""; cel3.value = ""; con3.value="";
+
+        cod11.value = 0; nom11.value =""; par11.value = ""; ci11.value="";
+        cod22.value = 0; nom22.value =""; par22.value = ""; ci22.value="";
+        cod33.value = 0; nom33.value =""; par33.value = ""; ci33.value="";
+
+        codh1.value = 0; codh2.value = 0; codh3.value = 0; 
+        nomh1.value ="";nomh2.value ="";nomh3.value ="";
+        anioh1.value ="";  anioh2.value =""; anioh3.value =""; 
+        guardar.disabled=false;
+        guardar3.disabled=false;
+        llenar(new Estudiantes(0));
+        estado(false,false);
+        llenarConsumidor();
+        cod1.value = 0;
+        cod2.value = 0;
+        cod3.value = 0;
+        cod11.value = 0;
+        cod22.value = 0;
+        cod33.value = 0; 
+        }catch(Exception e){
+        alert(""+e);
+        }
+
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Estudiantes)datos.selectedItem.value);
+        modificar.disabled = false;
+        acta.disabled = false;
+        acta8.disabled = false;
+        acta9.disabled = false;
+        certificado.disabled = false;
+        certificado2.disabled = false;
+        claveprint.disabled = false;
+        combo.value="";
+          registro.setSelected(true);
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false;
+       guardar3.disabled=false;
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             adm.eliminarObjeto(Matriculas.class, new Integer(codigomat.value));
+             llenarMatricula(new Matriculas(0));
+             codigomat.value = 0;
+             //CAMBIO DE ESTADO AL ESTUDIANTE
+             Estudiantes est = adm.buscarClave(codigo.value,Estudiantes.class);
+             est.setMatriculado(false);
+             adm.actualizar(est);
+             llenar(est);
+             
+                Messagebox.show("Matrícula Eliminada con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void buscarEstudiante(String valor){
+//cargandoFoto = false;
+int ini = valor.indexOf("[");
+int fin = valor.indexOf("]");
+valor = valor.substring(ini+1, fin);
+
+
+        List matriculas = adm.query("Select o from Matriculas as o where o.estudiante.codigoest = '"+valor+"' "
+                + " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
+                    if(matriculas.size()<= 0)
+                    { 
+                        int valor0 = Messagebox.show("El estudiante No se encuentra matriculado en éste PERIODO desea visualizar la información?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                       
+                            return;
+                            
+                    }
+
+
+
+
+
+            List empleados = adm.query("Select o from Estudiantes as o where o.codigoest = '"+valor+"' ");
+            if(empleados.size()>0){
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Estudiantes object = (Estudiantes)it.next();
+                      estudent = object;
+                 }
+                                     filas.addRow(new Matriculas(0));
+            llenar(estudent);
+
+            modificar.disabled=false;
+            acta.disabled = false;
+            acta8.disabled = false;
+        acta9.disabled = false;
+            certificado.disabled = false;
+            certificado2.disabled = false;
+            claveprint.disabled = false;
+            eliminar.disabled=false;
+             modificar3.disabled=false;
+            acta3.disabled = false;
+            certificado3.disabled = false;
+            certificado23.disabled = false;
+            claveprint3.disabled = false;
+            eliminar3.disabled=false;
+            }else{
+                estudent = new Estudiantes(0);
+            }
+
+    }
+void buscarRepresentante(String valor){
+
+int ini = valor.indexOf("[");
+int fin = valor.indexOf("]");
+valor = valor.substring(ini+1, fin);
+            List empleados = adm.query("Select o from Representante as o where o.codigorep = '"+valor+"' ");
+            if(empleados.size()>0){
+                Representante object = null;
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                 object = (Representante)it.next();
+                      //estudent = object;
+                 }
+           // llenarRepresentante(object);
+            modificar.disabled=false;
+            }else{
+                estudent = new Representante(0);
+            }
+
+    }
+    void limpiarRepresentante(){
+            Representante object = new Representante();
+            object.setCodigorep(0);
+            object.setTipoidentificacion("C");
+          //  llenarRepresentante(object);
+    }
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Estudiantes as o where o.cedula = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Estudiantes object = (Estudiantes)it.next();
+                        estudent = object;
+                 }
+            llenar(estudent);
+
+            }else{
+                estudent = new Estudiantes(0);
+            }
+
+        }
+    }
+
+
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o.estudiante from Matriculas as o " +
+        " where o.estudiante.apellido like '%"+p+"%' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'   order by o.estudiante.apellido");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Estudiantes acceIt = (Estudiantes) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCedula()+""));
+                      li.appendChild(new Listcell(acceIt.getApellido()+" "+acceIt.getNombre()));
+                      li.appendChild(new Listcell(acceIt.getDireccion()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+void cargar(Global g){
+    estudent.setPerfil(g);
+}
+
+void llenarConsumidor(){
+
+
+    cedulafac.value = "";
+    nombresfac.value = "";
+    direccionfac.value = "";
+    telefonofac.value = "";
+
+
+
+}
+
+
+
+//PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+                if(tipo.equals("INS")){
+                    query = "SELECT mat FROM Matriculas AS mat " +
+                        "WHERE  mat.estado like '%Inscrito%' " +
+                         "and mat.codigomat = '" + matricula.getCodigomat() + "' "; 
+                }
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            
+            String queryS = "SELECT o FROM ServiciosComplementarios as o " + 
+            " WHERE o.matricula.codigomat  =  '" + matricula.getCodigomat() + "'  and o.si = true ";
+            List empleadosectorList = adm.query(queryS);
+            ArrayList servicios = new ArrayList();
+            int i = 0;
+                for (Iterator itna = empleadosectorList.iterator(); itna.hasNext();) {
+                    ServiciosComplementarios vec = (ServiciosComplementarios) itna.next();
+                    elem = vec.getMatricula();
+                    elem.setProducto(vec.getProducto().getDescripcion());
+                    elem.setPrecio(vec.getProducto().getPrecio());
+                    elem.setObservacion2(vec.getProducto().getObservacion());
+                    elem.setProCodigo(vec.getProducto().getCodigo()+"");
+                    elem.setCodigomat(i);
+                    i++;
+                    detalle.add(elem);
+                }
+            
+        }
+        
+         
+        JRDataSource ds = null;
+         
+              ds = new ReporteActaDataSourceServicios(detalle);
+         
+        return ds;
+
+}
+        void showReport(String tipo) {
+            //Preparing parameters
+
+            Institucion insts = periodo.getInstitucion();
+
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            parametros.put("fechaFormat", insts.getRector());
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+            parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+             
+            if(tipo.equals("AM")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    report.setSrc(directorioReportes+"actaServicios.jasper");
+                    parametros.put("titulo", "Certificado de Matricula");
+            } 
+            if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+            }
+        }
+
+    anadirRetiro(){
+                try{
+                    Row row = new Row();
+                      
+                      //CARGO LAS SERIES COMO ATRIBUTO
+                       
+                    
+                           Doublebox dou = new Doublebox(0);
+                            dou.setStyle("float:right;text-align:right");
+                            dou.setValue(vu.value);
+                            Intbox intb = new Intbox(cantidad.value);
+                            intb.setCols(3);
+                            intb.setReadonly(true);
+                             intb.setStyle("float:right;text-align:right");
+                            Label prod = new Label(productod.value);
+                            row.appendChild(intb);
+                            row.appendChild(prod);
+                            row.appendChild(dou);
+                            
+                            Button aButton = null;
+                            aButton = new Button("quitar");
+                            aButton.setImage("/images/quitar.gif");
+                            aButton.setHeight("5px");
+                            aButton.setId("id"+idproducto.value);
+                            aButton.addEventListener("onClick", new EventListener() {
+                                public void onEvent(Event event) throws Exception {
+                                     int valor0 = Messagebox.show("Seguro que desea quitar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                     seriespanel.visible = false;
+                                     if(valor0 == 16){
+                                        quitarFila(aButton.getId());
+                                     }
+                                }
+                            });
+                            row.appendChild(aButton);
+                            
+                            row.setValue(new Equipos(idproducto.value)); 
+                    filas.appendChild(row);
+                    }catch(Exception e){
+                        alert("YA SE HA AGREGADO ESTE PRODUCTO");
+                    }
+                        vu.value=null;
+                        cantidad.value= null;
+                        productod.value=null;
+                        idproducto.value = null;
+                        cantidad.focus();
+  
+}
+
+public void quitarFila(String codigoBuscar){
+                 Rows filas2 =opciones.getRows();
+                List listadoProductos = filas2.getChildren();
+                    for (int i = 0; i <= listadoProductos.size()-1; i++) {
+                       Row object = (Row) listadoProductos.get(i);
+                       Equipos nuevo = ((Equipos)object.getValue());
+                       String codigoA = "id"+nuevo.getCodigo();
+                       if(codigoA.equals(codigoBuscar)){
+                            opciones.getRows().removeChild(object);
+                            break;
+                       }
+                    }
+
+}
+ 
+ void seleccionar(Boolean esta){
+        filas.seleccionar(esta);
+    }
+  ]]>
+    </zscript>
+    
+    <vbox id="contenido" >
+ 
+        <panel   title="DATOS DEL ESTUDIANTE"  framable="true"   border="normal"  >
+            <panelchildren>
+                <grid sclass="MyGridRowHeight" width="600px"   height="100%">
+                    <rows>
+
+                        <row style="background:yellow">
+                            <span style="float:right"> BÚSQUEDA: </span>
+                            <span>
+                                <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoComplete"/>
+                                _INGRESE UN APELLIDO
+                            </span>
+                        </row>
+                        <row visible = "false">
+
+                            <span style="float:right"> Codigo :</span>
+                            <span>
+                                <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
+                                Identificación:
+                                <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                <intbox maxlength="14" cols="5"  visible="true"  style="font-size:8px;background:transparent;border:0px"  readonly="true" id="codigomat"  />                                      
+                            </span>
+                        </row>
+                        <row>
+
+                            <span style="float:right;">
+                                <label value="Nombres: "  />
+                            </span>
+                            <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                        </row>
+                              
+                        <row>
+                            <span style="float:right;">
+                                <label value="Curso:"  />
+                            </span>
+                            <bandbox  width="380px" readonly="true"  id="bd1">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="curso" width="500px" rows="10" 
+                                                 onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                            <listitem selected="true" forEach="${cursos}" value="${each}">
+                                                <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                        </row>
+                        <row>
+                            <span style="float:right;">
+                                <label value="Estado:"  />
+                            </span>
+                            <span>
+                                <combobox disabled="true"   id="accion"  >
+                                    <comboitem  value="Matriculado" label="Matriculado"/>
+                                    <comboitem value="Inscrito" label="Inscrito"/>
+                                    <comboitem value="Retirado" label="Retirado"/>
+                                    <comboitem value="Emitir Pase" label="Emitir Pase"/>
+                                    <comboitem value="Recibir Pase" label="Recibir Pase"/>
+                                    <comboitem value="Anulado" label="Anulado"/>
+                                </combobox>
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right">Toma Transporte:</span>
+                            <span>
+                                <checkbox id="transporte" onCheck="vuelta.disabled = (self.checked? false: true);  ida.disabled = (self.checked? false: true) " disabled="true"/>
+                                Sector.:
+                                <textbox id="sector" maxlength="100" cols="7" readonly="true"  />
+                                No.Recorr.:
+                                <textbox id="recorrido" maxlength="100" cols="7" readonly="true"  />
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right">Transporte:</span>
+                            <span>
+                                Ida:
+                                <checkbox id="ida" disabled="true"/>
+                                Vuelta:
+                                <checkbox id="vuelta" disabled="true"/>
+                                Obs:
+                                <textbox id="nobus" maxlength="100" cols="15" readonly="true"  />
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right">Toma Alimentación:</span>
+
+                            <span>
+                                <checkbox id="alimentacion" onCheck=" lunes.disabled = (self.checked? false: true);  martes.disabled = (self.checked? false: true); miercoles.disabled = (self.checked? false: true); jueves.disabled = (self.checked? false: true); viernes.disabled = (self.checked? false: true); " disabled="true"/>
+                                Días:  
+                                Lun: 
+                                <checkbox id="lunes" disabled="true"/>
+                                Mar: 
+                                <checkbox id="martes" disabled="true"/>
+                                Mie: 
+                                <checkbox id="miercoles" disabled="true"/>
+                                Jue: 
+                                <checkbox id="jueves" disabled="true"/>
+                                Vie: 
+                                <checkbox id="viernes" disabled="true"/>
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right"> ¿Asegurado?:</span>
+                            <span>
+                                <checkbox id="asegurado"  disabled="true"/>
+
+                                Nombre Aseguradora:
+                                <textbox id="aseguradora"  maxlength="50" cols="20" readonly="true"  /> 
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+            </panelchildren>
+        </panel>
+        <panel>
+            <panelchildren>
+                <groupbox mold="3d" >
+                    <grid id="datos" >
+                        <columns>
+                            <column width="0px" label=""/>
+                            <column  sort="auto" label="Rubro"/>
+                            <column  label="Valor"/>
+                            <column>
+                                <checkbox id="por" onCheck="seleccionar(self.isChecked())"  label="TODOS" />
+                            </column>
+                            <column  width="0px" label=""/>
+                        </columns>
+                        <rows id="filas" use="bean.servicios">
+                        </rows>
+                    </grid>
+                </groupbox>
+            </panelchildren>
+        </panel>
+    </vbox>
+    <vbox  id="botones2">
+        <hbox>
+          <button image="/images/guardar.gif" id="guardar22" label="Guardar" onClick="guardar();" />           
+          <button image="/images/imprimir.gif"  label="ACTA"    onClick='showReport("AM"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; '/>
+        </hbox>
+    </vbox>
+    <vbox>
+        <separator id="separador" height="40px"> </separator>
+    </vbox>
+    <panel height="800px" visible="false"  id="contenidoReporte">
+        <toolbar align="center">
+            <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
+                    onClick="contenidoReporte.visible=false; contenido.visible=true; botones1.visible=true; botones2.visible=true; separador.visible=true;  "/>
+        </toolbar>
+        <panelchildren>
+            <jasperreport id="report" />
+        </panelchildren>
+    </panel>
+        
+     
+        
+        
+</window>
+  
