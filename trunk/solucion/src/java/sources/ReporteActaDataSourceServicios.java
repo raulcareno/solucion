@@ -405,7 +405,6 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
         } catch (Exception e) {
             System.out.println("en datasource Acta " + e);
         }
-        System.out.print(" "+valor);
         return valor;
     }
     public int year = 0;
