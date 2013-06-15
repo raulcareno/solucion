@@ -533,17 +533,12 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             String queryS = "SELECT o FROM ServiciosComplementarios as o " + 
             " WHERE o.matricula.codigomat  =  '" + matricula.getCodigomat() + "'  and o.si = true ";
             List empleadosectorList = adm.query(queryS);
-            System.out.println("**********************************************************");
+            
             int i = 0;
                 for (Iterator itna = empleadosectorList.iterator(); itna.hasNext();) {
                     ServiciosComplementarios vec = (ServiciosComplementarios) itna.next();
                     detalle.add(vec);
                 }
-
-           
-             
-        
-         
         JRDataSource ds = null;
          
               ds = new ReporteActaDataSourceServicios(detalle);
