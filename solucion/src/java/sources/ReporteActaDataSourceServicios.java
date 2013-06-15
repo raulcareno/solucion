@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Matriculas;
+import jcinform.persistencia.ServiciosComplementarios;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
@@ -47,54 +48,58 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
         Permisos permiso = new Permisos();
-        Matriculas nodo = (Matriculas) valorAtual;
+        ServiciosComplementarios nodo = (ServiciosComplementarios) valorAtual;
         String fieldName = campo.getName();
         try {
             
             if ("codigomat".equals(fieldName)) {
-                valor = nodo.getCodigomat();
+                valor = nodo.getMatricula().getCodigomat();
             }else if ("proCodigo".equals(fieldName)) {
-                valor = nodo.getProCodigo();
+                valor = nodo.getProducto().getCodigo()+"";
             } else if ("producto".equals(fieldName)) {
-                valor = nodo.getProducto();
+                valor = nodo.getProducto().getDescripcion();
             } else if ("precio".equals(fieldName)) {
-                valor = nodo.getPrecio();
+                valor = nodo.getProducto().getPrecio();
             } else if ("observacion2".equals(fieldName)) {
-                valor = nodo.getObservacion2();
+                valor = nodo.getProducto().getObservacion();
             }  else if ("tarjeta".equals(fieldName)) {
-                valor = nodo.getEstudiante().getTarjeta();
+                valor = nodo.getMatricula().getEstudiante().getTarjeta();
             }  else if ("alimentacion".equals(fieldName)) {
-                valor = nodo.getEstudiante().getAlimentacion();
+                valor = nodo.getMatricula().getEstudiante().getAlimentacion();
             }  else if ("lunes".equals(fieldName)) {
-                valor = nodo.getEstudiante().getLunes();
+                valor = nodo.getMatricula().getEstudiante().getLunes();
             }  else if ("martes".equals(fieldName)) {
-                valor = nodo.getEstudiante().getMartes();
+                valor = nodo.getMatricula().getEstudiante().getMartes();
             }  else if ("miercoles".equals(fieldName)) {
-                valor = nodo.getEstudiante().getMiercoles();
+                valor = nodo.getMatricula().getEstudiante().getMiercoles();
             }  else if ("jueves".equals(fieldName)) {
-                valor = nodo.getEstudiante().getJueves();
+                valor = nodo.getMatricula().getEstudiante().getJueves();
             }   else if ("viernes".equals(fieldName)) {
-                valor = nodo.getEstudiante().getViernes();
+                valor = nodo.getMatricula().getEstudiante().getViernes();
+            }   else if ("ida".equals(fieldName)) {
+                valor = nodo.getMatricula().getEstudiante().getIda();
+            }   else if ("vuelta".equals(fieldName)) {
+                valor = nodo.getMatricula().getEstudiante().getVuelta();
             }   else if ("recorrido".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRecorrido();
+                valor = nodo.getMatricula().getEstudiante().getRecorrido();
             }    else if ("sector".equals(fieldName)) {
-                valor = nodo.getEstudiante().getSector();
+                valor = nodo.getMatricula().getEstudiante().getSector();
             }   else if ("curso".equals(fieldName)) {
-                valor = nodo.getCurso().toString();
+                valor = nodo.getMatricula().getCurso().toString();
             } else if ("especialidad".equals(fieldName)) {
-                valor = nodo.getCurso().getEspecialidad().getDescripcion();
+                valor = nodo.getMatricula().getCurso().getEspecialidad().getDescripcion();
             } else if ("cursodescripcion".equals(fieldName)) {
-                valor = nodo.getCurso().getDescripcion();
+                valor = nodo.getMatricula().getCurso().getDescripcion();
             } else if ("paralelo".equals(fieldName)) {
-                valor = nodo.getCurso().getParalelo().getDescripcion();
+                valor = nodo.getMatricula().getCurso().getParalelo().getDescripcion();
             } else if ("estudiante".equals(fieldName)) {
-                String estado = (nodo.getEstado().equals("Retirado") ? "(R)" : (nodo.getEstado().equals("Emitir Pase") ? "(PE)" : ""));
-                valor = nodo.getEstudiante().getApellido() + " " + nodo.getEstudiante().getNombre() + " " + estado;
+                String estado = (nodo.getMatricula().getEstado().equals("Retirado") ? "(R)" : (nodo.getMatricula().getEstado().equals("Emitir Pase") ? "(PE)" : ""));
+                valor = nodo.getMatricula().getEstudiante().getApellido() + " " + nodo.getMatricula().getEstudiante().getNombre() + " " + estado;
             } else if ("nombres".equals(fieldName)) {
-                String estado = (nodo.getEstado().equals("Retirado") ? "(R)" : (nodo.getEstado().equals("Emitir Pase") ? "(PE)" : ""));
-                valor = nodo.getEstudiante().getApellido() + " " + nodo.getEstudiante().getNombre() + " " + estado;
+                String estado = (nodo.getMatricula().getEstado().equals("Retirado") ? "(R)" : (nodo.getMatricula().getEstado().equals("Emitir Pase") ? "(PE)" : ""));
+                valor = nodo.getMatricula().getEstudiante().getApellido() + " " + nodo.getMatricula().getEstudiante().getNombre() + " " + estado;
             } else if ("edad".equals(fieldName)) {
-                Date fecha = nodo.getEstudiante().getFechanacimiento();
+                Date fecha = nodo.getMatricula().getEstudiante().getFechanacimiento();
                 int y1 = fecha.getYear();
                 int m1 = fecha.getMonth();
                 int d1 = fecha.getDate();
@@ -150,76 +155,76 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
                 String f = " día " + fecha.getDay() + " del mes de " + mes + " del año " + (fecha.getYear() + 1900) + "";
                 valor = f;
             } else if ("padre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getApepadre() + " " + nodo.getEstudiante().getRepresentante().getNompadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getApepadre() + " " + nodo.getMatricula().getEstudiante().getRepresentante().getNompadre();
             } else if ("madre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getApemadre() + " " + nodo.getEstudiante().getRepresentante().getNommadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getApemadre() + " " + nodo.getMatricula().getEstudiante().getRepresentante().getNommadre();
             } else if ("profesionPadre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getProfesionpadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getProfesionpadre();
             } else if ("profesionMadre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getProfesionmadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getProfesionmadre();
             } else if ("ocupacionMadre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getOcupacionmadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getOcupacionmadre();
             } else if ("ocupacionPadre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getOcupacionpadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getOcupacionpadre();
             } else if ("tipoidentificacion".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getTipoidentificacion();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getTipoidentificacion();
             } else if ("dirfactura".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getDirfactura();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getDirfactura();
             } else if ("telfactura".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getTelfactura();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getTelfactura();
             } else if ("nombrefactura".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getNombrefactura();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getNombrefactura();
             } else if ("identificacionfactura".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getIdentificacionfactura();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getIdentificacionfactura();
             } else if ("direccion".equals(fieldName)) {
-                valor = nodo.getEstudiante().getDireccion();
+                valor = nodo.getMatricula().getEstudiante().getDireccion();
             } else if ("repite".equals(fieldName)) {
-                valor = nodo.getRepite();
+                valor = nodo.getMatricula().getRepite();
             } else if ("institutoAnterior".equals(fieldName)) {
-                valor = nodo.getInstitucion();
+                valor = nodo.getMatricula().getInstitucion();
             } else if ("representante".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getApellidos() + " " + nodo.getEstudiante().getRepresentante().getNombres();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getApellidos() + " " + nodo.getMatricula().getEstudiante().getRepresentante().getNombres();
             } else if ("observacion".equals(fieldName)) {
-                valor = nodo.getObservacion();
+                valor = nodo.getMatricula().getObservacion();
             } else if ("fechaNacimiento".equals(fieldName)) {
-                valor = nodo.getEstudiante().getFechanacimiento();
+                valor = nodo.getMatricula().getEstudiante().getFechanacimiento();
             } else if ("lugarNacimiento".equals(fieldName)) {
-                valor = (nodo.getEstudiante().getLugarnacimiento() == null ? "Quito" : nodo.getEstudiante().getLugarnacimiento());
+                valor = (nodo.getMatricula().getEstudiante().getLugarnacimiento() == null ? "Quito" : nodo.getMatricula().getEstudiante().getLugarnacimiento());
             } else if ("lugfecha".equals(fieldName)) {
-                valor = (nodo.getEstudiante().getLugarnacimiento() == null ? "Quito" : nodo.getEstudiante().getLugarnacimiento()) + ", " + nodo.getEstudiante().getFechanacimiento().toLocaleString().substring(0, 11);
+                valor = (nodo.getMatricula().getEstudiante().getLugarnacimiento() == null ? "Quito" : nodo.getMatricula().getEstudiante().getLugarnacimiento()) + ", " + nodo.getMatricula().getEstudiante().getFechanacimiento().toLocaleString().substring(0, 11);
             } else if ("telefonoPa".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getTelpadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getTelpadre();
             } else if ("telefonoMa".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getTelmadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getTelmadre();
             } else if ("emailMa".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getMailmadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getMailmadre();
             } else if ("email".equals(fieldName)) {
-                valor = nodo.getEstudiante().getMail();
+                valor = nodo.getMatricula().getEstudiante().getMail();
             } else if ("emailPa".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getMailpadre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getMailpadre();
             } else if ("emailRe".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getEmail();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getEmail();
             } else if ("transporte".equals(fieldName)) {
-                valor = nodo.getEstudiante().getTransporte();
+                valor = nodo.getMatricula().getEstudiante().getTransporte();
             } else if ("asegurado".equals(fieldName)) {
-                valor = nodo.getEstudiante().getAsegurado();
+                valor = nodo.getMatricula().getEstudiante().getAsegurado();
             } else if ("aseguradora".equals(fieldName)) {
-                valor = nodo.getEstudiante().getAseguradora();
+                valor = nodo.getMatricula().getEstudiante().getAseguradora();
             } else if ("telefonoRep".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getTelefono();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getTelefono();
             } else if ("identificacion".equals(fieldName)) {
-                valor = nodo.getEstudiante().getCedula();
+                valor = nodo.getMatricula().getEstudiante().getCedula();
             } else if ("identificacionRepre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getIdentificacionrepre();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getIdentificacionrepre();
             } else if ("direccionRep".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getDireccion();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getDireccion();
             } else if ("detalle".equals(fieldName)) {
-                valor = nodo.getEstudiante().getNobus();
+                valor = nodo.getMatricula().getEstudiante().getNobus();
             }else if ("bus".equals(fieldName)) {
-                valor = nodo.getEstudiante().getNobus();
+                valor = nodo.getMatricula().getEstudiante().getNobus();
             } else if ("foto".equals(fieldName)) {
                 try {
-                    byte[] bImage = nodo.getFoto();
+                    byte[] bImage = nodo.getMatricula().getFoto();
                     if (bImage != null) {
                         InputStream is = new ByteArrayInputStream(bImage);
                         valor = is;
@@ -229,120 +234,120 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
                     System.out.println("Error en foto:" + ex);
                 }
             } else if ("extension".equals(fieldName)) {
-                if (nodo.getExtension() != null) {
-                    valor = nodo.getCurso().getPeriodo().getInstitucion().getFotos() + nodo.getCodigomat() + "." + nodo.getExtension();
+                if (nodo.getMatricula().getExtension() != null) {
+                    valor = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getFotos() + nodo.getMatricula().getCodigomat() + "." + nodo.getMatricula().getExtension();
                 } else {
                     valor = null;
                 }
 
             } else if ("usuario".equals(fieldName)) {
-                valor = nodo.getEstudiante().getUsuario();
+                valor = nodo.getMatricula().getEstudiante().getUsuario();
             } else if ("codigoestudiante".equals(fieldName)) {
-                valor = nodo.getEstudiante().getCodigoest();
+                valor = nodo.getMatricula().getEstudiante().getCodigoest();
             } else if ("provincia".equals(fieldName)) {
-                valor = nodo.getEstudiante().getProvincia();
+                valor = nodo.getMatricula().getEstudiante().getProvincia();
             } else if ("canton".equals(fieldName)) {
-                valor = nodo.getEstudiante().getCanton();
+                valor = nodo.getMatricula().getEstudiante().getCanton();
             } else if ("parroquia".equals(fieldName)) {
-                valor = nodo.getEstudiante().getLugarnacimiento();
+                valor = nodo.getMatricula().getEstudiante().getLugarnacimiento();
             } else if ("clave".equals(fieldName)) {
-                valor = permiso.decriptar(nodo.getEstudiante().getClave());
+                valor = permiso.decriptar(nodo.getMatricula().getEstudiante().getClave());
             } else if ("usuarior".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getUsuario();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getUsuario();
             } else if ("claver".equals(fieldName)) {
-                valor = permiso.decriptar(nodo.getEstudiante().getRepresentante().getClave());
+                valor = permiso.decriptar(nodo.getMatricula().getEstudiante().getRepresentante().getClave());
             } else if ("matricula".equals(fieldName)) {
-                String codigo = nodo.getNumero() + "";
+                String codigo = nodo.getMatricula().getNumero() + "";
                 while (codigo.length() < 5) {
                     codigo = "0" + codigo;
                 }
                 valor = codigo;
-                //valor = String.format("%4d",nodo.getNumero());
+                //valor = String.format("%4d",nodo.getMatricula().getNumero());
 
             } else if ("folio".equals(fieldName)) {
-                String codigo = nodo.getFolio() + "";
+                String codigo = nodo.getMatricula().getFolio() + "";
                 while (codigo.length() < 5) {
                     codigo = "0" + codigo;
                 }
                 valor = codigo;
-                //valor = String.format("%4d",nodo.getNumero());
+                //valor = String.format("%4d",nodo.getMatricula().getNumero());
 
             } else if ("numero".equals(fieldName)) {
-                valor = nodo.getNumero();
+                valor = nodo.getMatricula().getNumero();
             } else if ("fecha".equals(fieldName)) {
-                valor = nodo.getFechamat();
+                valor = nodo.getMatricula().getFechamat();
             } else if ("periodo".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getDescripcion();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getDescripcion();
             } else if ("seccion".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getInstitucion().getTipo();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getTipo();
             } else if ("regimen".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getRegimen();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getRegimen();
             } else if ("jornada".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getSeccion().getDescripcion();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getSeccion().getDescripcion();
             } else if ("genero".equals(fieldName)) {
-                valor = nodo.getEstudiante().getGenero();
+                valor = nodo.getMatricula().getEstudiante().getGenero();
             } else if ("anios".equals(fieldName)) {
-                calcularEdad(nodo.getEstudiante().getFechanacimiento());
+                calcularEdad(nodo.getMatricula().getEstudiante().getFechanacimiento());
                 valor = this.year;
             } else if ("meses".equals(fieldName)) {
-                calcularEdad(nodo.getEstudiante().getFechanacimiento());
+                calcularEdad(nodo.getMatricula().getEstudiante().getFechanacimiento());
                 valor = this.month;
             } else if ("dias".equals(fieldName)) {
-                calcularEdad(nodo.getEstudiante().getFechanacimiento());
+                calcularEdad(nodo.getMatricula().getEstudiante().getFechanacimiento());
                 valor = this.day;
             } else if ("bus".equals(fieldName)) {
-                valor = nodo.getEstudiante().getNobus();
+                valor = nodo.getMatricula().getEstudiante().getNobus();
             } else if ("ruc".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getInstitucion().getRuc();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getRuc();
             } else if ("codigo".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getInstitucion().getCodigo();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getCodigo();
             } else if ("discapacidad".equals(fieldName)) {
-                valor = nodo.getEstudiante().getDiscapacidad();
+                valor = nodo.getMatricula().getEstudiante().getDiscapacidad();
             } else if ("nacionalidad".equals(fieldName)) {
-                valor = nodo.getEstudiante().getNacionalidad();
+                valor = nodo.getMatricula().getEstudiante().getNacionalidad();
             } else if ("tipodiscapacidad".equals(fieldName)) {
-                valor = nodo.getEstudiante().getTipodiscapacidad();
+                valor = nodo.getMatricula().getEstudiante().getTipodiscapacidad();
             } else if ("lugar".equals(fieldName)) {
-                valor = nodo.getEstudiante().getLugar();
+                valor = nodo.getMatricula().getEstudiante().getLugar();
             } else if ("hermanos".equals(fieldName)) {
-                valor = nodo.getEstudiante().getHermanos();
+                valor = nodo.getMatricula().getEstudiante().getHermanos();
             } else if ("vivecon".equals(fieldName)) {
-                valor = nodo.getEstudiante().getVivecon();
+                valor = nodo.getMatricula().getEstudiante().getVivecon();
             } else if ("tipofamilia".equals(fieldName)) {
-                valor = nodo.getEstudiante().getTipofamilia();
+                valor = nodo.getMatricula().getEstudiante().getTipofamilia();
             } else if ("ingpadre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getIngpadre();
+                valor = nodo.getMatricula().getEstudiante().getIngpadre();
             } else if ("ingmadre".equals(fieldName)) {
-                valor = nodo.getEstudiante().getIngmadre();
+                valor = nodo.getMatricula().getEstudiante().getIngmadre();
             } else if ("ingotros".equals(fieldName)) {
-                valor = nodo.getEstudiante().getIngotros();
+                valor = nodo.getMatricula().getEstudiante().getIngotros();
             } else if ("casa".equals(fieldName)) {
-                valor = nodo.getEstudiante().getCasa();
+                valor = nodo.getMatricula().getEstudiante().getCasa();
             } else if ("luz".equals(fieldName)) {
-                valor = nodo.getEstudiante().getLuz();
+                valor = nodo.getMatricula().getEstudiante().getLuz();
             } else if ("agua".equals(fieldName)) {
-                valor = nodo.getEstudiante().getAgua();
+                valor = nodo.getMatricula().getEstudiante().getAgua();
             } else if ("sshh".equals(fieldName)) {
-                valor = nodo.getEstudiante().getSshh();
+                valor = nodo.getMatricula().getEstudiante().getSshh();
             } else if ("pozo".equals(fieldName)) {
-                valor = nodo.getEstudiante().getPozo();
+                valor = nodo.getMatricula().getEstudiante().getPozo();
             } else if ("economia".equals(fieldName)) {
-                valor = nodo.getEstudiante().getEconomia();
+                valor = nodo.getMatricula().getEstudiante().getEconomia();
             } else if ("telefonob".equals(fieldName)) {
-                valor = nodo.getEstudiante().getTelefonob();
+                valor = nodo.getMatricula().getEstudiante().getTelefonob();
             } else if ("internet".equals(fieldName)) {
-                valor = nodo.getEstudiante().getInternet();
+                valor = nodo.getMatricula().getEstudiante().getInternet();
             } else if ("religion".equals(fieldName)) {
-                valor = nodo.getEstudiante().getReligion();
+                valor = nodo.getMatricula().getEstudiante().getReligion();
             } else if ("nombreministro".equals(fieldName)) {
-                valor = nodo.getCurso().getPeriodo().getInstitucion().getMinistronombre();
+                valor = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getMinistronombre();
             } else if ("barrio".equals(fieldName)) {
-                valor = nodo.getEstudiante().getBarrio();
+                valor = nodo.getMatricula().getEstudiante().getBarrio();
             } else if ("celular".equals(fieldName)) {
-                valor = nodo.getEstudiante().getRepresentante().getCelular();
+                valor = nodo.getMatricula().getEstudiante().getRepresentante().getCelular();
             } else if ("firmaministro".equals(fieldName)) {
                 try {
-                    byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getMinistrofirma();
+                    byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getMinistrofirma();
                     if (bImage != null) {
                         InputStream is = new ByteArrayInputStream(bImage);
                         valor = is;
@@ -353,7 +358,7 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
                 }
             } else if ("logo".equals(fieldName)) {
                 try {
-                    byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getMinisteriologo();
+                    byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getMinisteriologo();
                     if (bImage != null) {
                         InputStream is = new ByteArrayInputStream(bImage);
                         valor = is;
@@ -364,7 +369,7 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
                 }
             } else if ("logo2".equals(fieldName)) {
                 try {
-                    byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getMinisteriologo();
+                    byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getMinisteriologo();
                     if (bImage != null) {
                         InputStream is = new ByteArrayInputStream(bImage);
                         valor = is;
@@ -375,7 +380,7 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
                 }
             } else if ("firmarector".equals(fieldName)) {
                 try {
-                    byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getFirmarector();
+                    byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getFirmarector();
                     if (bImage != null) {
                         InputStream is = new ByteArrayInputStream(bImage);
                         valor = is;
@@ -386,7 +391,7 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
                 }
             } else if ("sello".equals(fieldName)) {
                 try {
-                    byte[] bImage = nodo.getCurso().getPeriodo().getInstitucion().getEscudo();
+                    byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getEscudo();
                     if (bImage != null) {
                         InputStream is = new ByteArrayInputStream(bImage);
                         valor = is;
@@ -400,7 +405,7 @@ public class ReporteActaDataSourceServicios implements JRDataSource {
         } catch (Exception e) {
             System.out.println("en datasource Acta " + e);
         }
-
+        System.out.print(" "+valor);
         return valor;
     }
     public int year = 0;
