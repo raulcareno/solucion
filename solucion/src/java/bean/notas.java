@@ -163,7 +163,9 @@ public class notas extends Rows {
             row = new Row();
             Boolean deshabilitado = false;
             String color = "black";
-
+                Double pg = 0.0;
+                Double sup = 0.0;
+                Double rem = 0.0;
             if (materia.getCuantitativa()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
@@ -185,6 +187,14 @@ public class notas extends Rows {
                             notaTexto.setValue(null);
                         } else {
                             notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                        }
+                        int dat = j - 2;
+                        if(((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("PG")){
+                             pg = valor;
+                        }else if(((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("SU")){
+                             sup = valor;
+                        }else if(((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("RE")){
+                             rem = valor;
                         }
 
                     } else {
@@ -217,6 +227,7 @@ public class notas extends Rows {
                         row.appendChild(label3);
                     } else {
                         if (!deshabilitado) {
+                            
                             Date fechaActual = new Date();
                             DateMidnight actual = new DateMidnight(fechaActual);
                             int dat = j - 2;
@@ -254,22 +265,6 @@ public class notas extends Rows {
                             });
                            
                             notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');" );
-//                              notaTexto.addEventListener("onFocus", new EventListener() {
-//
-//                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
-//                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-//                                    try {
-//                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
-//                                        if(valor<=0){
-//                                               ((Decimalbox) event.getTarget()).setValue(null);
-//                                        }
-//                                         
-//                                    } catch (Exception e) {
-//                                        ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-//                                    }
-//
-//                                }
-//                            });
                             notaTexto.addEventListener("onOK", new EventListener() {
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
                                     Robot b = new Robot();
@@ -290,8 +285,6 @@ public class notas extends Rows {
                                 Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
                                 if (empleado.getTipo().equals("Interna")) {
                                     fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainti();
-
-
                                 }
 //                            System.out.println("FECHA INICIAL: "+fecha);
                                 if (fecha.getDate() == 0) {
@@ -301,6 +294,43 @@ public class notas extends Rows {
                             } catch (Exception z) {
                                 notaTexto.setDisabled(true);
                                 notaTexto.setStyle(Sdeshabilitado);
+                            }
+                            Interpreter inter = new Interpreter();
+                           
+                            try {//valido si es que es una nota de supletorio o remedial 
+                                 inter.eval("Double pg = "+pg);
+                                    inter.eval("Double sup = "+sup);
+                                    inter.eval("Double rem = "+rem);
+                                if((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("SU")){
+                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
+                                    formulaValidacion = " (pg >= 5 && pg<7?false:true)";
+                                //if(formulaValidacion.trim().equals("")){
+                                    
+                                    Boolean valorObtenido = (Boolean)inter.eval(formulaValidacion);
+                                    notaTexto.setDisabled(valorObtenido); 
+                                //}else{
+                                    
+                                //}
+                                }else if((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("RE")){
+                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
+                                    formulaValidacion = " ((sup < 5 || sup <7) && pg<7 && pg>0 ?false:true)";
+                                    //if(formulaValidacion.trim().equals("")){
+                                        Boolean valorObtenido = (Boolean)inter.eval(formulaValidacion);
+                                        notaTexto.setDisabled(valorObtenido); 
+                                    //}else{
+
+                                    //}
+                                }else if((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("GR")){
+                                String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
+                                formulaValidacion = " (pg < 7?false:true)";
+                                //if(formulaValidacion.trim().equals("")){
+                                    Boolean valorObtenido = (Boolean)inter.eval(formulaValidacion);
+                                    notaTexto.setDisabled(valorObtenido); 
+                                //}else{
+                                    
+                                //}
+                                }
+                            } catch (Exception e) {
                             }
 
                         } else {

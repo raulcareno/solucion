@@ -242,6 +242,7 @@ void llenar(Sistemacalificacion empa){
     sacapromedio.checked = empa.getConsulta();  //saca promedio en la libreta
     formula.value = empa.getFormula();
     formuladisciplina.value = empa.getFormuladisciplina();
+    validacion.value = empa.getValidacion();
     //formulafaltas.value = empa.getFormulafaltas();
     try{
       if(empa.getNotalimite().equals(null))
@@ -307,6 +308,7 @@ void estado(Boolean estado,Boolean modificar){
     tipo.disabled= estado;
     formula.readonly= estado;
     formuladisciplina.readonly = estado;
+    validacion.readonly = estado;
     //formulafaltas.disabled = estado;
 conducta.readonly =estado;
 espromedio.disabled= estado;
@@ -357,6 +359,7 @@ sacapromedio.disabled = estado;
 
         empa.setFormula(formula.value);
         empa.setFormuladisciplina(formuladisciplina.value);
+        empa.setValidacion(validacion.value);
         //empa.setFormulafaltas(formulafaltas.value);
         Periodo per = (Periodo) ses.getAttribute("periodo");
         empa.setPeriodo(per);
@@ -701,6 +704,8 @@ if(formula1.equals("")){
                                     <radio id="promediogeneral" value="PG" label="Prom.Gen."/>
                                     <radio id="promediofinal" value="PF"  label="Prom.Final"/>
                                     <radio id="supletorio"  value="SU" label="Suplet."/>
+                                    <radio id="remedial"  value="RE" label="Rem."/>
+                                    <radio id="gracia"  value="GR" label="Grac."/>
                                     <radio id="ninguno"  value = "NI" label="Ninguno"/>
                                 </radiogroup>
                             </span>
@@ -749,8 +754,15 @@ if(formula1.equals("")){
                                 <image src="/images/information.png" height="22px" width="22px" tooltip="mailt" popup="mailt" style="cursor: pointer" />
                             </span>
                         </row>
- 
                         <row>
+                            <span style="float:right"> Validacion:</span>
+                            <span>
+                                <textbox id="validacion" rows="2" cols="30" />
+                                <button id="verificar8"  image="/images/ok.gif"  onClick="verificar3();"/>
+                                <image src="/images/information.png" height="22px" width="22px" tooltip="mailt" popup="mailt" style="cursor: pointer" />
+                            </span>
+                        </row>
+                        <row visible="false">
                             <span style="float:right"> Codigo:</span>
                             <span> 
                                 <textbox readonly="true" cols="2"  id="codi"   />
