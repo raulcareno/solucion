@@ -1484,6 +1484,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                     query = "SELECT mat FROM Matriculas AS mat " +
                         "WHERE  mat.estado like '%Inscrito%' " +
                          "and mat.codigomat = '" + matricula.getCodigomat() + "' "; 
+                }else if(tipo.equals("CL") || tipo.equals("CR") || tipo.equals("BAN")  || tipo.equals("CONT")){
+                    query = "SELECT mat FROM Matriculas AS mat " +
+                        "WHERE  mat.codigomat = '" + matricula.getCodigomat() + "' "; 
                 }
         List hoy = adm.query(query);
         for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -1528,6 +1531,10 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             }else if(tipo.equals("CONT")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
                     report.setSrc(directorioReportes+"contratoMatricula.jasper");
+                    parametros.put("titulo", "Contrato de Prestación de Servicios de Educación");
+            }else if(tipo.equals("BAN")){
+                    datasource = certificados(new Matriculas(codigomat.value),tipo);
+                    report.setSrc(directorioReportes+"codigoBanco.jasper");
                     parametros.put("titulo", "Contrato de Prestación de Servicios de Educación");
             } else if(tipo.equals("AM")){
                     datasource = certificados(new Matriculas(codigomat.value),tipo);
@@ -1653,6 +1660,7 @@ public void quitarFila(String codigoBuscar){
                                             <menuitem image="/images/imprimir.gif" id="carnetprint3"  label="Carnét Local"    onClick='showReport("CAR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
                                             <menuitem image="/images/imprimir.gif" id="carnetprintm3"  label="Carnét Ministerio"  onClick='showReport("CARM");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
                                             <menuitem image="/images/imprimir.gif" id="contrato"  label="Contrato Matricula"  onClick='showReport("CONT");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif" id="codigobanco"  label="Código del Banco"  onClick='showReport("BAN");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
                                         </menupopup>
                                     </menu>
                                     </menubar>
@@ -2011,8 +2019,6 @@ public void quitarFila(String codigoBuscar){
                                                     </span>
                                                     <span>
                                                         <checkbox id="matriculado"/>
-                                                        CODIGO DE MATRICULACIÓN:
-                                                        <textbox id="codigoclave"  />
                                                         BLOQUEADO
                                                         <checkbox id="pendientes"/>
                                                         <checkbox id="bloquear"/>
@@ -2057,11 +2063,13 @@ public void quitarFila(String codigoBuscar){
                                                     <span style="float:right">Ingresos:</span>
                                                     <span>
                                                         Padre:
-                                                        <intbox id="ingpadre" cols="10"  />
+                                                        <intbox id="ingpadre" cols="3"  />
                                                         Madre:
-                                                        <intbox id="ingmadre" cols="10"   />
+                                                        <intbox id="ingmadre" cols="3"   />
                                                         Otros:
-                                                        <intbox id="ingotros" cols="10"   />
+                                                        <intbox id="ingotros" cols="3"   />
+                                                        Código:
+                                                        <textbox cols="5" id="codigoclave"  />
                                                     </span>
                                                 </row>
                                                 <row>
@@ -2382,7 +2390,7 @@ public void quitarFila(String codigoBuscar){
                                      
                                             
                                                 <label value="Apellidos(*)" style="font-weight: bold;"/>
-                                                <textbox id="apellidosre"  maxlength="60" cols="20" readonly="true"  />
+                                                <textbox id="apellidosre" onBlur="generarClaveRep(false);"  maxlength="60" cols="20" readonly="true"  />
                                             </span>
                                             
                                         </row>
@@ -2612,6 +2620,7 @@ public void quitarFila(String codigoBuscar){
                                             <menuitem image="/images/imprimir.gif"  label="Carnét Local"    onClick='showReport("CAR"); contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
                                             <menuitem image="/images/imprimir.gif"  label="Carnét Ministerio"  onClick='showReport("CARM");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
                                             <menuitem image="/images/imprimir.gif"   label="Contrato Matricula"  onClick='showReport("CONT");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
+                                            <menuitem image="/images/imprimir.gif"  label="Código del Banco"  onClick='showReport("BAN");  contenidoReporte.visible=true; contenido.visible=false; botones1.visible=false; botones2.visible=false; separador.visible=false; ' />
                                         </menupopup>
                                     </menu>
                                     </menubar>

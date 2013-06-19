@@ -75,7 +75,6 @@ public class notas extends Rows {
 //         Label l;
 //         Row row;
 //         row.getZIndex()
-     
     }
 
     public Boolean verificar(String formula, List<Notanotas> notas) {
@@ -163,9 +162,9 @@ public class notas extends Rows {
             row = new Row();
             Boolean deshabilitado = false;
             String color = "black";
-                Double pg = 0.0;
-                Double sup = 0.0;
-                Double rem = 0.0;
+            Double pg = 0.0;
+            Double sup = 0.0;
+            Double rem = 0.0;
             if (materia.getCuantitativa()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
@@ -189,12 +188,12 @@ public class notas extends Rows {
                             notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
                         }
                         int dat = j - 2;
-                        if(((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("PG")){
-                             pg = valor;
-                        }else if(((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("SU")){
-                             sup = valor;
-                        }else if(((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("RE")){
-                             rem = valor;
+                        if (((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("PG")) {
+                            pg = valor;
+                        } else if (((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("SU")) {
+                            sup = valor;
+                        } else if (((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("RE")) {
+                            rem = valor;
                         }
 
                     } else {
@@ -227,7 +226,7 @@ public class notas extends Rows {
                         row.appendChild(label3);
                     } else {
                         if (!deshabilitado) {
-                            
+
                             Date fechaActual = new Date();
                             DateMidnight actual = new DateMidnight(fechaActual);
                             int dat = j - 2;
@@ -250,12 +249,12 @@ public class notas extends Rows {
                                             ((Decimalbox) event.getTarget()).setFocus(true);
                                             ((Decimalbox) event.getTarget()).focus();
                                             ((Decimalbox) event.getTarget()).setValue(null);
-                                             Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + limite + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
 //                                             Robot b = new Robot();
 //                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
 //                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
 //                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
-                                           
+
                                         }
                                     } catch (Exception e) {
                                         ((Decimalbox) event.getTarget()).setValue(null);
@@ -263,9 +262,10 @@ public class notas extends Rows {
 
                                 }
                             });
-                           
-                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');" );
+
+                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
                             notaTexto.addEventListener("onOK", new EventListener() {
+
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
                                     Robot b = new Robot();
                                     b.keyPress(java.awt.event.KeyEvent.VK_TAB);
@@ -296,39 +296,36 @@ public class notas extends Rows {
                                 notaTexto.setStyle(Sdeshabilitado);
                             }
                             Interpreter inter = new Interpreter();
-                           
-                            try {//valido si es que es una nota de supletorio o remedial 
-                                 inter.eval("Double pg = "+pg);
-                                    inter.eval("Double sup = "+sup);
-                                    inter.eval("Double rem = "+rem);
-                                if((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("SU")){
-                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
-                                    formulaValidacion = " (pg >= 5 && pg<7?false:true)";
-                                //if(formulaValidacion.trim().equals("")){
-                                    
-                                    Boolean valorObtenido = (Boolean)inter.eval(formulaValidacion);
-                                    notaTexto.setDisabled(valorObtenido); 
-                                //}else{
-                                    
-                                //}
-                                }else if((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("RE")){
-                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
-                                    formulaValidacion = " ((sup < 5 || sup <7) && pg<7 && pg>0 ?false:true)";
-                                    //if(formulaValidacion.trim().equals("")){
-                                        Boolean valorObtenido = (Boolean)inter.eval(formulaValidacion);
-                                        notaTexto.setDisabled(valorObtenido); 
-                                    //}else{
 
-                                    //}
-                                }else if((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("GR")){
-                                String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
-                                formulaValidacion = " (pg < 7?false:true)";
-                                //if(formulaValidacion.trim().equals("")){
-                                    Boolean valorObtenido = (Boolean)inter.eval(formulaValidacion);
-                                    notaTexto.setDisabled(valorObtenido); 
-                                //}else{
-                                    
-                                //}
+                            try {//valido si es que es una nota de supletorio o remedial 
+                                inter.eval("Double pg = " + pg);
+                                inter.eval("Double sup = " + sup);
+                                inter.eval("Double rem = " + rem);
+                                if ((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("SU")) {
+                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
+//                                    formulaValidacion = " (pg >= 5 && pg<7?false:true)";
+                                    if (!formulaValidacion.trim().equals("")) {
+
+                                        Boolean valorObtenido = (Boolean) inter.eval(formulaValidacion);
+                                        notaTexto.setDisabled(valorObtenido);
+                                    } else {
+                                    }
+                                } else if ((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("RE")) {
+                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
+                                    //                                  formulaValidacion = "( pg >=4 && pg <5) || (pg >=5 && sup <7)?false:true)";
+                                    if (!formulaValidacion.trim().equals("")) {
+                                        Boolean valorObtenido = (Boolean) inter.eval(formulaValidacion);
+                                        notaTexto.setDisabled(valorObtenido);
+                                    } else {
+                                    }
+                                } else if ((((Sistemacalificacion) sistemas.get(dat)).getPromediofinal()).equals("GR")) {
+                                    String formulaValidacion = (((Sistemacalificacion) sistemas.get(dat)).getValidacion());
+                                    //formulaValidacion = " (pg < 7 && (sup > 0 && sup<7) && (rem >0 && rem<7)?false:true)";
+                                    if (!formulaValidacion.trim().equals("")) {
+                                        Boolean valorObtenido = (Boolean) inter.eval(formulaValidacion);
+                                        notaTexto.setDisabled(valorObtenido);
+                                    } else {
+                                    }
                                 }
                             } catch (Exception e) {
                             }
@@ -509,9 +506,9 @@ public class notas extends Rows {
             //nota.setMatricula(new Matriculas(new Integer(((Label) vecDato.get(0)).getValue())));
             for (int j = 2; j < labels.size(); j++) {
                 Decimalbox object1 = (Decimalbox) labels.get(j);
-                   if(object1.getValue() ==null){
-                            object1.setValue(new BigDecimal(0));
-                        }
+                if (object1.getValue() == null) {
+                    object1.setValue(new BigDecimal(0));
+                }
                 String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
                 formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                 String toda = notas.get(j - 2).getNota() + "";
@@ -564,21 +561,21 @@ public class notas extends Rows {
 
 //            String del = "Delete from Notas where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " + "and materia.codigo = '" + materia.getMateria().getCodigo() + "'  and notas.disciplina = false ";
 //            adm.ejecutaSql(del);
-            
+
             List codigosNotas = adm.query("Select o.codigonot from Notas as o "
-                    + " where o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' " 
+                    + " where o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' "
                     + " and o.materia.codigo = '" + materia.getMateria().getCodigo() + "'  "
                     + " and o.disciplina = false ");
             String codigosNotasString = "";
-            if(codigosNotas.size()>0){
+            if (codigosNotas.size() > 0) {
                 for (Iterator it = codigosNotas.iterator(); it.hasNext();) {
                     Object object = it.next();
-                    codigosNotasString +="'"+object.toString()+"',";
+                    codigosNotasString += "'" + object.toString() + "',";
                 }
-                System.out.println(""+codigosNotasString);
-                codigosNotasString = codigosNotasString.substring(0,codigosNotasString.length()-1);
+                System.out.println("" + codigosNotasString);
+                codigosNotasString = codigosNotasString.substring(0, codigosNotasString.length() - 1);
 //                return "FALLO";
-                
+
             }
 //            adm.ejecutaSql(del);
             for (int i = 0; i < col.size(); i++) {
@@ -598,10 +595,10 @@ public class notas extends Rows {
                     inter.set("nota", nota);
                     for (int j = 2; j < labels.size(); j++) {
                         Decimalbox object1 = (Decimalbox) labels.get(j);
-                        if(object1.getValue() ==null){
+                        if (object1.getValue() == null) {
                             object1.setValue(new BigDecimal(0));
                         }
-                                
+
                         String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getNota() + "";
@@ -626,9 +623,9 @@ public class notas extends Rows {
                     Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(codigosNotasString.length()>0){
-                    String del = "Delete from Notas where codigonot in  ("+codigosNotasString+")  ";
-                    adm.ejecutaSql(del);
+            if (codigosNotasString.length() > 0) {
+                String del = "Delete from Notas where codigonot in  (" + codigosNotasString + ")  ";
+                adm.ejecutaSql(del);
             }
             recalculoNotas(materia, curso);
             System.out.println("FINALIZO EN: " + new Date());
@@ -980,13 +977,13 @@ public class notas extends Rows {
 
                 try {
                     if (codigosCursos.length() > 1) {
-                        
+
                         List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
                                 + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
                                 + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = false "
                                 + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                        System.out.println("GENERADOS CURSOS: " + especialidad+" NO GRADUADOS:"+matriculas.size());
+                        System.out.println("GENERADOS CURSOS: " + especialidad + " NO GRADUADOS:" + matriculas.size());
                         int i = 1;
                         System.out.println("__________________________________________________ ESPECIALIDAD: " + especialidad);
                         for (Notasacta acta : matriculas) {
@@ -997,7 +994,7 @@ public class notas extends Rows {
                             adm.actualizar(acta);
                         }
                     } else {
-                        System.out.println("NO HAY CODIGOSCURSOS: "+especialidad);
+                        System.out.println("NO HAY CODIGOSCURSOS: " + especialidad);
 
                     }
                 } catch (Exception e) {
@@ -1007,7 +1004,7 @@ public class notas extends Rows {
             } else {
                 try {
                     if (codigosCursos.length() > 1) {
-                          
+
 
 //                        String q = "Select o from Notasacta as o "
 //                                + "where o.matricula.curso.secuencia = 13 and o.matricula.suspenso = true "
@@ -1015,24 +1012,24 @@ public class notas extends Rows {
 //                                + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ";
 //                        System.out.println("" + q);
 //                        List<Notasacta> matriculas = adm.query(q);
-                         List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
+                        List<Notasacta> matriculas = adm.query("Select o from Notasacta as o "
                                 + "where o.matricula.curso.secuencia = 13 and o.matricula.perdio = false "
                                 + "and o.matricula.estado in ('Matriculado','Recibir Pase') and o.matricula.suspenso = true "
                                 + "and  o.matricula.curso.codigocur  in " + codigosCursos + ") "
                                 + " order by o.matricula.estudiante.apellido,  o.matricula.estudiante.nombre  ");
-                        System.out.println("GENERADOS CURSOS: " + especialidad+" # SUSPENDIDOS:"+matriculas.size());
+                        System.out.println("GENERADOS CURSOS: " + especialidad + " # SUSPENDIDOS:" + matriculas.size());
                         if (matriculas.size() > 0) {
                             Integer ultimo = 0;
-                            if(empezar){
+                            if (empezar) {
                                 ultimo = 0;
-                            }else{
+                            } else {
                                 List numeroFinal = adm.query("Select max(o.numeroacta) from Notasacta as o "
-                                    + "where o.matricula.suspenso = false  "
-                                    + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  ");
+                                        + "where o.matricula.suspenso = false  "
+                                        + "and  o.matricula.curso.codigocur  in " + codigosCursos + ")  ");
                                 ultimo = (Integer) numeroFinal.get(0);
-                            
+
                             }
-                            
+
                             int i = ultimo + 1;
                             for (Notasacta acta : matriculas) {
                                 acta.setFecha(fecha);
@@ -1044,7 +1041,7 @@ public class notas extends Rows {
                         }
 
                     } else {
-                      System.out.println("NO HAY CODIGOSCURSOS: "+especialidad);
+                        System.out.println("NO HAY CODIGOSCURSOS: " + especialidad);
 
                     }
                 } catch (Exception e) {
@@ -1103,7 +1100,7 @@ public class notas extends Rows {
             Cursos ActualCurso = ita.next();
             List<DisciplinaModificada> existeModificaciones = adm.query("Select o from DisciplinaModificada as o "
                     + "where o.matricula.curso.codigocur = '" + ActualCurso.getCodigocur() + "' ");
-            
+
             List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o "
                     + "where o.curso.codigocur = '" + ActualCurso.getCodigocur() + "' "
                     + "and o.materia.codigo > 1 and o.ministerio = true and o.opcional = true ");
@@ -1270,18 +1267,18 @@ public class notas extends Rows {
                                 Double object1 = (Double) vecDato.get(j);
                                 String toda = notas.get(j - 1).getNota() + "";
                                 Sistemacalificacion sisPregunta = notas.get(j - 1).getSistema();
-                                
+
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
-                                
+
                                 inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), decimales.intValue()) + ");");
-                                if(existeModificaciones.size()>0){
+                                if (existeModificaciones.size() > 0) {
                                     DisciplinaModificada disBuscada = buscarModificada(existeModificaciones, sisPregunta, new Integer(((Integer) vecDato.get(0))));
-                                    if(disBuscada != null){
+                                    if (disBuscada != null) {
                                         Double valor = disBuscada.getNota();
-                                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");    
+                                        inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");
                                     }
-                                    
+
                                 }
                             }
                             nota = (Notas) inter.get("nota");
@@ -1313,17 +1310,19 @@ public class notas extends Rows {
             }
         }
     }
-public DisciplinaModificada buscarModificada( List<DisciplinaModificada> lista, Sistemacalificacion sis, Integer matricula){ 
-    
-    for (Iterator<DisciplinaModificada> itMd = lista.iterator(); itMd.hasNext();) {
-        DisciplinaModificada dM = itMd.next();
-        if(dM.getMatricula().getCodigomat().equals(matricula) && dM.getSistema().getCodigosis().equals(sis.getCodigosis())){
-            return dM;
-        }
-    }
-    return null;
 
-}
+    public DisciplinaModificada buscarModificada(List<DisciplinaModificada> lista, Sistemacalificacion sis, Integer matricula) {
+
+        for (Iterator<DisciplinaModificada> itMd = lista.iterator(); itMd.hasNext();) {
+            DisciplinaModificada dM = itMd.next();
+            if (dM.getMatricula().getCodigomat().equals(matricula) && dM.getSistema().getCodigosis().equals(sis.getCodigosis())) {
+                return dM;
+            }
+        }
+        return null;
+
+    }
+
     public void nuevaClave() {
         try {
             Administrador adm = new Administrador();
