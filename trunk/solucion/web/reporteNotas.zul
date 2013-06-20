@@ -26,7 +26,7 @@ Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
 disciplina discipli = new disciplina();
-
+ List listaencuestar = adm.query("Select o from Encuestar as o " );
  List listaEmpleados = adm.query("Select o from Empleados as o " + 
                     "  order by o.apellidos ");
     Empleados empSel = new Empleados(-1);
@@ -469,13 +469,13 @@ void recalcular(){
                     datasource = noti.resumenGrupal();
                     report.setSrc(directorioReportes+"resumenEncuestaGraficas.jasper");
             }else if(tipo.equals("ENCP1")){
-                    datasource = noti.resumenGrupalProfesores();
+                    datasource = noti.resumenGrupalProfesores(encuestar.selectedItem.value);
                     report.setSrc(directorioReportes+"resumenEncuesta.jasper");
             }else if(tipo.equals("ENCP2")){
-                    datasource = noti.evaluacionProfesores(curs.selectedItem.value, empleadosList.selectedItem.value);
+                    datasource = noti.evaluacionProfesores(curs.selectedItem.value, empleadosList.selectedItem.value,encuestar.selectedItem.value);
                     report.setSrc(directorioReportes+"evaluacionPrincipalProfes.jasper");
             }else if(tipo.equals("ENCP3")){
-                    datasource = noti.evaluacionProfesoresResumido(curs.selectedItem.value, empleadosList.selectedItem.value);
+                    datasource = noti.evaluacionProfesoresResumido(curs.selectedItem.value, empleadosList.selectedItem.value,encuestar.selectedItem.value);
                     report.setSrc(directorioReportes+"evaluacionPrincipalProfesResumido.jasper");
             }else if(tipo.equals("DIS2")){
                     datasource = distributivo2();
@@ -791,7 +791,7 @@ void campos(String valor){
         materiasCombo.disabled = true;
         curs.disabled = true;
         sistemasCombo.disabled = true;
-
+      filaencuestar.visible == false;
       fila.visible = false;
       filarangos.visible = false;
       filamodalidad.visible = false;
@@ -850,9 +850,11 @@ void campos(String valor){
         }else if(valor.equals("ENC5") || valor.equals("ENC6")){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
         }else if(valor.equals("ENCP2")){
+                filaencuestar.visible = true;
              titulo.value= "RESULTADO DE LA EVALUACION";
              filaempleados.visible = true;
         }else if(valor.equals("ENCP3")){
+        filaencuestar.visible = true;
              titulo.value= "RESULTADO DE LA EVALUACION";
              filaempleados.visible = true;
         }else if(valor.equals("MEJ")){
@@ -1194,24 +1196,24 @@ void campos(String valor){
                         </row>
                         <row  spans="2" style="background:transparent;border:0px" id="fila" visible="false">
                             <vbox>
-                                   <span style="color:black"> Rango Notas: Desde:
-                                <decimalbox id="desde" value="0.0" cols="5" /> 
-                                <separator bar="true" orient="vertical" />
-                                Hasta:
-                                <decimalbox id="hasta" value="10.0" cols="5"/>
-                                <separator bar="true" orient="vertical" />
-                                Nota de Peligro:
-                                <decimalbox id="peligro" value="6.99" cols="5"/>
+                                <span style="color:black"> Rango Notas: Desde:
+                                    <decimalbox id="desde" value="0.0" cols="5" /> 
+                                    <separator bar="true" orient="vertical" />
+                                    Hasta:
+                                    <decimalbox id="hasta" value="10.0" cols="5"/>
+                                    <separator bar="true" orient="vertical" />
+                                    Nota de Peligro:
+                                    <decimalbox id="peligro" value="6.99" cols="5"/>
                            
-                            </span>
-                            <span style="color:black">  
+                                </span>
+                                <span style="color:black">  
                                
-                                <separator bar="false" orient="vertical" />
-                                Incluir en Reporte:  
-                                <checkbox visible="false" checked="true" id="incluirpromedio" label="El Promedio" style="color:blue" />
-                                <checkbox visible="false" onCheck="incluirfaltasydias.checked = false;"  id="incluirfaltas" label=" Las Faltas" style="color:blue" />
-                                <checkbox visible="false" onCheck="incluirfaltas.checked = false;" id="incluirfaltasydias" label="Los Días Laborados y Faltas" style="color:blue" />
-                            </span>
+                                    <separator bar="false" orient="vertical" />
+                                    Incluir en Reporte:  
+                                    <checkbox visible="false" checked="true" id="incluirpromedio" label="El Promedio" style="color:blue" />
+                                    <checkbox visible="false" onCheck="incluirfaltasydias.checked = false;"  id="incluirfaltas" label=" Las Faltas" style="color:blue" />
+                                    <checkbox visible="false" onCheck="incluirfaltas.checked = false;" id="incluirfaltasydias" label="Los Días Laborados y Faltas" style="color:blue" />
+                                </span>
                             </vbox>
                          
                         </row>
@@ -1219,34 +1221,34 @@ void campos(String valor){
                             
                             <grid width="75%"  id="rangos">
                             
-                                    <auxhead>
-                                        <auxheader label="INGRESE LOS RANGOS PARA REPORTE" colspan="3"/>
-                                    </auxhead>
-                                      <columns>
-                                        <column width="120px" label ="Desde(mayor.e.igual)"/>
-                                        <column width="120px"    label ="Hasta(menor)"/>
-                                        <column   label ="Título"/>
-                                    </columns>
-                                        <rows>
+                                <auxhead>
+                                    <auxheader label="INGRESE LOS RANGOS PARA REPORTE" colspan="3"/>
+                                </auxhead>
+                                <columns>
+                                    <column width="120px" label ="Desde(mayor.e.igual)"/>
+                                    <column width="120px"    label ="Hasta(menor)"/>
+                                    <column   label ="Título"/>
+                                </columns>
+                                <rows>
                                     <row>
-                                       <doublebox id="r1" cols="4"  value="0" /> 
-                                       <doublebox id="r2" cols="4"  value="10.5"   /> 
-                                       <textbox value="0-10" />
+                                        <doublebox id="r1" cols="4"  value="0" /> 
+                                        <doublebox id="r2" cols="4"  value="10.5"   /> 
+                                        <textbox value="0-10" />
                                     </row>
                                     <row>
-                                       <doublebox id="r3" cols="4"  value="10.5"  /> 
-                                       <doublebox id="r4" cols="4"  value="15.5"   /> 
-                                       <textbox value="11-15" />
+                                        <doublebox id="r3" cols="4"  value="10.5"  /> 
+                                        <doublebox id="r4" cols="4"  value="15.5"   /> 
+                                        <textbox value="11-15" />
                                     </row>
                                     <row>
-                                       <doublebox id="r5" cols="4"  value="15.5"  /> 
-                                       <doublebox id="r6" cols="4"  value="18.5"   /> 
-                                       <textbox value="16-18" />
+                                        <doublebox id="r5" cols="4"  value="15.5"  /> 
+                                        <doublebox id="r6" cols="4"  value="18.5"   /> 
+                                        <textbox value="16-18" />
                                     </row>
                                     <row>
-                                       <doublebox id="r7" cols="4"  value="18.5"  /> 
-                                       <doublebox id="r8" cols="4" value="20"   /> 
-                                       <textbox value="19-20" />
+                                        <doublebox id="r7" cols="4"  value="18.5"  /> 
+                                        <doublebox id="r8" cols="4" value="20"   /> 
+                                        <textbox value="19-20" />
                                     </row>
                                     
 
@@ -1277,6 +1279,17 @@ void campos(String valor){
                                 <listbox id="especialidad" width="450px"  mold="select" onSelect="buscar22(((Global)self.selectedItem.value)); estudiantesCombo.disabled = false; ">
                                     <listitem   forEach="${especialidades}" value="${each}" label="${each.descripcion}"/>
                                 </listbox>
+                            </span>
+                        </row>
+                        <row  id="filaencuestar" visible="false" style="background:transparent;border:0px">
+                            <span style="float:right"> Encuestas:</span>
+                            <span>
+                         
+                                <listbox id="encuestar" width="450px"  mold="select">
+                                    <listitem selected="true"  forEach="${listaencuestar}" value="${each}" label="${each.nombreencuesta}"/>
+                                </listbox>  
+                                               
+                                          
                             </span>
                         </row>
                         <row  id="filasecuencia" visible="false"  style="background:transparent;border:0px">
@@ -1324,7 +1337,7 @@ void campos(String valor){
                                 </listitem>
                             </listbox>
                         </row>
-                    <row   id="numeroEstudiantes" visible="false"  style="background:transparent;border:0px" >
+                        <row   id="numeroEstudiantes" visible="false"  style="background:transparent;border:0px" >
                             <span style="float:right"> # de Estudiantes </span>
  
                             <intbox id="numeroEstudiantes2" value="10" cols="5" /> 
