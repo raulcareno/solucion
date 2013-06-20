@@ -53,10 +53,11 @@ public class reportesClase {
 
         return ds;
     }
-      public JRDataSource evaluacionProfesores(Cursos curso, Empleados empleado) {
+      public JRDataSource evaluacionProfesores(Cursos curso, Empleados empleado, Encuestar enc) {
         Administrador adm = new Administrador();
         String query = "SELECT mat FROM Respuestasencuestar AS mat "
                 + "WHERE mat.empleado.codigoemp = '" + empleado.getCodigoemp() + "' "
+                + " and mat.detallepreguntar.preguntar.encuestar.codigo =  '"+enc.getCodigo()+"'  "
                 + "order by mat.empleado.apellidos, mat.empleado.nombres,"
                 + " mat.matricula.curso.secuencia, "
                 + " mat.matricula.curso.descripcion,"
@@ -64,12 +65,12 @@ public class reportesClase {
                 + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
         if(empleado.getCodigoemp().equals(-2) || empleado.getCodigoemp().equals(-1)  ){
             query = "SELECT mat FROM Respuestasencuestar AS mat "
-                + "  "
+                + " and mat.detallepreguntar.preguntar.encuestar.codigo =  '"+enc.getCodigo()+"'  "
                 + "order by mat.empleado.apellidos, mat.empleado.nombres,"
                 + " mat.matricula.curso.secuencia, "
                 + " mat.matricula.curso.descripcion,"
                 + " mat.matricula.curso.paralelo.descripcion,  "
-                + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
+                + "ma.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
         }
 //        Session ses = Sessions.getCurrent();
 //        Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -85,18 +86,18 @@ public class reportesClase {
 
         return ds;
     }
- public JRDataSource evaluacionProfesoresResumido(Cursos curso, Empleados empleado) {
+ public JRDataSource evaluacionProfesoresResumido(Cursos curso, Empleados empleado, Encuestar enc) {
         Administrador adm = new Administrador();
         String query = "SELECT mat FROM Respuestasencuestar AS mat "
                 + "WHERE mat.empleado.codigoemp = '" + empleado.getCodigoemp() + "' "
+                + " and mat.detallepreguntar.preguntar.encuestar.codigo =  '"+enc.getCodigo()+"'  "
                 + "order by mat.empleado.apellidos, mat.empleado.nombres,"
  
                 + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
         if(empleado.getCodigoemp().equals(-2) || empleado.getCodigoemp().equals(-1)  ){
             query = "SELECT mat FROM Respuestasencuestar AS mat "
-                + "  "
+                + " and mat.detallepreguntar.preguntar.encuestar.codigo =  '"+enc.getCodigo()+"'  "
                 + "order by mat.empleado.apellidos, mat.empleado.nombres,"
- 
                 + "mat.detallepreguntar.preguntar.orden,mat.detallepreguntar.secuencia  ";
         }
 //        Session ses = Sessions.getCurrent();
@@ -5851,7 +5852,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
 
 
     }
-  public JRDataSource resumenGrupalProfesores() {
+  public JRDataSource resumenGrupalProfesores(Encuestar enc) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -5859,6 +5860,7 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
         lisCursos = adm.queryNativo("Select o.* from Cursos as o where o.periodo = '" + periodo.getCodigoper() + "'  "
                 + "group by o.secuencia order by o.secuencia ", Cursos.class);
         List<Preguntar> preg = adm.query("Select o from Preguntar as o  "
+                + " where o.encuestar.codigo =  '"+enc.getCodigo()+"'  "
                 + "order by o.orden ");
         ArrayList listaResultados = new ArrayList();
         for (Iterator<Cursos> itCursos = lisCursos.iterator(); itCursos.hasNext();) {
