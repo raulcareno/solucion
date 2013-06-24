@@ -962,7 +962,7 @@ void campos(String valor){
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Estudiantes a Supletorios";
              fila.visible = true;
-             hasta.value = new java.math.BigDecimal(40);
+             hasta.value = new java.math.BigDecimal(6.99);
              filacursos.visible = true;
             filaaportes.visible = true;
              
