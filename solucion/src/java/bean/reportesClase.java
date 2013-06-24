@@ -1440,7 +1440,7 @@ public class reportesClase {
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
         if (notaFinal.size() <= 0) {
             try {
-                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                Messagebox.show("No ha parametrizado el Promedio Final o General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
                 return null;
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -1496,7 +1496,7 @@ public class reportesClase {
         String q = "Select codigomap, mat.codigomat,notas.materia, " + query + ", 'obs'  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
-                + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
+                + " and notas.disciplina = false and materia_profesor.seimprime = true  "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
@@ -1577,14 +1577,25 @@ public class reportesClase {
                     //int tamaSistema = sistemas.size() - 1;
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
-                        if (val < sumaPierde  && validaConPromedioGeneral) {
+                        if (val < sumaPierde  && validaConPromedioGeneral==false) {
                             obs = "Pierde";
                         } else if (val < sumaAprueba) {
                             obs = "Sup.";
                         }
                         sumatoria = val;
-                    } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
-                        if(validaConPromedioGeneral){
+                    } else if (nota.getSistema().getPromediofinal().equals("PG")) {
+                        if(validaConPromedioGeneral) {
+                            if (val < sumaAprueba && val < 5) {
+                                obs = "RM";
+                            }else if (val < sumaAprueba  && val < 7) {
+                                obs = "SP";
+                            }else{
+                                obs = "";
+                            }
+                        //sumatoria = val;
+                        }
+                    }else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
+                        if(validaConPromedioGeneral==false){
                         if (sumatoria < sumaAprueba) { 
                             try {
                                 Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
