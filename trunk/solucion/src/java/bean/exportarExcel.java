@@ -24,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.hssf.util.Region;
 import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zul.Auxhead;
 import org.zkoss.zul.Auxheader;
@@ -53,11 +54,12 @@ public class exportarExcel {
                 + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
         HSSFWorkbook libro = new HSSFWorkbook();
         HSSFSheet hoja = libro.createSheet("notas");
-        hoja.addMergedRegion(new CellRangeAddress(0,0,0,0));
+        //hoja.addMergedRegion(new CellRangeAddress(0,0,0,0));
+        hoja.addMergedRegion(new Region(0,Short.parseShort("0"),0,Short.parseShort("0")));
         //hoja.addMergedRegion(new CellRangeAddress(0,0,2,6));
         String inicial = "";
-        int desde = 2;
-        int hasta = 2;
+        short  desde = 2;
+        short hasta = 2;
         HSSFRow filaCabecera = hoja.createRow(0);
         for (Iterator<Sistemaevaluacion> it = notas.iterator(); it.hasNext();) {
             Sistemaevaluacion sistemaevaluacion = it.next();
@@ -68,7 +70,8 @@ public class exportarExcel {
             }else if(inicial.equals(sistemaevaluacion.getEvaluacion().getDescripcion())){
                 hasta ++;
             }else{
-                 hoja.addMergedRegion(new CellRangeAddress(0,0,desde,hasta));
+                 //hoja.addMergedRegion(new CellRangeAddress(0,0,desde,hasta));
+                 hoja.addMergedRegion(new Region(0,Short.parseShort("0"),desde,hasta));
                  HSSFCell celda = filaCabecera.createCell((short) hasta);
                  HSSFRichTextString textoAnadir = new HSSFRichTextString("" +sistemaevaluacion.getEvaluacion().getDescripcion());
                  celda.setCellType(HSSFCell.CELL_TYPE_STRING);
