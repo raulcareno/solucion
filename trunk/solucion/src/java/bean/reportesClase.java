@@ -1580,7 +1580,7 @@ public class reportesClase {
                         if (val < sumaPierde  && validaConPromedioGeneral==false) {
                             obs = "Pierde";
                         } else if (val < sumaAprueba) {
-                            obs = "Sup.";
+                            obs = "SP";
                         }
                         sumatoria = val;
                     } else if (nota.getSistema().getPromediofinal().equals("PG")) {
@@ -1602,7 +1602,7 @@ public class reportesClase {
                                 if (val < valor && val > 0.0) {
                                     obs = "Pierde";
                                 } else if (val == 0) {
-                                    obs = "Sup.";
+                                    obs = "SP";
                                 } else {
                                     obs = "";
                                 }
@@ -1667,7 +1667,8 @@ public class reportesClase {
             for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
                 Nota nota = it.next();
                 if (nota.getSistema().getNombre().equals("OBS")) {
-                    if (nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("Sup") || nota.getNota().toString().contains("SN")) {
+                    if (nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("RM") || nota.getNota().toString().contains("SP") || nota.getNota().toString().contains("SN")) {
+                        System.out.println(""+nota.getMatricula()+" "+ nota.getMateria() +" "+nota.getNota());
                         listaMatriculas.add(nota.getMatricula());
                     }
                 }
