@@ -6289,6 +6289,18 @@ public JRDataSource cuadrofinal(Cursos curso, Sistemacalificacion sistema, Doubl
         }
     }
 
+        String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
+    public Double truncar(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+
+
     public Double redondear(Double numero, int decimales) {
         try {
 

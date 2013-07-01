@@ -232,9 +232,12 @@ String columnaExamen ="";
      Periodo periodo = (Periodo) ses.getAttribute("periodo");
         try {
             String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+            String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
+ 
 //            System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
             inter.eval(redon);
+            inter.eval(truncar);
             Administrador adm = new Administrador();
 //            List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o " +
 //                    "where o.curso.codigocur = '"+curso.getCodigocur() +"' order by o.codigo ");
@@ -307,6 +310,19 @@ String columnaExamen ="";
 
 
     }
+    
+ 
+    public Double truncar(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+
+
      public Double redondear(Double numero, int decimales) {
         try {
 

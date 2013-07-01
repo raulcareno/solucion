@@ -35,6 +35,7 @@ public class notas extends Rows {
 
     private Double notaDisciplina = 0.0;
     String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+    String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
     String equival = "public Double equivalencia(Double numero) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "       return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
     String prom1 = " "
             + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19, Double va20, Double va21, Double va22, Double va23, Double va24, Double va25, Double va26, Double va27, Double va28, Double va29, Double va30, Double va31, Double va32){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++;  if(va20 >0) cont++;  if(va21 >0) cont++;  if(va22 >0) cont++;  if(va23 >0) cont++; if(va24 >0) cont++; if(va25 >0) cont++; if(va26 >0) cont++;  if(va27 >0) cont++;  if(va28 >0) cont++;   if(va29 >0) cont++;   if(va30 >0) cont++;  if(va31 >0) cont++; if(va32 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19+va20+va21+va22+va23+va24+va25+va26+va27+va28+va29+va30+va31+va32)/cont;     }"
@@ -85,6 +86,7 @@ public class notas extends Rows {
         Interpreter inter = new Interpreter();
         try {
             inter.eval(redon);
+            inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
             for (Iterator<Notanotas> it = notas.iterator(); it.hasNext();) {
@@ -538,6 +540,7 @@ public class notas extends Rows {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
             inter.eval(redon);
+            inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
             Administrador adm = new Administrador();
@@ -645,6 +648,7 @@ public class notas extends Rows {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
             inter.eval(redon);
+            inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
             Administrador adm = new Administrador();
@@ -742,6 +746,17 @@ public class notas extends Rows {
         List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o "
                 + "where o.formula <> '' and o.formula like '%MA" + materia.getMateria().getCodigo() + "%' "
                 + "and o.curso.codigocur = '" + curso.getCodigocur() + "' ");
+                        Interpreter inter = new Interpreter();
+                        try {
+                inter.eval(redon);
+                inter.eval(truncar);
+                inter.eval(prom1);
+                inter.eval(equival);
+        } catch (Exception e) {
+                            System.out.println("error en evaluar: funciones previas redondeo, prom1"+e);
+        }
+            
+        
         for (Iterator<MateriaProfesor> ita = maprofes.iterator(); ita.hasNext();) {
             try {
                 MateriaProfesor map = ita.next();
@@ -765,10 +780,7 @@ public class notas extends Rows {
                 if (ma.length() > 0) {
                     ma = ma.substring(0, ma.length() - 1);
                 }
-                Interpreter inter = new Interpreter();
-                inter.eval(redon);
-                inter.eval(prom1);
-                inter.eval(equival);
+
                 try {
                     for (Iterator<Global> it = Nmaterias.iterator(); it.hasNext();) {
                         Global global = it.next();
@@ -848,7 +860,7 @@ public class notas extends Rows {
 //            System.out.println(""+(Vector) inter.get("VEC18"));
 //          System.out.println(""+aguardar);
 
-            } catch (EvalError ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -864,6 +876,17 @@ public class notas extends Rows {
             return 0.0;
         }
     }
+    
+    public Double truncar(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+
 
     public static Object equivalencia(Object no, List<Equivalencias> equivalencias) {
         Double nota = (Double) no;
@@ -1193,6 +1216,7 @@ public class notas extends Rows {
                     String vector1 = (String) vectors.get(0);
 //                    System.out.println("VECTOR 1: "+vector1);
                     inter.eval(redon);
+                    inter.eval(truncar);
                     inter.eval(prom1);
                     inter.eval(equival);
                     inter.eval("int tamanio1 =  " + vector1 + ".size(); " +//OJOSSS
@@ -1322,7 +1346,7 @@ public class notas extends Rows {
         return null;
 
     }
-
+    
     public void nuevaClave() {
         try {
             Administrador adm = new Administrador();

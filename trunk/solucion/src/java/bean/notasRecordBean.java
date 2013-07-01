@@ -28,6 +28,17 @@ public class notasRecordBean extends Rows {
 //            Object object = it.next();
 //        }
     }
+    String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
+    public Double truncar(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+
 
     public Boolean verificar(String formula, List<Notanotas> notas) {
 
@@ -46,6 +57,7 @@ public class notasRecordBean extends Rows {
 
         Interpreter inter = new Interpreter();
         try {
+            inter.eval(truncar);
             inter.eval(redon);
             for (Iterator<Notanotas> it = notas.iterator(); it.hasNext();) {
                 Notanotas notanotas = it.next();
@@ -172,6 +184,7 @@ public class notasRecordBean extends Rows {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
             inter.eval(redon);
+            inter.eval(truncar);
             Administrador adm = new Administrador();
             secuencial sec = new secuencial();
 
