@@ -3434,6 +3434,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             parametros.put("empresa", emp.getRazon());
             parametros.put("direccion", emp.getDireccion());
             parametros.put("telefono", emp.getTelefonos());
+            parametros.put("multa", emp.getMulta());
             parametros.put("usuario", principal.usuarioActual.getNombres());
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             PrinterJob job = PrinterJob.getPrinterJob();

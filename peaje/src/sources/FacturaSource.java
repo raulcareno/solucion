@@ -127,6 +127,12 @@ public class FacturaSource implements JRDataSource {
                 valor = nodo.getIva();
             } else if ("motivo".equals(fieldName)) {
                 valor = nodo.getObservacion();
+            }else if ("producto".equals(fieldName)) {
+                valor = (nodo.getPlaca().contains("BOTON")?"SERV. PARQUEADERO":nodo.getPlaca());
+            }else if ("cantidad".equals(fieldName)) {
+                valor = 1;
+            }else if ("vt".equals(fieldName)) {
+                valor = nodo.getTotal();
             }
         } catch (Exception e) {
             Logger.getLogger(FacturaSource.class.getName()).log(Level.SEVERE, null, e);
