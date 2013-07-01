@@ -23,10 +23,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.FacesException;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
@@ -129,9 +132,9 @@ public class InscripcionesBean {
     Archivos arLibreta;
     Archivos arTitulo;
     Archivos arCedula;
-    List<RangosGpa> rangos; 
+    List<RangosGpa> rangos;
     public String admitido;
-    
+
     public InscripcionesBean() {
         //super();
         if (adm == null) {
@@ -263,6 +266,18 @@ public class InscripcionesBean {
     }
 
     /**
+     * limpiar
+     */
+    public void refresh() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Application application = context.getApplication();
+        ViewHandler viewHandler = application.getViewHandler();
+        UIViewRoot viewRoot = viewHandler.createView(context, context.getViewRoot().getViewId());
+        context.setViewRoot(viewRoot);
+        context.renderResponse();
+    }
+
+    /**
      * Graba el registro asociado al objeto que
      */
     public String guardar() {
@@ -302,7 +317,7 @@ public class InscripcionesBean {
         }
 
         try {
-            if (categoriaSeleccionado.getIdCategoriasSociales()==null) {
+            if (categoriaSeleccionado.getIdCategoriasSociales() == null) {
                 List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
                 if (datos.size() > 0) {
                     estudiante.setIdCategoriasSociales(datos.get(0));
@@ -314,10 +329,17 @@ public class InscripcionesBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado la categoría A,B,C "));
             return null;
         }
-        if (object.getEstadoMat().equals("")) {
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
-            return null;
+        try {
+            if (object.getEstadoMat().equals("")) {
+                object.setEstadoMat("I");
+                //FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado el estado de la matricula", "No ha seleccionado el estado de la matricula"));
+                //return null;
+            }
+        } catch (Exception e) {
+            object.setEstadoMat("I");
+            System.out.println("");
         }
+
 
 
         estudiante.setClave(cl.encriptar(estudiante.getClave()));
@@ -333,9 +355,9 @@ public class InscripcionesBean {
         if (pariente1.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente1.getIdentificacion(), "tipoRepresentante", "F", "");
             if (pariList.size() > 0) {
-                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                if (pariList.get(0).getIdParientes().equals(new Integer(0))) {
                     pariente1.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                }else{
+                } else {
                     pariente1.setIdParientes(pariList.get(0).getIdParientes());
                 }
                 adm.actualizar(pariente1);
@@ -351,9 +373,9 @@ public class InscripcionesBean {
         if (pariente2.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente2.getIdentificacion(), "tipoRepresentante", "P", "");
             if (pariList.size() > 0) {
-                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                if (pariList.get(0).getIdParientes().equals(new Integer(0))) {
                     pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                }else{
+                } else {
                     pariente2.setIdParientes(pariList.get(0).getIdParientes());
                 }
                 adm.actualizar(pariente2);
@@ -369,9 +391,9 @@ public class InscripcionesBean {
         if (pariente3.getIdParientes().equals(new Integer(0))) {
             List<Parientes> pariList = adm.existe("Parientes", "identificacion", pariente3.getIdentificacion(), "tipoRepresentante", "M", "");
             if (pariList.size() > 0) {
-                if(pariList.get(0).getIdParientes().equals(new Integer(0))){
+                if (pariList.get(0).getIdParientes().equals(new Integer(0))) {
                     pariente2.setIdParientes(adm.getNuevaClave("Parientes", "idParientes"));
-                }else{
+                } else {
                     pariente3.setIdParientes(pariList.get(0).getIdParientes());
                 }
                 adm.actualizar(pariente3);
@@ -454,7 +476,7 @@ public class InscripcionesBean {
 
         object.setIdEstudiantes(estudiante);
         object.setIdPeriodos(per);
-        
+
         object.setIdCarreras(carreraSeleccionado);
 
         if (object.getIdMatriculas().equals(new Integer(0))) {
@@ -504,10 +526,10 @@ public class InscripcionesBean {
             matMat.setIdMatriculas(object);
             //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
             matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat); 
-            
+            adm.guardar(matMat);
+
         }
-        
+
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
     }
@@ -630,7 +652,7 @@ public class InscripcionesBean {
             estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
                     + " where o.idEstudiantes.apellidoPaterno like '%" + apellido + "%' "
                     + " and (o.estadoMat = 'I' or o.estadoMat = 'A' ) order by o.idEstudiantes.apellidoPaterno ", 0, 10);
-            if(estudiantesListado.size()<=0){
+            if (estudiantesListado.size() <= 0) {
                 estudiantesListado = adm.query("Select o from Estudiantes as o "
                         + " where o.apellidoPaterno like '%" + apellido + "%' "
                         + "  order by o.apellidoPaterno ", 0, 10);
@@ -654,7 +676,7 @@ public class InscripcionesBean {
             estudiantesListado = adm.query("Select o.idEstudiantes from Matriculas as o "
                     + " where o.idEstudiantes.idEstudiantes like '%" + cedula + "%' "
                     + "  and o.estadoMat = 'I' order by o.idEstudiantes.idEstudiantes ", 0, 10);
-            if(estudiantesListado.size()<=0){
+            if (estudiantesListado.size() <= 0) {
                 estudiantesListado = adm.query("Select o from Estudiantes as o "
                         + " where o.idEstudiantes like '%" + cedula + "%' "
                         + "  order by o.apellidoPaterno ", 0, 10);
@@ -707,9 +729,9 @@ public class InscripcionesBean {
 
         String cedula2 = estudiante.getIdEstudiantes();
         estudiante = (Estudiantes) adm.buscarClave(cedula2, Estudiantes.class);
-        if(buscarMatricula(estudiante)){
+        if (buscarMatricula(estudiante)) {
             FacesContext context = FacesContext.getCurrentInstance();
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_WARN, "INFORMACIÓN","Ya se encuentra matriculado no puede volver a inscribir"));
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_WARN, "INFORMACIÓN", "Ya se encuentra matriculado no puede volver a inscribir"));
             System.out.println("ya se ha matriculado no puede continuar");
             estudiante = null;
             return;
@@ -761,7 +783,7 @@ public class InscripcionesBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-                try {
+        try {
             estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             clave2 = estudiante.getClave();
@@ -770,7 +792,7 @@ public class InscripcionesBean {
             estudiante.setClave(generarClaveSiVacio());
             clave2 = estudiante.getClave();
         }
-                List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
+        List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
                 + " and o.estadoMat = 'I'  ");
@@ -825,7 +847,7 @@ public class InscripcionesBean {
     }
 
     protected void buscarMateriasMatricula(Matriculas mat) {
-        if(!object.getIdMatriculas().equals(new Integer(0))){
+        if (!object.getIdMatriculas().equals(new Integer(0))) {
             destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
                     + " WHERE c.id_Materias in "
                     + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
@@ -839,17 +861,17 @@ public class InscripcionesBean {
 
             }
             sumarCreditos();
-        }else{
-                destino = new ArrayList<CarrerasMaterias>();
-                origen = adm.query("Select m from CarrerasMaterias as m  "
+        } else {
+            destino = new ArrayList<CarrerasMaterias>();
+            origen = adm.query("Select m from CarrerasMaterias as m  "
                     + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
-                for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-                    CarrerasMaterias destItem = it.next();
-                    origen.remove(destItem);
+            for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+                CarrerasMaterias destItem = it.next();
+                origen.remove(destItem);
 
-                }
-                sumarCreditos();
-        
+            }
+            sumarCreditos();
+
         }
     }
     public int noCreditos = 0;
@@ -954,16 +976,16 @@ public class InscripcionesBean {
     public boolean validarSecuencia(CarrerasMaterias materiaAanadir) {
 
         //ESTE METODO DEBE INICIALIZARSE CADA VEZ QUE CAMBIO DE ESPECIALDIAD
-                        try {
-                            CarrerasMaterias tmp = anadidasArray[0][0];
-                            if (tmp.getIdCarrerasMaterias().equals(null)) {
-                                buscarMateriasdeCarrera();                     
-                            }
-                        } catch (Exception e) {
-                            buscarMateriasdeCarrera();                
-                        }
-        
-        
+        try {
+            CarrerasMaterias tmp = anadidasArray[0][0];
+            if (tmp.getIdCarrerasMaterias().equals(null)) {
+                buscarMateriasdeCarrera();
+            }
+        } catch (Exception e) {
+            buscarMateriasdeCarrera();
+        }
+
+
 
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1016,8 +1038,8 @@ public class InscripcionesBean {
         for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
             SecuenciaDeMateriasAdicionales secM = it.next();
             if (secM.getFilacolumna().equals(idSeleccionado)) {
- 
-                 List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
+
+                List<Notas> notasEncontradas = adm.query("Select o from Notas as o "
                         + " where o.idMateriasMatricula.idMaterias.idMaterias = '" + secM.getIdCarrerasMaterias().getIdMaterias().getIdMaterias() + "' "
                         + "and o.idMateriasMatricula.idMatriculas.idEstudiantes.idEstudiantes = '" + object.getIdEstudiantes().getIdEstudiantes() + "' ");
                 if (notasEncontradas.size() > 0) {
@@ -1032,18 +1054,18 @@ public class InscripcionesBean {
                     requeridas += " || " + secM.getIdCarrerasMaterias().getIdNiveles().getNombre() + ": " + secM.getIdCarrerasMaterias().getIdMaterias().getNombre();
                 }
 
-                
+
 
             }
 
         }
-        if(requeridas.length()>0){
-        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
-        return true;
-        }else{
-        return false;
+        if (requeridas.length() > 0) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "NO PUEDE AGREGAR LA MATERIA, FALTA APROBAR OTRAS MATERIAS", requeridas));
+            return true;
+        } else {
+            return false;
         }
-        
+
 
     }
     List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
@@ -1071,7 +1093,7 @@ public class InscripcionesBean {
 
     public void buscarMateriasdeCarrera() {
         try {
-             buscarMateriasMatricula(object);
+            buscarMateriasMatricula(object);
             llenarArreglo();
             listaMaterias = adm.query("Select o from CarrerasMaterias as o "
                     + " where o.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "'  "
@@ -1147,12 +1169,12 @@ public class InscripcionesBean {
         }
     }
 
-      protected Boolean buscarMatricula(Estudiantes estudiante) {
-          admitido = "";
+    protected Boolean buscarMatricula(Estudiantes estudiante) {
+        admitido = "";
         List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' and o.estadoMat in ('M','I','A') ");
-         if (matriculasListado.size() > 0) {
+        if (matriculasListado.size() > 0) {
             object = matriculasListado.get(0);
 //            if(object.getEstadoMat().equals("A")){
 //                 admitido = "ADMITIDO";
@@ -1162,16 +1184,15 @@ public class InscripcionesBean {
 //                 return false; //MATRICULADO     
 //            }
             carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
             buscarMateriasMatricula(object);
             return true; //MATRICULADO
-        }else{
+        } else {
             carreraSeleccionado = new Carreras(0);
-            object = new Matriculas(0); 
+            object = new Matriculas(0);
             buscarMateriasMatricula(object);
-               return false; //MATRICULADO
+            return false; //MATRICULADO
         }
-        
+
     }
 //    protected void buscarMatricula(Estudiantes estudiante) {
 //        List<Matriculas> matriculasListado = adm.query("Select o from Matriculas as o "
@@ -1205,8 +1226,9 @@ public class InscripcionesBean {
 //        
 //        }
 //    }
- public String generarUsuarioSiVacio(String apellido1,String apellido2, String nombre) {
-        String usuario = apellido1.substring(0,2)+""+apellido2.substring(0,2)+""+nombre.substring(0,3);
+
+    public String generarUsuarioSiVacio(String apellido1, String apellido2, String nombre) {
+        String usuario = apellido1.substring(0, 2) + "" + apellido2.substring(0, 2) + "" + nombre.substring(0, 3);
         return usuario.toUpperCase();
     }
 
@@ -1221,6 +1243,7 @@ public class InscripcionesBean {
         return clave;
 
     }
+
     public void handleSelect(SelectEvent event) {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
 
@@ -1244,7 +1267,7 @@ public class InscripcionesBean {
         } else {
             pariente3 = new Parientes();
         }
- 
+
         arLibreta = new Archivos();
         arTitulo = new Archivos();
         arCedula = new Archivos();
@@ -1275,7 +1298,7 @@ public class InscripcionesBean {
         provinciaSeleccionado = estudiante.getIdCanton().getIdProvincia();
         buscarCanton();
         cantonSeleccionado = estudiante.getIdCanton();
-                try {
+        try {
             estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             //estudiante.setClave(cl.desencriptar(estudiante.getClave()));
             clave2 = estudiante.getClave();
@@ -1285,6 +1308,23 @@ public class InscripcionesBean {
             clave2 = estudiante.getClave();
         }
         buscarMatricula(estudiante);
+        try {
+                if (categoriaSeleccionado.getIdCategoriasSociales() == null) {
+                List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
+                if (datos.size() > 0) {
+                    estudiante.setIdCategoriasSociales(datos.get(0));
+                    categoriaSeleccionado = estudiante.getIdCategoriasSociales();
+                }
+
+            }else{
+                categoriaSeleccionado = estudiante.getIdCategoriasSociales();
+                }
+                    
+        } catch (Exception e) {
+            
+        }
+        
+        
         foto1 = estudiante.getIdEstudiantes() + ".jpg";
         try {
             if (estudiante.getFoto() != null) {
@@ -1514,17 +1554,17 @@ public class InscripcionesBean {
     }
 
     public List<SelectItem> getSelectedItemIngresos() {
-         try {
+        try {
             List<RangosIngresos> divisionPoliticas = new ArrayList<RangosIngresos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
                 divisionPoliticas = adm.queryNativo("Select o.* from Rangos_Ingresos as o "
-                        + "  order by o.valor ",RangosIngresos.class);
+                        + "  order by o.valor ", RangosIngresos.class);
                 if (divisionPoliticas.size() > 0) {
                     //RangosIngresos objSel = new RangosIngresos(0);
 //                    items.add(new SelectItem("-", "Seleccione..."));
                     for (RangosIngresos obj : divisionPoliticas) {
-                        items.add(new SelectItem(obj,obj.getRangoInicial() + "-" + obj.getRangoFinal(), obj.getRangoInicial() + "-" + obj.getRangoFinal()));
+                        items.add(new SelectItem(obj, obj.getRangoInicial() + "-" + obj.getRangoFinal(), obj.getRangoInicial() + "-" + obj.getRangoFinal()));
                     }
                 } else {
                     //RangosIngresos obj = new RangosIngresos(0);
@@ -1538,6 +1578,7 @@ public class InscripcionesBean {
         }
         return null;
     }
+
     public List<SelectItem> getSelectedItemOtrosIngresos() {
         try {
             List<OtrosIngresos> divisionPoliticas = new ArrayList<OtrosIngresos>();
@@ -1547,7 +1588,7 @@ public class InscripcionesBean {
                         + "  order by o.idOtrosIngresos ");
                 if (divisionPoliticas.size() > 0) {
                     for (OtrosIngresos obj : divisionPoliticas) {
-                        items.add(new SelectItem(obj,obj.getNombre()));
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
                 } else {
                     items.add(new SelectItem(new OtrosIngresos(), "NO EXISTEN OTROS INGRESOS"));
@@ -1560,8 +1601,8 @@ public class InscripcionesBean {
         }
         return null;
     }
-    
-        public List<SelectItem> getSelectedItemAutos() {
+
+    public List<SelectItem> getSelectedItemAutos() {
         try {
             List<Autos> divisionPoliticas = new ArrayList<Autos>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -1570,7 +1611,7 @@ public class InscripcionesBean {
                         + "  order by o.idAutos ");
                 if (divisionPoliticas.size() > 0) {
                     for (Autos obj : divisionPoliticas) {
-                        items.add(new SelectItem(obj,obj.getNombre()));
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
                 } else {
                     items.add(new SelectItem(new Autos(), "NO EXISTEN TIPOS DE AUTOS"));
@@ -1583,8 +1624,8 @@ public class InscripcionesBean {
         }
         return null;
     }
-        
-            public List<SelectItem> getSelectedItemTipoVivienda() {
+
+    public List<SelectItem> getSelectedItemTipoVivienda() {
         try {
             List<TipoVivienda> divisionPoliticas = new ArrayList<TipoVivienda>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -1593,7 +1634,7 @@ public class InscripcionesBean {
                         + "  order by o.idTipoVivienda ");
                 if (divisionPoliticas.size() > 0) {
                     for (TipoVivienda obj : divisionPoliticas) {
-                        items.add(new SelectItem(obj,obj.getNombre()));
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
                 } else {
                     items.add(new SelectItem(new TipoVivienda(), "NO EXISTEN TIPO DE VIVIENDA"));
@@ -1606,7 +1647,8 @@ public class InscripcionesBean {
         }
         return null;
     }
-                public List<SelectItem> getSelectedItemTipoTarjeta() {
+
+    public List<SelectItem> getSelectedItemTipoTarjeta() {
         try {
             List<TipoTarjeta> divisionPoliticas = new ArrayList<TipoTarjeta>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -1615,7 +1657,7 @@ public class InscripcionesBean {
                         + "  order by o.idTipoTarjeta ");
                 if (divisionPoliticas.size() > 0) {
                     for (TipoTarjeta obj : divisionPoliticas) {
-                        items.add(new SelectItem(obj,obj.getNombre()));
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
                 } else {
                     items.add(new SelectItem(new TipoTarjeta(), "NO HA CREADO TARJETAS"));
@@ -2232,6 +2274,4 @@ public class InscripcionesBean {
     public void setAdmitido(String admitido) {
         this.admitido = admitido;
     }
-    
-    
 }

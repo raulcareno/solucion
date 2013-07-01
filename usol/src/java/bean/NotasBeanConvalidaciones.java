@@ -9,7 +9,6 @@ import bsh.Interpreter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,17 +24,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import jcinform.persistencia.Aulas;
 import jcinform.persistencia.Carreras;
+import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.Horarios;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Notas;
+import jcinform.persistencia.Parametros;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.RangosGpa;
 import jcinform.persistencia.SistemaNotas;
 import jcinform.procesos.Administrador;
-import jcinform.procesos.SequenceUtil;
 import org.joda.time.DateMidnight;
 import utilerias.NotasIngresar;
 
@@ -63,6 +63,16 @@ public class NotasBeanConvalidaciones implements Serializable {
     Permisos permisos;
     Auditar aud = new Auditar();
     Periodos per = null;
+    public String tipoPago="O";
+    BigDecimal valorConvOtra = new BigDecimal(0);
+    BigDecimal valorConvReingreso = new BigDecimal(0);
+    BigDecimal valorConvMisma = new BigDecimal(0);
+    
+    /**
+     * O Otra universidad 25 usd  PARAMETRO= CONVOTRA
+     * R Reingreso 10 usd PARAMETRO= CONVINGRESO
+     * M Misma Universdiad  0 PARAMETRO= CONVMISMA
+     */
 
     public NotasBeanConvalidaciones() {
 //        super();
@@ -83,6 +93,48 @@ public class NotasBeanConvalidaciones implements Serializable {
                 java.util.logging.Logger.getLogger(NotasBeanConvalidaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        /**
+     * O Otra universidad 25 usd  PARAMETRO= CONVOTRA
+     * R Reingreso 10 usd PARAMETRO= CONVINGRESO
+     * M Misma Universdiad  0 PARAMETRO= CONVMISMA
+     */
+         
+         List<Parametros> parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVOTRA' ");
+         if(parConvOtraList.size()>0){
+          valorConvOtra = parConvOtraList.get(0).getVNumerico();
+         }else{
+             Parametros parConvOtra = new Parametros(adm.getNuevaClave("Parametros", "idParametros"));
+             parConvOtra.setNombre("Valor para cobrar convalidación cuando viene de Otra Univ.");
+             parConvOtra.setTipo("N");
+             parConvOtra.setVNumerico(new BigDecimal(25)); 
+             parConvOtra.setVariable("CONVOTRA"); 
+             adm.guardar(parConvOtra);
+         }
+         
+         parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVREINGRESO' ");
+         if(parConvOtraList.size()>0){
+          valorConvReingreso = parConvOtraList.get(0).getVNumerico();
+         }else{
+             Parametros parConvOtra = new Parametros(adm.getNuevaClave("Parametros", "idParametros"));
+             parConvOtra.setNombre("Valor convalidación cuando es Reingreso");
+             parConvOtra.setTipo("N");
+             parConvOtra.setVNumerico(new BigDecimal(10)); 
+             parConvOtra.setVariable("CONVREINGRESO"); 
+             adm.guardar(parConvOtra);
+         }
+         
+         parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVMISMA' ");
+         if(parConvOtraList.size()>0){
+          valorConvMisma = parConvOtraList.get(0).getVNumerico();
+         }else{
+             Parametros parConvOtra = new Parametros(adm.getNuevaClave("Parametros", "idParametros"));
+             parConvOtra.setNombre("Valor convalidación cuando es de la Misma Univ.");
+             parConvOtra.setTipo("N");
+             parConvOtra.setVNumerico(new BigDecimal(0)); 
+             parConvOtra.setVariable("CONVMISMA"); 
+             adm.guardar(parConvOtra);
+         }
+         
     }
 
     public String editarAction(Notas obj) {
@@ -315,13 +367,29 @@ public class NotasBeanConvalidaciones implements Serializable {
             MateriasMatricula mNueva = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
             mNueva.setIdMaterias(materiasSeleccionada);
             mNueva.setIdMatriculas(matriculasSeleccionada);
-            mNueva.setPagado(true); 
-            mNueva.setNumeroMatricula(matriculasSeleccionada.getNumero()); 
+            mNueva.setPagado(false); 
+            mNueva.setNumeroMatricula(); //query de números de veces matriculada
+            mNueva.setTipo("3"); //3: convalidada 2: arrastre  1: normal
+            mNueva.setConvalidado(true);
+            mNueva.setValor(tipoPago);
+            //si el valor es cero poner como pagado
+                    if(tipoPago.equals("O")){
+                            if(valorConvOtra.doubleValue()<=0){
+                                mNueva.setPagado(true); 
+                            }
+                    }else if(tipoPago.equals("R")){
+                        if(valorConvReingreso.doubleValue()<=0){
+                                mNueva.setPagado(true); 
+                            }
+                        
+                    }else if(tipoPago.equals("M")){
+                            if(valorConvMisma.doubleValue()<=0){
+                                mNueva.setPagado(true); 
+                            }
+                    }
+            
             adm.guardar(mNueva);
         }
-         
-        
-
         try {
             System.out.println("INICIO GUARDAR NOTAS : " + new Date());
             String redondear = "public Double redondear(Double numero, int decimales) {"
@@ -497,17 +565,20 @@ public class NotasBeanConvalidaciones implements Serializable {
     public List<SelectItem> getSelectedItemMaterias() {
         try {
             //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
-            List<Horarios> materiasListado = new ArrayList<Horarios>();
+            List<CarrerasMaterias> materiasListado = new ArrayList<CarrerasMaterias>();
             List<SelectItem> items = new ArrayList<SelectItem>();
-            materiasListado = adm.query("Select o from Horarios as o "
-                    + " where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
-                    + " and o.idCarreras.idCarreras = '" + carrerasSeleccionada.getIdCarreras() + "'  "
+            materiasListado = adm.query("Select o from CarrerasMaterias as o "
+                    + " where o.idCarreras.idCarreras = '" + carrerasSeleccionada.getIdCarreras() + "'  "
                     + " order by o.idNiveles.secuencia asc, o.idMaterias.nombre ");
+//            materiasListado = adm.query("Select o from Horarios as o "
+//                    + " where o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' "
+//                    + " and o.idCarreras.idCarreras = '" + carrerasSeleccionada.getIdCarreras() + "'  "
+//                    + " order by o.idNiveles.secuencia asc, o.idMaterias.nombre ");
             ArrayList agregados = new ArrayList();
             if (materiasListado.size() > 0) {
                 Materias objSel = new Materias(0);
                 items.add(new SelectItem(objSel, "Seleccione..."));
-                for (Horarios obj : materiasListado) {
+                for (CarrerasMaterias obj : materiasListado) {
                     if (!agregados.contains(obj.getIdMaterias().getIdMaterias())) {
                         items.add(new SelectItem(obj.getIdMaterias(), obj.getIdNiveles().getNombre() + " | " + obj.getIdMaterias().getNombre() + " "));
                     }
@@ -769,4 +840,14 @@ public class NotasBeanConvalidaciones implements Serializable {
     public void setMatriculasSeleccionada(Matriculas matriculasSeleccionada) {
         this.matriculasSeleccionada = matriculasSeleccionada;
     }
+
+    public String getTipoPago() {
+        return tipoPago;
+    }
+
+    public void setTipoPago(String tipoPago) {
+        this.tipoPago = tipoPago;
+    }
+    
+    
 }

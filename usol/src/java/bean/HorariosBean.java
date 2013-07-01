@@ -513,6 +513,7 @@ public class HorariosBean {
 
     public void buscarMateriasdeCarrera() {
         try {
+            Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
             if(carreraSeleccionada.getIdCarreras() == null){
                 return;
@@ -530,7 +531,8 @@ public class HorariosBean {
             List<Horarios> materiasSecuenciales = adm.query("Select o from Horarios as o "
                     + "where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
                     + "  and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' "
-                    + " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "'  order by o.fila, o.orden ");
+                    + " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
+                    + " and o.idPeriodos.idPeriodos = '"+ per.getIdPeriodos()+"'  order by o.fila, o.orden ");
                 model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
             

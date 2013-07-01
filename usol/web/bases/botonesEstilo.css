@@ -74,3 +74,12 @@
     .imprimir{
         background-image: url('../images/imprimir.gif') !important;
     }
+
+    .texto{
+       font-size: 11px;
+       font-family: Helvetica;
+       font-weight: bold;
+       font-stretch: condensed;
+
+   }
+

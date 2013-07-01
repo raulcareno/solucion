@@ -91,7 +91,13 @@ Registro de Notas
                             <f:selectItems value="#{notasBeanConvalidaciones.selectedItemMatriculas}"></f:selectItems>
                             <p:ajax event="change" process="@this" listener="#{notasBeanConvalidaciones.buscarNotas()}" update="datosNotas"  />
                         </h:selectOneMenu> 
-                       
+                        <p:spacer />
+                        <h:outputText styleClass="textos3" value="EL ESTUDIANTE VIENE DE : >> " /> 
+                         <p:selectOneRadio id="sexo" value="#{notasBeanConvalidaciones.tipoPago}">  
+                                <f:selectItem itemLabel="OTRA UNIVERSIDAD"  itemValue="O" />  
+                                <f:selectItem itemLabel="MISMA UNIVERSIDAD" itemValue="M" />  
+                                <f:selectItem itemLabel="REINGRESO" itemValue="R" />  
+                            </p:selectOneRadio>  
                     </h:panelGrid>
 
                     <h:panelGrid columns="#{notasBeanConvalidaciones.cabeceras.size()+3}" id="datos">
