@@ -121,6 +121,18 @@ public class notasConsultas extends Rows {
 
 
     }
+    
+    public Double truncar(Double numero, int decimales) {
+        try {
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
+
+
 
     public Double redondear(Double numero, int decimales) {
         try {
