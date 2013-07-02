@@ -569,7 +569,7 @@ void recalcular(){
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
                     parametros.put("materia", mate.getMateria().getDescripcion());
                      parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
-                    report.setSrc(directorioReportes+"notaspor.jasper");
+                    report.setSrc(directorioReportes+"notasporQ.jasper");
                     parametros.put("titulo", titulo.value);
             }else if(tipo.equals("NMATD")){
 
@@ -1134,9 +1134,9 @@ void campos(String valor){
                                     <listitem  id="LIB3" label="Libreta de Calificaciones(Con Aprobación o No)" value="LIB3" />
                                     <listitem  id="LIBQ" label="Libreta Quimestral" value="LIBQ" />
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
-                                    <listitem id="NMAT2"  label="Cuadro de Calificaciones(2)" value="NMAT2" />
-                                    <listitem id="CCAL4"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
-                                    <listitem id="CCAL3"  label="Cuadro de Calificaciones Quimestral" value="CCAL4" />
+                                    <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
+                                    <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
+                                    <listitem id="NMAT2"  label="Cuadro de Calificaciones Quimetral" value="NMAT2" />
                                     <listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" />
                                     <listitem  id="CNF5" label="Cuadro Juntas x Aportes" value="CNF5" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
