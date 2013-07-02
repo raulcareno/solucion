@@ -133,7 +133,7 @@ public class reportesClase {
 
         return ds;
     }
-//CUADRO DE NOTAS POR MATERIA
+    //CUADRO DE NOTAS POR MATERIA
 
     public ArrayList notasd(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
@@ -211,6 +211,114 @@ public class reportesClase {
         } catch (Exception e) {
             System.out.println("ERROR EN CUADRO DE EQUIVALENCIAS EN REPORTE DE NOTAS POR MATERIA:_  " + e);
         }
+//    tamanio = sistemas.size();
+        //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
+        String q = "Select matriculas.codigomat, " + query + "  from matriculas "
+                + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
+                + "left join notas on matriculas.codigomat = notas.matricula "
+                + "and notas.materia = '" + materia.getMateria().getCodigo() + "' and notas.disciplina = false "
+                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                + "and matriculas.estado in ('Matriculado','Recibir Pase','Retirado','Emitir Pase')  "
+                + "order by estudiantes.apellido";
+        System.out.println("" + q);
+        List nativo = adm.queryNativo(q);
+        List<Nota> lisNotas = new ArrayList();
+        int cont = 1;
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            //row = new Row();
+            Matriculas matriculaNo = null;
+//            MateriaProfesor mprofesor = null;
+            int ksis = 0;
+
+            for (int j = 0; j < vec.size(); j++) {
+                Object dos = vec.get(j);
+                Double val = 0.0;
+                Nota nota = new Nota();
+                try {
+                    if (dos.equals(null)) {
+                        dos = new Double(0.0);
+                    }
+                } catch (Exception e) {
+                    dos = new Double(0.0);
+                }
+                if (j >= 1) {
+                    val = redondear((Double) dos, 2);
+                    nota.setMatricula(matriculaNo);
+                    nota.setContador(cont);
+                    nota.setNota(val);
+                    if (!materia.getCuantitativa()) {
+                        nota.setNota(equivalencia(dos, equivalencias));
+                    }
+
+                    nota.setMateria(materia.getMateria());
+                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    lisNotas.add(nota);
+                    ksis++;
+                } else {
+                    matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                    //mprofesor = adm.query("Select o from ")
+                }
+            }
+            cont++;
+        }
+        nativo = null;
+        ReporteNotasDataSource ds = new ReporteNotasDataSource(lisNotas);
+        ArrayList arr = new ArrayList();
+        arr.add(ds);
+        arr.add(parametros);
+        return arr;
+    }
+
+    
+//CUADRO DE NOTAS POR MATERIA QUIMESTRAL
+
+    public ArrayList notasq(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Trimestres tri = sistema.getTrimestre();
+                
+        List sistemas = adm.query("Select o from Sistemacalificacion as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + " and o.trimestre.codigotrim = '"+tri.getCodigotrim()+"' "
+                + " order by o.orden ");
+
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true  and o.sistema.orden  <= '" + sistema.getOrden() + "' "
+                + "order by o.sistema.orden ");
+        List<Sistemaevaluacion> notasEval = adm.query("SELECT o FROM Sistemaevaluacion as o "
+                + " WHERE o.sistemacalificacion.codigosis = 59  AND o.espromedio = TRUE ORDER BY o.orden ");
+        String queryEval = "";
+        for (Iterator<Sistemaevaluacion> it = notasEval.iterator(); it.hasNext();) {
+            Sistemaevaluacion siste  = it.next();
+            queryEval += siste.getNombre() + ",";
+        }
+        if(notasEval.size()>0){
+        queryEval = queryEval.substring(0, queryEval.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        }else{
+            return null;
+        }
+        String query = "";
+        for (Notanotas notass : notas) {
+            query += notass.getNota() + ",";
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        if (materia.getMateria().getCodigo().equals(new Integer(0))) {
+            equivalencias = adm.query("Select o from Equivalencias as o "
+                    + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        }
+        Map parametros = new HashMap();
+        Institucion insts = curso.getPeriodo().getInstitucion();
+        parametros.put("denominacion", insts.getDenominacion());
+        parametros.put("nombre", insts.getNombre());
+        parametros.put("periodo", periodo.getDescripcion());
+        parametros.put("slogan", insts.getSlogan());
+        insts = null;
 //    tamanio = sistemas.size();
         //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
         String q = "Select matriculas.codigomat, " + query + "  from matriculas "

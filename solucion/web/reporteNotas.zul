@@ -561,6 +561,16 @@ void recalcular(){
                      parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
                     report.setSrc(directorioReportes+"notaspor.jasper");
                     parametros.put("titulo", titulo.value);
+            }else if(tipo.equals("NMAT2")){
+                    ArrayList arreglo = noti.notasq(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
+                    datasource = (ReporteNotasDataSource) arreglo.get(0);
+                     parametros = (HashMap) arreglo.get(1);
+                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
+                    parametros.put("materia", mate.getMateria().getDescripcion());
+                     parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                    report.setSrc(directorioReportes+"notaspor.jasper");
+                    parametros.put("titulo", titulo.value);
             }else if(tipo.equals("NMATD")){
 
                     ArrayList arreglo = noti.notasdisciplina(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()).getMateria(),sistemasCombo.getSelectedItem().getValue());
@@ -883,7 +893,7 @@ void campos(String valor){
              titulo.value= "Mejores Estudiantes";
              curs.disabled = false;
              filacursos.visible = true;
-        }else if(valor.equals("NMAT") || valor.equals("NMATD") || valor.equals("CCAL5") ){
+        }else if(valor.equals("NMAT2") || valor.equals("NMAT") || valor.equals("NMATD") || valor.equals("CCAL5") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             materiasCombo.disabled = false;
@@ -1124,8 +1134,9 @@ void campos(String valor){
                                     <listitem  id="LIB3" label="Libreta de Calificaciones(Con Aprobación o No)" value="LIB3" />
                                     <listitem  id="LIBQ" label="Libreta Quimestral" value="LIBQ" />
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
-                                    <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
-                                    <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
+                                    <listitem id="NMAT2"  label="Cuadro de Calificaciones(2)" value="NMAT2" />
+                                    <listitem id="CCAL4"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
+                                    <listitem id="CCAL3"  label="Cuadro de Calificaciones Quimestral" value="CCAL4" />
                                     <listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" />
                                     <listitem  id="CNF5" label="Cuadro Juntas x Aportes" value="CNF5" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
