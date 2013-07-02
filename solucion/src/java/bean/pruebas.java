@@ -5,6 +5,8 @@
 
 package bean;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Periodo;
 
@@ -18,8 +20,17 @@ public class pruebas {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Long i=Long.parseLong("001EEEA7",10);
-        System.out.println("DECIMALE: "+i);
+//        Long i=Long.parseLong("001EEEA7",10);
+//        System.out.println("DECIMALE: "+i);
+          //Double siete = 7.1;
+          BigDecimal d = new BigDecimal(7.43+"");
+          System.out.println(""+d);
+            //BigDecimal d = new BigDecimal(resultado);
+            //d = d.setScale(2, RoundingMode.DOWN);
+            d= d.setScale(2, BigDecimal.ROUND_DOWN);
+          System.out.println(""+d);
+         
+        
         // TODO code application logic here
 //        Double d = new Double("00");
 //        System.out.println(""+d);
