@@ -348,6 +348,9 @@ public class NotasBeanConvalidaciones implements Serializable {
         return "";
     }
 
+    int buscarMatriculas(){
+    return 0;
+    }
     /**
      * Graba el registro asociado al objeto que
      */
@@ -368,7 +371,7 @@ public class NotasBeanConvalidaciones implements Serializable {
             mNueva.setIdMaterias(materiasSeleccionada);
             mNueva.setIdMatriculas(matriculasSeleccionada);
             mNueva.setPagado(false); 
-            mNueva.setNumeroMatricula(1); //query de números de veces matriculada
+            mNueva.setNumeroMatricula(buscarMatriculas()); //query de números de veces matriculada
             mNueva.setTipo("3"); //3: convalidada 2: arrastre  1: normal
             mNueva.setConvalidado(true);
             mNueva.setValor(tipoPago);
