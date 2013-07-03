@@ -52,6 +52,7 @@ public class HorariosBean {
     protected Ejes ejesSeleccionada;
     protected Aulas aulasSeleccionada;
     protected Materias materiasSeleccionada;
+    protected Empleados empleadoSeleccionado;
     protected Horarios carreraMateriaSeleccionada;
     public String textoBuscar;
     Permisos permisos;
@@ -97,13 +98,27 @@ public class HorariosBean {
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        for (Horarios obj : model) {
-            if (obj.getIdEmpleados().getIdEmpleados().equals(new Integer(0))) {
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor"));
-                return null;
+        for (int i = 0; i < totalHoras; i++) {
+            for (int j = 0; j < 8; j++) {
+                //Horarios sec = anadidasArray[i][j];
+                if (anadidasArray[i][j].getIdMaterias().getIdMaterias() != null){
+                    if(!anadidasArray[i][j].getIdMaterias().getIdMaterias().equals(0)) {
+                    if (anadidasArray[i][j].getIdEmpleados() == null) {
+                         
+                        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario: [" + horas.get(i).getDesdeHor().toLocaleString().substring(11) +"-"+  horas.get(i).getHastaHor().toLocaleString().substring(11)+"]"));
+                        return null;
+                    }
+                    if (anadidasArray[i][j].getIdEmpleados().getIdEmpleados().equals(new Integer(0))) {
+                        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario:[ " + horas.get(i).getDesdeHor().toLocaleString().substring(11) +"-"+  horas.get(i).getHastaHor().toLocaleString().substring(11)+"]"));
+                        return null;
+                    }
+                }
+                }
+
 
             }
         }
+
 
 
         Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
@@ -125,16 +140,15 @@ public class HorariosBean {
                     sec.setIdAulas(aulasSeleccionada);
                     sec.setIdNiveles(nivelesSeleccionada);
                     sec.setIdPeriodos(per);
+                    sec.setIdEmpleados(anadidasArray[i][j].getIdEmpleados());
                     sec.setDia(j);
                     sec.setFila(i);
                     sec.setOrden(j);
-
                     sec.setIdHoras(horas.get(i));
-                    if (sec.getIdMaterias().getIdMaterias() != null) {
-                        sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
-                        adm.guardar(sec);
-
-                    }
+                    adm.guardar(sec);
+                    //   if (sec.getIdMaterias().getIdMaterias() != null) {
+                    //           sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
+                    //     }
 
                 }
             }
@@ -211,17 +225,16 @@ public class HorariosBean {
     public String idSeleccionado = "";
 
     public String seleccionado(int i, int j) {
-        idSeleccionado = "f" + i + "c" + j;
+        try {
+            filaActual = i;
+            columnaActual = j;
+            Horarios car = anadidasArray[i][j];
+            empleadoSeleccionado = car.getIdEmpleados();
 
-        adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
-        for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
-            SecuenciaDeMateriasAdicionales secM = it.next();
-            if (secM.getFilacolumna().equals(idSeleccionado)) {
-                adicionalesTmp.add(secM);
-            }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("" + e);
         }
-        filtroMaterias(j);
 
         return "";
     }
@@ -347,22 +360,13 @@ public class HorariosBean {
      * @param event
      */
     public void anadirAdicional() {
-//        SecuenciaDeMateriasAdicionales sec = new SecuenciaDeMateriasAdicionales();
-//
-//        carreraMateriaSeleccionada = (Horarios) adm.buscarClave(carreraMateriaSeleccionada.getIdHorarios(), Horarios.class);
-//        sec.setIdHorarios(carreraMateriaSeleccionada);
-//        sec.setFilacolumna(idSeleccionado);
-//        if (validarSiExiste(sec) == false) {
-//            adicionales.add(sec);
-//            adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
-//            for (Iterator<SecuenciaDeMateriasAdicionales> it = adicionales.iterator(); it.hasNext();) {
-//                SecuenciaDeMateriasAdicionales secM = it.next();
-//                if (secM.getFilacolumna().equals(idSeleccionado)) {
-//                    adicionalesTmp.add(secM);
-//                }
-//
-//            }
-//        }
+        try {
+            anadidasArray[filaActual][columnaActual].setIdEmpleados(empleadoSeleccionado);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("" + e);
+        }
+
     }
 
     public boolean validarSiExiste(SecuenciaDeMateriasAdicionales sec) {
@@ -497,28 +501,30 @@ public class HorariosBean {
         }
         return null;
     }
-    public void encerar0(){
-        
-            Niveles objSel = new Niveles(0);
-                nivelesSeleccionada = objSel;
-                Aulas objSelA = new Aulas();
-                aulasSeleccionada = objSelA;
-                
+
+    public void encerar0() {
+
+        Niveles objSel = new Niveles(0);
+        nivelesSeleccionada = objSel;
+        Aulas objSelA = new Aulas();
+        aulasSeleccionada = objSelA;
+
     }
-    public void encerar1(){
-                Aulas objSelA = new Aulas();
-                aulasSeleccionada = objSelA;
-                
+
+    public void encerar1() {
+        Aulas objSelA = new Aulas();
+        aulasSeleccionada = objSelA;
+
     }
 
     public void buscarMateriasdeCarrera() {
         try {
             Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
-            if(carreraSeleccionada.getIdCarreras() == null){
+            if (carreraSeleccionada.getIdCarreras() == null) {
                 return;
             }
-            if(nivelesSeleccionada.getIdNiveles() == null){
+            if (nivelesSeleccionada.getIdNiveles() == null) {
                 return;
             }
             //SELECT * FROM carreras_materias WHERE id_carreras = 1 AND id_niveles = 1
@@ -532,10 +538,10 @@ public class HorariosBean {
                     + "where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
                     + "  and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' "
                     + " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
-                    + " and o.idPeriodos.idPeriodos = '"+ per.getIdPeriodos()+"'  order by o.fila, o.orden ");
-                model = new ArrayList<Horarios>();
+                    + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  order by o.fila, o.orden ");
+            model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
-            
+
                 for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
                     Horarios cM = it.next();
 //                    cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
@@ -787,5 +793,23 @@ public class HorariosBean {
 
     public void setAulasSeleccionada(Aulas aulasSeleccionada) {
         this.aulasSeleccionada = aulasSeleccionada;
+    }
+
+    public Empleados getEmpleadoSeleccionado() {
+        return empleadoSeleccionado;
+    }
+
+    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
+        this.empleadoSeleccionado = empleadoSeleccionado;
+    }
+    int filaActual = 0;
+    int columnaActual = 0;
+
+    public int getFilaActual() {
+        return filaActual;
+    }
+
+    public void setFilaActual(int filaActual) {
+        this.filaActual = filaActual;
     }
 }

@@ -45,13 +45,14 @@
 
                     }
                     .panelGrande2{
+                        font-size: 10px;
                         vertical-align: top;
                         width: 150px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
                     }
                     .panelGrande{
-
+                        font-size: 10px;
                         width: 93px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
@@ -75,21 +76,21 @@
                 <p:panel id="registro"  style="width: 100%;" header="Horarios">
                     <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:panelGrid columns="6">
+                    <h:panelGrid  styleClass="texto"  columns="6">
                          <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
                     <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
                         <f:selectItems value="#{horariosBean.selectedItemCarreras}"></f:selectItems>
-                        <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel availableCars selectedCars carList"/>
+                        <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel availableCars selectedCars"/>
                     </h:selectOneMenu>
                     <h:outputText value="NIVEL: " /> 
                     <h:selectOneMenu id="nivel"   label="nivel" converter="ConvNiveles" value="#{horariosBean.nivelesSeleccionada}" rendered="true">
                         <f:selectItems value="#{horariosBean.selectedItemNiveles}"></f:selectItems>
-                        <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel aulas availableCars selectedCars carList"/>
+                        <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel aulas availableCars selectedCars"/>
                     </h:selectOneMenu>
                     <h:outputText value="AULAS: " /> 
                     <h:selectOneMenu id="aulas" label="aulas" converter="ConvAulas" value="#{horariosBean.aulasSeleccionada}" rendered="true">
                         <f:selectItems value="#{horariosBean.selectedItemAulas}"></f:selectItems>
-                        <p:ajax event="change"  listener="#{horariosBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars carList"/>
+                        <p:ajax event="change"  listener="#{horariosBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars"/>
                     </h:selectOneMenu>
                     </h:panelGrid>
                    
@@ -98,13 +99,32 @@
                     <p:graphicImage value="/images/minus.gif"/>   
                     Si desea quitar presione el menos
 
-                    <p:dataGrid emptyMessage="..." id="availableCars"  styleClass="panelito" style="padding: -5px -5px -5px -5px " 
+                    <p:dialog  header="AÑADIR OTRO PRE-REQUISITO" id="hola" widgetVar="modalSubirLibreta" modal="true"
+                               position="top"  showEffect="explode" 
+                                        width="440" visible="false" resizable="false">
+                                <p:panelGrid columns="2">  
+                                    <h:outputText value="Docente: " />
+                                    <h:selectOneMenu   converter="ConvEmpleados" value="#{horariosBean.empleadoSeleccionado}" >  
+                                        <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
+                                                       var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
+                                                       itemValue="#{man}" />  
+                                    </h:selectOneMenu>  
+                                    <h:outputText value="" />
+                                    <p:commandButton value="SELECCIONAR Y SALIR"  action="#{horariosBean.anadirAdicional}" oncomplete="modalSubirLibreta.hide();" icon="ui-icon-check" style="margin:0"/>
+  
+                                </p:panelGrid>
+                                 
+                                <br />
+  
+                            </p:dialog>
+                    
+                    <p:dataGrid emptyMessage="..." id="availableCars"  style="padding: -5px -5px -5px -5px " 
                                 var="car" value="#{horariosBean.listaMaterias}" columns="9">  
                         <p:column>  
                             <p:panel  id="pnl" styleClass="panelGrande">  
                                 <f:facet name="header">
                                     <p:graphicImage value="/images/plus.png"/>    
-                                    #{car.idMaterias.nombre} / #{car.numeroCreditos}C
+                                    <h:outputLabel value="#{car.idMaterias.nombre} / #{car.numeroCreditos}C"  style="font-size:10px" />
                                 </f:facet>
 
                             </p:panel>  
@@ -115,10 +135,10 @@
 
                     </p:dataGrid> 
 
-                    <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97; margin-top:20px">  
+                    <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
                            
-                            <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="8">
+                            <h:panelGrid cellpadding="1px"  styleClass="texto"  cellspacing="2px"  columns="8">
 
 
                                 <h:outputText styleClass="textos3"  value="HORA" />     
@@ -141,6 +161,10 @@
                                             <p:commandLink title="Quitar Elemento" rendered="#{horariosBean.anadidasArray[i][j].idMaterias.nombre != ''}"  update=":form" actionListener="#{horariosBean.onCarrerasInvDrop(horariosBean.anadidasArray[i][j],i,j)}"  >
                                                 <p:graphicImage value="/images/minus.gif"/>   
                                             </p:commandLink>
+                                            <p:commandLink title="Añadir Docente" rendered="#{horariosBean.anadidasArray[i][j].idMaterias.nombre != ''}"  actionListener="#{horariosBean.seleccionado(i,j)}"  oncomplete="modalSubirLibreta.show()" update=":form"  >
+                                                <p:spacer width="15"/>   
+                                                <p:graphicImage value="/images/usr.png"/>   
+                                            </p:commandLink>
                                             <p:spacer height="20" rendered="#{horariosBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
                                             <h:outputText style="color: #045491" value="#{horariosBean.anadidasArray[i][j].idMaterias.nombre}"  />
                                             <p:spacer width="7"/>   
@@ -155,7 +179,7 @@
                             <c:forEach var="k" begin="0" end="#{horariosBean.totalHoras-1}" step="1" varStatus ="status4">
                                 <c:forEach var="m" begin="0" end="6" step="1" varStatus ="status5">
                                     <p:droppable for="f#{k}c#{m}" tolerance="pointer"  activeStyleClass="ui-state-highlight"    datasource="availableCars" onDrop="handleDrop">  
-                                        <p:ajax listener="#{horariosBean.onCarrerasDrop}" update="dropArea availableCars carList" />  
+                                        <p:ajax listener="#{horariosBean.onCarrerasDrop}" update="dropArea availableCars" />  
                                     </p:droppable> 
                                 </c:forEach>
                             </c:forEach>
@@ -163,46 +187,7 @@
                         </p:outputPanel>  
 
                     </p:fieldset>  
-                    <p:dataTable var="car" value="#{horariosBean.model}" id="carList" editable="true">  
-
-                        <f:facet name="header">  
-                            MATERIAS PROFESOR
-                        </f:facet>  
-
-                        <p:ajax event="rowEdit" listener="#{horariosBean.onEdit}" update=":form:messages" />  
-                        <p:ajax event="rowEditCancel" listener="#{horariosBean.onCancel}" update=":form:messages" />  
-
-                        <p:column headerText="MATERIA" style="width:125px">  
-                            <p:cellEditor>  
-                                <f:facet name="output">  
-                                    <h:outputText value="#{car.idMaterias.nombre}" />  
-                                </f:facet>  
-                                <f:facet name="input">  
-                                    <p:inputText value="#{car.idMaterias.nombre}" style="width:100%"/>  
-                                </f:facet>  
-                            </p:cellEditor>  
-                        </p:column>  
- 
-                        <p:column headerText="PROFESOR" style="width:125px">  
-                            <p:cellEditor>  
-                                <f:facet name="output">  
-                                    <h:outputText value="#{car.idEmpleados.apellidoPaterno} #{car.idEmpleados.nombre}" />  
-                                </f:facet>  
-                                <f:facet name="input">  
-                                    <h:selectOneMenu   converter="ConvEmpleados" value="#{car.idEmpleados}" >  
-                                        <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
-                                                       var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  itemValue="#{man}" />  
-                                    </h:selectOneMenu>  
-                                </f:facet>  
-                            </p:cellEditor>  
-                        </p:column>  
- 
-
-                        <p:column headerText="Opciones" style="width:50px">  
-                            <p:rowEditor />  
-                        </p:column>  
-
-                    </p:dataTable>  
+                    
                     <h:panelGrid columns="4">
 
                         <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  

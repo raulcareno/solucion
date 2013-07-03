@@ -368,7 +368,7 @@ public class NotasBeanConvalidaciones implements Serializable {
             mNueva.setIdMaterias(materiasSeleccionada);
             mNueva.setIdMatriculas(matriculasSeleccionada);
             mNueva.setPagado(false); 
-            mNueva.setNumeroMatricula(); //query de números de veces matriculada
+            mNueva.setNumeroMatricula(1); //query de números de veces matriculada
             mNueva.setTipo("3"); //3: convalidada 2: arrastre  1: normal
             mNueva.setConvalidado(true);
             mNueva.setValor(tipoPago);

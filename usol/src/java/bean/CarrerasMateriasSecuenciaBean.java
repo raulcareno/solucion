@@ -239,6 +239,7 @@ public class CarrerasMateriasSecuenciaBean {
      *
      * @param event
      */
+
     public void anadirAdicional() {
         SecuenciaDeMateriasAdicionales sec = new SecuenciaDeMateriasAdicionales();
 
@@ -554,5 +555,14 @@ public class CarrerasMateriasSecuenciaBean {
     public void setListaMateriasAdicionales2(List<SelectItem> listaMateriasAdicionales2) {
         this.listaMateriasAdicionales2 = listaMateriasAdicionales2;
     }
+
+    public Permisos getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(Permisos permisos) {
+        this.permisos = permisos;
+    }
+
     
 }
