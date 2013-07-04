@@ -145,10 +145,11 @@ public class HorariosBean {
                     sec.setFila(i);
                     sec.setOrden(j);
                     sec.setIdHoras(horas.get(i));
-                    adm.guardar(sec);
-                    //   if (sec.getIdMaterias().getIdMaterias() != null) {
+                    
+                       if (sec.getIdMaterias().getIdMaterias() != null) {
                     //           sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
-                    //     }
+                           adm.guardar(sec);
+                         }
 
                 }
             }
@@ -156,6 +157,7 @@ public class HorariosBean {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
 
         } catch (Exception e) {
+            e.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
 

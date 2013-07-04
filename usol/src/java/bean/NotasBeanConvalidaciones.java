@@ -182,7 +182,7 @@ public class NotasBeanConvalidaciones implements Serializable {
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         int tamanio = sistemas.size();
         String q = "SELECT matricula.estado_mat, matricula.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno,'  ',estudiantes.nombre), "
-                + " nota1,nota2,nota3,nota4,  notas.estado    FROM   Matriculas matricula   "
+                + " "+query+"  notas.estado    FROM   Matriculas matricula   "
                 + " LEFT JOIN  Estudiantes estudiantes  ON matricula.id_estudiantes = estudiantes.id_estudiantes  "
                 + " LEFT JOIN Notas notas ON   notas.id_matriculas = matricula.id_matriculas    AND notas.id_materias = '" + materiasSeleccionada.getIdMaterias() + "' "
                 + " WHERE   matricula.id_periodos = '" + per.getIdPeriodos() + "'   AND (notas.convalidad = true or notas.convalidad is null) "
