@@ -107,7 +107,7 @@
                     <p:fieldset id="selectedCars" legend="MALLA CURRICULAR" style="width: 97; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
                             <p:dialog header="AÑADIR OTRO PRE-REQUISITO COPIA DE LA LIBRETA MILITAR" id="hola" widgetVar="modalSubirLibreta" modal="true"
-                                      fixedCenter="true" width="440" visible="false" resizable="false">
+                                       position="top" width="440" visible="false" resizable="false">
                                 <p:panelGrid columns="2">  
                                     <h:outputText value="MATERIA: " />
                                     <h:selectOneMenu id="carrerasMaterias" label="carreras" converter="ConvCarrerasMaterias" value="#{carrerasMateriasSecuenciaBean.carreraMateriaSeleccionada}" rendered="true">

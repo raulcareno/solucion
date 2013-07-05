@@ -53,9 +53,9 @@
                                         <p:message for="clave"   display="icon" /> 
                                         <p:watermark for="clave" value="Diqite aquí su Contraseña" />  
                                           
-                                        <p:selectOneMenu required="true"   requiredMessage="ERROR: Es necesario elegir un Periodo" id="periodo" label="periodo"  value="#{loginBean.periodoSeleccionado}" effect="fade" converter="ConvPeriodos">  
-                                            <f:selectItem itemLabel="SELECCIONE UN PERIODO" itemValue="" />  
-                                             <f:selectItems value="#{loginBean.selectedItemPeriodos}" var="ob"  itemLabel="#{ob}"   itemValue="#{ob}"/>  
+                                        <p:selectOneMenu style="font-size: 11px" required="true" styleClass="texto" requiredMessage="ERROR: Es necesario elegir un Periodo" id="periodo" label="periodo"  value="#{loginBean.periodoSeleccionado}"  converter="ConvPeriodos">  
+                                            <f:selectItem  itemLabel="SELECCIONE UN PERIODO" itemValue="" />  
+                                             <f:selectItems   value="#{loginBean.selectedItemPeriodos}" var="ob"  itemLabel="#{ob}"   itemValue="#{ob}"/>  
                                          </p:selectOneMenu>  
                                         <f:verbatim/><f:verbatim/>
                                         <p:commandButton update="login" value="Login" actionListener="#{loginBean.loginAction()}" icon="login" ajax="true" />  
