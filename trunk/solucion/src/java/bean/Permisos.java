@@ -156,6 +156,9 @@ public class Permisos {
         return false;
 
     }
+    public void crearParametros(){
+        
+    }
 
     public boolean verificarPermisoReporte(String idVariable, String descripcion, String accion, Boolean pantalla, String grupo) {
 

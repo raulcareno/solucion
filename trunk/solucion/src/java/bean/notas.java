@@ -536,6 +536,10 @@ public class notas extends Rows {
     public String guardar(List col, Cursos curso, MateriaProfesor materia) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Administrador adm = new Administrador();
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean noformulasencualitativas = regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
         try {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
@@ -543,7 +547,7 @@ public class notas extends Rows {
             inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
-            Administrador adm = new Administrador();
+           
             List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
             List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
                     + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
@@ -644,6 +648,10 @@ public class notas extends Rows {
     public String guardarCualitativas(List col, Cursos curso, MateriaProfesor materia) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+            Administrador adm = new Administrador();
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean noformulasencualitativas = regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
         try {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
@@ -651,7 +659,7 @@ public class notas extends Rows {
             inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
-            Administrador adm = new Administrador();
+        
             List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
             List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
                     + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
@@ -702,7 +710,7 @@ public class notas extends Rows {
                             aCargar = new Double(vaNota);
                         }
                         inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
-                        if (!formula.isEmpty()) {
+                      if (!formula.isEmpty() && noformulasencualitativas==false) {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }
                     }
