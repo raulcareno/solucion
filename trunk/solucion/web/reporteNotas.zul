@@ -659,6 +659,11 @@ void recalcular(){
                     datasource = noti.cuadrofinalsupletorio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),false);
                     report.setSrc(directorioReportes+"cuadrofinalsupletorio.jasper");
                            
+            }else if(tipo.equals("CRES")){
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadroresumen(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"cuadrofinalresumido.jasper");
+                           
             }else if(tipo.equals("CNF")){
                     
                     datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
@@ -989,6 +994,14 @@ void campos(String valor){
              filacursos.visible = true;
             filaaportes.visible = true;
              
+        }else if(valor.equals("CRES")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+             titulo.value= "Cuadro de Estudiantes a Supletorios";
+             hasta.value = new java.math.BigDecimal(6.99);
+             filacursos.visible = true;
+            filaaportes.visible = true;
+             
         }else if(valor.equals("AG") || valor.equals("AG2") ){
             especialidad.disabled = false;
             titulo.value= "Acta de Grado";
@@ -1143,6 +1156,7 @@ void campos(String valor){
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
                                     <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
                                     <listitem id="CSUP2"  label="Cuadro de Supletorios(Todos)" value="CSUP2" />
+                                    <listitem id="CRES"  label="Cuadro Resumido" value="CRES" />
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CNF4" label="Cuadro Final(10)" value="CNF4" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
