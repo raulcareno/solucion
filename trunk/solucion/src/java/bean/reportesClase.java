@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -150,7 +149,10 @@ public class reportesClase {
                 + "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true  and o.sistema.orden  <= '" + sistema.getOrden() + "' "
                 + "order by o.sistema.orden ");
 
-
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -245,7 +247,11 @@ public class reportesClase {
                     dos = new Double(0.0);
                 }
                 if (j >= 1) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setContador(cont);
                     nota.setNota(val);
@@ -286,6 +292,10 @@ public class reportesClase {
             equivalencias = adm.query("Select o from Equivalencias as o "
                     + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         }
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        
         List<Sistemacalificacion> sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " and o.trimestre.codigotrim = '" + tri.getCodigotrim() + "' "
@@ -337,7 +347,11 @@ public class reportesClase {
                             dos = new Double(0.0);
                         }
                         if (j >= 1) {
-                            val = redondear((Double) dos, 2);
+                            if(truncarNotas){
+                                val = truncar((Double) dos, 2);
+                            }else{
+                                val = redondear((Double) dos, 2);
+                            }
                             nota.setMatricula(matriculaNo);
                             nota.setContador(cont);
                             nota.setNota(val);
@@ -406,7 +420,11 @@ public class reportesClase {
                             dos = new Double(0.0);
                         }
                         if (j >= 1) {
-                            val = redondear((Double) dos, 2);
+                            if(truncarNotas){
+                                val = truncar((Double) dos, 2);
+                            }else{
+                               val = redondear((Double) dos, 2);
+                            }
                             nota.setMatricula(matriculaNo);
                             nota.setContador(cont);
                             nota.setNota(val);
@@ -477,6 +495,10 @@ public class reportesClase {
             equivalencias = adm.query("Select o from Equivalencias as o "
                     + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         }
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        
         Map parametros = new HashMap();
         Institucion insts = curso.getPeriodo().getInstitucion();
         parametros.put("denominacion", insts.getDenominacion());
@@ -564,7 +586,11 @@ public class reportesClase {
                     dos = new Double(0.0);
                 }
                 if (j >= 1) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setContador(cont);
                     if (notas.get(ksis).getEsdisciplina() || !materia.getCuantitativa()) {
@@ -633,6 +659,9 @@ public class reportesClase {
                 + "where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.orden  <= '" + sistema.getOrden() + "' and o.sistema.seimprime = true "
                 + "order by o.sistema.orden ");
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -673,7 +702,11 @@ public class reportesClase {
                     dos = new Double(0.0);
                 }
                 if (j >= 1) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setNota(val);
                     nota.setMateria(materia);
@@ -704,6 +737,7 @@ public class reportesClase {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
@@ -783,8 +817,12 @@ public class reportesClase {
                     dos = new Double(0.0);
                 }
                 if (j >= 3) {
-
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
+                    
                     if (materiaNo.getCodigo().equals(0)) {
                         val = redondear((Double) dos, numeroDecimalesDisc.intValue());
                     }
@@ -1137,7 +1175,13 @@ public class reportesClase {
                 }
                 if (j >= 3) {
 
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
+                    
+                    
                     if (materiaNo.getCodigo().equals(0)) {
                         val = redondear((Double) dos, numeroDecimalesDisc.intValue());
                     }
@@ -1407,12 +1451,13 @@ public class reportesClase {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         materiasReprobadas = new ArrayList<MateriaProfesor>();
-
-
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
         Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
-
+         
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.orden <= '" + sistema.getOrden() + "' "
@@ -1500,7 +1545,11 @@ public class reportesClase {
 
                     matricula = matriculaNo.toString();
                 } else if (j >= 3) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     matricula = matriculaNo.toString();
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     if (nota.getSistema().getPromediofinal().equals("SM")) {
@@ -1660,6 +1709,7 @@ public class reportesClase {
         }
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
         Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
@@ -1735,7 +1785,12 @@ String query = "";
                     nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
                 } else if (j >= 3) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
+                    
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     nota.setContador(cont);
@@ -1911,6 +1966,7 @@ String query = "";
         }
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
         Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
@@ -1990,7 +2046,11 @@ String query = "";
                     nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
                 } else if (j >= 3) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     nota.setContador(cont);
@@ -2151,6 +2211,7 @@ String query = "";
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
@@ -2213,8 +2274,12 @@ String query = "";
                     dos = new Double(0.0);
                 }
                 if (j >= 3) {
-
-                    val = redondear((Double) dos, 2);
+                        if(truncarNotas){
+                            val = truncar((Double) dos, 2);
+                        }else{
+                            val = redondear((Double) dos, 2);
+                        }
+                    
                     if (materiaNo.getCodigo().equals(0)) {
                         val = redondear((Double) dos, numeroDecimalesDisc.intValue());
                     }
@@ -2632,6 +2697,9 @@ String query = "";
         List<Cursos> listadoCursos = adm.query("Select o from Cursos as o "
                 + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.secuencia = 13 "
                 + " and o.especialidad.codigo = '" + especialidad.getCodigo() + "' ");
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List<Nota> lisNotas = new ArrayList();
         int m = 0;
         for (Iterator<Cursos> it = listadoCursos.iterator(); it.hasNext();) {
@@ -2663,15 +2731,22 @@ String query = "";
                     if (j >= 1) {
                         //                   val = redondear((Double) dos, 2);
                         nota.setCargo2(((Materiasgrado) notas.get(ksis)).getNombre());
-
-                        nota.setNota(redondear((Double) dos, 2));
+                        if(truncarNotas){
+                            nota.setNota(truncar((Double) dos, 2));
+                        }else{
+                            nota.setNota(redondear((Double) dos, 2));
+                        }
                         if ((j + 1) == vec.size()) {
                             String s = "##00.00##";
                             DecimalFormat decimalFormat = new DecimalFormat(s);
                             //DecimalFormat formateador = new DecimalFormat("####.###");
                             // Esto sale en pantalla con cuatro decimales, es decir, 3,4324
 //                        System.out.println("formato: " + decimalFormat.format(redondear((Double) dos, 3)));
-                            nota.setNota(decimalFormat.format(redondear((Double) dos, 3)));
+                            if(truncarNotas){
+                                nota.setNota(decimalFormat.format(truncar((Double) dos, 3)));
+                            }else{
+                               nota.setNota(decimalFormat.format(redondear((Double) dos, 3)));
+                            }
                         }
                         nota.setProfesor(((Materiasgrado) notas.get(ksis)).getProfesor().getApellidos() + " " + ((Materiasgrado) notas.get(0)).getProfesor().getNombres());
                         nota.setCurso(curso);
@@ -2723,6 +2798,9 @@ String query = "";
 //        List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
 //                "where  o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' and  o.sistema.espromedio = true  " +
 //                "order by o.sistema.orden ");
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.orden <= '" + sistema.getOrden() + "' "
@@ -2811,7 +2889,11 @@ String query = "";
                     dos = new Double(0.0);
                 }
                 if (j >= 3) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     nota.setContador(cont);
@@ -2907,6 +2989,9 @@ String query = "";
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
 //        List sistemas = adm.query("Select o from Sistemacalificacion as o " +
 //                "where o.periodo.codigoper = '"+periodo.getCodigoper()+"' and o.espromedio = true   order by o.orden ");
 //        List<Notanotas> notas = adm.query("Select o from Notanotas as o " +
@@ -3000,7 +3085,11 @@ String query = "";
                     dos = new Double(0.0);
                 }
                 if (j >= 3) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     nota.setContador(cont);
@@ -3093,7 +3182,7 @@ String query = "";
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         Boolean promCuantitativo = regresaVariableParametrosLogico("PROMCUAN", parametrosGlobales);
         Boolean discCuantitativo = regresaVariableParametrosLogico("DISCCUAN", parametrosGlobales);
         Boolean impPromedio = regresaVariableParametrosLogico("IMPPROM", parametrosGlobales);
@@ -3224,7 +3313,11 @@ String query = "";
                     dos = new Double(0.0);
                 }
                 if (j >= 3) {
-                    val = redondear((Double) dos, 2);
+                    if(truncarNotas){
+                        val = truncar((Double) dos, 2);
+                    }else{
+                        val = redondear((Double) dos, 2);
+                    }
                     nota.setMatricula(matriculaNo);
                     nota.setMateria(materiaNo);
                     if (mprofesor.getCuantitativa() == false) {
@@ -4942,8 +5035,12 @@ String query = "";
                         matep.setMateria(mate);
                         not.setMateriaProfesor(matep);
                         not.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
-
-                        not.setAprovechamiento(redondear(aprovechamiento, noDecimales));
+                        if(truncarNotas){
+                           not.setAprovechamiento(truncar(aprovechamiento, noDecimales));
+                        }else{
+                            not.setAprovechamiento(redondear(aprovechamiento, noDecimales));
+                        }
+                        
                         not.setDisciplina(disciplina);
 //                        if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
 
@@ -5209,8 +5306,11 @@ String query = "";
                         matep.setMateria(mate);
                         not.setMateriaProfesor(matep);
                         not.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
-
-                        not.setAprovechamiento(redondear(aprovechamiento, noDecimales));
+                if(truncarNotas){
+                    not.setAprovechamiento(truncar(aprovechamiento, noDecimales));
+                }else{
+                    not.setAprovechamiento(redondear(aprovechamiento, noDecimales));
+                }
                         not.setDisciplina(disciplina);
                         if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
                             not.setEstadoMateria("APROBADO");
@@ -6826,7 +6926,7 @@ String query = "";
 
     public Double truncar(Double numero, int decimales) {
         try {
-            BigDecimal d = new BigDecimal(numero);
+            BigDecimal d = new BigDecimal(numero+"");
             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
             return d.doubleValue();
         } catch (Exception e) {
