@@ -273,7 +273,11 @@ void llenar(Sistemacalificacion empa){
             supletorio.selected = true;
         }else if(empa.getPromediofinal().equals("SM")){
             sumatoria.selected = true;
-        }
+        }else if(empa.getPromediofinal().equals("RE")){
+            remedial.selected = true;
+        }else if(empa.getPromediofinal().equals("GR")){
+            gracia.selected = true;
+        } 
 
         if(empa.getTrimestre()!=null){
          for (int i = 0; i <= trime.getItems().size(); i++) {
