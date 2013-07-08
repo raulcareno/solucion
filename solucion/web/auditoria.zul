@@ -47,7 +47,21 @@ exportarExcel exp = new exportarExcel();
         Auditoria acceIt = (Auditoria) it.next();
         Listitem li = new Listitem();
         li.setValue(acceIt);
-        li.appendChild(new Listcell(acceIt.getUsuario().getApellidos()+" "+acceIt.getUsuario().getNombres()));
+        try{
+            li.appendChild(new Listcell(acceIt.getUsuario().getApellidos()+" "+acceIt.getUsuario().getNombres()));
+        }catch(Exception ax){
+                
+        }
+        try{
+            li.appendChild(new Listcell(acceIt.getRepresentante().getApellidos()+" "+acceIt.getRepresentante().getNombres()+"(Rep.)"));
+        }catch(Exception ax){
+
+        }
+        try{
+            li.appendChild(new Listcell(acceIt.getEstudiante().getApellido()+" "+acceIt.getEstudiante().getNombre()+"(Est.)"));
+        }catch(Exception ax){
+
+        }
         li.appendChild(new Listcell(acceIt.getTipo()+" "));
         li.appendChild(new Listcell(acceIt.getTabla()+" "));
         li.appendChild(new Listcell(acceIt.getPc()+" "));
