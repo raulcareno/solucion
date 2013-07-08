@@ -1956,6 +1956,8 @@ String query = "";
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'SU' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasDisc = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         if (equivalenciasSuple.size() <= 0) {
             try {
                 Messagebox.show("No existen los rangos de Supletorio, ingrese a Equivalencias > Supletorios y verifique que esté lleno...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -2058,7 +2060,13 @@ String query = "";
                     //nota.setNota(val);
 
                     if (mprofesor.getCuantitativa() == false) {
-                        nota.setNota(equivalencia(dos, equivalencias));
+                        
+                        //if(mprofesor.getMateria().getCodigo().equals(new Integer(0))){
+                        if (materiaNo.getCodigo().intValue() == 0) {
+                             nota.setNota(equivalencia(dos, equivalenciasDisc));
+                        }else{
+                            nota.setNota(equivalencia(dos, equivalencias));
+                        }
                     } else {
                         nota.setNota(val.toString());
 //                        aprovecha+=val;
