@@ -1715,7 +1715,11 @@ public class reportesClase {
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
 String query = "";
         for (Notanotas notass : notas) {
-            query += "AVG("+notass.getNota() + "),";
+                query += "round(AVG(CAST("+notass.getNota() + "  AS DECIMAL(9,2))),2),";
+                if(truncarNotas){
+                    query += "truncate(AVG(CAST("+notass.getNota() + "  AS DECIMAL(9,2))),2),";
+                }
+            
 
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("()", "");
@@ -1786,9 +1790,9 @@ String query = "";
                     lisNotas.add(nota);
                 } else if (j >= 3) {
                     if(truncarNotas){
-                        val = truncar((Double) dos, 2);
+                        val = truncar(((BigDecimal) dos).doubleValue(), 2);
                     }else{
-                        val = redondear((Double) dos, 2);
+                        val = redondear(((BigDecimal) dos).doubleValue(), 2);
                     }
                     
                     nota.setMatricula(matriculaNo);

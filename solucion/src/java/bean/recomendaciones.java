@@ -18,6 +18,7 @@ public class recomendaciones extends Rows {
     public recomendaciones() {
     }
 
+    
     public void addPerfil(Cursos curso, Sistemacalificacion sistema) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -39,6 +40,60 @@ public class recomendaciones extends Rows {
                 row = new Row();
                 String q = "SELECT  o from Recomendaciones as o where o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' "
                         + " AND o.sistema.codigosis = '" + sistema.getCodigosis() + "' ";
+                List<Recomendaciones> recom = adm.query(q);
+                 combo = new Textbox();
+                 combo.setCols(70);
+                 combo.setRows(2);
+                 //combo.setWidth("300px");
+                if (recom.size() <= 0) {
+                    label3 = new Label("" + matriculas1.getCodigomat());
+                    row.appendChild(label3);
+                    label3 = new Label("" + matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                    row.appendChild(label3);
+                    row.appendChild(combo);
+                } else {
+                    label3 = new Label("" + matriculas1.getCodigomat());
+                    row.appendChild(label3);
+                    label3 = new Label("" + matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                    row.appendChild(label3);
+                    combo.setValue(recom.get(0).getRecomendacion() + "");
+                    row.appendChild(combo);
+                }
+                row.setParent(this);
+
+            }
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+    }
+
+    public void addPerfil(Cursos curso, Sistemacalificacion sistema,MateriaProfesor mateP) {
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Administrador adm = new Administrador();
+
+        getChildren().clear();
+        Label label3 = null;
+
+        Textbox combo = new Textbox();
+        Listitem item = new Listitem("USUALMENTE");
+
+
+        List<Matriculas> matriculas = adm.query("Select o from Matriculas as o "
+                + "where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.estudiante.apellido, o.estudiante.nombre ");
+        Row row = new Row();
+        try {
+            for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
+                Matriculas matriculas1 = it.next();
+                row = new Row();
+                String q = "SELECT  o from Recomendaciones as o where o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' "
+                        + " AND o.sistema.codigosis = '" + sistema.getCodigosis() + "' "
+                        + " and o.materia.codigo = '"+mateP.getMateria().getCodigo()+"' ";
                 List<Recomendaciones> recom = adm.query(q);
                  combo = new Textbox();
                  combo.setCols(70);
