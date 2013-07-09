@@ -45,7 +45,7 @@
                                     <p:graphicImage id="logoSubido2" width="300" value="#{pageContext.contextPath}/fotos/logo.png"  cache="true" />
                                     <p:separator style="width:0;height:0px" />
                                     <h:outputText style="font-size: 12px;color: #D20005" value=" Cuenta de Usuario" />
-                                    <h:panelGrid style="font-size: 12px;border: 0px;border-color: transparent" columns="3">
+                                    <h:panelGrid styleClass="texto" style="font-size: 12px;border: 0px;border-color: transparent" columns="3">
                                         <p:inputText style="height: 30px;font-size: 11px" size="50" required="true"  id="usuario" value="#{loginBean.usuario}" />
                                         <p:message  for="usuario"  display="icon" /> 
                                         <p:watermark for="usuario" value="Diqite aquí su Usuario" />  

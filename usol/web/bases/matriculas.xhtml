@@ -12,7 +12,7 @@
 
     </ui:define>    
     <ui:define name="datos">
-        <h:panelGrid width="100%" id="busqueda" >
+        <h:panelGrid  styleClass="texto"  width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
                 <script type="text/javascript">
                     function handleDrop(event, ui) {
@@ -39,18 +39,18 @@
                         </p:column>  
                     </p:dataTable>  
                     <h:panelGrid columns="1" width="510"  cellpadding="2" style="background-color: khaki" rendered="#{matriculasBean2.matriculasListado.size() eq 0}" >
-                    <h:outputText rendered="#{matriculasBean2.matriculasListado.size() eq 0}" value="El estudiante no se encuentra matriculado, revise los libros de matricula, o acerquece a colecturía"   style="font-weight:bold;"  />
-                    <p:spacer width="10"/>
-                    <p:commandButton value="CERRAR"  rendered="#{matriculasBean2.matriculasListado.size() eq 0}"  onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
-                    </p:commandButton>      
-                    
-                     </h:panelGrid>
+                        <h:outputText rendered="#{matriculasBean2.matriculasListado.size() eq 0}" value="El estudiante no se encuentra matriculado, revise los libros de matricula, o acerquece a colecturía"   style="font-weight:bold;"  />
+                        <p:spacer width="10"/>
+                        <p:commandButton value="CERRAR"  rendered="#{matriculasBean2.matriculasListado.size() eq 0}"  onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
+                        </p:commandButton>      
+
+                    </h:panelGrid>
                     <p:commandButton value="CERRAR"   onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
                     </p:commandButton>      
-                                        
+
                 </p:dialog> 
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
- 
+
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                 <p:panel style="background-color: navajowhite" >  
                     <h:panelGrid  columns="6" cellpadding="-5">  
@@ -82,11 +82,11 @@
 
                 <p:fieldset   toggleable="false" toggleSpeed="500" >
 
-                    <h:panelGrid columns="5" cellpadding="-1" style="margin:0 ;">
+                    <h:panelGrid  styleClass="texto" columns="8" cellpadding="-1" style="margin:0 ;">
                         <h:outputText value=" #{matriculasBean2.estudiante.idEstudiantes}"   id="CedulaIdentidad"  style="font-weight:bold;"/>
+                        <p:spacer width="40"/>
                         <h:outputText value=" #{matriculasBean2.estudiante.apellidoPaterno} #{matriculasBean2.estudiante.apellidoMaterno} #{matriculasBean2.estudiante.nombre}" id="ApellidoPaterno"  style="font-weight:bold;"/>  
                         <p:inputText  value="#{matriculasBean2.object.idMatriculas}"  converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>
-                        <p:spacer width="40"/>
                         <p:spacer width="40"/>
                         <h:outputText value="CARRERA: " />     
 
@@ -94,56 +94,58 @@
                             <f:selectItems value="#{matriculasBean2.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
                             <p:ajax event="change"  process="@this carrera" listener="#{matriculasBean2.buscarMateriasdeCarrera}" update=":form"/>
                         </p:selectOneMenu>    
-                        <p:spacer width="30"/>
                     </h:panelGrid> 
-                    <h:panelGrid columns="8" cellpadding="-1" style="margin:0 ;">
-
+                    <h:panelGrid  styleClass="texto" columns="8" cellpadding="-1" style="margin:0 ;">
                         <h:outputText value="ESTADO: " />  
                         <h:outputText value="#{matriculasBean2.object.estadoMat eq 'M' ? 'MATRICULADO':matriculasBean2.object.estadoMat eq 'I'?'INSCRITO':matriculasBean2.object.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;" />  
-
                         <p:spacer width="40"/>
                         <h:outputText value="No. MATRICULA: " />  
                         <h:outputText value="#{matriculasBean2.object.numero}" id="NumeroMatricula"  style="font-weight:bold;"/>                                  
 
                     </h:panelGrid>
                     <p:panelGrid id="panelMaterias" columns="2">
-                        <p:dataTable  scrollable="true" scrollHeight="150"   id="asignadas" var="materia" value="#{matriculasBean2.destino}">  
-                            <p:column width="150" headerText="MATRICULADO EN">  
+                        <p:dataTable styleClass="texto"   scrollable="true" scrollHeight="200"   id="asignadas" var="materia" value="#{matriculasBean2.destino}">  
+                            <p:column width="150"  styleClass="texto" headerText="MATRICULADO EN">  
                                 <h:outputText value="#{materia.idMaterias.nombre}" />  
                             </p:column>  
-                            <p:column width="70" headerText="TIPO">  
+                            <p:column width="70" styleClass="texto"  headerText="TIPO">  
                                 <h:outputText value="#{materia.idMaterias.idTipoMateria.nombre}" />  
                             </p:column>  
-                            <p:column width="50"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
+                            <p:column width="50" styleClass="texto"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
                                 <h:outputText value="#{materia.idNiveles.nombre}" />  
                             </p:column>  
-                            <p:column width="18"   headerText="#Cred.">  
+                            <p:column width="18" styleClass="texto"   headerText="#Cred.">  
                                 <h:outputText value="#{materia.numeroCreditos}" />  
-                            </p:column>  
-                            <p:column  width="18"  headerText="&gt;">  
+                            </p:column> 
+                            <p:column width="18" styleClass="texto"   headerText="CONV.">  
+                                <h:outputText value="#{materia.convalidada}" />  
+                            </p:column> 
+                            <p:column width="18" styleClass="texto"   headerText="PAGADA">  
+                                <h:outputText value="#{materia.pagada}" />  
+                            </p:column> 
+                            <p:column  width="18" styleClass="texto"  headerText="&gt;">  
                                 <p:commandButton   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next">  
                                 </p:commandButton>  
                             </p:column>  
                             <f:facet name="footer">  
-
                                 <h:outputText style="font-size: 11px" value="# de Créditos asignados:  #{matriculasBean2.noCreditos}" />  
                             </f:facet>  
                         </p:dataTable>  
-                        <p:dataTable  scrollable="true"   scrollRows="20"  scrollHeight="150"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
+                        <p:dataTable  styleClass="texto"  scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
                             <p:column  width="18"  headerText="&lt;">  
                                 <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:panelMaterias" icon="ui-icon-seek-prev">  
                                 </p:commandButton>  
                             </p:column> 
-                            <p:column  width="150"  headerText="MATERIAS DISPONIBLES">  
+                            <p:column  width="150" styleClass="texto"  headerText="MATERIAS DISPONIBLES">  
                                 <h:outputText value="#{car.idMaterias.nombre}" />  
                             </p:column>  
-                            <p:column width="70"  headerText="TIPO">  
+                            <p:column width="70" styleClass="texto"  headerText="TIPO">  
                                 <h:outputText value="#{car.idMaterias.idTipoMateria.nombre}" />  
                             </p:column>  
-                            <p:column width="50"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
+                            <p:column width="50"  styleClass="texto"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
                                 <h:outputText value="#{car.idNiveles.nombre}" />  
                             </p:column>  
-                            <p:column width="18"  headerText="#Cred.">  
+                            <p:column width="18"  styleClass="texto"  headerText="#Cred.">  
                                 <h:outputText value="#{car.numeroCreditos}" />  
                             </p:column>  
                             <f:facet name="footer">  
@@ -152,7 +154,7 @@
                         </p:dataTable>  
                     </p:panelGrid>
                 </p:fieldset>
- 
+
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean2.guardar()}"  icon="guardar" title="Guardar"/>  
                     <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasBean2.limpiar()}" icon="nuevo" title="Nuevo"/>
