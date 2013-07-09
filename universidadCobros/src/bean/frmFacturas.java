@@ -1416,6 +1416,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
                     actualMatricula.setIdPeriodos(periodoActual);
                     actualMatricula.setEstadoMat("I");
+
                     actualMatricula.setFecha(adm.Date());
                     //actualMatricula.setNumero(adm.getNuevaClave("Matriculas", "numero"));
                     adm.guardar(actualMatricula);
@@ -1528,27 +1529,28 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
 
 
-            //if (actualMatricula.getIdMatriculas() != null) {
+            if (actualMatricula.getNumero() == null && actualMatricula.getEstadoMat().equals("M")) { 
                 try {
-                  Estudiantes est = (Estudiantes)adm.buscarClave(actualMatricula.getIdEstudiantes().getIdEstudiantes(),Estudiantes.class);
+                //Estudiantes est = (Estudiantes)adm.buscarClave(actualMatricula.getIdEstudiantes().getIdEstudiantes(),Estudiantes.class);
                   carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(),Carreras.class);
                         if(carreraSeleccionada.getMaestria()){
-                          if (actualMatricula.getIdEstudiantes().getPosgrado() == null && tipoMatricula) {
-                                       est.setPosgrado(nuevoNumero("MAESTRIA"));
+                          if (actualMatricula.getNumero() == null && tipoMatricula) {
+                                       actualMatricula.setNumero(nuevoNumero("MAESTRIA"));
                           }       
                         }else{
                             if (actualMatricula.getIdEstudiantes().getPregrado() == null && tipoMatricula) {
-                                       est.setPregrado(nuevoNumero("MATRICULA"));
+                                       actualMatricula.setNumero(nuevoNumero("MATRICULA"));
                             }       
                         }
                      
-                        adm.actualizar(est);
+                        //adm.actualizar(est);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                adm.actualizar(actualMatricula);
-            //}
+                
+            }
+            adm.actualizar(actualMatricula);
 
             Cxcobrar cx = new Cxcobrar();
             cx.setIdCxcobrar(adm.getNuevaClave("Cxcobrar", "idCxcobrar"));
@@ -1666,8 +1668,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         boolean noExiste = true;
         while(noExiste){
             
-        List resultados = adm.query("Select o from Estudiantes as o "
-                    + " where  o."+(tipo.contains("MAESTRIA")?"posgrado":"pregrado")+" = "+valUltimo+" ");
+        List resultados = adm.query("Select o from Matriculas as o "
+                    + " where  o.idCarreras.maestria = "+(tipo.contains("MAESTRIA")?true:false)+" and o.numero = "+valUltimo+" ");
             if(resultados.size()<=0){
                 parUltimo.setVNumerico(new BigDecimal(valUltimo));
                 adm.actualizar(parUltimo);
@@ -2041,7 +2043,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         frmSeleccionCarreras.setLocationByPlatform(true);
         frmSeleccionCarreras.show();
     }
-
     private void buscarRubrosDeCreditos() {
         //BUSCA LOS RUBROS DE LOS CRÉDITOS SI NO HA PAGADO
         DefaultTableModel dtm = (DefaultTableModel) this.tFactura.getModel();
@@ -2056,12 +2057,41 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             //BUSCO LAS MATERIAS QUE ESTÁ TOMANDO PARA PROCEDER A FACTURAR LOS CRÉDITOS
             List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
                     + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' and (o.pagado = false or o.pagado is null ) "
-                    + "order by o.idMaterias.especial desc ");
+                    + " and (o.convalidado = false or o.convalidado is null) order by o.idMaterias.especial desc ");
+            List<MateriasMatricula> materiasTomadasConvalidadas = adm.query("Select o from MateriasMatricula as o "
+                    + " where o.idMatriculas.idMatriculas = '" + actualMatricula.getIdMatriculas() + "' and (o.pagado = false or o.pagado is null ) "
+                    + " and o.convalidado = true order by o.idMaterias.especial desc ");
+            
+                         
+
             int creditos = 0;
             BigDecimal valorCreditosEspeciales = new BigDecimal(0);
             BigDecimal valorCreditos = new BigDecimal(0);
             int creditosEspeciales = 0;
             String codigosActualizar = "";
+            BigDecimal valorConvOtra = new BigDecimal(0);
+            BigDecimal valorConvReingreso = new BigDecimal(0);
+            BigDecimal valorConvMisma = new BigDecimal(0);
+            
+            /**
+             * valor de creditos convalidados
+             */
+            
+         List<Parametros> parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVOTRA' ");
+         if(parConvOtraList.size()>0){
+           valorConvOtra = parConvOtraList.get(0).getVNumerico();
+         } 
+         
+         parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVREINGRESO' ");
+         if(parConvOtraList.size()>0){
+          valorConvReingreso = parConvOtraList.get(0).getVNumerico();
+         } 
+         
+         parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVMISMA' ");
+         if(parConvOtraList.size()>0){
+          valorConvMisma = parConvOtraList.get(0).getVNumerico();
+         } 
+            
             for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
                 MateriasMatricula materiasMatricula = it.next();
                 List<CarrerasMaterias> noCreditos = adm.query("SELECT o FROM CarrerasMaterias as o "
@@ -2090,6 +2120,28 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     }
                 }
             }
+            
+            for (Iterator<MateriasMatricula> it = materiasTomadasConvalidadas.iterator(); it.hasNext();) {
+                MateriasMatricula materiasMatricula = it.next();
+                List<CarrerasMaterias> noCreditos = adm.query("SELECT o FROM CarrerasMaterias as o "
+                        + " WHERE o.idCarreras.idCarreras = " + materiasMatricula.getIdMatriculas().getIdCarreras().getIdCarreras() + " "
+                        + " AND o.idMaterias.idMaterias = '" + materiasMatricula.getIdMaterias().getIdMaterias() + "' ");
+                if (noCreditos.size() > 0) {
+                    CarrerasMaterias carM = noCreditos.get(0);
+                     
+                        Object[] obj = new Object[20];
+                        obj[0] = rubroCredito.getIdRubros();
+                        obj[1] = "" + carM.getIdMaterias().getNombre()+"(CONV)";
+                        obj[2] = 1;
+                        obj[3] = (materiasMatricula.getValor().equals("R")?valorConvReingreso:materiasMatricula.getValor().equals("M")?valorConvMisma:materiasMatricula.getValor().equals("O")?valorConvReingreso:new BigDecimal(0)); ;
+                        obj[4] = (materiasMatricula.getValor().equals("R")?valorConvReingreso:materiasMatricula.getValor().equals("M")?valorConvMisma:materiasMatricula.getValor().equals("O")?valorConvReingreso:new BigDecimal(0));
+                        obj[5] = rubroCredito.getNoaplica();
+                        obj[6] = "C";
+                        obj[7] = carM.getIdMaterias().getIdMaterias() + "";
+                        dtm.addRow(obj);
+                }
+            }
+            
             if (creditos > 0) {
                 Object[] obj = new Object[20];
                 obj[0] = rubroCredito.getIdRubros();
