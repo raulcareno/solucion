@@ -78,7 +78,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="248" splitType="Stretch">
+			<band height="251" splitType="Stretch">
 				<textField isBlankWhenNull="true">
 					<reportElement key="textField" positionType="Float" x="4" y="209" width="170" height="13" isRemoveLineWhenBlank="true"/>
 					<box>

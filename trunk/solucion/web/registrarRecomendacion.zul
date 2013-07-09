@@ -17,7 +17,34 @@ import org.zkoss.zul.Listbox;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
-List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+//List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+
+
+Empleados user =  (Empleados)ses.getAttribute("user");
+List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+      " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+
+
+
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur = '"+cur.codigocur+"' " + 
+        " and (o.materia.descripcion not like '%disciplina%'  and o.materia.descripcion not like '%comportamental%')  order by o.orden");
+        //bd2.getItems().clear();
+mates.getChildren().clear();
+datos.getRows().getChildren().clear();
+bd2.value = "";
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        mates.appendChild(item);
+             }
+    }
+
+
 Cursos curS = new Cursos(-1);
 cursos.add(0,curS);
 Permisos permiso = new Permisos();
@@ -74,12 +101,11 @@ guardar(){
         return permiso.verificarPermiso("Recomendaciones",accion);
  }
  
-doAdd(Cursos curso){
- if(!verificar("Agregar")){
-            
+doAdd(Cursos curso,MateriaProfesor mateP){
+            if(!verificar("Agregar")){
             }
-Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
-        filas.addPerfil(curso,sistema);
+        Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
+        filas.addPerfil(curso,sistema,mateP);
 }
 ]]>
     </zscript>
@@ -104,7 +130,7 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
                 <span style="float:right"> Curso(*):</span>
 
                 <listbox id="curs"  mold="select"  width="420px"
-                             onSelect="doAdd(((Cursos)curs.selectedItem.value));">
+                             onSelect="buscar2(((Cursos)curs.selectedItem.value));">
 
                     <listitem forEach="${cursos}" value="${each}">
                         <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
@@ -113,6 +139,26 @@ Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
                 </listbox>
 
             </row>
+            
+            <row>
+                 <span style="float:right"> Materias(*):</span>
+                        <span>
+                            <bandbox  width="200px" readonly="true"  id="bd2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="mates" height="300px"  width="420px"
+                                                 onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
+
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+            </row>
+
 
         </rows>
     </grid>
