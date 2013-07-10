@@ -82,4 +82,17 @@
        font-stretch: condensed;
 
    }
+    .textonormal{
+       font-size: 11px;
+       font-family: Helvetica;
+       font-stretch: condensed;
+       padding: -4px;
+
+   }
+   
+   .print{
+       height: 32px;
+       width:  103px;
+        background-image: url('../images/print.png') !important;
+    }
 

@@ -104,48 +104,51 @@
 
                     </h:panelGrid>
                     <p:panelGrid id="panelMaterias" columns="2">
-                        <p:dataTable styleClass="texto"   scrollable="true" scrollHeight="200"   id="asignadas" var="materia" value="#{matriculasBean2.destino}">  
-                            <p:column width="150"  styleClass="texto" headerText="MATRICULADO EN">  
+                        <p:dataTable styleClass="texto"  style="width: 540px"   emptyMessage="."  scrollable="true" scrollHeight="200"   id="asignadas" var="materia" value="#{matriculasBean2.destino}">  
+                            <p:column width="150"  styleClass="textonormal" headerText="MATRICULADO EN">  
                                 <h:outputText value="#{materia.idMaterias.nombre}" />  
                             </p:column>  
-                            <p:column width="70" styleClass="texto"  headerText="TIPO">  
+                            <p:column width="40" styleClass="textonormal"  headerText="TIPO">  
                                 <h:outputText value="#{materia.idMaterias.idTipoMateria.nombre}" />  
                             </p:column>  
-                            <p:column width="50" styleClass="texto"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
+                            <p:column width="40" styleClass="textonormal"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
                                 <h:outputText value="#{materia.idNiveles.nombre}" />  
                             </p:column>  
-                            <p:column width="18" styleClass="texto"   headerText="#Cred.">  
+                            <p:column width="10" styleClass="textonormal"   headerText="#Cred.">  
                                 <h:outputText value="#{materia.numeroCreditos}" />  
                             </p:column> 
-                            <p:column width="18" styleClass="texto"   headerText="CONV.">  
-                                <h:outputText value="#{materia.convalidada}" />  
+                            <p:column width="10" styleClass="textonormal"    headerText="CV.">  
+                                <h:outputText  value="#{materia.convalidada?'SI':'NO'}" />  
                             </p:column> 
-                            <p:column width="18" styleClass="texto"   headerText="PAGADA">  
-                                <h:outputText value="#{materia.pagada}" />  
+                            <p:column width="10" styleClass="textonormal"   headerText="PAG.">  
+                                <h:outputText   value="#{materia.pagada?'SI':'NO'}" />  
                             </p:column> 
-                            <p:column  width="18" styleClass="texto"  headerText="&gt;">  
+                            <p:column  width="18" styleClass="textonormal"  headerText="&gt;">  
                                 <p:commandButton   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next">  
                                 </p:commandButton>  
                             </p:column>  
+                            <p:column width="10" styleClass="textonormal"   headerText="">  
+                                <p:spacer/>
+                            </p:column> 
                             <f:facet name="footer">  
                                 <h:outputText style="font-size: 11px" value="# de Créditos asignados:  #{matriculasBean2.noCreditos}" />  
                             </f:facet>  
                         </p:dataTable>  
-                        <p:dataTable  styleClass="texto"  scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
-                            <p:column  width="18"  headerText="&lt;">  
+                        <p:dataTable   styleClass="texto" style="width: 400px" scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
+                            <p:column  width="18" styleClass="textonormal"   headerText="&lt;">  
                                 <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:panelMaterias" icon="ui-icon-seek-prev">  
                                 </p:commandButton>  
                             </p:column> 
-                            <p:column  width="150" styleClass="texto"  headerText="MATERIAS DISPONIBLES">  
+                            <p:column  width="150" styleClass="textonormal"  headerText="MATERIAS DISPONIBLES">  
                                 <h:outputText value="#{car.idMaterias.nombre}" />  
                             </p:column>  
-                            <p:column width="70" styleClass="texto"  headerText="TIPO">  
+                            <p:column width="70" styleClass="textonormal"  headerText="TIPO">  
                                 <h:outputText value="#{car.idMaterias.idTipoMateria.nombre}" />  
                             </p:column>  
-                            <p:column width="50"  styleClass="texto"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
+                            <p:column width="50"  styleClass="textonormal"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
                                 <h:outputText value="#{car.idNiveles.nombre}" />  
                             </p:column>  
-                            <p:column width="18"  styleClass="texto"  headerText="#Cred.">  
+                            <p:column width="18"  styleClass="textonormal"  headerText="#Cred.">  
                                 <h:outputText value="#{car.numeroCreditos}" />  
                             </p:column>  
                             <f:facet name="footer">  
@@ -158,12 +161,14 @@
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean2.guardar()}"  icon="guardar" title="Guardar"/>  
                     <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasBean2.limpiar()}" icon="nuevo" title="Nuevo"/>
-                    <p:splitButton  value="PDF" ajax="false"  actionListener="#{matriculasBean2.fichaMatricula('PDF')}"   icon="ui-icon-print">  
-                        <p:menuitem value="EXCEL" ajax="false" actionListener="#{matriculasBean2.fichaMatricula('XLS')}"  icon="ui-icon-print"/>  
-                        <p:menuitem value="WORD" ajax="false" actionListener="#{matriculasBean2.fichaMatricula('DOCX')}"  icon="ui-icon-print"/>  
-                    </p:splitButton>  
+                    <!--p:splitButton  value="PDF" ajax="false" onclick="window.open('./reporteView.jspx','_blank')" oncomplete="#{matriculasBean2.fichaMatricula('PDF')}" icon="ui-icon-print">  
+                    </p:splitButton-->  
                 </h:panelGrid>
+                <h:commandLink actionListener="#{matriculasBean2.fichaMatricula('PDF')}" style="width: 32px; height: 103px " styleClass="print" action="/reporteView.html" target="_blank"> 
+                    <img src="../images/print.png" width="103" height="32" alt="print"/>
+                </h:commandLink>
             </h:form>
+            
 
         </h:panelGrid>
     </ui:define>
