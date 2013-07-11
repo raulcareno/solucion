@@ -235,6 +235,11 @@ public class MatriculasBean2 {
     }
 
     public String quitar(CarrerasMaterias obj) {
+        if(obj.convalidada){
+                         FacesContext context = FacesContext.getCurrentInstance();
+                         FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se peude eliminar materia CONVALIDADA/HOMOLOGADA", "No se peude eliminar materia CONVALIDADA/HOMOLOGADA"));
+                         return null;
+        }
         origen.add(obj);
         destino.remove(obj);
         sumarCreditos();

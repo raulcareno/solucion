@@ -124,7 +124,8 @@
                                 <h:outputText   value="#{materia.pagada?'SI':'NO'}" />  
                             </p:column> 
                             <p:column  width="18" styleClass="textonormal"  headerText="&gt;">  
-                                <p:commandButton   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next">  
+                                <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next" onclick="if(!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) { return false;}" title="Eliminar"/>  
+                                <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next">  
                                 </p:commandButton>  
                             </p:column>  
                             <p:column width="10" styleClass="textonormal"   headerText="">  
