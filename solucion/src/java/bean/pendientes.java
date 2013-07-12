@@ -211,7 +211,7 @@ public class pendientes extends Rows {
         r.parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         adm.ejecutaSql("Update Matriculas set perdio = false where curso.codigocur = '" + curso.getCodigocur() + "' ");
-        List<Matriculas> listaPerdidos = r.cuadroverificar(curso, notas.get(0).getSistema());
+        List<Matriculas> listaPerdidos = r.cuadroverificar(curso, notas.get(0).getSistema(),new Matriculas(-1));
         for (Iterator<Matriculas> it = listaPerdidos.iterator(); it.hasNext();) {
             Matriculas matriculas = it.next();
             matriculas.setPerdio(true);
