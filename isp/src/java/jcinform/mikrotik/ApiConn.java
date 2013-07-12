@@ -130,8 +130,8 @@ package jcinform.mikrotik;
    public String runCommand() {
        return writeCommand.runCommand();
    }
- 
-   /**
+
+ /**
     * Tries to fech data that is repllied to commands sent. It will wait till it can return something.
     * @return returns data sent by RouterOS
     * @throws java.lang.InterruptedException

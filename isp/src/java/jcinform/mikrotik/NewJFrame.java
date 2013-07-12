@@ -42,12 +42,17 @@ public class NewJFrame extends javax.swing.JFrame {
         datos1 = new javax.swing.JFormattedTextField();
         datos2 = new javax.swing.JFormattedTextField();
         datos3 = new javax.swing.JFormattedTextField();
+        jButton2 = new javax.swing.JButton();
+        datos4 = new javax.swing.JFormattedTextField();
+        datos5 = new javax.swing.JFormattedTextField();
+        datos6 = new javax.swing.JFormattedTextField();
+        datos7 = new javax.swing.JFormattedTextField();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Enviar");
+        jButton1.setText("Crear");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -62,11 +67,25 @@ public class NewJFrame extends javax.swing.JFrame {
 
         datos3.setText("=comment=geovannyborrar");
 
+        jButton2.setText("Actualizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        datos4.setText("/ip/firewall/address-list/set");
+
+        datos5.setText("=comment=geovannyborrar");
+
+        datos6.setText("=list=corsups");
+
+        datos7.setText("=[find address=10.1.1.56]");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(datos1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,28 +93,49 @@ public class NewJFrame extends javax.swing.JFrame {
                         .addComponent(datos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(datos2, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
+                                .addGap(21, 21, 21)
+                                .addComponent(jButton1)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(21, 21, 21))
-                    .addComponent(datos3, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)))
+                    .addComponent(datos3, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(datos1, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(datos4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(datos6, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE)
+                        .addGap(21, 21, 21))
+                    .addComponent(datos5, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(datos7, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(39, 39, 39))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
+                .addGap(20, 20, 20)
                 .addComponent(datos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(19, 19, 19)
                 .addComponent(datos1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(datos2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(datos3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(26, 26, 26)
                 .addComponent(jButton1)
-                .addGap(45, 45, 45))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(datos4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(datos7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(datos6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(datos5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jButton2))
         );
 
         pack();
@@ -106,6 +146,11 @@ public class NewJFrame extends javax.swing.JFrame {
         llamar(datos.getText(),datos1.getText(),datos2.getText(),datos3.getText());
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+          llamar(datos4.getText(),datos7.getText(),datos6.getText(),datos5.getText());
+    }//GEN-LAST:event_jButton2ActionPerformed
   public void salida(String a){
       System.out.println(""+a);
   }
@@ -171,6 +216,7 @@ public class NewJFrame extends javax.swing.JFrame {
 //          ret.sendCommand("=password=123");
 //          ret.sendCommand("=profile=HOME-VIP");
           ret.sendCommand(datos+"\n"+datos2+"\n"+datos3+"\n"+datos4);
+          //ret.sendCommand(datos+"\n"+datos2);
           //ret.sendCommand(datos2);
           //ret.sendCommand(datos3);
              //ret.sendCommand("ppp secret add name=1234 password=123 profile=HOME-VIP");
@@ -178,6 +224,7 @@ public class NewJFrame extends javax.swing.JFrame {
           
           DataReceiver dataRec = new DataReceiver(ret, this);
           dataRec.start();
+          
         } catch (Exception ex) {
             Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -228,7 +275,12 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField datos1;
     private javax.swing.JFormattedTextField datos2;
     private javax.swing.JFormattedTextField datos3;
+    private javax.swing.JFormattedTextField datos4;
+    private javax.swing.JFormattedTextField datos5;
+    private javax.swing.JFormattedTextField datos6;
+    private javax.swing.JFormattedTextField datos7;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     // End of variables declaration//GEN-END:variables
 }

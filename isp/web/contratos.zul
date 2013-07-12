@@ -1427,10 +1427,9 @@ void verificarCedula(String valor){
                 List facEncontradas =  adm.queryNativo("SELECT fa.codigo, fa.fecha, fa.total,  ((SUM(cx.debe) + SUM(cx.rtotal)) - SUM(cx.haber)) saldo,fa.contratos, fa.numero,fa.emision FROM cxcobrar cx, factura  fa "   +
                         " WHERE fa.clientes  =  "+codigocli.value+"  " + 
                         "  AND cx.factura = fa.codigo GROUP BY fa.codigo   HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha "); 
-                
                 facturasDatos.getRows().getChildren().clear();
-  ArrayList contratosAnadidos = new ArrayList();
-  int i =0;
+                ArrayList contratosAnadidos = new ArrayList();
+                int i =0;
                 for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
                             Vector vec = (Vector) itna.next();
                           
@@ -1577,22 +1576,20 @@ void verificarCedula(String valor){
                                   seriespanel.visible = false;
                                    
                                    if(valor0 == 16){
-                                     
                                       Integer facCodi = new Integer(aButtonEli.getId().replace("eli",""));
                                       List siEx = adm.query("Select o from Cxcobrar as o where o.factura.codigo = '"+facCodi+"'");
                                       if(siEx.size()>1){
-                                               
                                                 Messagebox.show("No se puede eliminar, ya tiene pagos realizados...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
                                       }else{
                                               //adm.ejecutaSql("Delete from Cabeceracompra where factura.codigo = '"+facCodi +"' ");
+                                              adm.ejecutaSql("Delete from Facturasenviadas where factura.codigo = '"+facCodi +"' ");
                                               adm.ejecutaSql("Delete from Empleadosfacturas where factura.codigo = '"+facCodi +"' ");
                                               adm.ejecutaSql("Delete from Cxcobrar where factura.codigo = '"+facCodi +"' ");
                                               adm.ejecutaSql("Delete from Detalle  where factura.codigo = '"+facCodi +"' ");
-                                              adm.eliminarObjeto(Factura.class, facCodi );
+                                              adm.eliminarObjeto(Factura.class, facCodi);
                                               facturas.setSelected(true);
                                       }
-                                      
-                                      
+
                                     }
                                      
                                     facturas.setSelected(true);  
@@ -3138,17 +3135,6 @@ void llamar(){
                   
                 </tabpanel>
                 <tabpanel>
-                    <!--listbox mold="paging" rows="10" pageSize="10"   id="facturasDatos" width="100%">
-                        <listhead>
-                            <listheader label="Factura"/>
-                            <listheader label="Fecha Pago"/>
-                            <listheader label="Total"/>
-                            <listheader label="Saldo"/>
-                            <listheader label="Opcion"/>
-                        </listhead>
-                        <listitem forEach="${allEvents}" value="${each}">
-                        </listitem>
-                    </listbox--> 
                     <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"   id="facturasDatos" >
                         <columns>
                             <column  label="No."/>
