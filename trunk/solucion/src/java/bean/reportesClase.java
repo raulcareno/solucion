@@ -1715,9 +1715,11 @@ public class reportesClase {
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
 String query = "";
         for (Notanotas notass : notas) {
-                query += "round(AVG(CAST("+notass.getNota() + "  AS DECIMAL(9,2))),2),";
+                
                 if(truncarNotas){
                     query += "truncate(AVG(CAST("+notass.getNota() + "  AS DECIMAL(9,2))),2),";
+                }else{
+                    query += "round(AVG(CAST("+notass.getNota() + "  AS DECIMAL(9,2))),2),";
                 }
             
 
