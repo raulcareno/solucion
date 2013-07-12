@@ -180,6 +180,27 @@ private String materia;
     public void setNotaCuali(String notaCuali) {
         this.notaCuali = notaCuali;
     }
+
+    public Integer noDecimalesProme;
+    public Integer noDecimalesPromeParciales;
+
+    public Integer getNoDecimalesProme() {
+        return noDecimalesProme;
+    }
+
+    public void setNoDecimalesProme(Integer noDecimalesProme) {
+        this.noDecimalesProme = noDecimalesProme;
+    }
+
+    public Integer getNoDecimalesPromeParciales() {
+        return noDecimalesPromeParciales;
+    }
+
+    public void setNoDecimalesPromeParciales(Integer noDecimalesPromeParciales) {
+        this.noDecimalesPromeParciales = noDecimalesPromeParciales;
+    }
+    
+    
     
     
 }

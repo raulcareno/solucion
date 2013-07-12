@@ -26,16 +26,15 @@ public class ReportePromocionDataSource implements JRDataSource {
     private Iterator itrNodos;
     private Object valorAtual;
     private boolean irParaProximoAlumno = true;
-    
- 
-            Administrador adm=null;
-            List<Equivalencias> equ = null;
-         
+    Administrador adm = null;
+    List<Equivalencias> equ = null;
+    List<Equivalencias> equ2 = null;
+
     public ReportePromocionDataSource(List lista) {
         super();
         adm = new Administrador();
         this.itrNodos = lista.iterator();
-        
+
     }
 
     public boolean next() throws JRException {
@@ -44,7 +43,34 @@ public class ReportePromocionDataSource implements JRDataSource {
         irParaProximoAlumno = (valorAtual != null);
         return irParaProximoAlumno;
     }
-   public Equivalencias devolverNombre(List<Equivalencias> equiva, Double codigo) {
+
+    public Equivalencias devolverNombre(List<Equivalencias> equiva, Double codigo) {
+
+        for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
+            Equivalencias equivalencias = it.next();
+            if (equivalencias.getValorminimo() <= codigo && codigo <= equivalencias.getValormaximo()) {
+                return equivalencias;
+            }
+        }
+        return equiva.get(0);
+
+
+    }
+
+    public Equivalencias devolverDisciplina(List<Equivalencias> equiva, Double codigo) {
+
+        for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
+            Equivalencias equivalencias = it.next();
+            if (equivalencias.getValorminimo() <= codigo && codigo <= equivalencias.getValormaximo()) {
+                return equivalencias;
+            }
+        }
+        return equiva.get(0);
+
+
+    }
+
+    public Equivalencias devolverNombreDisciplina(List<Equivalencias> equiva, Double codigo) {
 
         for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
             Equivalencias equivalencias = it.next();
@@ -59,18 +85,23 @@ public class ReportePromocionDataSource implements JRDataSource {
     /*
      * (non-Javadoc)
      *
-     * @see net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
+     * @see
+     * net.sf.jasperreports.engine.JRDataSource#getFieldValue(net.sf.jasperreports.engine.JRField)
      */
+
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
         NotasClaseTemp nodo = (NotasClaseTemp) valorAtual;
         NumerosaLetras num = new NumerosaLetras();
         String fieldName = campo.getName();
-         if(equ == null){
+        if (equ == null) {
             equ = adm.query("Select o from Equivalencias as o"
                     + " where o.periodo.codigoper  = '" + nodo.getMatricula().getCurso().getPeriodo().getCodigoper() + "' "
                     + "and o.grupo = 'AP' ");
-         }
+            equ2 = adm.query("Select o from Equivalencias as o"
+                    + " where o.periodo.codigoper  = '" + nodo.getMatricula().getCurso().getPeriodo().getCodigoper() + "' "
+                    + "and o.grupo = 'DR' ");
+        }
         try {
 
             if ("textoParametro".equals(fieldName)) {
@@ -97,11 +128,11 @@ public class ReportePromocionDataSource implements JRDataSource {
                     if (parte_decimal_cadena.length() < 4) {
                         parte_decimal_cadena = parte_decimal_cadena + "0";
                     }
-                    
-                    if((nodo.getMateria()+"").contains("APROVECHAMIENTO")){
-                         //valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
-                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
-                    }else{
+
+                    if ((nodo.getMateria() + "").contains("APROVECHAMIENTO")) {
+                        //valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
+                        valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena + " " + devolverNombre(equ, (Double) nodo.getNota()).getNombre();
+                    } else {
                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena;
                     }
                 } else {
@@ -122,20 +153,69 @@ public class ReportePromocionDataSource implements JRDataSource {
                     if (parte_decimal_cadena.length() < 3) {
                         parte_decimal_cadena = parte_decimal_cadena + "0";
                     }
-                    
-                    if((nodo.getMateria()+"").contains("APROVECHAMIENTO")){
-                         //valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
-                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
-                    }else{
+
+                    if ((nodo.getMateria() + "").contains("APROVECHAMIENTO")) {
+                        //valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();
+                        valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena + " " + devolverNombre(equ, (Double) nodo.getNota()).getNombre();
+                    } else {
                         valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena;
                     }
                 } else {
                     valor = null;
                 }
 
+            } else if ("letrasTres".equals(fieldName)) {
+                if (nodo.getMateriaProfesor().getCuantitativa() == true) {
+                    double numero = redondear((Double) nodo.getNota(), 2).doubleValue();
+                    String formado = num.numerosDecimales(numero).toUpperCase();
+                    try {
+                        String valor1 = numero+"";
+                        int indice = valor1.indexOf(".");
+                        String cortado = valor1.substring(indice + 1);
+                        String cientos = " ";
+                        Boolean milesimas = false;
+                        if (cortado.length() > 2) {
+                            cientos = " " + num.GetHundreds(cortado).toUpperCase();
+                            milesimas = true;
+                        } else if (cortado.equals("01") || cortado.equals("02") || cortado.equals("03") || cortado.equals("04") || cortado.equals("05")
+                                || cortado.equals("06") || cortado.equals("07") || cortado.equals("08") || cortado.equals("09")) {
+                            cortado = cortado.replace("0", "");
+                            Integer valor2 = new Integer(cortado);
+                            cientos = " " + num.GetDigit(valor2).toUpperCase();
+                            milesimas = false;
+
+                        } else if (cortado.equals("1") || cortado.equals("2") || cortado.equals("3") || cortado.equals("4") || cortado.equals("5")
+                                || cortado.equals("6") || cortado.equals("7") || cortado.equals("8") || cortado.equals("9")) {
+                            cortado = cortado + "0";
+                            Integer valor2 = new Integer(cortado);
+                            cientos = " " + num.GetTens(valor2).toUpperCase();
+                            milesimas = false;
+
+                        } else {
+                            Integer valor2 = new Integer(cortado);
+                            cientos = " " + num.GetTens(valor2).toUpperCase();
+                            milesimas = false;
+                        }
+
+                        if (!cientos.trim().equals("")) {
+                            valor = formado + " PUNTOS CON " + cientos + (milesimas ? " MILESIMAS" : " CENTESIMAS");
+                        } else {
+                            valor = formado + " PUNTOS ";
+                        }
+                    } catch (Exception e) {
+                        valor = formado;
+                        System.out.println("erroren" + e);
+                    }
+
+
+
+                } else {
+                    valor = null;
+                }
+
             } else if ("equivale".equals(fieldName)) {
                 try {
-                        valor =  " "+devolverNombre(equ,(Double)nodo.getNota()).getNombre();    
+                    valor = " " + devolverNombre(equ, (Double) nodo.getNota()).getNombre();
                 } catch (Exception e) {
                     valor = "";
                 }
@@ -170,7 +250,7 @@ public class ReportePromocionDataSource implements JRDataSource {
                 } else {
                     valor = nodo.getNotaCuali();
                 }
-                if(valor.equals("")){
+                if (valor.equals("")) {
                     valor = "0";
                 }
 
@@ -178,7 +258,11 @@ public class ReportePromocionDataSource implements JRDataSource {
             } else if ("aprovechamiento".equals(fieldName)) {
                 valor = nodo.getAprovechamiento();
             } else if ("disciplina".equals(fieldName)) {
-                valor = redondear(nodo.getDisciplina(),2).doubleValue();
+                valor = redondear(nodo.getDisciplina(), 2).doubleValue();
+            } else if ("disciplinaLetra".equals(fieldName)) {
+                valor = devolverDisciplina(equ2, redondear(nodo.getDisciplina(), 2).doubleValue()).getAbreviatura();
+            } else if ("disciplinaLetraEqui".equals(fieldName)) {
+                valor = devolverDisciplina(equ2, redondear(nodo.getDisciplina(), 2).doubleValue()).getNombre();
             } else if ("disciplinaAbreviatura".equals(fieldName)) {
                 valor = nodo.getDisciplinaAbreviatura();
             } else if ("letrasDisciplina".equals(fieldName)) {
@@ -191,10 +275,10 @@ public class ReportePromocionDataSource implements JRDataSource {
                 String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
                 Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
                 parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
-                if(parte_decimal_cadena.length() < 3){
+                if (parte_decimal_cadena.length() < 3) {
                     parte_decimal_cadena = parte_decimal_cadena + "0";
                 }
-                valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, (Double) nodo.getDisciplina()).getNombre();
+                valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena + " " + devolverNombre(equ, (Double) nodo.getDisciplina()).getNombre();
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion();
             } else if ("paralelo".equals(fieldName)) {
@@ -209,31 +293,31 @@ public class ReportePromocionDataSource implements JRDataSource {
                     String cortado = valor1.substring(indice + 1);
                     String cientos = " ";
                     Boolean milesimas = false;
-                    if(cortado.length()>2){
-                     cientos = " " + num.GetHundreds(cortado).toUpperCase();
+                    if (cortado.length() > 2) {
+                        cientos = " " + num.GetHundreds(cortado).toUpperCase();
                         milesimas = true;
-                    }else if(cortado.equals("01")|| cortado.equals("02") || cortado.equals("03") || cortado.equals("04") || cortado.equals("05") ||
-                             cortado.equals("06") || cortado.equals("07") || cortado.equals("08") || cortado.equals("09")){
+                    } else if (cortado.equals("01") || cortado.equals("02") || cortado.equals("03") || cortado.equals("04") || cortado.equals("05")
+                            || cortado.equals("06") || cortado.equals("07") || cortado.equals("08") || cortado.equals("09")) {
                         cortado = cortado.replace("0", "");
                         Integer valor2 = new Integer(cortado);
                         cientos = " " + num.GetDigit(valor2).toUpperCase();
                         milesimas = false;
-                     
-                    }else if(cortado.equals("1")|| cortado.equals("2") || cortado.equals("3") || cortado.equals("4") || cortado.equals("5") ||
-                             cortado.equals("6") || cortado.equals("7") || cortado.equals("8") || cortado.equals("9")){
-                        cortado = cortado+"0";
+
+                    } else if (cortado.equals("1") || cortado.equals("2") || cortado.equals("3") || cortado.equals("4") || cortado.equals("5")
+                            || cortado.equals("6") || cortado.equals("7") || cortado.equals("8") || cortado.equals("9")) {
+                        cortado = cortado + "0";
                         Integer valor2 = new Integer(cortado);
                         cientos = " " + num.GetTens(valor2).toUpperCase();
                         milesimas = false;
-                     
-                    }else{
+
+                    } else {
                         Integer valor2 = new Integer(cortado);
-                      cientos = " " + num.GetTens(valor2).toUpperCase();
-                      milesimas = false;
+                        cientos = " " + num.GetTens(valor2).toUpperCase();
+                        milesimas = false;
                     }
-                    
+
                     if (!cientos.trim().equals("")) {
-                        valor = formado + " PUNTOS CON " + cientos + (milesimas?" MILESIMAS":" CENTESIMAS");
+                        valor = formado + " PUNTOS CON " + cientos + (milesimas ? " MILESIMAS" : " CENTESIMAS");
                     } else {
                         valor = formado + " PUNTOS ";
                     }
@@ -242,64 +326,64 @@ public class ReportePromocionDataSource implements JRDataSource {
                     System.out.println("erroren" + e);
                 }
             } else if ("letrasAprovechamiento2".equals(fieldName)) {
-                
-                double numero = redondear((Double) nodo.getAprovechamiento(), 2).doubleValue();
+
+                double numero = redondear((Double) nodo.getAprovechamiento(), nodo.getNoDecimalesProme()).doubleValue();
                 String cadena = Double.toString(numero);
                 String parte_decimal_cadena = cadena.substring(cadena.lastIndexOf("."), cadena.length());
                 String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
                 Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
                 parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
-                if(parte_decimal_cadena.length() < 3){
+                if (parte_decimal_cadena.length() < 3) {
                     parte_decimal_cadena = parte_decimal_cadena + "0";
                 }
-                valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena+" "+devolverNombre(equ, (Double) nodo.getAprovechamiento()).getNombre();
-                
+                valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena + " ";
+
             } else if ("letrasAprovechamiento3".equals(fieldName)) {
-                
-                double numero = redondear((Double) nodo.getAprovechamiento(), 3).doubleValue();
+
+                double numero = redondear((Double) nodo.getAprovechamiento(), nodo.getNoDecimalesProme()).doubleValue();
                 String cadena = Double.toString(numero);
                 String parte_decimal_cadena = cadena.substring(cadena.lastIndexOf("."), cadena.length());
                 String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
                 Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
                 parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
-                while(parte_decimal_cadena.length() < 4){
+                while (parte_decimal_cadena.length() < 4) {
                     parte_decimal_cadena = parte_decimal_cadena + "0";
                 }
-                valor = num.numeros(parte_entera_numero) + " con " + parte_decimal_cadena+" ";
-                
+                valor = num.numeros(parte_entera_numero) + " con " + parte_decimal_cadena + " ";
+
             } else if ("letrasAprovechamiento4".equals(fieldName)) {
-                
-                double numero = redondear((Double) nodo.getAprovechamiento(), 3).doubleValue();
+
+                double numero = redondear((Double) nodo.getAprovechamiento(), nodo.getNoDecimalesProme()).doubleValue();
                 String cadena = Double.toString(numero);
                 String parte_decimal_cadena = cadena.substring(cadena.lastIndexOf("."), cadena.length());
                 String parte_entera_cadena = cadena.substring(0, cadena.lastIndexOf("."));
                 Double parte_entera_numero = Double.valueOf(parte_entera_cadena);
                 parte_decimal_cadena = parte_decimal_cadena.replace(".", ",");
-                while(parte_decimal_cadena.length() < 4){
+                while (parte_decimal_cadena.length() < 4) {
                     parte_decimal_cadena = parte_decimal_cadena + "0";
                 }
-                valor = num.numeros(parte_entera_numero) + " , " + parte_decimal_cadena+" "+devolverNombre(equ, (Double) nodo.getAprovechamiento()).getNombre();
-                
-            }else if ("equivaleAprovechamiento".equals(fieldName)) {
+                valor = num.numeros(parte_entera_numero) + " , " + parte_decimal_cadena + " " + devolverNombre(equ, (Double) nodo.getAprovechamiento()).getNombre();
+
+            } else if ("equivaleAprovechamiento".equals(fieldName)) {
                 try {
-                    valor =  " "+devolverNombre(equ,nodo.getAprovechamiento()).getNombre();    
+                    valor = " " + devolverNombre(equ, nodo.getAprovechamiento()).getNombre();
                 } catch (Exception e) {
                     valor = "";
                     System.out.println("erroren" + e);
                 }
-                
+
             } else if ("equivaleDisciplina".equals(fieldName)) {
                 try {
-                    if(nodo.getCabeceraTexto()!=null){
-                        valor =  " "+nodo.getCabeceraTexto();
-                    }else{
-                        valor =  " "+devolverNombre(equ,nodo.getDisciplina()).getNombre();
-                    }    
+                    if (nodo.getCabeceraTexto() != null) {
+                        valor = " " + nodo.getCabeceraTexto();
+                    } else {
+                        valor = " " + devolverNombre(equ, nodo.getDisciplina()).getNombre();
+                    }
                 } catch (Exception e) {
                     valor = "";
                     System.out.println("erroren" + e);
                 }
-                
+
             } else if ("sello".equals(fieldName)) {
                 try {
                     byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getEscudo();
@@ -319,8 +403,8 @@ public class ReportePromocionDataSource implements JRDataSource {
 
         return valor;
     }
+    String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
 
-        String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
     public Double truncar(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);
@@ -330,7 +414,6 @@ public class ReportePromocionDataSource implements JRDataSource {
             return 0.0;
         }
     }
-
 
     public Double redondear(Double numero, int decimales) {
         try {
