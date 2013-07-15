@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="evaluacionPrincipal" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="evaluacionPrincipal" pageWidth="623" pageHeight="842" columnWidth="563" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -34,6 +34,9 @@
 	<variable name="respuesta_1" class="java.lang.Integer" resetType="Group" resetGroup="respuesta" calculation="Count">
 		<variableExpression><![CDATA[$F{respuesta}]]></variableExpression>
 	</variable>
+	<variable name="suma" class="java.lang.Integer" resetType="Group" resetGroup="preguntas" incrementType="Group" incrementGroup="respuesta" calculation="Sum">
+		<variableExpression><![CDATA[$V{respuesta_1}]]></variableExpression>
+	</variable>
 	<group name="empleados" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{estudiante}]]></groupExpression>
 		<groupHeader>
@@ -48,7 +51,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="50"/>
+			<band/>
 		</groupFooter>
 	</group>
 	<group name="cursos">
@@ -73,7 +76,7 @@
 		<groupHeader>
 			<band height="17">
 				<textField isStretchWithOverflow="true">
-					<reportElement x="0" y="0" width="373" height="17" isPrintWhenDetailOverflows="true"/>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="313" height="17" isPrintWhenDetailOverflows="true"/>
 					<box leftPadding="2">
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -87,7 +90,7 @@
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{pregunta}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="373" y="0" width="124" height="17"/>
+					<reportElement stretchType="RelativeToBandHeight" x="313" y="0" width="162" height="17"/>
 					<box>
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -101,7 +104,7 @@
 					<text><![CDATA[Respuesta]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="497" y="0" width="38" height="17"/>
+					<reportElement x="475" y="0" width="38" height="17"/>
 					<box>
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -117,7 +120,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="11"/>
+			<band/>
 		</groupFooter>
 	</group>
 	<group name="respuesta">
@@ -125,7 +128,7 @@
 		<groupHeader>
 			<band height="20">
 				<textField evaluationTime="Group" evaluationGroup="respuesta">
-					<reportElement x="497" y="0" width="38" height="20"/>
+					<reportElement x="475" y="0" width="38" height="20"/>
 					<box>
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>
@@ -137,7 +140,7 @@
 					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{respuesta_1}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="373" y="0" width="124" height="20"/>
+					<reportElement stretchType="RelativeToBandHeight" x="313" y="0" width="162" height="20"/>
 					<box>
 						<pen lineWidth="0.25"/>
 						<topPen lineWidth="0.25"/>

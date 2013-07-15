@@ -5523,8 +5523,8 @@ public class reportesClase {
                             not.setNota(equivalencia(dos, equivalencias));
                         }
                         not.setMatricula(matriculas1);
-                        not.setNoDecimalesProme(noDecimalesProme);
-                        not.setNoDecimalesPromeParciales(noDecimales);
+                        not.setNoDecimalesProme(noDecimales);
+                        not.setNoDecimalesPromeParciales(noDecimalesProme);
                         listaMatriculados.add(not);
 
 
