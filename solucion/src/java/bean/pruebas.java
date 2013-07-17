@@ -22,13 +22,16 @@ public class pruebas {
     public static void main(String[] args) {
 //        Long i=Long.parseLong("001EEEA7",10);
 //        System.out.println("DECIMALE: "+i);
-          //Double siete = 7.1;
-          BigDecimal d = new BigDecimal(7.43+"");
-          System.out.println(""+d);
-            //BigDecimal d = new BigDecimal(resultado);
-            //d = d.setScale(2, RoundingMode.DOWN);
-            d= d.setScale(2, BigDecimal.ROUND_DOWN);
-          System.out.println(""+d);
+          double siete = 7.44;
+          double ocho = 8.45;
+          System.out.println(""+siete*1);
+          System.out.println(""+ocho*1);
+//          BigDecimal d = new BigDecimal(7.43+"");
+//          System.out.println(""+d);
+//            //BigDecimal d = new BigDecimal(resultado);
+//            //d = d.setScale(2, RoundingMode.DOWN);
+//            d= d.setScale(2, BigDecimal.ROUND_DOWN);
+//          System.out.println(""+d);
          
         
         // TODO code application logic here

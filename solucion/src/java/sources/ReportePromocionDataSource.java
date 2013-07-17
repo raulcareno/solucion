@@ -419,7 +419,7 @@ public class ReportePromocionDataSource implements JRDataSource {
     public Double redondear(Double numero, int decimales) {
         try {
             
-            BigDecimal d = new BigDecimal(numero);
+            BigDecimal d = new BigDecimal(numero+"");
             d = d.setScale(decimales, RoundingMode.HALF_UP);
             return d.doubleValue();
         } catch (Exception e) {
