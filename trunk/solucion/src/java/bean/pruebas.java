@@ -19,11 +19,23 @@ public class pruebas {
     /**
      * @param args the command line arguments
      */
+       public Double redondear(Double numero, int decimales) {
+        try {
+
+            BigDecimal d = new BigDecimal(numero+"");
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
     public static void main(String[] args) {
 //        Long i=Long.parseLong("001EEEA7",10);
 //        System.out.println("DECIMALE: "+i);
+        pruebas p = new pruebas();
+        System.out.println(""+p.redondear(8.255, 2));
           double siete = 7.44;
-          double ocho = 8.45;
+          double ocho = 8.255;
           System.out.println(""+siete*1);
           System.out.println(""+ocho*1);
 //          BigDecimal d = new BigDecimal(7.43+"");

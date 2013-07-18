@@ -543,6 +543,9 @@ void recalcular(){
             }else if(tipo.equals("RECC4")){
                     datasource = noti.recordporcursoMejorCurso8a2(curs.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"recordMejor82.jasper");
+            }else if(tipo.equals("RECC5")){
+                    datasource = noti.recordporcursoMejorCurso8a3(curs.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"recordMejor82.jasper");
             }else if(tipo.equals("RECE")){
                     datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
@@ -1029,7 +1032,7 @@ void campos(String valor){
            curs.disabled = false;
            filacursos.visible = true;
            titulo.value= "Record Académico";
-         }else if(valor.equals("RECC3") || valor.equals("RECC4")  ){
+         }else if(valor.equals("RECC3") || valor.equals("RECC4") || valor.equals("RECC5")  ){
            curs.disabled = false;
            filacursos.visible = true;
            titulo.value= "Record Académico";
@@ -1201,6 +1204,7 @@ void campos(String valor){
                                     <listitem  id="RECC2" label="Record Académico por Mejores x Cursos" value="RECC2"/>
                                     <listitem  id="RECC3" label="Mejores x Cursos (2do a 10mo y Bachillerato )" value="RECC3"/>
                                     <listitem  id="RECC4" label="Mejores x Cursos (8vo a 2do. Bachillerato )" value="RECC4"/>
+                                    <listitem  id="RECC5" label="Mejores x Cursos (8vo a 3do. Bachillerato )" value="RECC5"/>
                                     <listitem  id="RECESP" label="Record Académico Notas de 1ero. a 5to." value="RECESP"/>
                                     <listitem  id="linea" label="========= ENCUESTAS ================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
