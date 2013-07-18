@@ -2133,8 +2133,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         obj[0] = rubroCredito.getIdRubros();
                         obj[1] = "" + carM.getIdMaterias().getNombre()+"(CONV)";
                         obj[2] = 1;
-                        obj[3] = (materiasMatricula.getValor().equals("R")?valorConvReingreso:materiasMatricula.getValor().equals("M")?valorConvMisma:materiasMatricula.getValor().equals("O")?valorConvReingreso:new BigDecimal(0)); ;
-                        obj[4] = (materiasMatricula.getValor().equals("R")?valorConvReingreso:materiasMatricula.getValor().equals("M")?valorConvMisma:materiasMatricula.getValor().equals("O")?valorConvReingreso:new BigDecimal(0));
+                        obj[3] = (materiasMatricula.getValor().equals("R")?valorConvReingreso:materiasMatricula.getValor().equals("M")?valorConvMisma:materiasMatricula.getValor().equals("O")?valorConvOtra:new BigDecimal(0)); ;
+                        obj[4] = (materiasMatricula.getValor().equals("R")?valorConvReingreso:materiasMatricula.getValor().equals("M")?valorConvMisma:materiasMatricula.getValor().equals("O")?valorConvOtra:new BigDecimal(0));
                         obj[5] = rubroCredito.getNoaplica();
                         obj[6] = "C";
                         obj[7] = carM.getIdMaterias().getIdMaterias() + "";
