@@ -2800,9 +2800,9 @@ public class reportesClase {
 //                        System.out.println("formato: " + decimalFormat.format(redondear((Double) dos, 3)));
                         nota.setNota(decimalFormat.format(redondear((Double) dos, 3)));
                     } else {
-                        String s = "##00";
+                        String s = "##00.00";
                         DecimalFormat decimalFormat = new DecimalFormat(s);
-                        nota.setNota(decimalFormat.format(redondear((Double) dos, 0)));
+                        nota.setNota(decimalFormat.format(redondear((Double) dos, 2)));
                         //nota.setNota(redondear((Double) dos, 0));
                     }
                     nota.setProfesor(((Materiasgrado) notas.get(ksis)).getProfesor().getApellidos() + " " + ((Materiasgrado) notas.get(ksis)).getProfesor().getNombres() + " CC:" + ((Materiasgrado) notas.get(ksis)).getProfesor().getIdentificacion());
