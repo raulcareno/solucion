@@ -253,6 +253,7 @@
                                         <listitem  id="Registro_de_Evaluaciones"  image="/images/notas.png"  label="Registro Notas Evaluaciones" value="/notasEvaluacion.zul"/>
                                         <listitem id="Notas_de_Grado"  image="/images/notas.png"  label="Registro Ex.Grado" value="/cursosIngresonotasGradoFuera.zul" />
                                         <listitem  id="ListaPendientes" image="/images/dinero.gif" label="Estudiantes con Pendientes"   value="/pendientesEstudiantesDobe.zul" />
+                                        <listitem  id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
                                         <listitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
                                         <listitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
                                         <listitem  id="Correo_Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
@@ -354,6 +355,9 @@
         Reportes_Notas.visible = per.verificarPermisoReporte("Reportes_Notas","Reportes_Notas", "Ingresar",true,"NOTAS");
         ListaPendientes.visible = per.verificarPermisoReporte("ListaPendientes","ListaPendientes", "Ingresar",true,"MATRICULAS");
         Registrar_Recomendacion.visible = per.verificarPermisoReporte("Registrar_Recomendacion","Registrar_Recomendacion", "Ingresar",true,"NOTAS");
+        Comentarios.visible = per.verificarPermisoReporte("Comentarios","Comentarios", "Ingresar",true,"NOTAS");
+        Tareas.visible = per.verificarPermisoReporte("Tareas","Tareas", "Ingresar",true,"NOTAS");
+        Pendientes.visible = per.verificarPermisoReporte("Pendientes","Pendientes", "Ingresar",true,"MATRICULAS");
         }
 
 
