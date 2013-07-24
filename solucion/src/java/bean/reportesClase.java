@@ -1445,21 +1445,21 @@ public class reportesClase {
     List<ParametrosGlobales> parametrosGlobales = null;
     public List<MateriaProfesor> materiasReprobadas = new ArrayList<MateriaProfesor>();
 
-     public void quitarPaso(List<MateriaProfesor> maprof, Integer codigomatricula, Integer codigomateria){
-         
-         for (Iterator<MateriaProfesor> it = maprof.iterator(); it.hasNext();) {
-             MateriaProfesor materiaProfesor = it.next();
-             try {
-                if(materiaProfesor.getCodigomap().equals(codigomatricula) && materiaProfesor.getMateria().getCodigo().equals(codigomateria)){
-                 maprof.remove(materiaProfesor); 
-             }
-         } catch (Exception e) {
-                 System.out.println(""+codigomatricula+" MATEIRA: "+codigomateria);
-                 System.out.println(""+e);
-         }
-          
-         }
-     }
+    public void quitarPaso(List<MateriaProfesor> maprof, Integer codigomatricula, Integer codigomateria) {
+
+        for (Iterator<MateriaProfesor> it = maprof.iterator(); it.hasNext();) {
+            MateriaProfesor materiaProfesor = it.next();
+            try {
+                if (materiaProfesor.getCodigomap().equals(codigomatricula) && materiaProfesor.getMateria().getCodigo().equals(codigomateria)) {
+                    maprof.remove(materiaProfesor);
+                }
+            } catch (Exception e) {
+//                System.out.println("" + codigomatricula + " MATEIRA: " + codigomateria+""+e);
+                //System.out.println("" + e);
+            }
+
+        }
+    }
 
     public List<Matriculas> cuadroverificar(Cursos curso, Sistemacalificacion sistema, Matriculas matriculaActual) {
 //     int tamanio=0;
@@ -1474,9 +1474,9 @@ public class reportesClase {
         Double valorPromedioGeneral = regresaVariableParametrosDecimal("VALORPROMEDIOGENERAL", parametrosGlobales);
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
 
-         if(valorPromedioGeneral<=0){
+        if (valorPromedioGeneral <= 0) {
             valorPromedioGeneral = sumaAprueba;
-         }
+        }
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
@@ -1629,7 +1629,7 @@ public class reportesClase {
                             matR.setOrden(materia.getCodigo());
                             if (materiasReprobadas.contains(matR)) {
                                 //materiasReprobadas.remove(matR);
-                                System.out.println("ENVIO A QUITAR PF: "+materia);
+                                System.out.println("ENVIO A QUITAR PF: " + materia);
                                 quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
                                 System.out.println("PF..he quitado la materia como reprobada: " + materia.getCodigo() + " " + materia + " NOTA: " + val);
                                 obs1--;
@@ -1682,17 +1682,7 @@ public class reportesClase {
                         if (validaConPromedioGeneral && pgeneral < valorPromedioGeneral) {
                             try {
                                 //si no llega a la nota minima
-                                if(pgeneral<sumaPierde){
-                                      obs = "Pierde";
-                                    System.out.println("pierde SUPLE(2.0):" + matricula + " mat:" + materia + " not:" + val);
-                                    MateriaProfesor matR = new MateriaProfesor();
-                                    matR.setCodigomap(matriculaNo.getCodigomat());
-                                    matR.setOrden(materia.getCodigo());
-                                    materiasReprobadas.add(matR);
-                                    obs1++;
-                                }else{
-                                Double valor = new Double(equivalenciaSupletorio(pgeneral, equivalenciasSuple) + "");
-                                if (val < valor) {
+                                if (val < valorPromedioGeneral) {
                                     obs = "Pierde";
                                     System.out.println("pierde SUPLE(2.0):" + matricula + " mat:" + materia + " not:" + val);
                                     MateriaProfesor matR = new MateriaProfesor();
@@ -1701,19 +1691,29 @@ public class reportesClase {
                                     materiasReprobadas.add(matR);
                                     obs1++;
                                 } else {
-                                    obs = "";
-                                    MateriaProfesor matR = new MateriaProfesor();
-                                    matR.setCodigomap(matriculaNo.getCodigomat());
-                                    matR.setOrden(materia.getCodigo());
-                                    if (materiasReprobadas.contains(matR)) {
-                                        //materiasReprobadas.remove(matR);
-                                        System.out.println("ENVIO A QUITAR SU: "+materia);
-                                        quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
-                                        System.out.println("he quitado la materia como reprobada PASA SUPLE: " + materia.getCodigo() + " " + materia + " nota" + val);
-                                        obs1--;
+                                    Double valor = new Double(equivalenciaSupletorio(pgeneral, equivalenciasSuple) + "");
+                                    if (val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde SUPLE(2.0):" + matricula + " mat:" + materia + " not:" + val);
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        materiasReprobadas.add(matR);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        if (materiasReprobadas.contains(matR)) {
+                                            //materiasReprobadas.remove(matR);
+                                            System.out.println("ENVIO A QUITAR SU: " + materia);
+                                            quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
+                                            System.out.println("he quitado la materia como reprobada PASA SUPLE: " + materia.getCodigo() + " " + materia + " nota" + val);
+                                            obs1--;
+                                        }
                                     }
                                 }
-                               }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -1769,7 +1769,7 @@ public class reportesClase {
             }
         }
         nativo = null;
-        if(aprobadMatriculas.size()<=0){
+        if (aprobadMatriculas.size() <= 0) {
             materiasReprobadas = new ArrayList<MateriaProfesor>();
         }
         return aprobadMatriculas;
@@ -2102,6 +2102,11 @@ public class reportesClase {
         Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
         Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
+        Double valorPromedioGeneral = regresaVariableParametrosDecimal("VALORPROMEDIOGENERAL", parametrosGlobales);
+
+        if (valorPromedioGeneral <= 0) {
+            valorPromedioGeneral = sumaAprueba;
+        }
 //Sistemacalificacion sd;
 //sd.getTrimestre().getCodigotrim();
 
@@ -2220,9 +2225,9 @@ public class reportesClase {
                         sumatoria = val;
                     } else if (nota.getSistema().getPromediofinal().equals("PG")) {
                         if (validaConPromedioGeneral) {
-                            if (val < sumaAprueba && val < 5) {
+                            if (val < valorPromedioGeneral && val < 5) {
                                 obs = "RM";
-                            } else if (val < sumaAprueba && val < 7) {
+                            } else if (val < valorPromedioGeneral && val < 7) {
                                 obs = "SP";
                             } else {
                                 obs = "";
@@ -7201,7 +7206,7 @@ public class reportesClase {
     public Double redondear(Double numero, int decimales) {
         try {
 
-            BigDecimal d = new BigDecimal(numero+"");
+            BigDecimal d = new BigDecimal(numero + "");
             d = d.setScale(decimales, RoundingMode.HALF_UP);
             return d.doubleValue();
         } catch (Exception e) {
