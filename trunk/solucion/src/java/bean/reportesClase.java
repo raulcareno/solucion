@@ -1769,6 +1769,9 @@ public class reportesClase {
             }
         }
         nativo = null;
+        if(aprobadMatriculas.size()<=0){
+            materiasReprobadas = new ArrayList<MateriaProfesor>();
+        }
         return aprobadMatriculas;
 
     }
@@ -6040,7 +6043,8 @@ public class reportesClase {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
         List<Actagrado> notas = adm.query("Select o from Actagrado as o "
-                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esfinal = true  order by o.codigo ");
+                + " where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "and o.esfinal = true  order by o.codigo ");
         if (notas.size() <= 0) {
             try {
                 Messagebox.show("No se ha parametrizado el PROMEDIO en el Acta de Grado \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
@@ -6058,7 +6062,7 @@ public class reportesClase {
         }
         //round(avg(nota1),3),
         for (Actagrado notass : notas) {
-            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,2))," + numeroDecimales + "),";
+            query2 += "round(cast(avg(" + notass.getColumna() + ") as decimal(9,3))," + numeroDecimales + "),";
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         query2 = query2.substring(0, query2.length() - 1).replace("'", "");
