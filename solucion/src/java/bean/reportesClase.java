@@ -5919,13 +5919,15 @@ public class reportesClase {
         List<Matriculas> matriculas = new ArrayList();
         if (mat.getCodigomat().equals(-2)) {
 
-            String complem = " o.suspenso = false ";
+            String complem = " (o.suspenso = false or o.suspenso is null) ";
             if (suspendidos) {
                 complem = " o.suspenso = true ";
             }
             matriculas = adm.query("Select o from Matriculas as o "
-                    + "where  o.perdio = false and " + complem + " "
-                    + "and o.curso.especialidad.codigo = '" + esp.getCodigo() + "' and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.curso.secuencia = '6' "
+                    + "where  (o.perdio = false or o.perdio is null) and " + complem + " "
+                    + " and o.curso.especialidad.codigo = '" + esp.getCodigo() + "'  "
+                    + " and o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                    + " and o.curso.secuencia = '13' "
                     + " order by o.estudiante.apellido,  o.estudiante.nombre  ");
         } else {
             matriculas.add(mat);
