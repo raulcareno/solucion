@@ -935,10 +935,10 @@ void campos(String valor){
         }else if(valor.equals("CERT") || valor.equals("CERT2")   ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
-             titulo.value= "Certificado de Promocion";
+             titulo.value= "Certificado de Promoción";
              filacursos.visible = true;
             filamaterias.visible = true;
- filaestudiantes.visible = true;
+            filaestudiantes.visible = true;
         }else if(valor.equals("PROC")  ){
              titulo.value= "Promedios x Curso y Materia";
              curs.disabled = false;
