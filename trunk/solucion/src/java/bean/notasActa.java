@@ -37,7 +37,14 @@ public class notasActa extends Rows {
      Periodo periodo = (Periodo) ses.getAttribute("periodo");
         List<Actagrado> notas = adm.query("Select o from Actagrado as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigo ");
         List<Materiasgrado> mgrado = adm.query("select o from Materiasgrado as o where o.espromedio = true and o.curso.codigocur = '"+curso.getCodigocur()+"' ");
-String columnaExamen ="";
+        String columnaExamen ="";
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        int noDecimalesParciales = regresaVariableParametrosDecimal("DECIPARCIALESGRADO", parametrosGlobales).intValue();
+         if(noDecimalesParciales == 0){
+            noDecimalesParciales = 3;
+         }
+         
         if(mgrado.size()>0){
             columnaExamen = mgrado.get(0).getColumna();
         }else{
@@ -137,7 +144,7 @@ String columnaExamen ="";
                     if (valor.equals(0.0)) {
                         txtNota.setValue(new BigDecimal(0));
                     } else {
-                        txtNota.setValue(new BigDecimal(redondear((Double) dos, 3)));
+                        txtNota.setValue(new BigDecimal(redondear((Double) dos, noDecimalesParciales)));
                     }
                     String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                     if(formula.contains("primero") || formula.contains("segundo") || formula.contains("tercero")
@@ -148,18 +155,18 @@ String columnaExamen ="";
                               if(rec==null || rec.size()<=0){
                                   txtNota.setValue(new BigDecimal(0));
                               }else{
-                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) ,3)));
+                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) ,noDecimalesParciales)));
 
                               }
                         
                     }else if(formula.contains("examenes")){
                         try{
-                         List rec =  adm.queryNativo("Select ("+columnaExamen+") from Notasgrado " +
+                         List rec =  adm.queryNativo("Select ("+formula.replace("examenes",columnaExamen)+") from Notasgrado " +
                                  "where matricula = '"+matricula.getCodigomat()+"' ");
                               if(rec==null){
                                   txtNota.setValue(new BigDecimal(0));
                               }else{
-                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 3)));
+                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , noDecimalesParciales)));
 
                               }
                         }catch(Exception e){
@@ -168,12 +175,12 @@ String columnaExamen ="";
 
                     }else if(formula.contains("trabajo")){
                         try{
-                         List rec =  adm.queryNativo("Select ("+columnaTrabajo+") from Notasgrado " +
+                         List rec =  adm.queryNativo("Select ("+formula.replace("trabajo",columnaTrabajo)+") from Notasgrado " +
                                  "where matricula = '"+matricula.getCodigomat()+"' ");
                               if(rec==null){
                                   txtNota.setValue(new BigDecimal(0));
                               }else{
-                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , 3)));
+                                 txtNota.setValue(new BigDecimal(redondear((Double) ((Vector)rec.get(0)).get(0) , noDecimalesParciales)));
 
                               }
                         }catch(Exception e){
@@ -388,5 +395,60 @@ public Boolean verificar(String formula,List<Notanotas> notas){
       }
         return false;
 }
+
+    public String regresaVariableParametros(String variable, List<ParametrosGlobales> textos) {
+        String dato = "";
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getCvalor();
+            }
+        }
+        return dato;
+    }
+
+    public Double regresaVariableParametrosDecimal(String variable, List<ParametrosGlobales> textos) {
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getNvalor();
+            }
+        }
+
+        return 0.0;
+    }
+
+    public Boolean regresaVariableParametrosLogico(String variable, List<ParametrosGlobales> textos) {
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getBvalor();
+            }
+        }
+
+        return false;
+    }
+
+    public String regresaTexto(String variable, List<Textos> textos) {
+        for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
+            Textos textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getMensaje();
+            }
+        }
+        return "NO EXISTE VARIABLE";
+    }
+
+    public String regresaVariable(String variable, List<Textos> textos) {
+        String dato = "";
+        for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
+            Textos textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getMensaje();
+            }
+        }
+        return dato;
+    }
+
 
 }
