@@ -204,12 +204,43 @@ Date fec = adm.Date();
             vericarEstudiante.visible = false;
             listadoListass.visible = false;
             filaEncuesta.getChildren().clear();
-            cedula.value = "0000000000";
+            cedula.setRawValue(null); 
+            
             validacion.getChildren().clear();
             
             guardar.disabled  = false;
+            usuario.setRawValue(null); 
+            clave.setRawValue(null);
+            verificaciondeCedula.visible = true;
+            verificaciondeUsuario.visible = false;
 }
-
+public void verificarUsuario(){
+    validacion.getChildren().clear();
+    Estudiantes user =adm.ingresoSistemaE(usuario.value.trim(), clave.value.trim());
+        if(user != null){
+               estudianteActual = user;
+                List resultadosL = adm.query("Select o.codigo from Resultados as o " 
+                        + " where o.estudiante.codigoest = '"+estudianteActual.getCodigoest()+"' " 
+                        + " and o.candidato.lista.eleccion.codigo = '"+eleccioneActual.getCodigo()+"' ");
+                if(resultadosL.size()>0){
+                        resultadosL = null;
+                        Messagebox.show("Usted, YA ha realizado la votación...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                        cedula.value = "000000000";
+                        estudiantesEncontrados = null;
+                        resultadosL = null;
+                        return;
+                }else{
+                 buscarCedulaPanel.visible=false;
+                  listadoListass.visible=true;
+                    cargar();
+                }        
+        }else{
+            Messagebox.show("Usuario o clave incorrectas...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+    
+        
+        
+}
 public void verificar(){
     validacion.getChildren().clear();
     List estudiantesEncontrados = adm.query("Select o from Estudiantes as o where o.cedula = '"+cedula.getValue().trim().replace(" ","").replace("-","")+"' ");
@@ -280,7 +311,7 @@ public void validarEstudiante(){
                                     
                                     buscarCedulaPanel.visible=true;
                                     vericarEstudiante.visible = false;
-                                    cedula.value = "0000000000";
+                                    cedula.value = "000";
                                     return;
                                 }
                      
@@ -300,16 +331,44 @@ public void validarEstudiante(){
   ]]>
         </zscript>
 
-        <panel id="buscarCedulaPanel" title="SISTEMA DE VOTACIÓN" framable="true"  width="100%" height="100%"
+        <panel id="buscarCedulaPanel" title="SISTEMA DE VOTACIÓN" framable="true"  width="100%" height="170px"
                border="normal">
             <panelchildren>
                 <grid id="verificaciondeCedula" >
                     <rows>
-                        <row>
-                            Ingrese su No. de Cédula: 
+                        <row spans="2">
+                            <span>
+                            <label style="font-weight:bold;size:13px" value="INGRESE SU NÚMERO DE CÉDULA:" />
                             <textbox id="cedula" maxlength="13" constraint="no empty:Número de Cédula es Obligatorio"  />
-                        
-                            <button label="Verificar"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="cedula.getValue(); verificar(); "/>
+                            </span>
+                        </row>
+                         <row align="center"  spans="2">
+                             <span>
+                            <button label="CONTINUAR >>"  height="30px" width="150px"  image="/images/key.png"  id="verificar" onClick="cedula.getValue(); verificar(); "/>
+                            <button label="NO TENGO CÉDULA"  height="30px" width="150px"  image="/images/bloquear.gif"  id="notengo" onClick="verificaciondeUsuario.visible = true; verificaciondeCedula.visible = false;" />
+                            </span>
+                        </row>
+                    </rows>
+                </grid>
+                <grid id="verificaciondeUsuario" visible ="false" >
+                    <rows>
+                        <row align="center" spans="2">
+                            <label style="font-weight:bold;size:13px" value="INGRESE SU USUARIO Y CONTRASEÑA" />
+                           
+                        </row>
+                        <row style="background:transparent;border:0px">
+                            <span style="float:right">Usuario:(*):</span>
+                            <textbox onOK="clave.focus()" id="usuario" constraint="no empty:Usuario es requerido" maxlength="20" cols="15"  />
+                        </row>
+                        <row style="background:transparent;border:0px">
+                            <span style="float:right">Contraseña:(*):</span>
+                            <textbox  onOK="ingresarModulo.focus()" id="clave" type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"   />
+                        </row>
+                      
+                        <row  align="center" spans="2" style="background:transparent;border:0px" >
+                            <span>
+                                <button label="CONTINUAR >>" id="ingresarModulo0"  height="30px" width="170px" image="/images/key.png"   onClick="usuario.getValue(); clave.getValue(); verificarUsuario();"/>
+                            </span>
                         </row>
                     </rows>
                 </grid>
@@ -358,23 +417,23 @@ public void validarEstudiante(){
             </toolbar>
         </panel>
         <grid>
-    <rows>
-           <row  style="background:white;border:0px" align="center" spans="2">
-                 <span>
-                <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009-2012"/>
+            <rows>
+                <row  style="background:white;border:0px" align="center" spans="2">
+                    <span>
+                        <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009-2012"/>
                 
-                <html>
+                        <html>
                      &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
 
-					</html>
-                    <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
-                </span>
-             </row>
+                        </html>
+                        <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                    </span>
+                </row>
               
-    </rows>
+            </rows>
 
 
-</grid>
+        </grid>
 
     </window>
 </zk>
