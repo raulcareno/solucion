@@ -509,6 +509,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         panelencontrados1.setLayout(null);
 
+        encontrados1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         encontrados1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Estudiantes..." };
             public int getSize() { return strings.length; }
@@ -530,10 +531,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jScrollPane8.setViewportView(encontrados1);
 
         panelencontrados1.add(jScrollPane8);
-        jScrollPane8.setBounds(10, 10, 260, 70);
+        jScrollPane8.setBounds(10, 10, 260, 100);
 
         getContentPane().add(panelencontrados1);
-        panelencontrados1.setBounds(90, 56, 280, 90);
+        panelencontrados1.setBounds(90, 56, 280, 120);
 
         variasCarreras.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2337,9 +2338,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             if (val == 0) {
                 llenarCarreras();
                 List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
-                actualMatricula.getIdEstudiantes().setIdCategoriasSociales(datos.get(0));
+                
                 sumar();
                 tipoProceso = "NUEVA";
+                try {
+                    actualMatricula.getIdEstudiantes().setIdCategoriasSociales(datos.get(0));    
+                } catch (Exception e) {
+                    
+                }
+                
+                
                 //buscarRubrosDeMatricula();
             } else {
                 return; //SALGO PORQUE NO DESEA NI MATRICULAR SOLO RELLENAR INFORMACIÓN
@@ -3358,58 +3366,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private void variasCarreras1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_variasCarreras1MouseClicked
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
-            Integer cod = (Integer) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 0);
-            String nom = (String) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 1);
-
-            List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
-                    + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
-                    + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "'  "
-                    + "and o.idCarreras.idCarreras = '" + cod + "' ");
-            if (matriculaList.size() > 0) {
-                JOptionPane.showMessageDialog(this, "Estudiante Ya Matriculado, \n "
-                        + "enn la Carrera Seleccionada", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-
-            carreraSeleccionada = new Carreras(cod);
-            carreraSeleccionada.setNombre(nom);
-//            carrera.setText(carreraSeleccionada.getNombre());
-            buscarRubrosDeMatricula();
-            if (tFactura.getRowCount() <= 0) {
-                JOptionPane.showMessageDialog(this, "Seleccione otra carrera, \n la "
-                        + "seleccionada no tiene asignados los rubros para la matricula", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-            } else {
-                tipoProceso = ".";
-                frmSeleccionCarreras.dispose();
-            }
-            DefaultTableModel dtm = (DefaultTableModel) variasCarreras.getModel();
-            //dtm.getDataVector().removeAllElements();
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMM/yyyy");
-            Object[] obj = new Object[5];
-            obj[0] = carreraSeleccionada.getIdCarreras();
-            obj[1] = carreraSeleccionada.getNombre() + " " + carreraSeleccionada.getEstado();
-            String fechaI = sdf.format(periodoActual.getFechaInicio());
-            String fechaF = sdf.format(periodoActual.getFechaFin());
-            obj[2] = " | " + fechaI + "-" + fechaF + " |  ";
-            obj[3] = "-";
-            dtm.addRow(obj);
-            variasCarreras.setModel(dtm);
-            carreraSeleccionadaLabel.setText(carreraSeleccionada.getNombre());
-            sumar();
-            sumarPagos();
-            BigDecimal to = new BigDecimal(total.getText());
-            BigDecimal co = new BigDecimal(totalCobros.getText());
-            faltan.setText("" + (to.subtract(co)));
-
+          variasCarrerasEvento();
         }
     }//GEN-LAST:event_variasCarreras1MouseClicked
-
-    private void variasCarreras1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_variasCarreras1KeyPressed
-        // TODO add your handling code here:
-        if (evt.getKeyCode() == evt.VK_ENTER) {
+    public void variasCarrerasEvento(){
             Integer cod = (Integer) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 0);
             String nom = (String) variasCarreras1.getValueAt(variasCarreras1.getSelectedRow(), 1);
+
             List<Matriculas> matriculaList = adm.query("Select o from Matriculas as o "
                     + " where o.idEstudiantes.idEstudiantes = '" + es.getIdEstudiantes() + "' "
                     + " and o.idPeriodos.idPeriodos = '" + periodoActual.getIdPeriodos() + "'  "
@@ -3420,7 +3383,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 return;
             }
 
-
+            //chkNuevo.isSelected()
+                    
+              int val = JOptionPane.showConfirmDialog(this, "¿EL ESTUDIANTE ES ANTIGUO?", "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION);
+            System.out.println("VALOR" + val);
+            if (val == 0) {
+                chkNuevo.setSelected(false);
+                chkAntiguo.setSelected(true);
+            }else {
+                chkNuevo.setSelected(true);
+                chkAntiguo.setSelected(false);
+            } 
+                    
             carreraSeleccionada = new Carreras(cod);
             carreraSeleccionada.setNombre(nom);
 //            carrera.setText(carreraSeleccionada.getNombre());
@@ -3450,7 +3424,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             BigDecimal to = new BigDecimal(total.getText());
             BigDecimal co = new BigDecimal(totalCobros.getText());
             faltan.setText("" + (to.subtract(co)));
-
+}
+    private void variasCarreras1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_variasCarreras1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            variasCarrerasEvento();
         }
 
     }//GEN-LAST:event_variasCarreras1KeyPressed
