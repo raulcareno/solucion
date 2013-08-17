@@ -1847,6 +1847,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         //System.out.println("imprimo nuevo ticket");
                         //asdf    
                         //imprimirTicket(facActual.getCodigo(), emp);
+                        guardando = false;
                         System.out.println("NO ABRE BARRERA POR DESHABILITACION EN FRMEMPRESA ");
                     }
 
@@ -1879,6 +1880,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     noTicket.requestFocusInWindow();
 
                 } catch (Exception ex) {
+                    guardando = false;
                     JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
                     return;
@@ -2442,6 +2444,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
         Integer minutos = minutos0.intValue();
+        //empresaObj.getGracia()
 
         Integer horas = minutos / 60;
         BigDecimal aCobrar = new BigDecimal(0);
@@ -2621,12 +2624,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     placa.setText(null);
                     tiempo.setDate(null);
                 }
+                guardando = false;
             } catch (Exception e) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, e);
                 ingreso.setDate(null);
                 salida.setDate(null);
                 placa.setText(null);
                 tiempo.setDate(null);
+                guardando = false;
 
             }
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {

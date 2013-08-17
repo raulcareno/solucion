@@ -41,7 +41,7 @@ public class ClienteChat
         try
         {
             creaYVisualizaVentana();
-            socket = new Socket("192.168.10.101", 5557);
+            socket = new Socket("localhost", 5557);
             ControlCliente control = new ControlCliente(socket, panel);
         } catch (Exception e)
         {
@@ -57,8 +57,9 @@ public class ClienteChat
         JFrame v = new JFrame();
         panel = new PanelCliente(v.getContentPane());
         v.pack();
-        v.setSize(300, 300);
+        v.setSize(300, 400);
         v.setVisible(true);
         v.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+         
     }
 }

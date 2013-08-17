@@ -1,6 +1,8 @@
 package peaje.formas;
 
 //import camaraIP.tomarImage;
+import chatear.cliente.ControlCliente;
+import chatear.cliente.PanelCliente;
 import chatear.servidor.HiloDeCliente;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
@@ -185,6 +187,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             this.setSize(600, 600);
             this.setExtendedState(this.MAXIMIZED_BOTH);
             procesando.setVisible(false);
+            
+            messenger.setVisible(false);
+            jButton13.setVisible(false);
+            btnAcerca.setVisible(false);
+            
             /*
              * CARGO EL MESSENGER
              */
@@ -360,6 +367,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         procesando = new javax.swing.JButton();
+        messenger = new org.jdesktop.swingx.JXTaskPane();
+        jToolBar4 = new javax.swing.JToolBar();
         formaTarjetas1 = new javax.swing.JInternalFrame();
         jLabel14 = new javax.swing.JLabel();
         panelHoras = new javax.swing.JPanel();
@@ -584,6 +593,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         miBotonImagen = new javax.swing.JLabel();
         ultimoIngreso = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
         usuarioLogeado = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         botoninst = new javax.swing.JButton();
@@ -1004,6 +1014,21 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         frmIngresarSistema.setBounds(100, 100, 390, 220);
         contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        messenger.setTitle("Mensajes");
+        messenger.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                messengerKeyPressed(evt);
+            }
+        });
+
+        jToolBar4.setFloatable(false);
+        jToolBar4.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jToolBar4.setRollover(true);
+        messenger.getContentPane().add(jToolBar4);
+
+        messenger.setBounds(560, 30, 230, 140);
+        contenedor.add(messenger, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         formaTarjetas1.setTitle("Registro y Modificación de Tarjetas");
         formaTarjetas1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.gif"))); // NOI18N
@@ -2533,8 +2558,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(cons);
             cons.setBounds(580, 270, 60, 20);
 
-            placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setEditable(false);
+            placa.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
             placa.setText(".");
             panelIngreso.add(placa);
             placa.setBounds(620, 350, 140, 20);
@@ -2547,7 +2572,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(camaraVista);
-            camaraVista.setBounds(10, 270, 350, 270);
+            camaraVista.setBounds(10, 300, 310, 240);
 
             camaraVista1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             camaraVista1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 153, 204), 1, true));
@@ -2557,7 +2582,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(camaraVista1);
-            camaraVista1.setBounds(10, 270, 350, 270);
+            camaraVista1.setBounds(10, 300, 310, 240);
 
             logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.png"))); // NOI18N
             panelIngreso.add(logoTeka);
@@ -2566,12 +2591,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
             miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
             panelIngreso.add(miBotonImagen);
-            miBotonImagen.setBounds(370, 360, 230, 180);
+            miBotonImagen.setBounds(330, 350, 230, 180);
 
             ultimoIngreso.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
             ultimoIngreso.setText("Ultimo Ingreso");
             panelIngreso.add(ultimoIngreso);
-            ultimoIngreso.setBounds(370, 340, 230, 13);
+            ultimoIngreso.setBounds(330, 320, 230, 13);
 
             jButton11.setText("..");
             jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -2580,7 +2605,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             panelIngreso.add(jButton11);
-            jButton11.setBounds(750, 150, 10, 23);
+            jButton11.setBounds(750, 150, 30, 23);
+
+            jButton13.setText("jButton13");
+            jButton13.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton13ActionPerformed(evt);
+                }
+            });
+            panelIngreso.add(jButton13);
+            jButton13.setBounds(690, 270, 79, 23);
 
             panelIngreso.setBounds(0, 30, 790, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2920,7 +2954,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(158, Short.MAX_VALUE))
+                    .addContainerGap(254, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -5572,41 +5606,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         contenedor.requestFocus();
     }//GEN-LAST:event_btnAccesosActionPerformed
 
-    private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
-        // TODO add your handling code here:
-        acerca ac = new acerca(this, true, empresaObj);
-        ac.setLocation(240, 100);
-        contenedor.add(ac);
-        ac.show();
-    }//GEN-LAST:event_btnAcercaActionPerformed
-
-    private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
-        // TODO add your handling code here:
-        frmManual usu = new frmManual(this, adm);
-        usu.setSize(617, 322);
-        usu.setLocation(0, 0);
-//            usu.setMaximizable(true);
-        contenedor.add(usu);
-        usu.show();
-
-    }//GEN-LAST:event_btnAyudaActionPerformed
-
-    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-//        usuario = new Usuarios();
-//        permisos = new Accesos();
-//        frmIngresarSistema.setVisible(true);
-//        habilitarBotones(false);
-//        clave.requestFocusInWindow();;
-    }//GEN-LAST:event_btnCerrarActionPerformed
-
-    private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
-        // TODO add your handling code here:
-        auditar("", "", "Salio del Sistema");
-        System.exit(0);
-    }//GEN-LAST:event_btnSalir2ActionPerformed
-
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
@@ -6916,7 +6915,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         Thread cargar = new Thread() {
             public void run() {
                 try {
-                    System.out.println("EMPEZO.. SERVIDOR");
+                    System.out.println("EMPEZO.. SERVIDOR DE MENSAJES");
                     ServidorChat();
                     System.out.println("EMPEZO.. SERVIDOR//");
                 } catch (Exception ex) {
@@ -6971,6 +6970,58 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         // TODO add your handling code here:
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_imAvisoKeyPressed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+        try {
+            PanelCliente panel = new PanelCliente(messenger.getContentPane());
+            Socket socket = new Socket("localhost", 5557);
+            ControlCliente control = new ControlCliente(socket, panel);
+         } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void messengerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_messengerKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_messengerKeyPressed
+
+    private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
+        // TODO add your handling code here:
+        auditar("", "", "Salio del Sistema");
+        System.exit(0);
+    }//GEN-LAST:event_btnSalir2ActionPerformed
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+        //        usuario = new Usuarios();
+        //        permisos = new Accesos();
+        //        frmIngresarSistema.setVisible(true);
+        //        habilitarBotones(false);
+        //        clave.requestFocusInWindow();;
+    }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed
+        // TODO add your handling code here:
+        acerca ac = new acerca(this, true, empresaObj);
+        ac.setLocation(240, 100);
+        contenedor.add(ac);
+        ac.show();
+    }//GEN-LAST:event_btnAcercaActionPerformed
+
+    private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
+        // TODO add your handling code here:
+        frmManual usu = new frmManual(this, adm);
+        usu.setSize(617, 322);
+        usu.setLocation(0, 0);
+        //            usu.setMaximizable(true);
+        contenedor.add(usu);
+        usu.show();
+    }//GEN-LAST:event_btnAyudaActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -7073,7 +7124,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox activa1;
     private javax.swing.JCheckBox activa2;
     private javax.swing.JToolBar barraHerramients;
-    private javax.swing.JButton barrera1;
+    public javax.swing.JButton barrera1;
     private javax.swing.JButton barrera2;
     private javax.swing.JButton barrera3;
     private javax.swing.JButton barrera4;
@@ -7170,6 +7221,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -7253,6 +7305,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JToolBar jToolBar4;
     private org.jdesktop.swingx.JXTaskPaneContainer jXTaskPaneContainer1;
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox jueves1;
@@ -7264,6 +7317,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox martes;
     private javax.swing.JCheckBox martes1;
     private javax.swing.JCheckBox martes2;
+    private org.jdesktop.swingx.JXTaskPane messenger;
     private javax.swing.JLabel miBotonImagen;
     private javax.swing.JCheckBox miercoles;
     private javax.swing.JCheckBox miercoles1;

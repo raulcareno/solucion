@@ -34,8 +34,8 @@ public class ClienteFrame extends javax.swing.JFrame {
 
         initComponents();
 this.setVisible(true);
-        servidorChat = "127.0.0.1";
-        servidorChat = "192.168.10.2";
+        //servidorChat = "127.0.0.1";
+        servidorChat = "localhost";
 //         Cliente aplicacion;
 //        if (args.length == 0) {
 //            aplicacion = new Cliente("127.0.0.1");
@@ -70,7 +70,7 @@ this.setVisible(true);
     private void conectarAServidor() throws IOException {
         mostrarMensaje("Intentando realizar conexión\n");
         // crear Socket para realizar la conexión con el servidor
-        cliente = new Socket(InetAddress.getByName(servidorChat), 12345);
+        cliente = new Socket(InetAddress.getByName(servidorChat), 5557);
         // mostrar la información de la conexión
         mostrarMensaje("Conectado a: "+ cliente.getInetAddress().getHostName());
     }

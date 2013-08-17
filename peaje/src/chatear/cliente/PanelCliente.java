@@ -21,7 +21,7 @@ import javax.swing.JTextField;
  * enviar.
  * @author Chuidiang
  */
-public class PanelCliente
+public class PanelCliente  
 {
     /** Scroll */
     private JScrollPane scroll;
@@ -30,10 +30,10 @@ public class PanelCliente
     private JTextArea textArea;
 
     /** Para pedir el texto al usuario */
-    private JTextField textField;
+    public JTextField textField;
 
     /** Bot�n para enviar el texto */
-    private JButton boton;
+    public JButton boton;
 
     /**
      * Crea el panel con todos sus componentes. Un Area de texto para ver la
@@ -55,9 +55,10 @@ public class PanelCliente
 //        panel.setSize(500, 600);
         panel.add(textField);
         panel.add(boton);
-
+        //contenedor.add(this)
         contenedor.add(scroll, BorderLayout.CENTER);
-        contenedor.add(panel, BorderLayout.SOUTH);
+         contenedor.add(panel, BorderLayout.SOUTH);
+  
     }
 
     /** A�ade el actionListener que se le pasa tanto a pulsar <intro> en el

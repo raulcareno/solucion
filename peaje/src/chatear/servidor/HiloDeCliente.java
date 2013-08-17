@@ -63,12 +63,19 @@ private frmPrincipal princip;
             while (true)
             {
                 String texto = dataInput.readUTF();
+                //sdsdsldksl
                 synchronized (charla)
                 {
                     charla.addElement(texto);
+                     System.out.println("TEXTO RECIBIDO: "+texto);
+                    if(texto.contains("1")){
+                        System.out.println("ABRIO BARRERA: "+texto);    
+                        princip.barrera1.doClick();
+                    }else{
+                        System.out.println("nada....");
+                    }
                     
-                    System.out.println("ABRIR PUERTA 1 "+princip.puertoListo);
-                    System.out.println(texto);
+                    
                 }
             }
         } catch (Exception e)
