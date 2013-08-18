@@ -19,6 +19,14 @@ import java.util.Date;
 import org.joda.time.DateMidnight;
 import org.zkoss.zul.Listbox;
 import bean.Permisos;
+
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+
+
 Permisos per = new Permisos();
 
          
@@ -621,6 +629,10 @@ void recalcular(){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificacionesPrimaria(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked,incluirfaltasydias.checked);
                     report.setSrc(directorioReportes+"cuadrocalificacionesPrimaria.jasper");
+            }else if(tipo.equals("CCALB")){
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    //report.setSrc(directorioReportes+"cuadrocalificacionesPrimaria.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -954,7 +966,7 @@ void campos(String valor){
              filaestudiantes.visible = true;
              filaaportes.visible = true;
              sistemasCombo.disabled = false;
-        }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3") || valor.equals("CCALP")){
+        }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3") || valor.equals("CCALP") || valor.equals("CCALB") || valor.equals("CCALBA") ){
              incluirfaltas.visible = true;
              incluirfaltasydias.visible = true;
              incluirpromedio.visible = true;
@@ -1154,6 +1166,10 @@ void campos(String valor){
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem id="NMAT2"  label="Cuadro de Calificaciones Quimetral" value="NMAT2" />
                                     <listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" />
+                                    
+                                    <listitem id="CCALB"  label="Cuadro Final de Calificaciones-Basica" value="CCALB" />
+                                    <listitem id="CCALBA"  label="Cuadro Final de Calificaciones-Bachillerato" value="CCALBA" />
+                                    
                                     <listitem  id="CNF5" label="Cuadro Juntas x Aportes" value="CNF5" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
                                     <listitem  id="CNF2" label="Cuadro Juntas o Final (2)" value="CNF2" />
