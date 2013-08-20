@@ -7999,8 +7999,8 @@ public class reportesClase {
 
 //        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
 //                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.grupo = 'AP'");
-        
-       List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalencias2 = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
@@ -8021,9 +8021,9 @@ public class reportesClase {
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
-         Double desde=0d;
-         Double hasta=0d;
-         
+        Double desde = 0d;
+        Double hasta = 0d;
+
         if (notaFinal.size() <= 0) {
             try {
                 Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
@@ -8033,8 +8033,8 @@ public class reportesClase {
             }
         }
         Notanotas nfinal = notaFinal.get(0);
-         
-         
+
+
 
         int eqTamano = equivalencias.size();
 
@@ -8056,14 +8056,14 @@ public class reportesClase {
         style.setBorderBottom((short) 1);
         style.setBorderLeft((short) 1);
         style.setBorderTop((short) 1);
-        
+
         style2.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
         style2.setVerticalAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
         style2.setBorderRight((short) 1);
         style2.setBorderBottom((short) 1);
         style2.setBorderLeft((short) 1);
         style2.setBorderTop((short) 1);
-        
+
 
         HSSFFont defaultFont = wb.createFont();
         defaultFont.setFontHeightInPoints((short) 7);
@@ -8071,7 +8071,7 @@ public class reportesClase {
         defaultFont.setColor(HSSFFont.COLOR_NORMAL);
         defaultFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         defaultFont.setItalic(false);
-        
+
         HSSFFont defaultFont2 = wb.createFont();
         defaultFont2.setFontHeightInPoints((short) 8);
         defaultFont2.setFontName("Arial");
@@ -8123,7 +8123,7 @@ public class reportesClase {
         List<MateriaProfesor> materiaProfesorOpcionales = adm.query("Select o from MateriaProfesor as o "
                 + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
                 + " and o.ministerio = false and o.seimprime = true order by o.orden");
-        List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema(), new Matriculas(-1));
+        List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notaFinal.get(0).getSistema(), new Matriculas(-1));
         String codigosPerdidos = "";
         ArrayList perdidos = new ArrayList();
         for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
@@ -8132,7 +8132,7 @@ public class reportesClase {
             perdidos.add(matriculas.getCodigomat());
 
         }
-        
+
 //        List<Matriculas> matriculados = adm.query("Select o from Matriculas as o "
 //                + " where o.curso.codigocur = " + curso.getCodigocur() + "");
         String query = "";
@@ -8141,7 +8141,7 @@ public class reportesClase {
 
         }
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
-        
+
         row = sheet.createRow((short) 7);//fila
         sheet.autoSizeColumn((short) 0);
         //row.createCell((short) 0).setCellValue("Orden");//columna
@@ -8151,7 +8151,7 @@ public class reportesClase {
         cellOrd.setCellStyle(style);
         sheet.autoSizeColumn((short) 0);
 
-        row = sheet.createRow((short) 7);//fila
+        // row = sheet.createRow((short) 7);//fila
         sheet.autoSizeColumn((short) 1);
 
         sheet.addMergedRegion(new Region(7, (short) 0, 8, (short) 0));
@@ -8166,13 +8166,13 @@ public class reportesClase {
 
         for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesor.iterator(); ImapTitulos.hasNext();) {
             MateriaProfesor acaMateriaProfesor = ImapTitulos.next();
-            row = sheet.createRow((short) 7);
+            // row = sheet.createRow((short) 7);
             HSSFCell cell = row.createCell((short) materiasCabecera);
             cell.setCellValue("" + acaMateriaProfesor.getMateria().getDescripcion());
             cell.setCellStyle(style);
             //anado celdas segun el tamaño de sub sistemas
-            for(int sis = 0; sis <sistemas.size()-1;sis++){
-                HSSFCell cellVacio = row.createCell((short) (materiasCabecera+sis+1));
+            for (int sis = 0; sis < sistemas.size() - 1; sis++) {
+                HSSFCell cellVacio = row.createCell((short) (materiasCabecera + sis + 1));
                 cellVacio.setCellValue("");
                 cellVacio.setCellStyle(style);
             }
@@ -8184,11 +8184,11 @@ public class reportesClase {
             //sistemas.size()
             sheet.autoSizeColumn((short) materiasCabecera);
         }
-         row = sheet.createRow((short) 7);
+        //row = sheet.createRow((short) 7);
         sheet.autoSizeColumn((short) materiasCabecera);
         HSSFCell cellComp = row.createCell((short) materiasCabecera);
         cellComp.setCellValue("COMPORTAMIENTO");
-        cellComp.setCellStyle(style); 
+        cellComp.setCellStyle(style);
         materiasCabecera++;
 //
 //        for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesorOpcionales.iterator(); ImapTitulos.hasNext();) {
@@ -8199,12 +8199,12 @@ public class reportesClase {
 //
 //            materiasCabecera++;
 //        }
-        row = sheet.createRow((short) 7);
+        // row = sheet.createRow((short) 7);
         sheet.autoSizeColumn((short) materiasCabecera);
         HSSFCell celdaDisciplina = row.createCell((short) materiasCabecera);
         celdaDisciplina.setCellValue("PROM.");
         celdaDisciplina.setCellStyle(style);
-        row = sheet.createRow((short) 7);
+        // row = sheet.createRow((short) 7);
         materiasCabecera++;
         sheet.autoSizeColumn((short) materiasCabecera);
 
@@ -8226,7 +8226,7 @@ public class reportesClase {
             MateriaProfesor acaMateriaProfesor = ImapTitulos.next();
             for (Iterator<Sistemacalificacion> it = sistemas.iterator(); it.hasNext();) {
                 Sistemacalificacion sistemacalificacion = it.next();
-                row = sheet.createRow((short) 8);
+                // row = sheet.createRow((short) 8);
                 HSSFCell cell = row.createCell((short) materiasCabecera);
                 cell.setCellValue("" + sistemacalificacion.getAbreviatura());
                 cell.setCellStyle(style);
@@ -8241,7 +8241,7 @@ public class reportesClase {
         Double sumaPromedio = 0.0;
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-            boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
@@ -8253,7 +8253,7 @@ public class reportesClase {
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
         int cont = 0;
-        int conteoMateriasBloque=0;
+        int conteoMateriasBloque = 0;
         String matricula = "";
         int columna = 0;
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -8266,7 +8266,7 @@ public class reportesClase {
             Double aprovecha = 0.0;
             Double disciplina = 0.0;
             int ksis = 0;
-            
+
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 Double val = 0.0;
@@ -8321,84 +8321,78 @@ public class reportesClase {
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
-                    row = sheet.createRow((short) x); //fila
-                    HSSFCell cellNota = row.createCell((short) (columna+2));
-                    
+//                    row = sheet.createRow((short) x); //fila
+                    HSSFCell cellNota = row.createCell((short) (columna + 2));
+
                     String s = "##00.00";
                     DecimalFormat decimalFormat = new DecimalFormat(s);
                     //nota.setNota(decimalFormat.format(redondear((Double) dos, 2)));
                     try {
-                        cellNota.setCellValue("" + decimalFormat.format(redondear(new Double(nota.getNota()+""), 2)));    
+                        cellNota.setCellValue("" + decimalFormat.format(redondear(new Double(nota.getNota() + ""), 2)));
                     } catch (Exception e) {
                         if (mprofesor.getCuantitativa() == false) {
                             cellNota.setCellValue("APROBADO");
-                             if(ksis==0)
-                            sheet.addMergedRegion(new Region(x, (short) (columna+2), x, (short) ((columna+2) + sistemas.size() - 1)));
-                        }else{
-                            cellNota.setCellValue(""+nota.getNota());
-                        } 
+                            if (ksis == 0) {
+                                sheet.addMergedRegion(new Region(x, (short) (columna + 2), x, (short) ((columna + 2) + sistemas.size() - 1)));
+                            }
+                        } else {
+                            cellNota.setCellValue("" + nota.getNota());
+                        }
                     }
 //                    System.out.println("VALORCELDA:"+cellNota.getStringCellValue()+"");
                     cellNota.setCellStyle(style2);
-                    sheet.setColumnWidth((short) (columna+2), (short)1250);
+                    sheet.setColumnWidth((short) (columna + 2), (short) 1250);
                     ksis++;
                     columna++;
                 } else if (j == 1) {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    
+
                     //AÑADO LA MATRICULA COMO CELDA AL EXCELS
-                    row = sheet.createRow((short) (x+1));
-                    
+                     if (!matriculaNo.toString().equals(matricula)) {
+                        row = sheet.createRow((short) (x + 1));
+                    }
+
                     HSSFCell cellOrden = row.createCell((short) 0);
-                    cellOrden.setCellValue("" + (cont+1));
+                    cellOrden.setCellValue("" + (cont));
                     cellOrden.setCellStyle(style2);
-                    
+
                     HSSFCell cell = row.createCell((short) 1);
-                    cell.setCellValue("" + matriculaNo.getEstudiante().getApellido()+" "+matriculaNo.getEstudiante().getNombre());
+                    cell.setCellValue("" + matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                     cell.setCellStyle(style2);
 
-                    
 
-  
-                   List  valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) "
+
+
+                    List valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) "
                             + " FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-                    HSSFCell cellDisc = row.createCell((short) (materiaProfesor.size()*sistemas.size()+2));
-                     cellDisc.setCellValue("" + equivalencia(disciplina,equivalencias2));
-                     cellDisc.setCellStyle(style2);
-                     
-                   valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas "
+                    HSSFCell cellDisc = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 2));
+                    cellDisc.setCellValue("" + equivalencia(disciplina, equivalencias2));
+                    cellDisc.setCellStyle(style2);
+
+                    valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas "
                             + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
                             + "AND disciplina = FALSE AND  promedia = TRUE "
                             + "AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     if (valor.size() > 0) {
                         aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-                     HSSFCell cellApr = row.createCell((short) (materiaProfesor.size()*sistemas.size()+3));
-                     cellApr.setCellValue("" + aprovecha);
-                     cellApr.setCellStyle(style2);
-                     
-//                     List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema(), matri);
-//        String codigosPerdidos = "";
-//        ArrayList perdidos = new ArrayList();
-//        for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
-//            Matriculas matriculas = it.next();
-//            codigosPerdidos = matriculas.getCodigomat() + "," + codigosPerdidos;
-//            perdidos.add(matriculas.getCodigomat());
-//
-//        }
-                    HSSFCell cellObss = row.createCell((short) (materiaProfesor.size()*sistemas.size()+4));
-                    if(perdidos.contains(matriculaNo.getCodigomat())){
-                         cellObss.setCellValue("PIERDE EL AÑO");
-                    }else{
-                         cellObss.setCellValue("");
+                    HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
+                    cellApr.setCellValue("" + aprovecha);
+                    cellApr.setCellStyle(style2);
+
+                    HSSFCell cellObss = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4));
+                    if (perdidos.contains(matriculaNo.getCodigomat())) {
+                        cellObss.setCellValue("PIERDE EL AÑO");
+                    } else {
+                        cellObss.setCellValue("");
                     }
-                     sheet.setColumnWidth((short) (materiaProfesor.size()*sistemas.size()+4),(short) 5000);
-                     cellObss.setCellStyle(style2);
-                     
+                    sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 4), (short) 5000);
+                    cellObss.setCellStyle(style2);
+
 
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
@@ -8410,7 +8404,9 @@ public class reportesClase {
                     if (!matriculaNo.toString().equals(matricula)) {
                         cont++;
                         x++;
-                        columna=0;
+                        columna = 0;
+//                        if(x!=9)
+                       
                     }
                 }
 
@@ -8419,29 +8415,26 @@ public class reportesClase {
         }
 
 
-            try {
+        try {
 //            response.setContentType("application/vnd.ms-excel");
 //            ServletOutputStream outputStream = response.getOutputStream();
 //            wb.write(outputStream);
 //            outputStream.flush();
 //            outputStream.close();
-                try {
-//                    File outFile = File.createTempFile("cuadro_basica", ".xls");
-                    FileOutputStream elFichero = new FileOutputStream("f://EXCEL.xls");
-                    wb.write(elFichero);
-                    elFichero.close();
-                    
-                    //Filedownload.save(outFile, "application/vnd.ms-excel");
+            try {
+                    File outFile = File.createTempFile("cuadro_basica", ".xls");
+                FileOutputStream elFichero = new FileOutputStream(outFile);
+                wb.write(elFichero);
+                elFichero.close();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Filedownload.save(outFile, "application/vnd.ms-excel");
 
-            } catch (Exception ex) {
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
+        } catch (Exception ex) {
         }
 
-
-    
+    }
 }
