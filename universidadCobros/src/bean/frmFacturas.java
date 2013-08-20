@@ -243,6 +243,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         jButton4 = new javax.swing.JButton();
         total9 = new javax.swing.JLabel();
         numeroMatricula = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        estudianteActual = new javax.swing.JLabel();
 
         frmSeleccionCarreras.setTitle("Seleccione la CARRERA a Matricular o Inscribir");
         frmSeleccionCarreras.setModal(true);
@@ -572,7 +574,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         variasCarreras.getColumnModel().getColumn(3).setPreferredWidth(10);
 
         getContentPane().add(jScrollPane4);
-        jScrollPane4.setBounds(22, 142, 700, 80);
+        jScrollPane4.setBounds(20, 170, 700, 80);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         jLabel17.setText("Digite un apellido");
@@ -632,7 +634,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         tFactura.getColumnModel().getColumn(7).setPreferredWidth(0);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(20, 240, 700, 120);
+        jScrollPane1.setBounds(20, 250, 700, 110);
 
         telefono.setText(".");
         getContentPane().add(telefono);
@@ -1175,6 +1177,14 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         getContentPane().add(numeroMatricula);
         numeroMatricula.setBounds(660, 120, 60, 15);
 
+        jLabel2.setText("ESTUDIANTE: ");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(20, 150, 100, 14);
+
+        estudianteActual.setText("estudiante-actual");
+        getContentPane().add(estudianteActual);
+        estudianteActual.setBounds(110, 150, 540, 14);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1248,6 +1258,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             parametros.put("direccion", obj.getDireccion());
             parametros.put("telefono", obj.getTelefono());
             try {
+                parametros.put("estudiante", obj.getIdMatriculas().getIdEstudiantes().getApellidoPaterno()+" "+obj.getIdMatriculas().getIdEstudiantes().getApellidoMaterno()+" "+obj.getIdMatriculas().getIdEstudiantes().getNombre());    
+            } catch (Exception e) {
+            }
+            
+            try {
                 parametros.put("matricula", obj.getIdMatriculas().getIdEstudiantes().getPregrado()+"-"+obj.getIdMatriculas().getIdEstudiantes().getPosgrado());    
             } catch (Exception e) {
             }
@@ -1271,7 +1286,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             int i = 1;
             for (Iterator<Cxcobrar> it = formasPago.iterator(); it.hasNext();) {
                 Cxcobrar cxcobrar = it.next();
-                parametros.put("forma"+i, cxcobrar.getTipopago() + "");
+                String banco="";
+                try {
+                     banco = cxcobrar.getIdBancos().getNombre();
+                } catch (Exception e) {
+                    
+                }
+                parametros.put("forma"+i, cxcobrar.getTipopago() + " "+banco );
                 parametros.put("referencia"+i, cxcobrar.getReferencia() + " ");
                 parametros.put("valor"+i, cxcobrar.getTotal());
                 i++;
@@ -1569,6 +1590,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 cx.setIdCxcobrar(adm.getNuevaClave("Cxcobrar", "idCxcobrar"));
                 cx.setTipopago(formasdePago.getValueAt(i, 0).toString());
                 cx.setTotal(((BigDecimal) formasdePago.getValueAt(i, 1)));
+                if(bancoA.getSelectedIndex()>0){
+                    cx.setIdBancos(new Bancos(((general)bancoA.getSelectedItem()).getCodigo()));
+                }
                 cx.setDebe(BigDecimal.ZERO);
                 cx.setHaber(((BigDecimal) formasdePago.getValueAt(i, 1)));
                 cx.setFecha(fecha);
@@ -2711,6 +2735,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         this.panelencontrados1.setVisible(false);
         EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
         //CARGO DATOS BÁSICOS A PANTALLA
+        estudianteActual.setText(EstudianteSeleccionado.getDescripcion());
         cargarDatos(EstudianteSeleccionado);
         String q = "SELECT COUNT(*),ID_PERIODOS FROM matriculas WHERE ESTADO_MAT = 'M' "
                 + "AND id_estudiantes = '" + EstudianteSeleccionado.getCodigoString() + "' "
@@ -3574,6 +3599,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JButton editarDatos;
     private javax.swing.JList encontrados1;
     private javax.swing.ButtonGroup estadoMatricula;
+    private javax.swing.JLabel estudianteActual;
     private javax.swing.JFormattedTextField factura;
     private javax.swing.JLabel faltan;
     private com.toedter.calendar.JDateChooser fechaA;
@@ -3597,6 +3623,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
