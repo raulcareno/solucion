@@ -8043,28 +8043,49 @@ public class reportesClase {
         HSSFWorkbook wb = new HSSFWorkbook();
         HSSFSheet sheet = wb.createSheet("cuadro");
         HSSFPrintSetup ps = sheet.getPrintSetup();
+        sheet.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE); 
+        sheet.getPrintSetup().setLandscape(true); 
         sheet.setAutobreaks(true);
         ps.setFitHeight((short) 1);
         ps.setFitWidth((short) 1);
-        HSSFCellStyle style = wb.createCellStyle();
-        HSSFCellStyle style2 = wb.createCellStyle();
+        HSSFCellStyle stiloCabeceras = wb.createCellStyle();
+        HSSFCellStyle stiloContenido = wb.createCellStyle();
+        HSSFCellStyle stiloTitulo = wb.createCellStyle();
+        HSSFCellStyle stiloSubTitulo = wb.createCellStyle();
+        
+         sheet.setFitToPage(true); 
+        
         //style.setFillForegroundColor(HSSFColor.LIME.index);
         //style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        style.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
-        style.setVerticalAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
-        style.setBorderRight((short) 1);
-        style.setBorderBottom((short) 1);
-        style.setBorderLeft((short) 1);
-        style.setBorderTop((short) 1);
+        stiloCabeceras.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
+        stiloCabeceras.setVerticalAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
+        stiloCabeceras.setBorderRight((short) 1);
+        stiloCabeceras.setBorderBottom((short) 1);
+        stiloCabeceras.setBorderLeft((short) 1);
+        stiloCabeceras.setBorderTop((short) 1);
+         
 
-        style2.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
-        style2.setVerticalAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
-        style2.setBorderRight((short) 1);
-        style2.setBorderBottom((short) 1);
-        style2.setBorderLeft((short) 1);
-        style2.setBorderTop((short) 1);
+        stiloContenido.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
+        stiloContenido.setVerticalAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
+        stiloContenido.setBorderRight((short) 1);
+        stiloContenido.setBorderBottom((short) 1);
+        stiloContenido.setBorderLeft((short) 1);
+        stiloContenido.setBorderTop((short) 1);
 
-
+        HSSFFont fuenteTitulo = wb.createFont();
+        fuenteTitulo.setFontHeightInPoints((short) 15);
+        fuenteTitulo.setFontName("Arial");
+        fuenteTitulo.setColor(HSSFFont.COLOR_NORMAL);
+        fuenteTitulo.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        fuenteTitulo.setItalic(false);
+        
+        HSSFFont fuenteSubTitulo = wb.createFont();
+        fuenteSubTitulo.setFontHeightInPoints((short) 11);
+        fuenteSubTitulo.setFontName("Arial");
+        fuenteSubTitulo.setColor(HSSFFont.COLOR_NORMAL);
+        fuenteSubTitulo.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        fuenteSubTitulo.setItalic(false);
+        
         HSSFFont defaultFont = wb.createFont();
         defaultFont.setFontHeightInPoints((short) 7);
         defaultFont.setFontName("Arial");
@@ -8079,50 +8100,66 @@ public class reportesClase {
         defaultFont2.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
         defaultFont2.setItalic(false);
 
-        style.setFont(defaultFont);
-        style2.setFont(defaultFont2);
-
-
-
-
-
+        stiloCabeceras.setFont(defaultFont);
+        stiloContenido.setFont(defaultFont2);
+        stiloTitulo.setFont(fuenteTitulo); 
 
         HSSFRow row = sheet.createRow((short) 0);//fila
-
-        sheet.autoSizeColumn((short) 1);
-        row.createCell((short) 1).setCellValue("" + periodo.getInstitucion().getDenominacion());//columna
+        
+        HSSFCell cellInst = row.createCell((short) 1);
+        cellInst.setCellValue("" + periodo.getInstitucion().getDenominacion()+" " + periodo.getInstitucion().getNombre());
+        cellInst.setCellStyle(stiloTitulo);
+        
+        HSSFCell cellCuadroCal = row.createCell((short) 18);
+        cellCuadroCal.setCellValue("CUADRO FINAL DE CALIFICACIONES");
+        cellCuadroCal.setCellStyle(stiloTitulo);
+ 
 
         row = sheet.createRow((short) 1);//fila
-
-        sheet.autoSizeColumn((short) 1);
-        row.createCell((short) 1).setCellValue("" + periodo.getInstitucion().getNombre());//columna
-
+        row.setHeight((short)100);
+        row.setRowStyle(stiloTitulo);
         row = sheet.createRow((short) 2);//fila
-
-        sheet.autoSizeColumn((short) 1);
-        row.createCell((short) 1).setCellValue("" + "AQUI UN NOMBRE ");//columna
-
+        row.setHeight((short)100);
+        row.setRowStyle(stiloTitulo);
         row = sheet.createRow((short) 3);//fila
-
-        sheet.autoSizeColumn((short) 1);
-        row.createCell((short) 1).setCellValue("" + periodo.getDescripcion());//columna
-
+        row.setHeight((short)100);
+        row.setRowStyle(stiloTitulo);
+ 
+        row = sheet.createRow((short) 6);//fila
+        row.setHeight((short)100);
+        row.setRowStyle(stiloTitulo);
+        
+        row = sheet.createRow((short) 7);//fila
+        row.setHeight((short)100);
+        row.setRowStyle(stiloTitulo);
+        
+ 
         row = sheet.createRow((short) 4);//fila
 
-        sheet.autoSizeColumn((short) 1);
-        row.createCell((short) 1).setCellValue("NIVEL: " + curso);//columna
-
+        stiloSubTitulo.setFont(fuenteSubTitulo); 
+        HSSFCell cellCurso = row.createCell((short) 1);
+        cellCurso.setCellValue("" + curso);
+        cellCurso.setCellStyle(stiloSubTitulo);
+        
+        HSSFCell cellAnio = row.createCell((short) 18);
+        cellAnio.setCellValue("AÑO LECTIVO: "+periodo.getDescripcion());
+        cellAnio.setCellStyle(stiloSubTitulo);
+        
+        
+        
         row = sheet.createRow((short) 5);//fila
-
-        sheet.autoSizeColumn((short) 1);
-        row.createCell((short) 1).setCellValue("" + sistema.getTrimestre().getDescripcion());//columna
+        
+        HSSFCell cellJornada = row.createCell((short) 18);
+        cellJornada.setCellValue("JORNADA: "+periodo.getSeccion().getDescripcion());
+        cellJornada.setCellStyle(stiloSubTitulo);
+        
+        
+ 
         List<MateriaProfesor> materiaProfesor = adm.query("Select o from MateriaProfesor as o "
                 + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
                 + " and o.seimprime = true and o.ministerio = true "
                 + " order by o.orden");
-        List<MateriaProfesor> materiaProfesorOpcionales = adm.query("Select o from MateriaProfesor as o "
-                + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
-                + " and o.ministerio = false and o.seimprime = true order by o.orden");
+  
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notaFinal.get(0).getSistema(), new Matriculas(-1));
         String codigosPerdidos = "";
         ArrayList perdidos = new ArrayList();
@@ -8148,18 +8185,18 @@ public class reportesClase {
 
         HSSFCell cellOrd = row.createCell((short) 0);
         cellOrd.setCellValue("Ord.");
-        cellOrd.setCellStyle(style);
+        cellOrd.setCellStyle(stiloCabeceras);
         sheet.autoSizeColumn((short) 0);
 
         // row = sheet.createRow((short) 7);//fila
-        sheet.autoSizeColumn((short) 1);
+  //      sheet.autoSizeColumn((short) 1);
 
         sheet.addMergedRegion(new Region(7, (short) 0, 8, (short) 0));
         sheet.addMergedRegion(new Region(7, (short) 1, 8, (short) 1));
 
         HSSFCell cellApe = row.createCell((short) 1, 1);
         cellApe.setCellValue("APELLIDOS Y NOMBRES");
-        cellApe.setCellStyle(style);
+        cellApe.setCellStyle(stiloCabeceras);
         sheet.autoSizeColumn((short) 1);
 
         int materiasCabecera = 2;
@@ -8169,12 +8206,12 @@ public class reportesClase {
             // row = sheet.createRow((short) 7);
             HSSFCell cell = row.createCell((short) materiasCabecera);
             cell.setCellValue("" + acaMateriaProfesor.getMateria().getDescripcion());
-            cell.setCellStyle(style);
+            cell.setCellStyle(stiloCabeceras);
             //anado celdas segun el tamaño de sub sistemas
             for (int sis = 0; sis < sistemas.size() - 1; sis++) {
                 HSSFCell cellVacio = row.createCell((short) (materiasCabecera + sis + 1));
                 cellVacio.setCellValue("");
-                cellVacio.setCellStyle(style);
+                cellVacio.setCellStyle(stiloCabeceras);
             }
             sheet.addMergedRegion(new Region(7, (short) materiasCabecera, 7, (short) (materiasCabecera + sistemas.size() - 1)));
             materiasCabecera++;
@@ -8188,7 +8225,7 @@ public class reportesClase {
         sheet.autoSizeColumn((short) materiasCabecera);
         HSSFCell cellComp = row.createCell((short) materiasCabecera);
         cellComp.setCellValue("COMPORTAMIENTO");
-        cellComp.setCellStyle(style);
+        cellComp.setCellStyle(stiloCabeceras);
         materiasCabecera++;
 //
 //        for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesorOpcionales.iterator(); ImapTitulos.hasNext();) {
@@ -8203,22 +8240,22 @@ public class reportesClase {
         sheet.autoSizeColumn((short) materiasCabecera);
         HSSFCell celdaDisciplina = row.createCell((short) materiasCabecera);
         celdaDisciplina.setCellValue("PROM.");
-        celdaDisciplina.setCellStyle(style);
+        celdaDisciplina.setCellStyle(stiloCabeceras);
         // row = sheet.createRow((short) 7);
         materiasCabecera++;
         sheet.autoSizeColumn((short) materiasCabecera);
 
         HSSFCell cellObs = row.createCell((short) materiasCabecera);
         cellObs.setCellValue("OBSERVACION");
-        cellObs.setCellStyle(style);
+        cellObs.setCellStyle(stiloCabeceras);
 
         row = sheet.createRow((short) 8);//fila
         HSSFCell cellOrd2 = row.createCell((short) 0);
         cellOrd2.setCellValue("");//
-        cellOrd2.setCellStyle(style);
+        cellOrd2.setCellStyle(stiloCabeceras);
         HSSFCell cellOrd3 = row.createCell((short) 1);
         cellOrd3.setCellValue("");//
-        cellOrd3.setCellStyle(style);
+        cellOrd3.setCellStyle(stiloCabeceras);
 
         materiasCabecera = 2;
         //PONGO LOS SISTEMAS DE CALIFICAICONES PG, PF, SUM, GRACIA, ETC.
@@ -8229,7 +8266,7 @@ public class reportesClase {
                 // row = sheet.createRow((short) 8);
                 HSSFCell cell = row.createCell((short) materiasCabecera);
                 cell.setCellValue("" + sistemacalificacion.getAbreviatura());
-                cell.setCellStyle(style);
+                cell.setCellStyle(stiloCabeceras);
                 sheet.autoSizeColumn((short) materiasCabecera);
                 materiasCabecera++;
             }
@@ -8340,7 +8377,7 @@ public class reportesClase {
                         }
                     }
 //                    System.out.println("VALORCELDA:"+cellNota.getStringCellValue()+"");
-                    cellNota.setCellStyle(style2);
+                    cellNota.setCellStyle(stiloContenido);
                     sheet.setColumnWidth((short) (columna + 2), (short) 1250);
                     ksis++;
                     columna++;
@@ -8355,11 +8392,11 @@ public class reportesClase {
 
                     HSSFCell cellOrden = row.createCell((short) 0);
                     cellOrden.setCellValue("" + (cont));
-                    cellOrden.setCellStyle(style2);
+                    cellOrden.setCellStyle(stiloContenido);
 
                     HSSFCell cell = row.createCell((short) 1);
                     cell.setCellValue("" + matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
-                    cell.setCellStyle(style2);
+                    cell.setCellStyle(stiloContenido);
 
 
 
@@ -8371,7 +8408,7 @@ public class reportesClase {
                     }
                     HSSFCell cellDisc = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 2));
                     cellDisc.setCellValue("" + equivalencia(disciplina, equivalencias2));
-                    cellDisc.setCellStyle(style2);
+                    cellDisc.setCellStyle(stiloContenido);
 
                     valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas "
                             + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
@@ -8382,7 +8419,7 @@ public class reportesClase {
                     }
                     HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
                     cellApr.setCellValue("" + aprovecha);
-                    cellApr.setCellStyle(style2);
+                    cellApr.setCellStyle(stiloContenido);
 
                     HSSFCell cellObss = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4));
                     if (perdidos.contains(matriculaNo.getCodigomat())) {
@@ -8391,7 +8428,7 @@ public class reportesClase {
                         cellObss.setCellValue("");
                     }
                     sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 4), (short) 5000);
-                    cellObss.setCellStyle(style2);
+                    cellObss.setCellStyle(stiloContenido);
 
 
                 } else if (j == 2) {
@@ -8414,7 +8451,46 @@ public class reportesClase {
             }
         }
 
+        sheet.setColumnWidth((short) (1), (short) 10000);
+ 
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+                String firma1 = regresaVariableParametros("FIR1", parametrosGlobales);
+                String cargo1 = regresaVariableParametros("CAR1", parametrosGlobales);
+//                String firma2 = regresaVariableParametros("FIR2", parametrosGlobales);
+//                String cargo2 = regresaVariableParametros("CAR2", parametrosGlobales);
+                String firma3 = regresaVariableParametros("FIR3", parametrosGlobales);
+                String cargo3 = regresaVariableParametros("CAR3", parametrosGlobales);
+        
+ 
+                try {
+                firma1 = firma1.replace("[RECTOR]",periodo.getInstitucion().getRector())
+                        .replace("[INSPECTOR]",curso.getInspector())
+                        .replace("[TUTOR]",curso.getTutor())
+                        .replace("[SECRETARIA]",periodo.getInstitucion().getSecretaria());
+                
+                firma3 = firma3.replace("[RECTOR]",periodo.getInstitucion().getRector())
+                        .replace("[INSPECTOR]",curso.getInspector())
+                        .replace("[TUTOR]",curso.getTutor())
+                        .replace("[SECRETARIA]",periodo.getInstitucion().getSecretaria());
+                      
 
+            } catch (Exception e) {
+                System.out.println("FALTA PARAMETROS DE FIRMAS: DE LIBRETA" + e);
+            }
+                
+        row = sheet.createRow((short) (x + 7));
+        row.createCell((short) 1).setCellValue(""+firma1);//;
+        row.createCell((short) 14).setCellValue(""+firma3);//;
+        
+        row = sheet.createRow((short) (x + 8));
+        row.createCell((short) 1).setCellValue(""+cargo1);//;
+        row.createCell((short) 14).setCellValue(""+cargo3);//;
+         
+        
+        
+        
+        
         try {
 //            response.setContentType("application/vnd.ms-excel");
 //            ServletOutputStream outputStream = response.getOutputStream();
