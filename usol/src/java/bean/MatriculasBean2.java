@@ -331,7 +331,12 @@ public class MatriculasBean2 {
         
          List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
                         + " where o.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "'"
-                        + " and o.pagado  = true or o.convalidado = true ");
+                        + " and (o.pagado  = true or o.convalidado = true) ");
+         for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
+            MateriasMatricula materiasMatricula1 = it.next();
+             System.out.println(""+materiasMatricula1.getIdMaterias().getIdMaterias()+" "+materiasMatricula1.getIdMaterias().getNombre());
+            
+        }
          
          
         //GUARDO LAS MATERIAS DE LA MATRICULA
@@ -350,8 +355,9 @@ public class MatriculasBean2 {
                             noEstaPagada++;
                         }
             }
-            if(noEstaPagada ==0)
+            if(noEstaPagada ==0) {
                 adm.guardar(matMat);
+            }
 
         }
  
@@ -696,11 +702,34 @@ public class MatriculasBean2 {
             
             
 
-            origen = adm.query("Select m from CarrerasMaterias as m  where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' order by m.idNiveles.secuencia");
+            origen = adm.query("Select m from CarrerasMaterias as m "
+                    + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' "
+                    + " and m.idMaterias.idMaterias not in (Select o.idMaterias.idMaterias from Notas as o where o.estado = 'A' "
+                    + " and o.idMatriculas.idEstudiantes.idEstudiantes = '"+mat.getIdEstudiantes().getIdEstudiantes()+"' "
+                    + " and o.idMatriculas.idCarreras.idCarreras = '"+mat.getIdCarreras().getIdCarreras()+"') " 
+                    + " order by m.idNiveles.secuencia");
             for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
                 CarrerasMaterias destItem = it.next();
                 origen.remove(destItem);
-            }
+            }   
+            //BUSCAR MATERIAS APROBADAS Y QUITARLAS TAMBIÉNOON09N9KGFD444-,  J,M
+//            List<Materias> lista = adm.query("");
+//            for (Iterator<Materias> itMat = lista.iterator(); itMat.hasNext();) {
+//                Materias materias1 = itMat.next();
+//                System.out.println(""+materias1);
+//                for (Iterator<CarrerasMaterias> it = origen.iterator(); it.hasNext();) {
+//                    CarrerasMaterias oritem = it.next();
+//                    if(oritem.getIdMaterias().getIdMaterias().equals(materias1.getIdMaterias())){
+//                        try{
+//                            origen.remove(oritem);
+//                        }catch(Exception er){
+//                            System.out.println(""+er);
+//                        }
+//                    }
+//                     
+//                }       
+//                
+//            }
             sumarCreditos();
         } else {
             destino = new ArrayList<CarrerasMaterias>();
