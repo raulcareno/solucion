@@ -558,7 +558,7 @@ void recalcular(){
                     datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
             }else if(tipo.equals("RECESP")){
-                    datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),6);
+                    datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),14);
                     report.setSrc(directorioReportes+"recordPrimeroQuinto.jasper");
             }else if(tipo.equals("NMAT")){
                     
@@ -1166,9 +1166,7 @@ void campos(String valor){
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem id="NMAT2"  label="Cuadro de Calificaciones Quimetral" value="NMAT2" />
                                     <listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" />
-                                    
                                     <listitem id="CCALB"  label="Cuadro Final de Calificaciones-Basica" value="CCALB" />
-                                    <listitem id="CCALBA"  label="Cuadro Final de Calificaciones-Bachillerato" value="CCALBA" />
                                     
                                     <listitem  id="CNF5" label="Cuadro Juntas x Aportes" value="CNF5" />
                                     <listitem  id="CNF" label="Cuadro Juntas o Final" value="CNF" />
