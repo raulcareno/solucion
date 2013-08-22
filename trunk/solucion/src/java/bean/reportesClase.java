@@ -753,6 +753,8 @@ public class reportesClase {
                 + "order by o.sistema.orden ");
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalencias2 = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
         String query = "";
         for (Notanotas notass : notas) {
@@ -835,8 +837,12 @@ public class reportesClase {
                     nota.setContador(cont);
                     matriculaAct = matriculaNo.getCodigomat() + "";
                     if (maprofesor.getCuantitativa() == false) {
-
-                        nota.setNota(equivalencia(dos, equivalencias));
+                        if(materiaNo.getCodigo().equals(new Integer(0))){
+                            nota.setNota(equivalencia(dos, equivalencias2));    
+                        }else{
+                            nota.setNota(equivalencia(dos, equivalencias));    
+                        }
+                        
                     } else {
                         nota.setNota(val.toString());
                         if (val == 0.0) {
