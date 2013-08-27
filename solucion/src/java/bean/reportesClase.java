@@ -1750,7 +1750,60 @@ public class reportesClase {
                             }
                         }
 
-                    }
+                    }else if (nota.getSistema().getPromediofinal().equals("RE")) {
+                        if (validaConPromedioGeneral && pgeneral < valorPromedioGeneral) {
+                            try {
+                           
+                                    Double valor = new Double(equivalenciaSupletorio(pgeneral, equivalenciasSuple) + "");
+                                    if (val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde REMEDIAL(2.0):" + matricula + " mat:" + materia + " not:" + val);
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        materiasReprobadas.add(matR);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        if (materiasReprobadas.contains(matR)) {
+                                            //materiasReprobadas.remove(matR);
+                                            System.out.println("ENVIO A QUITAR REM: " + materia);
+                                            quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
+                                            System.out.println("he quitado la materia como reprobada PASA SUPLE: " + materia.getCodigo() + " " + materia + " nota" + val);
+                                            obs1--;
+                                        }
+                                    }
+                              
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (sumatoria < sumaAprueba && sumatoria > 0) {
+                                try {
+                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
+                                    if (val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde SUPLE(2.1):" + matricula + " mat:" + materia + " not:" + val);
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        materiasReprobadas.add(matR);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                    }
+                                } catch (Exception e) {
+                                }
+
+                            } else {
+                                obs = "";
+                            }
+                        }
+
+                    }//fin remedial
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
