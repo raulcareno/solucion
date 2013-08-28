@@ -21,6 +21,7 @@ import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Institucion;
 import jcinform.persistencia.Periodos;
 import jcinform.procesos.Administrador;
+import jcinform.procesos.queryReportes;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -311,108 +312,56 @@ public class frmReportes extends javax.swing.JInternalFrame {
         }
 
         if (cmbTipoReporte.getSelectedItem().toString().contains("(101)")) {//# de MATRICULADOS POR CARRERA 
-            query = "SELECT COUNT(*) AS TOTAL, carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE,"
-                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,  jornada.`NOMBRE` AS jornada_NOMBRE "
-                    + " FROM `carreras` carreras , `matriculas` matriculas, `escuela` escuela, `modalidad` modalidad, `jornada` jornada  "
-                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS`  "
-                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
-                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
-                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
-                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
-                    + " GROUP BY carreras.`ID_CARRERAS` "; 
+             queryReportes rp = new queryReportes();
+            query = rp.matriculadosPorCarreras(periodoActual.getIdPeriodos()+"");
+            
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculados.jasper";
             titulo = "NÚMERO DE MATRICULADOS POR CARRERA";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
-        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(102)")) {//# de MATRICULADOS POR CARRERA 
-            query = "SELECT COUNT(*) AS TOTAL, carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE,"
-                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,  jornada.`NOMBRE` AS jornada_NOMBRE "
-                    + " FROM `carreras` carreras , `matriculas` matriculas, `escuela` escuela, `modalidad` modalidad, `jornada` jornada  "
-                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS`  "
-                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
-                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
-                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
-                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
-                    + " AND matriculas.ID_MATRICULAS NOT IN (SELECT ID_MATRICULAS FROM MATERIAS_MATRICULA) "
-                    + " GROUP BY carreras.`ID_CARRERAS` "; 
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(102)")) {//# de MATRICULADOS POR CARRERA sin creditos
+            queryReportes rp = new queryReportes();
+            query = rp.matriculadosPorCarreraSinCreditos(periodoActual.getIdPeriodos()+"");
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculados.jasper";
             titulo = "NÚMERO DE MATRICULADOS QUE NO HAN TOMADO CRÉDITOS";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
-        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(103)")) {//# de MATRICULADOS POR CARRERA 
-            query = "SELECT CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno, ' ',estudiantes.nombre) ESTUDIANTE, carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE,"
-                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,  jornada.`NOMBRE` AS jornada_NOMBRE "
-                    + " FROM `carreras` carreras , `matriculas` matriculas,`estudiantes` estudiantes, `escuela` escuela, `modalidad` modalidad, `jornada` jornada  "
-                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS`  "
-                    + "    AND matriculas.id_estudiantes = estudiantes.id_estudiantes "
-                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
-                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
-                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
-                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
-                    + " AND matriculas.ID_MATRICULAS NOT IN (SELECT ID_MATRICULAS FROM MATERIAS_MATRICULA) "
-                    + " ORDER BY carreras.`ID_CARRERAS` "; 
+        }else if (cmbTipoReporte.getSelectedItem().toString().contains("(103)")) {//# de MATRICULADOS POR CARRERA sn creditos con nombres
+            queryReportes rp = new queryReportes();
+            query = rp.matriculadosPorCarreraSinCreditosconNombres(periodoActual.getIdPeriodos()+"");
+            
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculadosDetallado.jasper";
             titulo = "NÚMERO DE MATRICULADOS QUE NO HAN TOMADO CRÉDITOS DETALLADO";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(104)")) {//# de CREDITOS IMPAGOS 
-            query = "SELECT matriculas.id_matriculas, CONCAT(estudiantes.apellido_paterno,' ',estudiantes.apellido_materno, ' ',estudiantes.nombre) ESTUDIANTE, "
-                    + " carreras.`ID_CARRERAS` AS carreras_ID_CARRERAS, carreras.`NOMBRE` AS carreras_NOMBRE, "
-                    + " escuela.`NOMBRE` AS escuela_NOMBRE,  modalidad.`NOMBRE` AS modalidad_NOMBRE,    "
-                    + " jornada.`NOMBRE` AS jornada_NOMBRE FROM "
-                    + " `carreras` carreras , `matriculas` matriculas,`estudiantes` estudiantes, `escuela` escuela, `modalidad` modalidad, `jornada` jornada "
-                    + " WHERE  carreras.`ID_CARRERAS` = matriculas.`ID_CARRERAS` "
-                    + " AND matriculas.id_estudiantes = estudiantes.id_estudiantes  "
-                    + " AND carreras.`ID_ESCUELA` = escuela.`ID_ESCUELA` "
-                    + " AND carreras.`ID_MODALIDAD` = modalidad.`ID_MODALIDAD` "
-                    + " AND carreras.`ID_JORNADA` = jornada.`ID_JORNADA`  "
-                    + " AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "
-                    + " AND matriculas.ID_MATRICULAS  IN (SELECT ID_MATRICULAS FROM MATERIAS_MATRICULA)"
-                    + " AND matriculas.id_matriculas NOT IN (SELECT id_matriculas FROM `facturas` facturas, `detalles` detalles WHERE facturas.id_facturas = detalles.id_facturas  "
-                    + " AND detalles.id_rubros IN (SELECT id_rubros FROM rubros WHERE eselcredito = TRUE)) "
-                    + " ORDER BY carreras.`ID_CARRERAS`"; 
+            queryReportes rp = new queryReportes();
+            query = rp.noCreditosTomadosImpagos(periodoActual.getIdPeriodos()+"");
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoMatriculadosDetallado.jasper";
             titulo = "ESTUDIANTES CON CRÉDITOS IMPAGOS";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(105)")) {//# de Becas
-            query = "SELECT estudiantes.id_estudiantes,CONCAT(estudiantes.apellido_paterno,' ', estudiantes.apellido_materno,' ',  estudiantes.nombre) estudiante, "
-                    + "descuentos.porcentaje, descuentos.valor,  "
-                    + "descuentos.tipo, "
-                    + " facturas.id_facturas , carreras.NOMBRE carrera  FROM `carreras` carreras , `descuentos` descuentos, `facturas` facturas, `matriculas` matriculas,`estudiantes` estudiantes "
-                    + "WHERE descuentos.id_facturas = facturas.id_facturas  "
-                    + "AND matriculas.id_matriculas = facturas.id_matriculas "
-                    + "AND estudiantes.id_estudiantes = matriculas.id_estudiantes  "
-                    + "AND descuentos.tipo LIKE '%Bec%' AND carreras.ID_CARRERAS = matriculas.ID_CARRERAS  "
-                    + "AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "; 
+            queryReportes rp = new queryReportes();
+            query = rp.noDeBecas(periodoActual.getIdPeriodos()+"");
+            
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoBecas.jasper";
             titulo = "ESTUDIANTES CON BECAS";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(106)")) {//# de AYUDA
-            query = "SELECT estudiantes.id_estudiantes,CONCAT(estudiantes.apellido_paterno,' ', estudiantes.apellido_materno,' ',  estudiantes.nombre) estudiante, "
-                    + "descuentos.porcentaje, descuentos.valor,  "
-                    + "descuentos.tipo, "
-                    + " facturas.id_facturas , carreras.NOMBRE carrera  FROM `carreras` carreras , `descuentos` descuentos, `facturas` facturas, `matriculas` matriculas,`estudiantes` estudiantes "
-                    + "WHERE descuentos.id_facturas = facturas.id_facturas  "
-                    + "AND matriculas.id_matriculas = facturas.id_matriculas "
-                    + "AND estudiantes.id_estudiantes = matriculas.id_estudiantes  "
-                    + "AND descuentos.tipo LIKE '%Ayu%' AND carreras.ID_CARRERAS = matriculas.ID_CARRERAS  "
-                    + "AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "; 
+            queryReportes rp = new queryReportes();
+            query = rp.noDeAyuda(periodoActual.getIdPeriodos()+"");
+
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoBecas.jasper";
             titulo = "ESTUDIANTES CON AYUDAS FINANCIERAS";
                    parametros.put("titulo", titulo);
             verReporteConexion(dirreporte, query, titulo, parametros);
         }else if (cmbTipoReporte.getSelectedItem().toString().contains("(107)")) {//# de AYUDA Y BECA
-            query = "SELECT estudiantes.id_estudiantes,CONCAT(estudiantes.apellido_paterno,' ', estudiantes.apellido_materno,' ',  estudiantes.nombre) estudiante, "
-                    + "descuentos.porcentaje, descuentos.valor,  "
-                    + "descuentos.tipo, "
-                    + " facturas.id_facturas , carreras.NOMBRE carrera  FROM `carreras` carreras , `descuentos` descuentos, `facturas` facturas, `matriculas` matriculas,`estudiantes` estudiantes "
-                    + "WHERE descuentos.id_facturas = facturas.id_facturas  "
-                    + "AND matriculas.id_matriculas = facturas.id_matriculas "
-                    + "AND estudiantes.id_estudiantes = matriculas.id_estudiantes  "
-                    + " AND carreras.ID_CARRERAS = matriculas.ID_CARRERAS  "
-                    + "AND matriculas.id_periodos = '"+periodoActual.getIdPeriodos()+"' "; 
+            
+            queryReportes rp = new queryReportes();
+            query = rp.noDeAyudaYBeca(periodoActual.getIdPeriodos()+"");
+            
             dirreporte = ubicacionDirectorio + "reportes" + separador + "NoBecasyAyudas.jasper";
             titulo = "ESTUDIANTES CON BECAS Y AYUDAS FINANCIERAS";
                    parametros.put("titulo", titulo);
