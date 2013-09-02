@@ -100,7 +100,7 @@
                         <h:outputText value="#{matriculasBean2.object.estadoMat eq 'M' ? 'MATRICULADO':matriculasBean2.object.estadoMat eq 'I'?'INSCRITO':matriculasBean2.object.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;" />  
                         <p:spacer width="40"/>
                         <h:outputText value="No. MATRICULA: " />  
-                        <h:outputText value="#{matriculasBean2.object.idEstudiantes.pregrado} #{matriculasBean2.object.idEstudiantes.posgrado}" id="NumeroMatricula"  style="font-weight:bold;"/>                                  
+                        <h:outputText value="#{matriculasBean2.object.numero}" id="NumeroMatricula"  style="font-weight:bold;"/>                                  
 
                     </h:panelGrid>
                     <p:panelGrid id="panelMaterias" columns="2">
