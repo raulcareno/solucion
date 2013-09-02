@@ -1474,8 +1474,8 @@ public class reportesClase {
     public List<Matriculas> cuadroverificar(Cursos curso, Sistemacalificacion sistema, Matriculas matriculaActual) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
-        Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+//        Session ses = Sessions.getCurrent();
+        Periodo periodo = curso.getPeriodo();
         materiasReprobadas = new ArrayList<MateriaProfesor>();
         parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
