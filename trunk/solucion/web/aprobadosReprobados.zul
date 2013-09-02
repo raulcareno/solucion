@@ -1,0 +1,1503 @@
+
+<window >
+    <style>
+        .MyGridRowHeight tr.z-row td.z-row-inner
+        { 
+        background: white;
+        border-top: none;
+        border-left: 1px solid white;
+        border-right: 1px solid #CCC;
+        border-bottom: 1px solid #DDD;
+
+        }
+        /*.MyGridRowHeight tr.z-grid-odd td.z-row-inner, tr.z-grid-odd{
+        background: #F8F8F8;
+        } */
+        .MyGridRowHeight td.z-row-inner
+        {
+        padding: 0px;
+        //overflow: hidden;
+        }
+    </style>
+    <zscript><![CDATA[
+  import jcinform.persistencia.Global;
+  import bean.EventDAO;
+  import java.util.ArrayList;
+  import jcinform.persistencia.*;
+  import jcinform.procesos.Administrador;
+  import bean.Permisos;
+  import bsh.Interpreter;
+  import bean.reportesClase;
+
+    Administrador adm = new Administrador();
+    Session ses = Sessions.getCurrent();
+    Periodo periodo = (Periodo) ses.getAttribute("periodo");
+    Permisos permiso = new Permisos();
+    Empleados user =  (Empleados)ses.getAttribute("user");
+    
+    List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
+    static MateriaProfesor matricula = new MateriaProfesor();
+   //List cursos = adm.query("Select o from Cursos as o  where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.paralelo.descripcion, o.descripcion");
+   
+   List periodoActuales = adm.query("Select o from Periodo as o " + 
+                " where o.codigoper <> '"+periodo.getCodigoper()+"' and o.codigoper < "+periodo.getCodigoper()+"  and o.descripcion <>  '"+periodo.getDescripcion()+"' ");
+   
+   List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"' and o.curso.periodo.codigoper =  '"+ periodo.getCodigoper() +"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+   if(cursos.size()<=0){
+             cursos = adm.query("Select o from Cursos as o "
+            + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"'  order by o.secuencia,o.paralelo.descripcion, o.descripcion  ");
+            System.out.println("ENTRO VACIO");
+   }
+   List profesores = adm.query("Select o from Empleados as o  order by o.apellidos ");
+        Empleados selecp = new Empleados(-1);
+        selecp.setApellidos("[Seleccione]");
+        selecp.setNombres("");
+        profesores.add(0,selecp);
+    
+    List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' order by o.descripcion ");
+        Global selecm = new Global(-1);
+        selecm.setDescripcion("[Seleccione]");
+        materias.add(0,selecm);
+        
+      List materias2 = adm.query("Select o from Global as o where o.grupo = 'GRU' order by o.descripcion ");
+        materias2.add(0,selecm);  
+
+    Object media = null;
+ Session ses = Sessions.getCurrent();
+
+ String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+ String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
+ String equival = "public Double equivalencia(Double numero) { try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "  return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
+ String prom1 = "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17)/cont;     }"
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;                 return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15)/cont;     }"
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14){          int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;                return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;        return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;          if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;          return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11)/cont;    } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10){         int cont = 0;          if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;                return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;          if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;                 return (va1+va2+va3+va4+va5+va6+va7+va8)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;                 return (va1+va2+va3+va4+va5+va6+va7)/cont;    } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;          return (va1+va2+va3+va4+va5+va6)/cont;     }"
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;             return (va1+va2+va3+va4+va5)/cont;     } "
+            + "   Double promedio (Double va1, Double va2, Double va3, Double va4){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;    if(va4 >0) cont++;         return (va1+va2+va3+va4)/cont;     }  "
+            + "   Double promedio (Double va1, Double va2, Double va3){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         return (va1+va2+va3)/cont;     } "
+            + "   Double promedio (Double va1, Double va2){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;             return (va1+va2)/cont; } "
+            + "   Double promedio (Double va1){         int cont = 0;         if(va1 >0) cont++;           return (va1)/cont; } ";
+            
+
+//FUNCIONES
+
+void llenar(MateriaProfesor estudent){
+    codigo.value = estudent.getCodigomap();
+    seimprime.checked = estudent.getSeimprime();
+    promediada.checked = estudent.getMinisterio();
+    opcional.checked = estudent.getOpcional();
+    cuantitativa.checked = estudent.getCuantitativa();
+    ingcualitativo.checked = estudent.getIngcualitativo();
+    orden.value = estudent.getOrden();
+    formula.value = estudent.getFormula();
+    
+        if(estudent.getCurso() != null){
+                     for (int i = 0; i <= curs.getItems().size(); i++) {
+                            Cursos tr0 = ((Cursos)((Listitem)curs.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigocur();
+                            int segundo = estudent.getCurso().getCodigocur();
+                            if(primero == segundo){
+                                curs.setSelectedItem((Listitem)curs.getItems().get(i));
+                                break;
+                            }
+                   }
+        }
+    if(estudent.getMateria() != null){
+
+              for (int i = 0; i <= mates.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)mates.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = estudent.getMateria().getCodigo();
+                            if(primero == segundo){
+                                mates.setSelectedItem((Listitem)mates.getItems().get(i));
+                                break;
+                            }
+                   }
+                   
+                    for (int i = 0; i <= matesAnterior.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)matesAnterior.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = estudent.getMateria().getCodigo();
+                            if(primero == segundo){
+                                matesAnterior.setSelectedItem((Listitem)matesAnterior.getItems().get(i));
+                                break;
+                            }
+                   }
+
+        }
+        if(estudent.getGrupo() != null){
+
+              for (int i = 0; i <= matesg.getItems().size(); i++) {
+                            Global tr0 = ((Global)((Listitem)matesg.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigo();
+                            int segundo = estudent.getGrupo().getCodigo();
+                            if(primero == segundo){
+                                matesg.setSelectedItem((Listitem)matesg.getItems().get(i));
+                                break;
+                            }
+                   }
+                   
+        }
+        
+        if(estudent.getEmpleado() != null){
+                for (int i = 0; i <= profes.getItems().size(); i++) {
+                            Empleados tr0 = ((Empleados)((Listitem)profes.getItems().get(i)).getValue());
+                            int primero = tr0.getCodigoemp();
+                            int segundo = estudent.getEmpleado().getCodigoemp();
+                            if(primero == segundo){
+                                profes.setSelectedItem((Listitem)profes.getItems().get(i));
+                                break;
+                            }
+                   }
+        }
+
+        
+}
+
+
+ 
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            estudent = (MateriaProfesor)datos.selectedItem.value;
+        }
+   codigo.disabled = estado;
+    seimprime.disabled = estado;
+    promediada.disabled = estado;
+    opcional.disabled = estado;
+    cuantitativa.disabled = estado;
+    ingcualitativo.disabled = estado;
+    orden.readonly = estado;
+    mates.disabled = estado;
+    matesg.disabled = estado;
+    profes.disabled = estado;
+    formula.readonly = estado;
+
+}
+
+
+ void guardar(){
+
+
+ if(orden.value == null || profes.getSelectedIndex()==0 || mates.getSelectedIndex()== 0){
+    Messagebox.show("Ingrese o [Seleccione] los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    return;
+ }
+        matricula.setCodigomap(codigo.value);
+        matricula.setFormula(formula.value);
+        matricula.setOrden(orden.value);
+        matricula.setCurso(curs.selectedItem.value);
+        matricula.setMateria(mates.selectedItem.value);
+        matricula.setEmpleado(profes.selectedItem.value);
+        matricula.setSeimprime(seimprime.checked);
+        matricula.setMinisterio(promediada.checked);
+        matricula.setOpcional(opcional.checked); //ingresan disciplina
+        matricula.setCuantitativa(cuantitativa.checked);
+        matricula.setIngcualitativo(ingcualitativo.checked);
+        try{
+            if(matesg.selectedIndex > 0){
+                matricula.setGrupo(matesg.selectedItem.value);
+            }else{
+                matricula.setGrupo(null);
+            }
+        }catch(Exception erro){
+            System.out.println("SIN GRUPO ERROR AL GUARDAR");
+        }
+
+        if((!matricula.getCodigomap().equals(0)) ){
+                adm.actualizar(matricula);
+ 
+                  try{
+                  if((mates.selectedItem.value).getCodigo().equals((matesAnterior.selectedItem.value).getCodigo())){
+                      String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                      " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+matricula.getMateria().getCodigo()+" ";
+                     adm.ejecutaSqlNativo(quera);
+                  }else{
+            
+                    String quera = "update notas set materia = '"+ matricula.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                          " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                          " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
+                          " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
+                        adm.ejecutaSqlNativo(quera);
+                  
+                  }
+                        //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+                  }catch(Exception ae){
+                         System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+                  }
+                  
+         }else{
+            List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+((Cursos)curs.selectedItem.value).getCodigocur()+"'  and o.materia.codigo = '"+((Global)mates.selectedItem.value).getCodigo()+"' ");
+                if(existe.size()>0){
+                    Messagebox.show("MATERIA YA ASIGNADA...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                }
+             matricula.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+             adm.guardar(matricula);
+               
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Distributivo","Guardar",""+matricula.getCurso()+" "+matricula.getMateria());
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new MateriaProfesor(0));
+                buscar2(curs.selectedItem.value);
+
+
+    }
+
+ void setear(){
+               Rows filas001 = datos3.getRows();
+                List listadoMaterias = filas001.getChildren();
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                                  Empleados empSelec = profesSetear.selectedItem.value;
+                                            for (int i = 0; i <= ((Listbox)labels.get(3)).getItems().size(); i++) {
+                                                        Empleados tr0 = ((Empleados)((Listitem)((Listbox)labels.get(3)).getItems().get(i)).getValue());
+                                                        int primero = tr0.getCodigoemp();
+                                                        int segundo = empSelec.getCodigoemp();
+                                                        if(primero == segundo){
+                                                          ((Listbox)labels.get(3)).setSelectedItem((Listitem)((Listbox)labels.get(3)).getItems().get(i));
+                                                            break;
+                                                        }
+                                            }
+                   }
+    }
+     void setearP(){
+               Rows filas001 = datos3P.getRows();
+                List listadoMaterias = filas001.getChildren();
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                                  Empleados empSelec = profesSetearP.selectedItem.value;
+                                            for (int i = 0; i <= ((Listbox)labels.get(3)).getItems().size(); i++) {
+                                                        Empleados tr0 = ((Empleados)((Listitem)((Listbox)labels.get(3)).getItems().get(i)).getValue());
+                                                        int primero = tr0.getCodigoemp();
+                                                        int segundo = empSelec.getCodigoemp();
+                                                        if(primero == segundo){
+                                                          ((Listbox)labels.get(3)).setSelectedItem((Listitem)((Listbox)labels.get(3)).getItems().get(i));
+                                                            break;
+                                                        }
+                                            }
+                   }
+    }
+   Boolean verificar(String accion){
+        return permiso.verificarPermiso("MatriculaAutomatica",accion);
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+       guardar.disabled=false; llenar(new MateriaProfesor(0));estado(false,false);
+       mates.setSelectedIndex(0);
+       matesg.setSelectedIndex(0);
+        profes.setSelectedIndex(0);
+
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        matesg.setSelectedIndex(0);
+        llenar((MateriaProfesor)datos.selectedItem.value);
+        modificar.disabled = false;
+        combo.value="";
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false;
+        estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             estudent = (MateriaProfesor)datos.selectedItem.value;
+             adm.eliminarObjeto(MateriaProfesor.class, estudent.getCodigomap());
+            datos.removeItemAt(datos.getSelectedIndex());
+            permiso.auditar("Distributivo","Eliminar",""+estudent.getCurso()+" "+estudent.getMateria());
+            llenar(new MateriaProfesor(0));
+            combo.value="";
+              try{
+                 String quera = "update notas set orden = 1000, seimprime = false,  " +
+                      " promedia = false, cuantitativa = false  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + estudent.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+estudent.getMateria().getCodigo()+" ";
+                  adm.ejecutaSqlNativo(quera);
+                  System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+              }catch(Exception ae){
+                     System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+              }
+            
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+
+
+void buscar2(Cursos cur){
+mates.setSelectedIndex(0);
+matesg.setSelectedIndex(0);
+profes.setSelectedIndex(0);
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getOrden()+""));
+                      li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getMateria()+" [MA"+acceIt.getMateria().getCodigo()+"] " ));
+                      li.appendChild(new Listcell((acceIt.getCuantitativa()?"SI":"NO")+""));
+                      li.appendChild(new Listcell((acceIt.getMinisterio()?"SI":"NO")+""));
+                      li.appendChild(new Listcell((acceIt.getOpcional()?"SI":"NO")+""));
+                      li.appendChild(new Listcell((acceIt.getSeimprime()?"SI":"NO")+""));
+                      
+                      datos.appendChild(li);
+             }
+
+    }
+   public Boolean validar(Cursos elcurso,String formulaLlega){ //VERIFICO SI EL APROVEHCAMIENTO ESTA BIEN INGRESADO
+    String formula1 = formulaLlega;
+    if(formula1.equals("")){
+        return false;
+    }
+    
+     
+        Interpreter inter = new Interpreter();
+         try {
+             inter.eval(redon);
+             inter.eval(truncar);
+             inter.eval(prom1);
+             inter.eval(equival);
+                    List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' "
+                            + "and o.codigo in (Select ma.materia.codigo from  MateriaProfesor as ma "
+                            + "where ma.curso.codigocur = '" + elcurso.getCodigocur() + "' ) ");
+                            List Nmaterias = new ArrayList();
+                            String ma = "";
+                                        for (Iterator it = materias.iterator(); it.hasNext();) {
+                                            Global global0 = (Global)it.next();
+                                               if (formula1.contains("MA" + global0.getCodigo())) {
+                                                String  llena = "Double MA" + global0.getCodigo() + " = 1.0";
+                                                inter.eval(llena);
+                                            }
+                                        }
+           inter.eval(redon);
+           inter.eval(truncar);
+           inter.eval(prom1);
+           inter.eval(equival);                                        
+           
+            String formuPrevia = formula1;
+            try{
+             inter.eval(formuPrevia);
+            }catch(Exception e1){
+                    Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...! \n", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return true;
+            }
+       
+      } catch (EvalError ex) {
+      System.out.println(".........."+ex);
+          Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+          return true;
+      } 
+        return false;
+}
+   void buscar2Desde(Cursos cur){
+            List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
+        desCursos = new Listbox();
+        int a=0;
+            for (Iterator it = desCursos.getItems().iterator(); it.hasNext();) {
+                    desCursos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+      
+                      li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getMateria()+""));
+  
+                      desCursos.appendChild(li);
+             }
+
+    }
+       void buscar2Hasta(Cursos cur){
+        
+        
+        if(cur.equals(desdeCurso.selectedItem.value)){
+                alert("Seleccione otro curso, El Origen es igual al Destino");
+      
+            return;
+        }
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
+        hasCursos = new Listbox();
+        int a=0;
+            for (Iterator it = hasCursos.getItems().iterator(); it.hasNext();) {
+                    hasCursos.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getEmpleado().getApellidos()+" "+acceIt.getEmpleado().getNombres()));
+                      li.appendChild(new Listcell(acceIt.getMateria()+""));
+                    
+                      hasCursos.appendChild(li);
+             }
+
+    }
+   
+void materias123(){
+Cursos cur = curs.selectedItem.value;
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' order by o.orden");
+        materiaslista = new Listbox();
+        int a=0;
+            for (Iterator it = materiaslista.getItems().iterator(); it.hasNext();) {
+                    materiaslista.getItems().remove(a);
+            }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt.getMateria());
+                      li.appendChild(new Listcell("[MA"+acceIt.getMateria().getCodigo()+"] "+acceIt.getMateria().getDescripcion()));
+                      materiaslista.appendChild(li);
+             }
+             materiaslista.visible = true; 
+             cerrar.visible=true;
+             verificar.visible = true;
+
+    }
+    void anadir(Global glob){
+    //alert(glob);
+    formula.value = formula.value +"MA"+ glob.getCodigo()+" + ";
+    
+    }
+    
+    public void anadirCursos(){
+        if(hastaCurso.selectedItem.value == -1 || desdeCurso.selectedItem.value == -1){
+            alert("Seleccione el Origen y Destino");
+            return;
+        }
+        Set  selec =  desCursos.getSelectedItems();
+        for (Iterator it = selec.iterator(); it.hasNext();) {
+                        Listitem object = (Listitem)it.next();
+                             List children = object.children;
+                              MateriaProfesor cor =   object.getValue();
+                              cor.setCurso(hastaCurso.selectedItem.value);
+                                     List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cor.getCurso().getCodigocur()+"'  "  +
+                                 " and o.materia.codigo = '"+cor.getMateria().getCodigo()+"' ");
+                                    if(existe.size()>0){
+                                        Messagebox.show("UNA O VARIAS MATERIAS YA ESTÁN ASIGNADAS...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                        return;
+                                    }
+                                 cor.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                 adm.guardar(cor);
+        }
+       
+        buscar2Hasta(hastaCurso.selectedItem.value);
+       permiso.auditar("Copiar Distributivo","Guardar","D: "+desdeCurso.selectedItem.value+" H: "+hastaCurso.selectedItem.value);
+}
+
+void vaciarList(){
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                   datos.getItems().remove(a);
+            }
+            for (Iterator it = desCursos.getItems().iterator(); it.hasNext();) {
+                   desCursos.getItems().remove(a);
+            }
+            for (Iterator it = hasCursos.getItems().iterator(); it.hasNext();) {
+                   hasCursos.getItems().remove(a);
+            }
+            
+}
+//PARA POR PROFESORES ***********************************************************************************************************************************************************************************************
+Listbox llenarComboMaterias(Global mat){
+        Listbox lista = new Listbox();
+        
+            for (Iterator it = materias.iterator(); it.hasNext();) {
+                       Global acceIt = (Global) it.next();
+                        Listitem li = new Listitem();
+                          li.setValue(acceIt);
+                          Listcell celda = new Listcell(acceIt.getDescripcion()+" [MA"+acceIt.getCodigo()+"]" );
+                      
+                          li.appendChild(celda);
+                            if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+            lista.setMold("select");
+             lista.setStyle("font-size:11px");
+        return lista;
+}
+Listbox llenarComboMateriasG(Global mat){
+        Listbox lista = new Listbox();
+        
+            for (Iterator it = materias2.iterator(); it.hasNext();) {
+                       Global acceIt = (Global) it.next();
+                        Listitem li = new Listitem();
+                          li.setValue(acceIt);
+                          Listcell celda = new Listcell(acceIt.getDescripcion()+"" );
+                      
+                          li.appendChild(celda);
+                          if(mat !=null){
+                            if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                li.setSelected(true);
+                                
+                           }
+                          lista.appendChild(li);
+
+            }
+            lista.setMold("select");
+             lista.setStyle("font-size:11px");
+        return lista;
+}
+
+Listbox llenarComboCursos(Cursos cur){
+        Listbox lista = new Listbox();
+            Cursos curse = new Cursos(-1);
+            Listitem li = new Listitem();
+            li.setValue(curse);
+            li.appendChild(new Listcell("[Seleccione]"));
+            if(cur.getCodigocur().equals(curse.getCodigocur())){
+                li.setSelected(true);
+             }
+            lista.appendChild(li);
+
+            for (Iterator it = cursos.iterator(); it.hasNext();) {
+                       Cursos acceIt = (Cursos) it.next();
+                         li = new Listitem();
+                         li.setValue(acceIt);
+                          li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getEspecialidad()+" "+acceIt.getParalelo()));
+                          if(cur.getCodigocur().equals(acceIt.getCodigocur()))
+                                li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+            
+            lista.setMold("select");
+            lista.setStyle("font-size:10px");
+        return lista;
+}
+
+llenarGrid(Empleados emp){
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.empleado.codigoemp = '"+emp.getCodigoemp()+"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
+        " order by o.orden");
+        datos2 = new Grid();
+                    filas.getChildren().clear();
+            if(empleadosEncontrados.size()>0){
+                 
+                       for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                              MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                                    Row row = new Row();
+                                    row.appendChild(new Label(""+acceIt.getCodigomap()));
+                                   row.appendChild(llenarComboMaterias(acceIt.getMateria()));
+                                    Listbox listaC = llenarComboCursos(acceIt.getCurso());
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(acceIt.getCuantitativa());
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(acceIt.getMinisterio());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getOpcional());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getSeimprime());
+                                        row.appendChild(ch);
+                                        
+                                      ch = new Checkbox();
+                                        ch.setChecked(acceIt.getIngcualitativo());
+                                        row.appendChild(ch);
+                                        
+                                        Intbox tx = new Intbox(acceIt.getOrden());
+                                        row.appendChild(tx);
+                                        Textbox formu = new Textbox(acceIt.getFormula());
+                                        row.appendChild(formu);
+
+
+                                          Toolbarbutton aButton = new Toolbarbutton("ELIMINAR");
+                                            aButton.setId("MAT"+acceIt.getCodigomap());
+                                            //aButton.setImage("/images/eliminar.gif");
+                                            aButton.setStyle("font-size:9px");
+                                            aButton.addEventListener("onClick", new EventListener() {
+                                                public void onEvent(Event event) throws Exception {
+                                                            int valor = Messagebox.show("Seguro que deséa eliminar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                            if(valor == Messagebox.YES){
+                                                                if(verificar("Eliminar")){
+                                                                        eliminando(aButton.getId().replace("MAT",""));
+                                                                }else{
+                                                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                }
+                                                            }
+                                                }
+                                            });
+                                            row.appendChild(aButton);
+
+
+
+                                    filas.appendChild(row);
+                       }
+          }else{
+
+          }
+            
+           
+}
+
+ void eliminando(Object clave){
+    try{
+            try{
+                  Integer id = new Integer(clave.toString());
+                  adm.eliminarObjeto(MateriaProfesor.class,id);
+                  llenarGrid(profes2.selectedItem.value);
+            }catch(Exception e){
+                //quitarFila(clave);
+            }
+    }catch(Exception e){
+
+        System.out.println(e);
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+
+ }
+
+  public void quitarFila(String codigoBuscar){
+
+                Rows filas = materias.getRows();
+                List listadoMaterias = filas.getChildren();
+                    for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                       MateriaProfesor nuevo = ((MateriaProfesor)object.getValue());
+                       String codigoA = "MAT"+nuevo.getMateria().getCodigo();
+                       if(codigoA.equals(codigoBuscar)){
+                            materias.getRows().removeChild(object);
+                            break;
+                       }
+                    }
+
+}
+
+llenarGrid2(Integer n){
+
+        datos2 = new Grid();
+                    for (int i=0 ; i<n; i++) {
+                                    Row row = new Row();
+                                    row.appendChild(new Label("0"));
+                                    Listbox lista = llenarComboMaterias(new Global(-1));
+                                    lista.setMold("select");
+                                    row.appendChild(lista);
+                                    Listbox listaC = llenarComboCursos(new Cursos(-1));
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(false);
+                                        row.appendChild(ch); 
+
+                                     Intbox tx = new Intbox(0);
+                                        row.appendChild(tx);
+                                     Textbox formu = new Textbox("");
+                                        row.appendChild(formu);
+
+                                         Toolbarbutton aButton = new Toolbarbutton("_");
+                                         row.appendChild(aButton);
+
+                                    filas.appendChild(row);
+                       }
+
+
+
+}
+
+void guardarp(){
+   Rows filas001 = datos2.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                                //Integer Orden = new Integer(((Textbox)labels.get(0)).value);
+                                    MateriaProfesor mateProfe = new MateriaProfesor();
+                                  mateProfe.setCodigomap(new Integer(((Label)labels.get(0)).value));
+
+                                  Cursos curSelec = ((Listbox)labels.get(2)).selectedItem.value;
+                                  Global matSelec = ((Listbox)labels.get(1)).selectedItem.value;
+                                  mateProfe.setEmpleado(profes2.selectedItem.value);
+                                  mateProfe.setMateria(matSelec);
+                                  mateProfe.setCurso(curSelec);
+                                  mateProfe.setCuantitativa(((Checkbox)labels.get(3)).isChecked());
+                                  mateProfe.setMinisterio(((Checkbox)labels.get(4)).isChecked());
+                                  mateProfe.setOpcional(((Checkbox)labels.get(5)).isChecked()); //ingresan disciplina
+                                  mateProfe.setSeimprime(((Checkbox)labels.get(6)).isChecked());
+                                  mateProfe.setIngcualitativo(((Checkbox)labels.get(7)).isChecked());
+                                  mateProfe.setOrden((((Intbox)labels.get(8)).value));
+                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  if((!mateProfe.getCodigomap().equals(0)) ){
+                                        if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1))
+                                            adm.actualizar(mateProfe);
+                                  }else{
+
+                                    if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1)){
+                                            mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                            adm.guardar(mateProfe);
+                                        }
+                                  }
+
+                   }
+                   llenarGrid(profes2.selectedItem.value);
+                   
+     /*
+
+        if((!mateProfe.getCodigomap().equals(0)) ){
+                adm.actualizar(mateProfe);
+
+                  try{
+                  if((mates.selectedItem.value).getCodigo().equals((matesAnterior.selectedItem.value).getCodigo())){
+                      String quera = "update notas set orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                      " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                      " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                      " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                     adm.ejecutaSqlNativo(quera);
+                  }else{
+
+                    String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', orden = '"+orden.value+"', seimprime = "+seimprime.checked+",  " +
+                          " promedia = "+ promediada.checked +", cuantitativa = "+ cuantitativa.checked +"  "+
+                          " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                          " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
+                        adm.ejecutaSqlNativo(quera);
+
+                  }
+                        //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
+                  }catch(Exception ae){
+                         System.out.println("ERROR EN ACTUALIZAR NOTAS "+ae);
+                  }
+
+         }else{
+            List existe = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+((Cursos)curs.selectedItem.value).getCodigocur()+"'  and o.materia.codigo = '"+((Global)mates.selectedItem.value).getCodigo()+"' ");
+                if(existe.size()>0){
+                    Messagebox.show("MATERIA YA ASIGNADA...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                }
+             mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+             adm.guardar(mateProfe);
+
+         }
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Distributivo","Guardar",""+mateProfe.getCurso()+" "+mateProfe.getMateria());
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new MateriaProfesor(0));
+                buscar2(curs.selectedItem.value);
+                */
+
+
+    }
+
+//************************************************ PRO CURSOS
+//PARA POR CURSOS***********************************************************************************************************************************************************************************************
+Listbox llenarComboEmpleados(Empleados emp){
+        Listbox lista = new Listbox();
+ 
+
+            for (Iterator it = profesores.iterator(); it.hasNext();) {
+                       Empleados acceIt = (Empleados) it.next();
+                         li = new Listitem();
+                         li.setValue(acceIt);
+                          li.appendChild(new Listcell(acceIt.getApellidos()+" "+acceIt.getNombres()));
+                          if(emp.getCodigoemp().equals(acceIt.getCodigoemp()))
+                                li.setSelected(true);
+                          lista.appendChild(li);
+
+            }
+
+            lista.setMold("select");
+            lista.setStyle("font-size:10px");
+        return lista;
+}
+
+llenarGrid3(Cursos cur){
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " +
+        " where o.curso.codigocur = '"+cur.getCodigocur() +"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
+        " order by o.orden");
+        datos2 = new Grid();
+                    filas3.getChildren().clear();
+            if(empleadosEncontrados.size()>0){
+
+                       for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                              MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                                    Row row = new Row();
+                                    row.appendChild(new Label(""+acceIt.getCodigomap()));
+                                    Intbox tx = new Intbox(acceIt.getOrden());
+                                    row.appendChild(tx);
+                                   row.appendChild(llenarComboMaterias(acceIt.getMateria()));
+                                    Listbox listaC = llenarComboEmpleados(acceIt.getEmpleado());
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(acceIt.getCuantitativa());
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(acceIt.getMinisterio());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getOpcional());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getSeimprime());
+                                        row.appendChild(ch);
+                                        
+                                      ch = new Checkbox();
+                                        ch.setChecked(acceIt.getIngcualitativo());
+                                        row.appendChild(ch);   
+
+                                        
+                                        Textbox formu = new Textbox(acceIt.getFormula());
+                                        row.appendChild(formu);
+
+
+                                          Toolbarbutton aButton = new Toolbarbutton("ELIMINAR");
+                                            aButton.setId("CUR"+acceIt.getCodigomap());
+                                            //aButton.setImage("/images/eliminar.gif");
+                                            aButton.setStyle("font-size:9px");
+                                            aButton.addEventListener("onClick", new EventListener() {
+                                                public void onEvent(Event event) throws Exception {
+                                                            int valor = Messagebox.show("Seguro que deséa eliminar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                            if(valor == Messagebox.YES){
+                                                                if(verificar("Eliminar")){
+                                                                        eliminando3(aButton.getId().replace("CUR",""));
+                                                                }else{
+                                                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                }
+                                                            }
+                                                }
+                                            });
+                                            row.appendChild(aButton);
+
+
+
+                                    filas3.appendChild(row);
+                       }
+          }else{
+
+          }
+
+
+}
+
+llenarGrid3P(Cursos cur){
+
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " +
+        " where o.curso.codigocur = '"+cur.getCodigocur() +"' and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' " +
+        " order by o.orden");
+        datos2P = new Grid();
+                    filas3P.getChildren().clear();
+            if(empleadosEncontrados.size()>0){
+
+                       for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                              MateriaProfesor acceIt = (MateriaProfesor) it.next();
+                                    Row row = new Row();
+                                    row.appendChild(new Label(""+acceIt.getCodigomap()));
+                                    Intbox tx = new Intbox(acceIt.getOrden());
+                                    row.appendChild(tx);
+                                   row.appendChild(llenarComboMaterias(acceIt.getMateria()));
+                                    Listbox listaC = llenarComboEmpleados(acceIt.getEmpleado());
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(acceIt.getCuantitativa());
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(acceIt.getMinisterio());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getOpcional());
+                                        row.appendChild(ch);
+
+                                     ch = new Checkbox();
+                                        ch.setChecked(acceIt.getSeimprime());
+                                        row.appendChild(ch);
+                                        
+                                      ch = new Checkbox();
+                                        ch.setChecked(acceIt.getIngcualitativo());
+                                        row.appendChild(ch);   
+
+                                        
+                                        Textbox formu = new Textbox(acceIt.getFormula());
+                                        row.appendChild(formu);
+
+
+                                          Toolbarbutton aButton = new Toolbarbutton("ELIMINAR");
+                                            aButton.setId("CURP"+acceIt.getCodigomap());
+                                            //aButton.setImage("/images/eliminar.gif");
+                                            aButton.setStyle("font-size:9px");
+                                            aButton.addEventListener("onClick", new EventListener() {
+                                                public void onEvent(Event event) throws Exception {
+                                                            int valor = Messagebox.show("Seguro que deséa eliminar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                                            if(valor == Messagebox.YES){
+                                                                if(verificar("Eliminar")){
+                                                                        eliminando3P(aButton.getId().replace("CURP",""));
+                                                                }else{
+                                                                            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                                }
+                                                            }
+                                                }
+                                            });
+                                            row.appendChild(aButton);
+                                            
+                                            
+                                            row.appendChild(llenarComboMateriasG(acceIt.getGrupo()));
+
+
+
+                                    filas3P.appendChild(row);
+                       }
+          }else{
+
+          }
+
+
+}
+
+llenarGridCursos(Periodo periodoSelec){
+
+        List cursosPeriodo = adm.query("Select o from Cursos as o " + 
+        " where o.periodo.codigoper = '"+periodoSelec.getCodigoper()+"' order by o.secuencia,  o.paralelo.descripcion ,o.especialidad.descripcion");
+            cursosCopiar = new Grid();
+            filasCursos.getChildren().clear();
+            if(cursosPeriodo.size()>0){
+
+                       for (Iterator it = cursosPeriodo.iterator(); it.hasNext();) {
+                              Cursos acceIt = (Cursos) it.next();
+                                    Row row = new Row();
+                                    
+                                    Checkbox ch = new Checkbox();
+                                    Listbox listaC = llenarComboCursosPeriodo(acceIt);
+                                    ch.setChecked(true);
+                                    if(listaC.getSelectedItem() == null){
+                                        ch.setChecked(false);
+                                    }
+                                    row.appendChild(ch);
+                                    row.setValue(acceIt);
+                                    Label cursoLabel = new Label(""+acceIt);
+                                    cursoLabel.setStyle("font-size:10px");
+                                    row.appendChild(cursoLabel);
+                                    
+                                    listaC.setMold("select");
+                                    
+                                    row.appendChild(listaC);          
+                                    if(listaC.getSelectedItem() == null){
+                                            Label sinc = new Label("Sin Coincidencia");
+                                                    sinc.setStyle("color:red; font-weight:bold");
+                                                    row.appendChild(sinc);
+                                                    row.setStyle("background:yellow");
+                                     }else{
+                                        row.appendChild(new Label(""));
+                                     }
+                                    filasCursos.appendChild(row);
+                       }
+          }else{
+
+          }
+
+
+}
+
+Listbox llenarComboCursosPeriodo(Cursos cursollega){
+        Listbox lista = new Listbox();
+            Cursos curse = new Cursos(-1);
+            Listitem li = new Listitem();
+            li.setValue(curse);
+            li.appendChild(new Listcell("[Seleccione]"));
+            //li.setSelected(true);
+            lista.appendChild(li);
+            for (Iterator it = cursos.iterator(); it.hasNext();) {
+                       Cursos acceIt = (Cursos) it.next();
+                         li = new Listitem();
+                         li.setValue(acceIt);
+                         li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getEspecialidad()+" "+acceIt.getParalelo()));
+                        /*if(acceIt.getDescripcion().replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U").contains(cursollega.getDescripcion().substring(0,5).replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U")) 
+                           && acceIt.getEspecialidad().getCodigo().equals(cursollega.getEspecialidad().getCodigo())
+                           && acceIt.getParalelo().getCodigo().equals(cursollega.getParalelo().getCodigo())){
+                                    li.setSelected(true);
+                        } */
+                        
+                        if(acceIt.getSecuencia().equals((cursollega.getSecuencia()+1)) 
+                           && acceIt.getParalelo().getCodigo().equals(cursollega.getParalelo().getCodigo())){
+                                    li.setSelected(true);
+                           }
+                         lista.appendChild(li);
+                         
+
+            }
+            
+            lista.setMold("select");
+            lista.setStyle("font-size:10px");
+        return lista;
+}
+
+ void eliminando3(Object clave){
+    try{
+            try{
+                  Integer id = new Integer(clave.toString());
+                  adm.eliminarObjeto(MateriaProfesor.class,id);
+                  llenarGrid3(curs3.selectedItem.value);
+            }catch(Exception e){
+                
+            }
+    }catch(Exception e){
+        System.out.println(e);
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+
+ }
+ void eliminando3P(Object clave){
+    try{
+            try{
+                  Integer id = new Integer(clave.toString());
+                  adm.eliminarObjeto(MateriaProfesor.class,id);
+                  llenarGrid3P(curs3P.selectedItem.value);
+            }catch(Exception e){
+                
+            }
+    }catch(Exception e){
+        System.out.println(e);
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+
+
+ }
+
+
+
+llenarGrid23(Integer n){
+
+        datos2 = new Grid();
+                    for (int i=0 ; i<n; i++) {
+                                    Row row = new Row();
+                                    row.appendChild(new Label("0"));
+                                         Intbox tx = new Intbox(0);
+                                        row.appendChild(tx);
+                                    Listbox lista = llenarComboMaterias(new Global(-1));
+                                    lista.setMold("select");
+                                    row.appendChild(lista);
+                                    Listbox listaC = llenarComboEmpleados(new Empleados(-1));
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(false);
+                                        row.appendChild(ch);
+
+                                
+                                     Textbox formu = new Textbox("");
+                                        row.appendChild(formu);
+                                    Toolbarbutton aButton = new Toolbarbutton("_");
+                                         row.appendChild(aButton);
+                                    filas3.appendChild(row);
+                       }
+
+
+
+}
+
+llenarGrid23P(Integer n){
+
+        datos2P = new Grid();
+                    for (int i=0 ; i<n; i++) {
+                                    Row row = new Row();
+                                    row.appendChild(new Label("0"));
+                                         Intbox tx = new Intbox(0);
+                                        row.appendChild(tx);
+                                    Listbox lista = llenarComboMaterias(new Global(-1));
+                                    lista.setMold("select");
+                                    row.appendChild(lista);
+                                    Listbox listaC = llenarComboEmpleados(new Empleados(-1));
+                                    listaC.setMold("select");
+                                    row.appendChild(listaC);
+                                    Checkbox ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                    ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(true);
+                                        row.appendChild(ch);
+                                     ch = new Checkbox();
+                                        ch.setChecked(false);
+                                        row.appendChild(ch);
+
+                                
+                                     Textbox formu = new Textbox("");
+                                        row.appendChild(formu);
+                                    Toolbarbutton aButton = new Toolbarbutton("_");
+                                         row.appendChild(aButton);
+                                         Listbox lista2 = llenarComboMateriasG(new Global(-1));
+                                    lista2.setMold("select");
+                                    row.appendChild(lista2);
+                                         
+                                    filas3P.appendChild(row);
+                       }
+
+
+
+}
+
+void guardaryMatricularEstudiantes(){
+ if(!verificar("Agregar")){
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+    }
+Periodo periAnterior = periodoAnterior.selectedItem.value;
+    int valor = Messagebox.show("Se matricularán todos los estudiantes APROBADOS del PERIODO:  "+periAnterior.getDescripcion()+"  \n al PERIODO "+periodo.getDescripcion()+" ¿Desea Continuar? ", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+    if(valor != Messagebox.YES){
+        return;
+    }else{
+            int valor2 = Messagebox.show("Si empieza éste proceso no podrá volver hacia atrás ¿Desea Continuar?", "Question", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                if(valor2 != Messagebox.YES){
+                    return;
+                }
+    }
+    reportesClase rp = new reportesClase();
+
+//BUSCO LOS PERDIDOS ***************************************************************
+
+    List notas = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + periAnterior.getCodigoper() + "'  "
+                + "and o.sistema.promediofinal = 'PF' ");
+
+        try {
+            if (notas.size() <= 0) {
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return null;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+//*********************************************************************************
+
+
+java.util.Date fecha = adm.Date();
+
+int totalMatriculados = 0;
+
+        Rows filas001 = cursosCopiar.getRows();
+                List listadoMaterias = filas001.getChildren();
+                int noMatricula = nuevaMatricula();
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                      Row object = (Row) listadoMaterias.get(i);
+                      List labels = object.getChildren();
+                      Boolean estado = ((Checkbox)labels.get(0)).isChecked();
+                      
+                            if(estado){
+                                    Cursos cur = object.getValue();
+                                    Cursos cursoActIterado = ((Listbox)labels.get(2)).selectedItem.value;
+                                    List listaMatriculasPerdidos = rp.cuadroverificar(cur, notas.get(0).getSistema(), new Matriculas(-1)); 
+                                    
+                                    String codigoMatriculasPerdidos = "";
+                                    for (Iterator it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                                        Matriculas matriculaA = it.next();
+                                        codigoMatriculasPerdidos += matriculaA.getCodigomat() + ",";
+                                    }
+                                    String complemPerdidos = "";
+                                    if (codigoMatriculasPerdidos.length() > 0) {
+                                        codigoMatriculasPerdidos = codigoMatriculasPerdidos.substring(0, codigoMatriculasPerdidos.length() - 1);
+                                        complemPerdidos = " and o.codigomat not in (" + codigoMatriculasPerdidos + ")";
+                                    }
+                                        List matriculas = adm.query("Select o from Matriculas as o "
+                                                + " where o.curso.codigocur = '" + cur.getCodigocur() + "' "
+                                                + " and o.estado in  ('Matriculado','Recibir Pase')  " + complemPerdidos
+                                                 + " and o.estudiante.codigoest not in (Select a.estudiante.codigoest from Matriculas as a " 
+                                                + " where a.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ) " 
+                                                + " order by o.estudiante.apellido " );
+                                                totalMatriculados = matriculas.size()+totalMatriculados;
+                                                  for (Matriculas matriculas1 : matriculas) {
+
+                                                    Matriculas mat = matriculas1;
+                                                    mat.setCodigomat(adm.getNuevaClave("Matriculas","codigomat"));
+                                                    mat.setCurso(cursoActIterado);
+                                                    mat.setNumero(noMatricula);
+                                                    mat.setFolio(mat.getNumero());
+                                                    mat.setFechamat(fecha);
+                                                    mat.setEstado("Matriculado");
+                                                    System.out.println(""+mat.getEstudiante());
+                                                    adm.guardar(mat);
+                                                    noMatricula++;
+                                                  
+                                                  }
+                                                  matriculas = null;
+                                                  listaMatriculasPerdidos = null;
+                                                  
+                                  
+                                                 
+                             }
+                }
+                
+    Messagebox.show("Proceso realizado con Éxito en total se han matriculado "+totalMatriculados+" estudiantes ...! \n revise en Reporte Estudiantes, el reporte TOTALIZADO DE MATRICULADOS para verificar el proceso", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+}
+
+       Integer nuevaMatricula() {
+       Administrador adm = new Administrador();
+
+        List NoActualMatricula = adm.query("Select o from ParametrosGlobales as o " +
+                "where o.variable = 'MATRICULA' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'");
+        ParametrosGlobales parametros = new ParametrosGlobales();
+        if(NoActualMatricula.size()<=0){
+            alert("Falta copiar los parámetros a este Año Lectivo");
+        }
+        parametros = (ParametrosGlobales) NoActualMatricula.get(0);
+        int noMatri = 0;
+        Double decs = parametros.getNvalor();
+        Long val = java.lang.Math.round(decs);
+        noMatri = Integer.valueOf(val.toString());
+        noMatri += 1;
+        List  numeroYa = adm.query("Select o from Matriculas as o " +
+                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                "and o.numero = '" + noMatri + "'");
+        if (numeroYa.size() > 0) {
+            Integer nClave = adm.geUltimaMatricula("Select max(o.numero) from Matriculas as o " +
+                    "where o.curso.periodo.codigoper= '" + periodo.getCodigoper() + "'"  );
+            parametros.setNvalor(new Double(nClave + 1));
+            adm.actualizar(parametros);
+            return nClave + 1;
+        } else {
+            parametros.setNvalor(new Double(noMatri));
+            adm.actualizar(parametros);
+            return noMatri;
+        }
+    }
+
+
+void guardarc(){
+   Rows filas001 = datos3.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                          
+                                    MateriaProfesor mateProfe = new MateriaProfesor();
+                                  mateProfe.setCodigomap(new Integer(((Label)labels.get(0)).value));
+
+                                  
+                                  Global matSelec = ((Listbox)labels.get(2)).selectedItem.value;
+                                  Empleados empSelec = ((Listbox)labels.get(3)).selectedItem.value;
+                                  
+                                  mateProfe.setEmpleado(empSelec);
+                                  mateProfe.setMateria(matSelec);
+                                  mateProfe.setCurso(curs3.selectedItem.value);
+                                  mateProfe.setOrden((((Intbox)labels.get(1)).value));
+                                  mateProfe.setCuantitativa(((Checkbox)labels.get(4)).isChecked());
+                                  mateProfe.setMinisterio(((Checkbox)labels.get(5)).isChecked());
+                                  mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
+                                  mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
+                                  mateProfe.setIngcualitativo(((Checkbox)labels.get(8)).isChecked());
+                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  if((!mateProfe.getCodigomap().equals(0)) ){
+                                        if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            adm.actualizar(mateProfe);
+                                             String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', " +
+                                                " orden = '"+mateProfe.getOrden()+"', seimprime = "+ mateProfe.getSeimprime() +",  " +
+                                                " promedia = "+ mateProfe.getMinisterio()  +", cuantitativa = "+ mateProfe.getCuantitativa() +"  "+
+                                                " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                                                " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                                                adm.ejecutaSqlNativo(quera);
+                                        }
+                                  }else{
+
+                                    if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                            adm.guardar(mateProfe);
+                                        }
+                                  }
+
+                   }
+                   llenarGrid3(curs3.selectedItem.value);
+ 
+
+    }
+
+
+void guardarcP(){
+   Rows filas001 = datos3P.getRows();
+                List listadoMaterias = filas001.getChildren();
+
+                   for (int i = 0; i <= listadoMaterias.size()-1; i++) {
+                       Row object = (Row) listadoMaterias.get(i);
+                             List labels = object.getChildren();
+                          
+                                    MateriaProfesor mateProfe = new MateriaProfesor();
+                                  mateProfe.setCodigomap(new Integer(((Label)labels.get(0)).value));
+
+                                  
+                                  Global matSelec = ((Listbox)labels.get(2)).selectedItem.value;
+                                  Empleados empSelec = ((Listbox)labels.get(3)).selectedItem.value;
+                                  Global grupoSelec = null;
+                                  if(((Listbox)labels.get(11)).selectedIndex >0){
+                                    grupoSelec = ((Listbox)labels.get(11)).selectedItem.value;
+                                  }  
+                                  
+                                  mateProfe.setEmpleado(empSelec);
+                                  mateProfe.setMateria(matSelec);
+                                  mateProfe.setGrupo(grupoSelec);
+                                  mateProfe.setCurso(curs3P.selectedItem.value);
+                                  mateProfe.setOrden((((Intbox)labels.get(1)).value));
+                                  mateProfe.setCuantitativa(((Checkbox)labels.get(4)).isChecked());
+                                  mateProfe.setMinisterio(((Checkbox)labels.get(5)).isChecked());
+                                  mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
+                                  mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
+                                  mateProfe.setIngcualitativo(((Checkbox)labels.get(8)).isChecked());
+                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  if((!mateProfe.getCodigomap().equals(0)) ){
+                                        if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            adm.actualizar(mateProfe);
+                                             String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', " +
+                                                " orden = '"+mateProfe.getOrden()+"', seimprime = "+ mateProfe.getSeimprime() +",  " +
+                                                " promedia = "+ mateProfe.getMinisterio()  +", cuantitativa = "+ mateProfe.getCuantitativa() +"  "+
+                                                " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                                                " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                                                adm.ejecutaSqlNativo(quera);
+                                        }
+                                  }else{
+
+                                    if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
+                                            mateProfe.setCodigomap(adm.getNuevaClave("MateriaProfesor","codigomap"));
+                                            adm.guardar(mateProfe);
+                                        }
+                                  }
+
+                   }
+                   llenarGrid3P(curs3P.selectedItem.value);
+ 
+
+    }
+
+
+    
+]]>
+    </zscript>
+  
+    <grid>
+
+        <rows>
+            <row spans="2">
+                Seleccione el periodo anterior del cual desea pasar los estudiantes para matricularlos en el periodo actual.
+            </row>
+            <row>
+                <span style="float:right"> PERIODO ANTERIOR(*):</span>
+                <span>
+                    <listbox height="100px" onSelect='llenarGridCursos(self.selectedItem.value);' id="periodoAnterior" width="100%">
+                        <listhead>
+                            <listheader label="Cod."/>
+                            <listheader label="Nombres"/>
+                            <listheader label="Estado"/>
+                        </listhead>
+                        <listitem forEach="${periodoActuales}" value="${each}">
+                            <listcell label="${each.codigoper}" />
+                            <listcell label="${each.descripcion}" />
+                            <listcell label="${each.institucion}" />
+                            <listcell label="${each.institucion.tipo}" />
+                        </listitem>
+                    </listbox>
+
+                </span>
+
+ 
+            </row>
+            <row >
+                <span style="float:right"> PERIODO ACTUAL(*):</span>
+                <span>
+                                 
+                    <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="cursosCopiar" >
+                        <columns>
+                            <column  width="30px" label="Todos"/>
+                            <column   label="CURSOS DEL PERIODO ANTERIOR"/>
+                            <column   label="CURSOS DEL PRESENTE PERIODO"/>
+                            <column   label="OBS"/>
+                                    
+                        </columns>
+                        <rows id="filasCursos">
+                        </rows>
+                    </grid>
+                            
+                </span>
+            </row>
+            <row spans="2">
+                <span>
+                    
+                    <button image="/images/guardar.gif" id="guardarDis" label="Empezar a Copiar y Guardar"  onClick="guardaryMatricularEstudiantes()"/>
+                </span>
+               
+            </row>
+                         
+        </rows>
+    </grid>
+         
+  
+</window>
+
+ 
