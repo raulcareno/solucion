@@ -1921,7 +1921,7 @@ public class reportesClase {
         String q = "Select codigomap, mat.codigomat,notas.materia, " + query + ", 'obs'  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
-                + " and notas.disciplina = false and materia_profesor.seimprime = true and notas.materia >1   AND materia_profesor.ministerio = TRUE   "
+                + " and notas.disciplina = false and materia_profesor.cuantitativa = true and materia_profesor.seimprime = true and notas.materia >1   AND materia_profesor.ministerio = TRUE   "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + " GROUP BY matricula  order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
