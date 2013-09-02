@@ -1263,7 +1263,8 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             }
             
             try {
-                parametros.put("matricula", obj.getIdMatriculas().getIdEstudiantes().getPregrado()+"-"+obj.getIdMatriculas().getIdEstudiantes().getPosgrado());    
+                //parametros.put("matricula", obj.getIdMatriculas().getIdEstudiantes().getPregrado()+"-"+obj.getIdMatriculas().getIdEstudiantes().getPosgrado());    
+                parametros.put("matricula", obj.getIdMatriculas().getNumero()+"");    
             } catch (Exception e) {
             }
             
@@ -2293,10 +2294,6 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         actualPariente = new Parientes();
         actualMatricula = new Matriculas();
         es = (Estudiantes) adm.buscarClave(gen.getCodigoString(), Estudiantes.class);
-        try {
-             numeroMatricula.setText(""+es.getPregrado()+" - "+ es.getPosgrado());    
-        } catch (Exception e) {
-        }
         
         String complemento = "";
         if (dobleMatricula && carreraSeleccionada != null) {
@@ -2353,6 +2350,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     buscarRubrosDeCreditos();
                 }
                 sumar();
+                        try {
+                        numeroMatricula.setText(""+actualMatricula.getNumero()+"");    
+                   } catch (Exception e) {
+                   }
             }
         } else {
             //tengo que preguntar solo
