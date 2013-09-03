@@ -13,19 +13,23 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-                <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                <p:panel id="registro"  style="width: 600px;" header="Cambiar Clave de Usuario">
+                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                         <h:panelGrid columns="2" cellpadding="1" style="margin:0 auto;">  
                             <h:outputText value="USUARIO: " />  
                             <p:inputText value="#{cambiarClaveBean.object.usuario}" id="Usuario"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="CLAVE ACTUAL: " />  
-                            <p:password  value="#{cambiarClaveBean.claveActual}"   redisplay="true"  feedback="true" id="ClaveActual"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{cambiarClaveBean.claveActual}"   redisplay="true"  feedback="true" id="ClaveActual"  promptLabel="Ingrese su clave Actual" maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NUEVA CLAVE: " />  
-                            <p:password  value="#{cambiarClaveBean.object.clave}"   requiredMessage="No coincidena las contraseñas" match="Clave2" redisplay="true"  feedback="true" id="Clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{cambiarClaveBean.claveNueva}"   requiredMessage="No coincidena las contraseñas"  promptLabel="Ingrese su nueva clave" match="Clave2" redisplay="true" weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte"  feedback="true" id="Clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="CONFIRME SU NUEVA CLAVE: " />  
-                            <p:password  value="#{cambiarClaveBean.object.clave}" redisplay="true"  id="Clave2"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{cambiarClaveBean.claveNueva}" redisplay="true"  id="Clave2"   promptLabel="Repita su nueva clave"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <p:inputText  value="#{cambiarClaveBean.object.idEmpleados}"  converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>
                             <p:commandButton  value="Cambiar"  id="guardar"  update=":form"   action="#{cambiarClaveBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                            <h:inputHidden value="#{cambiarClaveBean.object.clave}" /> 
                         </h:panelGrid>  
+                    </p:panel>
+               
                     
             </h:form>
         </h:panelGrid>

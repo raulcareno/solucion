@@ -26,6 +26,14 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.omnifaces.filter.CharacterEncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
     </filter>
@@ -33,7 +41,7 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-      <servlet>
+    <servlet>
         <servlet-name>redireccionSalir</servlet-name>
         <servlet-class>bean.redireccionSalir</servlet-class>
     </servlet>

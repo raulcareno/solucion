@@ -142,11 +142,11 @@ public class CambiarClaveBean{
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "La Clave Ingresada no Coincide con la clave actual...!", ""));
             return null;       
        }
-        if (object.getClave().isEmpty()) {
+        if (claveNueva.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la Nueva Clave", ""));
             return null;
         }
-        String nuevaClave = object.getClave();
+        String nuevaClave = claveNueva;
         String nuevoUsuario = object.getUsuario();
         object = (Empleados) adm.buscarClave(object.getIdEmpleados(), object.getClass());
         object.setClave(cl.encriptar(nuevaClave));
@@ -161,6 +161,9 @@ public class CambiarClaveBean{
                 aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "cambioClave", "", object.getIdEmpleados() + "");
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Actualizado Correctamente...!"));
                 inicializar();
+              
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/login.jspx");
+                
             } catch (Exception e) {
                 //log.error("grabarAction() {} ", e.getMessage());
                 java.util.logging.Logger.getLogger(CambiarClaveBean.class.getName()).log(Level.SEVERE, null, e);
@@ -172,6 +175,7 @@ public class CambiarClaveBean{
         return null;
     }
     public String claveActual;
+    public String claveNueva;
 
     public String getClaveActual() {
         return claveActual;
@@ -180,6 +184,15 @@ public class CambiarClaveBean{
     public void setClaveActual(String claveActual) {
         this.claveActual = claveActual;
     }
+
+    public String getClaveNueva() {
+        return claveNueva;
+    }
+
+    public void setClaveNueva(String claveNueva) {
+        this.claveNueva = claveNueva;
+    }
+    
     
     boolean comparar(String claveEnviada){
             if(object.getClave().equals(claveEnviada)){
