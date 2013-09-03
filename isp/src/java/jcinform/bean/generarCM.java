@@ -88,7 +88,8 @@ public class generarCM {
                             + "\t"
                             + "\t" + factura // numero de factura
                             + "\t" + fac.getFactura().getAutorizacion()); // numero de autorización
-                    writer.newLine(); // Esto es un salto de linea
+                    writer.write("\r\n");
+//                    writer.newLine(); // Esto es un salto de linea
                 }
 
             } else if (banco.getNombre().toLowerCase().contains("internaci")) {
@@ -130,7 +131,8 @@ public class generarCM {
                             + "\t" + ((fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()).length() > 41 ? (fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres()).substring(0, 41) : (fac.getFactura().getClientes().getApellidos() + " " + fac.getFactura().getClientes().getNombres())) // nombres cliente
                             + "\t" + base //base del iva
                             + "\t32"); // numero de autorización
-                    writer.newLine(); // Esto es un salto de linea
+                    writer.write("\r\n");
+//                    writer.newLine(); // Esto es un salto de linea
                 }
             } else if (banco.getNombre().toLowerCase().contains("guayaquil")) {
 
@@ -194,10 +196,11 @@ public class generarCM {
                             + "" + "01" //6	Agencia	Numérico 01/06	2 Tipo de agencia.  01: Matriz.  06: Sucursal. 01 si es por Banca Transaccional ( Internet)
                             + "" + banco.getEmpresa()
                             + "" + nombreCliente);
+                    writer.write("\r\n");
                                 //                  Código empresa recaudadora; lo suministra el banco.(Motivo)
                                 //Campo opcional.  Podrá contener datos que relacionen al cliente con la empresa, como: código del cliente, número de identificación, etc
 
-                    writer.newLine(); // Esto es un salto de linea
+//                    writer.newLine(); // Esto es un salto de linea
                 }
 
             } else if (banco.getNombre().toLowerCase().contains("bolivariano")) {
@@ -361,8 +364,8 @@ public class generarCM {
                             + "" + banco.getEmpresa()
                             + "" + valor
                             + "001"); //tipo de comprobante 001 igual a factura
-
-                    writer.newLine(); // Esto es un salto de linea
+writer.write("\r\n");
+//                    writer.newLine(); // Esto es un salto de linea
                 }
             }else if (banco.getNombre().toLowerCase().contains("pacifico")) {
 
@@ -474,8 +477,8 @@ public class generarCM {
                             + fac.getFactura().getContratos().getClientes().getTipoidentificacion() //C R P
                             + identificacion
                             + telefono);
-
-                    writer.newLine(); // Esto es un salto de linea
+writer.write("\r\n");
+//                    writer.newLine(); // Esto es un salto de linea
                 }
 
             }

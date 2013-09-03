@@ -1304,6 +1304,7 @@ void verificarCedula(String valor){
                                     if(sop.getFecha() == null)
                                         fechasoporte.value = adm.Date();
                                     observacion.value = sop.getObservacion();
+                                    observacion2.value = sop.getObservacion2();
                                     generar.checked  = sop.getGenerada();
                                     noorden.value = sop.getNoorden();        
                         }else{
@@ -1332,6 +1333,7 @@ void verificarCedula(String valor){
                                 sop.setEmpleados(new Empleados(atendida.value));
                                 sop.setFecha(fechasoporte.value);
                                 sop.setObservacion(observacion.value);
+                                sop.setObservacion2(observacion2.value);
                                 sop.setGenerada(generar.checked);
                                 sop.setClientes(new Clientes(new Integer(codigocli.value)));
                                 sop.setNoorden(noorden.value);
@@ -1364,6 +1366,7 @@ void verificarCedula(String valor){
                                                     System.out.println("00001");
                                                     parameters.put("direccion", empresa.getDireccion());
                                                     parameters.put("observacion", observacion.value);
+                                                    parameters.put("observacion2", observacion2.value);
                                                     parameters.put("telefono", empresa.getTelefono());
                                                     parameters.put("cliente", combo.value);
                                                     parameters.put("noorden", sop.getNoorden());
@@ -1410,6 +1413,7 @@ void verificarCedula(String valor){
                                       li.setValue(acceIt);
                                       li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
                                       li.appendChild(new Listcell(acceIt.getObservacion()+""));
+                                      li.appendChild(new Listcell(acceIt.getObservacion2()+""));
                                       li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
                                       li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
                                       soporte.appendChild(li);
@@ -1434,7 +1438,7 @@ void verificarCedula(String valor){
                             Vector vec = (Vector) itna.next();
                           
                               Contratos con = adm.buscarClave(vec.get(4), Contratos.class);
-                              Group grupo = new Group(con.getPlan()+"");
+                              Group grupo = new Group("CONTRATO No.: \t\t "+con.getContrato()+"\t\t | - | "+con.getPlan());
                               grupo.setId("grup"+con.getCodigo()+"");
                              // grupo.setStyle("background-color:#FFDDAA");
                               
@@ -3172,6 +3176,10 @@ void llamar(){
                                 <span style="float:right"> Observación: </span>
                                 <textbox readonly="true" cols="60" rows="3" id="observacion"/>
                             </row>
+                             <row>
+                                <span style="float:right"> Solución: </span>
+                                <textbox readonly="true" cols="60" rows="3" id="observacion2"/>
+                            </row>
                             <row>
                                 <span style="float:right"> Generar Orden: </span>
                                 <checkbox id="generar" disabled="true"   />
@@ -3187,10 +3195,11 @@ void llamar(){
                     <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>
                     <listbox mold="paging" rows="10" pageSize="10"  onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
                         <listhead>
-                            <listheader label="Fecha"/>
-                            <listheader label="Observación"/>
-                            <listheader label="Orden Generada"/>
-                            <listheader label="Atendida"/>
+                            <listheader width="10px" label="Fecha"/>
+                            <listheader width="200px"  label="Observación"/>
+                            <listheader width="200px"  label="Solución"/>
+                            <listheader  width="20px" label="Ord.Gen."/>
+                            <listheader width="10px"  label="Atendida"/>
                         </listhead>
                         <listitem forEach="${allEvents}" value="${each}">
                             <listcell label="${each.fecha}" />

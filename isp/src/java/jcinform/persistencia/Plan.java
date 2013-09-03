@@ -6,18 +6,8 @@ package jcinform.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import java.util.Date;
+import javax.persistence.*;
 
 /**
  *
@@ -53,12 +43,14 @@ public class Plan implements Serializable {
     private Integer dias;
     @Column(name = "bien")
     private Boolean bien;
-     @Column(name = "tipocliente")
+    @Column(name = "tipocliente")
     private String tipocliente;
-      @Column(name = "nivelcomparticion")
+    @Column(name = "nivelcomparticion")
     private String nivelcomparticion;
-    
-            
+    @Column(name = "fechavencimiento")
+    private Integer fechavencimiento;
+    @Column(name = "fechaaviso")
+    private Integer fechaaviso;
     @OneToMany(mappedBy = "plan")
     private Collection<Comisiones> comisionesCollection;
     @OneToMany(mappedBy = "plan")
@@ -163,7 +155,6 @@ public class Plan implements Serializable {
     public void setSucursal(Sucursal sucursal) {
         this.sucursal = sucursal;
     }
-    
 
     public Collection<Comisiones> getComisionesCollection() {
         return comisionesCollection;
@@ -204,7 +195,22 @@ public class Plan implements Serializable {
     public void setTipocliente(String tipocliente) {
         this.tipocliente = tipocliente;
     }
-    
+
+    public Integer getFechaaviso() {
+        return fechaaviso;
+    }
+
+    public void setFechaaviso(Integer fechaaviso) {
+        this.fechaaviso = fechaaviso;
+    }
+
+    public Integer getFechavencimiento() {
+        return fechavencimiento;
+    }
+
+    public void setFechavencimiento(Integer fechavencimiento) {
+        this.fechavencimiento = fechavencimiento;
+    }
 
     @Override
     public int hashCode() {
@@ -228,6 +234,6 @@ public class Plan implements Serializable {
 
     @Override
     public String toString() {
-        return nombre+" "+tipo;
+        return nombre + " " + tipo;
     }
 }

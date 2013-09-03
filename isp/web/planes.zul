@@ -1,151 +1,157 @@
 
 <window   border="normal"
- >
+>
 
     <zscript>
-  import bean.EventDAO; 
-  import java.util.ArrayList; 
-  import jcinform.persistencia.*;
-  import jcinform.conexion.*;
-  import jcinform.bean.*;
-  import java.math.BigDecimal;
+        import bean.EventDAO; 
+        import java.util.ArrayList; 
+        import jcinform.persistencia.*;
+        import jcinform.conexion.*;
+        import jcinform.bean.*;
+        import java.math.BigDecimal;
 
-  Session ses = Sessions.getCurrent();
-    Administrador adm = new Administrador();
-      Session ses = Sessions.getCurrent();
-  Empleadossucursal sucursalEmp = ses.getAttribute("sector");
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Empleadossucursal sucursalEmp = ses.getAttribute("sector");
   
-    List allEvents = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
-    static Plan equi = new Plan();
-    Permisos permiso = new Permisos();
-    //SimpleTreeModel stm = new SimpleTreeModel(root);
-//FUNCIONES
-void llenar(Plan equi2){
-    equi = equi2;
-    nombre.value = equi.getNombre();
-    valor.value = equi.getValor();
-    pvp4.value = equi.getPvp4();
-    tipo.value = equi.getTipo(); //home, corporativo
-    dias.value = equi.getDias();
-    nivelcomparticion.value = equi.getNivelcomparticion();//8:1 1:1
+        List allEvents = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+        static Plan equi = new Plan();
+        Permisos permiso = new Permisos();
+        //SimpleTreeModel stm = new SimpleTreeModel(root);
+        //FUNCIONES
+        void llenar(Plan equi2){
+        equi = equi2;
+        nombre.value = equi.getNombre();
+        valor.value = equi.getValor();
+        pvp4.value = equi.getPvp4();
+        tipo.value = equi.getTipo(); //home, corporativo
+        dias.value = equi.getDias();
+        fechaaviso.value = equi.getFechaaviso();
+        fechavencimiento.value = equi.getFechavencimiento();
+        nivelcomparticion.value = equi.getNivelcomparticion();//8:1 1:1
     
-}
-void estado(Boolean estado,Boolean modificar){
-    if(modificar){
+        }
+        void estado(Boolean estado,Boolean modificar){
+        if(modificar){
         equi = (Plan)datos.selectedItem.value;
-    }
-    nombre.readonly = estado;
-    valor.readonly = estado;
-    pvp4.readonly = estado;
-    tipo.disabled = estado;
-    dias.readonly = estado;
+        }
+        nombre.readonly = estado;
+        valor.readonly = estado;
+        pvp4.readonly = estado;
+        tipo.disabled = estado;
+        dias.readonly = estado;
+        fechaaviso.readonly = estado;
+        fechavencimiento.readonly = estado;
  
-    nivelcomparticion.readonly = estado;
+        nivelcomparticion.readonly = estado;
  
 
-}
+        }
 
 
- void guardar(){
-    if(nombre.value.equals("")){
-            Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-            return;
-    }
+        void guardar(){
+        if(nombre.value.equals("")){
+        Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+        }
         equi.setNombre(nombre.value);
         equi.setValor(valor.value);
         equi.setTipo(tipo.value);
         equi.setDias(dias.value);
         equi.setPvp4(pvp4.value);
         equi.setSucursal(sucursalEmp.getSucursal());
+        equi.setFechaaviso(fechaaviso.value);
+        equi.setFechavencimiento(fechavencimiento.value);
  
         equi.setNivelcomparticion(nivelcomparticion.value);
         
         if((!equi.getCodigo().equals(0)) ){
-             adm.actualizar(equi);
-                List children = datos.selectedItem.children;
-                  ((Listcell)children.get(0)).label = equi.getCodigo()+"";
-                  ((Listcell)children.get(1)).label = nombre.value+ "" ;
-                  permiso.auditar("Planes","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
-         }else{
-                equi.setCodigo(adm.getNuevaClave("Plan","codigo"));
-                adm.guardar(equi);
-                permiso.auditar("Planes","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
-         }
-                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-                    guardar.disabled=true;
-                    agregar.disabled=false;
-                    estado(true,false);
-                    llenar(new Plan(0));
-                    buscar("");
-    }
+        adm.actualizar(equi);
+        List children = datos.selectedItem.children;
+        ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+        ((Listcell)children.get(1)).label = nombre.value+ "" ;
+        permiso.auditar("Planes","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+        }else{
+        equi.setCodigo(adm.getNuevaClave("Plan","codigo"));
+        adm.guardar(equi);
+        permiso.auditar("Planes","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+        }
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        guardar.disabled=true;
+        agregar.disabled=false;
+        estado(true,false);
+        llenar(new Plan(0));
+        buscar("");
+        }
 
- Boolean verificar(String accion){
+        Boolean verificar(String accion){
         return permiso.verificarPermiso("Planes",accion);
- }
- void nuevo(){
-    if(verificar("Agregar")){
-       guardar.disabled=false;
+        }
+        void nuevo(){
+        if(verificar("Agregar")){
+        guardar.disabled=false;
         llenar(new Plan(0));
         estado(false,false);
         
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
- void move(){
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void move(){
         llenar((Plan)datos.selectedItem.value);
         modificar.disabled = false;
-  }
-void modificar(){
-  if(verificar("Modificar")){
-       guardar.disabled=false; estado(false,true);
-    }else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
-void eliminar(){
-  if(verificar("Eliminar")){
-        try{
-             equi = (Plan)datos.selectedItem.value;
-             adm.eliminarObjeto(Plan.class, equi.getCodigo());
-             permiso.auditar("Planes","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
-            datos.removeItemAt(datos.getSelectedIndex());
-            llenar(new Plan(0));
-                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        }catch(Exception e){
-            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
         }
-}else{
-            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-    }
-}
-   void buscar(String p){
+        void modificar(){
+        if(verificar("Modificar")){
+        guardar.disabled=false; estado(false,true);
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void eliminar(){
+        if(verificar("Eliminar")){
+        try{
+        equi = (Plan)datos.selectedItem.value;
+        adm.eliminarObjeto(Plan.class, equi.getCodigo());
+        permiso.auditar("Planes","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+        datos.removeItemAt(datos.getSelectedIndex());
+        llenar(new Plan(0));
+        Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void buscar(String p){
 
       
         List equivaEncontrados = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre");
         datos = new Listbox();
         int a=0;
-            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                    datos.getItems().remove(a);
-                }
+        for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+        datos.getItems().remove(a);
+        }
    
        
-               for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                      Plan acceIt = (Plan) it.next();
-                      Listitem li = new Listitem();
-                      li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
-                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
-                      li.appendChild(new Listcell(acceIt.getValor()+" "));
-                      li.appendChild(new Listcell(acceIt.getTipo()+" "));
-                      li.appendChild(new Listcell(acceIt.getDias()+" "));
-                      datos.appendChild(li);
-             }
+        for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+        Plan acceIt = (Plan) it.next();
+        Listitem li = new Listitem();
+        li.setValue(acceIt);
+        li.appendChild(new Listcell(acceIt.getCodigo()+""));
+        li.appendChild(new Listcell(acceIt.getNombre()+" "));
+        li.appendChild(new Listcell(acceIt.getValor()+" "));
+        li.appendChild(new Listcell(acceIt.getTipo()+" "));
+        li.appendChild(new Listcell(acceIt.getDias()+" "));
+        datos.appendChild(li);
+        }
 
-    }
-void cargar(Plan g){
-equi.setPerfil(g);
-}
+        }
+        void cargar(Plan g){
+        equi.setPerfil(g);
+        }
     </zscript>
     <groupbox mold="3d" >
         <caption label="Agregar Planes" />
@@ -160,13 +166,13 @@ equi.setPerfil(g);
                     <span style="float:right"> Valor(*):</span>
                     <doublebox id="valor"  maxlength="100" cols="40" readonly="true"   />
                 </row>
-               <row>
+                <row>
                     <span style="float:right"> Mbps(*):</span>
                     <doublebox id="pvp4"  maxlength="100" cols="40" readonly="true"   />
                 </row>
                 <row>
                     <span style="float:right"> Nivel de Compartición:(*):</span>
-                         <textbox id="nivelcomparticion"  maxlength="100" cols="40" readonly="true"   />
+                    <textbox id="nivelcomparticion"  maxlength="100" cols="40" readonly="true"   />
                 </row>
                 <row>
                     <span style="float:right"> Tipo(*):</span>
@@ -184,6 +190,16 @@ equi.setPerfil(g);
                         <intbox id="dias"  maxlength="5" cols="4" readonly="true"   />
                     </span>
                 </row>
+                <row>
+                    <span style="float:right"> Día Aviso(*):</span>
+                    <span>
+                        <intbox id="fechaaviso" readonly="true"   />
+                        Día Vencimiento(*):
+                        <intbox id="fechavencimiento" readonly="true"  />
+                    </span>
+                    
+                </row>
+                 
             </rows>
         </grid>
         <vbox>
