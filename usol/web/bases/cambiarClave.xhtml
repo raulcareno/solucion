@@ -13,9 +13,9 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-                <p:panel id="registro"  style="width: 600px;" header="Cambiar Clave de Usuario">
+                <p:panel id="registro"  styleClass="texto"  style="width: 600px;" header="Cambiar Clave de Usuario">
                      <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                        <h:panelGrid columns="2" cellpadding="1" style="margin:0 auto;">  
+                        <h:panelGrid columns="2" styleClass="texto"  cellpadding="1" style="margin:0 auto;">  
                             <h:outputText value="USUARIO: " />  
                             <p:inputText value="#{cambiarClaveBean.object.usuario}" id="Usuario"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="CLAVE ACTUAL: " />  

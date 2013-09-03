@@ -28,7 +28,7 @@
                 <p:tabView  id="RegistroInformacion" >  
 
                     <p:tab id="registro01" title="INFORMACIÓN GENERAL">
-                        <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                        <h:panelGrid columns="4" styleClass="texto" cellpadding="1" style="margin:0 auto;">  
                             <p:selectOneRadio id="TipoIdentificacion" value="#{empleadosBean.object.tipoIdentificacion}">  
                                 <f:selectItem itemLabel="CEDULA"  itemValue="C" />  
                                 <f:selectItem itemLabel="RUC" itemValue="R" />  
@@ -118,7 +118,7 @@
                         </h:panelGrid>  
                     </p:tab>
                     <p:tab id="registro02" title="INFORMACIÓN CES">
-                        <h:panelGrid columns="4" cellpadding="1" style="margin:0 auto;">  
+                        <h:panelGrid  styleClass="texto" columns="4" cellpadding="1" style="margin:0 auto;">  
                             <h:outputText value="FECHA INGRESO: " />  
                             <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{empleadosBean.object.fechaIngreso}" id="FechaIngreso" showOn="button"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="FECHA AFILIACIÓN: " />  
@@ -193,7 +193,7 @@
                         </h:panelGrid>  
                     </p:tab>
                     <p:tab id="registro07" title="MATERIAS DEL PROFESOR">
-                        <p:panelGrid columns="2">
+                        <p:panelGrid styleClass="texto" columns="2">
                             <p:dataTable  scrollable="true" scrollHeight="150"  id="asignadas" var="materia" value="#{empleadosBean.destino}">  
 
                                 <p:column width="300" headerText="MATERIAS ASIGNADAS">  
@@ -222,15 +222,15 @@
                         </p:panelGrid>
                     </p:tab>
                     <p:tab id="registro03" title="BUSQUEDAS">
-                        <h:panelGrid columns="1" cellpadding="1" style="margin:0 auto;">  
+                        <h:panelGrid  styleClass="texto" columns="1" cellpadding="1" style="margin:0 auto;">  
 
-                            <p:dataTable style="width:780px;" id="empleados" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  var="obj" value="#{empleadosBean.model}">  
+                            <p:dataTable  styleClass="texto" style="width:780px;" id="empleados" rowsPerPageTemplate="5,10,15,20,25" paginator="true" rows="5"  var="obj" value="#{empleadosBean.model}">  
 
                             
-                             <p:column headerText="NOMBRE"   sortBy="#{obj.nombre}" filterBy="#{obj.nombre}"  style="width:20%">  
+                             <p:column headerText="NOMBRE"  styleClass="texto"  sortBy="#{obj.nombre}" filterBy="#{obj.nombre}"  style="width:20%">  
                                 <h:outputText value="#{obj.nombre}" />  
                             </p:column>  
-                                 <p:column headerText="APELLIDO"   sortBy="#{obj.apellidoPaterno}" filterBy="#{obj.apellidoPaterno}"  style="width:20%">  
+                                 <p:column headerText="APELLIDO"  styleClass="texto"  sortBy="#{obj.apellidoPaterno}" filterBy="#{obj.apellidoPaterno}"  style="width:20%">  
                                      <h:outputText value="#{obj.apellidoPaterno}" />  
                             </p:column>  
                                 <p:column style="width:10%">  

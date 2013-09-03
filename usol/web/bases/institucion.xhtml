@@ -13,12 +13,12 @@
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
 
-                <p:panel id="registro"  style="width: 700px;" header="Institucion">
+                <p:panel id="registro"  style="width: 800px;" header="Datos de la Institución">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:panelGrid id="Cdisplay" columns="2" cellpadding="4" style="margin:0 auto;">
-                         <h:panelGrid id="display" columns="3" cellpadding="4" style="margin:0 auto;">  
+                    <h:panelGrid id="Cdisplay"  columns="2" cellpadding="4" style="margin:0 auto;">
+                         <h:panelGrid id="display" styleClass="texto" columns="3" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="NOMBRE" />  
                         <p:inputText value="#{institucionBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <f:verbatim/>
@@ -60,7 +60,7 @@
                         </p:commandLink>
                         <p:inputText  value="#{institucionBean.object.idInstitucion}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
                     </h:panelGrid>  
-                    <h:panelGrid id="display2" columns="3" cellpadding="4" style="margin:0 auto;">  
+                    <h:panelGrid id="display2" styleClass="texto" columns="3" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="EMAIL" />  
                         <p:inputText value="#{institucionBean.object.email}" id="email"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                         <f:verbatim/>
