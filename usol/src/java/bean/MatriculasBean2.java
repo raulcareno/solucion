@@ -65,7 +65,9 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.StreamedContent;
 import reportes.ExportarReportesCon;
+import reportes.ExportarReportesSource;
 import reportes.FichaMatricula;
+import sources.ReporteActaMatricula;
 import utilerias.Permisos;
 
 /**
@@ -235,17 +237,16 @@ public class MatriculasBean2 {
     }
 
     public String quitar(CarrerasMaterias obj) {
-        if(obj.convalidada){
-                         FacesContext context = FacesContext.getCurrentInstance();
-                         FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se peude eliminar materia CONVALIDADA/HOMOLOGADA", "No se peude eliminar materia CONVALIDADA/HOMOLOGADA"));
-                         return null;
+        if (obj.convalidada) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se peude eliminar materia CONVALIDADA/HOMOLOGADA", "No se peude eliminar materia CONVALIDADA/HOMOLOGADA"));
+            return null;
         }
         origen.add(obj);
         destino.remove(obj);
         sumarCreditos();
         return null;
     }
-   
 
     public StreamedContent getImageAsStream() {
         try {
@@ -281,12 +282,12 @@ public class MatriculasBean2 {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Ingrese la IDENTIFICACIÓN del Estudiante", ""));
             return null;
         }
-  
+
         if (carreraSeleccionado.getIdCarreras().equals(new Integer(0))) {
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado la CARRERA", "No ha seleccionado la CARRERA"));
             return null;
         }
-           
+
         object.setIdEstudiantes(estudiante);
         object.setIdPeriodos(per);
         estudiante.setIdCategoriasSociales(categoriaSeleccionado);
@@ -328,17 +329,17 @@ public class MatriculasBean2 {
             }
 
         }
-        
-         List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
-                        + " where o.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "'"
-                        + " and (o.pagado  = true or o.convalidado = true) ");
-         for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
+
+        List<MateriasMatricula> materiasTomadas = adm.query("Select o from MateriasMatricula as o "
+                + " where o.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "'"
+                + " and (o.pagado  = true or o.convalidado = true) ");
+        for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
             MateriasMatricula materiasMatricula1 = it.next();
-             System.out.println(""+materiasMatricula1.getIdMaterias().getIdMaterias()+" "+materiasMatricula1.getIdMaterias().getNombre());
-            
+            System.out.println("" + materiasMatricula1.getIdMaterias().getIdMaterias() + " " + materiasMatricula1.getIdMaterias().getNombre());
+
         }
-         
-         
+
+
         //GUARDO LAS MATERIAS DE LA MATRICULA
         adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' and (pagado is null or pagado = false) and (convalidado = false or convalidado is null) ");
         for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
@@ -348,19 +349,19 @@ public class MatriculasBean2 {
             matMat.setIdMatriculas(object);
             //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
             matMat.setNumeroMatricula(object.getNumero());
-            int  noEstaPagada = 0;  
+            int noEstaPagada = 0;
             for (Iterator<MateriasMatricula> matePagada = materiasTomadas.iterator(); matePagada.hasNext();) {
                 MateriasMatricula materiasMatricula1 = matePagada.next();
-                        if(materiasMatricula1.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())){
-                            noEstaPagada++;
-                        }
+                if (materiasMatricula1.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())) {
+                    noEstaPagada++;
+                }
             }
-            if(noEstaPagada ==0) {
+            if (noEstaPagada == 0) {
                 adm.guardar(matMat);
             }
 
         }
- 
+
         return null;
     }
 
@@ -671,47 +672,47 @@ public class MatriculasBean2 {
         if (!object.getIdMatriculas().equals(new Integer(0))) {
             List<MateriasMatricula> mateMatriculas = adm.query(" Select o from MateriasMatricula as o "
                     + " WHERE o.idMatriculas.idMatriculas = '" + mat.getIdMatriculas() + "' "
-                    + " and o.idMatriculas.idCarreras.idCarreras = '" + mat.getIdCarreras().getIdCarreras() + "' " );
+                    + " and o.idMatriculas.idCarreras.idCarreras = '" + mat.getIdCarreras().getIdCarreras() + "' ");
             destino = new ArrayList<CarrerasMaterias>();
-                for (Iterator<MateriasMatricula> it = mateMatriculas.iterator(); it.hasNext();) { 
-                    MateriasMatricula materiasMatricula1 = it.next();
-                    List<CarrerasMaterias> carMat = adm.query("Select o from CarrerasMaterias as o "
-                            + " where o.idMaterias.idMaterias = "+materiasMatricula1.getIdMaterias().getIdMaterias()+"  "
-                            + " and o.idCarreras.idCarreras = "+mat.getIdCarreras().getIdCarreras()+" "); 
-                            try {
-                                    (carMat.get(0)).setConvalidada(materiasMatricula1.getConvalidado());    
-                               } catch (Exception e) {
-                                    (carMat.get(0)).setConvalidada(false);    
-                               }
-                    
-                            try {
-                                (carMat.get(0)).setPagada(materiasMatricula1.getPagado());
-                            } catch (Exception e) {
-                                    (carMat.get(0)).setPagada(false);
-                            }
-                        
-                            (carMat.get(0)).setValor(materiasMatricula1.getValor());
-                            destino.add(carMat.get(0));
-               }
-            
+            for (Iterator<MateriasMatricula> it = mateMatriculas.iterator(); it.hasNext();) {
+                MateriasMatricula materiasMatricula1 = it.next();
+                List<CarrerasMaterias> carMat = adm.query("Select o from CarrerasMaterias as o "
+                        + " where o.idMaterias.idMaterias = " + materiasMatricula1.getIdMaterias().getIdMaterias() + "  "
+                        + " and o.idCarreras.idCarreras = " + mat.getIdCarreras().getIdCarreras() + " ");
+                try {
+                    (carMat.get(0)).setConvalidada(materiasMatricula1.getConvalidado());
+                } catch (Exception e) {
+                    (carMat.get(0)).setConvalidada(false);
+                }
+
+                try {
+                    (carMat.get(0)).setPagada(materiasMatricula1.getPagado());
+                } catch (Exception e) {
+                    (carMat.get(0)).setPagada(false);
+                }
+
+                (carMat.get(0)).setValor(materiasMatricula1.getValor());
+                destino.add(carMat.get(0));
+            }
+
 //            destino = adm.queryNativo(" Select c.* from Carreras_Materias as  c "
 //                    + " WHERE c.id_Materias in "
 //                    + "(Select o.id_Materias from Materias_Matricula as o WHERE o.id_Matriculas = '" + object.getIdMatriculas() + "' ) "
 //                    + " and c.id_Carreras = '" + object.getIdCarreras().getIdCarreras() + "' "
 //                    + " ", CarrerasMaterias.class);
-            
-            
+
+
 
             origen = adm.query("Select m from CarrerasMaterias as m "
                     + " where m.idCarreras.idCarreras = '" + carreraSeleccionado.getIdCarreras() + "' "
                     + " and m.idMaterias.idMaterias not in (Select o.idMaterias.idMaterias from Notas as o where o.estado = 'A' "
-                    + " and o.idMatriculas.idEstudiantes.idEstudiantes = '"+mat.getIdEstudiantes().getIdEstudiantes()+"' "
-                    + " and o.idMatriculas.idCarreras.idCarreras = '"+mat.getIdCarreras().getIdCarreras()+"') " 
+                    + " and o.idMatriculas.idEstudiantes.idEstudiantes = '" + mat.getIdEstudiantes().getIdEstudiantes() + "' "
+                    + " and o.idMatriculas.idCarreras.idCarreras = '" + mat.getIdCarreras().getIdCarreras() + "') "
                     + " order by m.idNiveles.secuencia");
             for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
                 CarrerasMaterias destItem = it.next();
                 origen.remove(destItem);
-            }   
+            }
             //BUSCAR MATERIAS APROBADAS Y QUITARLAS TAMBIÉNOON09N9KGFD444-,  J,M
 //            List<Materias> lista = adm.query("");
 //            for (Iterator<Materias> itMat = lista.iterator(); itMat.hasNext();) {
@@ -848,7 +849,7 @@ public class MatriculasBean2 {
         //ESTE METODO DEBE INICIALIZARSE CADA VEZ QUE CAMBIO DE ESPECIALDIAD
         try {
             CarrerasMaterias tmp = anadidasArray[0][0];
-            if (tmp== null ) {
+            if (tmp == null) {
                 buscarMateriasdeCarrera();
             }
         } catch (Exception e) {
@@ -1045,28 +1046,29 @@ public class MatriculasBean2 {
             java.util.logging.Logger.getLogger(CarrerasMateriasBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
+
     public String seleccionar(Matriculas obj) {
-            object = obj;
-            carreraSeleccionado = object.getIdCarreras();
-            categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
-            buscarMateriasMatricula(object);
-            if (object.getEstadoMat().equals("I") && (object.getPagadainscripcion() == null || object.getPagadainscripcion() == false)) {
-                FacesContext context = FacesContext.getCurrentInstance();
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante Inscrito no ha cancelado valores por INSCRIPCION...!"));
-            }
-            estudiante = (Estudiantes) adm.buscarClave(obj.getIdEstudiantes().getIdEstudiantes(), Estudiantes.class);
+        object = obj;
+        carreraSeleccionado = object.getIdCarreras();
+        categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
+        buscarMateriasMatricula(object);
+        if (object.getEstadoMat().equals("I") && (object.getPagadainscripcion() == null || object.getPagadainscripcion() == false)) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante Inscrito no ha cancelado valores por INSCRIPCION...!"));
+        }
+        estudiante = (Estudiantes) adm.buscarClave(obj.getIdEstudiantes().getIdEstudiantes(), Estudiantes.class);
 
         return null;
     }
-List<Matriculas> matriculasListado = new ArrayList<Matriculas>();
+    List<Matriculas> matriculasListado = new ArrayList<Matriculas>();
+
     protected void buscarMatricula(Estudiantes estudiante) {
-            matriculasListado = adm.query("Select o from Matriculas as o "
+        matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
-        if (matriculasListado.size() > 1) {     
+        if (matriculasListado.size() > 1) {
             return;
-        }else{
+        } else {
             if (matriculasListado.size() > 0) {
                 object = matriculasListado.get(0);
                 carreraSeleccionado = object.getIdCarreras();
@@ -1078,9 +1080,9 @@ List<Matriculas> matriculasListado = new ArrayList<Matriculas>();
                 }
 
             } else {
-                
-               FacesContext context = FacesContext.getCurrentInstance();
-               FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante no se Encuentra Inscrito o Matriculado...!"));
+
+                FacesContext context = FacesContext.getCurrentInstance();
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante no se Encuentra Inscrito o Matriculado...!"));
                 carreraSeleccionado = new Carreras(0);
                 object = new Matriculas(0);
                 //matriculasListado.add(object); 
@@ -1485,16 +1487,64 @@ List<Matriculas> matriculasListado = new ArrayList<Matriculas>();
             map.put("tituloReporte", "FICHA DE MATRICULA");
             map.put("titulo1", "USUARIO");
             map.put("titulo2", "# DE INFORMES");
-            List<Estudiantes> estu = new ArrayList<Estudiantes>();
-            estu.add(estudiante);
-            String query = "SELECT est.id_estudiantes cedula, est.apellido_paterno, est.apellido_materno, "
-                    + " est.nombre, mate.nombre materia, carma.numero_creditos, mat.numero, car.nombre carrera, per.fecha_inicio, per.fecha_fin, niv.nombre nivel     "
-                     + " FROM materias_matricula mama, matriculas mat, estudiantes est, materias mate, carreras_materias carma, carreras car, periodos per, niveles niv "
-                     + " WHERE mama.id_matriculas = "+object.getIdMatriculas()+" AND mama.id_matriculas = mat.id_matriculas  AND mate.id_materias = mama.id_materias  "
-                     + " AND est.id_estudiantes = mat.id_estudiantes  AND carma.id_materias = mate.id_materias AND carma.id_carreras = mat.id_carreras "
-                     + " AND car.id_carreras = mat.id_carreras AND mat.id_periodos = per.id_periodos "
-                    + " AND niv.id_niveles = carma.id_niveles  order by niv.secuencia ";
-            ExportarReportesCon ex = new ExportarReportesCon(query, "creditosMatricula", map);
+
+            BigDecimal valorConvOtra = new BigDecimal(0);
+            BigDecimal valorConvReingreso = new BigDecimal(0);
+            BigDecimal valorConvMisma = new BigDecimal(0);
+            List<Parametros> parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVOTRA' ");
+            if (parConvOtraList.size() > 0) {
+                valorConvOtra = parConvOtraList.get(0).getVNumerico();
+            }
+
+            parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVREINGRESO' ");
+            if (parConvOtraList.size() > 0) {
+                valorConvReingreso = parConvOtraList.get(0).getVNumerico();
+            }
+
+            parConvOtraList = adm.query("Select o from Parametros as o where o.variable = 'CONVMISMA' ");
+            if (parConvOtraList.size() > 0) {
+                valorConvMisma = parConvOtraList.get(0).getVNumerico();
+            }
+
+            List<MateriasMatricula> matri = adm.query("Select o from MateriasMatricula as o "
+                    + " where o.idMatriculas.idMatriculas = " + object.getIdMatriculas() + " ");
+            for (Iterator<MateriasMatricula> it = matri.iterator(); it.hasNext();) {
+                MateriasMatricula materiasMatricula1 = it.next();
+                List<CarrerasMaterias> care = adm.query("Select o from CarrerasMaterias as o where "
+                        + "o.idMaterias.idMaterias = '" + materiasMatricula1.getIdMaterias().getIdMaterias() + "' "
+                        + " and o.idCarreras.idCarreras = '" + materiasMatricula1.getIdMatriculas().getIdCarreras().getIdCarreras() + "' ");
+                materiasMatricula1.setNoCreditos(care.get(0).getNumeroCreditos());
+                System.out.println("" + care.get(0).getIdMaterias().getCredito());
+                try {
+                    if (materiasMatricula1.getConvalidado()) {
+                        materiasMatricula1.setValorCredito(materiasMatricula1.getValor().equals("R") ? valorConvReingreso : materiasMatricula1.getValor().equals("M") ? valorConvMisma : materiasMatricula1.getValor().equals("O") ? valorConvOtra : new BigDecimal(0));
+                        materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getValor().equals("R") ? valorConvReingreso : materiasMatricula1.getValor().equals("M") ? valorConvMisma : materiasMatricula1.getValor().equals("O") ? valorConvOtra : new BigDecimal(0));
+                    } else {
+                        materiasMatricula1.setValorCredito(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito());
+                        materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
+                    }
+                } catch (Exception e) {
+                        materiasMatricula1.setValorCredito(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito());
+                        materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
+                }
+
+                /*
+                 obj[3] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito();
+                 obj[4] = actualMatricula.getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(creditos));
+                 */
+                materiasMatricula1.setNoHoras(care.get(0).getNumeroHoras());
+            }
+//            estu.add(estudiante);
+//            String query = "SELECT est.id_estudiantes cedula, est.apellido_paterno, est.apellido_materno, "
+//                    + " est.nombre, mate.nombre materia, carma.numero_creditos, mat.numero, car.nombre carrera, per.fecha_inicio, per.fecha_fin, niv.nombre nivel     "
+//                     + " FROM materias_matricula mama, matriculas mat, estudiantes est, materias mate, carreras_materias carma, carreras car, periodos per, niveles niv "
+//                     + " WHERE mama.id_matriculas = "+object.getIdMatriculas()+" AND mama.id_matriculas = mat.id_matriculas  AND mate.id_materias = mama.id_materias  "
+//                     + " AND est.id_estudiantes = mat.id_estudiantes  AND carma.id_materias = mate.id_materias AND carma.id_carreras = mat.id_carreras "
+//                     + " AND car.id_carreras = mat.id_carreras AND mat.id_periodos = per.id_periodos "
+//                    + " AND niv.id_niveles = carma.id_niveles  order by niv.secuencia ";
+
+            ReporteActaMatricula ds = new ReporteActaMatricula(matri);
+            ExportarReportesSource ex = new ExportarReportesSource(ds, "creditosMatricula", map);
             if (tipo.equals("PDF")) {
                 ex.PDF();
             } else if (tipo.equals("DOCX")) {
@@ -1952,5 +2002,4 @@ List<Matriculas> matriculasListado = new ArrayList<Matriculas>();
     public void setMatriculasListado(List<Matriculas> matriculasListado) {
         this.matriculasListado = matriculasListado;
     }
-    
 }
