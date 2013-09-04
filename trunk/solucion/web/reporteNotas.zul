@@ -1117,7 +1117,7 @@ void campos(String valor){
             Long totalM = new Long(totalMatriculados.get(0).toString());
         for (Iterator  it = cursos.iterator(); it.hasNext();) {
             Cursos curso = it.next();
-            List listaMatriculasPerdidos = noti.cuadroverificar(curso, notas.get(0).getSistema());
+            List listaMatriculasPerdidos = noti.cuadroverificar(curso, notas.get(0).getSistema(),new Matriculas(-1));
             totalPerdidos += listaMatriculasPerdidos.size();
 
         }
