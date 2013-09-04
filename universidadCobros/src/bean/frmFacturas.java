@@ -1368,6 +1368,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 
         if (grabar == false) {
             limpiar();
+            totalCobros.setText("0.00");
             buscarApellido.setEnabled(true);
             editarDatos.setEnabled(true);
             llenarFactura();
