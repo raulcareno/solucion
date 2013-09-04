@@ -1087,6 +1087,13 @@ void campos(String valor){
             fila.visible = true;
             filacursos.visible = true;
             filaaportes.visible = true;
+        }else if(valor.equals("APREP2")){
+            curs.disabled = false;
+            sistemasCombo.disabled = false;
+            titulo.value= "Cuadro de Estadístico";
+            fila.visible = true;
+            filacursos.visible = true;
+            filaaportes.visible = true;APREP2
         }else{
             titulo.value= " ";
         }
@@ -1188,6 +1195,7 @@ void campos(String valor){
                                     <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
                                     <listitem  id="RESUL" label="Resultados de Aprendizajes(Desde 2010)" value="RESUL" />
                                     <listitem  id="APREP" label="Aprobados y Reprobados" value="APREP" />
+                                    <listitem  id="APREP2" label="Aprobados y Reprobados Listados" value="APREP2" />
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
