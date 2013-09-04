@@ -45,6 +45,8 @@ public class ReporteActaMatricula implements JRDataSource{
             valor = nodo.getIdMatriculas().getIdEstudiantes().getIdEstudiantes();
         }else if ("numero".equals(campo.getName())) {
             valor = nodo.getIdMatriculas().getNumero();
+        }else if ("categoria_social".equals(campo.getName())) {
+            valor = nodo.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getNombre();
         }else if ("fecha_inicio".equals(campo.getName())) {
             valor = nodo.getIdMatriculas().getIdPeriodos().getFechaInicio();
         }else if ("fecha_fin".equals(campo.getName())) {

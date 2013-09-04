@@ -95,12 +95,16 @@
                             <p:ajax event="change"  process="@this carrera" listener="#{matriculasBean2.buscarMateriasdeCarrera}" update=":form"/>
                         </p:selectOneMenu>    
                     </h:panelGrid> 
-                    <h:panelGrid  styleClass="texto" columns="8" cellpadding="-1" style="margin:0 ;">
+                    <h:panelGrid  styleClass="texto" columns="10" cellpadding="-1" style="margin:0 ;">
                         <h:outputText value="ESTADO: " />  
-                        <h:outputText value="#{matriculasBean2.object.estadoMat eq 'M' ? 'MATRICULADO':matriculasBean2.object.estadoMat eq 'I'?'INSCRITO':matriculasBean2.object.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;" />  
+                        <h:outputText value="#{matriculasBean2.object.estadoMat eq 'M' ? 'MATRICULADO':matriculasBean2.object.estadoMat eq 'I'?'INSCRITO':matriculasBean2.object.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;;color:blue" />  
                         <p:spacer width="40"/>
+                        <h:outputText value=" | " />  
                         <h:outputText value="No. MATRICULA: " />  
-                        <h:outputText value="#{matriculasBean2.object.numero}" id="NumeroMatricula"  style="font-weight:bold;"/>                                  
+                        <h:outputText value="#{matriculasBean2.object.numero}" id="NumeroMatricula"  style="font-weight:bold;;color:blue"/>
+                        <h:outputText value=" | " />  
+                        <h:outputText value="Categoría Social: " />  
+                        <h:outputText value="#{matriculasBean2.object.idEstudiantes.idCategoriasSociales.nombre}" id="CategoriaSocial"  style="font-weight:bold;color:blue"/>                                  
 
                     </h:panelGrid>
                     <p:panelGrid id="panelMaterias" columns="2">
@@ -162,12 +166,13 @@
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean2.guardar()}"  icon="guardar" title="Guardar"/>  
                     <p:commandButton value="Limpiar"  id="limpiar" update=":form" actionListener="#{matriculasBean2.limpiar()}" icon="nuevo" title="Nuevo"/>
+                    <h:commandLink actionListener="#{matriculasBean2.fichaMatricula('PDF')}" style="width: 32px; height: 103px " styleClass="print" action="/reporteView.html" target="_blank"> 
+                    <img src="../images/print.png" width="103" height="32" alt="print"/>
+                </h:commandLink>
                     <!--p:splitButton  value="PDF" ajax="false" onclick="window.open('./reporteView.jspx','_blank')" oncomplete="#{matriculasBean2.fichaMatricula('PDF')}" icon="ui-icon-print">  
                     </p:splitButton-->  
                 </h:panelGrid>
-                <h:commandLink actionListener="#{matriculasBean2.fichaMatricula('PDF')}" style="width: 32px; height: 103px " styleClass="print" action="/reporteView.html" target="_blank"> 
-                    <img src="../images/print.png" width="103" height="32" alt="print"/>
-                </h:commandLink>
+                
             </h:form>
             
 

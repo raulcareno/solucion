@@ -1515,17 +1515,27 @@ public class MatriculasBean2 {
                         + " and o.idCarreras.idCarreras = '" + materiasMatricula1.getIdMatriculas().getIdCarreras().getIdCarreras() + "' ");
                 materiasMatricula1.setNoCreditos(care.get(0).getNumeroCreditos());
                 System.out.println("" + care.get(0).getIdMaterias().getCredito());
+                //obj[4] = new BigDecimal(carM.getNumeroCreditos()).multiply(carM.getIdMaterias().getCredito());
                 try {
                     if (materiasMatricula1.getConvalidado()) {
                         materiasMatricula1.setValorCredito(materiasMatricula1.getValor().equals("R") ? valorConvReingreso : materiasMatricula1.getValor().equals("M") ? valorConvMisma : materiasMatricula1.getValor().equals("O") ? valorConvOtra : new BigDecimal(0));
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getValor().equals("R") ? valorConvReingreso : materiasMatricula1.getValor().equals("M") ? valorConvMisma : materiasMatricula1.getValor().equals("O") ? valorConvOtra : new BigDecimal(0));
-                    } else {
+                    }else if (materiasMatricula1.getIdMaterias().getEspecial()) {
+                        materiasMatricula1.setValorCredito(materiasMatricula1.getIdMaterias().getCredito());
+                        materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMaterias().getCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
+                    }else{
                         materiasMatricula1.setValorCredito(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito());
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
                     }
                 } catch (Exception e) {
+                    if (materiasMatricula1.getIdMaterias().getEspecial()) {
+                        materiasMatricula1.setValorCredito(materiasMatricula1.getIdMaterias().getCredito());
+                        materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMaterias().getCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
+                    }else{
                         materiasMatricula1.setValorCredito(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito());
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
+                    }
+                    
                 }
 
                 /*

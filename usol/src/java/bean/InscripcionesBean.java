@@ -218,6 +218,7 @@ public class InscripcionesBean {
             arTitulo = new Archivos();
         }
         object.setIdEstudiantes(estudiante);
+        object.setEstadoMat("I"); 
         estudiante.setSexo("M");
         //estudiante.setTipoIdentificacion("C");
         foto1 = null;
@@ -518,17 +519,17 @@ public class InscripcionesBean {
 
         }
         //GUARDO LAS MATERIAS DE LA MATRICULA
-        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' ");
-        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-            CarrerasMaterias carrerasMaterias = it.next();
-            MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
-            matMat.setIdMaterias(carrerasMaterias.getIdMaterias());
-            matMat.setIdMatriculas(object);
-            //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
-            matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat);
-
-        }
+//        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' ");
+//        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+//            CarrerasMaterias carrerasMaterias = it.next();
+//            MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
+//            matMat.setIdMaterias(carrerasMaterias.getIdMaterias());
+//            matMat.setIdMatriculas(object);
+//            //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
+//            matMat.setNumeroMatricula(object.getNumero());
+//            adm.guardar(matMat);
+//
+//        }
 
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
@@ -1309,7 +1310,7 @@ public class InscripcionesBean {
         }
         buscarMatricula(estudiante);
         try {
-                if (categoriaSeleccionado.getIdCategoriasSociales() == null) {
+                if (estudiante.getIdCategoriasSociales() == null) {
                 List<CategoriasSociales> datos = adm.query("Select o from CategoriasSociales as o order by o.nombre ");
                 if (datos.size() > 0) {
                     estudiante.setIdCategoriasSociales(datos.get(0));

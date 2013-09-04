@@ -145,7 +145,7 @@ public class OrientacionBean implements Serializable{
         if (!permisos.verificarPermisoReporte("BienestarEstudiantil", "ingresar_orientacion.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/bases/noPuedeIngresar.jspx");
             } //selectedMatriculas = new Matriculas();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(MatriculasBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -475,18 +475,18 @@ public class OrientacionBean implements Serializable{
             }
 
         }
-        //GUARDO LAS MATERIAS DE LA MATRICULA
-        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' ");
-        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
-            CarrerasMaterias carrerasMaterias = it.next();
-            MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
-            matMat.setIdMaterias(carrerasMaterias.getIdMaterias());
-            matMat.setIdMatriculas(object);
-            //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
-            matMat.setNumeroMatricula(object.getNumero());
-            adm.guardar(matMat);
-
-        }
+//        //GUARDO LAS MATERIAS DE LA MATRICULA
+//        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' ");
+//        for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
+//            CarrerasMaterias carrerasMaterias = it.next();
+//            MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
+//            matMat.setIdMaterias(carrerasMaterias.getIdMaterias());
+//            matMat.setIdMatriculas(object);
+//            //matMat.setTipo(carrerasMaterias.getIdEjes().getNombre());
+//            matMat.setNumeroMatricula(object.getNumero());
+//            adm.guardar(matMat);
+//
+//        }
 
         estudiante.setClave(cl.desencriptar(estudiante.getClave()));
         return null;
@@ -1294,6 +1294,7 @@ public class OrientacionBean implements Serializable{
                 CategoriasSociales categoriasSociales = it.next();
                 if (categoriasSociales.getNombre().equals(letraCat)) {
                     categoriaSeleccionado = categoriasSociales;
+                    break;
                 }
             }
             if (categoriaSeleccionado == null) {
