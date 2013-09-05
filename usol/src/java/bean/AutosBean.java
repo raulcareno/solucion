@@ -66,7 +66,7 @@ public class AutosBean {
     }
 
     public String editarAction(Autos obj) {
-        inicializar();
+        //inicializar();
 
         object = obj;
         System.out.println("" + object.getIdAutos());

@@ -66,7 +66,7 @@ public class OtrosIngresosBean {
     }
 
     public String editarAction(OtrosIngresos obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdOtrosIngresos());

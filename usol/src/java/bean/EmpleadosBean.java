@@ -114,7 +114,7 @@ public class EmpleadosBean{
     }
 
     public String editarAction(Empleados obj) {
-        inicializar();
+        //inicializar();
         object = obj;
         obj.setClave(cl.desencriptar(obj.getClave()));
         clave2 = obj.getClave();

@@ -66,7 +66,7 @@ public class HorasBean {
     }
 
     public String editarAction(Horas obj) {
-        inicializar();
+        //inicializar();
 
         object = obj;
         System.out.println("" + object.getIdHoras());

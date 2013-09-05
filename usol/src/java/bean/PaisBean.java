@@ -66,7 +66,7 @@ public class PaisBean {
     }
 
     public String editarAction(Pais obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdPais());

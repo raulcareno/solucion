@@ -70,7 +70,7 @@ public class AulasBean {
     }
 
     public String editarAction(Aulas obj) {
-        inicializar();
+        //inicializar();
 
         object = obj;
         System.out.println("" + object.getIdAulas());

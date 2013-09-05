@@ -66,7 +66,7 @@ public class NivelesBean {
     }
 
     public String editarAction(Niveles obj) {
-        inicializar();
+     //   inicializar();
 
         object = obj;
         System.out.println("" + object.getIdNiveles());

@@ -37,6 +37,7 @@ import jcinform.persistencia.Canton;
 import jcinform.persistencia.Carreras;
 import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.CategoriasSociales;
+import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
@@ -679,6 +680,7 @@ public class MatriculasBean2 {
                 List<CarrerasMaterias> carMat = adm.query("Select o from CarrerasMaterias as o "
                         + " where o.idMaterias.idMaterias = " + materiasMatricula1.getIdMaterias().getIdMaterias() + "  "
                         + " and o.idCarreras.idCarreras = " + mat.getIdCarreras().getIdCarreras() + " ");
+                System.out.println(""+materiasMatricula1.getIdMaterias().getNombre()+" "+materiasMatricula1.getIdMaterias().getIdMaterias());
                 try {
                     (carMat.get(0)).setConvalidada(materiasMatricula1.getConvalidado());
                 } catch (Exception e) {
@@ -1487,6 +1489,8 @@ public class MatriculasBean2 {
             map.put("tituloReporte", "FICHA DE MATRICULA");
             map.put("titulo1", "USUARIO");
             map.put("titulo2", "# DE INFORMES");
+            map.put("usuario", ""+((Empleados) context.getExternalContext().getSessionMap().get("user")).getApellidoPaterno()+" "+((Empleados) context.getExternalContext().getSessionMap().get("user")).getNombre());
+            map.put("fecha", adm.Date());
 
             BigDecimal valorConvOtra = new BigDecimal(0);
             BigDecimal valorConvReingreso = new BigDecimal(0);

@@ -65,7 +65,7 @@ public class RubrosBean {
     }
 
     public String editarAction(Rubros obj) {
-        inicializar();
+//        inicializar();
         object = obj;
         System.out.println("" + object.getIdRubros());
         return null;

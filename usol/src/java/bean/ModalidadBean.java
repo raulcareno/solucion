@@ -66,7 +66,7 @@ public class ModalidadBean {
     }
 
     public String editarAction(Modalidad obj) {
-        inicializar();
+        //inicializar();
 
         object = obj;
         System.out.println("" + object.getIdModalidad());

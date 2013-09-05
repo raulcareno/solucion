@@ -67,7 +67,7 @@ public class RangosIngresosBean {
     }
 
     public String editarAction(RangosIngresos obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdRangosIngresos());

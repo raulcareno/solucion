@@ -67,7 +67,7 @@ Auditar  aud = new Auditar();
     }
 
     public String editarAction(Carreras obj) {
-        inicializar();
+        //inicializar();
 
         object = obj;
         return null;

@@ -66,7 +66,7 @@ Auditar  aud = new Auditar();
     }
 
     public String editarAction(Bancos obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdBancos());

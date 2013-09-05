@@ -67,7 +67,7 @@ public class RangosGpaBean {
     }
 
     public String editarAction(RangosGpa obj) {
-        inicializar();
+////        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdRangosGpa());

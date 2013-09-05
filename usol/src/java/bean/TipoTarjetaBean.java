@@ -66,7 +66,7 @@ public class TipoTarjetaBean {
     }
 
     public String editarAction(TipoTarjeta obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdTipoTarjeta());

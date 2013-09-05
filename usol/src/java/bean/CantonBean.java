@@ -70,7 +70,7 @@ public class CantonBean {
     }
 
     public String editarAction(Canton obj) {
-        inicializar();
+        //inicializar();
         object = obj;
         paisSeleccionado = object.getIdProvincia().getIdPais();
         buscarProvincia();

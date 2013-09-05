@@ -66,7 +66,7 @@ public class FacultadBean {
     }
 
     public String editarAction(Facultad obj) {
-        inicializar();
+       // inicializar();
 
         object = obj;
         System.out.println("" + object.getIdFacultad());

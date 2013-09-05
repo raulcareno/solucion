@@ -65,7 +65,7 @@ Auditar  aud = new Auditar();
     }
 
     public String editarAction(CategoriasSociales obj) {
-        inicializar();
+     //   inicializar();
 
         object = obj;
         System.out.println("" + object.getIdCategoriasSociales());

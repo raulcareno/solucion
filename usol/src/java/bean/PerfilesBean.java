@@ -67,7 +67,7 @@ public class PerfilesBean {
     }
 
     public String editarAction(Perfiles obj) {
-        inicializar();
+//        inicializar();
         object = obj;
         System.out.println("" + object.getIdPerfiles());
         return null;

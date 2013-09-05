@@ -68,7 +68,7 @@ Auditar  aud = new Auditar();
     }
 
     public String editarAction(Materias obj) {
-        inicializar();
+        //inicializar();
         object = obj;
         System.out.println("" + object.getIdMaterias());
         return null;

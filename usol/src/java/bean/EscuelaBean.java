@@ -68,7 +68,7 @@ Auditar  aud = new Auditar();
     }
 
     public String editarAction(Escuela obj) {
-        inicializar();
+        //inicializar();
         object = obj;
         System.out.println("" + object.getIdEscuela());
         return null;

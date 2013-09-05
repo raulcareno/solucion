@@ -66,7 +66,7 @@ public class TipoViviendaBean {
     }
 
     public String editarAction(TipoVivienda obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdTipoVivienda());

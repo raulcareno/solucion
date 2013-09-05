@@ -66,7 +66,7 @@ public class JornadaBean {
     }
 
     public String editarAction(Jornada obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdJornada());

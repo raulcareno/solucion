@@ -66,7 +66,7 @@ public class EjesBean {
     }
 
     public String editarAction(Ejes obj) {
-        inicializar();
+       // inicializar();
 
         object = obj;
         System.out.println("" + object.getIdEjes());

@@ -67,7 +67,7 @@ public class TipoMateriaBean {
     }
 
     public String editarAction(TipoMateria obj) {
-        inicializar();
+//        inicializar();
 
         object = obj;
         System.out.println("" + object.getIdTipoMateria());

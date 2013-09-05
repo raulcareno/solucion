@@ -68,7 +68,7 @@ Auditar  aud = new Auditar();
     }
 
     public String editarAction(Provincia obj) {
-        inicializar();
+        //inicializar();
         object = obj;
         System.out.println("" + object.getIdProvincia());
         return null;
