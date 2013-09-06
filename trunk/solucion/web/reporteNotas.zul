@@ -1093,7 +1093,7 @@ void campos(String valor){
             titulo.value= "Cuadro de Estadístico";
             fila.visible = true;
             filacursos.visible = true;
-            filaaportes.visible = true;APREP2
+            filaaportes.visible = true;
         }else{
             titulo.value= " ";
         }
