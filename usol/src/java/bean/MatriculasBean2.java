@@ -39,6 +39,7 @@ import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.CategoriasSociales;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
+import jcinform.persistencia.HorariosMatricula;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.Matriculas;
@@ -87,6 +88,7 @@ public class MatriculasBean2 {
     Estudiantes estudiante;
     Administrador adm;
     protected List<Matriculas> model;
+    protected List<HorariosMatricula> horariosMatriculas;
     protected List<MateriasMatricula> materiasMatricula;
     protected List<Parientes> modelParientes;
     public String textoBuscar;
@@ -156,7 +158,13 @@ public class MatriculasBean2 {
         //selectedMatriculas = new Matriculas();
 
     }
-
+   public void buscarHorariosAsignadas() {
+        origen = adm.queryNativo(" Select o.* from Materias as o "
+                + "where o.id_materias not in (Select m.id_Materias from Matriculas_Materias as m where m.id_Matriculas = '" + object.getIdMatriculas() + "') "
+                + " order by o.nombre ", Materias.class);
+        destino = adm.query("Select m.idMaterias from MateriasMatricula as m where m.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "' "
+                + " order by m.idMaterias.nombre ");
+    }
     public void buscarMateriasNoAsignadas() {
         origen = adm.queryNativo(" Select o.* from Materias as o "
                 + "where o.id_materias not in (Select m.id_Materias from Matriculas_Materias as m where m.id_Matriculas = '" + object.getIdMatriculas() + "') "

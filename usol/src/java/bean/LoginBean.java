@@ -107,10 +107,26 @@ public class LoginBean {
         }
         return null;
     }
+    List<Periodos> periodosListados3 =null;
+      public List<Periodos> cargarPeriodos() {
+        try {
+            periodosListados3 = adm.query("Select o from Periodos as o order by o.orden, o.fechaInicio ");
+            return periodosListados3;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(EmpleadosBean.class.getName()).log(Level.SEVERE, null, e);
 
-    public String cambiarPeriodo() {
+        }
+        return null;
+    }
+
+    public String cambiarPeriodo(Periodos periodo) {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("periodo");
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodoSeleccionado);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodo);
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/index.jspx");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return null;
     }
     public String cedula;
@@ -522,4 +538,13 @@ public class LoginBean {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
+
+    public List<Periodos> getPeriodosListados3() {
+        return periodosListados3;
+    }
+
+    public void setPeriodosListados3(List<Periodos> periodosListados3) {
+        this.periodosListados3 = periodosListados3;
+    }
+    
 }

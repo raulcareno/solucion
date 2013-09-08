@@ -48,6 +48,7 @@
                         </p:submenu>  
 
                         <p:menuitem value="Cambiar Clave"  url="/bases/cambiarClave.jspx"  icon="cambiarclave" />  
+                        <p:menuitem value="Cambiar Periodo"  oncomplete="variasMatriculas.show();" actionListener="#{loginBean.cargarPeriodos()}" update="modalPeriodo" icon="periodos" />  
                         <p:menuitem value="Salir"  actionListener="#{loginBean.cerrarSesion()}"  icon="salir" />  
                     </p:menubar>  
 
@@ -59,6 +60,29 @@
             <p:dialog modal="false" position="right" widgetVar="statusDialog" header="Estado..."   
                       draggable="false" closable="false">  
                 <p:graphicImage width="110" value="/images/procesando.gif" />  
+            </p:dialog> 
+
+            <p:dialog   id="modalPeriodo" header="SELECCIONE UN PERIODO" widgetVar="variasMatriculas" modal="true" position="top" height="250" width="600">  
+                <p:panel>
+                    <p:dataTable id="listaMatriculas" var="per" value="#{loginBean.periodosListados3}">  
+                        <p:column  headerText="INICIO">  
+                            <h:outputText value="#{per.fechaInicio}" >  
+                                <f:convertDateTime pattern="dd/MMMM/yyyy"/>  
+                            </h:outputText> 
+                        </p:column> 
+                        <p:column  headerText="FIN">
+                            <h:outputText value="#{per.fechaFin}" >  
+                                <f:convertDateTime pattern="dd/MMMM/yyyy"/>  
+                            </h:outputText> 
+                        </p:column>  
+                        <p:column  headerText="Acción">  
+                            <p:commandButton   actionListener="#{loginBean.cambiarPeriodo(per)}" ajax="false" update=":form" oncomplete="variasMatriculas.hide()" icon="ui-icon-circle-arrow-s">  
+                            </p:commandButton>  
+                        </p:column>  
+                    </p:dataTable>  
+                    <p:commandButton value="CERRAR"   onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
+                    </p:commandButton>      
+                </p:panel>
             </p:dialog> 
             <!--p:ajaxStatus style="width:24px;height:24px;position:fixed;right:80px;bottom:100px">  
                       <f:facet name="start">  

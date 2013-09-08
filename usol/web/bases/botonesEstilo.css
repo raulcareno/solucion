@@ -38,6 +38,9 @@
     .salir{
         background-image: url('../images/salir.gif') !important;
     }
+    .periodos{
+        background-image: url('../images/periodos.png') !important;
+    }
 
     .inicio{
         background-image: url('../images/inicio.png') !important;

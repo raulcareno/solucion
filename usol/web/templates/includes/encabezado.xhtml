@@ -31,7 +31,7 @@
                     <h:panelGrid style="background-color:transparent;border-color: transparent;"  columns="12">
                         <h:outputText style="font-weight: bold;font-size: 10px;color: #919396" rendered="#{not empty periodo}"   value="Usuario: "/>
                         <h:outputText style="font-size: 10px"  rendered="#{not empty user}"  value="#{user.apellidoPaterno} #{user.nombre} | "/>
-
+                        <p:spacer height="5" width="30"/>
                         <h:outputText style="font-weight: bold;font-size: 10px;color: #919396" rendered="#{not empty periodo}"   value="DESDE:"/>
                         <h:outputText style="font-weight: bold;font-size: 10px"   value="#{periodo.fechaInicio}">
                             <f:convertDateTime dateStyle="long"/>
@@ -42,6 +42,7 @@
                             <f:convertDateTime dateStyle="long"/>
                         </h:outputText>  
 
+                        <p:spacer height="5" width="30"/>
                         <h:outputText style="font-weight: bold;font-size: 10px;color:black" value="| ACTIVO" rendered="#{periodo.activo  and  not empty periodo }"/>
                         <h:outputText style="font-weight: bold;font-size: 10px;color:red" value="| CERRADO" rendered="#{!periodo.activo  and  not empty periodo}"/>
                         <h:outputText style="font-weight: bold;font-size: 10px;color:blue" value="| PROXIMO" rendered="#{periodo.proximo  and  not empty periodo}"/>
