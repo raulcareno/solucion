@@ -1172,7 +1172,8 @@ void campos(String valor){
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
                                     <listitem id="NMAT2"  label="Cuadro de Calificaciones Quimetral" value="NMAT2" />
-                                    <listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" />
+                                    <!--listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" /-->
+                                    <!-- PARA PRIMARIA EN PERIODO 2011-2012 -->
                                     <listitem id="CCALB"  label="Cuadro Final de Calificaciones-Basica" value="CCALB" />
                                     
                                     <listitem  id="CNF5" label="Cuadro Juntas x Aportes" value="CNF5" />
@@ -1185,17 +1186,7 @@ void campos(String valor){
                                     <listitem  id="CNF4" label="Cuadro Final(10)" value="CNF4" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="CFAL" label="Cuadro de Faltas" value="CFAL"/>
-                                    <listitem  id="linea0281222" label="============ ESTADISTICOS =============" value="linea2801222" />
-                                    <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
-                                    <listitem  id="PROC" label="Promedios x Materias y Curso " value="PROC" />
-                                    <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
-                                    <listitem  id="MEJ2" label="Bajo Rendimiento por Curso" value="MEJ2"/>
-                                    <listitem  id="EST" label="Estadístico por Curso" value="EST" />
-                                    <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
-                                    <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
-                                    <listitem  id="RESUL" label="Resultados de Aprendizajes(Desde 2010)" value="RESUL" />
-                                    <listitem  id="APREP" label="Aprobados y Reprobados" value="APREP" />
-                                    <listitem  id="APREP2" label="Aprobados y Reprobados Listados" value="APREP2" />
+
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
@@ -1219,6 +1210,19 @@ void campos(String valor){
                                     <listitem  id="EXAMESP" label="Examenes de Grado por Especialidad" value="EXAMESP"/>
                                     <listitem  id="EXAMESPS" label="Examenes de Grado por Especialidad(Suspendidos)" value="EXAMESPS"/>
                                     <listitem  id="MEJE" label="Mejor egresado(*)" value="MEJE"/>
+                                    
+                                    <listitem  id="linea0281222" label="============ ESTADISTICOS =============" value="linea2801222" />
+                                    <listitem  id="PCUR" label="Promedios por Curso" value="PCUR"/>
+                                    <listitem  id="PROC" label="Promedios x Materias y Curso " value="PROC" />
+                                    <listitem  id="MEJ" label="Mejores por Curso" value="MEJ"/>
+                                    <listitem  id="MEJ2" label="Bajo Rendimiento por Curso" value="MEJ2"/>
+                                    <listitem  id="EST" label="Estadístico por Curso" value="EST" />
+                                    <listitem  id="ESTA" label="Estadístico de Rendimiento por Curso" value="ESTA" />
+                                    <listitem  id="ESTAD" label="Estadístico de Rendimiento por Distributivo" value="ESTAD" />
+                                    <listitem  id="RESUL" label="Resultados de Aprendizajes(Desde 2010)" value="RESUL" />
+                                    <listitem  id="APREP" label="Aprobados y Reprobados" value="APREP" />
+                                    <listitem  id="APREP2" label="Aprobados y Reprobados Listados" value="APREP2" />
+                                    
                                     <listitem  id="linea001" label="============RECORDS=============" value="linea" />
                                     <listitem  id="RECC" label="Record Académico por Paralelos" value="RECC"/>
                                     <listitem  id="RECE" label="Record Académico por Especialidad" value="RECE"/>
