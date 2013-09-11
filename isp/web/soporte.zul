@@ -414,7 +414,7 @@ void guardars(){
                            
                                        noorden.value = sop.getNoorden();
                                               if(valorEstado.equals(3) || valorEstado.equals(4) ){  //GENERAR ORDEN DE COMPRA
-                                         
+                                                    String directorioReportes = empresa.getReportes();
                                                    Map parameters = new HashMap();
                                                    System.out.println("00000");
                                              
@@ -427,15 +427,22 @@ void guardars(){
                                                     parameters.put("observacion2", solucion.value);
                                                     parameters.put("telefono", empresa.getTelefono());
                                                     parameters.put("cliente", combo.value);
+                                                    parameters.put("empleado", usuarioActual.getApellidos()+" "+usuarioActual.getNombres());
                                                     parameters.put("noorden", sop.getNoorden());
                                                     try{
                                                        parameters.put("tecnico",sop.getTecnico().getApellidos()+ " "+sop.getTecnico().getNombres() );
                                                     }catch(Exception ar){System.out.println("ERROR EN TECNICO"+ar);}
+                                                    
+                                                    try{
+                                                       parameters.put("escalado",(empleadosListEs.selectedItem.value).getApellidos()+ " "+(empleadosListEs.selectedItem.value).getNombres() );
+                                                    }catch(Exception ar){System.out.println("ERROR EN TECNICO"+ar);}
+                                                    
+                                                    
                                                     System.out.println("00002");
                                                     parameters.put("telefono1", telefonoi.value);
                                                     parameters.put("direccion1", direccioni.value);
                                                     System.out.println("00003");
-                                                    reportelocal.setSrc("/jcinform/bean/reportes/jrxml/orden.jasper");
+                                                    reportelocal.setSrc(directorioReportes+ "/orden.jasper");
                                                     reportelocal.setParameters(parameters);
                                                     reportelocal.setDatasource(null);
                                                     reportelocal.setType("pdf");
