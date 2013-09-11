@@ -78,6 +78,7 @@ cantonTodos.setNombre("- TODOS - ");
             parametros.put("desde", desde.value);
             parametros.put("hasta", hasta.value);
             parametros.put("estado", estadoContrato.selectedItem.value);
+            parametros.put("empleado",user.getApellidos()+" "+user.getNombres() );
             try{
                 parametros.put("canton", cant.selectedItem.value+"");
                 parametros.put("sector", sectorList.selectedItem.value+"");
@@ -94,9 +95,9 @@ cantonTodos.setNombre("- TODOS - ");
                         cclientev = -1; //TODOS LOS CLIENTES
                 }
                 if(cclientev.equals(-1)){
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value),estadoContrato.selectedItem.value);
                 }else{
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value));
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value),estadoContrato.selectedItem.value);
                 }
                 
                 
@@ -404,11 +405,11 @@ void campos(String valor){
                             <span>
                                 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="400px"  mold="select" >
                                     <listitem disabled="true" label="[Seleccione]" value="-1" selected="true" />
-                                    <listitem  disabled="true" id="linea0" label="========CLIENTES==============" value="linea" />
+                                    <!--listitem  disabled="true" id="linea0" label="========CLIENTES==============" value="linea" />
                                     <listitem id="CXCLI" label="Cuentas x Cobrar x Clientes" value="CXCLI" />
-                                    <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" />
+                                    <listitem id="COBROS"  label="Cuentas Cobradas por Clientes " value="COBROS" /-->
                                     <listitem id="ARQUEOU" label="Reporte Diario de Caja X Fechas y Usuario" value="ARQUEOU" />
-                                    <listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" />
+                                    <!--listitem id="PORSECTOR" label="Valores x Cobrar por Sectores" value="PORSECTOR" /-->
  
           
                                 </listbox>
