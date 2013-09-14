@@ -239,6 +239,7 @@ void llenar(Sistemacalificacion empa){
     requerida.checked = empa.getRequerida();
     espromedio.checked = empa.getEspromedio();
     ensupletorio.checked = empa.getEnsupletorio();
+    promedioparcial.checked = empa.getPromedioparcial();
     esequivalencia.checked = empa.getEsequivalencia();
     sacapromedio.checked = empa.getConsulta();  //saca promedio en la libreta
     formula.value = empa.getFormula();
@@ -277,7 +278,10 @@ void llenar(Sistemacalificacion empa){
             remedial.selected = true;
         }else if(empa.getPromediofinal().equals("GR")){
             gracia.selected = true;
-        } 
+        }  
+           
+       
+        
 
         if(empa.getTrimestre()!=null){
          for (int i = 0; i <= trime.getItems().size(); i++) {
@@ -318,6 +322,7 @@ void estado(Boolean estado,Boolean modificar){
 conducta.readonly =estado;
 espromedio.disabled= estado;
 ensupletorio.disabled= estado;
+promedioparcial.disabled= estado;
 esequivalencia.disabled= estado;
 sacapromedio.disabled = estado;
 }
@@ -349,6 +354,7 @@ sacapromedio.disabled = estado;
         empa.setRequerida(requerida.checked);
         empa.setEspromedio(espromedio.checked);
         empa.setEnsupletorio(ensupletorio.checked);
+        empa.setPromedioparcial(promedioparcial.checked);
         empa.setEsequivalencia(esequivalencia.checked);
         empa.setConsulta(sacapromedio.checked); //saca promedio en la libreta
 
@@ -702,6 +708,7 @@ if(formula1.equals("")){
                                 <separator bar="true" orient="vertical" />
                                 <checkbox id="ensupletorio" label="Impr.Supletorios"/> 
                                 <separator bar="true" orient="vertical" />
+                                <checkbox id="promedioparcial" label="Prom.Parc"/>
                                 
                             </span>
                         </row>
@@ -709,7 +716,8 @@ if(formula1.equals("")){
                             <span style="float:right"> Tipo de Nota:</span>
                             <span>
                                 <radiogroup id="promedios">
-                                    <radio id="sumatoria" value="SM" label="Sumatoria"/>
+                                    
+                                    <radio id="sumatoria" value="SM" label="Sumat."/>
                                     <radio id="promediogeneral" value="PG" label="Prom.Gen."/>
                                     <radio id="promediofinal" value="PF"  label="Prom.Final"/>
                                     <radio id="supletorio"  value="SU" label="Suplet."/>
