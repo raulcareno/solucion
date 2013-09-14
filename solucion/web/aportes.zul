@@ -675,40 +675,43 @@ if(formula1.equals("")){
                             <span>Aprovechamiento:
                                 <decimalbox id="aprovechamiento" maxlength="5" cols="5"  format="#,##0.##"/> Disciplina:
                                 <decimalbox id="conducta" maxlength="5" cols="5" format="#,##0.##"/> 
+                                <span> Orden(*):</span>
+                                <intbox id="orden" cols="4"  onChange="verificarOrden(self.value)" />
                             </span>
                         </row>
                         <row spans="2"> 
                             <span style="float:center" >
-                                <separator bar="false" orient="vertical"  />
-                                <separator bar="false" orient="vertical"  />
+                                
                                 <separator bar="false" orient="vertical"  />
                                 <separator bar="false" orient="vertical" />
-                                <checkbox label="Imprime en Reportes" id="seimprime"/> 
+                                <checkbox label="¿Imprime en Reportes?" id="seimprime"/> 
                                 <separator bar="true" orient="vertical" />
         
-                                <checkbox id="esdisciplina" label="Ingresa Disciplina" />
+                                <checkbox id="esdisciplina" label="¿Ingresa Disciplina?" />
                                 <separator bar="true" orient="vertical" />
          
-                                <checkbox label="Ingresa Faltas" id="faltas"/>     
+                                <checkbox label="¿Ingresa Faltas?" id="faltas"/>     
                                 <separator bar="true" orient="vertical" />
                                 
-                                <checkbox label="Es Requerida" id="requerida"/>     
+                                <checkbox label="¿Es Requerida?" id="requerida"/>     
                                 <separator bar="true" orient="vertical" />
+                                
                             </span>
                         </row>
 
-                        <row> 
-                            <span style="float:right"> Orden(*):</span>
-                            <span>
-                                <intbox id="orden" cols="5"  onChange="verificarOrden(self.value)" />
+                        <row spans="2" > 
+                            
+                            <span  style="float:center" >
+                          
+                                <separator bar="false" orient="vertical"  /> <separator bar="false" orient="vertical" />
+                                <checkbox id="espromedio" label="¿Impr. en Prom Final?"/> 
                                 <separator bar="true" orient="vertical" />
-                                <checkbox id="espromedio" label="Impr. en Prom Final"/> 
+                                <checkbox id="promedioparcial" label="¿Imp. en Prom.Parc?"/>
                                 <separator bar="true" orient="vertical" />
-                                <checkbox id="esequivalencia" label="Es Equivalencia"/> 
+                                <checkbox id="esequivalencia" label="¿Es Equivalencia?"/> 
                                 <separator bar="true" orient="vertical" />
-                                <checkbox id="ensupletorio" label="Impr.Supletorios"/> 
-                                <separator bar="true" orient="vertical" />
-                                <checkbox id="promedioparcial" label="Prom.Parc"/>
+                                <checkbox id="ensupletorio" label="¿Impr.Supletorios?"/> 
+                                
                                 
                             </span>
                         </row>
@@ -731,19 +734,19 @@ if(formula1.equals("")){
  
                         <row> 
                             <span style="float:right"> Trimestre:</span>
-                        <span>  
-                            <listbox mold="select" id="trime" width="250px" onSelect="cargar(((Trimestres)self.selectedItem.value));">
-                                <listhead>
-                                    <listheader label="Description"/>
-                                </listhead>
-                                <listitem selected="true" forEach="${trimestres}" value="${each}">
-                                    <listcell label="${each.descripcion}" />
+                            <span>  
+                                <listbox mold="select" id="trime" width="250px" onSelect="cargar(((Trimestres)self.selectedItem.value));">
+                                    <listhead>
+                                        <listheader label="Description"/>
+                                    </listhead>
+                                    <listitem selected="true" forEach="${trimestres}" value="${each}">
+                                        <listcell label="${each.descripcion}" />
 
-                                </listitem>
-                            </listbox>
-                            <separator bar="true" orient="vertical" />
-                            <checkbox id="sacapromedio" label="No Calcula Promedio en Libreta"/> 
-                        </span>
+                                    </listitem>
+                                </listbox>
+                                <separator bar="true" orient="vertical" />
+                                <checkbox id="sacapromedio" label="No Calcula Promedio en Libreta"/> 
+                            </span>
 
                         </row>
                         <row>
@@ -800,13 +803,13 @@ if(formula1.equals("")){
                               
                                 <button label="Añadir SubAportes" disabled="true" id="anadirSubAportes" image="/images/editar.gif" >
                                     <attribute name="onClick">{
-                                final Window win = (Window) Executions.createComponents("evaluacionSub.zul", null, null);
-                                win.setMaximizable(true);
-                                win.setClosable(true);
-                                win.setAttribute("codigo", codigo.value);
-                                win.setTitle("AÑADIR SUB REPORTES");
-                                win.doModal();
-                            }                            
+                                        final Window win = (Window) Executions.createComponents("evaluacionSub.zul", null, null);
+                                        win.setMaximizable(true);
+                                        win.setClosable(true);
+                                        win.setAttribute("codigo", codigo.value);
+                                        win.setTitle("AÑADIR SUB REPORTES");
+                                        win.doModal();
+                                        }                            
                                     </attribute>
                                 </button>
                               
