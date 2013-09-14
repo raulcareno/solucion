@@ -624,6 +624,11 @@ void recalcular(){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadrocalificaciones(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluirfaltas.checked,incluirpromedio.checked,incluirfaltasydias.checked);
                     report.setSrc(directorioReportes+"cuadrocalificaciones3.jasper");
+            }else if(tipo.equals("CCAL4")){
+                    //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadrojuntasMinisterio(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    report.setSrc(directorioReportes+"cuadrocalificacionesMinisterio.jasper");
             }else if(tipo.equals("CCALP")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
@@ -966,7 +971,7 @@ void campos(String valor){
              filaestudiantes.visible = true;
              filaaportes.visible = true;
              sistemasCombo.disabled = false;
-        }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL3") || valor.equals("CCALP") || valor.equals("CCALB") || valor.equals("CCALBA") ){
+        }else if(valor.equals("CCAL") || valor.equals("CCAL2") || valor.equals("CCAL4")|| valor.equals("CCAL3") || valor.equals("CCALP") || valor.equals("CCALB") || valor.equals("CCALBA") ){
              incluirfaltas.visible = true;
              incluirfaltasydias.visible = true;
              incluirpromedio.visible = true;
@@ -978,6 +983,9 @@ void campos(String valor){
             filaaportes.visible = true;
             if(valor.equals("CCALP")){
                 titulo.value= "CUADRO FINAL DE CALIFICACIONES";
+            }
+            if(valor.equals("CCAL4")){
+                 titulo.value= "CUADRO DE CALIFICACIONES QUIMESTRALES";
             }
             
         }else if(valor.equals("ESTA")){
@@ -1171,6 +1179,7 @@ void campos(String valor){
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
+                                    <listitem id="CCAL4"  label="Cuadro de Calificaciones x Quimestres-Ministerio" value="CCAL4" />
                                     <listitem id="NMAT2"  label="Cuadro de Calificaciones Quimetral" value="NMAT2" />
                                     <!--listitem id="CCALP"  label="Cuadro Final de Calificaciones-Primaria" value="CCALP" /-->
                                     <!-- PARA PRIMARIA EN PERIODO 2011-2012 -->

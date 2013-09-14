@@ -34,6 +34,7 @@ private Double aprovechamiento;
 private Double sumatoria;
 private Integer diasAsistidos;
 private Double disciplina;
+private String disciplinaS;
 
 //para examenes de grado
 private Cursos curso;
@@ -403,6 +404,14 @@ private BigDecimal disciplina2;
 
     public void setTipoSi(String tipoSi) {
         this.tipoSi = tipoSi;
+    }
+
+    public String getDisciplinaS() {
+        return disciplinaS;
+    }
+
+    public void setDisciplinaS(String disciplinaS) {
+        this.disciplinaS = disciplinaS;
     }
  
     

@@ -1194,6 +1194,11 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = noti.matriculadosxgenero();
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"alumnosmatriculadosxgenero.jasper");
+            }else if(tipo.equals("CONT")){
+                    datasource = certificados(listadoCursos,"LREL2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    parametros.put("pathSubRel",directorioReportes );
+                    report.setSrc(directorioReportes+"contratoMatricula.jasper");
             }else if(tipo.equals("LREL2")){
                     datasource = certificados(listadoCursos,"LREL2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
@@ -1394,6 +1399,11 @@ void campos(String valor){
            filacurso.visible = true;
            //filaestudiantes.visible = false;
         }
+         if(valor.equals("CONT")){
+           titulo.value = "CONTRATOS";
+           filacurso.visible = true;
+           //filaestudiantes.visible = false;
+        }
            if(valor.equals("CA") || valor.equals("CD") || valor.equals("CAD") ){
                 filaaportes.visible = true;
         }
@@ -1436,6 +1446,7 @@ void campos(String valor){
                                 <listitem  id="LPAS" label="Pases Recibidos" value="LPAS"/>
                                 <listitem  id="LMAT2" label="Totalizado de Matriculados" value="LMAT2" />
                                 <listitem  id="LMAT3" label="Totalizado de Matriculados(x Genero)" value="LMAT3" />
+                                <listitem  id="CONT" label="Contrato de Matricula" value="CONT" />
                                 
                              
                                 <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
