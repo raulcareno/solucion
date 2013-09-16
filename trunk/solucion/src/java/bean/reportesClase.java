@@ -3066,7 +3066,7 @@ public class reportesClase {
         String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
-                + "and notas.disciplina = false and materia_profesor.seimprime = true and materia_profesor.ministerio = true and notas.materia != 0   "
+                + "and notas.disciplina = false and notas.promedia = true  and materia_profesor.seimprime = true and materia_profesor.ministerio = true and notas.materia != 0   "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
         System.out.println("cuadro final: " + q);
