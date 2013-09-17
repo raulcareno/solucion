@@ -7270,7 +7270,7 @@ public class reportesClase {
         ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
         return ds;
     }
-   public JRDataSource recordporcursoMejorCursoFormula(Cursos cursoLlega,String formula) {
+   public JRDataSource recordporcursoMejorCursoFormula(Cursos cursoLlega,String formula,String formulaDisc) {
         Administrador adm = new Administrador();
 //        Session ses = Sessions.getCurrent();
 //        Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -7279,7 +7279,7 @@ public class reportesClase {
         String complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo+ o.tercero) / 9  AS DECIMAL(5,3))  ";
         String complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod+ o.tercerd) / 9 AS DECIMAL(5,3)) ";
         String complementoPromedioBac = ""+formula;
-        String complementoDisciplinaBac = "";
+        String complementoDisciplinaBac = ""+formulaDisc;
 //        if (secuencia == 11) {
 //            complementoPromedioBac = "  CAST((o.primero + o.segundo+ o.tercero+ o.cuarto )/4   AS DECIMAL(5,3)) ";
 //            complementoDisciplinaBac = " CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod )/4 AS DECIMAL(5,3))";
@@ -7288,7 +7288,7 @@ public class reportesClase {
 //            complementoDisciplinaBac = "  CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod + o.quintod) / 5 AS DECIMAL(5,3))";
 //        } else if (secuencia == 13) {
 //            complementoPromedioBac = "  CAST((o.primero + o.segundo+ o.tercero+ o.cuarto + o.quinto+ o.sexto ) / 6 AS DECIMAL(5,3)) ";
-            complementoDisciplinaBac = "  CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod + o.quintod+ o.sextod ) / 6 AS DECIMAL(5,3))";
+            //complementoDisciplinaBac = "  CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod + o.quintod+ o.sextod ) / 6 AS DECIMAL(5,3))";
 //        }
         String querString = " Select " + complementoPromedio + ", " + complementoDisciplina + " "
                 + ", " + complementoPromedioBac + ", " + complementoDisciplinaBac + ", "
@@ -8331,6 +8331,15 @@ public class reportesClase {
                 + "and o.sistema.espromedio = true "
                 + "order by o.sistema.orden ");
 
+         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Integer noDecimales = 3;
+        try {
+            noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimales = 3;
+
+        }
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
@@ -8589,8 +8598,8 @@ public class reportesClase {
         int x = 8;
         int y = 1;
         Double sumaPromedio = 0.0;
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+//        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+  //              + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
@@ -8723,12 +8732,17 @@ public class reportesClase {
                     cellDisc.setCellValue("" + equivalencia(disciplina, equivalencias2));
                     cellDisc.setCellStyle(stiloContenido);
 
-                    valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas "
+                    valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,"+noDecimales+")) FROM notas "
                             + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
                             + "AND disciplina = FALSE AND  promedia = TRUE "
                             + "AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
                     if (valor.size() > 0) {
-                        aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                        if(truncarNotas){
+                            aprovecha = truncar(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(),noDecimales);
+                        }else{
+                            aprovecha = redondear(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(),noDecimales);
+                        }
+                        
                     }
                     HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
                     cellApr.setCellValue("" + aprovecha);

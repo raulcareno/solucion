@@ -555,8 +555,8 @@ void recalcular(){
                     datasource = noti.recordporcursoMejorCurso8a3(curs.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"recordMejor82.jasper");
             }else if(tipo.equals("RECC6")){
-                    datasource = noti.recordporcursoMejorCursoFormula(curs.getSelectedItem().getValue(),formuEnviar.value);
-                    report.setSrc(directorioReportes+"recordMejor82.jasper");
+                    datasource = noti.recordporcursoMejorCursoFormula(curs.getSelectedItem().getValue(),formuEnviar.value,formuEnviar2.value);
+                    report.setSrc(directorioReportes+"recordMejorEscojer.jasper");
             }else if(tipo.equals("RECE")){
                     datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
@@ -1058,10 +1058,12 @@ void campos(String valor){
          }else if(valor.equals("RECC3") || valor.equals("RECC4") || valor.equals("RECC5")  || valor.equals("RECC6")  ){
            curs.disabled = false;
            filacursos.visible = true;
+           
+           titulo.value= "Record Académico";
            if(valor.equals("RECC6")){
+                titulo.value= "Mejores por Curso";
                 filasecuencia2.visible = true;
            }
-           titulo.value= "Record Académico";
          }else if(valor.equals("RECC1") ){
            filasecuencia.visible = true;
            titulo.value= "Record Académico";
@@ -1382,20 +1384,25 @@ void campos(String valor){
                             realizarFormula(){
                                         
                                     String formu = "CAST( (";
+                                    String formu2 = "CAST( (";
                                     int NoVariables=0;
                                         for(Iterator it = secuencia2.getItems().iterator(); it.hasNext();) {
                                                 Listitem object = (Listitem)it.next();
                                                 if(object.isSelected()){
                                                         String valor = object.getValue();
                                                             formu +=" IF("+valor+">10,"+ valor + "/2," + valor + ") +"; 
+                                                            formu2 +=" IF("+valor+"d>10,"+ valor + "d/2," + valor + "d) +"; 
                                                             NoVariables++;
                                                     }
                                         }
                                             if(formu.length()>0){
                                                 formu = formu.substring(0, formu.length()-1);
                                                 formu = formu+")/"+NoVariables+" AS DECIMAL(5,3))";
+                                                formu2 = formu2.substring(0, formu2.length()-1);
+                                                formu2 = formu2+")/"+NoVariables+" AS DECIMAL(5,3))";
                                             }
                                     formuEnviar.value = formu;
+                                    formuEnviar2.value = formu2.replace("tercerod","tercerd");
                             }
                             
                             ]]>
@@ -1419,23 +1426,27 @@ void campos(String valor){
                             <span style="float:right"> Se Promediarán </span>
                             <span>
                                 <listbox id="secuencia2"  onSelect="realizarFormula()" multiple="true" checkmark="true"  width="450px"  >
-                                
-                                    <listitem   value="primerob" label="Primero"/>
-                                    <listitem   value="segundob" label="Segundo"/>
-                                    <listitem   value="tercerob" label="Tercero"/>
-                                    <listitem   value="cuartob" label="Cuarto"/>
-                                    <listitem   value="quintob" label="Quinto"/>
-                                    <listitem   value="sextob" label="Sexto"/>
-                                    <listitem   value="septimob" label="Septimo"/>
-                                    <listitem   value="primero" label="Octavo"/>
-                                    <listitem   value="segundo" label="Noveno"/>
-                                    <listitem   value="tercero" label="Décimo"/>
-                                    <listitem   value="cuarto" label="Primero Bachillerato"/>
-                                    <listitem   value="quinto" label="Segundo Bachillerato"/>
-                                    <listitem   value="sexto" label="Tercero Bachillerato"/>
+                                    <listhead>
+                                        
+                                        <listheader label="SELECCIONE QUE SE PROMEDIA"/>
+                                    </listhead>
+                                    <listitem   value="primerob" label="Prom. de Primero + "/>
+                                    <listitem   value="segundob" label="Prom. de Segundo + "/>
+                                    <listitem   value="tercerob" label="Prom. de Tercero + "/>
+                                    <listitem   value="cuartob" label="Prom. de Cuarto + "/>
+                                    <listitem   value="quintob" label="Prom. de Quinto + "/>
+                                    <listitem   value="sextob" label="Prom. de Sexto + "/>
+                                    <listitem   value="septimob" label="Prom. de Septimo + "/>
+                                    <listitem   value="primero" label="Prom. de Octavo + "/>
+                                    <listitem   value="segundo" label="Prom. de Noveno + "/>
+                                    <listitem   value="tercero" label="Prom. de Décimo + "/>
+                                    <listitem   value="cuarto" label="Prom. de Primero Bachillerato + "/>
+                                    <listitem   value="quinto" label="Prom. de Segundo Bachillerato + "/>
+                                    <listitem   value="sexto" label="Prom. de Tercero Bachillerato + "/>
 
                                 </listbox>
-                                <textbox  cols="75" rows="2" id="formuEnviar" />
+                                <textbox visible="false" cols="75" rows="2" id="formuEnviar" />
+                                <textbox visible="false"   cols="75" rows="2" id="formuEnviar2" />
                             </span>
                         </row>
                         <row   id="filaestudiantes"   style="background:transparent;border:0px">
