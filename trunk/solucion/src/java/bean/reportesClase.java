@@ -5737,7 +5737,7 @@ public class reportesClase {
                     + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
                     + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
                     + "and notas.seimprime = true  "
-                    + " "
+                    + "and notas.promedia = true  "
                     + "and notas.disciplina = false   and notas.materia != 0  "
                     + "order by estudiantes.apellido, notas.orden";
             nativo = adm.queryNativo(q);
@@ -7247,6 +7247,60 @@ public class reportesClase {
 //                + "  in (Select m.estudiante from Matriculas as m, Cursos as cu "
 //                + "where cu.codigocur = m.curso and cu.secuencia = '"+cursoLlega.getSecuencia()+"'  and cu.periodo = '"+cursoLlega.getPeriodo().getCodigoper()+"' ) "
 //                + " order by  6 DESC ");
+        for (Iterator itna = notas.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            Nota n1 = new Nota();
+            //n1.setCurso(cursoLlega);
+            n1.setP1(new BigDecimal(vec.get(0) == null ? "0" : vec.get(0) + ""));
+            n1.setD1(new BigDecimal(vec.get(1) == null ? "0" : vec.get(1) + ""));
+            n1.setP2(new BigDecimal(vec.get(2) == null ? "0" : vec.get(2) + ""));
+            n1.setD2(new BigDecimal(vec.get(3) == null ? "0" : vec.get(3) + ""));
+            n1.setEstudiante((Estudiantes) adm.buscarClave(vec.get(4), Estudiantes.class));
+            try {
+                List<Cursos> matri = adm.query("Select o.curso from Matriculas as o  "
+                        + "where o.estudiante.codigoest = '" + n1.getEstudiante().getCodigoest() + "' "
+                        + "and o.curso.periodo.codigoper = '" + cursoLlega.getPeriodo().getCodigoper() + "' ");
+                n1.setCurso(matri.get(0));
+            } catch (Exception e) {
+            }
+            n1.setP3(new BigDecimal(vec.get(5) == null ? "0" : vec.get(5) + ""));
+            listaResultados.add(n1);
+
+        }
+        ReporteRecordDataSource ds = new ReporteRecordDataSource(listaResultados);
+        return ds;
+    }
+   public JRDataSource recordporcursoMejorCursoFormula(Cursos cursoLlega,String formula) {
+        Administrador adm = new Administrador();
+//        Session ses = Sessions.getCurrent();
+//        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList listaResultados = new ArrayList();
+        int secuencia = cursoLlega.getSecuencia();
+        String complementoPromedio = " CAST((o.segundob + o.tercerob + o.cuartob + o.quintob + o.sextob + o.septimob + o.primero + o.segundo+ o.tercero) / 9  AS DECIMAL(5,3))  ";
+        String complementoDisciplina = " CAST((o.segundobd + o.tercerobd + o.cuartobd + o.quintobd + o.sextobd + o.septimobd + o.primerod + o.segundod+ o.tercerd) / 9 AS DECIMAL(5,3)) ";
+        String complementoPromedioBac = ""+formula;
+        String complementoDisciplinaBac = "";
+//        if (secuencia == 11) {
+//            complementoPromedioBac = "  CAST((o.primero + o.segundo+ o.tercero+ o.cuarto )/4   AS DECIMAL(5,3)) ";
+//            complementoDisciplinaBac = " CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod )/4 AS DECIMAL(5,3))";
+//        } else if (secuencia == 12) {
+//            complementoPromedioBac = "  CAST((o.primero/2 + o.segundo/2 + o.tercero/2 + o.cuarto/2 + o.quinto) / 5 AS DECIMAL(5,3)) ";
+//            complementoDisciplinaBac = "  CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod + o.quintod) / 5 AS DECIMAL(5,3))";
+//        } else if (secuencia == 13) {
+//            complementoPromedioBac = "  CAST((o.primero + o.segundo+ o.tercero+ o.cuarto + o.quinto+ o.sexto ) / 6 AS DECIMAL(5,3)) ";
+            complementoDisciplinaBac = "  CAST((o.primerod + o.segundod+ o.tercerd+o.cuartod + o.quintod+ o.sextod ) / 6 AS DECIMAL(5,3))";
+//        }
+        String querString = " Select " + complementoPromedio + ", " + complementoDisciplina + " "
+                + ", " + complementoPromedioBac + ", " + complementoDisciplinaBac + ", "
+                + " o.estudiante,  "
+                + " CAST( (" + complementoPromedio + "  )  AS DECIMAL(5,3)) AS PROM_APROV  "
+                + " from Notasrecord as o where o.estudiante  "
+                + "  in (Select m.estudiante from Matriculas as m, Cursos as cu "
+                + "where cu.codigocur = m.curso and cu.secuencia = '" + cursoLlega.getSecuencia() + "'  and cu.periodo = '" + cursoLlega.getPeriodo().getCodigoper() + "' ) "
+                + " order by  3 DESC ";
+        List notas = adm.queryNativo(querString);
+        System.out.println("Q82: " + querString);
+
         for (Iterator itna = notas.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             Nota n1 = new Nota();
