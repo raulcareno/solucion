@@ -554,6 +554,9 @@ void recalcular(){
             }else if(tipo.equals("RECC5")){
                     datasource = noti.recordporcursoMejorCurso8a3(curs.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"recordMejor82.jasper");
+            }else if(tipo.equals("RECC6")){
+                    datasource = noti.recordporcursoMejorCursoFormula(curs.getSelectedItem().getValue(),formuEnviar.value);
+                    report.setSrc(directorioReportes+"recordMejor82.jasper");
             }else if(tipo.equals("RECE")){
                     datasource = noti.recordporespecialidad(especialidad.getSelectedItem().getValue(),new Integer(secuencia.selectedItem.value));
                     report.setSrc(directorioReportes+"record.jasper");
@@ -1052,9 +1055,12 @@ void campos(String valor){
            curs.disabled = false;
            filacursos.visible = true;
            titulo.value= "Record Académico";
-         }else if(valor.equals("RECC3") || valor.equals("RECC4") || valor.equals("RECC5")  ){
+         }else if(valor.equals("RECC3") || valor.equals("RECC4") || valor.equals("RECC5")  || valor.equals("RECC6")  ){
            curs.disabled = false;
            filacursos.visible = true;
+           if(valor.equals("RECC6")){
+                filasecuencia2.visible = true;
+           }
            titulo.value= "Record Académico";
          }else if(valor.equals("RECC1") ){
            filasecuencia.visible = true;
@@ -1240,6 +1246,7 @@ void campos(String valor){
                                     <listitem  id="RECC3" label="Mejores x Cursos (2do a 10mo y Bachillerato )" value="RECC3"/>
                                     <listitem  id="RECC4" label="Mejores x Cursos (8vo a 2do. Bachillerato )" value="RECC4"/>
                                     <listitem  id="RECC5" label="Mejores x Cursos (8vo a 3do. Bachillerato )" value="RECC5"/>
+                                    <listitem  id="RECC6" label="Mejores x Cursos (Escoger)" value="RECC6"/>
                                     <listitem  id="RECESP" label="Record Académico Notas de 1ero. a 5to." value="RECESP"/>
                                     <listitem  id="linea" label="========= ENCUESTAS ================" value="linea" />
                                     <listitem  id="ENC2" label="Resultados por Estudiantes" value="ENC2"/>
@@ -1369,18 +1376,66 @@ void campos(String valor){
                                           
                             </span>
                         </row>
+                        
+                        <zscript>
+                            <![CDATA[
+                            realizarFormula(){
+                                        
+                                    String formu = "CAST( (";
+                                    int NoVariables=0;
+                                        for(Iterator it = secuencia2.getItems().iterator(); it.hasNext();) {
+                                                Listitem object = (Listitem)it.next();
+                                                if(object.isSelected()){
+                                                        String valor = object.getValue();
+                                                            formu +=" IF("+valor+">10,"+ valor + "/2," + valor + ") +"; 
+                                                            NoVariables++;
+                                                    }
+                                        }
+                                            if(formu.length()>0){
+                                                formu = formu.substring(0, formu.length()-1);
+                                                formu = formu+")/"+NoVariables+" AS DECIMAL(5,3))";
+                                            }
+                                    formuEnviar.value = formu;
+                            }
+                            
+                            ]]>
+                        </zscript>
                         <row  id="filasecuencia" visible="false"  style="background:transparent;border:0px">
                             <span style="float:right"> Cursos:</span>
                             <span>
                                 <listbox id="secuencia" width="450px"  mold="select" >
                                     <listitem selected="true"  value="1" label="Octavo"/>
-                                    <listitem   value="2" label="Noveno"/>
-                                    <listitem   value="3" label="Décimo"/>
-                                    <listitem   value="4" label="Primero Bachillerato"/>
-                                    <listitem   value="5" label="Segundo Bachillerato"/>
-                                    <listitem   value="6" label="Tercero Bachillerato"/>
+                                    <listitem   value="9" label="Noveno"/>
+                                    <listitem   value="10" label="Décimo"/>
+                                    <listitem   value="11" label="Primero Bachillerato"/>
+                                    <listitem   value="12" label="Segundo Bachillerato"/>
+                                    <listitem   value="13" label="Tercero Bachillerato"/>
 
                                 </listbox>
+                            </span>
+                        </row>
+                        
+                         <row  id="filasecuencia2" visible="false"  style="background:transparent;border:0px">
+                            <span style="float:right"> Se Promediarán </span>
+                            <span>
+                                <listbox id="secuencia2"  onSelect="realizarFormula()" multiple="true" checkmark="true"  width="450px"  >
+                                
+                                    <listitem   value="primerob" label="Primero"/>
+                                    <listitem   value="segundob" label="Segundo"/>
+                                    <listitem   value="tercerob" label="Tercero"/>
+                                    <listitem   value="cuartob" label="Cuarto"/>
+                                    <listitem   value="quintob" label="Quinto"/>
+                                    <listitem   value="sextob" label="Sexto"/>
+                                    <listitem   value="septimob" label="Septimo"/>
+                                    <listitem   value="primero" label="Octavo"/>
+                                    <listitem   value="segundo" label="Noveno"/>
+                                    <listitem   value="tercero" label="Décimo"/>
+                                    <listitem   value="cuarto" label="Primero Bachillerato"/>
+                                    <listitem   value="quinto" label="Segundo Bachillerato"/>
+                                    <listitem   value="sexto" label="Tercero Bachillerato"/>
+
+                                </listbox>
+                                <textbox  cols="75" rows="2" id="formuEnviar" />
                             </span>
                         </row>
                         <row   id="filaestudiantes"   style="background:transparent;border:0px">
@@ -1509,20 +1564,20 @@ void campos(String valor){
             import bean.Permisos;
             Permisos per = new Permisos();
             void cargando(){
-            filacursos.visible = false;
-            filaespecialidad.visible = false;
-            filaestudiantes.visible = false;
-            filamodalidad.visible = false;
-            filamaterias.visible = false;
-            filaaportes.visible = false;
-            filaempleados.visible = false;
-    
-            for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
-            Listitem object = (Listitem)it.next();
-            String valor = object.getValue();
-            String labe = object.getLabel();
-            object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
-            }
+                    filacursos.visible = false;
+                    filaespecialidad.visible = false;
+                    filaestudiantes.visible = false;
+                    filamodalidad.visible = false;
+                    filamaterias.visible = false;
+                    filaaportes.visible = false;
+                    filaempleados.visible = false;
+
+                    for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+                            Listitem object = (Listitem)it.next();
+                            String valor = object.getValue();
+                            String labe = object.getLabel();
+                            object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
+                    }
      
             
             }
