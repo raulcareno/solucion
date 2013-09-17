@@ -856,6 +856,7 @@ void campos(String valor){
     filamaterias.visible = false;
     filaaportes.visible = false;
      filasecuencia.visible = false;
+     filasecuencia2.visible = false;
      incluirfaltas.visible = false;
      incluirfaltasydias.visible = false;
      incluirpromedio.visible = false;
