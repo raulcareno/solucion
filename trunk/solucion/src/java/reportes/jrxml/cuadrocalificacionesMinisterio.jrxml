@@ -381,7 +381,7 @@
 ($V{nota_Average}+"").equals(".")   ||
 ($V{nota_Average}+"").equals("null") ||
 ($V{nota_Average}+"").equals("")
-? ""+$V{nota_Average}+"": new DecimalFormat("###0.00").format(new Double($V{nota_Average}+"").doubleValue()).toString()]]></textFieldExpression>
+? (($V{nota_Average}+"").equals("null")?"":$V{nota_Average}+""): new DecimalFormat("###0.00").format(new Double($V{nota_Average}+"").doubleValue()).toString()]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
