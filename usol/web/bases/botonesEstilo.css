@@ -77,6 +77,18 @@
     .imprimir{
         background-image: url('../images/imprimir.gif') !important;
     }
+    .suspender{
+        background-image: url('../images/suspender.png') !important;
+    }
+    .cancelar{
+        background-image: url('../images/cancelar.png') !important;
+    }
+    .anadir{
+        background-image: url('../images/anadir.png') !important;
+    }
+    .quitar{
+        background-image: url('../images/quitar.png') !important;
+    }
 
     .texto{
        font-size: 11px;

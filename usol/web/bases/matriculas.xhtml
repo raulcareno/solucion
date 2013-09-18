@@ -116,26 +116,30 @@
                             <p:column width="150"  styleClass="textonormal" headerText="MATRICULADO EN">  
                                 <h:outputText value="#{materia.idMaterias.nombre}" />  
                             </p:column>  
-                            <p:column width="40" styleClass="textonormal"  headerText="TIPO">  
-                                <h:outputText value="#{materia.idMaterias.idTipoMateria.nombre}" />  
-                            </p:column>  
                             <p:column width="40" styleClass="textonormal"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
                                 <h:outputText value="#{materia.idNiveles.nombre}" />  
                             </p:column>  
-                            <p:column width="10" styleClass="textonormal"   headerText="#Cred.">  
+                            <p:column width="10" styleClass="textonormal"   headerText="# C">  
                                 <h:outputText value="#{materia.numeroCreditos}" />  
                             </p:column> 
                             <p:column width="10" styleClass="textonormal"    headerText="CV.">  
                                 <h:outputText  value="#{materia.convalidada?'SI':'NO'}" />  
                             </p:column> 
-                            <p:column width="10" styleClass="textonormal"   headerText="PAG.">  
+                            <p:column width="10" styleClass="textonormal"   headerText="PA">  
                                 <h:outputText   value="#{materia.pagada?'SI':'NO'}" />  
                             </p:column> 
-                            <p:column  width="18" styleClass="textonormal"  headerText="&gt;">  
-                                <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
+                            <p:column width="10" styleClass="textonormal"   headerText="SU">  
+                                <p:commandButton rendered="#{materia.pagada}"   onclick="if (!confirm('Desea SUSPENDER el presente crédito?')) {return false;}"    title="Suspender" actionListener="#{matriculasBean2.suspender(materia)}" update=":form:panelMaterias" icon="suspender"/>
+                            </p:column>
+                            <p:column width="10" styleClass="textonormal"   headerText="CA">  
+                                <p:commandButton rendered="#{materia.pagada}"  onclick="if (!confirm('Desea CANCELAR el presente crédito?')) {return false;}"  style="background-color: transparent; background-color: white" title="Cancelar" actionListener="#{matriculasBean2.cancelar(materia)}" update=":form:panelMaterias" icon="cancelar"/>
+                            </p:column>
+
+                            <p:column  width="18" styleClass="textonormal" >  
+                                <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="quitar" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
                             return false;
                         }" title="Eliminar"/>  
-                                <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="ui-icon-seek-next">  
+                                <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="quitar">  
                                 </p:commandButton>  
                             </p:column>  
                             <p:column width="10" styleClass="textonormal"   headerText="">  
@@ -146,8 +150,8 @@
                             </f:facet>  
                         </p:dataTable>  
                         <p:dataTable   styleClass="texto" style="width: 400px" scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
-                            <p:column  width="18" styleClass="textonormal"   headerText="&lt;">  
-                                <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:panelMaterias" icon="ui-icon-seek-prev">  
+                            <p:column  width="18" styleClass="textonormal">  
+                                <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:panelMaterias" icon="anadir">  
                                 </p:commandButton>  
                             </p:column> 
                             <p:column  width="150" styleClass="textonormal"  headerText="MATERIAS DISPONIBLES">  
@@ -163,9 +167,12 @@
                                 <h:outputText value="#{car.numeroCreditos}" />  
                             </p:column>  
                             <f:facet name="footer">  
-                                .
+                                <h:outputText style="font-size: 11px" value="#C: CREDITOS; CV: CONVALIDADA; PA: PAGADA; SU: SUSPENDIDA; CA: CANCELAR; ." />  
+
                             </f:facet>  
                         </p:dataTable>  
+
+
                     </p:panelGrid>
 
 

@@ -42,6 +42,7 @@ import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.HorariosMatricula;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
+import jcinform.persistencia.MateriasMatriculaSuspendidas;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Notas;
@@ -246,6 +247,45 @@ public class MatriculasBean2 {
     }
 
     public String quitar(CarrerasMaterias obj) {
+        if (obj.convalidada) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se peude eliminar materia CONVALIDADA/HOMOLOGADA", "No se peude eliminar materia CONVALIDADA/HOMOLOGADA"));
+            return null;
+        }
+        origen.add(obj);
+        destino.remove(obj);
+        sumarCreditos();
+        return null;
+    }
+    
+    public String suspender(CarrerasMaterias obj) {
+        if (obj.convalidada) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se peude eliminar materia CONVALIDADA/HOMOLOGADA", "No se peude eliminar materia CONVALIDADA/HOMOLOGADA"));
+            return null;
+        }
+        //origen.add(obj);
+        destino.remove(obj);
+        MateriasMatriculaSuspendidas sus = new MateriasMatriculaSuspendidas();
+        sus.setConvalidado(obj.getConvalidada());
+        sus.setIdFacturas(obj.getFa);
+        sus.setIdMaterias(obj.getIdMaterias());
+        sus.setIdMateriasMatriculaSuspendidas(adm.getNuevaClave("MateriasMatriculaSuspendidas", "idMateriasMatriculaSuspendidas"));
+        sus.setIdMatriculas(object); 
+        sus.setNivel(clave2);
+        sus.setNoCreditos(obj.getNumeroCreditos());
+        sus.setNoHoras(obj.getNumeroHoras());
+        sus.setPagado(obj.getPagada());
+        //sus.setTipo(obj.get);
+        sus.setValor(obj.getValor());
+        //sus.setValorCredito(obj.get);
+        //sus.setValorCreditoTotal();
+        adm.guardar(sus); 
+        
+        sumarCreditos();
+        return null;
+    }
+    public String cancelar(CarrerasMaterias obj) {
         if (obj.convalidada) {
             FacesContext context = FacesContext.getCurrentInstance();
             FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se peude eliminar materia CONVALIDADA/HOMOLOGADA", "No se peude eliminar materia CONVALIDADA/HOMOLOGADA"));
