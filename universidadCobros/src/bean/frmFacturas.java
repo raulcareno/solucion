@@ -1562,7 +1562,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                                        actualMatricula.setNumero(nuevoNumero("MAESTRIA"));
                           }       
                         }else{
-                            if (actualMatricula.getIdEstudiantes().getPregrado() == null && tipoMatricula) {
+                            if (actualMatricula.getNumero() == null && tipoMatricula) {
                                        actualMatricula.setNumero(nuevoNumero("MATRICULA"));
                             }       
                         }
@@ -2313,7 +2313,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             carreraSeleccionada = actualMatricula.getIdCarreras();
             if (actualMatricula.getEstadoMat().equals("I")) {
                 JOptionPane.showMessageDialog(this, "El Estudiante no está Admitido, comuniquese con Admisiones....!", "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION);
-                return;
+             
 //                tipoProceso = "INSCRITO";
 //                boolean siPago = verificarSiPagoMatricula();
 //                if (!siPago) {
@@ -2329,6 +2329,11 @@ public class frmFacturas extends javax.swing.JInternalFrame {
 //                    buscarRubrosDeCreditos();
 //                }
 //                sumar();
+                  try {
+                        numeroMatricula.setText(""+actualMatricula.getNumero()+"");    
+                   } catch (Exception e) {
+                   }
+                     return;
             } else if (actualMatricula.getEstadoMat().equals("A")) {
                 tipoProceso = "ADMITIDO";
                 boolean siPago = verificarSiPagoMatricula();
@@ -2340,6 +2345,10 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                     buscarRubrosDeCreditos();
                 }
                 sumar();
+                  try {
+                        numeroMatricula.setText(""+actualMatricula.getNumero()+"");    
+                   } catch (Exception e) {
+                   }
             } else if (actualMatricula.getEstadoMat().equals("M")) {
                 tipoProceso = "MATRICULADO";
                 boolean siPago = verificarSiPagoMatricula();
