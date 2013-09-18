@@ -39,6 +39,7 @@ import jcinform.persistencia.CarrerasMaterias;
 import jcinform.persistencia.CategoriasSociales;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
+import jcinform.persistencia.Facturas;
 import jcinform.persistencia.HorariosMatricula;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
@@ -91,6 +92,7 @@ public class MatriculasBean2 {
     protected List<Matriculas> model;
     protected List<HorariosMatricula> horariosMatriculas;
     protected List<MateriasMatricula> materiasMatricula;
+    protected List<MateriasMatriculaSuspendidas> materiasMatriculaSuspendidas;
     protected List<Parientes> modelParientes;
     public String textoBuscar;
     Permisos permisos;
@@ -239,6 +241,7 @@ public class MatriculasBean2 {
 //                destino = new ArrayList<CarrerasMaterias>();
             }
             destino.add(obj);
+            //COUNT DE NUMERO DE MATRICULAS EN ÉSTA MATERIA
             origen.remove(obj);
             sumarCreditos();
         }
@@ -268,7 +271,12 @@ public class MatriculasBean2 {
         destino.remove(obj);
         MateriasMatriculaSuspendidas sus = new MateriasMatriculaSuspendidas();
         sus.setConvalidado(obj.getConvalidada());
-        sus.setIdFacturas(obj.getFa);
+        if(obj.getFactura()!=null){
+            if(obj.getFactura().length()>0){
+            sus.setIdFacturas(new Facturas(obj.getFactura()));    
+            }
+            
+        }
         sus.setIdMaterias(obj.getIdMaterias());
         sus.setIdMateriasMatriculaSuspendidas(adm.getNuevaClave("MateriasMatriculaSuspendidas", "idMateriasMatriculaSuspendidas"));
         sus.setIdMatriculas(object); 
@@ -283,6 +291,8 @@ public class MatriculasBean2 {
         adm.guardar(sus); 
         
         sumarCreditos();
+        
+        materiasSuspensas();
         return null;
     }
     public String cancelar(CarrerasMaterias obj) {
@@ -488,6 +498,16 @@ public class MatriculasBean2 {
             model = (adm.listar("Matriculas"));
             setModel(model);
 
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
+            System.out.println("" + e);
+        }
+    }
+    
+    public void materiasSuspensas() {
+        try {
+            materiasMatriculaSuspendidas = adm.query("Select o from MateriasMatriculaSuspendidas as o "
+                    + " where o.idMatriculas.idMatriculas = "+object.getIdMatriculas()+" ");
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
