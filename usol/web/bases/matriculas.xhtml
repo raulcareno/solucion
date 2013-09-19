@@ -145,7 +145,7 @@
                                 <h:outputText   value="#{materia.pagada?'SI':'NO'}" />  
                             </p:column> 
                             <p:column width="10" styleClass="textonormal"   headerText="SU">  
-                                <p:commandButton rendered="#{materia.pagada}"   onclick="if (!confirm('Desea SUSPENDER el presente crédito?')) {return false;}"    title="Suspender" actionListener="#{matriculasBean2.suspender(materia)}" update=":form:panelMaterias" icon="suspender"/>
+                                <p:commandButton rendered="#{materia.pagada}"   onclick="if (!confirm('Desea SUSPENDER el presente crédito?')) {return false;}"    title="Suspender" actionListener="#{matriculasBean2.suspender(materia)}" update=":form:panelMaterias :form:suspendidas :form:listaMateriasSuspendidas" icon="suspender"/>
                             </p:column>
                             <p:column width="10" styleClass="textonormal"   headerText="CA">  
                                 <p:commandButton rendered="#{materia.pagada}"  onclick="if (!confirm('Desea CANCELAR el presente crédito?')) {return false;}"  style="background-color: transparent; background-color: white" title="Cancelar" actionListener="#{matriculasBean2.cancelar(materia)}" update=":form:panelMaterias" icon="cancelar"/>

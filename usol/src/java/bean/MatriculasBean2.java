@@ -453,13 +453,15 @@ public class MatriculasBean2 {
                           matMat.setConvalidado(ms.getConvalidado());
                           matMat.setPagado(ms.getPagado()); 
                           matMat.setTipo(ms.getTipo());
+                          adm.ejecutaSql("Delete from MateriasMatriculaSuspendidas where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' "
+                            + " and idMaterias.idMaterias = '"+ms.getIdMaterias().getIdMaterias()+"' ");
                      }
                 }
                 adm.guardar(matMat);
             } 
 
         }
-
+        materiasSuspensas();
         return null;
     }
 
