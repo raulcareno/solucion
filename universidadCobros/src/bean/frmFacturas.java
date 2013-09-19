@@ -1530,6 +1530,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
                     MateriasMatricula materiasMatricula = it.next();
                     materiasMatricula.setPagado(true);
+                    materiasMatricula.setIdFacturas(cab); 
                     adm.actualizar(materiasMatricula);
 
                 }
@@ -3536,6 +3537,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         for (Iterator<MateriasMatricula> it1 = materiasTomadas.iterator(); it1.hasNext();) {
                             MateriasMatricula materiasMatricula = it1.next();
                             materiasMatricula.setPagado(false);
+                            materiasMatricula.setIdFacturas(null);
                             adm.actualizar(materiasMatricula);
                         }
                     }
@@ -3543,7 +3545,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 }
 
             }
-
+            adm.ejecutaSql("Delete from  Detalles where idFacturas.idFacturas = '" + fac + "'  ");
+            adm.ejecutaSql("Delete from Cxcobrar where idFacturas.idFacturas = '" + fac + "'  ");
+            adm.ejecutaSql("Delete from Facturas where idFacturas = '"+fac+"' "); 
             anularFacturaForm.dispose();
 
         }
