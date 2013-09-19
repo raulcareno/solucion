@@ -4,6 +4,7 @@
  */
 package peaje.formas;
 
+import hibernate.Clientes;
 import hibernate.Empresa;
 import hibernate.Factura;
 import hibernate.cargar.WorkingDirectory;
@@ -33,6 +34,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.GeneraXMLPersonal;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import sources.FacturaSource;
@@ -201,7 +203,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             habilitado = false;
             princip.errores.setText("<html>BOTÓN DESHABILITADO para ingresar en éste horario</html>");
         }
-
+        System.gc();
         //        System.out.println("" + tarjeta);
         switch (event.getEventType()) {
             case SerialPortEvent.BI:
@@ -322,7 +324,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         } else {
 
-            if (tarjeta.contains("AEIOUAE1")  || tarjeta.contains("Ingenier")) {//*******PULSA EL BOTÓN 1 E INTENTA ABRIR LA BARRERA
+            if (tarjeta.contains("AEIOUAE1") || tarjeta.contains("Ingenier")) {//*******PULSA EL BOTÓN 1 E INTENTA ABRIR LA BARRERA
                 if (habilitado) {
                     try {
                         System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
@@ -351,26 +353,26 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     return;
                 }
             } else if (tarjeta.contains("AEIOUAE2")) {
-                if(habilitado){
-                try {
-                    System.out.println("abrio 2:  " + tarjeta + " ** " + new Date());
-                    //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
-                    //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
-                    //             tarjeta = tarjeta.replace("00", "");
-                    tarjeta = "";
-                    imprimir("2");
-                    if (princip.empresaObj.getRetardoEntrada() != null) {
-                        if (princip.empresaObj.getRetardoEntrada().length() > 0) {
-                            Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
-                            Thread.sleep(retardo * 1000);
+                if (habilitado) {
+                    try {
+                        System.out.println("abrio 2:  " + tarjeta + " ** " + new Date());
+                        //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
+                        //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
+                        //             tarjeta = tarjeta.replace("00", "");
+                        tarjeta = "";
+                        imprimir("2");
+                        if (princip.empresaObj.getRetardoEntrada() != null) {
+                            if (princip.empresaObj.getRetardoEntrada().length() > 0) {
+                                Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
+                                Thread.sleep(retardo * 1000);
+                            }
                         }
+                        abrirPuerta(princip.empresaObj.getEntra2());
+                        System.out.println("ABRIO PUERTA aeiou2: " + princip.empresaObj.getEntra2());
+                        return;
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    abrirPuerta(princip.empresaObj.getEntra2());
-                    System.out.println("ABRIO PUERTA aeiou2: " + princip.empresaObj.getEntra2());
-                    return;
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 } else {
                     princip.tarjetatxt.setText("");
                     tarjeta = "";
@@ -592,10 +594,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                     if (ubicacionDirectorio.contains("build")) {
                         ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                     }
-
-                    fotografiarIp("" + fac.getCodigo() + ".jpg", ubicacionDirectorio + "\\fotos");
-
-
+                    fotografiarIp( ubicacionDirectorio + "\\fotos"+separador +fac.getCodigo() + ".jpg" );
                 }
                 noDisponibles();
                 princip.cargarFoto(fac.getCodigo());
@@ -618,8 +617,16 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //        }
     }
 
-    public void fotografiarIp(String nombre, String direccion) {
-        princip.verIp.tomarFotoIp(direccion + separador + nombre, princip);
+    public void fotografiarIp(String nombre) {
+
+        Thread cargar = new Thread(""+nombre) {
+            public void run() {
+                System.out.println("FOTO_: "+this.getName());
+                princip.verIp.tomarFotoIp(this.getName(), princip);
+            }
+        };
+        cargar.start();
+
 //        if (resultado == 0) {
 //            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
 //        }

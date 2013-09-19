@@ -89,7 +89,7 @@ public class leerTcpIp {
 
 
                 if (ping.isReachable(5000)) {
-                    System.out.println(ip + " - responde..!");
+                    System.out.print("\t"+ip + " - responde..!");
                 } else {
                     lger.logger("leerTcpIP", "ERROR EN PING A: "+ip);
                     System.out.println(ip + " - error de conexion con ip "+ip);

@@ -3767,7 +3767,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     if (ubicacionDirectorio.contains("build")) {
                         ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                     }
-                    verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);
+                    try {
+                            verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);    
+                            
+                    } catch (Exception e) {
+                        System.out.println("NO TOMÓ FOTO"+e.getMessage());
+                    }
+                    
                 }
                 try {
                     //LE QUITO EL RETARDO YA QUE NO NECESITO EN CASO DE LECTURA DE TARJETA DE PROXIMIDAD
@@ -3786,6 +3792,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 cliente.setText(tarje.getClientes().getNombres());
                 noDisponibles();
                 cargarFoto(fac.getCodigo());
+                fac =null;
+                facturas = null;
             }
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -3966,6 +3974,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 }
             }
+            fac =null;
+                facturas = null;
+                emp = null;
             noDisponibles();
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -6997,7 +7008,9 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
+        System.gc();
         System.exit(0);
+        
         //        usuario = new Usuarios();
         //        permisos = new Accesos();
         //        frmIngresarSistema.setVisible(true);
