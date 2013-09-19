@@ -3545,9 +3545,13 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                 }
 
             }
+             deallesCobradas = null;
+             cuentasCobradas = null;
+             facAc = null;
             adm.ejecutaSql("Delete from  Detalles where idFacturas.idFacturas = '" + fac + "'  ");
             adm.ejecutaSql("Delete from Cxcobrar where idFacturas.idFacturas = '" + fac + "'  ");
             adm.ejecutaSql("Delete from Facturas where idFacturas = '"+fac+"' "); 
+             
             anularFacturaForm.dispose();
 
         }
