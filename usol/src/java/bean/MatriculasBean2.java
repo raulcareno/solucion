@@ -161,13 +161,15 @@ public class MatriculasBean2 {
         //selectedMatriculas = new Matriculas();
 
     }
-   public void buscarHorariosAsignadas() {
+
+    public void buscarHorariosAsignadas() {
         origen = adm.queryNativo(" Select o.* from Materias as o "
                 + "where o.id_materias not in (Select m.id_Materias from Matriculas_Materias as m where m.id_Matriculas = '" + object.getIdMatriculas() + "') "
                 + " order by o.nombre ", Materias.class);
         destino = adm.query("Select m.idMaterias from MateriasMatricula as m where m.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "' "
                 + " order by m.idMaterias.nombre ");
     }
+
     public void buscarMateriasNoAsignadas() {
         origen = adm.queryNativo(" Select o.* from Materias as o "
                 + "where o.id_materias not in (Select m.id_Materias from Matriculas_Materias as m where m.id_Matriculas = '" + object.getIdMatriculas() + "') "
@@ -260,7 +262,7 @@ public class MatriculasBean2 {
         sumarCreditos();
         return null;
     }
-    
+
     public String suspender(CarrerasMaterias obj) {
         if (obj.convalidada) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -271,15 +273,15 @@ public class MatriculasBean2 {
         destino.remove(obj);
         MateriasMatriculaSuspendidas sus = new MateriasMatriculaSuspendidas();
         sus.setConvalidado(obj.getConvalidada());
-        if(obj.getFactura()!=null){
-            if(obj.getFactura().length()>0){
-            sus.setIdFacturas(new Facturas(obj.getFactura()));    
+        if (obj.getFactura() != null) {
+            if (obj.getFactura().length() > 0) {
+                sus.setIdFacturas(new Facturas(obj.getFactura()));
             }
-            
+
         }
         sus.setIdMaterias(obj.getIdMaterias());
         sus.setIdMateriasMatriculaSuspendidas(adm.getNuevaClave("MateriasMatriculaSuspendidas", "idMateriasMatriculaSuspendidas"));
-        sus.setIdMatriculas(object); 
+        sus.setIdMatriculas(object);
         sus.setNivel(clave2);
         sus.setNoCreditos(obj.getNumeroCreditos());
         sus.setNoHoras(obj.getNumeroHoras());
@@ -288,13 +290,19 @@ public class MatriculasBean2 {
         sus.setValor(obj.getValor());
         //sus.setValorCredito(obj.get);
         //sus.setValorCreditoTotal();
-        adm.guardar(sus); 
-        
+        adm.guardar(sus);
+
+        //envio a eliminar de las materias_matriculas para uqe no exista duplicidad
+
+        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' "
+                + " and  idMaterias.idMaterias = '" + obj.getIdMaterias().getIdMaterias() + "' ");
+
         sumarCreditos();
-        
+
         materiasSuspensas();
         return null;
     }
+
     public String cancelar(CarrerasMaterias obj) {
         if (obj.convalidada) {
             FacesContext context = FacesContext.getCurrentInstance();
@@ -397,12 +405,29 @@ public class MatriculasBean2 {
             System.out.println("" + materiasMatricula1.getIdMaterias().getIdMaterias() + " " + materiasMatricula1.getIdMaterias().getNombre());
 
         }
+        
+        List<MateriasMatriculaSuspendidas> materiasTomadasSuspendidas = adm.query("Select o from MateriasMatriculaSuspendidas as o "
+                + " where o.idMatriculas.idMatriculas = '" + object.getIdMatriculas() + "' ");
+        for (Iterator<MateriasMatriculaSuspendidas> it = materiasTomadasSuspendidas.iterator(); it.hasNext();) {
+            MateriasMatriculaSuspendidas ms = it.next();
+             MateriasMatricula ma = new MateriasMatricula(ms.getIdMateriasMatriculaSuspendidas());
+//             ma.setConvalidado(ms.getConvalidado());
+//             ma.setIdMaterias(ms.getIdMaterias());
+//             ma.setIdMatriculas(ms.getIdMatriculas()); 
+//             ma.setNivel(ms.getNivel());
+//             ma.setNoCreditos(ms.getNoCreditos());
+//              materiasTomadas.add(ma);
+
+        }
 
 
         //GUARDO LAS MATERIAS DE LA MATRICULA
-        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' and (pagado is null or pagado = false) and (convalidado = false or convalidado is null) ");
+        adm.ejecutaSql("Delete from MateriasMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "' "
+                + " and (pagado is null or pagado = false) "
+                + " and (convalidado = false or convalidado is null) ");
         for (Iterator<CarrerasMaterias> it = destino.iterator(); it.hasNext();) {
             CarrerasMaterias carrerasMaterias = it.next();
+
             MateriasMatricula matMat = new MateriasMatricula(adm.getNuevaClave("MateriasMatricula", "idMateriasMatricula"));
             matMat.setIdMaterias(carrerasMaterias.getIdMaterias());
             matMat.setIdMatriculas(object);
@@ -412,12 +437,26 @@ public class MatriculasBean2 {
             for (Iterator<MateriasMatricula> matePagada = materiasTomadas.iterator(); matePagada.hasNext();) {
                 MateriasMatricula materiasMatricula1 = matePagada.next();
                 if (materiasMatricula1.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())) {
-                    noEstaPagada++;
+                    noEstaPagada++;//LE SUMO SI ES QUE NO ESTÁ DENTRO DEL LISTADO, CON EL FIN DE NO VOLVER A GUARDARLA
                 }
             }
-            if (noEstaPagada == 0) {
+            if (noEstaPagada == 0) {//SI NO ESTÁ EN EL LISTADO DE YA PAGADAS, NO LA GUARDO
+                
+                //++vuelvo a comprobar en cambio solo si está suspendida para volverla a poner
+                int noEstaenSuspendida=0;
+                for (Iterator<MateriasMatriculaSuspendidas> it2 = materiasTomadasSuspendidas.iterator(); it2.hasNext();) {
+                    MateriasMatriculaSuspendidas ms = it2.next();
+ 
+                     if (ms.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())) {
+                          noEstaenSuspendida++;
+                          matMat.setIdFacturas(ms.getIdFacturas());
+                          matMat.setConvalidado(ms.getConvalidado());
+                          matMat.setPagado(ms.getPagado()); 
+                          matMat.setTipo(ms.getTipo());
+                     }
+                }
                 adm.guardar(matMat);
-            }
+            } 
 
         }
 
@@ -503,11 +542,19 @@ public class MatriculasBean2 {
             System.out.println("" + e);
         }
     }
-    
+
+    public List<MateriasMatriculaSuspendidas> getMateriasMatriculaSuspendidas() {
+        return materiasMatriculaSuspendidas;
+    }
+
+    public void setMateriasMatriculaSuspendidas(List<MateriasMatriculaSuspendidas> materiasMatriculaSuspendidas) {
+        this.materiasMatriculaSuspendidas = materiasMatriculaSuspendidas;
+    }
+
     public void materiasSuspensas() {
         try {
             materiasMatriculaSuspendidas = adm.query("Select o from MateriasMatriculaSuspendidas as o "
-                    + " where o.idMatriculas.idMatriculas = "+object.getIdMatriculas()+" ");
+                    + " where o.idMatriculas.idMatriculas = " + object.getIdMatriculas() + " ");
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
             System.out.println("" + e);
@@ -748,7 +795,7 @@ public class MatriculasBean2 {
                 List<CarrerasMaterias> carMat = adm.query("Select o from CarrerasMaterias as o "
                         + " where o.idMaterias.idMaterias = " + materiasMatricula1.getIdMaterias().getIdMaterias() + "  "
                         + " and o.idCarreras.idCarreras = " + mat.getIdCarreras().getIdCarreras() + " ");
-                System.out.println(""+materiasMatricula1.getIdMaterias().getNombre()+" "+materiasMatricula1.getIdMaterias().getIdMaterias());
+                System.out.println("" + materiasMatricula1.getIdMaterias().getNombre() + " " + materiasMatricula1.getIdMaterias().getIdMaterias());
                 try {
                     (carMat.get(0)).setConvalidada(materiasMatricula1.getConvalidado());
                 } catch (Exception e) {
@@ -1117,6 +1164,44 @@ public class MatriculasBean2 {
         }
     }
 
+    public String seleccionarSuspendidas(MateriasMatriculaSuspendidas obj) {
+//materiasMatriculaSuspendidas
+        List<CarrerasMaterias> carMat = adm.query("Select m from CarrerasMaterias as m "
+                + " where m.idCarreras.idCarreras = '" + obj.getIdMatriculas().getIdCarreras().getIdCarreras() + "' "
+                + " and m.idMaterias.idMaterias = '" + obj.getIdMaterias().getIdMaterias() + "' "
+                + "   ");
+        CarrerasMaterias car = new CarrerasMaterias(obj.getIdMateriasMatriculaSuspendidas());
+        if (carMat.size() > 0) {
+            car = carMat.get(0);
+        }
+        car.setConvalidada(obj.getConvalidado());
+        try {
+            car.setFactura(obj.getIdFacturas().getIdFacturas());
+        } catch (Exception e) {
+        }
+        car.setIdCarreras(obj.getIdMatriculas().getIdCarreras());
+        car.setIdMaterias(obj.getIdMaterias());
+        //car.setIdEjes(obj.getIdMaterias().getIdTipoMateria().getI);
+        //car.setIdNiveles(obj.get);
+        //car.setNumeroCreditos(obj.getNoCreditos());
+        car.setNumeroHoras(obj.getNoHoras());
+        car.setPagada(obj.getPagado());
+        //car.setSecuencia(obj.get);
+        car.setValor(obj.getValor());
+
+        if (!validarSecuencia(car)) {
+            if (destino == null) {
+//                destino = new ArrayList<CarrerasMaterias>();
+            }
+            destino.add(car);
+            //COUNT DE NUMERO DE MATRICULAS EN ÉSTA MATERIA
+            origen.remove(obj);
+            sumarCreditos();
+        }
+
+        return null;
+    }
+
     public String seleccionar(Matriculas obj) {
         object = obj;
         carreraSeleccionado = object.getIdCarreras();
@@ -1166,6 +1251,7 @@ public class MatriculasBean2 {
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
         buscarMatricula(estudiante);
         estudiantesListado = null;
+        materiasSuspensas();
 
     }
 
@@ -1557,7 +1643,7 @@ public class MatriculasBean2 {
             map.put("tituloReporte", "FICHA DE MATRICULA");
             map.put("titulo1", "USUARIO");
             map.put("titulo2", "# DE INFORMES");
-            map.put("usuario", ""+((Empleados) context.getExternalContext().getSessionMap().get("user")).getApellidoPaterno()+" "+((Empleados) context.getExternalContext().getSessionMap().get("user")).getNombre());
+            map.put("usuario", "" + ((Empleados) context.getExternalContext().getSessionMap().get("user")).getApellidoPaterno() + " " + ((Empleados) context.getExternalContext().getSessionMap().get("user")).getNombre());
             map.put("fecha", adm.Date());
 
             BigDecimal valorConvOtra = new BigDecimal(0);
@@ -1592,10 +1678,10 @@ public class MatriculasBean2 {
                     if (materiasMatricula1.getConvalidado()) {
                         materiasMatricula1.setValorCredito(materiasMatricula1.getValor().equals("R") ? valorConvReingreso : materiasMatricula1.getValor().equals("M") ? valorConvMisma : materiasMatricula1.getValor().equals("O") ? valorConvOtra : new BigDecimal(0));
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getValor().equals("R") ? valorConvReingreso : materiasMatricula1.getValor().equals("M") ? valorConvMisma : materiasMatricula1.getValor().equals("O") ? valorConvOtra : new BigDecimal(0));
-                    }else if (materiasMatricula1.getIdMaterias().getEspecial()) {
+                    } else if (materiasMatricula1.getIdMaterias().getEspecial()) {
                         materiasMatricula1.setValorCredito(materiasMatricula1.getIdMaterias().getCredito());
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMaterias().getCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
-                    }else{
+                    } else {
                         materiasMatricula1.setValorCredito(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito());
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
                     }
@@ -1603,11 +1689,11 @@ public class MatriculasBean2 {
                     if (materiasMatricula1.getIdMaterias().getEspecial()) {
                         materiasMatricula1.setValorCredito(materiasMatricula1.getIdMaterias().getCredito());
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMaterias().getCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
-                    }else{
+                    } else {
                         materiasMatricula1.setValorCredito(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito());
                         materiasMatricula1.setValorCreditoTotal(materiasMatricula1.getIdMatriculas().getIdEstudiantes().getIdCategoriasSociales().getValorCredito().multiply(new BigDecimal(care.get(0).getNumeroCreditos())));
                     }
-                    
+
                 }
 
                 /*

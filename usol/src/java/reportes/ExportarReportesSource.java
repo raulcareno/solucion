@@ -76,6 +76,8 @@ public class ExportarReportesSource {
     }
     
     public void PDF() throws JRException, IOException {
+        try {
+
              init();
             HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             httpServletResponse.addHeader("Content-disposition", "inline; filename="+nombreReporte+".pdf");
@@ -84,6 +86,9 @@ public class ExportarReportesSource {
             httpServletResponse.setContentType("application/pdf");
 //            servletOutputStream.print("<script language=\"javascript\"> window.print();</script>");
             JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+                        
+        } catch (Exception e) {
+        }
             
     }
 

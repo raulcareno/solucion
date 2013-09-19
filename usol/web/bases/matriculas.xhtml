@@ -50,6 +50,22 @@
                     </p:commandButton>      
 
                 </p:dialog> 
+
+                <p:dialog   id="modalDialogSuspendidas" header="MATERIAS SUSPENIDIDAS" widgetVar="variasMatriculasSuspendidas" modal="true" position="top" height="150" width="550">  
+                    <p:dataTable   id="listaMateriasSuspendidas" var="mate" value="#{matriculasBean2.materiasMatriculaSuspendidas}">  
+                        <p:column  headerText="NOMBRE">  
+                            <h:outputText value="#{mate.idMaterias.nombre}" />  
+                        </p:column>  
+                        <p:column  headerText="Acción">  
+                            <p:commandButton   actionListener="#{matriculasBean2.seleccionarSuspendidas(mate)}" update=":form:panelMaterias" oncomplete="variasMatriculasSuspendidas.hide()" icon="ui-icon-circle-arrow-s">  
+                            </p:commandButton>  
+                        </p:column>  
+                    </p:dataTable>  
+
+                    <p:commandButton value="CERRAR"   onclick="variasMatriculasSuspendidas.hide()" icon="ui-icon-closethick">  
+                    </p:commandButton>      
+
+                </p:dialog> 
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
 
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
@@ -60,7 +76,7 @@
                                         completeMethod="#{matriculasBean2.buscarApellido}" 
                                         var="p" itemLabel="#{p}" itemValue="#{p}"
                                         converter="ConvEstudiantes" forceSelection="true">  
-                            <p:ajax event="itemSelect"  listener="#{matriculasBean2.handleSelect}" update=":form :form:modalDialog :form:acSimpleautoCompleteApellidos"  oncomplete="variasMatriculas.show();" />  
+                            <p:ajax event="itemSelect"  listener="#{matriculasBean2.handleSelect}" update=":form :form:modalDialog :form:acSimpleautoCompleteApellidos :form:suspendidas"  oncomplete="variasMatriculas.show();" />  
                         </p:autoComplete>  
                         <p:watermark for="acSimpleautoCompleteApellidos" value="DIGITE UN APELLIDO" />   
                         <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  
@@ -137,8 +153,8 @@
 
                             <p:column  width="18" styleClass="textonormal" >  
                                 <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="quitar" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
-                            return false;
-                        }" title="Eliminar"/>  
+                                    return false;
+                                }" title="Eliminar"/>  
                                 <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="quitar">  
                                 </p:commandButton>  
                             </p:column>  
@@ -171,7 +187,7 @@
 
                             </f:facet>  
                         </p:dataTable>  
-
+                        <p:commandButton id="suspendidas" onclick="variasMatriculasSuspendidas.show()" rendered="#{matriculasBean2.materiasMatriculaSuspendidas.size() >0}" value="TIENE SUSPENDIDAS" />
 
                     </p:panelGrid>
 
