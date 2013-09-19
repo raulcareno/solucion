@@ -169,7 +169,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             public void windowClosing(WindowEvent we) {
                 //JOptionPane.showMessageDialog(puertoBase, "mensaje");
                 auditar("", "", "Salir del Sistema");
-                System.exit(0);
+                return;
+                //System.exit(0);
 
             }
         });
@@ -692,7 +693,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         buscarClientes.getContentPane().add(jPanel9);
         jPanel9.setBounds(10, 60, 510, 180);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Sistema de Control");
         setName("miForma"); // NOI18N
 
@@ -2954,7 +2955,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(254, Short.MAX_VALUE))
+                    .addContainerGap(158, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -7008,6 +7009,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
+        auditar("", "", "Salio del Sistema");
         System.gc();
         System.exit(0);
         
