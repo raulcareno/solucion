@@ -46,12 +46,31 @@ import jcinform.bean.sources.clasestmp.Pendientes;
       
       
 List cantonesList = adm.query("Select o from Canton as o ");
+
+    Canton c = new Canton(-1);
+    c.setNombre(" [ TODOS ] ");
+    cantonesList.add(0,c);
+    
+    
 List empleadosList = adm.query("Select o from Empleados as o ");
            
 
   void facturasPendientes(){
         try{
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),sect.selectedItem.value,sect2.selectedItem.value,formapago.selectedItem.value,estadoContrato.selectedItem.value);
+            
+            Sector sec001 = new Sector(0);
+            Sector sec002 = new Sector(0);
+            
+            if(cant.getSelectedItem().getValue().getCodigo().equals(-1)){
+                sec001 = new Sector(-1);
+                sec002 = new Sector(-1);
+            }else{
+                sec001 = sect.selectedItem.value;
+                sec002 = sect2.selectedItem.value;
+            }
+            
+        List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),sec001,sec002,formapago.selectedItem.value,estadoContrato.selectedItem.value);
+        
             facturasDatos.getRows().getChildren().clear();
             ArrayList contratosAnadidos = new ArrayList();
             int i =0;
@@ -684,7 +703,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                                 <bandpopup>
                                                     <vbox>
                                                         <listbox id="sect" width="250px"
-                                                                     onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();facturasDatos.getRows().getChildren().clear();">
+                                                                 onSelect="bdSector.value=self.selectedItem.label;bdSector.closeDropdown();facturasDatos.getRows().getChildren().clear();">
                                  
                                                             <listitem forEach="${sectiles}" value="${each}">
                                                                 <listcell label="${each.nombre}" />
@@ -717,15 +736,15 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                         </row>
                                         <row>
                                             <span></span>
-                                             <radiogroup id="estadoContrato" >
-                                                        <radio id="eactivo" selected="true" value="Activo" label="Act." style="font-weight:bold2" />
-                                                        <radio  id="ecortado"  value="Cortado"  label="Cort." style="font-weight:bold2" />
-                                                        <radio id="esuspendido"    value="Suspendido"  label="Susp." style="font-weight:bold2" />
-                                                        <radio id="eterminado"   value="Terminado"  label="Term." style="font-weight:bold2" />
-                                                        <radio id="ependiente"  value="Pendiente"  label="Pend." style="font-weight:bold2" />
-                                                        <radio id="etodos"  value="Todos"  label="Todos" style="font-weight:bold2" />
-                                                    </radiogroup>
-                                                    <button label="Buscar" onClick="facturasPendientes()"/>
+                                            <radiogroup id="estadoContrato" >
+                                                <radio id="eactivo" selected="true" value="Activo" label="Act." style="font-weight:bold2" />
+                                                <radio  id="ecortado"  value="Cortado"  label="Cort." style="font-weight:bold2" />
+                                                <radio id="esuspendido"    value="Suspendido"  label="Susp." style="font-weight:bold2" />
+                                                <radio id="eterminado"   value="Terminado"  label="Term." style="font-weight:bold2" />
+                                                <radio id="ependiente"  value="Pendiente"  label="Pend." style="font-weight:bold2" />
+                                                <radio id="etodos"  value="Todos"  label="Todos" style="font-weight:bold2" />
+                                            </radiogroup>
+                                            <button label="Buscar" onClick="facturasPendientes()"/>
                                         </row>
                                         <row spans="4">
                                             <groupbox id="gb" mold="3d" width="100%">

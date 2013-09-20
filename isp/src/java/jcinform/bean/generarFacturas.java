@@ -608,6 +608,10 @@ public class generarFacturas {
     public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago, String estado) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
+        String complementoSectores = " and o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " ";
+        if(uno.getCodigo().equals(new Integer(-1))){
+            complementoSectores = "";
+        }
         if (formapago.equals("0")) {
             complemento = "";
         }
@@ -616,8 +620,7 @@ public class generarFacturas {
             compEstado = "";
         }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
-                + "where o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " "
-                + "and  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " + complemento + " " + compEstado);
+                + "where o.sucursal.codigo =  '" + suc.getCodigo() + "'  "+ complementoSectores  + complemento + " " + compEstado);
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
