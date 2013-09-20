@@ -286,6 +286,7 @@ public class MatriculasBean2 {
         sus.setNoCreditos(obj.getNumeroCreditos());
         sus.setNoHoras(obj.getNumeroHoras());
         sus.setPagado(obj.getPagada());
+        sus.setObservacion(observacion);
         //sus.setTipo(obj.get);
         sus.setValor(obj.getValor());
         //sus.setValorCredito(obj.get);
@@ -2172,4 +2173,15 @@ public class MatriculasBean2 {
     public void setMatriculasListado(List<Matriculas> matriculasListado) {
         this.matriculasListado = matriculasListado;
     }
+    String observacion = "";
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
+    
 }

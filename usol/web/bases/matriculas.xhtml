@@ -23,197 +23,223 @@
                     }
                 </script>
                 <script src="locales.js" type="text/javascript"/>
-                <p:dialog   id="modalDialog" header="SELECCIONE UNA MATRICULA" widgetVar="variasMatriculas" modal="true" position="top" height="150" width="550">  
-                    <p:dataTable  rendered="#{matriculasBean2.matriculasListado.size()>1}" id="listaMatriculas" var="matriculas" value="#{matriculasBean2.matriculasListado}">  
-                        <p:column  headerText="CARRERAS">  
-                            <h:outputText value="#{matriculas.idCarreras.nombre}" />  
-                        </p:column>  
-                        <p:column headerText="PERIODO">  
-                            <h:outputText value="#{matriculas.idPeriodos.fechaInicio.toLocaleString()}" />  
-                        </p:column>  
-                        <p:column   headerText="ESTADO">  
-                            <h:outputText value="#{matriculas.estadoMat eq 'M' ? 'MATRICULADO':matriculas.estadoMat eq 'I'?'INSCRITO':matriculas.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;" />  
-                        </p:column>  
-                        <p:column  headerText="Acción">  
-                            <p:commandButton   actionListener="#{matriculasBean2.seleccionar(matriculas)}" update=":form" oncomplete="variasMatriculas.hide()" icon="ui-icon-circle-arrow-s">  
-                            </p:commandButton>  
-                        </p:column>  
-                    </p:dataTable>  
-                    <h:panelGrid columns="1" width="510"  cellpadding="2" style="background-color: khaki" rendered="#{matriculasBean2.matriculasListado.size() eq 0}" >
-                        <h:outputText rendered="#{matriculasBean2.matriculasListado.size() eq 0}" value="El estudiante no se encuentra matriculado, revise los libros de matricula, o acerquece a colecturía"   style="font-weight:bold;"  />
-                        <p:spacer width="10"/>
-                        <p:commandButton value="CERRAR"  rendered="#{matriculasBean2.matriculasListado.size() eq 0}"  onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
-                        </p:commandButton>      
 
-                    </h:panelGrid>
-                    <p:commandButton value="CERRAR"   onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
-                    </p:commandButton>      
+                <p:accordionPanel id="acordionBusca">  
+                    <p:tab title="Busca de Estudiantes">  
 
-                </p:dialog> 
+                        <h:panelGrid columns="2" cellpadding="10">  
+                            <p:panel style="background-color: navajowhite" >  
+                                <p:dialog   id="modalDialog" header="SELECCIONE UNA MATRICULA" widgetVar="variasMatriculas" modal="true" position="top" height="150" width="550">  
+                                    <p:dataTable  rendered="#{matriculasBean2.matriculasListado.size()>1}" id="listaMatriculas" var="matriculas" value="#{matriculasBean2.matriculasListado}">  
+                                        <p:column  headerText="CARRERAS">  
+                                            <h:outputText value="#{matriculas.idCarreras.nombre}" />  
+                                        </p:column>  
+                                        <p:column headerText="PERIODO">  
+                                            <h:outputText value="#{matriculas.idPeriodos.fechaInicio.toLocaleString()}" />  
+                                        </p:column>  
+                                        <p:column   headerText="ESTADO">  
+                                            <h:outputText value="#{matriculas.estadoMat eq 'M' ? 'MATRICULADO':matriculas.estadoMat eq 'I'?'INSCRITO':matriculas.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;" />  
+                                        </p:column>  
+                                        <p:column  headerText="Acción">  
+                                            <p:commandButton   actionListener="#{matriculasBean2.seleccionar(matriculas)}" update=":form:acordionBusca" oncomplete="variasMatriculas.hide()" icon="ui-icon-circle-arrow-s">  
+                                            </p:commandButton>  
+                                        </p:column>  
+                                    </p:dataTable>  
+                                    <h:panelGrid columns="1" width="510"  cellpadding="2" style="background-color: khaki" rendered="#{matriculasBean2.matriculasListado.size() eq 0}" >
+                                        <h:outputText rendered="#{matriculasBean2.matriculasListado.size() eq 0}" value="El estudiante no se encuentra matriculado, revise los libros de matricula, o acerquece a colecturía"   style="font-weight:bold;"  />
+                                        <p:spacer width="10"/>
+                                        <p:commandButton value="CERRAR"  rendered="#{matriculasBean2.matriculasListado.size() eq 0}"  onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
+                                        </p:commandButton>      
 
-                <p:dialog   id="modalDialogSuspendidas" header="MATERIAS SUSPENIDIDAS" widgetVar="variasMatriculasSuspendidas" modal="true" position="top" height="150" width="550">  
-                    <p:dataTable   id="listaMateriasSuspendidas" var="mate" value="#{matriculasBean2.materiasMatriculaSuspendidas}">  
-                        <p:column  headerText="NOMBRE">  
-                            <h:outputText value="#{mate.idMaterias.nombre}" />  
-                        </p:column>  
-                        <p:column  headerText="Acción">  
-                            <p:commandButton   actionListener="#{matriculasBean2.seleccionarSuspendidas(mate)}" update=":form:panelMaterias" oncomplete="variasMatriculasSuspendidas.hide()" icon="ui-icon-circle-arrow-s">  
-                            </p:commandButton>  
-                        </p:column>  
-                    </p:dataTable>  
+                                    </h:panelGrid>
+                                    <p:commandButton value="CERRAR"   onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
+                                    </p:commandButton>      
 
-                    <p:commandButton value="CERRAR"   onclick="variasMatriculasSuspendidas.hide()" icon="ui-icon-closethick">  
-                    </p:commandButton>      
+                                </p:dialog> 
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">  
+                                    <p:separator/>Observación
+                                    <p:inputTextarea value="#{matriculasBean2.observacion}" id="observacionSuspender" />
+                                    <p:separator/>
+                                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                                    <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                                </p:confirmDialog> 
 
-                </p:dialog> 
-                <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                                <p:dialog   id="modalDialogSuspendidas" header="MATERIAS SUSPENDIDAS" widgetVar="variasMatriculasSuspendidas" modal="true" position="top" height="150" width="550">  
+                                    <p:dataTable   id="listaMateriasSuspendidas" var="mate" value="#{matriculasBean2.materiasMatriculaSuspendidas}">  
+                                        <p:column  headerText="NOMBRE">  
+                                            <h:outputText value="#{mate.idMaterias.nombre}" />  
+                                        </p:column>  
+                                        <p:column  headerText="Acción">  
+                                            <p:commandButton   actionListener="#{matriculasBean2.seleccionarSuspendidas(mate)}" update=":form:acordionBusca:panelMaterias" oncomplete="variasMatriculasSuspendidas.hide()" icon="ui-icon-circle-arrow-s">  
+                                            </p:commandButton>  
+                                        </p:column>  
+                                    </p:dataTable>  
 
-                <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                <p:panel style="background-color: navajowhite" >  
-                    <h:panelGrid styleClass="texto"  width="840px" columns="7" cellpadding="-5">  
-                        <h:outputLabel value="Buscar: " />  
-                        <p:autoComplete size="40"  style="font-size: 12px; width: 200px" id="acSimpleautoCompleteApellidos" value="#{matriculasBean2.estudiante}" 
-                                        completeMethod="#{matriculasBean2.buscarApellido}" 
-                                        var="p" itemLabel="#{p}" itemValue="#{p}"
-                                        converter="ConvEstudiantes" forceSelection="true">  
-                            <p:ajax event="itemSelect"  listener="#{matriculasBean2.handleSelect}" update=":form :form:modalDialog :form:acSimpleautoCompleteApellidos :form:suspendidas"  oncomplete="variasMatriculas.show();" />  
-                        </p:autoComplete>  
-                        <p:watermark for="acSimpleautoCompleteApellidos" value="DIGITE UN APELLIDO" />   
-                        <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  
-                        <p:autoComplete size="40" style="width: 200px" id="autoCompleteCedula" value="#{matriculasBean2.estudiante}" 
-                                        completeMethod="#{matriculasBean2.buscarCedula}" 
-                                        var="p" itemLabel="#{p.idEstudiantes}" itemValue="#{p}"
-                                        converter="ConvEstudiantes" forceSelection="true">  
-                            <p:ajax event="itemSelect" listener="#{matriculasBean2.handleSelect}" update=":form" />  
-                            <f:facet name="itemtip">  
-                                <h:panelGrid  columns="2" cellpadding="-1">  
-                                    <h:outputText id="modelNo" value="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" />  
-                                </h:panelGrid>  
-                            </f:facet>  
-                        </p:autoComplete>  
+                                    <p:commandButton value="CERRAR"   onclick="variasMatriculasSuspendidas.hide()" icon="ui-icon-closethick">  
+                                    </p:commandButton>      
 
-                        <h:outputText value=" " />  <h:outputText value=" " />  
+                                </p:dialog> 
+                                <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
 
+                                <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
 
-                        <h:outputText value=" #{matriculasBean2.estudiante.idEstudiantes}"   id="CedulaIdentidad"  style="font-weight:bold;"/>        
+                                <h:panelGrid styleClass="texto"  width="840px" columns="7" cellpadding="-5">  
+                                    <h:outputLabel value="Buscar: " />  
+                                    <p:autoComplete size="40"  style="font-size: 12px; width: 200px" id="acSimpleautoCompleteApellidos" value="#{matriculasBean2.estudiante}" 
+                                                    completeMethod="#{matriculasBean2.buscarApellido}" 
+                                                    var="p" itemLabel="#{p}" itemValue="#{p}"
+                                                    converter="ConvEstudiantes" forceSelection="true">  
+                                        <p:ajax event="itemSelect"  listener="#{matriculasBean2.handleSelect}" update=":form:acordionBusca :form:acordionBusca:modalDialog :form:acordionBusca:acSimpleautoCompleteApellidos :form:acordionBusca:suspendidas"  oncomplete="variasMatriculas.show();" />  
+                                    </p:autoComplete>  
+                                    <p:watermark for="acSimpleautoCompleteApellidos" value="DIGITE UN APELLIDO" />   
+                                    <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  
+                                    <p:autoComplete size="40" style="width: 200px" id="autoCompleteCedula" value="#{matriculasBean2.estudiante}" 
+                                                    completeMethod="#{matriculasBean2.buscarCedula}" 
+                                                    var="p" itemLabel="#{p.idEstudiantes}" itemValue="#{p}"
+                                                    converter="ConvEstudiantes" forceSelection="true">  
+                                        <p:ajax event="itemSelect" listener="#{matriculasBean2.handleSelect}" update=":form:acordionBusca" />  
+                                        <f:facet name="itemtip">  
+                                            <h:panelGrid  columns="2" cellpadding="-1">  
+                                                <h:outputText id="modelNo" value="#{p.apellidoPaterno} #{p.apellidoMaterno} #{p.nombre}" />  
+                                            </h:panelGrid>  
+                                        </f:facet>  
+                                    </p:autoComplete>  
 
-                        <h:outputText value=" #{matriculasBean2.estudiante.apellidoPaterno} #{matriculasBean2.estudiante.apellidoMaterno} #{matriculasBean2.estudiante.nombre}" id="ApellidoPaterno"  style="font-weight:bold;"/>  
-                        <p:inputText  value="#{matriculasBean2.object.idMatriculas}"  converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>
-
-                        <h:outputText value="CARRERA: " />     
-                        <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{matriculasBean2.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
-                            <f:selectItems value="#{matriculasBean2.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
-                            <p:ajax event="change"  process="@this carrera" listener="#{matriculasBean2.buscarMateriasdeCarrera}" update=":form"/>
-                        </p:selectOneMenu>   
-                        <h:outputText value=" " />  
-                        <h:outputText value=" " />  
-                        <h:outputText value="ESTADO: " />  
-                        <h:outputText value="#{matriculasBean2.object.estadoMat eq 'M' ? 'MATRICULADO':matriculasBean2.object.estadoMat eq 'I'?'INSCRITO':matriculasBean2.object.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;;color:blue" />  
-                        <h:outputText value=" " />  
-
-                        <h:outputText value="No. MATRICULA: " />  
-                        <p:column>
-                            <h:outputText value="#{matriculasBean2.object.numero}" id="NumeroMatricula"  style="font-weight:bold;;color:blue"/>
-                            <h:outputText value=" . " /> 
-                            <p:spacer  />
-                            <h:outputText value="Categoría Social: " />  
-                            <h:outputText value="#{matriculasBean2.object.idEstudiantes.idCategoriasSociales.nombre}" id="CategoriaSocial"  style="font-weight:bold;color:blue"/>                                  
-                        </p:column>
-
-                        <h:outputText value=" " />  
-                        <h:outputText value=" " />  
-                        <h:outputText value=" " />  
-                    </h:panelGrid> 
+                                    <h:outputText value=" " />  <h:outputText value=" " />  
 
 
+                                    <h:outputText value=" #{matriculasBean2.estudiante.idEstudiantes}"   id="CedulaIdentidad"  style="font-weight:bold;"/>        
 
-                    <p:panelGrid id="panelMaterias" width="840px" columns="2">
-                        <p:dataTable styleClass="texto"  style="width: 540px"   emptyMessage="."  scrollable="true" scrollHeight="200"   id="asignadas" var="materia" value="#{matriculasBean2.destino}">  
-                            <p:column width="150"  styleClass="textonormal" headerText="MATRICULADO EN">  
-                                <h:outputText value="#{materia.idMaterias.nombre}" />  
-                            </p:column>  
-                            <p:column width="40" styleClass="textonormal"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
-                                <h:outputText value="#{materia.idNiveles.nombre}" />  
-                            </p:column>  
-                            <p:column width="10" styleClass="textonormal"   headerText="# C">  
-                                <h:outputText value="#{materia.numeroCreditos}" />  
-                            </p:column> 
-                            <p:column width="10" styleClass="textonormal"    headerText="CV.">  
-                                <h:outputText  value="#{materia.convalidada?'SI':'NO'}" />  
-                            </p:column> 
-                            <p:column width="10" styleClass="textonormal"   headerText="PA">  
-                                <h:outputText   value="#{materia.pagada?'SI':'NO'}" />  
-                            </p:column> 
-                            <p:column width="10" styleClass="textonormal"   headerText="SU">  
-                                <p:commandButton rendered="#{materia.pagada}"   onclick="if (!confirm('Desea SUSPENDER el presente crédito?')) {return false;}"    title="Suspender" actionListener="#{matriculasBean2.suspender(materia)}" update=":form:panelMaterias :form:suspendidas :form:listaMateriasSuspendidas" icon="suspender"/>
-                            </p:column>
-                            <p:column width="10" styleClass="textonormal"   headerText="CA">  
-                                <p:commandButton rendered="#{materia.pagada}"  onclick="if (!confirm('Desea CANCELAR el presente crédito?')) {return false;}"  style="background-color: transparent; background-color: white" title="Cancelar" actionListener="#{matriculasBean2.cancelar(materia)}" update=":form:panelMaterias" icon="cancelar"/>
-                            </p:column>
+                                    <h:outputText value=" #{matriculasBean2.estudiante.apellidoPaterno} #{matriculasBean2.estudiante.apellidoMaterno} #{matriculasBean2.estudiante.nombre}" id="ApellidoPaterno"  style="font-weight:bold;"/>  
+                                    <p:inputText  value="#{matriculasBean2.object.idMatriculas}"  converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>
 
-                            <p:column  width="18" styleClass="textonormal" >  
-                                <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="quitar" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
-                                    return false;
-                                }" title="Eliminar"/>  
-                                <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:panelMaterias" icon="quitar">  
-                                </p:commandButton>  
-                            </p:column>  
-                            <p:column width="10" styleClass="textonormal"   headerText="">  
-                                <p:spacer/>
-                            </p:column> 
-                            <f:facet name="footer">  
-                                <h:outputText style="font-size: 11px" value="# de Créditos asignados:  #{matriculasBean2.noCreditos}" />  
-                            </f:facet>  
-                        </p:dataTable>  
-                        <p:dataTable   styleClass="texto" style="width: 400px" scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
-                            <p:column  width="18" styleClass="textonormal">  
-                                <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:panelMaterias" icon="anadir">  
-                                </p:commandButton>  
-                            </p:column> 
-                            <p:column  width="150" styleClass="textonormal"  headerText="MATERIAS DISPONIBLES">  
-                                <h:outputText value="#{car.idMaterias.nombre}" />  
-                            </p:column>  
-                            <p:column width="70" styleClass="textonormal"  headerText="TIPO">  
-                                <h:outputText value="#{car.idMaterias.idTipoMateria.nombre}" />  
-                            </p:column>  
-                            <p:column width="50"  styleClass="textonormal"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
-                                <h:outputText value="#{car.idNiveles.nombre}" />  
-                            </p:column>  
-                            <p:column width="18"  styleClass="textonormal"  headerText="#Cred.">  
-                                <h:outputText value="#{car.numeroCreditos}" />  
-                            </p:column>  
-                            <f:facet name="footer">  
-                                <h:outputText style="font-size: 11px" value="#C: CREDITOS; CV: CONVALIDADA; PA: PAGADA; SU: SUSPENDIDA; CA: CANCELAR; ." />  
+                                    <h:outputText value="CARRERA: " />     
+                                    <p:selectOneMenu   id="carrera" label="carrera"  style="width:360px"  value="#{matriculasBean2.carreraSeleccionado}" effect="fade" converter="ConvCarreras">  
+                                        <f:selectItems value="#{matriculasBean2.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
+                                        <p:ajax event="change"  process="@this carrera" listener="#{matriculasBean2.buscarMateriasdeCarrera}" update=":form:acordionBusca"/>
+                                    </p:selectOneMenu>   
+                                    <h:outputText value=" " />  
+                                    <h:outputText value=" " />  
+                                    <h:outputText value="ESTADO: " />  
+                                    <h:outputText value="#{matriculasBean2.object.estadoMat eq 'M' ? 'MATRICULADO':matriculasBean2.object.estadoMat eq 'I'?'INSCRITO':matriculasBean2.object.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;;color:blue" />  
+                                    <h:outputText value=" " />  
 
-                            </f:facet>  
-                        </p:dataTable>  
-                        <p:commandButton id="suspendidas" onclick="variasMatriculasSuspendidas.show()" rendered="#{matriculasBean2.materiasMatriculaSuspendidas.size() >0}" value="TIENE SUSPENDIDAS" />
+                                    <h:outputText value="No. MATRICULA: " />  
+                                    <p:column>
+                                        <h:outputText value="#{matriculasBean2.object.numero}" id="NumeroMatricula"  style="font-weight:bold;;color:blue"/>
+                                        <h:outputText value=" . " /> 
+                                        <p:spacer  />
+                                        <h:outputText value="Categoría Social: " />  
+                                        <h:outputText value="#{matriculasBean2.object.idEstudiantes.idCategoriasSociales.nombre}" id="CategoriaSocial"  style="font-weight:bold;color:blue"/>                                  
+                                    </p:column>
 
-                    </p:panelGrid>
+                                    <h:outputText value=" " />  
+                                    <h:outputText value=" " />  
+                                    <h:outputText value=" " />  
+                                </h:panelGrid> 
 
 
-                    <h:panelGrid cellpadding="1px" width="840px" cellspacing="2px"  columns="8">
-                        <h:outputText styleClass="texto"  value="HORA" />     
-                        <h:outputText styleClass="texto"  value="LUNES " />         
-                        <h:outputText styleClass="texto"  value="MARTES " />         
-                        <h:outputText styleClass="texto"  value="MIERCOLES" />         
-                        <h:outputText styleClass="texto"  value="JUEVES" />         
-                        <h:outputText styleClass="texto"  value="VIERNES" />         
-                        <h:outputText styleClass="texto"  value="SABADO" />         
-                        <h:outputText styleClass="texto"  value="DOMINGO" />         
-                        <c:forEach var="i" begin="0" end="#{horariosProfesoresBean.totalHoras-1}" step="1" varStatus ="status">
-                            <h:outputText style="font-size:10px" value="#{horariosProfesoresBean.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{horariosProfesoresBean.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
-                            <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
-                                <p:panel  id="f#{i}c#{j}" >  
-                                    <p:spacer height="20" rendered="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
-                                    <h:outputText styleClass="texto" value="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idAulas.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idNiveles.nombre} "  />
-                                    <p:spacer width="7"/>   
-                                </p:panel>
-                            </c:forEach>
-                        </c:forEach>
-                    </h:panelGrid>
 
-                </p:panel>  
+                                <p:panelGrid id="panelMaterias" width="840px" columns="2">
+                                    <p:dataTable styleClass="texto"  style="width: 540px"   emptyMessage="."  scrollable="true" scrollHeight="200"   id="asignadas" var="materia" value="#{matriculasBean2.destino}">  
+                                        <p:column width="150"  styleClass="textonormal" headerText="MATRICULADO EN">  
+                                            <h:outputText value="#{materia.idMaterias.nombre}" />  
+                                        </p:column>  
+                                        <p:column width="40" styleClass="textonormal"  sortBy="#{materia.idNiveles.nombre}"  headerText="NIVEL">  
+                                            <h:outputText value="#{materia.idNiveles.nombre}" />  
+                                        </p:column>  
+                                        <p:column width="10" styleClass="textonormal"   headerText="# C">  
+                                            <h:outputText value="#{materia.numeroCreditos}" />  
+                                        </p:column> 
+                                        <p:column width="10" styleClass="textonormal"    headerText="CV.">  
+                                            <h:outputText  value="#{materia.convalidada?'SI':'NO'}" />  
+                                        </p:column> 
+                                        <p:column width="10" styleClass="textonormal"   headerText="PA">  
+                                            <h:outputText   value="#{materia.pagada?'SI':'NO'}" />  
+                                        </p:column> 
+                                        <p:column width="10" styleClass="textonormal"   headerText="SU">  
+                                            <p:commandButton rendered="#{materia.pagada}"  title="Suspender" actionListener="#{matriculasBean2.suspender(materia)}" update=":form:acordionBusca:panelMaterias :form:acordionBusca:suspendidas :form:acordionBusca:listaMateriasSuspendidas" icon="suspender">
+                                                <p:confirm header="Confirmation" message="Seguro de Suspender?" icon="ui-icon-alert" /> 
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column width="10" styleClass="textonormal"   headerText="CA">  
+                                            <p:commandButton rendered="#{materia.pagada}"  onclick="if (!confirm('Desea CANCELAR el presente crédito?')) {return false;}"  style="background-color: transparent; background-color: white" title="Cancelar" actionListener="#{matriculasBean2.cancelar(materia)}" update=":form:acordionBusca:panelMaterias" icon="cancelar"/>
+                                        </p:column>
+
+                                        <p:column  width="18" styleClass="textonormal" >  
+                                            <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias" icon="quitar" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
+                                                return false;
+                                            }" title="Eliminar"/>  
+                                            <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias" icon="quitar">  
+                                            </p:commandButton>  
+                                        </p:column>  
+                                        <p:column width="10" styleClass="textonormal"   headerText="">  
+                                            <p:spacer/>
+                                        </p:column> 
+                                        <f:facet name="footer">  
+                                            <h:outputText style="font-size: 11px" value="# de Créditos asignados:  #{matriculasBean2.noCreditos}" />  
+                                        </f:facet>  
+                                    </p:dataTable>  
+                                    <p:dataTable   styleClass="texto" style="width: 400px" scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
+                                        <p:column  width="18" styleClass="textonormal">  
+                                            <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:acordionBusca:panelMaterias" icon="anadir">  
+                                            </p:commandButton>  
+                                        </p:column> 
+                                        <p:column  width="150" styleClass="textonormal"  headerText="MATERIAS DISPONIBLES">  
+                                            <h:outputText value="#{car.idMaterias.nombre}" />  
+                                        </p:column>  
+                                        <p:column width="70" styleClass="textonormal"  headerText="TIPO">  
+                                            <h:outputText value="#{car.idMaterias.idTipoMateria.nombre}" />  
+                                        </p:column>  
+                                        <p:column width="50"  styleClass="textonormal"  sortBy="#{car.idNiveles.secuencia}" headerText="NIVEL">  
+                                            <h:outputText value="#{car.idNiveles.nombre}" />  
+                                        </p:column>  
+                                        <p:column width="18"  styleClass="textonormal"  headerText="#Cred.">  
+                                            <h:outputText value="#{car.numeroCreditos}" />  
+                                        </p:column>  
+                                        <f:facet name="footer">  
+                                            <h:outputText style="font-size: 11px" value="#C: CREDITOS; CV: CONVALIDADA; PA: PAGADA; SU: SUSPENDIDA; CA: CANCELAR; ." />  
+
+                                        </f:facet>  
+                                    </p:dataTable>  
+                                    <p:commandButton id="suspendidas" onclick="variasMatriculasSuspendidas.show()" rendered="#{matriculasBean2.materiasMatriculaSuspendidas.size() >0}" value="TIENE SUSPENDIDAS" />
+
+                                </p:panelGrid>
+                            </p:panel>  
+                        </h:panelGrid>  
+                    </p:tab>  
+
+                    <p:tab title="Horarios">  
+                        <h:panelGrid columns="2" cellpadding="10">  
+                            <p:panel style="background-color: navajowhite" >  
+
+                                <h:panelGrid cellpadding="1px" width="840px" cellspacing="2px"  columns="8">
+                                    <h:outputText styleClass="texto"  value="HORA" />     
+                                    <h:outputText styleClass="texto"  value="LUNES " />         
+                                    <h:outputText styleClass="texto"  value="MARTES " />         
+                                    <h:outputText styleClass="texto"  value="MIERCOLES" />         
+                                    <h:outputText styleClass="texto"  value="JUEVES" />         
+                                    <h:outputText styleClass="texto"  value="VIERNES" />         
+                                    <h:outputText styleClass="texto"  value="SABADO" />         
+                                    <h:outputText styleClass="texto"  value="DOMINGO" />         
+                                    <c:forEach var="i" begin="0" end="#{horariosProfesoresBean.totalHoras-1}" step="1" varStatus ="status">
+                                        <h:outputText style="font-size:10px" value="#{horariosProfesoresBean.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{horariosProfesoresBean.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
+                                        <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
+                                            <p:panel  id="f#{i}c#{j}" >  
+                                                <p:spacer height="20" rendered="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                                <h:outputText styleClass="texto" value="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idAulas.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idNiveles.nombre} "  />
+                                                <p:spacer width="7"/>   
+                                            </p:panel>
+                                        </c:forEach>
+                                    </c:forEach>
+                                </h:panelGrid>
+
+                            </p:panel>  
+                        </h:panelGrid>  
+                    </p:tab>  
+                </p:accordionPanel>  
+
+
 
                 <h:panelGrid columns="4">
                     <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{matriculasBean2.guardar()}"  icon="guardar" title="Guardar"/>  
