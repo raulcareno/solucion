@@ -167,6 +167,9 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         txtValorAgregar = new javax.swing.JFormattedTextField();
         btnAnadir = new javax.swing.JButton();
         btnCerrarAnadirRubros = new javax.swing.JButton();
+        frmFacturaBusca = new javax.swing.JInternalFrame();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        tMatriculados3 = new javax.swing.JTable();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         encontrados1 = new javax.swing.JList();
@@ -245,6 +248,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         numeroMatricula = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         estudianteActual = new javax.swing.JLabel();
+        btnVerHistorial = new javax.swing.JToggleButton();
 
         frmSeleccionCarreras.setTitle("Seleccione la CARRERA a Matricular o Inscribir");
         frmSeleccionCarreras.setModal(true);
@@ -506,6 +510,92 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         setTitle("Facturación");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/rubros.gif"))); // NOI18N
         getContentPane().setLayout(null);
+
+        frmFacturaBusca.setClosable(true);
+        frmFacturaBusca.setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        frmFacturaBusca.setVisible(false);
+        frmFacturaBusca.addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                frmFacturaBuscaInternalFrameClosing(evt);
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+        frmFacturaBusca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                frmFacturaBuscaKeyPressed(evt);
+            }
+        });
+
+        tMatriculados3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "NO", "ESTUDIANTES", "FECHA"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tMatriculados3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tMatriculados3MouseClicked(evt);
+            }
+        });
+        tMatriculados3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tMatriculados3KeyPressed(evt);
+            }
+        });
+        jScrollPane9.setViewportView(tMatriculados3);
+        tMatriculados3.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tMatriculados3.getColumnModel().getColumn(2).setPreferredWidth(80);
+
+        javax.swing.GroupLayout frmFacturaBuscaLayout = new javax.swing.GroupLayout(frmFacturaBusca.getContentPane());
+        frmFacturaBusca.getContentPane().setLayout(frmFacturaBuscaLayout);
+        frmFacturaBuscaLayout.setHorizontalGroup(
+            frmFacturaBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frmFacturaBuscaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        frmFacturaBuscaLayout.setVerticalGroup(
+            frmFacturaBuscaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frmFacturaBuscaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        getContentPane().add(frmFacturaBusca);
+        frmFacturaBusca.setBounds(150, 164, 600, 240);
 
         panelencontrados1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
         panelencontrados1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -1184,6 +1274,16 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         estudianteActual.setText("estudiante-actual");
         getContentPane().add(estudianteActual);
         estudianteActual.setBounds(110, 150, 540, 14);
+
+        btnVerHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/0025-search.gif"))); // NOI18N
+        btnVerHistorial.setText("VER HISTORIAL PAGOS.");
+        btnVerHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerHistorialActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnVerHistorial);
+        btnVerHistorial.setBounds(560, 140, 190, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -2722,6 +2822,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
             this.panelencontrados1.setVisible(false);
             EstudianteSeleccionado = (general) this.encontrados1.getSelectedValue();
             // buscarInscripcion(EstudianteSeleccionado);
+            estudianteActual.setText("");
             funcionBuscar();
             faltan.setText(total.getText());
             buscarApellido.setText("");
@@ -2813,7 +2914,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
         if (evt.getKeyCode() == evt.VK_ENTER) {
-
+            estudianteActual.setText("");
             funcionBuscar();
         } else if (evt.getKeyCode() == evt.VK_UP && encontrados1.getSelectedIndex() == 0) {
             this.buscarApellido.requestFocusInWindow();
@@ -3009,7 +3110,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         if (tipoA.getSelectedIndex() > 0) {
             valorLabel.setVisible(true);
             cmbPorcentaje.setVisible(false);
-            if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda") || tipoA.getSelectedItem().toString().contains("Financia")) {
+            if (tipoA.getSelectedItem().toString().contains("Efec") || tipoA.getSelectedItem().toString().contains("Beca") || tipoA.getSelectedItem().toString().contains("Ayuda") ) {
                 valorA.setEnabled(true);
                 if (tipoA.getSelectedItem().toString().contains("Ayuda") || tipoA.getSelectedItem().toString().contains("Beca")) {
                     referenciaA.setEnabled(true);
@@ -3584,6 +3685,89 @@ public class frmFacturas extends javax.swing.JInternalFrame {
         frmAnadirRubros.show();
 
     }//GEN-LAST:event_jButton4ActionPerformed
+ public void llenarHistorialPagos() {
+
+     String a = "Select o from Facturas as o "
+                + "where o.idMatriculas.idMatriculas =  '" + actualMatricula.getIdMatriculas() +"' "
+                + " order by o.idFacturas";
+     
+        this.frmFacturaBusca.setVisible(true);
+        List lista = adm.query(a);
+//            List lista = (List) bs.buscarFacutra(this.txtApellidoBusca2.getText(),this.getPeriodoAct().getPerCod());
+        DefaultTableModel dtm = (DefaultTableModel) this.tMatriculados3.getModel();
+        dtm.getDataVector().removeAllElements();
+        for (Iterator it = lista.iterator(); it.hasNext();) {
+            Facturas elem = (Facturas) it.next();
+            Object[] obj = new Object[4];
+            obj[0] = elem.getIdFacturas();
+            obj[1] = elem.getIdMatriculas().getIdEstudiantes().getApellidoPaterno()+" "+elem.getIdMatriculas().getIdEstudiantes().getNombre();
+            obj[2] = elem.getFecha().toLocaleString();
+            //obj[3] = (elem.getEstado() ? "" : "ANULADO");
+            dtm.addRow(obj);
+        }
+        tMatriculados3.setModel(dtm);
+        this.tMatriculados3.requestFocusInWindow();
+ 
+    }
+    private void btnVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerHistorialActionPerformed
+        // TODO add your handling code here:
+        if (btnVerHistorial.isSelected()) {
+            frmFacturaBusca.setVisible(true);
+            btnVerHistorial.setLabel("OCULTAR HISTORIAL");
+            btnVerHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif")));
+            llenarHistorialPagos();
+        } else {
+            frmFacturaBusca.setVisible(false);
+            btnVerHistorial.setLabel("VER HISTORIAL PAGOS");
+            btnVerHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif")));
+        }
+    }//GEN-LAST:event_btnVerHistorialActionPerformed
+
+    private void tMatriculados3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tMatriculados3MouseClicked
+//        int val = evt.getClickCount();
+//        if (val == 2) {
+//            int fila = tMatriculados3.getSelectedRow();
+//            Cabecerafactura adm = (Cabecerafactura) tMatriculados3.getValueAt(fila, 0);
+//            llenar(adm);
+//            frmFacturaBusca.setVisible(false);
+//        }
+    }//GEN-LAST:event_tMatriculados3MouseClicked
+
+    private void tMatriculados3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tMatriculados3KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            frmFacturaBusca.setVisible(false);
+            btnVerHistorial.setSelected(false); 
+            btnVerHistorial.setLabel("VER HISTORIAL PAGOS");
+            btnVerHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif")));
+        }
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            int fila = tMatriculados3.getSelectedRow();
+            Facturas fac = (Facturas)adm.buscarClave(tMatriculados3.getValueAt(fila, 0)+"",Facturas.class);
+            //llenar(fac);
+            frmFacturaBusca.setVisible(false);
+        }
+    }//GEN-LAST:event_tMatriculados3KeyPressed
+
+    private void frmFacturaBuscaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_frmFacturaBuscaKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.frmFacturaBusca.setVisible(false);
+
+        }
+    }//GEN-LAST:event_frmFacturaBuscaKeyPressed
+
+    private void frmFacturaBuscaInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_frmFacturaBuscaInternalFrameClosing
+        // TODO add your handling code here:
+         
+         //   frmFacturaBusca.setVisible(false);
+            btnVerHistorial.setSelected(false); 
+            btnVerHistorial.setLabel("VER HISTORIAL PAGOS");
+            btnVerHistorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif")));
+         
+        
+    }//GEN-LAST:event_frmFacturaBuscaInternalFrameClosing
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anadir;
     private javax.swing.JDialog anularFacturaForm;
@@ -3597,6 +3781,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     public javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalirAnula;
+    private javax.swing.JToggleButton btnVerHistorial;
     private javax.swing.JFormattedTextField buscarApellido;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
@@ -3625,6 +3810,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JTable formasdePago;
     private javax.swing.JDialog frmActualizarDatosFactura;
     private javax.swing.JDialog frmAnadirRubros;
+    private javax.swing.JInternalFrame frmFacturaBusca;
     private javax.swing.JDialog frmSeleccionCarreras;
     private javax.swing.JLabel iva;
     private javax.swing.JButton jButton1;
@@ -3659,6 +3845,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel nombre;
     private javax.swing.JFormattedTextField nombre1;
     private javax.swing.JFormattedTextField numeroFacturaAnula;
@@ -3673,6 +3860,7 @@ public class frmFacturas extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField ruc1;
     private javax.swing.JLabel subtotal;
     private javax.swing.JTable tFactura;
+    private javax.swing.JTable tMatriculados3;
     private javax.swing.JLabel telefono;
     private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JComboBox tipoA;
