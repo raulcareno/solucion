@@ -1627,13 +1627,18 @@ public class frmFacturas extends javax.swing.JInternalFrame {
                         + " where o.idMatriculas. idMatriculas = '" + actualMatricula.getIdMatriculas() + "'"
                         + " and (o.pagado = false or o.pagado is null ) "
                         + " and o.idMaterias.idMaterias in (" + nuevosCodigosActualizar + ")  ");
-                for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
-                    MateriasMatricula materiasMatricula = it.next();
-                    materiasMatricula.setPagado(true);
-                    materiasMatricula.setIdFacturas(cab); 
-                    adm.actualizar(materiasMatricula);
+                    try {
+                        for (Iterator<MateriasMatricula> it = materiasTomadas.iterator(); it.hasNext();) {
+                        MateriasMatricula materiasMatricula = it.next();
+                        materiasMatricula.setPagado(true);
+                        materiasMatricula.setIdFacturas(cab); 
+                        adm.actualizar(materiasMatricula);
 
+                    }
+                } catch (Exception e) {
+                        System.out.println("NO HAY MATERIAS TOMADAS...! ");
                 }
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
