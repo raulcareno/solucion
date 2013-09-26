@@ -8601,6 +8601,7 @@ public class reportesClase {
 //        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
   //              + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        System.out.println("TRUNCAR NOTAS: "+truncarNotas);
         String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
@@ -8721,8 +8722,8 @@ public class reportesClase {
                     cell.setCellStyle(stiloContenido);
 
 
-
-
+ 
+                    
                     List valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) "
                             + " FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     if (valor.size() > 0) {
@@ -8731,8 +8732,12 @@ public class reportesClase {
                     HSSFCell cellDisc = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 2));
                     cellDisc.setCellValue("" + equivalencia(disciplina, equivalencias2));
                     cellDisc.setCellStyle(stiloContenido);
-
-                    valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,"+noDecimales+")) FROM notas "
+                        String query2 = "round(cast(avg(" +  nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
+                                if (truncarNotas) {
+                                    query2 = "truncate(cast(avg(" +  nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
+                                }
+                    //CAST(AVG(" + nfinal.getNota() + ")as decimal (9,"+noDecimales+"))
+                    valor = adm.queryNativo("SELECT "+query2+" FROM notas "
                             + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
                             + "AND disciplina = FALSE AND  promedia = TRUE "
                             + "AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
