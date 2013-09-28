@@ -59,7 +59,7 @@
                                     <p:separator/>Observación
                                     <p:inputTextarea value="#{matriculasBean2.observacion}" id="observacionSuspender" />
                                     <p:separator/>
-                                    <p:commandButton value="SI" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
+                                    <p:commandButton value="SI" process="@this observacionSuspender" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>  
                                     <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
                                 </p:confirmDialog> 
 
@@ -73,7 +73,7 @@
                                             </p:commandButton>  
                                         </p:column>  
                                     </p:dataTable>  
-
+vacion
                                     <p:commandButton value="CERRAR"   onclick="variasMatriculasSuspendidas.hide()" icon="ui-icon-closethick">  
                                     </p:commandButton>      
 
@@ -211,8 +211,8 @@
                     <p:tab title="Horarios">  
                         <h:panelGrid columns="2" cellpadding="10">  
                             <p:panel style="background-color: navajowhite" >  
-
-                                <h:panelGrid cellpadding="1px" width="840px" cellspacing="2px"  columns="8">
+                                <p:commandButton id="generarHorario"  update=":form:acordionBusca:horarioEstudiante"  actionListener="#{matriculasBean2.cargarHorarioPreferencial()}" value="GENERAR HORARIO" />                                        
+                                <h:panelGrid cellpadding="1px" width="840px" cellspacing="2px" id="horarioEstudiante"  columns="8">
                                     <h:outputText styleClass="texto"  value="HORA" />     
                                     <h:outputText styleClass="texto"  value="LUNES " />         
                                     <h:outputText styleClass="texto"  value="MARTES " />         
@@ -221,12 +221,12 @@
                                     <h:outputText styleClass="texto"  value="VIERNES" />         
                                     <h:outputText styleClass="texto"  value="SABADO" />         
                                     <h:outputText styleClass="texto"  value="DOMINGO" />         
-                                    <c:forEach var="i" begin="0" end="#{horariosProfesoresBean.totalHoras-1}" step="1" varStatus ="status">
-                                        <h:outputText style="font-size:10px" value="#{horariosProfesoresBean.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{horariosProfesoresBean.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
+                                    <c:forEach var="i" begin="0" end="#{matriculasBean2.totalHoras-1}" step="1" varStatus ="status">
+                                        <h:outputText style="font-size:10px" value="#{matriculasBean2.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{matriculasBean2.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
                                         <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
                                             <p:panel  id="f#{i}c#{j}" >  
-                                                <p:spacer height="20" rendered="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
-                                                <h:outputText styleClass="texto" value="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idAulas.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idNiveles.nombre} "  />
+                                                <p:spacer height="20" rendered="#{matriculasBean2.anadidasArrayHoras[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                                <h:outputText styleClass="texto" value="#{matriculasBean2.anadidasArrayHoras[i][j].idMaterias.nombre} #{matriculasBean2.anadidasArrayHoras[i][j].idAulas.nombre} #{matriculasBean2.anadidasArrayHoras[i][j].idNiveles.nombre} "  />
                                                 <p:spacer width="7"/>   
                                             </p:panel>
                                         </c:forEach>

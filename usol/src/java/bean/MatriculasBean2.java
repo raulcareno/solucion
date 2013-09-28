@@ -40,7 +40,9 @@ import jcinform.persistencia.CategoriasSociales;
 import jcinform.persistencia.Empleados;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Facturas;
+import jcinform.persistencia.Horarios;
 import jcinform.persistencia.HorariosMatricula;
+import jcinform.persistencia.Horas;
 import jcinform.persistencia.Materias;
 import jcinform.persistencia.MateriasMatricula;
 import jcinform.persistencia.MateriasMatriculaSuspendidas;
@@ -86,10 +88,19 @@ public class MatriculasBean2 {
     /**
      * Creates a new instance of MatriculasBean
      */
+    protected int totalHoras;
+    protected List<Horas> horas;
+      List<Horarios> listaMaterias = new ArrayList<Horarios>();
+    List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
+    List<SelectItem> listaMateriasAdicionales2 = new ArrayList<SelectItem>();
+    List<Horarios> anadidas = new ArrayList<Horarios>();
+    //List<Horarios> anadidas2[2][2]  = new ArrayList<>();
+    Horarios anadidasArrayHoras[][] = new Horarios[30][12];
+    
     Matriculas object;
     Estudiantes estudiante;
     Administrador adm;
-    protected List<Matriculas> model;
+    //protected List<Matriculas> model;
     protected List<HorariosMatricula> horariosMatriculas;
     protected List<MateriasMatricula> materiasMatricula;
     protected List<MateriasMatriculaSuspendidas> materiasMatriculaSuspendidas;
@@ -536,14 +547,14 @@ public class MatriculasBean2 {
      * llena el listado con datos
      */
     public void cargarDataModel() {
-        try {
-            model = (adm.listar("Matriculas"));
-            setModel(model);
-
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("" + e);
-        }
+//        try {
+//            model = (adm.listar("Matriculas"));
+//            setModel(model);
+//
+//        } catch (Exception e) {
+//            java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
+//            System.out.println("" + e);
+//        }
     }
 
     public List<MateriasMatriculaSuspendidas> getMateriasMatriculaSuspendidas() {
@@ -585,15 +596,15 @@ public class MatriculasBean2 {
      * busca según criterio textoBuscar
      */
     public void buscar() {
-        try {
-            //setModel(adm.listar("Matriculas"));
-            model = (adm.query("Select o from Matriculas as o where o.nombre like '%" + textoBuscar + "%' order by o.nombre "));
-            setModel(model);
-
-        } catch (Exception e) {
-            java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
-            System.out.println("" + e);
-        }
+//        try {
+//            //setModel(adm.listar("Matriculas"));
+//            model = (adm.query("Select o from Matriculas as o where o.nombre like '%" + textoBuscar + "%' order by o.nombre "));
+//            setModel(model);
+//
+//        } catch (Exception e) {
+//            java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, e);
+//            System.out.println("" + e);
+//        }
     }
 
     public List<Estudiantes> buscarApellido(String apellido) {
@@ -1066,13 +1077,13 @@ public class MatriculasBean2 {
 
 
     }
-    List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
+//    List<CarrerasMaterias> anadidas = new ArrayList<CarrerasMaterias>();
     CarrerasMaterias anadidasArray[][] = new CarrerasMaterias[30][12];
-    List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
+  //  List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
     List<SecuenciaDeMateriasAdicionales> adicionales = new ArrayList<SecuenciaDeMateriasAdicionales>();
     List<SecuenciaDeMateriasAdicionales> adicionalesTmp = new ArrayList<SecuenciaDeMateriasAdicionales>();
-    List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
-    List<SelectItem> listaMateriasAdicionales2 = new ArrayList<SelectItem>();
+    //List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
+    //List<SelectItem> listaMateriasAdicionales2 = new ArrayList<SelectItem>();
 
     public void llenarArreglo() {
         for (int i = 0; i < 30; i++) {
@@ -1251,6 +1262,9 @@ public class MatriculasBean2 {
     }
 
     public void handleSelect(SelectEvent event) {
+        horas = adm.query("Select o from Horas as o ");
+        totalHoras = horas.size();
+        llenarArreglo();
         estudiante = (Estudiantes) adm.buscarClave(((Estudiantes) event.getObject()).getIdEstudiantes(), Estudiantes.class);
         buscarMatricula(estudiante);
         estudiantesListado = null;
@@ -1774,16 +1788,7 @@ public class MatriculasBean2 {
      *
      * @return
      */
-    public List<Matriculas> getModel() {
-        if (model == null) {
-            //cargarDataModel();
-        }
-        return model;
-    }
-
-    public void setModel(List<Matriculas> model) {
-        this.model = model;
-    }
+ 
 
 // public void onTransfer(TransferEvent event) {  
 //        StringBuilder builder = new StringBuilder();  
@@ -2173,7 +2178,7 @@ public class MatriculasBean2 {
     public void setMatriculasListado(List<Matriculas> matriculasListado) {
         this.matriculasListado = matriculasListado;
     }
-    String observacion = "";
+    String observacion;
 
     public String getObservacion() {
         return observacion;
@@ -2181,6 +2186,148 @@ public class MatriculasBean2 {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+       public Boolean verificarMateria(CarrerasMaterias player) {
+        for (int i = 0; i < totalHoras; i++) {
+            for (int j = 0; j < 8; j++) {
+                Horarios carA = anadidasArrayHoras[i][j];
+                if (player.getIdMaterias().getIdMaterias().equals(carA.getIdMaterias().getIdMaterias())) {
+
+                    return true;
+                }
+
+            }
+
+        }
+        return false;
+    }
+    
+    List<Horarios> model = null;
+    
+    
+   public void cargarHorarioPreferencial(){
+        try {
+            Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+            llenarArreglo();
+            if (object.getIdCarreras().getIdCarreras() == null) {
+                return;
+            }
+//            if (nivelesSeleccionada.getIdNiveles() == null) {
+//                return;
+//            }
+            //SELECT * FROM carreras_materias WHERE id_carreras = 1 AND id_niveles = 1
+//            listaMaterias = adm.query("Select o from CarrerasMaterias as o "
+//                    + " where o.idCarreras.idCarreras = '" + object.getIdCarreras().getIdCarreras() + "' "
+//                    + "and  o.idHorarios.idMaterias.idMaterias in () "
+//                    //+ " and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "'   "
+//                    + "  order by o.idMaterias.nombre ");
+            String codigosMaterias = "";
+                for (Iterator<CarrerasMaterias> it1 = destino.iterator(); it1.hasNext();) {
+                        CarrerasMaterias carrerasMaterias = it1.next();
+                        codigosMaterias +=""+carrerasMaterias.getIdMaterias().getIdMaterias()+","; 
+                }
+                if(codigosMaterias.length()>0){
+                    codigosMaterias = codigosMaterias.substring(0, codigosMaterias.length()-1);
+                }
+
+            List<Horarios> materiasSecuenciales = adm.query("Select o from Horarios as o "
+                    + "where o.idCarreras.idCarreras = '" + object.getIdCarreras().getIdCarreras() + "' "
+                    //+ "  and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' "
+                    //+ " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
+                    + " and o.idMaterias.idMaterias in ("+codigosMaterias+") "
+                    + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  order by o.fila, o.orden ");
+            model = new ArrayList<Horarios>();
+            if (materiasSecuenciales.size() > 0) {
+                for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
+                    Horarios cM = it.next();
+//                    cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
+                    CarrerasMaterias player = new CarrerasMaterias();
+                    player.setIdMaterias(cM.getIdMaterias());
+//                    if (!verificarMateria(player)) { //CARGO LOS PROFESORES QUE DICTAN CADA MATERIA
+//                        Horarios hora = new Horarios();
+//                        hora.setIdCarreras(object.getIdCarreras());
+//                        hora.setIdMaterias(player.getIdMaterias());
+//                        hora.setIdEmpleados(cM.getIdEmpleados());
+//                        hora.setIdHorarios(hora.getIdMaterias().getIdMaterias());
+//                        model.add(hora);
+//                    }
+                          
+                    for (Iterator<CarrerasMaterias> it1 = destino.iterator(); it1.hasNext();) {
+                        CarrerasMaterias carrerasMaterias = it1.next();
+                        if(cM.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())){
+                            System.out.println(""+cM.getIdMaterias().getNombre());
+                            anadidasArrayHoras[cM.getFila()][cM.getOrden()] = cM;
+                        }else{
+                            //anadidasArrayHoras[cM.getFila()][cM.getOrden()] = new Horarios();
+                            //System.out.println("no añado no está en el listado");
+                        }
+                        
+                    }
+                    
+                    
+
+                }
+
+                //LLENO LOS VACIOS
+                for (int i = 0; i < totalHoras; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        try {
+                            Horarios tmp = anadidasArrayHoras[i][j];
+                            if (tmp.getIdHorarios().equals(null)) {
+                                Horarios car = new Horarios();
+                                Materias mat = new Materias();
+                                mat.setNombre("");
+                                car.setIdMaterias(mat);
+                                car.setIdNiveles(new Niveles());
+                                car.setIdCarreras(new Carreras());
+                                anadidasArrayHoras[i][j] = car;
+                            }
+                        } catch (Exception e) {
+                            Horarios car = new Horarios();
+                            Materias mat = new Materias();
+                            mat.setNombre("");
+                            car.setIdMaterias(mat);
+                            car.setIdNiveles(new Niveles());
+                            car.setIdCarreras(new Carreras());
+                            anadidasArrayHoras[i][j] = car;
+                        }
+
+
+
+                    }
+
+                }
+
+            } else {
+                llenarArreglo();
+            }
+
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(HorariosBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    public List<Horas> getHoras() {
+        return horas;
+    }
+
+    public void setHoras(List<Horas> horas) {
+        this.horas = horas;
+    }
+
+    public int getTotalHoras() {
+        return totalHoras;
+    }
+
+    public void setTotalHoras(int totalHoras) {
+        this.totalHoras = totalHoras;
+    }
+
+    public Horarios[][] getAnadidasArrayHoras() {
+        return anadidasArrayHoras;
+    }
+
+    public void setAnadidasArrayHoras(Horarios[][] anadidasArrayHoras) {
+        this.anadidasArrayHoras = anadidasArrayHoras;
     }
     
     
