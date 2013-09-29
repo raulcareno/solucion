@@ -37,10 +37,16 @@ public class ScheduleController {
         Date feca = new Date();
         feca.setDate(20);
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEvent("Mi evento", new Date(), feca));
-        eventModel.addEvent(new DefaultScheduleEvent("Día del Maestro", today1Pm(), today6Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Cambios de Autoriadad", nextDay9Am(), nextDay11Am()));
-        eventModel.addEvent(new DefaultScheduleEvent("Planificación de Maestros", theDayAfter3Pm(), fourDaysLater3pm()));
+        eventModel.addEvent(new DefaultScheduleEvent("Mi evento", new Date(), feca,"uno"));
+        eventModel.addEvent(new DefaultScheduleEvent("Día del Maestro", today1Pm(), today6Pm(),"dos"));
+        eventModel.addEvent(new DefaultScheduleEvent("Cambios de Autoriadad", nextDay9Am(), nextDay11Am(),"tres"));
+        eventModel.addEvent(new DefaultScheduleEvent("Planificación de Maestros", theDayAfter3Pm(), fourDaysLater3pm(),"cuatro"));
+        eventModel.addEvent(new DefaultScheduleEvent("Maestros", theDayAfter3Pm(), fourDaysLater3pm(),"cinco"));
+        eventModel.addEvent(new DefaultScheduleEvent("Maestros", theDayAfter3Pm(), fourDaysLater3pm(),"seis"));
+        eventModel.addEvent(new DefaultScheduleEvent("Maestros", theDayAfter3Pm(), fourDaysLater3pm(),"siete"));
+        eventModel.addEvent(new DefaultScheduleEvent("Mi evento", new Date(), feca,"ocho"));
+        eventModel.addEvent(new DefaultScheduleEvent("Día del Maestro", today1Pm(), today6Pm(),"nueve"));
+        eventModel.addEvent(new DefaultScheduleEvent("Día del Maestro", today1Pm(), today6Pm(),"diez"));
         lazyEventModel = new LazyScheduleModel() {
 //            @Override  
             public void fetchEvents(Date start, Date end) {
@@ -79,7 +85,7 @@ public class ScheduleController {
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
-        event =(ScheduleEvent) selectEvent.getObject();
+        event =((ScheduleEvent) selectEvent.getObject());
     }
 
     public void onDateSelect(SelectEvent selectEvent) {

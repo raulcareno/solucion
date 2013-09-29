@@ -110,4 +110,35 @@
        width:  103px;
         background-image: url('../images/print.png') !important;
     }
+    
+    .uno{
+            background-color: #045491;
+        }
+        .dos{
+            background-color: #95CAFF;
+        }
+        .tres{
+            background-color: teal;
+        }
+        .cuatro{
+            background-color: brown;
+        }
+        .cinco{
+            background-color: green;
+        }
+        .seis{
+            background-color: red;
+        }
+        .siete{
+            background-color: orange;
+        }
+        .ocho{
+            background-color: #919396;
+        }
+        .nueve{
+            background-color: blueviolet;
+        }
+        .diez{
+            background-color: orange;
+        }
 

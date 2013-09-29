@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/templates/mantenimiento.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core" 
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <ui:define name="title">
+
+    </ui:define>    
+    <ui:define name="datos">
+        <h:panelGrid width="100%" id="busqueda" >
+            <h:form prependId="false" id="form">
+                <script type="text/javascript">
+                    function handleDrop(event, ui) {
+                        var droppedCar = ui.draggable;
+                        droppedCar.fadeOut('fast');
+                    }
+                </script>
+                <style type="text/css">
+                    .slot {
+                        width:150px;
+                        height:150px;
+                        display:block;
+                        background: lightgrey;
+                    }
+
+                    .blueslot {
+                        width:100%;
+                        height:200px;
+                        background: blue;
+                        display:block;
+                    }
+                    .panelito{
+                        vertical-align: top;
+                        margin: -5px -5px 0px 0px;
+                        border:none; 
+
+                        border-color: transparent; 
+                        text-align:center;
+
+
+                    }
+                    .panelGrande2{
+                        font-size: 10px;
+                        vertical-align: top;
+                        width: 150px; 
+                        text-align:center;
+                        margin: 0px 0px 0px 0px;
+                    }
+                    .panelGrande{
+                        font-size: 10px;
+                        width: 93px; 
+                        text-align:center;
+                        margin: 0px 0px 0px 0px;
+                        padding: -2px !important;
+                        border-width: 1px;
+                        border-color: black;
+                    }
+
+                    .textos{
+                        font-size: 9px;font-weight: bold; margin: -15px -5px -5px -5px; padding: -5px -5px -5px -5px; text-align:center;
+                    }
+                    .textos2{
+                        font-size: 9px;font-weight: bold; margin: -5px; text-align:center;
+                    }
+                    .textos3{
+                        font-size: 12px;font-weight: bold;   text-align:center; float:center;
+                        color: red ;
+                    }
+
+                </style>
+                <p:panel id="registro"  style="width: 100%;" header="Horarios">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                    <h:panelGrid  styleClass="texto"  columns="6">
+                         <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
+                    <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
+                        <f:selectItems value="#{horariosBean.selectedItemCarreras}"></f:selectItems>
+                        <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel availableCars selectedCars"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="NIVEL: " /> 
+                    <h:selectOneMenu id="nivel"   label="nivel" converter="ConvNiveles" value="#{horariosBean.nivelesSeleccionada}" rendered="true">
+                        <f:selectItems value="#{horariosBean.selectedItemNiveles}"></f:selectItems>
+                        <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel aulas availableCars selectedCars"/>
+                    </h:selectOneMenu>
+                    <h:outputText value="AULAS: " /> 
+                    <h:selectOneMenu id="aulas" label="aulas" converter="ConvAulas" value="#{horariosBean.aulasSeleccionada}" rendered="true">
+                        <f:selectItems value="#{horariosBean.selectedItemAulas}"></f:selectItems>
+                        <p:ajax event="change"  listener="#{horariosBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars"/>
+                    </h:selectOneMenu>
+                    </h:panelGrid>
+                   
+                    <p:graphicImage value="/images/plus.png"/>    
+                    Arrastre hacia abajo las materias que desea agregar 
+                    <p:graphicImage value="/images/minus.gif"/>   
+                    Si desea quitar presione el menos
+
+                    <p:dialog  header="AÑADIR OTRO PRE-REQUISITO" id="hola" widgetVar="modalSubirLibreta" modal="true"
+                               position="top"  showEffect="explode" 
+                                        width="440" visible="false" resizable="false">
+                                <p:panelGrid columns="2">  
+                                    <h:outputText value="Docente: " />
+                                    <h:selectOneMenu   converter="ConvEmpleados" value="#{horariosBean.empleadoSeleccionado}" >  
+                                        <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
+                                                       var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
+                                                       itemValue="#{man}" />  
+                                    </h:selectOneMenu>  
+                                    <h:outputText value="" />
+                                    <p:commandButton value="SELECCIONAR Y SALIR"  action="#{horariosBean.anadirAdicional}" oncomplete="modalSubirLibreta.hide();" icon="ui-icon-check" style="margin:0"/>
+  
+                                </p:panelGrid>
+                                 
+                                <br />
+  
+                            </p:dialog>
+                    
+                    <p:dataGrid emptyMessage="..." id="availableCars"  style="padding: -5px -5px -5px -5px " 
+                                var="car" value="#{horariosBean.listaMaterias}" columns="9">  
+                        <p:column>  
+                            <p:panel  id="pnl" styleClass="panelGrande">  
+                                <f:facet name="header">
+                                    <p:graphicImage value="/images/plus.png"/>    
+                                    <h:outputLabel value="#{car.idMaterias.nombre} / #{car.numeroCreditos}C"  style="font-size:10px" />
+                                </f:facet>
+
+                            </p:panel>  
+                            <p:draggable  for="pnl" revert="true"   stack=".ui-panel"/>  
+
+
+                        </p:column>  
+
+                    </p:dataGrid> 
+
+                    <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97%; margin-top:20px">  
+                        <p:outputPanel id="dropArea"> 
+                           
+                            <h:panelGrid cellpadding="1px"  styleClass="texto"  cellspacing="2px"  columns="8">
+
+
+                                <h:outputText styleClass="textos3"  value="HORA" />     
+                                <h:outputText styleClass="textos3"  value="LUNES " />         
+                                <h:outputText styleClass="textos3"  value="MARTES " />         
+                                <h:outputText styleClass="textos3"  value="MIERCOLES" />         
+                                <h:outputText styleClass="textos3"  value="JUEVES" />         
+                                <h:outputText styleClass="textos3"  value="VIERNES" />         
+                                <h:outputText styleClass="textos3"  value="SABADO" />         
+                                <h:outputText styleClass="textos3"  value="DOMINGO" />         
+
+
+
+
+                                <c:forEach var="i" begin="0" end="#{horariosBean.totalHoras-1}" step="1" varStatus ="status">
+                                    <h:outputText  value="#{horariosBean.horas.get(i).getDesdeHor().toLocaleString().substring(11)} - #{horariosBean.horas.get(i).getHastaHor().toLocaleString().substring(11)}" />             
+                                    <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
+
+                                        <p:panel  id="f#{i}c#{j}" styleClass="panelGrande">  
+                                            <p:commandLink title="Quitar Elemento" rendered="#{horariosBean.anadidasArray[i][j].idMaterias.nombre != ''}"  update=":form" actionListener="#{horariosBean.onCarrerasInvDrop(horariosBean.anadidasArray[i][j],i,j)}"  >
+                                                <p:graphicImage value="/images/minus.gif"/>   
+                                            </p:commandLink>
+                                            <p:commandLink title="Añadir Docente" rendered="#{horariosBean.anadidasArray[i][j].idMaterias.nombre != ''}"  actionListener="#{horariosBean.seleccionado(i,j)}"  oncomplete="modalSubirLibreta.show()" update=":form"  >
+                                                <p:spacer width="15"/>   
+                                                <p:graphicImage value="/images/usr.png"/>   
+                                            </p:commandLink>
+                                            <p:spacer height="20" rendered="#{horariosBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
+                                            <h:outputText style="color: #045491" value="#{horariosBean.anadidasArray[i][j].idMaterias.nombre}"  />
+                                            <p:spacer width="7"/>   
+
+                                        </p:panel>
+
+                                    </c:forEach>
+
+                                </c:forEach>
+                            </h:panelGrid>
+
+                            <c:forEach var="k" begin="0" end="#{horariosBean.totalHoras-1}" step="1" varStatus ="status4">
+                                <c:forEach var="m" begin="0" end="6" step="1" varStatus ="status5">
+                                    <p:droppable for="f#{k}c#{m}" tolerance="pointer"  activeStyleClass="ui-state-highlight"    datasource="availableCars" onDrop="handleDrop">  
+                                        <p:ajax listener="#{horariosBean.onCarrerasDrop}" update="dropArea availableCars" />  
+                                    </p:droppable> 
+                                </c:forEach>
+                            </c:forEach>
+
+                        </p:outputPanel>  
+
+                    </p:fieldset>  
+                    
+                    <h:panelGrid columns="4">
+
+                        <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  
+                            <p:printer target="selectedCars" />  
+                        </p:commandButton>  
+                        <p:commandButton  value="Guardar"  id="guardar"  
+                                          action="#{horariosBean.guardar()}"  
+                                          icon="guardar" title="Guardar"/>  
+
+                    </h:panelGrid>
+                </p:panel>
+
+            </h:form>
+
+
+        </h:panelGrid>
+    </ui:define>
+</ui:composition>

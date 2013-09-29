@@ -6,6 +6,8 @@ package bean;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import jcinform.persistencia.Aulas;
 import jcinform.persistencia.Carreras;
@@ -29,7 +32,13 @@ import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
 import jcinform.procesos.Administrador;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.RowEditEvent;
-import utilerias.Car;
+import org.primefaces.event.ScheduleEntryMoveEvent;
+import org.primefaces.event.ScheduleEntryResizeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 
 import utilerias.Permisos;
 
@@ -101,18 +110,18 @@ public class HorariosBean {
         for (int i = 0; i < totalHoras; i++) {
             for (int j = 0; j < 8; j++) {
                 //Horarios sec = anadidasArray[i][j];
-                if (anadidasArray[i][j].getIdMaterias().getIdMaterias() != null){
-                    if(!anadidasArray[i][j].getIdMaterias().getIdMaterias().equals(0)) {
-                    if (anadidasArray[i][j].getIdEmpleados() == null) {
-                         
-                        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario: [" + horas.get(i).getDesdeHor().toLocaleString().substring(11) +"-"+  horas.get(i).getHastaHor().toLocaleString().substring(11)+"]"));
-                        return null;
+                if (anadidasArray[i][j].getIdMaterias().getIdMaterias() != null) {
+                    if (!anadidasArray[i][j].getIdMaterias().getIdMaterias().equals(0)) {
+                        if (anadidasArray[i][j].getIdEmpleados() == null) {
+
+                            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario: [" + horas.get(i).getDesdeHor().toLocaleString().substring(11) + "-" + horas.get(i).getHastaHor().toLocaleString().substring(11) + "]"));
+                            return null;
+                        }
+                        if (anadidasArray[i][j].getIdEmpleados().getIdEmpleados().equals(new Integer(0))) {
+                            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario:[ " + horas.get(i).getDesdeHor().toLocaleString().substring(11) + "-" + horas.get(i).getHastaHor().toLocaleString().substring(11) + "]"));
+                            return null;
+                        }
                     }
-                    if (anadidasArray[i][j].getIdEmpleados().getIdEmpleados().equals(new Integer(0))) {
-                        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario:[ " + horas.get(i).getDesdeHor().toLocaleString().substring(11) +"-"+  horas.get(i).getHastaHor().toLocaleString().substring(11)+"]"));
-                        return null;
-                    }
-                }
                 }
 
 
@@ -145,11 +154,11 @@ public class HorariosBean {
                     sec.setFila(i);
                     sec.setOrden(j);
                     sec.setIdHoras(horas.get(i));
-                    
-                       if (sec.getIdMaterias().getIdMaterias() != null) {
-                    //           sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
-                           adm.guardar(sec);
-                         }
+
+                    if (sec.getIdMaterias().getIdMaterias() != null) {
+                        //           sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
+                        adm.guardar(sec);
+                    }
 
                 }
             }
@@ -520,6 +529,7 @@ public class HorariosBean {
     }
 
     public void buscarMateriasdeCarrera() {
+        eventModel = new DefaultScheduleModel();
         try {
             Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
@@ -813,5 +823,128 @@ public class HorariosBean {
 
     public void setFilaActual(int filaActual) {
         this.filaActual = filaActual;
+    }
+    /*HORARIOS CON CALENDAR*/
+    private ScheduleModel eventModel;
+    private ScheduleModel lazyEventModel;
+    private ScheduleEvent event = new DefaultScheduleEvent();
+    private String theme;
+
+    public void addEvent(ActionEvent actionEvent) {
+        if (event.getId() == null) {
+            eventModel.addEvent(event);
+        } else {
+            eventModel.updateEvent(event);
+        }
+        event = new DefaultScheduleEvent();
+    }
+
+    public void onEventSelect(SelectEvent selectEvent) {
+        nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
+        String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
+        event = ((ScheduleEvent) selectEvent.getObject());
+
+    }
+
+    public void onDateSelect(SelectEvent selectEvent) {
+        System.out.println("");
+        nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
+        String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
+
+        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo);
+        System.out.println(""+event.getStartDate().toLocaleString());
+    }
+
+    public void onEventMove(ScheduleEntryMoveEvent event) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+
+        addMessage(message);
+    }
+
+    public void onEventResize(ScheduleEntryResizeEvent event) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+
+        addMessage(message);
+    }
+
+    private void addMessage(FacesMessage message) {
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    private Calendar today() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+
+        return calendar;
+    }
+
+    public String estiloColor(int nivel) {
+        String valor = "blue";
+        switch (nivel) {
+            case 1:
+                valor = "uno";
+                break;
+            case 2:
+                valor = "dos";
+                break;
+            case 3:
+                valor = "tres";
+                break;
+            case 4:
+                valor = "cuatro";
+                break;
+            case 5:
+                valor = "cinco";
+                break;
+            case 6:
+                valor = "seis";
+                break;
+            case 7:
+                valor = "siete";
+                break;
+            case 8:
+                valor = "ocho";
+                break;
+            case 9:
+                valor = "nueve";
+                break;
+            case 10:
+                valor = "diez";
+                break;
+
+        }
+        return valor;
+    }
+
+    public ScheduleModel getEventModel() {
+        return eventModel;
+    }
+
+    public void setEventModel(ScheduleModel eventModel) {
+        this.eventModel = eventModel;
+    }
+
+    public ScheduleEvent getEvent() {
+        return event;
+    }
+
+    public void setEvent(ScheduleEvent event) {
+        this.event = event;
+    }
+
+    public ScheduleModel getLazyEventModel() {
+        return lazyEventModel;
+    }
+
+    public void setLazyEventModel(ScheduleModel lazyEventModel) {
+        this.lazyEventModel = lazyEventModel;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 }
