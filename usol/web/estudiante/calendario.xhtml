@@ -17,7 +17,7 @@
                 <script src="locales.js" type="text/javascript"/>
                 <p:schedule  locale="es"   value="#{scheduleController.eventModel}" widgetVar="myschedule">  
 
-                    <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" update="@form:eventDetails" oncomplete="eventDialog.show()" />  
+                    <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
                     <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
                     <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="messages" />  
                     <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="messages" />  
