@@ -136,32 +136,40 @@
 
                     <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
-
-                            <p:schedule id="schedule" showHeader="false"  locale="es" allDaySlot="false" view="agendaWeek" widgetVar="myschedule">  
-                                 <p:ajax event="dateSelect" listener="#{horariosBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />  
-                                 <p:ajax event="eventSelect" listener="#{horariosBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />  
+                            <p:schedule id="schedule" showHeader="false"  value="#{horariosBean.eventModel}"   locale="es" allDaySlot="false" view="agendaWeek" widgetVar="myschedule">  
+                                 <p:ajax event="dateSelect" listener="#{horariosBean.onDateSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
+                                 <p:ajax event="eventSelect" listener="#{horariosBean.onEventSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
                             </p:schedule>  
-
                         </p:outputPanel>  
-                        <p:dialog widgetVar="eventDialog" header="Hora Clase" appendTo="@(body)"  position="top" showEffect="clip" hideEffect="clip">  
+                        <p:dialog widgetVar="eventDialog001" header="Hora Clase" position="top" showEffect="clip" hideEffect="clip">  
                             <h:panelGrid id="eventDetails" columns="2">  
                                 <h:outputLabel for="title" value="Materia" />  
                                 <p:inputText id="title" value="#{horariosBean.event.title}" required="true"/>  
-                                <h:outputLabel for="from" value="Docente:" />  
+                                <h:outputText value="MATERIA: " /> 
+                                <h:selectOneMenu id="materia" label="materia" converter="ConvMaterias" value="#{horariosBean.materiasSeleccionada}" rendered="true">
+                                    <f:selectItems value="#{horariosBean.selectedItemMaterias}"></f:selectItems>
+                                </h:selectOneMenu>
+                                 <h:outputText value="DOCENTE: " />
+                                 <h:selectOneMenu   converter="ConvEmpleados" value="#{horariosBean.empleadoSeleccionado}" >  
+                                        <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
+                                               var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
+                                               itemValue="#{man}" />  
+                                </h:selectOneMenu>  
+                                
+                                <h:outputLabel for="from" value="Desde:" />  
                                 <p:inputMask id="from" value="#{horariosBean.event.startDate}" mask="99/99/9999 99:99">  
                                     <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />  
                                 </p:inputMask>  
 
-                                <h:outputLabel for="to" value="To:" />  
-                                <p:inputMask id="to" value="#{horariosBean.event.endDate}" mask="99/99/9999 99:99">  
+                                <h:outputLabel for="to" value="Hasta: " />  
+                                <p:inputMask id="to" value="#{horariosBean.event.endDate}" mask="99/99/9999  99:99">  
                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
                                 </p:inputMask>  
-
                                 <h:outputLabel for="allDay" value="All Day:" />  
                                 <h:selectBooleanCheckbox id="allDay" value="#{horariosBean.event.allDay}" />  
 
-                                <p:commandButton type="reset" value="Reset" />  
-                                <p:commandButton id="addButton" value="Save" actionListener="#{horariosBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>  
+                                <p:commandButton type="reset" value="Limpiar" />  
+                                <p:commandButton id="addButton" value="Añadir" actionListener="#{horariosBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog001').hide();"/>  
                             </h:panelGrid>  
                         </p:dialog> 
                     </p:fieldset>  

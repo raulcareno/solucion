@@ -37,6 +37,7 @@ import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
@@ -530,6 +531,21 @@ public class HorariosBean {
 
     public void buscarMateriasdeCarrera() {
         eventModel = new DefaultScheduleModel();
+         
+        Date feca = new Date();
+        feca.setDate(20);
+        eventModel = new DefaultScheduleModel();
+        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca,"uno",new Periodos(),new Empleados(),new Materias(),new Carreras(),new Niveles() ));
+         lazyEventModel = new LazyScheduleModel() {
+//            @Override  
+            public void fetchEvents(Date start, Date end) {
+                clear();
+                Date random = new Date();
+                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
+                //random = getRandomDate(start);
+                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
+            }
+        };
         try {
             Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
@@ -843,15 +859,15 @@ public class HorariosBean {
         nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
         String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
         event = ((ScheduleEvent) selectEvent.getObject());
-
+        System.out.println("");
     }
 
     public void onDateSelect(SelectEvent selectEvent) {
         System.out.println("");
         nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
         String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
-
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo);
+        //event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(),estilo);
+        event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(),estilo,new Periodos(),new Empleados(),new Materias(),new Carreras(),new Niveles() );
         System.out.println(""+event.getStartDate().toLocaleString());
     }
 
@@ -947,4 +963,32 @@ public class HorariosBean {
     public void setTheme(String theme) {
         this.theme = theme;
     }
+    
+     public List<SelectItem> getSelectedItemMaterias() {
+        try {
+            List<Materias> divisionPoliticas = new ArrayList<Materias>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+            if (object != null) {
+                 
+                    divisionPoliticas = adm.query("Select o from Materias as o order by o.nombre ");
+                    if (divisionPoliticas.size() > 0) {
+                        Materias objSel = new Materias(0);
+                        items.add(new SelectItem(objSel, "Seleccione..."));
+                        for (Materias obj : divisionPoliticas) {
+                            items.add(new SelectItem(obj, obj.getNombre()));
+                        }
+                    } else {
+                        Materias obj = new Materias(0);
+                        items.add(new SelectItem(obj, "NO EXISTEN MATERIAS"));
+                    }
+                 
+            }
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(CarrerasMaterias.class.getName()).log(Level.SEVERE, null, e);
+
+        }
+        return null;
+    }
+    
 }
