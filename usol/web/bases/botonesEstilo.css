@@ -111,12 +111,13 @@
         background-image: url('../images/print.png') !important;
     }
     
-    .uno{
+        .uno{
             background-color: #045491;
         }
         .dos{
             background-color: #95CAFF;
-        }
+            color: black;
+         }
         .tres{
             background-color: teal;
         }

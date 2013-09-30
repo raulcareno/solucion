@@ -5,11 +5,7 @@
 package bean;
 
 import java.util.Date;
-import jcinform.persistencia.Carreras;
-import jcinform.persistencia.Empleados;
-import jcinform.persistencia.Materias;
-import jcinform.persistencia.Niveles;
-import jcinform.persistencia.Periodos;
+import jcinform.persistencia.Horarios;
 import org.primefaces.model.DefaultScheduleEvent;
 
 /**
@@ -18,58 +14,40 @@ import org.primefaces.model.DefaultScheduleEvent;
  */
 public class DefaultScheduleEventLocal extends DefaultScheduleEvent {
 
-    private Periodos idPeriodos;
-    private Empleados idEmpleados;
-    private Materias idMaterias;
-    private Carreras idCarreras;
-    private Niveles idNiveles;
+    public DefaultScheduleEventLocal() {
+    }
 
-    public DefaultScheduleEventLocal(String title, Date startDate, Date endDate, String styleClass, Periodos idPeriodos, Empleados idEmpleados, Materias idMaterias, Carreras idCarreras, Niveles idNiveles) {
+    private Horarios idHorarios;
+    
+     private String title;
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    
+    
+    public DefaultScheduleEventLocal(String title, Date startDate, Date endDate, String styleClass, Horarios idHorarios) {
         super(title, startDate, endDate, styleClass);
-        this.idCarreras = idCarreras;
-        this.idEmpleados = idEmpleados;
-        this.idMaterias = idMaterias;
-        this.idNiveles = idNiveles;
-        this.idPeriodos = idPeriodos;
+        this.idHorarios = idHorarios;
     }
 
-    public Periodos getIdPeriodos() {
-        return idPeriodos;
+ 
+
+    public Horarios getIdHorarios() {
+        return idHorarios;
     }
 
-    public void setIdPeriodos(Periodos idPeriodos) {
-        this.idPeriodos = idPeriodos;
+    public void setIdHorarios(Horarios idHorarios) {
+        this.idHorarios = idHorarios;
     }
-
-    public Empleados getIdEmpleados() {
-        return idEmpleados;
-    }
-
-    public void setIdEmpleados(Empleados idEmpleados) {
-        this.idEmpleados = idEmpleados;
-    }
-
-    public Materias getIdMaterias() {
-        return idMaterias;
-    }
-
-    public void setIdMaterias(Materias idMaterias) {
-        this.idMaterias = idMaterias;
-    }
-
-    public Carreras getIdCarreras() {
-        return idCarreras;
-    }
-
-    public void setIdCarreras(Carreras idCarreras) {
-        this.idCarreras = idCarreras;
-    }
-
-    public Niveles getIdNiveles() {
-        return idNiveles;
-    }
-
-    public void setIdNiveles(Niveles idNiveles) {
-        this.idNiveles = idNiveles;
-    }
+    
+    
+    
 }

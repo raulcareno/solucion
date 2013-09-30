@@ -80,24 +80,19 @@
                         <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
                             <f:selectItems value="#{horariosBean.selectedItemCarreras}"></f:selectItems>
-                            <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel availableCars selectedCars"/>
+                            <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel selectedCars"/>
                         </h:selectOneMenu>
                         <h:outputText value="NIVEL: " /> 
                         <h:selectOneMenu id="nivel"   label="nivel" converter="ConvNiveles" value="#{horariosBean.nivelesSeleccionada}" rendered="true">
                             <f:selectItems value="#{horariosBean.selectedItemNiveles}"></f:selectItems>
-                            <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel aulas availableCars selectedCars"/>
+                            <p:ajax event="change"  listener="#{horariosBean.encerar1()}"  update="nivel aulas selectedCars"/>
                         </h:selectOneMenu>
                         <h:outputText value="AULAS: " /> 
                         <h:selectOneMenu id="aulas" label="aulas" converter="ConvAulas" value="#{horariosBean.aulasSeleccionada}" rendered="true">
                             <f:selectItems value="#{horariosBean.selectedItemAulas}"></f:selectItems>
-                            <p:ajax event="change"  listener="#{horariosBean.buscarMateriasdeCarrera()}" update="availableCars selectedCars schedule"/>
+                            <p:ajax event="change"  listener="#{horariosBean.buscarMateriasdeCarrera()}" update=" selectedCars schedule"/>
                         </h:selectOneMenu>
                     </h:panelGrid>
-
-                    <p:graphicImage value="/images/plus.png"/>    
-                    Arrastre hacia abajo las materias que desea agregar 
-                    <p:graphicImage value="/images/minus.gif"/>   
-                    Si desea quitar presione el menos
 
                     <p:dialog  header="AÑADIR OTRO PRE-REQUISITO" id="hola" widgetVar="modalSubirLibreta" modal="true"
                                position="top"  showEffect="explode" 
@@ -118,44 +113,28 @@
 
                     </p:dialog>
 
-                    <p:dataGrid emptyMessage="..." id="availableCars"  style="padding: -5px -5px -5px -5px " 
-                                var="car" value="#{horariosBean.listaMaterias}" columns="9">  
-                        <p:column>  
-                            <p:panel  id="pnl" styleClass="panelGrande">  
-                                <f:facet name="header">
-                                    <p:graphicImage value="/images/plus.png"/>    
-                                    <h:outputLabel value="#{car.idMaterias.nombre} / #{car.numeroCreditos}C"  style="font-size:10px" />
-                                </f:facet>
 
-                            </p:panel>  
-
-
-                        </p:column>  
-
-                    </p:dataGrid> 
 
                     <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
                             <p:schedule id="schedule" showHeader="false"  value="#{horariosBean.eventModel}"   locale="es" allDaySlot="false" view="agendaWeek" widgetVar="myschedule">  
-                                 <p:ajax event="dateSelect" listener="#{horariosBean.onDateSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
-                                 <p:ajax event="eventSelect" listener="#{horariosBean.onEventSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
+                                <p:ajax event="dateSelect" listener="#{horariosBean.onDateSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
+                                <p:ajax event="eventSelect" listener="#{horariosBean.onEventSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
                             </p:schedule>  
                         </p:outputPanel>  
                         <p:dialog widgetVar="eventDialog001" header="Hora Clase" position="top" showEffect="clip" hideEffect="clip">  
                             <h:panelGrid id="eventDetails" columns="2">  
-                                <h:outputLabel for="title" value="Materia" />  
-                                <p:inputText id="title" value="#{horariosBean.event.title}" required="true"/>  
                                 <h:outputText value="MATERIA: " /> 
-                                <h:selectOneMenu id="materia" label="materia" converter="ConvMaterias" value="#{horariosBean.materiasSeleccionada}" rendered="true">
-                                    <f:selectItems value="#{horariosBean.selectedItemMaterias}"></f:selectItems>
+                                <h:selectOneMenu id="materia" label="materia" converter="ConvHorarios" value="#{horariosBean.carreraMateriaSeleccionada}" rendered="true">
+                                    <f:selectItems value="#{horariosBean.listaMaterias}"></f:selectItems>
                                 </h:selectOneMenu>
-                                 <h:outputText value="DOCENTE: " />
-                                 <h:selectOneMenu   converter="ConvEmpleados" value="#{horariosBean.empleadoSeleccionado}" >  
-                                        <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
-                                               var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
-                                               itemValue="#{man}" />  
+                                <h:outputText value="DOCENTE: " />
+                                <h:selectOneMenu   converter="ConvEmpleados" value="#{horariosBean.empleadoSeleccionado}" >  
+                                    <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
+                                                   var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
+                                                   itemValue="#{man}" />  
                                 </h:selectOneMenu>  
-                                
+
                                 <h:outputLabel for="from" value="Desde:" />  
                                 <p:inputMask id="from" value="#{horariosBean.event.startDate}" mask="99/99/9999 99:99">  
                                     <f:convertDateTime pattern="dd/MM/yyyy hh:mm" />  

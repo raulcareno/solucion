@@ -531,12 +531,11 @@ public class HorariosBean {
 
     public void buscarMateriasdeCarrera() {
         eventModel = new DefaultScheduleModel();
-         
         Date feca = new Date();
         feca.setDate(20);
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca,"uno",new Periodos(),new Empleados(),new Materias(),new Carreras(),new Niveles() ));
-         lazyEventModel = new LazyScheduleModel() {
+        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca, "uno", new Horarios()));
+        lazyEventModel = new LazyScheduleModel() {
 //            @Override  
             public void fetchEvents(Date start, Date end) {
                 clear();
@@ -582,6 +581,7 @@ public class HorariosBean {
                         hora.setIdEmpleados(cM.getIdEmpleados());
                         hora.setIdHorarios(hora.getIdMaterias().getIdMaterias());
                         model.add(hora);
+                        eventModel.addEvent(new DefaultScheduleEventLocal("" + player.getIdCarreras().getNombre(), new Date(), feca, "uno", new Horarios()));
                     }
                     anadidasArray[cM.getFila()][cM.getOrden()] = cM;
 
@@ -843,10 +843,11 @@ public class HorariosBean {
     /*HORARIOS CON CALENDAR*/
     private ScheduleModel eventModel;
     private ScheduleModel lazyEventModel;
-    private ScheduleEvent event = new DefaultScheduleEvent();
+    private ScheduleEvent event = new DefaultScheduleEventLocal();
     private String theme;
 
     public void addEvent(ActionEvent actionEvent) {
+         
         if (event.getId() == null) {
             eventModel.addEvent(event);
         } else {
@@ -867,8 +868,8 @@ public class HorariosBean {
         nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
         String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
         //event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(),estilo);
-        event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(),estilo,new Periodos(),new Empleados(),new Materias(),new Carreras(),new Niveles() );
-        System.out.println(""+event.getStartDate().toLocaleString());
+        event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo, new Horarios());
+        System.out.println("" + event.getStartDate().toLocaleString());
     }
 
     public void onEventMove(ScheduleEntryMoveEvent event) {
@@ -963,25 +964,25 @@ public class HorariosBean {
     public void setTheme(String theme) {
         this.theme = theme;
     }
-    
-     public List<SelectItem> getSelectedItemMaterias() {
+
+    public List<SelectItem> getSelectedItemMaterias() {
         try {
             List<Materias> divisionPoliticas = new ArrayList<Materias>();
             List<SelectItem> items = new ArrayList<SelectItem>();
             if (object != null) {
-                 
-                    divisionPoliticas = adm.query("Select o from Materias as o order by o.nombre ");
-                    if (divisionPoliticas.size() > 0) {
-                        Materias objSel = new Materias(0);
-                        items.add(new SelectItem(objSel, "Seleccione..."));
-                        for (Materias obj : divisionPoliticas) {
-                            items.add(new SelectItem(obj, obj.getNombre()));
-                        }
-                    } else {
-                        Materias obj = new Materias(0);
-                        items.add(new SelectItem(obj, "NO EXISTEN MATERIAS"));
+
+                divisionPoliticas = adm.query("Select o from Materias as o order by o.nombre ");
+                if (divisionPoliticas.size() > 0) {
+                    Materias objSel = new Materias(0);
+                    items.add(new SelectItem(objSel, "Seleccione..."));
+                    for (Materias obj : divisionPoliticas) {
+                        items.add(new SelectItem(obj, obj.getNombre()));
                     }
-                 
+                } else {
+                    Materias obj = new Materias(0);
+                    items.add(new SelectItem(obj, "NO EXISTEN MATERIAS"));
+                }
+
             }
             return items;
         } catch (Exception e) {
@@ -990,5 +991,4 @@ public class HorariosBean {
         }
         return null;
     }
-    
 }
