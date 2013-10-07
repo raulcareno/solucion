@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.Equivalencias;
@@ -258,6 +260,8 @@ public class ReportePromocionDataSource implements JRDataSource {
                 
             } else if ("aprovechamiento".equals(fieldName)) {
                 valor = nodo.getAprovechamiento();
+            }  else if ("aprovechamientos".equals(fieldName)) {
+                valor = nodo.getAprovechamientos();
             } else if ("disciplina".equals(fieldName)) {
                 valor = redondear(nodo.getDisciplina(), 2).doubleValue();
             } else if ("disciplinaLetra".equals(fieldName)) {
@@ -282,6 +286,8 @@ public class ReportePromocionDataSource implements JRDataSource {
                 valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena + " " + devolverNombre(equ, (Double) nodo.getDisciplina()).getNombre();
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion();
+            } else if ("edad".equals(fieldName)) {
+                valor = nodo.getMatricula().getFolio();
             } else if ("paralelo".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getParalelo().getDescripcion();
             } else if ("especialidad".equals(fieldName)) {
@@ -401,7 +407,7 @@ public class ReportePromocionDataSource implements JRDataSource {
         } catch (Exception e) {
             System.out.println("ERROR EN ITERAR REPORTE" + e);
         }
- 
+        System.out.print(fieldName+"\t"+valor);
         return valor;
     }
     String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
@@ -426,4 +432,5 @@ public class ReportePromocionDataSource implements JRDataSource {
             return 0.0;
         }
     }
+   
 }

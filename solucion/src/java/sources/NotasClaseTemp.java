@@ -2,19 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sources;
 
 import jcinform.persistencia.MateriaProfesor;
 import jcinform.persistencia.Matriculas;
 import jcinform.persistencia.Notas;
 
-public class NotasClaseTemp   {
+public class NotasClaseTemp {
 
-   public NotasClaseTemp() {
+    public NotasClaseTemp() {
     }
-      private Matriculas matricula;
-public String estudiante;
+    private Matriculas matricula;
+    public String estudiante;
 
     public String getEstudiante() {
         return estudiante;
@@ -31,10 +30,6 @@ public String estudiante;
     public void setMatricula(Matriculas matricula) {
         this.matricula = matricula;
     }
-      
-
-
-
     private Notas notas;
 
     public Notas getNotas() {
@@ -44,7 +39,8 @@ public String estudiante;
     public void setNotas(Notas notas) {
         this.notas = notas;
     }
- public MateriaProfesor materiaProfesor;
+    public MateriaProfesor materiaProfesor;
+
     public MateriaProfesor getMateriaProfesor() {
         return materiaProfesor;
     }
@@ -52,12 +48,8 @@ public String estudiante;
     public void setMateriaProfesor(MateriaProfesor materiaProfesor) {
         this.materiaProfesor = materiaProfesor;
     }
-   
-   
-    
     public String cabeceraTexto;
 
-   
     public String getCabeceraTexto() {
         return cabeceraTexto;
     }
@@ -65,8 +57,8 @@ public String estudiante;
     public void setCabeceraTexto(String cabeceraTexto) {
         this.cabeceraTexto = cabeceraTexto;
     }
-     public String pieTextoAprobado;
-     public String pieTextoReprobado;
+    public String pieTextoAprobado;
+    public String pieTextoReprobado;
 
     public String getPieTextoAprobado() {
         return pieTextoAprobado;
@@ -83,7 +75,6 @@ public String estudiante;
     public void setPieTextoReprobado(String pieTextoReprobado) {
         this.pieTextoReprobado = pieTextoReprobado;
     }
-     
     public Boolean estado;
 
     public Boolean getEstado() {
@@ -93,8 +84,8 @@ public String estudiante;
     public void setEstado(Boolean estado) {
         this.estado = estado;
     }
-    
     public Double aprovechamiento;
+    public Object aprovechamientos;
     public Double disciplina;
     public String disciplinaAbreviatura;
 
@@ -121,7 +112,6 @@ public String estudiante;
     public void setDisciplinaAbreviatura(String disciplinaAbreviatura) {
         this.disciplinaAbreviatura = disciplinaAbreviatura;
     }
-    
     public String aprovechamientoLetras;
     public String disciplinaLetras;
 
@@ -140,9 +130,7 @@ public String estudiante;
     public void setDisciplinaLetras(String disciplinaLetras) {
         this.disciplinaLetras = disciplinaLetras;
     }
-
-
-   private String estadoMateria;
+    private String estadoMateria;
 
     public String getEstadoMateria() {
         return estadoMateria;
@@ -151,8 +139,7 @@ public String estudiante;
     public void setEstadoMateria(String estadoMateria) {
         this.estadoMateria = estadoMateria;
     }
-
-private String materia;
+    private String materia;
 
     public String getMateria() {
         return materia;
@@ -161,7 +148,7 @@ private String materia;
     public void setMateria(String materia) {
         this.materia = materia;
     }
-      private Object nota;
+    private Object nota;
 
     public Object getNota() {
         return nota;
@@ -170,7 +157,6 @@ private String materia;
     public void setNota(Object nota) {
         this.nota = nota;
     }
-
     private String notaCuali;
 
     public String getNotaCuali() {
@@ -180,7 +166,6 @@ private String materia;
     public void setNotaCuali(String notaCuali) {
         this.notaCuali = notaCuali;
     }
-
     public Integer noDecimalesProme;
     public Integer noDecimalesPromeParciales;
 
@@ -199,8 +184,14 @@ private String materia;
     public void setNoDecimalesPromeParciales(Integer noDecimalesPromeParciales) {
         this.noDecimalesPromeParciales = noDecimalesPromeParciales;
     }
-    
-    
+
+    public Object getAprovechamientos() {
+        return aprovechamientos;
+    }
+
+    public void setAprovechamientos(Object aprovechamientos) {
+        this.aprovechamientos = aprovechamientos;
+    }
     
     
 }
