@@ -516,6 +516,9 @@ void recalcular(){
             }else if(tipo.equals("CERT2")){
                     datasource = noti.promocion2(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"promocion2.jasper");
+            }else if(tipo.equals("CERT3")){
+                    datasource = noti.promocion3(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),fecha.value);
+                    report.setSrc(directorioReportes+"notafinal.jasper");
             }else if(tipo.equals("CERD")){
             
                     List matric = new ArrayList();
@@ -862,6 +865,8 @@ void campos(String valor){
      incluirpromedio.visible = false;
      filaempleados.visible = false;
      numeroEstudiantes.visible = false;
+     filafecha.visible = false;
+     
         if(valor.equals("DIS")){
             curs.disabled = false;
             filacursos.visible = true;
@@ -953,13 +958,16 @@ void campos(String valor){
             filacursos.visible = true;
             filaaportes.visible = true;
 
-        }else if(valor.equals("CERT") || valor.equals("CERT2")   ){
+        }else if(valor.equals("CERT") || valor.equals("CERT3")  || valor.equals("CERT2")   ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Promoción";
              filacursos.visible = true;
             filamaterias.visible = true;
             filaestudiantes.visible = true;
+            if(valor.equals("CERT3")){
+                filafecha.visible = true;
+            }
         }else if(valor.equals("PROC")  ){
              titulo.value= "Promedios x Curso y Materia";
              curs.disabled = false;
@@ -1209,6 +1217,7 @@ void campos(String valor){
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
+                                    <listitem  id="CERT3" label="Notas de Promoción" value="CERT3"/>
                                     
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
                                     <listitem  id="AG2" label="Acta de Grado(Suspendidos)" value="AG2"/>
@@ -1341,6 +1350,12 @@ void campos(String valor){
 
                                 </rows>
                             </grid>
+                        </row>
+                         <row id="filafecha" style="background:transparent;border:0px">
+                            <span style="float:right"> Hasta la Fecha:</span>
+                            <span>
+                                <datebox id="fecha" onCreate="self.value = new Date()" />
+                            </span>
                         </row>
                         <row id="filaempleados" style="background:transparent;border:0px">
                             <span style="float:right"> Curso:</span>
@@ -1583,6 +1598,7 @@ void campos(String valor){
                     filamaterias.visible = false;
                     filaaportes.visible = false;
                     filaempleados.visible = false;
+                    filafecha.visible = false;
 
                     for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
                             Listitem object = (Listitem)it.next();

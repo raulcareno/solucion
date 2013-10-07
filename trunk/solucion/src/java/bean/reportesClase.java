@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -5812,6 +5813,353 @@ public class reportesClase {
             }
 
 
+        }
+
+
+        ReportePromocionDataSource ds = new ReportePromocionDataSource(listaMatriculados);
+
+        return ds;
+
+    }
+    
+    
+       public int year = 0;
+    public int month = 0;
+    public int day = 0;
+      public void calcularEdad(Date nacimiento,Date fecha) {
+//Date yourDate = (Date) Calendar.getInstance().getTime();
+        java.sql.Timestamp birth = new java.sql.Timestamp(nacimiento.getTime());
+        Date d = fecha;
+
+
+        SimpleDateFormat sdfDia = new SimpleDateFormat("dd");
+        SimpleDateFormat sdfMes = new SimpleDateFormat("MM");
+        SimpleDateFormat sdfAño = new SimpleDateFormat("yyyy");
+
+        int a = Integer.parseInt(sdfAño.format(d)) - Integer.parseInt(sdfAño.format(birth));
+        int b = Integer.parseInt(sdfMes.format(d)) - Integer.parseInt(sdfMes.format(birth));
+        int c = Integer.parseInt(sdfDia.format(d)) - Integer.parseInt(sdfDia.format(birth));
+
+        if (b < 0) {
+            a = a - 1;
+            b = 12 + b;
+        }
+
+        if (c < 0) {
+            b = b - 1;
+            switch (Integer.parseInt(sdfMes.format(d))) {
+                case 2:
+                    int año = Integer.parseInt(sdfAño.format(d));
+                    if ((año % 4 == 0) && ((año % 100 != 0) || (año % 400 == 0))) {
+                        c = 29 + c;
+                    } else {
+                        c = 28 + c;
+                    }
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 10:
+                case 11:
+                    c = 30 + c;
+                    break;
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 12:
+                    c = 31 + c;
+                    break;
+            }
+        }
+
+
+        this.day = c;
+        this.month = (b < 0 ? 0 : b);
+        this.year = a;
+
+    }
+    //REPORTE PARA PREESCOLAR
+    public JRDataSource promocion3(Cursos curso, Matriculas matri,Date fecha) { //CON DECIMALES
+//     int tamanio=0; -2
+        Administrador adm = new Administrador();
+
+ 
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List<Textos> textos = adm.query("Select o from Textos as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        String cabecera = regresaTexto("CMAT", textos);
+        String aprobado = regresaTexto("PACMAT", textos);
+        String reprobado = regresaTexto("PRCMAT", textos);
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        Boolean promCuantitativo = regresaVariableParametrosLogico("PROMCUAN", parametrosGlobales);
+        Boolean discCuantitativo = regresaVariableParametrosLogico("DISCCUAN", parametrosGlobales);
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
+                + "and o.sistema.promediofinal = 'PF' ");
+        List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema(), matri);
+        String codigosPerdidos = "";
+        for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+            Matriculas matriculas = it.next();
+            codigosPerdidos = matriculas.getCodigomat() + "," + codigosPerdidos;
+
+        }
+        String complemento = "";
+        if (codigosPerdidos.length() > 0) {
+            codigosPerdidos = codigosPerdidos.substring(0, codigosPerdidos.length() - 1);
+            complemento = " and o.codigomat not in (" + codigosPerdidos + ") ";
+        } else {
+            complemento = "";
+        }
+        Integer noDecimales = 3;
+        try {
+            noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimales = 3;
+
+        }
+        Integer noDecimalesProme = 3;
+        try {
+            noDecimalesProme = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesProme = 3;
+
+        }
+
+        try {
+            if (notas.size() <= 0) {
+                Messagebox.show("No se ha parametrizado el PROMEDIO FINAL en los APORTES \n Puede obtener resultados no esperados", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return null;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        ArrayList listaMatriculados = new ArrayList();
+//        List<Nota> lisNotas = new ArrayList();
+        List<Matriculas> matriculas = new ArrayList();
+        if (matri.getCodigomat().equals(-2)) {
+            String codigoMatriculasPerdidos = "";
+            for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                Matriculas matriculaA = it.next();
+                codigoMatriculasPerdidos += matriculaA.getCodigomat() + ",";
+            }
+            String complemPerdidos = "";
+            if (codigoMatriculasPerdidos.length() > 0) {
+                codigoMatriculasPerdidos = codigoMatriculasPerdidos.substring(0, codigoMatriculasPerdidos.length() - 1);
+                complemPerdidos = " and o.codigomat not in (" + codigoMatriculasPerdidos + ")";
+            }
+
+            matriculas = adm.query("Select o from Matriculas as o "
+                    + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
+                    + " and o.estado in  ('Matriculado','Recibir Pase')  " + complemPerdidos
+                    + " order by o.estudiante.apellido ");
+        } else {
+            if (matriculas.size() > 0) {
+                for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
+                    Matriculas matriculaA = it.next();
+                    if (matri.getCodigomat().equals(matriculaA.getCodigomat())) {
+                        try {
+                            Messagebox.show("EL ESTUDIANTE " + matri.getEstudiante() + " ESTA REPROBADO, ESCOJA OTRO ESTUDIANTE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                            return null;
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        matriculas.add(matri);
+                    }
+                }
+            } else {
+                if (listaMatriculasPerdidos.size() > 0) {
+                    if (matri.getCodigomat().equals(listaMatriculasPerdidos.get(0).getCodigomat())) {
+                        try {
+                            Messagebox.show("EL ESTUDIANTE " + matri.getEstudiante() + " ESTA REPROBADO, ESCOJA OTRO ESTUDIANTE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                            return null;
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        matriculas.add(matri);
+                    }
+                } else {
+                    matriculas.add(matri);
+                }
+
+
+            }
+
+        }
+        for (Matriculas matriculas1 : matriculas) {
+            String cabe1 = cabecera;
+            String piea = aprobado;
+            String pier = reprobado;
+            boolean estadoEstudiante = true;
+            //PARA CARGAR EL APROVECHAMIENTO
+            String valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            if (truncarNotas) {
+                valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            }
+        String COMPLE = " and notas.cuantitativa = true ";
+        if(promCuantitativo==false){
+            COMPLE ="";
+        }
+            String q = "Select " + valorAnadir2 + " from matriculas "
+                    + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
+                    + "left join notas on matriculas.codigomat = notas.matricula "
+                    + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
+                    + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
+                    + "and notas.seimprime = true "
+                    + "and notas.promedia = true "
+                    + COMPLE
+                    + "and notas.disciplina = false   and notas.materia != 0  "
+                    + "group by notas.matricula  ";
+            System.out.println("" + q);
+            List nativo = adm.queryNativo(q);
+            Double aprovechamiento = 0.0;
+            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new BigDecimal(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new BigDecimal(0.0);
+                    }
+
+                    BigDecimal b = (BigDecimal) dos;
+                    aprovechamiento = b.doubleValue();
+                }
+            }
+//PARA CARGAR LA DISCIPLINA
+            String valorAnadir = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            if (truncarNotas) {
+                valorAnadir = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            }
+            q = "Select " + valorAnadir + " from matriculas "
+                    + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
+                    + "left join notas on matriculas.codigomat = notas.matricula "
+                    + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
+                    + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
+                    + " and notas.materia = 0 "
+                    + "group by notas.matricula    ";
+//        System.out.println(""+q);
+            nativo = adm.queryNativo(q);
+            Double disciplina = 0.0;
+            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new BigDecimal(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new BigDecimal(0.0);
+                    }
+
+                    BigDecimal b = (BigDecimal) dos;
+                    disciplina = b.doubleValue();
+                }
+            }
+
+//            q = "Select matriculas.codigomat,notas.materia,notas.cuantitativa, " + notas.get(0).getNota() + "  "
+//                    + "from matriculas  "
+//                    + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest "
+//                    + "left join notas on matriculas.codigomat = notas.matricula "
+//                    + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
+//                    + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
+//                    + "and notas.seimprime = true  "
+//                    + "and notas.promedia = true  "
+//                    + "and notas.disciplina = false   and notas.materia != 0  "
+//                    + "order by estudiantes.apellido, notas.orden";
+//            nativo = adm.queryNativo(q);
+//            //cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion() + " " + matriculas1.getCurso().getEspecialidad().getDescripcion() + " " + matriculas1.getCurso().getParalelo().getDescripcion());
+//            cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
+//                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion());
+//            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+//                Vector vec = (Vector) itna.next();
+//                Boolean cuantitativa = false;
+//                Global mate = new Global();
+//                int ksis = 0;
+//                for (int j = 0; j < vec.size(); j++) {
+//                    Object dos = vec.get(j);
+////                    Double val = 0.0;
+                    NotaCollection coll = new NotaCollection();
+//                    try {
+//                        if (dos.equals(null)) {
+//                            dos = new Double(0.0);
+//                        }
+//                    } catch (Exception e) {
+//                        dos = new Double(0.0);
+//                    }
+//                    if (j >= 3) {
+//
+//                        ksis++;
+                        NotasClaseTemp not = new NotasClaseTemp();
+//                        not.setNota(dos);
+//                        not.setNotaCuali(equivalencia(dos, equivalencias) + "");
+//                        not.setMateria(mate.getDescripcion());
+//
+//                        not.setCabeceraTexto(cabe1);
+//                        not.setPieTextoAprobado(piea);
+//                        not.setPieTextoReprobado(pier);
+//
+                        MateriaProfesor matep = new MateriaProfesor();
+                        matep.setCuantitativa(true);
+                        matep.setMateria(new Global(-1));
+                        not.setMateriaProfesor(matep);
+                        not.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
+                        if (truncarNotas) {
+                            not.setAprovechamientos(truncar(aprovechamiento, noDecimales));
+                            if(promCuantitativo==false){
+                                not.setAprovechamientos(equivalencia(not.getAprovechamientos(), equivalencias));   
+                            }
+                        } else {
+                            not.setAprovechamientos(redondear(aprovechamiento, noDecimales));
+                            if(promCuantitativo==false){
+                                not.setAprovechamientos(equivalencia(not.getAprovechamientos(), equivalencias));   
+                            }
+                        }
+                        not.setDisciplina(disciplina);
+//                        if ((Double) dos >= matriculas1.getCurso().getAprobacion()) {
+//                            not.setEstadoMateria("APROBADO");
+//                        } else {
+//                            not.setEstadoMateria("REPROBADO");
+//                            estadoEstudiante = false;
+//                        }
+//                        not.setEstado(estadoEstudiante);
+//                        if (cuantitativa == false) {
+//                            not.setNota(equivalencia(dos, equivalencias));
+//                        }
+                        calcularEdad(matriculas1.getEstudiante().getFechanacimiento(),fecha);
+                        matriculas1.setFolio(this.year); 
+                        not.setMatricula(matriculas1);
+                        not.setNoDecimalesProme(noDecimales);
+                        not.setNoDecimalesPromeParciales(noDecimalesProme);
+                        listaMatriculados.add(not);
+//
+//
+//                    } else if (j >= 2) {
+//                        //System.out.println(""+dos);
+//                        cuantitativa = (Boolean) dos;
+//                    } else if (j >= 1) {
+//                        mate = (Global) adm.buscarClave((Integer) dos, Global.class);
+//                    } else {
+////                        matriculaNo = (AcaMatricula) adm.buscarAcaMatricula((Integer) dos);
+//                    }
+//                }
+//                //row.setParent(this);
+//            }
+//
+//
         }
 
 
