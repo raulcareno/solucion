@@ -63,7 +63,8 @@ public class HorariosBean {
     protected Aulas aulasSeleccionada;
     protected Materias materiasSeleccionada;
     protected Empleados empleadoSeleccionado;
-    protected Horarios carreraMateriaSeleccionada;
+    protected CarrerasMaterias carreraMateriaSeleccionada;
+    protected Horarios horariosSeleccionada;
     public String textoBuscar;
     Permisos permisos;
     Auditar aud = new Auditar();
@@ -107,69 +108,74 @@ public class HorariosBean {
 
     public String guardar() {
         FacesContext context = FacesContext.getCurrentInstance();
+        Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+        List lista = eventModel.getEvents();
+        for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
+            DefaultScheduleEventLocal dH = it.next();
+            Horarios sec = new Horarios();
+            sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));
+            sec.setIdCarreras(dH.getIdHorarios().getIdCarreras());
+            sec.setIdAulas(aulasSeleccionada);
+            sec.setIdNiveles(nivelesSeleccionada);
+            sec.setIdMaterias(dH.getIdHorarios().getIdMaterias());
+            sec.setIdPeriodos(per);
+            sec.setColor(dH.getStyleClass());
+            sec.setIdEmpleados(dH.getIdHorarios().getIdEmpleados());
+            sec.setFechainicial(dH.getStartDate());
+            sec.setFechafinal(dH.getEndDate());
+//                    if (sec.getIdMaterias().getIdMaterias() != null) {
+            adm.guardar(sec);
+//                    }
 
-        for (int i = 0; i < totalHoras; i++) {
-            for (int j = 0; j < 8; j++) {
-                //Horarios sec = anadidasArray[i][j];
-                if (anadidasArray[i][j].getIdMaterias().getIdMaterias() != null) {
-                    if (!anadidasArray[i][j].getIdMaterias().getIdMaterias().equals(0)) {
-                        if (anadidasArray[i][j].getIdEmpleados() == null) {
+//            System.out.println("");
 
-                            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario: [" + horas.get(i).getDesdeHor().toLocaleString().substring(11) + "-" + horas.get(i).getHastaHor().toLocaleString().substring(11) + "]"));
-                            return null;
-                        }
-                        if (anadidasArray[i][j].getIdEmpleados().getIdEmpleados().equals(new Integer(0))) {
-                            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "Falta seleccionar un profesor en: [" + anadidasArray[i][j].getIdMaterias().getNombre() + "] \n Horario:[ " + horas.get(i).getDesdeHor().toLocaleString().substring(11) + "-" + horas.get(i).getHastaHor().toLocaleString().substring(11) + "]"));
-                            return null;
-                        }
-                    }
-                }
-
-
-            }
+        }
+        if (true) {
+            return "OK";
         }
 
 
 
-        Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+
+
 //            if (!permisos.verificarPermisoReporte("Facultad", "agregar_facultad", "agregar", true, "HORARIOS")) {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "No tiene permisos para realizar ésta acción", "No tiene permisos para realizar ésta acción"));                return null;
 //            }
-        try {
-            //borro primero los prerequisitos
-            adm.ejecutaSql("Delete from Horarios where idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
-                    + "and idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' and idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
-                    + "and idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
-
-            for (int i = 0; i < totalHoras; i++) {
-                for (int j = 0; j < 8; j++) {
-                    Horarios sec = anadidasArray[i][j];
-
-                    sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));
-                    sec.setIdCarreras(carreraSeleccionada);
-                    sec.setIdAulas(aulasSeleccionada);
-                    sec.setIdNiveles(nivelesSeleccionada);
-                    sec.setIdPeriodos(per);
-                    sec.setIdEmpleados(anadidasArray[i][j].getIdEmpleados());
-                    sec.setDia(j);
-                    sec.setFila(i);
-                    sec.setOrden(j);
-                    sec.setIdHoras(horas.get(i));
-
-                    if (sec.getIdMaterias().getIdMaterias() != null) {
-                        //           sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
-                        adm.guardar(sec);
-                    }
-
-                }
-            }
-            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", carreraSeleccionada.getNombre() + "");
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
-        }
+//        try {
+//            //borro primero los prerequisitos
+//            adm.ejecutaSql("Delete from Horarios where idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
+//                    + "and idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' and idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
+//                    + "and idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "' ");
+//
+//            for (int i = 0; i < totalHoras; i++) {
+//                for (int j = 0; j < 8; j++) {
+//                    Horarios sec = anadidasArray[i][j];
+//
+//                    sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));
+//                    sec.setIdCarreras(carreraSeleccionada);
+//                    sec.setIdAulas(aulasSeleccionada);
+//                    sec.setIdNiveles(nivelesSeleccionada);
+//                    sec.setIdPeriodos(per);
+//                    sec.setIdEmpleados(anadidasArray[i][j].getIdEmpleados());
+//                    sec.setDia(j);
+//                    sec.setFila(i);
+//                    sec.setOrden(j);
+//                    sec.setIdHoras(horas.get(i));
+//
+//                    if (sec.getIdMaterias().getIdMaterias() != null) {
+//                        //           sec.setIdEmpleados(buscarEmpleado(sec.getIdMaterias()));
+//                        adm.guardar(sec);
+//                    }
+//
+//                }
+//            }
+//            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", carreraSeleccionada.getNombre() + "");
+//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+//        }
 
 
         return null;
@@ -394,7 +400,7 @@ public class HorariosBean {
     /**
      * busca según criterio textoBuscar
      */
-    List<Horarios> listaMaterias = new ArrayList<Horarios>();
+    List<CarrerasMaterias> listaMaterias = new ArrayList<CarrerasMaterias>();
     List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
     List<SelectItem> listaMateriasAdicionales2 = new ArrayList<SelectItem>();
     List<Horarios> anadidas = new ArrayList<Horarios>();
@@ -534,17 +540,17 @@ public class HorariosBean {
         Date feca = new Date();
         feca.setDate(20);
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca, "uno", new Horarios()));
-        lazyEventModel = new LazyScheduleModel() {
-//            @Override  
-            public void fetchEvents(Date start, Date end) {
-                clear();
-                Date random = new Date();
-                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
-                //random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
-            }
-        };
+//        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca, "uno", new Horarios()));
+//        lazyEventModel = new LazyScheduleModel() {
+////            @Override  
+//            public void fetchEvents(Date start, Date end) {
+//                clear();
+//                Date random = new Date();
+////                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
+//                //random = getRandomDate(start);
+////                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
+//            }
+//        };
         try {
             Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
@@ -565,57 +571,62 @@ public class HorariosBean {
                     + "where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
                     + "  and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' "
                     + " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
-                    + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  order by o.fila, o.orden ");
+                    + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  ");
             model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
 
                 for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
                     Horarios cM = it.next();
 //                    cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-                    CarrerasMaterias player = new CarrerasMaterias();
-                    player.setIdMaterias(cM.getIdMaterias());
-                    if (!verificarMateria(player)) { //CARGO LOS PROFESORES QUE DICTAN CADA MATERIA
-                        Horarios hora = new Horarios();
-                        hora.setIdCarreras(carreraSeleccionada);
-                        hora.setIdMaterias(player.getIdMaterias());
-                        hora.setIdEmpleados(cM.getIdEmpleados());
-                        hora.setIdHorarios(hora.getIdMaterias().getIdMaterias());
-                        model.add(hora);
-                        eventModel.addEvent(new DefaultScheduleEventLocal("" + player.getIdCarreras().getNombre(), new Date(), feca, "uno", new Horarios()));
-                    }
-                    anadidasArray[cM.getFila()][cM.getOrden()] = cM;
+//                    CarrerasMaterias player = new CarrerasMaterias();
+//                    player.setIdMaterias(cM.getIdMaterias());
+//                    if (!verificarMateria(player)) { //CARGO LOS PROFESORES QUE DICTAN CADA MATERIA
+                        //Horarios hora = new Horarios();
+                        carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
+//                        hora.setIdCarreras(carreraSeleccionada);
+//                        hora.setIdMaterias(cM.getIdMaterias());
+//                        hora.setIdEmpleados(cM.getIdEmpleados());
+                        //hora.setIdHorarios(cM.get.getIdMaterias().getIdMaterias());
+//                        model.add(hora);
+                        DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(), cM.getFechainicial(),cM.getFechafinal(), cM.getColor(), cM);
+                        Materias m = (Materias)adm.buscarClave(cM.getIdMaterias().getIdMaterias(),Materias.class);
+                        eve.setTitle(m.getNombre()); 
+                        eventModel.addEvent(eve);
+                        m = null;
+//                    }
+//                    anadidasArray[cM.getFila()][cM.getOrden()] = cM;
 
                 }
 
                 //LLENO LOS VACIOS
-                for (int i = 0; i < totalHoras; i++) {
-                    for (int j = 0; j < 8; j++) {
-                        try {
-                            Horarios tmp = anadidasArray[i][j];
-                            if (tmp.getIdHorarios().equals(null)) {
-                                Horarios car = new Horarios();
-                                Materias mat = new Materias();
-                                mat.setNombre("");
-                                car.setIdMaterias(mat);
-                                car.setIdNiveles(new Niveles());
-                                car.setIdCarreras(new Carreras());
-                                anadidasArray[i][j] = car;
-                            }
-                        } catch (Exception e) {
-                            Horarios car = new Horarios();
-                            Materias mat = new Materias();
-                            mat.setNombre("");
-                            car.setIdMaterias(mat);
-                            car.setIdNiveles(new Niveles());
-                            car.setIdCarreras(new Carreras());
-                            anadidasArray[i][j] = car;
-                        }
-
-
-
-                    }
-
-                }
+//                for (int i = 0; i < totalHoras; i++) {
+//                    for (int j = 0; j < 8; j++) {
+//                        try {
+//                            Horarios tmp = anadidasArray[i][j];
+//                            if (tmp.getIdHorarios().equals(null)) {
+//                                Horarios car = new Horarios();
+//                                Materias mat = new Materias();
+//                                mat.setNombre("");
+//                                car.setIdMaterias(mat);
+//                                car.setIdNiveles(new Niveles());
+//                                car.setIdCarreras(new Carreras());
+//                                anadidasArray[i][j] = car;
+//                            }
+//                        } catch (Exception e) {
+//                            Horarios car = new Horarios();
+//                            Materias mat = new Materias();
+//                            mat.setNombre("");
+//                            car.setIdMaterias(mat);
+//                            car.setIdNiveles(new Niveles());
+//                            car.setIdCarreras(new Carreras());
+//                            anadidasArray[i][j] = car;
+//                        }
+//
+//
+//
+//                    }
+//
+//                }
 
             } else {
                 llenarArreglo();
@@ -735,11 +746,11 @@ public class HorariosBean {
         this.materiasSeleccionada = materiasSeleccionada;
     }
 
-    public List<Horarios> getListaMaterias() {
+    public List<CarrerasMaterias> getListaMaterias() {
         return listaMaterias;
     }
 
-    public void setListaMaterias(List<Horarios> listaMaterias) {
+    public void setListaMaterias(List<CarrerasMaterias> listaMaterias) {
         this.listaMaterias = listaMaterias;
     }
 
@@ -767,11 +778,11 @@ public class HorariosBean {
         this.listaMateriasAdicionales = listaMateriasAdicionales;
     }
 
-    public Horarios getCarreraMateriaSeleccionada() {
+    public CarrerasMaterias getCarreraMateriaSeleccionada() {
         return carreraMateriaSeleccionada;
     }
 
-    public void setCarreraMateriaSeleccionada(Horarios carreraMateriaSeleccionada) {
+    public void setCarreraMateriaSeleccionada(CarrerasMaterias carreraMateriaSeleccionada) {
         this.carreraMateriaSeleccionada = carreraMateriaSeleccionada;
     }
 
@@ -843,23 +854,64 @@ public class HorariosBean {
     /*HORARIOS CON CALENDAR*/
     private ScheduleModel eventModel;
     private ScheduleModel lazyEventModel;
-    private ScheduleEvent event = new DefaultScheduleEventLocal();
+    private DefaultScheduleEventLocal event = new DefaultScheduleEventLocal();
     private String theme;
 
     public void addEvent(ActionEvent actionEvent) {
-         
+        carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
         if (event.getId() == null) {
+            Horarios idHo = new Horarios();
+
+            idHo.setIdMaterias(carreraMateriaSeleccionada.getIdMaterias());
+            idHo.setIdEmpleados(empleadoSeleccionado);
+            idHo.setIdNiveles(nivelesSeleccionada);
+            idHo.setIdAulas(aulasSeleccionada);
+            idHo.setIdCarreras(carreraSeleccionada);
+            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre());
+            event.setIdHorarios(idHo);
+
             eventModel.addEvent(event);
         } else {
+            Horarios idHo = new Horarios();
+            idHo.setIdMaterias(carreraMateriaSeleccionada.getIdMaterias());
+            idHo.setIdEmpleados(empleadoSeleccionado);
+            idHo.setIdNiveles(nivelesSeleccionada);
+            idHo.setIdAulas(aulasSeleccionada);
+            idHo.setIdCarreras(carreraSeleccionada);
+            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre());
+            event.setIdHorarios(idHo);
             eventModel.updateEvent(event);
         }
-        event = new DefaultScheduleEvent();
+        event = new DefaultScheduleEventLocal();
+    }
+
+    public void deleteEvent(ActionEvent actionEvent) {
+        //carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
+        if (event.getId() == null) {
+
+            eventModel.deleteEvent(event);
+        } else {
+
+            eventModel.deleteEvent(event);
+        }
+        event = new DefaultScheduleEventLocal();
     }
 
     public void onEventSelect(SelectEvent selectEvent) {
         nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
         String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
-        event = ((ScheduleEvent) selectEvent.getObject());
+//       ScheduleEvent abc;
+//        abc = (ScheduleEvent)selectEvent.getObject();
+        event = ((DefaultScheduleEventLocal) selectEvent.getObject());
+        horariosSeleccionada = event.getIdHorarios();
+        List<CarrerasMaterias> ca = adm.query("Select o from CarrerasMaterias as o "
+                + "where  o.idCarreras.idCarreras = '" + horariosSeleccionada.getIdCarreras().getIdCarreras() + "'"
+                + " and o.idNiveles.idNiveles = '" + horariosSeleccionada.getIdNiveles().getIdNiveles() + "'"
+                + " and o.idMaterias.idMaterias = '" + horariosSeleccionada.getIdMaterias().getIdMaterias() + "'");
+        if (ca.size() > 0) {
+            carreraMateriaSeleccionada = ca.get(0);
+        }
+        empleadoSeleccionado = event.getIdHorarios().getIdEmpleados();
         System.out.println("");
     }
 
@@ -868,7 +920,19 @@ public class HorariosBean {
         nivelesSeleccionada = (Niveles) adm.buscarClave(nivelesSeleccionada.getIdNiveles(), Niveles.class);
         String estilo = estiloColor(nivelesSeleccionada.getSecuencia().intValue());
         //event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(),estilo);
-        event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo, new Horarios());
+        //event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo, new Horarios());
+        Horarios idHo = new Horarios();
+        try {
+            idHo.setIdMaterias(carreraMateriaSeleccionada.getIdMaterias());
+        } catch (Exception e) {
+            idHo.setIdMaterias(new Materias());
+        }
+
+        idHo.setIdEmpleados(empleadoSeleccionado);
+        idHo.setIdNiveles(nivelesSeleccionada);
+        idHo.setIdAulas(aulasSeleccionada);
+        idHo.setIdCarreras(carreraSeleccionada);
+        event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo, idHo);
         System.out.println("" + event.getStartDate().toLocaleString());
     }
 
@@ -941,11 +1005,11 @@ public class HorariosBean {
         this.eventModel = eventModel;
     }
 
-    public ScheduleEvent getEvent() {
+    public DefaultScheduleEventLocal getEvent() {
         return event;
     }
 
-    public void setEvent(ScheduleEvent event) {
+    public void setEvent(DefaultScheduleEventLocal event) {
         this.event = event;
     }
 
