@@ -588,7 +588,22 @@ public class HorariosBean {
 //                        hora.setIdEmpleados(cM.getIdEmpleados());
                         //hora.setIdHorarios(cM.get.getIdMaterias().getIdMaterias());
 //                        model.add(hora);
-                        DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(), cM.getFechainicial(),cM.getFechafinal(), cM.getColor(), cM);
+//                        int diaI = cM.getFechainicial().getDay();
+//                        int diaF = cM.getFechafinal().getDay();
+//                        
+//                        Calendar calIni = Calendar.getInstance();
+//                        calIni.setTime(cM.getFechainicial()); 
+//                        calIni.set(Calendar.DAY_OF_WEEK, diaI);
+//                        
+//                        Calendar calFin = Calendar.getInstance();
+//                        calFin.setTime(cM.getFechafinal()); 
+//                        calFin.set(Calendar.DAY_OF_WEEK, diaF);
+                        
+                         //;Calendar.DAY_OF_WEEK
+                        //if(cM.getFechainicial().getMonth() == (cM.getFechainicial().getMonth()))
+                        cM.getFechainicial().setDate(cM.getFechainicial().getDate()+7); 
+                        cM.getFechafinal().setDate(cM.getFechafinal().getDate()+7); 
+                        DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(),cM.getFechainicial(),cM.getFechainicial(), cM.getColor(), cM);
                         Materias m = (Materias)adm.buscarClave(cM.getIdMaterias().getIdMaterias(),Materias.class);
                         eve.setTitle(m.getNombre()); 
                         eventModel.addEvent(eve);
