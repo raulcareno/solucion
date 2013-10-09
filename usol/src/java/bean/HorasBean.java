@@ -51,7 +51,7 @@ public class HorasBean {
         if (permisos == null) {
             permisos = new Permisos();
         }
-        if (!permisos.verificarPermisoReporte("Horas", "ingresar_horas.jspx", "ingresar", true, "HORARIOS")) {
+        if (!permisos.verificarPermisoReporte("Grupos", "ingresar_grupos.jspx", "ingresar", true, "HORARIOS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");

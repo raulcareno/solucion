@@ -33,6 +33,7 @@ import jcinform.procesos.Administrador;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Minutes;
+import org.primefaces.component.tooltip.Tooltip;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -566,19 +567,15 @@ fechaInicialS = new Date();
         eventModel = new DefaultScheduleModel();
  
         try {
-     
-          
+     String comple = " o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  and ";
+          if(carreraSeleccionada.getIdCarreras().equals(-2)){
+                comple = "";
+          }
                 Empleados empleadoAc = (Empleados) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
                 List<Horarios> materiasSecuenciales = adm.query("Select o from Horarios as o "
-                    + "where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
-                    + "  and o.idEmpleados.idEmpleados = '" + empleadoAc.getIdEmpleados() + "' "
+                    + "where "+comple+" o.idEmpleados.idEmpleados = '" + empleadoAc.getIdEmpleados() + "' "
+                        + " and o.idPeriodos.idPeriodos = '"+per.getIdPeriodos()+"' "
                     + "  order by o.fila, o.orden ");
-
-//            List<Horarios> materiasSecuenciales = adm.query("Select o from Horarios as o "
-//                    + "where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "' "
-//                    + "  and o.idEmpleados.idEmpleados = '" +  .getIdNiveles() + "' "
-//                    + " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
-//                    + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  ");
             model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
                 int i = 0;
@@ -587,7 +584,7 @@ fechaInicialS = new Date();
                     if (i == 0) {
                         fechaInicialS = cM.getFechainicial();
                     }
-                    carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
+//                    carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
 
                     //CALULO EL TIEMPO
                     DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
@@ -598,8 +595,10 @@ fechaInicialS = new Date();
 
                     DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
                     Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
-                    eve.setTitle(m.getNombre() + " " + minutos + " min."+cM.getIdAulas().getNombre());
+                    eve.setTitle(cM.getIdAulas().getNombre()+" - "+"\""+cM.getIdHoras().getNombre()+"\" - "+m.getNombre() + " " + minutos + " min.");
+                                 
                     eventModel.addEvent(eve);
+                    
                     m = null;
                     i++;
 //                    }
@@ -629,6 +628,9 @@ fechaInicialS = new Date();
                 for (Carreras obj : divisionPoliticas) {
                     items.add(new SelectItem(obj, obj.getNombre()));
                 }
+                
+                Carreras objSel2 = new Carreras(-2);
+                items.add(new SelectItem(objSel2, "- TODOS -"));
             } else {
                 Carreras obj = new Carreras(0);
                 items.add(new SelectItem(obj, "NO EXISTEN CARRERAS"));

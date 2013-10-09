@@ -124,6 +124,12 @@
                                                    var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
                                                    itemValue="#{man}" />  
                                 </h:selectOneMenu>  
+                                <h:outputText value="GRUPO: " />
+                                <h:selectOneMenu   converter="ConvHoras" value="#{horariosBean.horaSeleccionado}" >  
+                                    <f:selectItems value="#{horariosBean.selectedItemHoras}"  
+                                                   var="man"   itemLabel="#{man.nombre}"  
+                                                   itemValue="#{man}" />  
+                                </h:selectOneMenu>  
 
                                 <h:outputLabel for="from" value="Desde:" />  
                                 <p:inputMask id="from" value="#{horariosBean.event.startDate}" mask="99/99/9999 99:99">  

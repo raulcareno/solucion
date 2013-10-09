@@ -333,7 +333,7 @@ public class LoginBean {
         verificarPermisoReporte("Aulas", "ingresar_aulas.jspx", "ingresar", true, "HORARIOS");
         verificarPermisoReporte("Horarios", "ingresar_horarios.jspx", "ingresar", true, "HORARIOS");
         verificarPermisoReporte("Horarios Docentes", "ingresar_horariosProfesores.jspx", "ingresar", true, "HORARIOS");
-        verificarPermisoReporte("Horas", "ingresar_horas.jspx", "ingresar", true, "HORARIOS");
+        verificarPermisoReporte("Grupos", "ingresar_grupos.jspx", "ingresar", true, "HORARIOS");
 
 
         verificarPermisoReporte("RangosGpa", "ingresar_rangosGpa.jspx", "ingresar", true, "NOTAS");

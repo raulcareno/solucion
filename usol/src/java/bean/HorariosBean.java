@@ -63,6 +63,7 @@ public class HorariosBean {
     protected Aulas aulasSeleccionada;
     protected Materias materiasSeleccionada;
     protected Empleados empleadoSeleccionado;
+    protected Horas horaSeleccionado;
     protected CarrerasMaterias carreraMateriaSeleccionada;
     protected Horarios horariosSeleccionada;
     public String textoBuscar;
@@ -484,6 +485,32 @@ public class HorariosBean {
         }
         return null;
     }
+    
+    public List<SelectItem> getSelectedItemHoras() {
+        try {
+            List<Horas> divisionPoliticas = new ArrayList<Horas>();
+            List<SelectItem> items = new ArrayList<SelectItem>();
+
+
+            divisionPoliticas = adm.query("Select o from Horas as o order by o.nombre");
+            if (divisionPoliticas.size() > 0) {
+                Horas objSel = new Horas(0);
+                items.add(new SelectItem(objSel, "Seleccione..."));
+                for (Horas obj : divisionPoliticas) {
+                    items.add(new SelectItem(obj, obj.getNombre()));
+                }
+            } else {
+                Horas obj = new Horas(0);
+                items.add(new SelectItem(obj, "NO EXISTEN NIVELES"));
+            }
+
+
+            return items;
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(Horarios.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return null;
+    }
 
     public List<SelectItem> getSelectedItemAulas() {
         try {
@@ -615,7 +642,7 @@ public class HorariosBean {
 
                     DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
                     Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
-                    eve.setTitle(m.getNombre() + " " + minutos + " min.");
+                    eve.setTitle("\""+cM.getIdHoras().getNombre()+"\" - "+m.getNombre() + " " + minutos + " min.");
                     eventModel.addEvent(eve);
                     m = null;
                     i++;
@@ -861,7 +888,7 @@ public class HorariosBean {
         for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
             DefaultScheduleEventLocal dH = it.next();
             Horarios carA = dH.getIdHorarios();
-            if (player.getIdMaterias().getIdMaterias().equals(carA.getIdMaterias().getIdMaterias())) {
+            if (player.getIdMaterias().getIdMaterias().equals(carA.getIdMaterias().getIdMaterias()) && dH.getIdHorarios().getIdHoras().getIdHoras().equals(horaSeleccionado.getIdHoras())) {
                 DateTime start = new DateTime(dH.getStartDate()); //Devuelve la fecha actual al estilo Date
                 DateTime end = new DateTime(dH.getEndDate()); //Devuelve la fecha actual al estilo Date
                 int minutos = Minutes.minutesBetween(start, end).getMinutes();
@@ -896,8 +923,10 @@ public class HorariosBean {
             idHo.setIdEmpleados(empleadoSeleccionado);
             idHo.setIdNiveles(nivelesSeleccionada);
             idHo.setIdAulas(aulasSeleccionada);
+            idHo.setIdHoras(horaSeleccionado); 
+            horaSeleccionado = (Horas)adm.buscarClave(horaSeleccionado.getIdHoras(), Horas.class);
             idHo.setIdCarreras(carreraSeleccionada);
-            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutosASerAgregados + " min.");
+            event.setTitle("\""+horaSeleccionado.getNombre()+"\" - "+carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutosASerAgregados + " min.");
             event.setIdHorarios(idHo);
 
             eventModel.addEvent(event);
@@ -907,12 +936,14 @@ public class HorariosBean {
             idHo.setIdEmpleados(empleadoSeleccionado);
             idHo.setIdNiveles(nivelesSeleccionada);
             idHo.setIdAulas(aulasSeleccionada);
+            idHo.setIdHoras(horaSeleccionado);
+            horaSeleccionado = (Horas)adm.buscarClave(horaSeleccionado.getIdHoras(), Horas.class);
             idHo.setIdCarreras(carreraSeleccionada);
             //CALULO EL TIEMPO
             DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
             DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
             int minutos = Minutes.minutesBetween(start, end).getMinutes();
-            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutos + " min.");
+            event.setTitle("\""+horaSeleccionado.getNombre()+"\" - "+carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutos + " min.");
             event.setIdHorarios(idHo);
             eventModel.updateEvent(event);
         }
@@ -954,6 +985,7 @@ public class HorariosBean {
             carreraMateriaSeleccionada = ca.get(0);
         }
         empleadoSeleccionado = event.getIdHorarios().getIdEmpleados();
+        horaSeleccionado = event.getIdHorarios().getIdHoras();
         System.out.println("");
     }
 
@@ -974,6 +1006,7 @@ public class HorariosBean {
         idHo.setIdNiveles(nivelesSeleccionada);
         idHo.setIdAulas(aulasSeleccionada);
         idHo.setIdCarreras(carreraSeleccionada);
+        idHo.setIdHoras(horaSeleccionado); 
 
         Date fechaF = ((Date) selectEvent.getObject());
 
@@ -1105,6 +1138,24 @@ public class HorariosBean {
         }
         return null;
     }
+
+    public Horas getHoraSeleccionado() {
+        return horaSeleccionado;
+    }
+
+    public void setHoraSeleccionado(Horas horaSeleccionado) {
+        this.horaSeleccionado = horaSeleccionado;
+    }
+
+    public Horarios getHorariosSeleccionada() {
+        return horariosSeleccionada;
+    }
+
+    public void setHorariosSeleccionada(Horarios horariosSeleccionada) {
+        this.horariosSeleccionada = horariosSeleccionada;
+    }
+
+  
 
     public Date getFechaInicialS() {
         return fechaInicialS;
