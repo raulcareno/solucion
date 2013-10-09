@@ -543,15 +543,15 @@ public class HorariosBean {
         nivelesSeleccionada = objSel;
         Aulas objSelA = new Aulas();
         aulasSeleccionada = objSelA;
-fechaInicialS = new Date();
-         eventModel = new DefaultScheduleModel();
+        fechaInicialS = new Date();
+        eventModel = new DefaultScheduleModel();
     }
 
     public void encerar1() {
         Aulas objSelA = new Aulas();
         aulasSeleccionada = objSelA;
         fechaInicialS = new Date();
-         eventModel = new DefaultScheduleModel();
+        eventModel = new DefaultScheduleModel();
 
     }
 
@@ -877,17 +877,18 @@ fechaInicialS = new Date();
 
     public void addEvent(ActionEvent actionEvent) {
         carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
+        textoBuscar = "";
         if (event.getId() == null) {
             int maximoHorasSemana = carreraMateriaSeleccionada.getNumeroCreditos() * 60;
             int totalAgregadas = contarMateriasNuevo(carreraMateriaSeleccionada);
-             //CALULO EL TIEMPO
+            //CALULO EL TIEMPO
             DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
             DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
             int minutosASerAgregados = Minutes.minutesBetween(start, end).getMinutes();
-            
             if (maximoHorasSemana <= totalAgregadas) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "EXECIDO EN HORAS", "EXECIDO EN HORAS:");
-                addMessage(message);
+                FacesContext context = FacesContext.getCurrentInstance();
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("EXECIDO EN HORAS" + (maximoHorasSemana - totalAgregadas)));
+                textoBuscar = "EXECIDO EN MINUTOS: " + (maximoHorasSemana - totalAgregadas);
                 return;
             }
             Horarios idHo = new Horarios();
@@ -896,15 +897,12 @@ fechaInicialS = new Date();
             idHo.setIdNiveles(nivelesSeleccionada);
             idHo.setIdAulas(aulasSeleccionada);
             idHo.setIdCarreras(carreraSeleccionada);
-           
-
-
             event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutosASerAgregados + " min.");
             event.setIdHorarios(idHo);
 
             eventModel.addEvent(event);
         } else {
-            Horarios idHo = new Horarios();
+            Horarios idHo = event.getIdHorarios();
             idHo.setIdMaterias(carreraMateriaSeleccionada.getIdMaterias());
             idHo.setIdEmpleados(empleadoSeleccionado);
             idHo.setIdNiveles(nivelesSeleccionada);
@@ -914,8 +912,6 @@ fechaInicialS = new Date();
             DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
             DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
             int minutos = Minutes.minutesBetween(start, end).getMinutes();
-
-
             event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutos + " min.");
             event.setIdHorarios(idHo);
             eventModel.updateEvent(event);

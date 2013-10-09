@@ -73,9 +73,11 @@
 
                 </style>
                 <script src="locales.js" type="text/javascript"/>  <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
-                    <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                <div style="border: 1px; alignment-adjust: central">
+                    <h:outputText  id="mensaje" style="color:blue;font-weight:bold ;font-size: 14px;border: 1px; border-color: red" value="#{horariosBean.textoBuscar}" />
+                </div>
                 <p:panel id="registro"  style="width: 100%;" header="Horarios">
-                  
                     <h:panelGrid  styleClass="texto"  columns="6">
                         <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
@@ -94,27 +96,6 @@
                         </h:selectOneMenu>
                     </h:panelGrid>
 
-                    <p:dialog  header="AÑADIR OTRO PRE-REQUISITO" id="hola" widgetVar="modalSubirLibreta" modal="true"
-                               position="top"  showEffect="explode" 
-                               width="440" visible="false" resizable="false">
-                        <p:panelGrid columns="2">  
-                            <h:outputText value="Docente: " />
-                            <h:selectOneMenu   converter="ConvEmpleados" value="#{horariosBean.empleadoSeleccionado}" >  
-                                <f:selectItems value="#{horariosBean.selectedItemEmpleados}"  
-                                               var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  
-                                               itemValue="#{man}" />  
-                            </h:selectOneMenu>  
-                            <h:outputText value="" />
-                            <p:commandButton value="SELECCIONAR Y SALIR"  action="#{horariosBean.anadirAdicional}" oncomplete="modalSubirLibreta.hide();" icon="ui-icon-check" style="margin:0"/>
-
-                        </p:panelGrid>
-
-                        <br />
-
-                    </p:dialog>
-
-
-
                     <p:fieldset id="selectedCars" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
                             <p:schedule id="schedule" maxTime="22" minTime="7" firstHour="7" columnFormat="dddd"
@@ -124,7 +105,7 @@
                                         allDaySlot="false"
                                         view="agendaWeek"
                                         widgetVar="myschedule"> 
-                                
+
                                 <p:ajax event="dateSelect" listener="#{horariosBean.onDateSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
                                 <p:ajax event="eventSelect" listener="#{horariosBean.onEventSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
                                 <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="messages" />  
@@ -154,7 +135,7 @@
                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
                                 </p:inputMask>  
                                 <p:commandButton id="deleteButton" value="Eliminar" actionListener="#{horariosBean.deleteEvent}" oncomplete="PF('myschedule').update();PF('eventDialog001').hide();"/>  
-                                <p:commandButton id="addButton" value="Añadir" actionListener="#{horariosBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog001').hide();"/>  
+                                <p:commandButton id="addButton" value="Añadir" update="mensaje messages" actionListener="#{horariosBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog001').hide();"/>  
                             </h:panelGrid>  
                         </p:dialog> 
                     </p:fieldset>  
@@ -167,6 +148,7 @@
                         <p:commandButton  value="Guardar"  id="guardar"  
                                           action="#{horariosBean.guardar()}"  
                                           icon="guardar" title="Guardar"/>  
+
 
                     </h:panelGrid>
                 </p:panel>
