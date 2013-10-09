@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.joda.time.DateTime;
+import org.joda.time.Minutes;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
@@ -100,6 +102,17 @@ public class ScheduleController {
     }
 
     public void onEventResize(ScheduleEntryResizeEvent event) {
+        //        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event movido", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
+//
+//        addMessage(message);
+//                DateTime start = new DateTime(event.getScheduleEvent().getStartDate()); //Devuelve la fecha actual al estilo Date
+//                DateTime end = new DateTime(event.getScheduleEvent().getEndDate()); //Devuelve la fecha actual al estilo Date
+//                DefaultScheduleEventLocal dt = (DefaultScheduleEventLocal) event.getScheduleEvent();
+//                int minutos = Minutes.minutesBetween(start, end).getMinutes();
+//                dt.setTitle(dt.getTitle()+" "+minutos+" min.");
+//                 eventModel.updateEvent(dt);
+                
+
 //        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
 //        addMessage(message);
     }

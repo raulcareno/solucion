@@ -605,14 +605,14 @@ public class HorariosBean {
      
   //CALULO EL TIEMPO
                 DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
-                DateTime end = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
+                DateTime end = new DateTime(cM.getFechafinal()); //Devuelve la fecha actual al estilo Date
                 int minutos = Minutes.minutesBetween(start, end).getMinutes();
             
             
             
                     DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre()+" "+minutos+" min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
                     Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
-                    eve.setTitle(m.getNombre());
+                    eve.setTitle(m.getNombre()+" "+minutos+" min.");
                     eventModel.addEvent(eve);
                     m = null;
                     i++;
