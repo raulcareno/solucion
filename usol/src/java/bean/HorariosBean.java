@@ -543,12 +543,15 @@ public class HorariosBean {
         nivelesSeleccionada = objSel;
         Aulas objSelA = new Aulas();
         aulasSeleccionada = objSelA;
-
+fechaInicialS = new Date();
+         eventModel = new DefaultScheduleModel();
     }
 
     public void encerar1() {
         Aulas objSelA = new Aulas();
         aulasSeleccionada = objSelA;
+        fechaInicialS = new Date();
+         eventModel = new DefaultScheduleModel();
 
     }
 

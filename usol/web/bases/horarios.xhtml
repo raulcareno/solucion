@@ -131,7 +131,7 @@
                                 <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="messages" />
                             </p:schedule>  
                         </p:outputPanel>  
-                        <p:dialog widgetVar="eventDialog001" header="Hora Clase" position="top" showEffect="clip" hideEffect="clip">  
+                        <p:dialog widgetVar="eventDialog001" header="Hora Clase"   showEffect="clip" hideEffect="clip">  
                             <h:panelGrid id="eventDetails" columns="2">  
                                 <h:outputText value="MATERIA: " /> 
                                 <h:selectOneMenu id="materia" label="materia" converter="ConvCarrerasMaterias" value="#{horariosBean.carreraMateriaSeleccionada}" rendered="true">
