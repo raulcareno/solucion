@@ -602,17 +602,17 @@ public class HorariosBean {
                         fechaInicialS = cM.getFechainicial();
                     }
                     carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
-     
-  //CALULO EL TIEMPO
-                DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
-                DateTime end = new DateTime(cM.getFechafinal()); //Devuelve la fecha actual al estilo Date
-                int minutos = Minutes.minutesBetween(start, end).getMinutes();
-            
-            
-            
-                    DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre()+" "+minutos+" min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
+
+                    //CALULO EL TIEMPO
+                    DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
+                    DateTime end = new DateTime(cM.getFechafinal()); //Devuelve la fecha actual al estilo Date
+                    int minutos = Minutes.minutesBetween(start, end).getMinutes();
+
+
+
+                    DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
                     Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
-                    eve.setTitle(m.getNombre()+" "+minutos+" min.");
+                    eve.setTitle(m.getNombre() + " " + minutos + " min.");
                     eventModel.addEvent(eve);
                     m = null;
                     i++;
@@ -621,7 +621,7 @@ public class HorariosBean {
 
                 }
 
-              
+
 
             } else {
 //                llenarArreglo();
@@ -862,7 +862,7 @@ public class HorariosBean {
                 DateTime start = new DateTime(dH.getStartDate()); //Devuelve la fecha actual al estilo Date
                 DateTime end = new DateTime(dH.getEndDate()); //Devuelve la fecha actual al estilo Date
                 int minutos = Minutes.minutesBetween(start, end).getMinutes();
-                total+=minutos;
+                total += minutos;
             }
         }
         return total;
@@ -873,41 +873,30 @@ public class HorariosBean {
     }
 
     public void addEvent(ActionEvent actionEvent) {
-
-
-
-
         carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
-
-
         if (event.getId() == null) {
-
-//        CarrerasMaterias player = (CarrerasMaterias) event.getData();
-            int maximoHorasSemana = carreraMateriaSeleccionada.getNumeroCreditos()*60;
+            int maximoHorasSemana = carreraMateriaSeleccionada.getNumeroCreditos() * 60;
             int totalAgregadas = contarMateriasNuevo(carreraMateriaSeleccionada);
+             //CALULO EL TIEMPO
+            DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
+            DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
+            int minutosASerAgregados = Minutes.minutesBetween(start, end).getMinutes();
+            
             if (maximoHorasSemana <= totalAgregadas) {
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "EXECIDO EN HORAS", "EXECIDO EN HORAS"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "EXECIDO EN HORAS", "EXECIDO EN HORAS:");
                 addMessage(message);
                 return;
             }
-
-
             Horarios idHo = new Horarios();
-
             idHo.setIdMaterias(carreraMateriaSeleccionada.getIdMaterias());
             idHo.setIdEmpleados(empleadoSeleccionado);
             idHo.setIdNiveles(nivelesSeleccionada);
             idHo.setIdAulas(aulasSeleccionada);
             idHo.setIdCarreras(carreraSeleccionada);
-            //CALULO EL TIEMPO
-                DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
-                DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
-                int minutos = Minutes.minutesBetween(start, end).getMinutes();
-            
-            
-            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre()+" "+minutos+" min.");
+           
+
+
+            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutosASerAgregados + " min.");
             event.setIdHorarios(idHo);
 
             eventModel.addEvent(event);
@@ -919,12 +908,12 @@ public class HorariosBean {
             idHo.setIdAulas(aulasSeleccionada);
             idHo.setIdCarreras(carreraSeleccionada);
             //CALULO EL TIEMPO
-                DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
-                DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
-                int minutos = Minutes.minutesBetween(start, end).getMinutes();
-            
-            
-            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre()+" "+minutos+" min.");
+            DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
+            DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
+            int minutos = Minutes.minutesBetween(start, end).getMinutes();
+
+
+            event.setTitle(carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutos + " min.");
             event.setIdHorarios(idHo);
             eventModel.updateEvent(event);
         }
