@@ -72,10 +72,10 @@
                     }
 
                 </style>
-                <script src="locales.js" type="text/javascript"/>
-                <p:panel id="registro"  style="width: 100%;" header="Horarios">
-                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                <script src="locales.js" type="text/javascript"/>  <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
+                <p:panel id="registro"  style="width: 100%;" header="Horarios">
+                  
                     <h:panelGrid  styleClass="texto"  columns="6">
                         <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
@@ -117,9 +117,10 @@
 
                     <p:fieldset id="selectedCars" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
-                            <p:schedule id="schedule" maxTime="22" minTime="7" firstHour="7" columnFormat="dddd" resizable="false" initialDate="#{horariosBean.fechaInicialS}" 
+                            <p:schedule id="schedule" maxTime="22" minTime="7" firstHour="7" columnFormat="dddd"
+                                        resizable="true" initialDate="#{horariosBean.fechaInicialS}" 
                                         showHeader="false"  value="#{horariosBean.eventModel}"  
-                                        locale="es"   timeFormat="HH:mm" 
+                                        locale="es" 
                                         allDaySlot="false"
                                         view="agendaWeek"
                                         widgetVar="myschedule"> 
