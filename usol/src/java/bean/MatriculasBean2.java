@@ -159,7 +159,7 @@ public class MatriculasBean2 {
         if (!permisos.verificarPermisoReporte("Matriculas", "ingresar_matriculas.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedMatriculas = new Matriculas();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(MatriculasBean2.class.getName()).log(Level.SEVERE, null, ex);

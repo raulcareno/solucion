@@ -55,7 +55,7 @@ public class PerfilesBean {
         if (!permisos.verificarPermisoReporte("Perfiles", "ingresar_perfiles.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedPerfiles = new Perfiles();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PerfilesBean.class.getName()).log(Level.SEVERE, null, ex);

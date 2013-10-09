@@ -79,7 +79,7 @@ public class CambiarClaveBean{
         if (!permisos.verificarPermisoReporte("Empleados", "ingresar_empleados.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedEmpleados = new Empleados();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(CambiarClaveBean.class.getName()).log(Level.SEVERE, null, ex);

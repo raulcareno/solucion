@@ -54,7 +54,7 @@ Auditar  aud = new Auditar();
         if (!permisos.verificarPermisoReporte("Bancos", "ingresar_bancos.jspx", "ingresar", true, "PAGOS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedBancos = new Bancos();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(BancosBean.class.getName()).log(Level.SEVERE, null, ex);

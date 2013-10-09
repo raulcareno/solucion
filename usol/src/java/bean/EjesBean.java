@@ -54,7 +54,7 @@ public class EjesBean {
         if (!permisos.verificarPermisoReporte("Ejes", "ingresar_ejes.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedEjes = new Ejes();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(EjesBean.class.getName()).log(Level.SEVERE, null, ex);

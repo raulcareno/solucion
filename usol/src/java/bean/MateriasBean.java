@@ -55,7 +55,7 @@ Auditar  aud = new Auditar();
         if (!permisos.verificarPermisoReporte("Materias", "ingresar_materias.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedMaterias = new Materias();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(MateriasBean.class.getName()).log(Level.SEVERE, null, ex);

@@ -115,9 +115,15 @@
 
 
 
-                    <p:fieldset id="selectedCars" legend="HORARIO DE CLASES" style="width: 97%; margin-top:20px">  
+                    <p:fieldset id="selectedCars" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
-                            <p:schedule id="schedule" showHeader="false"  value="#{horariosBean.eventModel}"   locale="es" allDaySlot="false" view="agendaWeek" widgetVar="myschedule">  
+                            <p:schedule id="schedule" firstHour="7" columnFormat="dddd" resizable="false" initialDate="#{horariosBean.fechaInicialS}" 
+                                        showHeader="false"  value="#{horariosBean.eventModel}"  
+                                        locale="es" 
+                                        allDaySlot="false"
+                                        view="agendaWeek"
+                                        widgetVar="myschedule"> 
+                                
                                 <p:ajax event="dateSelect" listener="#{horariosBean.onDateSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
                                 <p:ajax event="eventSelect" listener="#{horariosBean.onEventSelect}" update="eventDetails from" oncomplete="PF('eventDialog001').show()" />  
                                 <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="messages" />  

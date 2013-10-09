@@ -58,7 +58,7 @@ public class SistemaNotasBean {
         if (!permisos.verificarPermisoReporte("SistemaNotas", "ingresar_sistemaNotas.jspx", "ingresar", true, "NOTAS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedSistemaNotas = new SistemaNotas();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(SistemaNotasBean.class.getName()).log(Level.SEVERE, null, ex);

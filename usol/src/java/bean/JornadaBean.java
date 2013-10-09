@@ -54,7 +54,7 @@ public class JornadaBean {
         if (!permisos.verificarPermisoReporte("Jornada", "ingresar_jornada.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedJornada = new Jornada();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(JornadaBean.class.getName()).log(Level.SEVERE, null, ex);

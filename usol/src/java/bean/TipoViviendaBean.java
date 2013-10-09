@@ -54,7 +54,7 @@ public class TipoViviendaBean {
         if (!permisos.verificarPermisoReporte("TipoVivienda", "ingresar_tipoVivienda.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedTipoVivienda = new TipoVivienda();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(TipoViviendaBean.class.getName()).log(Level.SEVERE, null, ex);

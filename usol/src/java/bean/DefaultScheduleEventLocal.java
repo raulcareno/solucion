@@ -48,6 +48,9 @@ public class DefaultScheduleEventLocal extends DefaultScheduleEvent {
         this.idHorarios = idHorarios;
     }
     
-    
+    @Override
+    public String toString(){
+        return getTitle()+" "+getStartDate().toLocaleString()+" "+getEndDate().toLocaleString();
+    }
     
 }

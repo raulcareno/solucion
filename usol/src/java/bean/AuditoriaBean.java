@@ -51,7 +51,7 @@ public class AuditoriaBean {
         if (!permisos.verificarPermisoReporte("Auditoria", "ingresar_auditoria.jspx", "ingresar", true, "ADMINISTRACION")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedAuditoria = new Auditoria();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(AuditoriaBean.class.getName()).log(Level.SEVERE, null, ex);

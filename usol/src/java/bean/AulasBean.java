@@ -58,7 +58,7 @@ public class AulasBean {
         if (!permisos.verificarPermisoReporte("Aulas", "ingresar_aulas.jspx", "ingresar", true, "HORARIOS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedAulas = new Aulas();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(AulasBean.class.getName()).log(Level.SEVERE, null, ex);

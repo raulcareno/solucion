@@ -55,7 +55,7 @@ public class RangosIngresosBean {
         if (!permisos.verificarPermisoReporte("RangosIngresos", "ingresar_rangosIngresos.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedRangosIngresos = new RangosIngresos();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(RangosIngresosBean.class.getName()).log(Level.SEVERE, null, ex);

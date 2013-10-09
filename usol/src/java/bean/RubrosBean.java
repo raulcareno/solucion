@@ -53,7 +53,7 @@ public class RubrosBean {
         if (!permisos.verificarPermisoReporte("Rubros", "ingresar_rubros.jspx", "ingresar", true, "PAGOS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedRubros = new Rubros();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(RubrosBean.class.getName()).log(Level.SEVERE, null, ex);

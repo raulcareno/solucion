@@ -54,7 +54,7 @@ public class PeriodosBean {
         if (!permisos.verificarPermisoReporte("Periodos", "ingresar_periodos.jspx", "ingresar", true, "PARAMETROS")) {
             try {
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedPeriodos = new Periodos();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(PeriodosBean.class.getName()).log(Level.SEVERE, null, ex);

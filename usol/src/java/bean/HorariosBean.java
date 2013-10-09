@@ -66,6 +66,7 @@ public class HorariosBean {
     protected CarrerasMaterias carreraMateriaSeleccionada;
     protected Horarios horariosSeleccionada;
     public String textoBuscar;
+    protected Date fechaInicialS;
     Permisos permisos;
     Auditar aud = new Auditar();
     protected int totalHoras;
@@ -81,7 +82,7 @@ public class HorariosBean {
         if (!permisos.verificarPermisoReporte("Horarios", "ingresar_horarios.jspx", "ingresar", true, "HORARIOS")) {
             try {
 //                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "No tiene permisos para ingresar"));
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/noPuedeIngresar.jspx");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/universidad/noPuedeIngresar.jspx");
             } //selectedHorarios = new Horarios();
             catch (IOException ex) {
                 java.util.logging.Logger.getLogger(HorariosBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -112,8 +113,9 @@ public class HorariosBean {
         List lista = eventModel.getEvents();
         for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
             DefaultScheduleEventLocal dH = it.next();
-            Horarios sec = new Horarios();
-            sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));
+            Horarios sec = dH.getIdHorarios();
+           
+            
             sec.setIdCarreras(dH.getIdHorarios().getIdCarreras());
             sec.setIdAulas(aulasSeleccionada);
             sec.setIdNiveles(nivelesSeleccionada);
@@ -121,15 +123,30 @@ public class HorariosBean {
             sec.setIdPeriodos(per);
             sec.setColor(dH.getStyleClass());
             sec.setIdEmpleados(dH.getIdHorarios().getIdEmpleados());
+            Calendar calIni = Calendar.getInstance();
+            calIni.setTime(dH.getStartDate()); 
+            Calendar calFin = Calendar.getInstance();
+            calFin.setTime(dH.getEndDate()); 
+            
             sec.setFechainicial(dH.getStartDate());
-            sec.setFechafinal(dH.getEndDate());
+            sec.setFechafinal(dH.getEndDate()); 
+            sec.setDia(calIni.get(Calendar.DAY_OF_WEEK)); 
 //                    if (sec.getIdMaterias().getIdMaterias() != null) {
-            adm.guardar(sec);
+             if(dH.getIdHorarios().getIdHorarios()==null){
+                sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));    
+                adm.guardar(sec);
+            }else{
+                 adm.actualizar(sec);
+             }
+            
 //                    }
 
 //            System.out.println("");
 
         }
+         aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", carreraSeleccionada.getNombre() + "");
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
+
         if (true) {
             return "OK";
         }
@@ -171,7 +188,7 @@ public class HorariosBean {
 //            }
 //            aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", carreraSeleccionada.getNombre() + "");
 //            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
-//
+
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
@@ -538,7 +555,11 @@ public class HorariosBean {
     public void buscarMateriasdeCarrera() {
         eventModel = new DefaultScheduleModel();
         Date feca = new Date();
+        Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+        fechaInicialS = per.getFechaInicio();
+        
         feca.setDate(20);
+        
         eventModel = new DefaultScheduleModel();
 //        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca, "uno", new Horarios()));
 //        lazyEventModel = new LazyScheduleModel() {
@@ -552,7 +573,7 @@ public class HorariosBean {
 //            }
 //        };
         try {
-            Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+            //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
             if (carreraSeleccionada.getIdCarreras() == null) {
                 return;
@@ -574,40 +595,32 @@ public class HorariosBean {
                     + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  ");
             model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
-
+                    int i =0;
                 for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
                     Horarios cM = it.next();
-//                    cM.setSecuenciaDeMateriasAdicionalesList(new ArrayList<SecuenciaDeMateriasAdicionales>());
-//                    CarrerasMaterias player = new CarrerasMaterias();
-//                    player.setIdMaterias(cM.getIdMaterias());
-//                    if (!verificarMateria(player)) { //CARGO LOS PROFESORES QUE DICTAN CADA MATERIA
-                        //Horarios hora = new Horarios();
+                    if(i==0){
+                        fechaInicialS = cM.getFechainicial();
+                    }
                         carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
-//                        hora.setIdCarreras(carreraSeleccionada);
-//                        hora.setIdMaterias(cM.getIdMaterias());
-//                        hora.setIdEmpleados(cM.getIdEmpleados());
-                        //hora.setIdHorarios(cM.get.getIdMaterias().getIdMaterias());
-//                        model.add(hora);
-//                        int diaI = cM.getFechainicial().getDay();
-//                        int diaF = cM.getFechafinal().getDay();
-//                        
+
 //                        Calendar calIni = Calendar.getInstance();
+//                        cM.getFechainicial().setMonth((new Date()).getMonth());
 //                        calIni.setTime(cM.getFechainicial()); 
-//                        calIni.set(Calendar.DAY_OF_WEEK, diaI);
-//                        
+//                        calIni.set(Calendar.DAY_OF_WEEK,cM.getDia());
+//
+////                        
 //                        Calendar calFin = Calendar.getInstance();
+//                        cM.getFechafinal().setMonth((new Date()).getMonth());
 //                        calFin.setTime(cM.getFechafinal()); 
-//                        calFin.set(Calendar.DAY_OF_WEEK, diaF);
-                        
-                         //;Calendar.DAY_OF_WEEK
-                        //if(cM.getFechainicial().getMonth() == (cM.getFechainicial().getMonth()))
-                        cM.getFechainicial().setDate(cM.getFechainicial().getDate()+7); 
-                        cM.getFechafinal().setDate(cM.getFechafinal().getDate()+7); 
-                        DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(),cM.getFechainicial(),cM.getFechainicial(), cM.getColor(), cM);
+//                        calFin.set(Calendar.DAY_OF_WEEK,cM.getDia());
+//                        
+                     
+                        DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(),cM.getFechainicial(),cM.getFechafinal(), cM.getColor(), cM);
                         Materias m = (Materias)adm.buscarClave(cM.getIdMaterias().getIdMaterias(),Materias.class);
                         eve.setTitle(m.getNombre()); 
                         eventModel.addEvent(eve);
                         m = null;
+                        i++;
 //                    }
 //                    anadidasArray[cM.getFila()][cM.getOrden()] = cM;
 
@@ -902,11 +915,19 @@ public class HorariosBean {
 
     public void deleteEvent(ActionEvent actionEvent) {
         //carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
-        if (event.getId() == null) {
+        try {
+                    DefaultScheduleEventLocal dH = event;
+                    adm.eliminarObjeto(Horarios.class, dH.getIdHorarios().getIdHorarios());
+                    dH = null;
+        } catch (Exception e) {
+        }
 
+                
+        if (event.getId() == null) {
+            
+            
             eventModel.deleteEvent(event);
         } else {
-
             eventModel.deleteEvent(event);
         }
         event = new DefaultScheduleEventLocal();
@@ -947,7 +968,15 @@ public class HorariosBean {
         idHo.setIdNiveles(nivelesSeleccionada);
         idHo.setIdAulas(aulasSeleccionada);
         idHo.setIdCarreras(carreraSeleccionada);
-        event = new DefaultScheduleEventLocal("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(), estilo, idHo);
+        
+        Date fechaF = ((Date) selectEvent.getObject());
+        
+        
+        Date fechaIni = new Date(fechaF.getYear(), fechaF.getMonth(), fechaF.getDate(), fechaF.getHours(), fechaF.getMinutes());
+        
+        int ho = fechaF.getHours()+1;
+        fechaF.setHours(ho);
+        event = new DefaultScheduleEventLocal("", fechaIni,fechaF , estilo, idHo);
         System.out.println("" + event.getStartDate().toLocaleString());
     }
 
@@ -1070,4 +1099,14 @@ public class HorariosBean {
         }
         return null;
     }
+
+    public Date getFechaInicialS() {
+        return fechaInicialS;
+    }
+
+    public void setFechaInicialS(Date fechaInicialS) {
+        this.fechaInicialS = fechaInicialS;
+    }
+    
+    
 }
