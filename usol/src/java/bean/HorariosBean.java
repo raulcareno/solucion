@@ -30,15 +30,15 @@ import jcinform.persistencia.Niveles;
 import jcinform.persistencia.Periodos;
 import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
 import jcinform.procesos.Administrador;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Minutes;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
 import utilerias.Permisos;
@@ -114,8 +114,8 @@ public class HorariosBean {
         for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
             DefaultScheduleEventLocal dH = it.next();
             Horarios sec = dH.getIdHorarios();
-           
-            
+
+
             sec.setIdCarreras(dH.getIdHorarios().getIdCarreras());
             sec.setIdAulas(aulasSeleccionada);
             sec.setIdNiveles(nivelesSeleccionada);
@@ -124,28 +124,28 @@ public class HorariosBean {
             sec.setColor(dH.getStyleClass());
             sec.setIdEmpleados(dH.getIdHorarios().getIdEmpleados());
             Calendar calIni = Calendar.getInstance();
-            calIni.setTime(dH.getStartDate()); 
+            calIni.setTime(dH.getStartDate());
             Calendar calFin = Calendar.getInstance();
-            calFin.setTime(dH.getEndDate()); 
-            
+            calFin.setTime(dH.getEndDate());
+
             sec.setFechainicial(dH.getStartDate());
-            sec.setFechafinal(dH.getEndDate()); 
-            sec.setDia(calIni.get(Calendar.DAY_OF_WEEK)); 
+            sec.setFechafinal(dH.getEndDate());
+            sec.setDia(calIni.get(Calendar.DAY_OF_WEEK));
 //                    if (sec.getIdMaterias().getIdMaterias() != null) {
-             if(dH.getIdHorarios().getIdHorarios()==null){
-                sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));    
+            if (dH.getIdHorarios().getIdHorarios() == null) {
+                sec.setIdHorarios(adm.getNuevaClave("Horarios", "idHorarios"));
                 adm.guardar(sec);
-            }else{
-                 adm.actualizar(sec);
-             }
-            
+            } else {
+                adm.actualizar(sec);
+            }
+
 //                    }
 
 //            System.out.println("");
 
         }
-         aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", carreraSeleccionada.getNombre() + "");
-            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
+        aud.auditar(adm, this.getClass().getSimpleName().replace("Bean", ""), "guardar", "", carreraSeleccionada.getNombre() + "");
+        FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Guardado...!"));
 
         if (true) {
             return "OK";
@@ -557,9 +557,9 @@ public class HorariosBean {
         Date feca = new Date();
         Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
         fechaInicialS = per.getFechaInicio();
-        
+
         feca.setDate(20);
-        
+
         eventModel = new DefaultScheduleModel();
 //        eventModel.addEvent(new DefaultScheduleEventLocal("Mi evento", new Date(), feca, "uno", new Horarios()));
 //        lazyEventModel = new LazyScheduleModel() {
@@ -595,13 +595,13 @@ public class HorariosBean {
                     + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  ");
             model = new ArrayList<Horarios>();
             if (materiasSecuenciales.size() > 0) {
-                    int i =0;
+                int i = 0;
                 for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
                     Horarios cM = it.next();
-                    if(i==0){
+                    if (i == 0) {
                         fechaInicialS = cM.getFechainicial();
                     }
-                        carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
+                    carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
 
 //                        Calendar calIni = Calendar.getInstance();
 //                        cM.getFechainicial().setMonth((new Date()).getMonth());
@@ -614,13 +614,13 @@ public class HorariosBean {
 //                        calFin.setTime(cM.getFechafinal()); 
 //                        calFin.set(Calendar.DAY_OF_WEEK,cM.getDia());
 //                        
-                     
-                        DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(),cM.getFechainicial(),cM.getFechafinal(), cM.getColor(), cM);
-                        Materias m = (Materias)adm.buscarClave(cM.getIdMaterias().getIdMaterias(),Materias.class);
-                        eve.setTitle(m.getNombre()); 
-                        eventModel.addEvent(eve);
-                        m = null;
-                        i++;
+
+                    DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre(), cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
+                    Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
+                    eve.setTitle(m.getNombre());
+                    eventModel.addEvent(eve);
+                    m = null;
+                    i++;
 //                    }
 //                    anadidasArray[cM.getFila()][cM.getOrden()] = cM;
 
@@ -885,9 +885,48 @@ public class HorariosBean {
     private DefaultScheduleEventLocal event = new DefaultScheduleEventLocal();
     private String theme;
 
+    public int contarMateriasNuevo(CarrerasMaterias player) {
+        List lista = eventModel.getEvents();
+        int total = 0;
+        for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
+            DefaultScheduleEventLocal dH = it.next();
+            Horarios carA = dH.getIdHorarios();
+            if (player.getIdMaterias().getIdMaterias().equals(carA.getIdMaterias().getIdMaterias())) {
+                DateTime start = new DateTime(dH.getStartDate()); //Devuelve la fecha actual al estilo Date
+                DateTime end = new DateTime(dH.getEndDate()); //Devuelve la fecha actual al estilo Date
+                int minutos = Minutes.minutesBetween(start, end).getMinutes();
+                total+=minutos;
+            }
+        }
+        return total;
+
+
+
+
+    }
+
     public void addEvent(ActionEvent actionEvent) {
+
+
+
+
         carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
+
+
         if (event.getId() == null) {
+
+//        CarrerasMaterias player = (CarrerasMaterias) event.getData();
+            int maximoHorasSemana = carreraMateriaSeleccionada.getNumeroCreditos()*60;
+            int totalAgregadas = contarMateriasNuevo(carreraMateriaSeleccionada);
+            if (maximoHorasSemana <= totalAgregadas) {
+//            FacesContext context = FacesContext.getCurrentInstance();
+//            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "EXECIDO EN HORAS", "EXECIDO EN HORAS"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "EXECIDO EN HORAS", "EXECIDO EN HORAS:");
+                addMessage(message);
+                return;
+            }
+
+
             Horarios idHo = new Horarios();
 
             idHo.setIdMaterias(carreraMateriaSeleccionada.getIdMaterias());
@@ -916,16 +955,16 @@ public class HorariosBean {
     public void deleteEvent(ActionEvent actionEvent) {
         //carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
         try {
-                    DefaultScheduleEventLocal dH = event;
-                    adm.eliminarObjeto(Horarios.class, dH.getIdHorarios().getIdHorarios());
-                    dH = null;
+            DefaultScheduleEventLocal dH = event;
+            adm.eliminarObjeto(Horarios.class, dH.getIdHorarios().getIdHorarios());
+            dH = null;
         } catch (Exception e) {
         }
 
-                
+
         if (event.getId() == null) {
-            
-            
+
+
             eventModel.deleteEvent(event);
         } else {
             eventModel.deleteEvent(event);
@@ -968,15 +1007,15 @@ public class HorariosBean {
         idHo.setIdNiveles(nivelesSeleccionada);
         idHo.setIdAulas(aulasSeleccionada);
         idHo.setIdCarreras(carreraSeleccionada);
-        
+
         Date fechaF = ((Date) selectEvent.getObject());
-        
-        
+
+
         Date fechaIni = new Date(fechaF.getYear(), fechaF.getMonth(), fechaF.getDate(), fechaF.getHours(), fechaF.getMinutes());
-        
-        int ho = fechaF.getHours()+1;
+
+        int ho = fechaF.getHours() + 1;
         fechaF.setHours(ho);
-        event = new DefaultScheduleEventLocal("", fechaIni,fechaF , estilo, idHo);
+        event = new DefaultScheduleEventLocal("", fechaIni, fechaF, estilo, idHo);
         System.out.println("" + event.getStartDate().toLocaleString());
     }
 
@@ -1107,6 +1146,4 @@ public class HorariosBean {
     public void setFechaInicialS(Date fechaInicialS) {
         this.fechaInicialS = fechaInicialS;
     }
-    
-    
 }
