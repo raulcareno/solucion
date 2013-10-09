@@ -44,13 +44,14 @@
 
                     }
                     .panelGrande2{
+                        font-size: 10px;
                         vertical-align: top;
                         width: 150px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
                     }
                     .panelGrande{
-
+                        font-size: 10px;
                         width: 93px; 
                         text-align:center;
                         margin: 0px 0px 0px 0px;
@@ -71,115 +72,48 @@
                     }
 
                 </style>
-                <p:panel id="registro"  style="width: 100%;" header="Horarios">
-                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
+                <script src="locales.js" type="text/javascript"/>  <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                    <h:panelGrid columns="6">
+                <p:panel id="registro"  style="width: 100%;" header="Horarios">
+                  
+                    <h:panelGrid  styleClass="texto"  columns="6">
                         <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosProfesoresBean.carreraSeleccionada}" rendered="true">
                             <f:selectItems value="#{horariosProfesoresBean.selectedItemCarreras}"></f:selectItems>
-                            <p:ajax event="change"   listener="#{horariosProfesoresBean.buscarMateriasdeCarrera()}"   update="carreras availableCars selectedCars carList"/>
+                            <p:ajax event="change"   listener="#{horariosProfesoresBean.buscarMateriasdeCarrera()}"   update="carreras  selectedCars"/>
                         </h:selectOneMenu>
+                         
                     </h:panelGrid>
 
-
-                    <p:dataGrid emptyMessage="..." id="availableCars"  styleClass="panelito" style="padding: -5px -5px -5px -5px " 
-                                var="car" value="#{horariosProfesoresBean.listaMaterias}" columns="9">  
-                        <p:column>  
-                            <p:panel  id="pnl" styleClass="panelGrande">  
-                                <f:facet name="header">
-                                    <p:graphicImage value="/images/plus.png"/>    
-                                    #{car.idMaterias.nombre} / #{car.numeroCreditos}C
-                                </f:facet>
-
-                            </p:panel>  
-                            <p:draggable  for="pnl" revert="true"   stack=".ui-panel"/>  
+                    
 
 
-                        </p:column>  
 
-                    </p:dataGrid> 
-
-                    <p:fieldset id="selectedCars" legend="HORARIO DE CLASES"  style="width: 97%; margin-top:20px">  
+                    <p:fieldset id="selectedCars" style="width: 97%; margin-top:20px">  
                         <p:outputPanel id="dropArea"> 
-                            <h:panelGrid cellpadding="1px" cellspacing="2px"  columns="8">
-                                <h:outputText styleClass="textos3"  value="HORA" />     
-                                <h:outputText styleClass="textos3"  value="LUNES " />         
-                                <h:outputText styleClass="textos3"  value="MARTES " />         
-                                <h:outputText styleClass="textos3"  value="MIERCOLES" />         
-                                <h:outputText styleClass="textos3"  value="JUEVES" />         
-                                <h:outputText styleClass="textos3"  value="VIERNES" />         
-                                <h:outputText styleClass="textos3"  value="SABADO" />         
-                                <h:outputText styleClass="textos3"  value="DOMINGO" />         
-                                <c:forEach var="i" begin="0" end="#{horariosProfesoresBean.totalHoras-1}" step="1" varStatus ="status">
-                                    <h:outputText  value="#{horariosProfesoresBean.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{horariosProfesoresBean.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
-                                    <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
-                                        <p:panel  id="f#{i}c#{j}" styleClass="panelGrande">  
-                                            <p:spacer height="20" rendered="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
-                                            <h:outputText style="color: #045491" value="#{horariosProfesoresBean.anadidasArray[i][j].idMaterias.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idAulas.nombre} #{horariosProfesoresBean.anadidasArray[i][j].idNiveles.nombre} "  />
-                                            <p:spacer width="7"/>   
-                                        </p:panel>
-                                    </c:forEach>
-                                </c:forEach>
-                            </h:panelGrid>
-
-                            <c:forEach var="k" begin="0" end="#{horariosProfesoresBean.totalHoras-1}" step="1" varStatus ="status4">
-                                <c:forEach var="m" begin="0" end="6" step="1" varStatus ="status5">
-                                    <p:droppable for="f#{k}c#{m}" tolerance="pointer"  activeStyleClass="ui-state-highlight"    datasource="availableCars" onDrop="handleDrop">  
-                                        <p:ajax listener="#{horariosProfesoresBean.onCarrerasDrop}" update="dropArea availableCars carList" />  
-                                    </p:droppable> 
-                                </c:forEach>
-                            </c:forEach>
-
+                            <p:schedule id="schedule" maxTime="22" minTime="7" firstHour="7" columnFormat="dddd"
+                                        resizable="false" initialDate="#{horariosProfesoresBean.fechaInicialS}" 
+                                        showHeader="false"  value="#{horariosProfesoresBean.eventModel}"   
+                                        locale="es" 
+                                        allDaySlot="false"
+                                        view="agendaWeek"
+                                        widgetVar="myschedule"> 
+                            </p:schedule>  
                         </p:outputPanel>  
-
+                       
                     </p:fieldset>  
-                    <p:dataTable var="car" value="#{horariosProfesoresBean.model}" id="carList" editable="true">  
 
-                        <f:facet name="header">  
-                            MATERIAS PROFESOR
-                        </f:facet>  
-
-                        <p:ajax event="rowEdit" listener="#{horariosProfesoresBean.onEdit}" update=":form:messages" />  
-                        <p:ajax event="rowEditCancel" listener="#{horariosProfesoresBean.onCancel}" update=":form:messages" />  
-
-                        <p:column headerText="MATERIA" style="width:125px">  
-                            <p:cellEditor>  
-                                <f:facet name="output">  
-                                    <h:outputText value="#{car.idMaterias.nombre}" />  
-                                </f:facet>  
-                                <f:facet name="input">  
-                                    <p:inputText value="#{car.idMaterias.nombre}" style="width:100%"/>  
-                                </f:facet>  
-                            </p:cellEditor>  
-                        </p:column>  
-
-                        <p:column headerText="PROFESOR" style="width:125px">  
-                            <p:cellEditor>  
-                                <f:facet name="output">  
-                                    <h:outputText value="#{car.idEmpleados.apellidoPaterno} #{car.idEmpleados.nombre}" />  
-                                </f:facet>  
-                                <f:facet name="input">  
-                                    <h:selectOneMenu   converter="ConvEmpleados" value="#{car.idEmpleados}" >  
-                                        <f:selectItems value="#{horariosProfesoresBean.selectedItemEmpleados}"  
-                                                       var="man"   itemLabel="#{man.idEmpleados.apellidoPaterno} #{man.idEmpleados.nombre}"  itemValue="#{man}" />  
-                                    </h:selectOneMenu>  
-                                </f:facet>  
-                            </p:cellEditor>  
-                        </p:column>  
-
-
-                        <p:column headerText="Opciones" style="width:50px">  
-                            <p:rowEditor />  
-                        </p:column>  
-
-                    </p:dataTable>  
                     <h:panelGrid columns="4">
 
                         <p:commandButton value="imprimir" type="button" icon="ui-icon-print">  
                             <p:printer target="selectedCars" />  
                         </p:commandButton>  
-
+                        <p:commandButton  value="Guardar"  id="guardar"  
+                                          action="#{horariosProfesoresBean.guardar()}"  
+                                          icon="guardar" title="Guardar"/>  
+                         <h:commandButton value="Print" type="button"  >  
+        <p:printer target="schedule" />  
+    </h:commandButton>  
 
                     </h:panelGrid>
                 </p:panel>
