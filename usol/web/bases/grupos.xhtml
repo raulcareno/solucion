@@ -14,17 +14,13 @@
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
                 <script src="locales.js" type="text/javascript"/>
-                <p:panel id="registro"  style="width: 600px;" header="Pais">
+                <p:panel id="registro"  style="width: 600px;" header="GRUPOS">
                     <!--p:growl id="growl" showDetail="true" sticky="true"  /--> 
                     <!--p:message for="form" /-->
                     <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
                     <h:panelGrid id="display" columns="2" cellpadding="4" style="margin:0 auto;">  
                         <h:outputText value="NOMBRE:" />  
                         <p:inputText value="#{horasBean.object.nombre}" id="nombre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
-                        <h:outputText value="HORA INICIAL: " />  
-                        <p:calendar value="#{horasBean.object.desdeHor}" locale="es"  pattern="HH:mm" timeOnly="true" id="fechaInicio"   showOn="button" style="font-weight:bold;"/>  
-                        <h:outputText value="HORA FINAL: " />  
-                        <p:calendar value="#{horasBean.object.hastaHor}" locale="es"   id="fechaFin"    pattern="HH:mm" timeOnly="true"   showOn="button"  style="font-weight:bold;"/>  
                          <p:inputText  value="#{horasBean.object.idHoras}" converter="JsfConvInteger" id="id"   style="font-weight:bold; width: 15px;visibility: hidden"/>  
 
                     </h:panelGrid>  
@@ -49,18 +45,7 @@
                     <p:column headerText="NOMBRE" style="width:30%">  
                         <h:outputText value="#{obj.nombre}" />  
                     </p:column>  
-                    <p:column headerText="INICIA" style="width:30%">  
-                      
-                        <h:outputText value="#{obj.desdeHor}" >  
-                            <f:convertDateTime pattern="HH:mm"/>  
-                        </h:outputText>  
-                    </p:column>  
-                    <p:column headerText="TERMINA" style="width:30%">  
-                        <h:outputText value="#{obj.hastaHor}">  
-                            <f:convertDateTime pattern="HH:mm"/>  
-                        </h:outputText> 
-                    </p:column>  
-                  
+                                     
                     <p:column style="width:10%">  
                         <h:panelGrid style="border-color: transparent;" columns="2">
 
