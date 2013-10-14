@@ -10,14 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jcinform.persistencia.*;
@@ -1456,20 +1449,42 @@ public class reportesClase {
     List<ParametrosGlobales> parametrosGlobales = null;
     public List<MateriaProfesor> materiasReprobadas = new ArrayList<MateriaProfesor>();
 
-    public void quitarPaso(List<MateriaProfesor> maprof, Integer codigomatricula, Integer codigomateria) {
-
-        for (Iterator<MateriaProfesor> it = maprof.iterator(); it.hasNext();) {
-            MateriaProfesor materiaProfesor = it.next();
-            try {
-                if (materiaProfesor.getCodigomap().equals(codigomatricula) && materiaProfesor.getMateria().getCodigo().equals(codigomateria)) {
+    public int quitarPaso(List<MateriaProfesor> maprof, Integer codigomatricula, Integer codigomateria) {
+        
+        int m = 0;
+            for (int i = 0; i < maprof.size(); i++) {  
+                try
+        {  
+                 MateriaProfesor materiaProfesor = maprof.get(i); 
+         
+                if (materiaProfesor.getCodigomap().equals(codigomatricula) && materiaProfesor.getOrden().equals(codigomateria)) {
                     maprof.remove(materiaProfesor);
+                    i =0;
+                    m++;
                 }
             } catch (Exception e) {
-//                System.out.println("" + codigomatricula + " MATEIRA: " + codigomateria+""+e);
-                //System.out.println("" + e);
+                //System.out.println("" + codigomatricula + " MATEIRA: " + codigomateria+""+e);
+                System.out.println("" + e);
+                break;
+                
             }
-
-        }
+            }
+            return m;
+//        for (Iterator<MateriaProfesor> it = maprof.iterator(); it.hasNext();) {
+//              try {
+//                  MateriaProfesor materiaProfesor = it.next();
+//         
+//                if (materiaProfesor.getCodigomap().equals(codigomatricula) && materiaProfesor.getOrden().equals(codigomateria)) {
+//                    maprof.remove(materiaProfesor);
+//                }
+//            } catch (ConcurrentModificationException e) {
+//                //System.out.println("" + codigomatricula + " MATEIRA: " + codigomateria+""+e);
+//                System.out.println("" + e);
+//                break;
+//                
+//            }
+//
+//        }
     }
 
     public List<Matriculas> cuadroverificar(Cursos curso, Sistemacalificacion sistema, Matriculas matriculaActual) {
@@ -1641,9 +1656,9 @@ public class reportesClase {
                             if (materiasReprobadas.contains(matR)) {
                                 //materiasReprobadas.remove(matR);
                                 System.out.println("ENVIO A QUITAR PF: " + materia);
-                                quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
+                                int Noquitadas = quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
                                 System.out.println("PF..he quitado la materia como reprobada: " + materia.getCodigo() + " " + materia + " NOTA: " + val);
-                                obs1--;
+                                obs1 = obs1-Noquitadas;
                             }
                         }
                         pfinal = val;
@@ -1773,7 +1788,7 @@ public class reportesClase {
                                             //materiasReprobadas.remove(matR);
                                             System.out.println("ENVIO A QUITAR REM: " + materia);
                                             quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
-                                            System.out.println("he quitado la materia como reprobada PASA SUPLE: " + materia.getCodigo() + " " + materia + " nota" + val);
+                                            System.out.println("he quitado la materia como reprobada PASA REM: " + materia.getCodigo() + " " + materia + " nota" + val);
                                             obs1--;
                                         }
                                     }
@@ -1804,7 +1819,63 @@ public class reportesClase {
                             }
                         }
 
-                    }//fin remedial
+                    }else if (nota.getSistema().getPromediofinal().equals("GR")) { //fin remedial
+                        if (validaConPromedioGeneral && pgeneral < valorPromedioGeneral) {
+                            try {
+                           
+                                    Double valor = new Double(equivalenciaSupletorio(pgeneral, equivalenciasSuple) + "");
+                                    if (val> 0 && val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde gracia(2.0):" + matricula + " mat:" + materia + " not:" + val);
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        materiasReprobadas.add(matR);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        if (materiasReprobadas.contains(matR)) {
+                                            //materiasReprobadas.remove(matR);
+                                            System.out.println("ENVIO A QUITAR GRAC: " + materia);
+//                                            quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
+//                                            System.out.println("he quitado la materia como reprobada PASA GRAC: " + materia.getCodigo() + " " + materia + " nota" + val);
+//                                            obs1--;
+                                            int Noquitadas = quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
+                                System.out.println("PF..he quitado la materia como reprobada: " + materia.getCodigo() + " " + materia + " NOTA: " + val);
+                                obs1 = obs1-Noquitadas;
+                                        }
+                                    }
+                              
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (sumatoria < sumaAprueba && sumatoria > 0) {
+                                try {
+                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
+                                    if (val < valor) {
+                                        obs = "Pierde";
+                                        System.out.println("pierde SUPLE(2.1):" + matricula + " mat:" + materia + " not:" + val);
+                                        MateriaProfesor matR = new MateriaProfesor();
+                                        matR.setCodigomap(matriculaNo.getCodigomat());
+                                        matR.setOrden(materia.getCodigo());
+                                        materiasReprobadas.add(matR);
+                                        obs1++;
+                                    } else {
+                                        obs = "";
+                                    }
+                                } catch (Exception e) {
+                                }
+
+                            } else {
+                                obs = "";
+                            }
+                        }
+
+                    }//fin gracia
                     ksis++;
                 } else if (j == 1) {
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
