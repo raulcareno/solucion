@@ -6,6 +6,7 @@ package bean;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.Estudiantes;
@@ -26,6 +27,26 @@ public class borrar {
 //Progressmeter p;
 //p.set
     public static void main(String[] args) {
+        HashSet a = new HashSet();
+        generalMatriculaMateria ab = new generalMatriculaMateria(1,1);
+        a.add(ab);
+        //ab = new generalMatriculaMateria(1,1);
+        ab.materia = 1;
+        ab.matricula = 1;
+        a.add(ab);
+        
+        ab.materia = 2;
+        ab.matricula = 1;
+        a.add(ab);
+        //a.add(ac);
+        //a.add(ac);
+        
+        for( Iterator it2 = a.iterator(); it2.hasNext();) { 
+	    
+	    generalMatriculaMateria x = (generalMatriculaMateria)it2.next();
+	    System.out.println(x.matricula + " : " + x.materia);
+
+	}
         
         DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
     //simbolo.setDecimalSeparator('.');
