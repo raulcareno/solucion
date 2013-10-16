@@ -73,7 +73,7 @@
                                             </p:commandButton>  
                                         </p:column>  
                                     </p:dataTable>  
-vacion
+                                    vacion
                                     <p:commandButton value="CERRAR"   onclick="variasMatriculasSuspendidas.hide()" icon="ui-icon-closethick">  
                                     </p:commandButton>      
 
@@ -162,13 +162,15 @@ vacion
                                             </p:commandButton>
                                         </p:column>
                                         <p:column width="10" styleClass="textonormal"   headerText="CA">  
-                                            <p:commandButton rendered="#{materia.pagada}"  onclick="if (!confirm('Desea CANCELAR el presente crédito?')) {return false;}"  style="background-color: transparent; background-color: white" title="Cancelar" actionListener="#{matriculasBean2.cancelar(materia)}" update=":form:acordionBusca:panelMaterias" icon="cancelar"/>
+                                            <p:commandButton rendered="#{materia.pagada}"  onclick="if (!confirm('Desea CANCELAR el presente crédito?')) {
+                            return false;
+                        }"  style="background-color: transparent; background-color: white" title="Cancelar" actionListener="#{matriculasBean2.cancelar(materia)}" update=":form:acordionBusca:panelMaterias" icon="cancelar"/>
                                         </p:column>
 
                                         <p:column  width="18" styleClass="textonormal" >  
                                             <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias" icon="quitar" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
-                                                return false;
-                                            }" title="Eliminar"/>  
+                            return false;
+                        }" title="Eliminar"/>  
                                             <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias" icon="quitar">  
                                             </p:commandButton>  
                                         </p:column>  
@@ -211,26 +213,28 @@ vacion
                     <p:tab title="Horarios">  
                         <h:panelGrid columns="2" cellpadding="10">  
                             <p:panel style="background-color: navajowhite" >  
-                                <p:commandButton id="generarHorario"  update=":form:acordionBusca:horarioEstudiante"  actionListener="#{matriculasBean2.cargarHorarioPreferencial()}" value="GENERAR HORARIO" />                                        
-                                <h:panelGrid cellpadding="1px" width="840px" cellspacing="2px" id="horarioEstudiante"  columns="8">
-                                    <h:outputText styleClass="texto"  value="HORA" />     
-                                    <h:outputText styleClass="texto"  value="LUNES " />         
-                                    <h:outputText styleClass="texto"  value="MARTES " />         
-                                    <h:outputText styleClass="texto"  value="MIERCOLES" />         
-                                    <h:outputText styleClass="texto"  value="JUEVES" />         
-                                    <h:outputText styleClass="texto"  value="VIERNES" />         
-                                    <h:outputText styleClass="texto"  value="SABADO" />         
-                                    <h:outputText styleClass="texto"  value="DOMINGO" />         
-                                    <c:forEach var="i" begin="0" end="#{matriculasBean2.totalHoras-1}" step="1" varStatus ="status">
-                                        <h:outputText style="font-size:10px" value="#{matriculasBean2.horas.get(i).getDesdeHor().toLocaleString().substring(10)} - #{matriculasBean2.horas.get(i).getHastaHor().toLocaleString().substring(10)}" />             
-                                        <c:forEach var="j" begin="0" end="6" step="1" varStatus ="status2">
-                                            <p:panel  id="f#{i}c#{j}" >  
-                                                <p:spacer height="20" rendered="#{matriculasBean2.anadidasArrayHoras[i][j].idMaterias.nombre eq ''}" value="/images/plus2.png"/>   
-                                                <h:outputText styleClass="texto" value="#{matriculasBean2.anadidasArrayHoras[i][j].idMaterias.nombre} #{matriculasBean2.anadidasArrayHoras[i][j].idAulas.nombre} #{matriculasBean2.anadidasArrayHoras[i][j].idNiveles.nombre} "  />
-                                                <p:spacer width="7"/>   
-                                            </p:panel>
-                                        </c:forEach>
-                                    </c:forEach>
+                                
+                                 <h:outputText value="GRUPO: " />
+                                <h:selectOneMenu   converter="ConvHoras" value="#{matriculasBean2.horaSeleccionado}" >  
+                                    <f:selectItems value="#{matriculasBean2.selectedItemHoras}"  
+                                                   var="man"   itemLabel="#{man.nombre}"  
+                                                   itemValue="#{man}" />  
+                                </h:selectOneMenu>  
+                               <p:commandButton id="generarHorario"  update=":form:acordionBusca:horarioEstudiante"  actionListener="#{matriculasBean2.cargarHorarioPreferencial()}" value="GENERAR HORARIO" />                                        
+                                <h:panelGrid columns="2">
+                                    <h:panelGrid cellpadding="-5px"  width="840px" cellspacing="2px" id="horarioEstudiante"  columns="2">
+                                        <p:schedule id="schedule" style="padding-top: -5;height: 400px" maxTime="22" minTime="7" firstHour="7" columnFormat="dddd"
+                                                    resizable="true" initialDate="#{matriculasBean2.fechaInicialS}" 
+                                                    showHeader="false"  value="#{matriculasBean2.eventModel}"  
+                                                    locale="es" 
+                                                    allDaySlot="false"
+                                                    view="agendaWeek"
+                                                    widgetVar="myschedule"> 
+
+
+                                        </p:schedule> 
+                                    </h:panelGrid>
+
                                 </h:panelGrid>
 
                             </p:panel>  

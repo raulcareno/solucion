@@ -4,7 +4,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/templates/mantenimiento.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core" >
     <ui:define name="title">
@@ -13,15 +12,7 @@
     <ui:define name="datos">
         <h:panelGrid width="100%" id="busqueda" >
             <h:form prependId="false" id="form">
-                <script type="text/javascript">
-                    function handleDrop(event, ui) {
-                        var droppedCar = ui.draggable;
-
-                        droppedCar.fadeOut('fast');
-                    }
-                </script>
                 <script src="locales.js" type="text/javascript"/>
-
                 <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                 
                 <p:panel rendered="true" style="background-color: navajowhite" >  
@@ -46,14 +37,14 @@
                                 </h:panelGrid>  
                             </f:facet>  
                         </p:autoComplete>  
-
+                        <h:outputLabel value="#{inscripcionesBean.admitido}"  style="color:blue;font-size: 15px"/>  
 
                     </h:panelGrid>  
                 </p:panel>  
 
                 <p:fieldset >
                     <h:panelGrid columns="2">  
-                        <h:panelGrid columns="5" cellpadding="-1" style="margin:0 auto;">  
+                        <h:panelGrid columns="5" styleClass="texto" cellpadding="-1" style="margin:0 auto;">  
 
                             <h:outputText value="CEDULA IDENTIDAD.: " />  
                             <p:inputText value="#{inscripcionesBean.estudiante.idEstudiantes}"   id="CedulaIdentidad"  maxlength="13" size="35"  style="font-weight:bold;">
@@ -62,13 +53,13 @@
                             <p:spacer width="10"/>
 
                             <h:outputText value="APELLIDO PATERNO: " />  
-                            <p:inputText value="#{inscripcionesBean.estudiante.apellidoPaterno}" id="ApellidoPaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.estudiante.apellidoPaterno}" id="ApellidoPaterno" onkeyup="this.value = this.value.toUpperCase();"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="APELLIDO MATERNO: " />  
-                            <p:inputText value="#{inscripcionesBean.estudiante.apellidoMaterno}" id="ApellidoMaterno"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.estudiante.apellidoMaterno}" id="ApellidoMaterno" onkeyup="this.value = this.value.toUpperCase();"    maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <p:spacer width="10"/>
                             <h:outputText value="NOMBRE: " />  
-                            <p:inputText value="#{inscripcionesBean.estudiante.nombre}"   id="nombre"  maxlength="100" size="35"  style="font-weight:bold;">
+                            <p:inputText value="#{inscripcionesBean.estudiante.nombre}"   id="nombre"  onkeyup="this.value = this.value.toUpperCase();"   maxlength="100" size="35"  style="font-weight:bold;">
                                 <p:ajax event="blur" listener="#{inscripcionesBean.generarClaveyUsuario}"  process="@this ApellidoPaterno ApellidoMaterno CedulaIdentidad" update=":form"  />
                             </p:inputText>  
 
@@ -98,7 +89,7 @@
                             <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{inscripcionesBean.estudiante.fechaNacimiento}" id="FechaNacimiento" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
                             <p:spacer width="10"/>
                             <h:outputText value="CONFIRMAR CLAVE: " />  
-                            <p:password  value="#{inscripcionesBean.clave2}" redisplay="true"   requiredMessage="No coincidena las contraseñas"   autocomplete="false"  id="Clave2E"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:password  value="#{inscripcionesBean.clave2}"  redisplay="true"   requiredMessage="No coincidena las contraseñas"   autocomplete="false"  id="Clave2E"  maxlength="100" size="35"  style="font-weight:bold;"/>  
 
                             <h:outputText value="PAIS NACIMIENTO: " /> 
                             <p:selectOneMenu   id="pais" label="pais"  style="width:170px"  value="#{inscripcionesBean.paisSeleccionado}" effect="fade" converter="ConvPais">  
@@ -117,7 +108,7 @@
                                     <h:outputText style="color:orange; font-color:orange;font-size: 9px" value="#{inscripcionesBean.arLibreta.nombre}"   />
                                 </h:panelGrid>
                                 <p:dialog header="SUBIR COPIA DE LA LIBRETA MILITAR" widgetVar="modalSubirLibreta" modal="true"
-                                          position="top" width="400" visible="false" resizable="false">
+                                          fixedCenter="true" width="400" visible="false" resizable="false">
                                     <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)"     label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
                                                   style="width:100%; font-size: 150% !important;"
                                                   fileUploadListener="#{inscripcionesBean.handleFileUploadLibreta}"  
@@ -153,7 +144,7 @@
                                     <h:outputText style="color:orange; font-color:orange;font-size: 9px" value="#{inscripcionesBean.arTitulo.nombre}"   />
                                 </h:panelGrid>
                                 <p:dialog header="SUBIR COPIA DEL TÍTULO DE GRADO" widgetVar="modalSubirTitulo" modal="true"
-                                          position="top" width="400" visible="false" resizable="false">
+                                          fixedCenter="true" width="400" visible="false" resizable="false">
                                     <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)" label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
                                                   style="width:100%; font-size: 150% !important;"
                                                   fileUploadListener="#{inscripcionesBean.handleFileUploadTitulo}"  
@@ -187,7 +178,7 @@
                                     <h:outputText style="color:orange; font-color:orange;font-size: 9px" value="#{inscripcionesBean.arCedula.nombre}"   />
                                 </h:panelGrid>
                                 <p:dialog header="SUBIR LA COPIA DE LA CÉDULA" widgetVar="modalSubirCedula" modal="true"
-                                           position="top" width="400" visible="false" resizable="false">
+                                          fixedCenter="true" width="400" visible="false" resizable="false">
                                     <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (PDF)"   label="SELECCIONAR ARCHIVO PDF (SOLO PDF)"
                                                   style="width:100%; font-size: 150% !important;"
                                                   fileUploadListener="#{inscripcionesBean.handleFileUploadCedula}"  
@@ -205,7 +196,7 @@
 
                             </h:panelGrid>
                         </h:panelGrid>  
-                        <h:panelGrid   cellpadding="-1" style="margin:0 auto;" columns="1"> 
+                        <h:panelGrid styleClass="texto"  cellpadding="-1" style="margin:0 auto;" columns="1"> 
                             <p:graphicImage id="logoSubido2" style="border:2px;border-color: #919396"  width="70"
                                             height="120" rendered="#{not empty inscripcionesBean.foto1}"
                                             value="#{pageContext.contextPath}/fotosMatriculas/#{inscripcionesBean.foto1}"
@@ -219,7 +210,7 @@
                                 <p:graphicImage value="#{pageContext.contextPath}/images/ver.png" />Subir Imagen
                             </p:commandLink>
                             <p:dialog header="Seleccionar una foto" widgetVar="modalSubir" modal="true"
-                                      position="top" width="400" visible="false" resizable="false">
+                                      fixedCenter="true" width="400" visible="false" resizable="false">
                                 <p:fileUpload invalidSizeMessage="Archivo demasiado grande"  invalidFileMessage="Invalido, solo formato (gif,jpeg,png)"   label="Seleccionar Imagen (click aquí)"
                                               style="width:100%; font-size: 150% !important;"
                                               fileUploadListener="#{inscripcionesBean.handleFileUpload}"  
@@ -243,7 +234,7 @@
                 <p:fieldset rendered="true" toggleable="false" toggleSpeed="500" legend="DATOS DE MATRICULA">
 
 
-                    <h:panelGrid columns="4" cellpadding="-1" style="margin:0 ;">
+                    <h:panelGrid columns="4" styleClass="texto" cellpadding="-1" style="margin:0 ;">
 
                         <h:outputText value="CARRERA: " />     
 
@@ -251,9 +242,9 @@
                             <f:selectItems value="#{inscripcionesBean.selectedItemCarreras}" var="obC"  itemValue="#{obC}"/>  
                         </p:selectOneMenu>    
                         <h:outputText value="No. MATRICULA: " />  
-                        <p:inputText disabled="true"  value="#{inscripcionesBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
+                        <p:inputText    value="#{inscripcionesBean.object.numero}" id="NumeroMatricula"  maxlength="100" size="35"  style="font-weight:bold;"/>                                  
                     </h:panelGrid> 
-                    <h:panelGrid columns="5" cellpadding="-1" style="margin:0 ;">
+                    <h:panelGrid columns="5" styleClass="texto" cellpadding="-1" style="margin:0 ;">
 
                         <h:outputText value="FECHA MATRICULA: " />  
                         <p:calendar locale="es" pattern="dd/MM/yyyy" navigator="true" value="#{inscripcionesBean.object.fecha}" id="FechaMatricula" showOn="button"  maxlength="100" size="28"  style="font-weight:bold;"/>  
@@ -263,13 +254,24 @@
                             <f:selectItems value="#{inscripcionesBean.selectedCategoriasSociales}" var="ob" itemLabel="#{ob.nombre}"  itemValue="#{ob}"/>  
                         </p:selectOneRadio>
 
-                        <h:outputText value="ESTADO: " />  
-                        <p:selectOneRadio   id="EstadoMatricula" label="EstadoMatricula"  value="#{inscripcionesBean.object.estadoMat}">  
-                            <f:selectItem   itemLabel="INSCRITO"  itemValue="I" />      
-                            <!--f:selectItem   itemLabel="MATRICULADO"  itemValue="M" /-->  
-                            <f:selectItem   itemLabel="ADMINITIDO" itemValue="A" />  
+                        <h:outputText value="ESTADO: " />    
+                        <h:panelGrid rendered="#{inscripcionesBean.object.estadoMat == 'M' || inscripcionesBean.object.estadoMat == 'A' }">
+                            <h:outputText value="MATRICULADO" rendered="#{inscripcionesBean.object.estadoMat == 'M'}"  style="color:blue; font-size: 14px; font-weight: bold" />
+                            <h:outputText value="ADMITIDO" rendered="#{inscripcionesBean.object.estadoMat == 'A'}" style="color:green; font-size: 14px; font-weight: bold"  />
 
+                         <h:inputHidden value="#{inscripcionesBean.object.estadoMat}" /> 
+                         <h:inputHidden value="#{inscripcionesBean.categoriaSeleccionado}"  converter="ConvCategoriasSociales" /> 
+                         
+                        </h:panelGrid>
+                        
+                        <h:panelGrid rendered="#{inscripcionesBean.object.estadoMat == 'I'}" >
+                            <p:selectOneRadio  id="EstadoMatricula" label="EstadoMatricula"  value="#{inscripcionesBean.object.estadoMat}">  
+                            <f:selectItem itemLabel="INSCRITO"  itemValue="I" />      
+                            <!--f:selectItem  itemLabel="MATRICULADO"  itemValue="M" /-->  
+                            <f:selectItem itemLabel="ADMITIDO" itemValue="A" />  
                         </p:selectOneRadio> 
+                        </h:panelGrid>
+                      
                         <p:spacer width="10"/>
                         <h:outputText value="CONFIRMADA: " />  
                         <p:selectBooleanCheckbox disabled="true" value="#{inscripcionesBean.object.confirmada}" id="Confirmada"  style="font-weight:bold;"/>  
@@ -291,7 +293,7 @@
                         </p:selectOneMenu>  
 
                     </h:panelGrid>
-                    <p:panelGrid rendered="false" id="panelMaterias" columns="2">
+                    <p:panelGrid rendered="false" styleClass="texto" id="panelMaterias" columns="2">
                         <p:dataTable  scrollable="true" scrollHeight="150"   id="asignadas" var="materia" value="#{inscripcionesBean.destino}">  
                             <p:column width="150" headerText="MATRICULADO EN">  
                                 <h:outputText value="#{materia.idMaterias.nombre}" />  
@@ -340,16 +342,16 @@
                 <h:panelGrid columns="2"> 
 
                     <p:fieldset  toggleable="false" toggleSpeed="500"  legend="DATOS PADRE">
-                        <h:panelGrid columns="2" id="panelPadre" cellpadding="-1" style="margin:0 auto;">  
+                        <h:panelGrid columns="2" styleClass="texto" id="panelPadre" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="CED/RUC/PASS: " />  
                             <p:inputText value="#{inscripcionesBean.pariente2.identificacion}" id="IdentificacionPadre"  maxlength="100" size="35"   style="font-weight:bold;">
                                 <p:ajax event="blur"  listener="#{inscripcionesBean.buscarCedulaPadre}"  update="panelPadre" />
                             </p:inputText>  
 
                             <h:outputText value="APELLIDOS: " />  
-                            <p:inputText value="#{inscripcionesBean.pariente2.apellidos}" id="ApellidosPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.pariente2.apellidos}" id="ApellidosPadre"  onkeyup="this.value = this.value.toUpperCase();"   maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NOMBRES: " />  
-                            <p:inputText value="#{inscripcionesBean.pariente2.nombres}" id="NombresPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.pariente2.nombres}" id="NombresPadre"  onkeyup="this.value = this.value.toUpperCase();"   maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="DIRECCION: " />  
                             <p:inputText value="#{inscripcionesBean.pariente2.direccion}" id="DireccionPadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="LUGAR DE TRABAJO: " />  
@@ -362,15 +364,15 @@
                         </h:panelGrid>
                     </p:fieldset>
                     <p:fieldset  toggleable="false" toggleSpeed="500"  legend="DATOS MADRE">
-                        <h:panelGrid columns="2" id="panelMadre" cellpadding="-1" style="margin:0 auto;">  
+                        <h:panelGrid columns="2" styleClass="texto" id="panelMadre" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="CED/RUC/PASS: " />  
                             <p:inputText value="#{inscripcionesBean.pariente3.identificacion}" id="IdentificacionMadre"  maxlength="100" size="35"  style="font-weight:bold;">
                                 <p:ajax event="blur" listener="#{inscripcionesBean.buscarCedulaMadre}"  update="panelMadre"  />
                             </p:inputText>  
                             <h:outputText value="APELLIDOS: " />  
-                            <p:inputText value="#{inscripcionesBean.pariente3.apellidos}" id="ApellidosMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.pariente3.apellidos}" id="ApellidosMadre"  onkeyup="this.value = this.value.toUpperCase();"   maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NOMBRES: " />  
-                            <p:inputText value="#{inscripcionesBean.pariente3.nombres}" id="NombresMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.pariente3.nombres}" id="NombresMadre"  onkeyup="this.value = this.value.toUpperCase();"   maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="DIRECCION: " />  
                             <p:inputText value="#{inscripcionesBean.pariente3.direccion}" id="DireccionMadre"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="LUGAR DE TRABAJO: " />  
@@ -383,16 +385,16 @@
                         </h:panelGrid>
                     </p:fieldset>
                     <p:fieldset  toggleable="false" toggleSpeed="500" legend="DATOS PARA FACTURA">
-                        <h:panelGrid columns="2" id="datosFactura" cellpadding="-1" style="margin:0 auto;">  
+                        <h:panelGrid columns="2" styleClass="texto" id="datosFactura" cellpadding="-1" style="margin:0 auto;">  
                             <p:commandButton update="datosFactura" action="#{inscripcionesBean.copiarPadre()}" value="TRAER PADRE" />
-                            <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">       
+                            <h:panelGrid columns="2" styleClass="texto" cellpadding="-1" style="margin:0 auto;">       
                                 <p:commandButton update="datosFactura"  action="#{inscripcionesBean.copiarMadre()}"  value="TRAER MADRE" />
                                 <p:commandButton  update="datosFactura" action="#{inscripcionesBean.copiarEstudiante()}"  value="TRAER ESTUDIANTE" />
                             </h:panelGrid>     
                             <h:outputText value="CED o RUC: " />  
                             <p:inputText value="#{inscripcionesBean.pariente1.identificacion}" id="IdentificacionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="NOMBRES: " />  
-                            <p:inputText value="#{inscripcionesBean.pariente1.nombres}" id="NombresFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
+                            <p:inputText value="#{inscripcionesBean.pariente1.nombres}" id="NombresFactura"  onkeyup="this.value = this.value.toUpperCase();"   maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="DIRECCION: " />  
                             <p:inputText value="#{inscripcionesBean.pariente1.direccion}" id="DireccionFactura"  maxlength="100" size="35"  style="font-weight:bold;"/>  
                             <h:outputText value="TELÉFONO: " />  
@@ -401,7 +403,7 @@
                         </h:panelGrid>
                     </p:fieldset>
                     <p:fieldset   toggleable="false" toggleSpeed="500" legend="DATOS LABORALES">
-                        <h:panelGrid columns="2" cellpadding="-1" style="margin:0 auto;">  
+                        <h:panelGrid columns="2" styleClass="texto" cellpadding="-1" style="margin:0 auto;">  
                             <h:outputText value="TRABAJA: " />  
                             <p:selectBooleanButton id="Trabaja" value="#{inscripcionesBean.estudiante.trabaja}" onLabel="SI" offLabel="NO" onIcon="ui-icon-check" offIcon="ui-icon-close" />  
 
@@ -422,7 +424,7 @@
 
                 </h:panelGrid>
                 <p:fieldset   toggleable="false" toggleSpeed="500"  legend="DATOS SOCIOECONÓMICOS">
-                    <h:panelGrid columns="5" cellpadding="-1" style="margin:0">  
+                    <h:panelGrid columns="5" styleClass="texto" cellpadding="-1" style="margin:0">  
 
                         <h:outputText value="TIPO DE VIVIENDA: " />  
                         <p:selectOneMenu  style="width:170px"  converter="ConvTipoVivienda"  value="#{inscripcionesBean.estudiante.idTipoVivienda}" id="TipoVivienda">  
@@ -439,7 +441,7 @@
                         </p:selectOneMenu>  
                         
                         <h:outputText value="MONTO DE INGRESOS: " />  
-                        <p:selectOneMenu   style="width:170px"  value="#{inscripcionesBean.estudiante.montoIngresos}" id="MontoIngresos">  
+                        <p:selectOneMenu   style="width:170px"   converter="ConvRangosIngresos"  value="#{inscripcionesBean.estudiante.idRangosIngresos}" id="MontoIngresos">  
                             <f:selectItems value="#{inscripcionesBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu>  
                         <p:spacer width="10"/>
@@ -448,7 +450,7 @@
                             <f:selectItems value="#{inscripcionesBean.selectedItemOtrosIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu> 
                         <h:outputText value="MONTO DE EGRESOS: " />  
-                        <p:selectOneMenu  style="width:170px"   value="#{inscripcionesBean.estudiante.montoEgresos}" id="MontoEgresos">  
+                        <p:selectOneMenu  style="width:170px"   converter="ConvRangosIngresos"   value="#{inscripcionesBean.estudiante.idRangosIngresos2}" id="MontoEgresos">  
                             <f:selectItems value="#{inscripcionesBean.selectedItemIngresos}"  var="ob33"  itemValue="#{ob33}" />  
                         </p:selectOneMenu> 
                         <p:spacer width="10"/>
@@ -492,7 +494,8 @@
                 </p:fieldset>
 
                 <h:panelGrid columns="4">
-                    <p:commandButton  value="Guardar"  id="guardar"  update=":form"   action="#{inscripcionesBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                    <p:commandButton  value="Guardar"  id="guardar"  ajax="false" update=":form"   action="#{inscripcionesBean.guardar()}"  icon="guardar" title="Guardar"/>  
+                    <p:commandButton  value="Nuevo"  id="nuevo"  ajax="false" update=":form"   action="#{inscripcionesBean.refresh()}"  icon="nuevo" title="Guardar"/>  
                 </h:panelGrid>
             </h:form>
 
