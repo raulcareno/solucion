@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -484,6 +485,22 @@ public class MatriculasBean2 {
 
         }
         materiasSuspensas();
+
+
+
+        //*** GUARDAR HORARIOS 
+        adm.ejecutaSql("Delete from HorariosMatricula where idMatriculas.idMatriculas  = '" + object.getIdMatriculas() + "'  ");
+        List lista = eventModel.getEvents();
+        for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
+            DefaultScheduleEventLocal dH = it.next();
+            Horarios sec = dH.getIdHorarios();
+            HorariosMatricula hM = new HorariosMatricula();
+            hM.setIdHorarios(sec);
+            hM.setIdMatriculas(object);
+            hM.setIdHorariosMatricula(adm.getNuevaClave("HorariosMatricula", "idHorariosMatricula"));
+            adm.guardar(hM);
+        }
+
         return null;
     }
 
