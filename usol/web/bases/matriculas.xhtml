@@ -171,7 +171,7 @@
                                             <p:commandButton rendered="#{materia.pagada}" actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias" icon="quitar" onclick="if (!confirm('Ya se ha pagado ésta materia, Seguro que desea eliminar el registro?')) {
                             return false;
                         }" title="Eliminar"/>  
-                                            <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias" icon="quitar">  
+                                            <p:commandButton rendered="#{materia.pagada==false}"   actionListener="#{matriculasBean2.quitar(materia)}" update=":form:acordionBusca:panelMaterias  :form:acordionBusca:schedule" icon="quitar">  
                                             </p:commandButton>  
                                         </p:column>  
                                         <p:column width="10" styleClass="textonormal"   headerText="">  
@@ -183,7 +183,7 @@
                                     </p:dataTable>  
                                     <p:dataTable   styleClass="texto" style="width: 400px" scrollable="true"   scrollRows="20"  scrollHeight="200"  var="car" id="disponibles" value="#{matriculasBean2.origen}" >  
                                         <p:column  width="18" styleClass="textonormal">  
-                                            <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:acordionBusca:panelMaterias" icon="anadir">  
+                                            <p:commandButton   actionListener="#{matriculasBean2.anadir(car)}" update=":form:acordionBusca:panelMaterias :form:acordionBusca:schedule" icon="anadir">  
                                             </p:commandButton>  
                                         </p:column> 
                                         <p:column  width="150" styleClass="textonormal"  headerText="MATERIAS DISPONIBLES">  
@@ -213,14 +213,14 @@
                     <p:tab title="Horarios">  
                         <h:panelGrid columns="2" cellpadding="10">  
                             <p:panel style="background-color: navajowhite" >  
-                                
-                                 <h:outputText value="GRUPO: " />
+
+                                <h:outputText value="GRUPO: " />
                                 <h:selectOneMenu   converter="ConvHoras" value="#{matriculasBean2.horaSeleccionado}" >  
                                     <f:selectItems value="#{matriculasBean2.selectedItemHoras}"  
                                                    var="man"   itemLabel="#{man.nombre}"  
                                                    itemValue="#{man}" />  
                                 </h:selectOneMenu>  
-                               <p:commandButton id="generarHorario"  update=":form:acordionBusca:horarioEstudiante"  actionListener="#{matriculasBean2.cargarHorarioPreferencial()}" value="GENERAR HORARIO" />                                        
+                                <p:commandButton id="generarHorario"  update=":form:acordionBusca:horarioEstudiante"  actionListener="#{matriculasBean2.cargarHorarioPreferencial()}" value="GENERAR HORARIO" />                                        
                                 <h:panelGrid columns="2">
                                     <h:panelGrid cellpadding="-5px"  width="840px" cellspacing="2px" id="horarioEstudiante"  columns="2">
                                         <p:schedule id="schedule" style="padding-top: -5;height: 400px" maxTime="22" minTime="7" firstHour="7" columnFormat="dddd"

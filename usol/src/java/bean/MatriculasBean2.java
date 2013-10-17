@@ -66,15 +66,14 @@ import miniaturas.ProcesadorImagenes;
 import net.sf.jasperreports.engine.JRException;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DualListModel;
+import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 import org.primefaces.model.StreamedContent;
-import reportes.ExportarReportesCon;
 import reportes.ExportarReportesSource;
 import reportes.FichaMatricula;
 import sources.ReporteActaMatricula;
@@ -94,10 +93,10 @@ public class MatriculasBean2 {
      */
     protected int totalHoras;
     protected Date fechaInicialS;
-      private ScheduleModel eventModel;
+    private ScheduleModel eventModel;
     private ScheduleModel lazyEventModel;
     private DefaultScheduleEventLocal event = new DefaultScheduleEventLocal();
-       protected Horas horaSeleccionado;
+    protected Horas horaSeleccionado;
     protected List<Horas> horas;
     List<Horarios> listaMaterias = new ArrayList<Horarios>();
     List<SelectItem> listaMateriasAdicionales = new ArrayList<SelectItem>();
@@ -266,6 +265,7 @@ public class MatriculasBean2 {
             //COUNT DE NUMERO DE MATRICULAS EN ÉSTA MATERIA
             origen.remove(obj);
             sumarCreditos();
+            asignarHorariosMateria(object, obj.getIdMaterias());
         }
 
         return null;
@@ -280,6 +280,7 @@ public class MatriculasBean2 {
         origen.add(obj);
         destino.remove(obj);
         sumarCreditos();
+        quitarHorariosMateria(object, obj.getIdMaterias());
         return null;
     }
 
@@ -884,9 +885,11 @@ public class MatriculasBean2 {
             sumarCreditos();
 
         }
+        buscarHorariosMatricula(mat);
     }
+
     protected void buscarHorariosMatricula(Matriculas mat) {
-          eventModel = new DefaultScheduleModel();
+        eventModel = new DefaultScheduleModel();
         Date feca = new Date();
         Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
         fechaInicialS = per.getFechaInicio();
@@ -896,8 +899,8 @@ public class MatriculasBean2 {
         eventModel = new DefaultScheduleModel();
         try {
             //Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
-            llenarArreglo();
-            
+//            llenarArreglo();
+
             //SELECT * FROM carreras_materias WHERE id_carreras = 1 AND id_niveles = 1
 //            listaMaterias = adm.query("Select o from CarrerasMaterias as o "
 //                    + " where o.idCarreras.idCarreras = '" + carreraSeleccionada.getIdCarreras() + "'  "
@@ -927,7 +930,7 @@ public class MatriculasBean2 {
 
                     DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdHorarios().getIdMaterias().getNombre() + " " + minutos + " min.", cM.getIdHorarios().getFechainicial(), cM.getIdHorarios().getFechafinal(), cM.getIdHorarios().getColor(), cM.getIdHorarios());
                     Materias m = (Materias) adm.buscarClave(cM.getIdHorarios().getIdMaterias().getIdMaterias(), Materias.class);
-                    eve.setTitle("\""+cM.getIdHorarios().getIdHoras().getNombre()+"\" - "+m.getNombre() + " " + minutos + " min.");
+                    eve.setTitle("\"" + cM.getIdHorarios().getIdHoras().getNombre() + "\" - " + m.getNombre() + " " + minutos + " min.");
                     eventModel.addEvent(eve);
                     m = null;
                     i++;
@@ -945,6 +948,98 @@ public class MatriculasBean2 {
         } catch (Exception e) {
             java.util.logging.Logger.getLogger(HorariosBean.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    protected void asignarHorariosMateria(Matriculas mat, Materias materia) {
+        //eventModel = new DefaultScheduleModel();
+        Date feca = new Date();
+        Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
+        fechaInicialS = per.getFechaInicio();
+
+        feca.setDate(20);
+        if (eventModel == null) {
+            eventModel = new DefaultScheduleModel();
+        }
+        try {
+            List<Horarios> materiasSecuenciales = adm.query("Select o from Horarios as o "
+                    + "where o.idCarreras.idCarreras = '" + mat.getIdCarreras().getIdCarreras() + "' "
+                    + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  "
+                    + " and o.idMaterias.idMaterias =  '" + materia.getIdMaterias() + "' ");
+            model = new ArrayList<Horarios>();
+            if (materiasSecuenciales.size() > 0) {
+                int i = 0;
+                for (Iterator<Horarios> it = materiasSecuenciales.iterator(); it.hasNext();) {
+                    Horarios cM = it.next();
+                    if (i == 0) {
+                        fechaInicialS = cM.getFechainicial();
+                    }
+//                    carreraSeleccionada = (Carreras) adm.buscarClave(carreraSeleccionada.getIdCarreras(), Carreras.class);
+                    //CALULO EL TIEMPO
+                    DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
+                    DateTime end = new DateTime(cM.getFechafinal()); //Devuelve la fecha actual al estilo Date
+                    int minutos = Minutes.minutesBetween(start, end).getMinutes();
+                    DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
+                    Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
+                    eve.setTitle("\"" + cM.getIdHoras().getNombre() + "\" - " + m.getNombre() + " " + minutos + " min.");
+                    eventModel.addEvent(eve);
+                    m = null;
+                    i++;
+//                    }
+//                    anadidasArray[cM.getFila()][cM.getOrden()] = cM;
+
+                }
+
+
+
+            } else {
+//                llenarArreglo();
+            }
+
+        } catch (Exception e) {
+            java.util.logging.Logger.getLogger(HorariosBean.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+    }
+
+    protected void quitarHorariosMateria(Matriculas mat, Materias materia) {
+        try {
+            int tamanio = eventModel.getEvents().size();
+            for (int j = 0; j <= tamanio; j++) {
+                DefaultScheduleEventLocal dH = null;
+                try {
+                    dH = (DefaultScheduleEventLocal) eventModel.getEvents().get(j);
+                } catch (Exception e) {
+                    dH = (DefaultScheduleEventLocal) eventModel.getEvents().get(j + 1);
+                }
+                if (dH.getIdHorarios().getIdMaterias().getIdMaterias().equals(materia.getIdMaterias())) {
+                    eventModel.deleteEvent(eventModel.getEvents().get(j));
+                    j = 0;
+                    tamanio = eventModel.getEvents().size();
+                    System.out.println("" + tamanio);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("error en quitarhorariosmateria" + e);
+            try {
+                int tamanio = eventModel.getEvents().size();
+                for (int j = 0; j <= tamanio; j++) {
+                    DefaultScheduleEventLocal dH = null;
+
+                    dH = (DefaultScheduleEventLocal) eventModel.getEvents().get(j);
+                    if (dH.getIdHorarios().getIdMaterias().getIdMaterias().equals(materia.getIdMaterias())) {
+                        eventModel.deleteEvent(eventModel.getEvents().get(j));
+                        j = 0;
+                        tamanio = eventModel.getEvents().size();
+                        System.out.println("" + tamanio);
+                    }
+                }
+            } catch (Exception ea) {
+                System.out.println("error en quitarhorariosmateria" + e);
+            }
+
+
+        }
+
     }
     public int noCreditos = 0;
 
@@ -2274,7 +2369,7 @@ public class MatriculasBean2 {
 
     public void cargarHorarioPreferencial() {
         try {
-               eventModel = new DefaultScheduleModel();
+            eventModel = new DefaultScheduleModel();
             Periodos per = (Periodos) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("periodo");
             llenarArreglo();
             if (object.getIdCarreras().getIdCarreras() == null) {
@@ -2293,7 +2388,7 @@ public class MatriculasBean2 {
                     + "where o.idCarreras.idCarreras = '" + object.getIdCarreras().getIdCarreras() + "' "
                     //+ "  and o.idNiveles.idNiveles = '" + nivelesSeleccionada.getIdNiveles() + "' "
                     //+ " and o.idAulas.idAulas = '" + aulasSeleccionada.getIdAulas() + "' "
-                    + " and o.idHoras.idHoras = '"+horaSeleccionado.getIdHoras()+"' "
+                    + " and o.idHoras.idHoras = '" + horaSeleccionado.getIdHoras() + "' "
                     + " and o.idMaterias.idMaterias in (" + codigosMaterias + ") "
                     + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'  order by o.fila, o.orden ");
             model = new ArrayList<Horarios>();
@@ -2307,22 +2402,22 @@ public class MatriculasBean2 {
 //                    for (Iterator<CarrerasMaterias> it1 = destino.iterator(); it1.hasNext();) {
 //                        CarrerasMaterias carrerasMaterias = it1.next();
 //                        if (cM.getIdMaterias().getIdMaterias().equals(carrerasMaterias.getIdMaterias().getIdMaterias())) {
-                            System.out.println("" + cM.getIdMaterias().getNombre());
+                    System.out.println("" + cM.getIdMaterias().getNombre());
 //                            anadidasArrayHoras[cM.getFila()][cM.getOrden()] = cM;
-                                //CALULO EL TIEMPO
-                                DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
-                                DateTime end = new DateTime(cM.getFechafinal()); //Devuelve la fecha actual al estilo Date
-                                int minutos = Minutes.minutesBetween(start, end).getMinutes();
+                    //CALULO EL TIEMPO
+                    DateTime start = new DateTime(cM.getFechainicial()); //Devuelve la fecha actual al estilo Date
+                    DateTime end = new DateTime(cM.getFechafinal()); //Devuelve la fecha actual al estilo Date
+                    int minutos = Minutes.minutesBetween(start, end).getMinutes();
 
 
 
-                                DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
-                                Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
-                                eve.setTitle("\""+cM.getIdHoras().getNombre()+"\" - "+m.getAbreviatura() );
-                                eventModel.addEvent(eve);
-                                m = null;
+                    DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
+                    Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
+                    eve.setTitle("\"" + cM.getIdHoras().getNombre() + "\" - " + m.getAbreviatura());
+                    eventModel.addEvent(eve);
+                    m = null;
 //                                i++;
-                            
+
 ////                        } else {
 ////                            //anadidasArrayHoras[cM.getFila()][cM.getOrden()] = new Horarios();
 ////                            //System.out.println("no añado no está en el listado");
@@ -2334,7 +2429,7 @@ public class MatriculasBean2 {
 
                 }
 
-                
+
 
             } else {
                 llenarArreglo();
@@ -2344,7 +2439,8 @@ public class MatriculasBean2 {
             java.util.logging.Logger.getLogger(HorariosBean.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-   public List<SelectItem> getSelectedItemHoras() {
+
+    public List<SelectItem> getSelectedItemHoras() {
         try {
             List<Horas> divisionPoliticas = new ArrayList<Horas>();
             List<SelectItem> items = new ArrayList<SelectItem>();
@@ -2433,6 +2529,4 @@ public class MatriculasBean2 {
     public void setHoraSeleccionado(Horas horaSeleccionado) {
         this.horaSeleccionado = horaSeleccionado;
     }
-    
-    
 }
