@@ -4,6 +4,7 @@ package bean;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.awt.MenuItem;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuModel;
 import utilerias.RecuperarBean;
 
 /**
@@ -36,7 +41,11 @@ public class LoginBean {
     public String clave;
     Administrador adm;
     FacesContext context = FacesContext.getCurrentInstance();
+     private MenuModel model; 
 
+        public MenuModel getModel() {  
+        return model;  
+    }
     /**
      * Creates a new instance of LoginBean
      */
@@ -74,6 +83,12 @@ public class LoginBean {
         } catch (Exception e) {
         }
 
+        
+          model = new DefaultMenuModel();  
+          
+        
+           
+        
 
     }
     public Periodos periodoSeleccionado;
@@ -84,6 +99,7 @@ public class LoginBean {
             List<SelectItem> items = new ArrayList<SelectItem>();
 
             periodosListados = adm.query("Select o from Periodos as o order by o.orden, o.fechaInicio ");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodosListado", periodosListados);
             if (periodosListados.size() > 0) {
 //                        Periodos objSel = new Periodos(0);
 //                        items.add(new SelectItem(objSel, "SELECCIONE UN PERIODO"));
@@ -119,7 +135,8 @@ public class LoginBean {
         return null;
     }
 
-    public String cambiarPeriodo(Periodos periodo) {
+    public String cambiarPeriodo(Integer per) {
+        Periodos periodo = (Periodos)adm.buscarClave(per, Periodos.class);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("periodo");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("periodo", periodo);
         try {

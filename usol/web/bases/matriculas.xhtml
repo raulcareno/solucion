@@ -28,30 +28,23 @@
 
                         <h:panelGrid columns="2" cellpadding="10">  
                             <p:panel style="background-color: navajowhite" >  
-                                <p:dialog   id="modalDialog" header="SELECCIONE UNA MATRICULA" widgetVar="variasMatriculas" modal="true" position="top" height="150" width="550">  
-                                    <p:dataTable  rendered="#{matriculasBean2.matriculasListado.size()>1}" id="listaMatriculas" var="matriculas" value="#{matriculasBean2.matriculasListado}">  
-                                        <p:column  headerText="CARRERAS">  
+                                <p:dialog   id="matriculasModal" header="SELECCIONE UNA MATRICULA" widgetVar="matriculasModal" modal="true" position="top" height="150" width="650">  
+                                    <p:dataTable styleClass="texto" emptyMessage="No hay matriculas para el estudiante seleccionado..."  id="listaMatriculas" var="matriculas" value="#{matriculasBean2.matriculasListado}">  
+                                        <p:column styleClass="textonormal" headerText="CARRERAS">  
                                             <h:outputText value="#{matriculas.idCarreras.nombre}" />  
                                         </p:column>  
-                                        <p:column headerText="PERIODO">  
+                                        <p:column styleClass="textonormal" headerText="PERIODO">  
                                             <h:outputText value="#{matriculas.idPeriodos.fechaInicio.toLocaleString()}" />  
                                         </p:column>  
-                                        <p:column   headerText="ESTADO">  
+                                        <p:column  styleClass="textonormal" headerText="ESTADO">  
                                             <h:outputText value="#{matriculas.estadoMat eq 'M' ? 'MATRICULADO':matriculas.estadoMat eq 'I'?'INSCRITO':matriculas.estadoMat eq 'R'?'RETIRADO':'SIN MATRICULA'  }"  style="font-weight:bold;" />  
                                         </p:column>  
-                                        <p:column  headerText="Acción">  
-                                            <p:commandButton   actionListener="#{matriculasBean2.seleccionar(matriculas)}" update=":form:acordionBusca" oncomplete="variasMatriculas.hide()" icon="ui-icon-circle-arrow-s">  
+                                        <p:column  styleClass="textonormal" headerText="Acción">  
+                                            <p:commandButton   actionListener="#{matriculasBean2.seleccionar(matriculas)}" update=":form:acordionBusca" oncomplete="matriculasModal.hide()" icon="ui-icon-circle-arrow-s">  
                                             </p:commandButton>  
                                         </p:column>  
                                     </p:dataTable>  
-                                    <h:panelGrid columns="1" width="510"  cellpadding="2" style="background-color: khaki" rendered="#{matriculasBean2.matriculasListado.size() eq 0}" >
-                                        <h:outputText rendered="#{matriculasBean2.matriculasListado.size() eq 0}" value="El estudiante no se encuentra matriculado, revise los libros de matricula, o acerquece a colecturía"   style="font-weight:bold;"  />
-                                        <p:spacer width="10"/>
-                                        <p:commandButton value="CERRAR"  rendered="#{matriculasBean2.matriculasListado.size() eq 0}"  onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
-                                        </p:commandButton>      
-
-                                    </h:panelGrid>
-                                    <p:commandButton value="CERRAR"   onclick="variasMatriculas.hide()" icon="ui-icon-closethick">  
+                                                <p:commandButton value="CERRAR"   onclick="matriculasModal.hide()" icon="ui-icon-closethick">  
                                     </p:commandButton>      
 
                                 </p:dialog> 
@@ -63,7 +56,7 @@
                                     <p:commandButton value="NO" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
                                 </p:confirmDialog> 
 
-                                <p:dialog   id="modalDialogSuspendidas" header="MATERIAS SUSPENDIDAS" widgetVar="variasMatriculasSuspendidas" modal="true" position="top" height="150" width="550">  
+                                <p:dialog   id="modalDialogMatriSuspendidas" header="MATERIAS SUSPENDIDAS" widgetVar="variasMatriculasSuspendidas" modal="true" position="top" height="150" width="550">  
                                     <p:dataTable   id="listaMateriasSuspendidas" var="mate" value="#{matriculasBean2.materiasMatriculaSuspendidas}">  
                                         <p:column  headerText="NOMBRE">  
                                             <h:outputText value="#{mate.idMaterias.nombre}" />  
@@ -88,7 +81,7 @@
                                                     completeMethod="#{matriculasBean2.buscarApellido}" 
                                                     var="p" itemLabel="#{p}" itemValue="#{p}"
                                                     converter="ConvEstudiantes" forceSelection="true">  
-                                        <p:ajax event="itemSelect"  listener="#{matriculasBean2.handleSelect}" update=":form:acordionBusca :form:acordionBusca:modalDialog :form:acordionBusca:acSimpleautoCompleteApellidos :form:acordionBusca:suspendidas"  oncomplete="variasMatriculas.show();" />  
+                                        <p:ajax event="itemSelect"  listener="#{matriculasBean2.handleSelect}" update=":form:acordionBusca :form:acordionBusca:matriculasModal :form:acordionBusca:acSimpleautoCompleteApellidos :form:acordionBusca:suspendidas"  oncomplete="matriculasModal.show();" />  
                                     </p:autoComplete>  
                                     <p:watermark for="acSimpleautoCompleteApellidos" value="DIGITE UN APELLIDO" />   
                                     <h:outputLabel value="Cedula/Ruc/Pasaporte: " />  

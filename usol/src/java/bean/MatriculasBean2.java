@@ -67,6 +67,8 @@ import miniaturas.ProcesadorImagenes;
 import net.sf.jasperreports.engine.JRException;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
+import org.primefaces.component.dialog.Dialog;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleModel;
@@ -1417,7 +1419,18 @@ public class MatriculasBean2 {
         matriculasListado = adm.query("Select o from Matriculas as o "
                 + " where o.idEstudiantes.idEstudiantes = '" + estudiante.getIdEstudiantes() + "' "
                 + " and o.idPeriodos.idPeriodos = '" + per.getIdPeriodos() + "'");
+          FacesContext context = FacesContext.getCurrentInstance();
+            final UIComponent wizDialog = findComponent(context.getViewRoot(), "matriculasModal");
+        
         if (matriculasListado.size() > 1) {
+              try {
+                ((Dialog) wizDialog).setVisible(true);
+//                RequestContext.getCurrentInstance().update("acordionBusca:matriculasModalculacion");
+
+            } catch (Exception e) {
+                System.out.println("ERROR EN CERRAR DIALOG" + e);
+            }
+            RequestContext.getCurrentInstance().update("matriculasModal");
             return;
         } else {
             if (matriculasListado.size() > 0) {
@@ -1426,19 +1439,25 @@ public class MatriculasBean2 {
                 categoriaSeleccionado = object.getIdEstudiantes().getIdCategoriasSociales();
                 buscarMateriasMatricula(object);
                 if (object.getEstadoMat().equals("I") && (object.getPagadainscripcion() == null || object.getPagadainscripcion() == false)) {
-                    FacesContext context = FacesContext.getCurrentInstance();
                     FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante Inscrito no ha cancelado valores por INSCRIPCION...!"));
                 }
 
             } else {
-
-                FacesContext context = FacesContext.getCurrentInstance();
                 FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR", "El estudiante no se Encuentra Inscrito o Matriculado...!"));
                 carreraSeleccionado = new Carreras(0);
                 object = new Matriculas(0);
                 //matriculasListado.add(object); 
                 buscarMateriasMatricula(object);
 
+            }
+
+          
+            try {
+                ((Dialog) wizDialog).setVisible(false);
+                RequestContext.getCurrentInstance().update("matriculasModal");
+
+            } catch (Exception e) {
+                System.out.println("ERROR EN CERRAR DIALOG" + e);
             }
         }
     }
