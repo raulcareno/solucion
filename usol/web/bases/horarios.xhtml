@@ -74,12 +74,12 @@
                 </style>
                 <script src="locales.js" type="text/javascript"/>  <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true"  /> 
                 <p:messages id="messages" showDetail="false" autoUpdate="true" /> 
-                <div style="border: 1px; alignment-adjust: central">
-                    <h:outputText  id="mensaje" style="color:blue;font-weight:bold ;font-size: 14px;border: 1px; border-color: red" value="#{horariosBean.textoBuscar}" />
+                <div align="center" style="border: 1px; alignment-adjust: central">
+                    
                 </div>
                 <p:panel id="registro"  style="width: 100%;" header="Horarios">
                     <h:panelGrid  styleClass="texto"  columns="6">
-                        <h:outputText styleClass="textos3" value="SELECCIONE UNA CARRERA.: " /> 
+                        <h:outputText  value="SELECCIONE UNA CARRERA.: " /> 
                         <h:selectOneMenu id="carreras"   label="carreras" converter="ConvCarreras" value="#{horariosBean.carreraSeleccionada}" rendered="true">
                             <f:selectItems value="#{horariosBean.selectedItemCarreras}"></f:selectItems>
                             <p:ajax event="change"   listener="#{horariosBean.encerar0()}"   update="carreras aulas nivel selectedCars"/>
@@ -112,7 +112,8 @@
                                 <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="messages" />
                             </p:schedule>  
                         </p:outputPanel>  
-                        <p:dialog widgetVar="eventDialog001" header="Hora Clase"   showEffect="clip" hideEffect="clip">  
+                        <p:dialog widgetVar="eventDialog001" header="Hora Clase" id="eventDialog001"  showEffect="clip" hideEffect="clip">  
+                            <h:outputText id="mensaje" style="alignment-adjust: center; aling:center; border: 1px; color:red;font-weight:bold ;font-size: 14px;border: 1px; border-color: red" value="#{horariosBean.textoBuscar}" />
                             <h:panelGrid id="eventDetails" columns="2">  
                                 <h:outputText value="MATERIA: " /> 
                                 <h:selectOneMenu id="materia" label="materia" converter="ConvCarrerasMaterias" value="#{horariosBean.carreraMateriaSeleccionada}" rendered="true">
@@ -141,9 +142,9 @@
                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />  
                                 </p:inputMask>  
                                 <p:commandButton id="deleteButton" value="Eliminar" actionListener="#{horariosBean.deleteEvent}" oncomplete="PF('myschedule').update();PF('eventDialog001').hide();"/>  
-                                <p:commandButton id="addButton" value="Añadir" update="mensaje messages" actionListener="#{horariosBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog001').hide();"/>  
+                                <p:commandButton id="addButton" value="Añadir"   actionListener="#{horariosBean.addEvent}" />  
                             </h:panelGrid>  
-                        </p:dialog> 
+                        </p:dialog> <!--oncomplete="PF('myschedule').update();PF('eventDialog001').hide();" -->
                     </p:fieldset>  
 
                     <h:panelGrid columns="4">

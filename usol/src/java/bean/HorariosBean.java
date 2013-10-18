@@ -31,8 +31,9 @@ import jcinform.persistencia.Periodos;
 import jcinform.persistencia.SecuenciaDeMateriasAdicionales;
 import jcinform.procesos.Administrador;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.joda.time.Minutes;
+import org.primefaces.component.dialog.Dialog;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.DragDropEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -485,7 +486,7 @@ public class HorariosBean {
         }
         return null;
     }
-    
+
     public List<SelectItem> getSelectedItemHoras() {
         try {
             List<Horas> divisionPoliticas = new ArrayList<Horas>();
@@ -642,7 +643,7 @@ public class HorariosBean {
 
                     DefaultScheduleEventLocal eve = new DefaultScheduleEventLocal(cM.getIdMaterias().getNombre() + " " + minutos + " min.", cM.getFechainicial(), cM.getFechafinal(), cM.getColor(), cM);
                     Materias m = (Materias) adm.buscarClave(cM.getIdMaterias().getIdMaterias(), Materias.class);
-                    eve.setTitle("\""+cM.getIdHoras().getNombre()+"\" - "+m.getNombre() + " " + minutos + " min.");
+                    eve.setTitle("\"" + cM.getIdHoras().getNombre() + "\" - " + m.getNombre() + " " + minutos + " min.");
                     eventModel.addEvent(eve);
                     m = null;
                     i++;
@@ -902,9 +903,47 @@ public class HorariosBean {
 
     }
 
+    public boolean validarEvento(DefaultScheduleEventLocal eve) {
+        List lista = eventModel.getEvents();
+        for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
+            DefaultScheduleEventLocal dH = it.next();
+//            Horarios sec = dH.getIdHorarios();
+
+            if (dH.getStartDate().getTime() >= eve.getEndDate().getTime() && dH.getStartDate().getDay() == eve.getStartDate().getDay()) {
+                //if(sec.getIdAulas().getIdAulas().equals(eve.getIdHorarios().getIdAulas().getIdAulas()) && sec.getIdEmpleados().getIdEmpleados().equals(eve.getIdHorarios().getIdEmpleados().getIdEmpleados());
+                System.out.println("en el rango...!");
+
+                return false;
+            }
+
+        }
+        return true;
+
+    }
+
     public void addEvent(ActionEvent actionEvent) {
         carreraMateriaSeleccionada = (CarrerasMaterias) adm.buscarClave(carreraMateriaSeleccionada.getIdCarrerasMaterias(), CarrerasMaterias.class);
         textoBuscar = "";
+        FacesContext context = FacesContext.getCurrentInstance();
+        final UIComponent wizDialog = findComponent(context.getViewRoot(), "eventDialog001");
+      
+            if (empleadoSeleccionado.getIdEmpleados().equals(new Integer(0))) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Seleccione el Profesor...!"));
+                textoBuscar = "Seleccione el Profesor...!";
+                return;
+            }
+          if (horaSeleccionado.getIdHoras().equals(new Integer(0))) {
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Seleccione el Grupo...!"));
+                textoBuscar = "Seleccione el Grupo...!";
+                return;
+            }
+       
+
+        if (validarEvento(event)) {
+            FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("La hora ingresada ya está ocupada...!"));
+            textoBuscar = "La hora ingresada ya está ocupada...!";
+            return;
+        }
         if (event.getId() == null) {
             int maximoHorasSemana = carreraMateriaSeleccionada.getNumeroCreditos() * 60;
             int totalAgregadas = contarMateriasNuevo(carreraMateriaSeleccionada);
@@ -913,9 +952,8 @@ public class HorariosBean {
             DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
             int minutosASerAgregados = Minutes.minutesBetween(start, end).getMinutes();
             if (maximoHorasSemana <= totalAgregadas) {
-                FacesContext context = FacesContext.getCurrentInstance();
-                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("EXECIDO EN HORAS" + (maximoHorasSemana - totalAgregadas)));
-                textoBuscar = "EXECIDO EN MINUTOS: " + (maximoHorasSemana - totalAgregadas);
+                FacesContext.getCurrentInstance().addMessage(findComponent(context.getViewRoot(), "form").getClientId(), new FacesMessage("Ya no puede asignar más horas a la Materia...!, excedido en: "));
+                textoBuscar = "Ya no puede asignar más horas a la Materia...!";
                 return;
             }
             Horarios idHo = new Horarios();
@@ -923,10 +961,10 @@ public class HorariosBean {
             idHo.setIdEmpleados(empleadoSeleccionado);
             idHo.setIdNiveles(nivelesSeleccionada);
             idHo.setIdAulas(aulasSeleccionada);
-            idHo.setIdHoras(horaSeleccionado); 
-            horaSeleccionado = (Horas)adm.buscarClave(horaSeleccionado.getIdHoras(), Horas.class);
+            idHo.setIdHoras(horaSeleccionado);
+            horaSeleccionado = (Horas) adm.buscarClave(horaSeleccionado.getIdHoras(), Horas.class);
             idHo.setIdCarreras(carreraSeleccionada);
-            event.setTitle("\""+horaSeleccionado.getNombre()+"\" - "+carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutosASerAgregados + " min.");
+            event.setTitle("\"" + horaSeleccionado.getNombre() + "\" - " + carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutosASerAgregados + " min.");
             event.setIdHorarios(idHo);
 
             eventModel.addEvent(event);
@@ -937,17 +975,26 @@ public class HorariosBean {
             idHo.setIdNiveles(nivelesSeleccionada);
             idHo.setIdAulas(aulasSeleccionada);
             idHo.setIdHoras(horaSeleccionado);
-            horaSeleccionado = (Horas)adm.buscarClave(horaSeleccionado.getIdHoras(), Horas.class);
+            horaSeleccionado = (Horas) adm.buscarClave(horaSeleccionado.getIdHoras(), Horas.class);
             idHo.setIdCarreras(carreraSeleccionada);
             //CALULO EL TIEMPO
             DateTime start = new DateTime(event.getStartDate()); //Devuelve la fecha actual al estilo Date
             DateTime end = new DateTime(event.getEndDate()); //Devuelve la fecha actual al estilo Date
             int minutos = Minutes.minutesBetween(start, end).getMinutes();
-            event.setTitle("\""+horaSeleccionado.getNombre()+"\" - "+carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutos + " min.");
+            event.setTitle("\"" + horaSeleccionado.getNombre() + "\" - " + carreraMateriaSeleccionada.getIdMaterias().getNombre() + " " + minutos + " min.");
             event.setIdHorarios(idHo);
             eventModel.updateEvent(event);
         }
         event = new DefaultScheduleEventLocal();
+
+        try {
+            ((Dialog) wizDialog).setVisible(false);
+            RequestContext.getCurrentInstance().update("eventDialog001");
+            RequestContext.getCurrentInstance().update("schedule");
+            //PF('myschedule').update();
+        } catch (Exception e) {
+            System.out.println("ERROR EN CERRAR DIALOG" + e);
+        }
     }
 
     public void deleteEvent(ActionEvent actionEvent) {
@@ -1006,7 +1053,7 @@ public class HorariosBean {
         idHo.setIdNiveles(nivelesSeleccionada);
         idHo.setIdAulas(aulasSeleccionada);
         idHo.setIdCarreras(carreraSeleccionada);
-        idHo.setIdHoras(horaSeleccionado); 
+        idHo.setIdHoras(horaSeleccionado);
 
         Date fechaF = ((Date) selectEvent.getObject());
 
@@ -1154,8 +1201,6 @@ public class HorariosBean {
     public void setHorariosSeleccionada(Horarios horariosSeleccionada) {
         this.horariosSeleccionada = horariosSeleccionada;
     }
-
-  
 
     public Date getFechaInicialS() {
         return fechaInicialS;
