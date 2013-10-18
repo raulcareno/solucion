@@ -906,18 +906,21 @@ public class HorariosBean {
     public boolean validarEvento(DefaultScheduleEventLocal eve) {
         List lista = eventModel.getEvents();
         for (Iterator<DefaultScheduleEventLocal> it = lista.iterator(); it.hasNext();) {
-            DefaultScheduleEventLocal dH = it.next();
-//            Horarios sec = dH.getIdHorarios();
-
-            if (dH.getStartDate().getTime() >= eve.getEndDate().getTime() && dH.getStartDate().getDay() == eve.getStartDate().getDay()) {
-                //if(sec.getIdAulas().getIdAulas().equals(eve.getIdHorarios().getIdAulas().getIdAulas()) && sec.getIdEmpleados().getIdEmpleados().equals(eve.getIdHorarios().getIdEmpleados().getIdEmpleados());
-                System.out.println("en el rango...!");
-
-                return false;
+            DefaultScheduleEventLocal hExistente = it.next();
+            if(hExistente.getStartDate().getDay() == eve.getStartDate().getDay()){
+                if (hExistente.getStartDate().getTime() <= eve.getEndDate().getTime() && eve.getEndDate().getTime() <= hExistente.getEndDate().getTime() ) {
+                    //if(sec.getIdAulas().getIdAulas().equals(eve.getIdHorarios().getIdAulas().getIdAulas()) && sec.getIdEmpleados().getIdEmpleados().equals(eve.getIdHorarios().getIdEmpleados().getIdEmpleados());
+                    System.out.println("cruce de horarios...!");
+                    return true;
+                }
+                if (hExistente.getStartDate().getTime() <= eve.getStartDate().getTime() && eve.getStartDate().getTime()<= hExistente.getEndDate().getTime() ) {
+                    //if(sec.getIdAulas().getIdAulas().equals(eve.getIdHorarios().getIdAulas().getIdAulas()) && sec.getIdEmpleados().getIdEmpleados().equals(eve.getIdHorarios().getIdEmpleados().getIdEmpleados());
+                    System.out.println("cruce de horarios...!");
+                    return true;
+                }
             }
-
         }
-        return true;
+        return false;
 
     }
 
