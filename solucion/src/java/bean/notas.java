@@ -6,6 +6,8 @@ import java.awt.Robot;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,7 +23,6 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -102,6 +103,13 @@ public class notas extends Rows {
     }
 
     public void addRow(Cursos curso, MateriaProfesor materia) {
+        
+        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
+        simbolo.getCurrencySymbol();
+//    simbolo.setDecimalSeparator('.');
+//    simbolo.setGroupingSeparator(',');
+//DecimalFormat formateador = new DecimalFormat("###,###.##",simbolo);
+
         System.out.println("TOP INI; " + new Date());
         int tamanio = 0;
         Session ses = Sessions.getCurrent();
@@ -232,6 +240,7 @@ public class notas extends Rows {
                             color = "blue";
                             deshabilitado = true;
                         }
+
 
                         row.appendChild(label3);
                     } else {
