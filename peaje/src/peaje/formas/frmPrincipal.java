@@ -3717,9 +3717,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             ImageIcon tmpIconAux = new ImageIcon(image);
             ImageIcon tmpIcon = new ImageIcon(tmpIconAux.getImage().getScaledInstance(240, -1, Image.SCALE_DEFAULT));
             miBotonImagen.setIcon(tmpIcon);
+            tmpIcon = null;
         } catch (Exception e) {
             System.out.println("NO SE CARGO LA FOTO...");
         }
+        limpiarMemoria();
 
     }
 
@@ -3796,6 +3798,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 fac =null;
                 facturas = null;
             }
+          limpiarMemoria();
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3979,6 +3982,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 facturas = null;
                 emp = null;
             noDisponibles();
+           limpiarMemoria();
+            
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3986,7 +3991,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
     }
-
+    public void limpiarMemoria() {
+        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    }
     public void buscarTarjeta(String puertoViene) {
 //        final frmPrincipal pra = this;
         miBotonImagen.setIcon(null);

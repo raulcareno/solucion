@@ -268,7 +268,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         } catch (Exception e) {
                             System.out.println("error en recontar");
                         }
-
+                        limpiarMemoria();
                         return;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -276,6 +276,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 } else {
                     princip.tarjetatxt.setText("");
                     tarjeta = "";
+                    limpiarMemoria();
                     return;
                 }
 
@@ -297,6 +298,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         abrirPuerta(princip.empresaObj.getEntra2());
                         System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
                         tarjeta = "";
+                        limpiarMemoria();
                         return;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -304,12 +306,14 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 } else {
                     princip.tarjetatxt.setText("");
                     tarjeta = "";
+                    limpiarMemoria();
                     return;
                 }
             }
             if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
                 tarjeta = "";
+                limpiarMemoria();
                 //                inputStream = null;
                 return;
             }
@@ -319,6 +323,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             System.out.println("POR LECTORA: " + tarjeta);
             princip.buscarTarjeta(puertoId.getName());
             tarjeta = "";
+            limpiarMemoria();
             //peaje.formas.SimpleWrite.llamar("COM3");
             return;
 
@@ -343,6 +348,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         }
                         abrirPuerta(princip.empresaObj.getEntra1());
                         System.out.println("ABRIO PUERTA AEIOUAE1: " + princip.empresaObj.getEntra1());
+                        limpiarMemoria();
                         return;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -350,6 +356,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 } else {
                     princip.tarjetatxt.setText("");
                     tarjeta = "";
+                    limpiarMemoria();
                     return;
                 }
             } else if (tarjeta.contains("AEIOUAE2")) {
@@ -369,6 +376,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         }
                         abrirPuerta(princip.empresaObj.getEntra2());
                         System.out.println("ABRIO PUERTA aeiou2: " + princip.empresaObj.getEntra2());
+                        limpiarMemoria();
                         return;
                     } catch (InterruptedException ex) {
                         Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
@@ -376,6 +384,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 } else {
                     princip.tarjetatxt.setText("");
                     tarjeta = "";
+                    limpiarMemoria();
                     return;
                 }
 
@@ -384,6 +393,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             try {
                 valor = new Long(tarjeta);
             } catch (Exception e) {
+                limpiarMemoria();
                 return;
 
             }
@@ -399,10 +409,20 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
                 System.out.println("ABRIO BARRAS: " + tarjeta);
                 tarjeta = "";
+                limpiarMemoria();
                 return;
             }
 
         }
+    }
+
+    public void limpiarMemoria() {
+//        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+//        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
 
     public String manejarDatos() {

@@ -1891,7 +1891,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
             guardando = false;
         }
-
+limpiarMemoria();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
@@ -2399,6 +2399,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     } catch (Exception ab) {
                     }
                 }
+                minutosEntreSalidayActual =null;
                 return;
             }
 
@@ -2624,6 +2625,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     placa.setText(null);
                     tiempo.setDate(null);
                 }
+                 fac = null;
                 guardando = false;
             } catch (Exception e) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, e);
@@ -2634,11 +2636,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 guardando = false;
 
             }
+            limpiarMemoria();
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
             //principal = null;
             //empresaObj = null;
-            System.gc();
+            limpiarMemoria();
             this.setVisible(false);
         } else if (evt.getKeyCode() == evt.VK_F1
                 || evt.getKeyCode() == evt.VK_F2
@@ -2654,8 +2657,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 || evt.getKeyCode() == evt.VK_F12) {
             principal.tecla(evt.getKeyCode());
         }
+        
     }//GEN-LAST:event_noTicketKeyPressed
-
+   public void limpiarMemoria() {
+        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    }
     public void llenarCliente(Clientes nCliente) {
         cliente.setText("" + nCliente.getCodigo());
         identificacion.setText(nCliente.getIdentificacion());
@@ -3470,7 +3481,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
 
-
+            fac = null;
+            detalle = null;
+            ds = null;
 
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
 //            viewer.show();
