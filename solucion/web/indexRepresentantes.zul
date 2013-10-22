@@ -220,17 +220,19 @@ void cambiarEstado(Estudiantes user){
        
         Session a = Sessions.getCurrent();
         Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
- 
-     if(!periEst.getAplico()){
-                Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
-                win34.setVisible(true);
-                win34.setStyle("position:absolute; top:1%; left:0%");
-               
-               //win34.setMode("overlapped");
-               todo.visible = false;
+        try{
+            if(!periEst.getAplico()){
+                        Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
+                        win34.setVisible(true);
+                        win34.setStyle("position:absolute; top:1%; left:0%");
 
-       }
-        
+                    //win34.setMode("overlapped");
+                    todo.visible = false;
+
+            }
+        }catch(Exception ax1){
+            System.out.println("ERROR EN APLICO...");
+        }   
        Include inc = (Include) xcontents;
        inc.setSrc("/ayudafuera.zul");
       
