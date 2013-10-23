@@ -101,14 +101,23 @@ public class notas extends Rows {
         }
         return false;
     }
-
-    public void addRow(Cursos curso, MateriaProfesor materia) {
+void limpiarMemoria(){
+    System.gc();
+    System.gc();
+    System.gc();
+    System.gc();
+}
+    public void addRow(Cursos curso, MateriaProfesor materia,String separador) {
         
-        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
-        simbolo.getCurrencySymbol();
+//        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
+//        simbolo.getCurrencySymbol();
 //    simbolo.setDecimalSeparator('.');
 //    simbolo.setGroupingSeparator(',');
 //DecimalFormat formateador = new DecimalFormat("###,###.##",simbolo);
+       //21.000.65
+        
+        //String separador2 = separador.substring(1,2);
+        separador = separador.substring(6,7);
 
         System.out.println("TOP INI; " + new Date());
         int tamanio = 0;
@@ -167,8 +176,10 @@ public class notas extends Rows {
 
         List nativo = adm.queryNativo(q);
         Row row = new Row();
-        String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
-        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+        String Shabilitado = "color:black;font-weight:bold;width:27px;font:arial;font-size:11px;text-align:right;";
+        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:27px;font:arial;font-size:11px;text-align:right;background:transparent;font-weigth:bold";
+//        String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
+  //      String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
@@ -282,7 +293,9 @@ public class notas extends Rows {
                                 }
                             });
 
-                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+separador+"');");
+                            
                             notaTexto.addEventListener("onOK", new EventListener() {
 
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {

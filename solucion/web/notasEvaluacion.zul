@@ -198,7 +198,7 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
                 //guardar2.disabled=true;
             }
 
-                filas.addRow(curso,materia,sistCali,vertical.checked);
+                filas.addRow(curso,materia,sistCali,vertical.checked,demo.getText());
                    if(periodo.getCerrado()){
                         guardar1.disabled = true;
                         //guardar2.disabled = true;
@@ -464,7 +464,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
-                            
+                                                        <decimalbox  id="demo" visible="false" format="#,###.00"/>
                             
                              <image src="/images/information.png" height="16px" width="16px" tooltip="direcciont" popup="direcciont" style="cursor: pointer" />
                                     <popup id="direcciont" width="300px">
@@ -518,6 +518,10 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
 
         </panelchildren>
     </panel>
+      <zscript>
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+    </zscript>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
 
 </zk>

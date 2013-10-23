@@ -30,11 +30,12 @@ List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
 void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
         " where o.curso.codigocur = '"+cur.codigocur+"' " + 
-        " and (o.materia.descripcion not like '%disciplina%'  and o.materia.descripcion not like '%comportamental%')  order by o.orden");
-        //bd2.getItems().clear();
-mates.getChildren().clear();
-datos.getRows().getChildren().clear();
-bd2.value = "";
+        " and (o.materia.descripcion not like '%disciplina%'  and o.materia.descripcion not like '%comportamental%') " + 
+        " and o.empleado.codigoemp = '"+user.getCodigoemp()+"'  order by o.orden");
+
+            mates.getChildren().clear();
+            datos.getRows().getChildren().clear();
+            bd2.value = "";
                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
                       MateriaProfesor estudent = (MateriaProfesor) it.next();
                         Listitem item = new Listitem();
@@ -90,7 +91,8 @@ String[][] values = new String[equivalen.size()][2];
 guardar(){
     recomendaciones nso = new recomendaciones();
     recomendaciones r = (recomendaciones) datos.getRows();
-    nso.guardarPerfil(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
+    
+    nso.guardarPerfil(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value,mates.selectedItem.value);
     int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.QUESTION);
  
 
@@ -143,11 +145,11 @@ doAdd(Cursos curso,MateriaProfesor mateP){
             <row>
                  <span style="float:right"> Materias(*):</span>
                       
-                            <bandbox  width="200px" readonly="true"  id="bd2">
+                            <bandbox  width="300px" readonly="true"  id="bd2">
                                 <bandpopup>
                                     <vbox>
                                         <listbox id="mates" height="300px"  width="420px"
-                                                 onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
+                                                 onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value));'>
 
                                             <listitem forEach="${materias}" value="${each}">
                                                 <listcell label="${each.descripcion}" />
