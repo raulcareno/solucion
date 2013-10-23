@@ -126,13 +126,13 @@ public class recomendaciones extends Rows {
 
     }
 
-    public void guardarPerfil(List col, Cursos curso, Sistemacalificacion sistema) {
+    public void guardarPerfil(List col, Cursos curso, Sistemacalificacion sistema,MateriaProfesor mateP) {
         System.out.println("INICIO EN: " + new Date());
         Interpreter inter = new Interpreter();
         Administrador adm = new Administrador();
         String del = "Delete from Recomendaciones "
                 + "where matricula.curso.codigocur = '" + curso.getCodigocur() + "' "
-                + "and sistema.codigosis = '" + sistema.getCodigosis() + "' ";
+                + "and sistema.codigosis = '" + sistema.getCodigosis() + "' and materia.codigo = '"+mateP.getMateria().getCodigo()+"' ";
         adm.ejecutaSql(del);
         for (int i = 0; i < col.size(); i++) {
             try {
@@ -142,6 +142,7 @@ public class recomendaciones extends Rows {
                 List labels = object.getChildren();
                 nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                 nota.setSistema(sistema);
+                nota.setMateria(mateP.getMateria()); 
 
                 inter.set("nota", nota);
 

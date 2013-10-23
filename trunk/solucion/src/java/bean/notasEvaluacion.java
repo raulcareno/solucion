@@ -101,13 +101,15 @@ public class notasEvaluacion extends Rows {
         return false;
     }
 
-    public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema, Boolean vertical) {
+    public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema, Boolean vertical,String separador) {
         System.out.println("CARGAR NOTAS INI; " + new Date());
 //        int tamanio = 0;
         System.setProperty("java.awt.headless", "true");
         Session ses = Sessions.getCurrent();
         Empleados empleado = (Empleados) ses.getAttribute("user");
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        separador = separador.substring(6,7);
+
 //     if(listad==null){
         Administrador adm = new Administrador();
         sistema = (Sistemacalificacion) adm.buscarClave(sistema.getCodigosis(), Sistemacalificacion.class);
@@ -314,7 +316,7 @@ public class notasEvaluacion extends Rows {
                             });
                             //asdfsdfasd
                             //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+simbolo.getDecimalSeparator()+"');");
-                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+separador+"');");
  
                             notaTexto.addEventListener("onOK", new EventListener() {
 
@@ -363,7 +365,12 @@ public class notasEvaluacion extends Rows {
 //                            combo.setStyle(s);
 //                                
 //                            }
-                        if (notas.get(kk).getEsdisciplina()) {
+                        
+                            if((vec.size()-1)==j){
+                                notaTexto.setDisabled(true);
+                                notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                            }
+                            if (notas.get(kk).getEsdisciplina()) {
                             row.appendChild(combo);
                         } else {
                             row.appendChild(notaTexto);

@@ -2,9 +2,9 @@
 <?page id="main-page"?>
 
 <zk  xmlns="http://www.zkoss.org/2005/zul"
-	xmlns:h="http://www.w3.org/1999/xhtml" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+     xmlns:h="http://www.w3.org/1999/xhtml" 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
     <zscript>
         <![CDATA[
 import bean.reportesClase;
@@ -45,7 +45,7 @@ reportesClase no = new reportesClase();
 //List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
 
 List sistemas = new ArrayList();
-
+            
 
 List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
 String[][] cabes = new String[trimestres.size()][2];
@@ -76,6 +76,7 @@ int k=0;
                }
 k++;
  }
+ 
 
 String[][] values = new String[sistemas.size()][2];
 
@@ -190,8 +191,10 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                 guardar1.disabled=true;
                 guardar2.disabled=true;
             }
+            
+            String separador = ""+ demo.getText();
 
-                filas.addRow(curso,materia);
+                filas.addRow(curso,materia,separador);
                    if(periodo.getCerrado()){
                         guardar1.disabled = true;
                         guardar2.disabled = true;
@@ -259,18 +262,21 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 ]]>
     </zscript>
     
-<grid onClientInfo="onClientInfo(event)" visible="false">
-    <rows>
-        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
-    </rows>
+    <grid onClientInfo="onClientInfo(event)" visible="false">
+        <rows>
+            <row>
+                <intbox id="alto"/> ancho: 
+                <intbox id="ancho"/>
+            </row>
+        </rows>
  
-    <zscript>
-     void onClientInfo(ClientInfoEvent evt) {
-         alto.setValue(evt.getScreenHeight());
-         ancho.setValue(evt.getScreenWidth());
-     }
-    </zscript>
-</grid>
+        <zscript>
+            void onClientInfo(ClientInfoEvent evt) {
+            alto.setValue(evt.getScreenHeight());
+            ancho.setValue(evt.getScreenWidth());
+            }
+        </zscript>
+    </grid>
     <panel  id="notasingreso" >
         <panelchildren>
 
@@ -304,11 +310,14 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
                                                 <listcell label="${each.descripcion}" />
 
                                             </listitem>
+                                            
                                         </listbox>
+                                      
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
-
+                            <decimalbox  id="demo" visible="false" format="#,###.00"/>
+                                        
                             <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
                             <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
 
@@ -372,5 +381,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
         </panelchildren>
     </panel>
+    <zscript>
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+    </zscript>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
- </zk>
+</zk>

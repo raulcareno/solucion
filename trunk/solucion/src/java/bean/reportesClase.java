@@ -4458,7 +4458,13 @@ public class reportesClase {
                     + " where o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                     + " and o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' ");
             if (recomenList.size() > 0) {
-                nota.setObservacion(((Recomendaciones) recomenList.get(0)).getRecomendacion());
+                for (Iterator it = recomenList.iterator(); it.hasNext();) {
+                    Recomendaciones object = (Recomendaciones)it.next();
+                    nota.setObservacion(nota.getObservacion()+"; "+object.getRecomendacion());    
+                    nota.setObservacion(nota.getObservacion().replace("null", ""));
+                }
+                
+                
             } else {
                 nota.setObservacion("");
             }

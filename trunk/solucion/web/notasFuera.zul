@@ -152,7 +152,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
                 guardar1.disabled=true;
                 guardar2.disabled=true;
             }
-                filas.addRow(curso,materia);
+                filas.addRow(curso,materia,demo.getText());
                  if(periodo.getCerrado()){
                         guardar1.disabled = true;
                         guardar2.disabled = true;
@@ -279,6 +279,7 @@ Boolean verificar(String accion){
             <span>
                 <button label="Guardar" visible="false"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
                 <button label="Imprimir" visible="false"   image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                <decimalbox  id="demo" visible="false" format="#,###.00"/>
             </span>
 
         </panelchildren>
@@ -318,4 +319,8 @@ Boolean verificar(String accion){
 
         </panelchildren> 
     </panel>
+    <zscript>
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+    </zscript>
 </zk>

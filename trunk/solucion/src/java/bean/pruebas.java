@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.InetAddress;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.zkoss.zul.Decimalbox;
 
 /**
  *
@@ -33,6 +33,41 @@ public class pruebas {
     }
 
     public static void main(String[] args) {
+        String punto = "8.5";
+        String coma = "8,5";
+        int tipo = 0;
+        String separador = "";
+           try {
+            Decimalbox x = new Decimalbox();
+               System.out.println(""+x.getAttribute("Locale"));
+            x.setFormat("###,###.##");
+            Double v = 99000/4.7d;
+            x.setValue(new BigDecimal(v)); 
+               System.out.println(""+x.getValue());
+            //Decimalbox x = new Decimalbox(coma);
+            tipo = 2;
+            separador = ",";
+        } catch (Exception e) {
+            System.out.println("no es coma "+e);
+        }
+           try {
+            Decimalbox x = new Decimalbox();
+            x.setFormat("###,###.##");
+            x.setValue(new BigDecimal("5.2")); 
+            tipo = 1;
+            separador = ".";
+        } catch (Exception e) {
+            System.out.println("no es punto "+e);
+        }
+    
+
+        System.out.println("" + (tipo == 1 ? "es punto" : "es coma") + " " + separador);
+
+        if (true) {
+            return;
+        }
+
+
         try {
             InetAddress ping;
             String ip = "192.168.10.1"; // Ip de la máquina remota 
