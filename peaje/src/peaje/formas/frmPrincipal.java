@@ -4130,7 +4130,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 noDisponibles();
 
-
+                facturas = null;
+                System.gc();
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -4196,8 +4197,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 } else {
                 }
-
-
+                facturas = null;
+                System.gc();
                 noDisponibles();
 
 
