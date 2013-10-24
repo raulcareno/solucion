@@ -17,17 +17,17 @@ public class leerTcpIp {
 
     public void leerDatos(frmPrincipal pantalla, String ip, Integer puerto) {
         principal = pantalla;
-        try {
-            
-                 Thread cargar = new Thread(ip) {
-                public void run() {
-                        ping(this.getName()); 
-                }
-            };
-            cargar.start();
-            
-        } catch (Exception e) {
-        }
+//        try {
+//            
+//                 Thread cargar = new Thread(ip) {
+//                public void run() {
+//                        ping(this.getName()); 
+//                }
+//            };
+//            cargar.start();
+//            
+//        } catch (Exception e) {
+//        }
         try {
             int c;
             Date fechaInicial = new Date();
@@ -54,6 +54,7 @@ public class leerTcpIp {
                     if (datos.length() == 8) {
                         abrirbarrera(datos, ip);
                         datos = "";
+                        System.gc();
                     }
                 } catch (InterruptedException ex) {
                     Logger.getLogger(leerTcpIp.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,9 +64,11 @@ public class leerTcpIp {
             // Cuando se alcance el fin de fichero, cerramos la conexión y
             // abandonamos
             s.close();
+            System.gc();
             lger.logger("leerTcpIP", "xxx CERRO CONEXION TCPIP \n "+"ABIERTA A LAS: "+fechaInicial.toLocaleString()+" CERRADO A LAS "+ (new Date()).toLocaleString());
             try {
                 //VUELVO A RECONECTAR
+                System.gc();
                 System.out.println("VUELVO A RECONECTAR POR DESCONEXION O FALTA DE LECTURA EN EL SOCKET.....");
                 leerDatos(pantalla, ip, puerto);
             } catch (Exception e) {
@@ -128,6 +131,6 @@ public class leerTcpIp {
         principal.buscarTarjetaValidarSalida2(ip, tarjeta);//ENVIO EL NUMERO DE TICKET
 
         tarjeta = "";
-
+        System.gc();
     }
 }
