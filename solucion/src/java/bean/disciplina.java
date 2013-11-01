@@ -861,6 +861,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join disciplina on matriculas.codigomat = disciplina.matricula and disciplina.sistema = '" + sistema.getCodigosis() + "'  "
                 + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                + "   and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' )  "
                 + "order by estudiantes.apellido";
         ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
         if (para.getCvalor().equals("P")) {
@@ -868,7 +869,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                     + " " + query + " from matriculas "
                     + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                     + "left join disciplina on matriculas.codigomat = disciplina.matricula and disciplina.sistema = '" + sistema.getCodigosis() + "'  "
-                    + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                    + "where matriculas.curso = '" + curso.getCodigocur() + "'   and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' )  "
                     + "order by estudiantes.apellido";
         }
 

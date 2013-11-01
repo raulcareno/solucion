@@ -21,10 +21,13 @@ Periodo periodo = (Periodo) ses.getAttribute("periodo");
 
 
 Empleados user =  (Empleados)ses.getAttribute("user");
-List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
-      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+      " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
       " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
-
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+            " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }
 
 
 void buscar2(Cursos cur){
@@ -32,7 +35,12 @@ void buscar2(Cursos cur){
         " where o.curso.codigocur = '"+cur.codigocur+"' " + 
         " and (o.materia.descripcion not like '%disciplina%'  and o.materia.descripcion not like '%comportamental%') " + 
         " and o.empleado.codigoemp = '"+user.getCodigoemp()+"'  order by o.orden");
-
+        if(user.getTipo().equals("Interna")){
+                 empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                    " where o.curso.codigocur = '"+cur.codigocur+"' " + 
+                    " and (o.materia.descripcion not like '%disciplina%'  and o.materia.descripcion not like '%comportamental%') " + 
+                    "  order by o.orden");
+            }
             mates.getChildren().clear();
             datos.getRows().getChildren().clear();
             bd2.value = "";
