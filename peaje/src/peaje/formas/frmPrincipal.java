@@ -188,11 +188,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             this.setSize(600, 600);
             this.setExtendedState(this.MAXIMIZED_BOTH);
             procesando.setVisible(false);
-            
+
             messenger.setVisible(false);
             jButton13.setVisible(false);
             btnAcerca.setVisible(false);
-            
+
             /*
              * CARGO EL MESSENGER
              */
@@ -3375,6 +3375,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             System.out.println("NO SE PUEDE INICIAR CAMARA.....!");
         }
     }
+    public static boolean cerroSesion = false;
 
     public void verificarUsuario() {
         Usuarios usu = null;
@@ -3582,24 +3583,26 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         barrera7.setEnabled(false);
                     }
                 }
-
-                iniciarPuertos();
+                if (cerroSesion == false) {
+                    iniciarPuertos();
+                    leerTcpIp c = new leerTcpIp();
+                    //s = new Socket("192.168.0.7", 1024);
+                    if (empresaObj.getIpBarras1() != null) {
+                        if (empresaObj.getIpBarras1().length() > 0) {
+                            //c.leerDatos(this,"192.168.0.7", 1024);    
+                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
+                        }
+                    }
+                    if (empresaObj.getIpBarras2() != null) {
+                        if (empresaObj.getIpBarras2().length() > 0) {
+                            //c.leerDatos(this,"192.168.0.7", 1024);    
+                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
+                        }
+                    }
+                }
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
-                leerTcpIp c = new leerTcpIp();
-                //s = new Socket("192.168.0.7", 1024);
-                if (empresaObj.getIpBarras1() != null) {
-                    if (empresaObj.getIpBarras1().length() > 0) {
-                        //c.leerDatos(this,"192.168.0.7", 1024);    
-                        c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
-                    }
-                }
-                if (empresaObj.getIpBarras2() != null) {
-                    if (empresaObj.getIpBarras2().length() > 0) {
-                        //c.leerDatos(this,"192.168.0.7", 1024);    
-                        c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
-                    }
-                }
+
 
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -3771,12 +3774,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                     }
                     try {
-                            verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);    
-                            
+                        verIp.tomarFotoIp(ubicacionDirectorio + "fotos" + separador + fac.getCodigo() + ".jpg", this);
+
                     } catch (Exception e) {
-                        System.out.println("NO TOMÓ FOTO"+e.getMessage());
+                        System.out.println("NO TOMÓ FOTO" + e.getMessage());
                     }
-                    
+
                 }
                 try {
                     //LE QUITO EL RETARDO YA QUE NO NECESITO EN CASO DE LECTURA DE TARJETA DE PROXIMIDAD
@@ -3795,10 +3798,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 cliente.setText(tarje.getClientes().getNombres());
                 noDisponibles();
                 cargarFoto(fac.getCodigo());
-                fac =null;
+                fac = null;
                 facturas = null;
             }
-          limpiarMemoria();
+            limpiarMemoria();
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3978,12 +3981,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 }
             }
-            fac =null;
-                facturas = null;
-                emp = null;
+            fac = null;
+            facturas = null;
+            emp = null;
             noDisponibles();
-           limpiarMemoria();
-            
+            limpiarMemoria();
+
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3991,14 +3994,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
     }
+
     public void limpiarMemoria() {
-        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         System.gc();
         System.gc();
         System.gc();
         System.gc();
-        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
+
     public void buscarTarjeta(String puertoViene) {
 //        final frmPrincipal pra = this;
         miBotonImagen.setIcon(null);
@@ -4104,7 +4109,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
                             Integer minutos = minutos0.intValue();
                             if (minutos > empresaObj.getSalida()) {
-                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. "+act.getTicket()+" </html>");
+                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. " + act.getTicket() + " </html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else if (yasalio) {
                                 errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
@@ -4176,7 +4181,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
                             Integer minutos = minutos0.intValue();
                             if (minutos > empresaObj.getSalida()) {
-                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. "+act.getTicket()+" </html>");
+                                errores.setText("<html>TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. " + act.getTicket() + " </html>");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else if (yasalio) {
                                 errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
@@ -6006,6 +6011,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 verificarUsuario();
                 procesando.setVisible(false);
                 btnIngresar.setEnabled(true);
+                limpiarMemoria();
 
             }
         };
@@ -7002,12 +7008,11 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             PanelCliente panel = new PanelCliente(messenger.getContentPane());
             Socket socket = new Socket("localhost", 5557);
             ControlCliente control = new ControlCliente(socket, panel);
-         } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+
+
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void messengerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_messengerKeyPressed
@@ -7023,14 +7028,17 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
         auditar("", "", "Salio del Sistema");
-        System.gc();
-        System.exit(0);
-        
-        //        usuario = new Usuarios();
-        //        permisos = new Accesos();
-        //        frmIngresarSistema.setVisible(true);
-        //        habilitarBotones(false);
-        //        clave.requestFocusInWindow();;
+//        System.gc();
+//        System.exit(0);
+
+        usuario = new Usuarios();
+        usuarioActual = new Usuarios();
+        permisos = new Accesos();
+        frmIngresarSistema.setVisible(true);
+        habilitarBotones(false);
+        clave.requestFocusInWindow();
+        cerroSesion = true;
+        limpiarMemoria();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnAcercaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAcercaActionPerformed

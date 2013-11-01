@@ -452,7 +452,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public void abrirPuerta(String puerta) {
         System.out.println("ORDEN DE ABRIR PUERTA: " + puerta);
         try {
-
+System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+//        System.gc();
+//        System.gc();
+//        System.gc();
+//        System.gc();
+//        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
             if (puerta == null) {
                 puerta = "1";
             }
@@ -477,6 +482,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
             noDisponibles();
+            ta = null;
+            limpiarMemoria();
+            System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         } catch (InterruptedException ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -504,6 +512,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             try {
                 LeerTarjeta ta = princip.buscarPuerto("led");
                 ta.outputSream.write((("XYinforma" + valor).getBytes()));
+                ta = null;
             } catch (Exception e) {
                 System.out.println("NO HAY PANTALLA DE LEDS: " + e);
             }
@@ -514,6 +523,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             } catch (Exception err) {
                 System.out.println("EN CONTAR: " + err);
             }
+            
+//            con = null;
+//            disponibles = 0;
+//            val2 = null;
+            
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             return regresa;
         } catch (Exception ex) {
@@ -628,6 +642,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //            } catch (JRException ex) {
 //                ex.printStackTrace();
 //            }
+            emp = null;
+            detalle = null;
+            job = null;
+            masterPrint = null;
+            job = null;
+            limpiarMemoria();
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
         }

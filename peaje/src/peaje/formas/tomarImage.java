@@ -47,6 +47,8 @@ public class tomarImage {
 
         } catch (IOException e) {
         }
+        image = null;
+        
 
     }
 
