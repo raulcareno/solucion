@@ -181,6 +181,7 @@ void limpiarMemoria(){
 //        String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
   //      String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+//        System.out.println("antes del select"+(new Date()));
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
@@ -585,12 +586,14 @@ void limpiarMemoria(){
             List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
                     + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
                     + "  order by o.orden ");
-            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
-                Sistemacalificacion siCal = it.next();
-                if (verificar(siCal.getFormula(), notas)) {
-                    return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
-                }
-            }
+//            System.out.println("1.-"+(new Date()));
+//            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
+//                Sistemacalificacion siCal = it.next();
+//               if (verificar(siCal.getFormula(), notas)) {
+//                    return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
+//                }
+//            }
+//            System.out.println("2.-"+(new Date()));
             String valida = validar(col, notas);
             if (!valida.isEmpty()) {
                 return valida;
@@ -698,17 +701,17 @@ void limpiarMemoria(){
             inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
-        
+//        
             List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
-            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
-                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
-                    + "  order by o.orden ");
-            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
-                Sistemacalificacion siCal = it.next();
-                if (verificar(siCal.getFormula(), notas)) {
-                    return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
-                }
-            }
+//            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
+//                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
+//                    + "  order by o.orden ");
+//            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
+//                Sistemacalificacion siCal = it.next();
+//                if (verificar(siCal.getFormula(), notas)) {
+//                    return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
+//                }
+//            }
 //            String valida = validar(col, notas);
 //            if (!valida.isEmpty()) {
 //                return valida;

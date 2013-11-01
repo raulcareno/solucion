@@ -3,7 +3,7 @@
 
 <zk  xmlns="http://www.zkoss.org/2005/zul"
      xmlns:h="http://www.w3.org/1999/xhtml" 
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
      xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
     <zscript>
         <![CDATA[
@@ -109,7 +109,7 @@ nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
         return permiso.verificarPermiso("Registro de Notas",accion);
 
     }
-
+    notas nso = new notas();
 guardar(){
 if(guardando)
     return;
@@ -117,7 +117,7 @@ if(guardando)
 guardando = true;
   guardar1.disabled=false;
   guardar2.disabled=false;
-    notas nso = new notas();
+
     notas r = (notas) datos.getRows();
      Cursos curso = ((Cursos)curs.selectedItem.value);
      MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
@@ -185,6 +185,8 @@ bd2.value = "";
                         mates.appendChild(item);
              }
     }
+    
+    
 
 void doAdd(Cursos curso, MateriaProfesor materia){
             if(!verificar("Agregar")){
@@ -235,7 +237,7 @@ void doAdd(Cursos curso, MateriaProfesor materia){
 
         //PARA REPORTES
 public JRDataSource certificados(Matriculas matricula,String tipo){
-      Administrador adm = new Administrador();
+      
       Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         ArrayList detalle = new ArrayList();
@@ -282,6 +284,9 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
 
             <grid>
                 <rows>
+                    <row spans="4" style="background:red" visible="false" id="errorMensaje" >
+                        Error en FORMULAS de los APORTES, si Ud. no es el administrador, solicite ayuda...!
+                    </row>
                     <row>
                         <span style="float:right"> Curso(*):</span>
                         <bandbox  width="200px"  readonly="true"  id="bd1">
@@ -382,8 +387,31 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         </panelchildren>
     </panel>
     <zscript>
+        <![CDATA[
         Double v = 99000 / 4.7d;
         demo.setValue(new BigDecimal(v));
+        
+       
+ 
+                    List notasNot = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
+                    List sisFormulas = adm.query("Select o from Sistemacalificacion as o "
+                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
+                    + "  order by o.orden ");
+                    for (Iterator it = sisFormulas.iterator(); it.hasNext();) {
+                                Sistemacalificacion siCal = (Sistemacalificacion)it.next();
+                                if (nso.verificar(siCal.getFormula(), notasNot)) {
+
+                                            errorMensaje.visible = true;
+                                            System.out.println("REVISE LAS FORMULAS");
+                                            //return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
+                                            break;
+
+                                }
+                    }
+      
+            
+        
+]]>
     </zscript>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
 </zk>

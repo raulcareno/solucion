@@ -32,7 +32,8 @@ public class recomendaciones extends Rows {
 
 
         List<Matriculas> matriculas = adm.query("Select o from Matriculas as o "
-                + "where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.estudiante.apellido, o.estudiante.nombre ");
+                + "where o.curso.codigocur = '" + curso.getCodigocur() + "' "
+                + "and   (o.estado = 'Matriculado' or o.estado  = 'Recibir Pase'  or o.estado  = 'Emitir Pase'  or o.estado  = 'Retirado' ) order by o.estudiante.apellido, o.estudiante.nombre ");
         Row row = new Row();
         try {
             for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {
@@ -85,7 +86,8 @@ public class recomendaciones extends Rows {
 
 
         List<Matriculas> matriculas = adm.query("Select o from Matriculas as o "
-                + "where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.estudiante.apellido, o.estudiante.nombre ");
+                + "where o.curso.codigocur = '" + curso.getCodigocur() + "'"
+                + "and    (o.estado = 'Matriculado' or o.estado  = 'Recibir Pase'  or o.estado  = 'Emitir Pase'  or o.estado  = 'Retirado' )  order by o.estudiante.apellido, o.estudiante.nombre ");
         Row row = new Row();
         try {
             for (Iterator<Matriculas> it = matriculas.iterator(); it.hasNext();) {

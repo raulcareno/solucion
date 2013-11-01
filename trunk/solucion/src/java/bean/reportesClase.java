@@ -4455,12 +4455,12 @@ public class reportesClase {
             }
 
             List recomenList = adm.query("Select o from Recomendaciones as o "
-                    + " where o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
-                    + " and o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' ");
+                    + " where o.sistema.orden <= " + sistema.getOrden()+ "  "
+                    + " and o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' order by o.sistema.orden ");
             if (recomenList.size() > 0) {
                 for (Iterator it = recomenList.iterator(); it.hasNext();) {
                     Recomendaciones object = (Recomendaciones)it.next();
-                    nota.setObservacion(nota.getObservacion()+"; "+object.getRecomendacion());    
+                    nota.setObservacion(nota.getObservacion()+"; "+object.getSistema().getAbreviatura()+": "+object.getRecomendacion());    
                     nota.setObservacion(nota.getObservacion().replace("null", ""));
                 }
                 
