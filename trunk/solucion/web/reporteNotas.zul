@@ -113,12 +113,13 @@ List materias = adm.query("Select o from Global as o where o.grupo = 'zz' ");
 void buscar2(Cursos cur){
 
             if(estudiantesCombo.disabled==false){
-                    List matriculasEncontradas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
+                    List matriculasEncontradas = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  and o.estado not in ('Anulado','Inscrito') order by o.estudiante.apellido");
                     estudiantesCombo.getChildren().clear();
                     Matriculas matri = new Matriculas(-1);
                     Estudiantes es = new Estudiantes(-1);
                     es.setApellido("[Seleccione]");
                     es.setNombre("");
+                    matri.setEstado("Matriculado");
                     matri.setEstudiante(es);
                     matriculasEncontradas.add(0,matri);
                         
@@ -126,7 +127,7 @@ void buscar2(Cursos cur){
                                   Matriculas estudent = (Matriculas) it.next();
                                     Listitem item = new Listitem();
                                     item.setValue(estudent);
-                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre));
+                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre+(estudent.estado.equals("Matriculado")?"":" ["+estudent.estado+"]") ));
                                     estudiantesCombo.appendChild(item);
                          }
                             matri = new Matriculas(-2);
@@ -137,6 +138,7 @@ void buscar2(Cursos cur){
                                     estudiantesCombo.appendChild(item);
 
                                     estudiantesCombo.setSelectedIndex(0);
+                      matriculasEncontradas = null;
             }
 
 if(materiasCombo.disabled==false){
@@ -158,6 +160,7 @@ if(materiasCombo.disabled==false){
                                     materiasCombo.appendChild(item);
                          }
 materiasCombo.setSelectedIndex(0);
+        materiaEncontrados = null;
 }
         
         

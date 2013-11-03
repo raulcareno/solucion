@@ -1110,6 +1110,12 @@ void estado(Boolean estado,Boolean modificar){
              }
            
          }
+       if(matricula.getEstado().equals("Retirado") || matricula.getEstado().equals("Pase Emitido") || matricula.getEstado().equals("Anulado")){
+            Date fechaActual = adm.Date();
+            String fechaActualString = ((fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+fechaActual.getDate() );
+            adm.ejecutaSqlNativo("DELETE FROM asignados where estado = true " +
+                " and matricula = '"+ matricula.getCodigomat() +"' and fechai >= '"+fechaActualString+"'   ");
+        }
 
           llenar(estudent);
 //TERMINA AREA DE MATRICULA
