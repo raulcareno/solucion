@@ -221,7 +221,7 @@ void cambiarEstado(Estudiantes user){
         Session a = Sessions.getCurrent();
         Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
         try{
-            if(!periEst.getAplico()){
+           /* if(!periEst.getAplico()){
                         Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
                         win34.setVisible(true);
                         win34.setStyle("position:absolute; top:1%; left:0%");
@@ -229,7 +229,7 @@ void cambiarEstado(Estudiantes user){
                     //win34.setMode("overlapped");
                     todo.visible = false;
 
-            }
+            } */
         }catch(Exception ax1){
             System.out.println("ERROR EN APLICO...");
         }   
