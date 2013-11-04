@@ -28,25 +28,25 @@ public class borrar {
 //p.set
     public static void main(String[] args) {
         HashSet a = new HashSet();
-        generalMatriculaMateria ab = new generalMatriculaMateria(1,1);
-        a.add(ab);
-        //ab = new generalMatriculaMateria(1,1);
-        ab.materia = 1;
-        ab.matricula = 1;
-        a.add(ab);
-        
-        ab.materia = 2;
-        ab.matricula = 1;
-        a.add(ab);
-        //a.add(ac);
-        //a.add(ac);
-        
-        for( Iterator it2 = a.iterator(); it2.hasNext();) { 
-	    
-	    generalMatriculaMateria x = (generalMatriculaMateria)it2.next();
-	    System.out.println(x.matricula + " : " + x.materia);
-
-	}
+//        generalMatriculaMateria ab = new generalMatriculaMateria(1,1);
+//        a.add(ab);
+//        //ab = new generalMatriculaMateria(1,1);
+//        ab.materia = 1;
+//        ab.matricula = 1;
+//        a.add(ab);
+//        
+//        ab.materia = 2;
+//        ab.matricula = 1;
+//        a.add(ab);
+//        //a.add(ac);
+//        //a.add(ac);
+//        
+//        for( Iterator it2 = a.iterator(); it2.hasNext();) { 
+//	    
+////	    generalMatriculaMateria x = (generalMatriculaMateria)it2.next();
+//	    System.out.println(x.matricula + " : " + x.materia);
+//
+//	}
         
         DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
     //simbolo.setDecimalSeparator('.');

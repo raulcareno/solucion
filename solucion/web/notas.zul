@@ -390,26 +390,7 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
         <![CDATA[
         Double v = 99000 / 4.7d;
         demo.setValue(new BigDecimal(v));
-        
-       
- 
-                    List notasNot = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
-                    List sisFormulas = adm.query("Select o from Sistemacalificacion as o "
-                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
-                    + "  order by o.orden ");
-                    for (Iterator it = sisFormulas.iterator(); it.hasNext();) {
-                                Sistemacalificacion siCal = (Sistemacalificacion)it.next();
-                                if (nso.verificar(siCal.getFormula(), notasNot)) {
-
-                                            errorMensaje.visible = true;
-                                            System.out.println("REVISE LAS FORMULAS");
-                                            //return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
-                                            break;
-
-                                }
-                    }
-      
-            
+        nso.verificarSistema();   
         
 ]]>
     </zscript>

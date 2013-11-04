@@ -125,15 +125,15 @@ String[][] values = new String[siseval.size()][2];
           }
 
 void recalculo(){
-notas nso = new notas();
-nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
+notas nso1 = new notas();
+nso1.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
 
 }
  Boolean verificar(String accion){
         return permiso.verificarPermiso("Registro de Evaluaciones",accion);
 
     }
-
+    notasEvaluacion nso = new notasEvaluacion();
 guardar(){
 if(guardando)
     return;
@@ -141,7 +141,7 @@ if(guardando)
 guardando = true;
   guardar1.disabled=false;
   //guardar2.disabled=false;
-    notasEvaluacion nso = new notasEvaluacion();
+
     notasEvaluacion r = (notasEvaluacion) datos.getRows();
      Cursos curso = ((Cursos)curs.selectedItem.value);
      MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
@@ -521,6 +521,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
       <zscript>
         Double v = 99000 / 4.7d;
         demo.setValue(new BigDecimal(v));
+        nso.verificarSistema();   
     </zscript>
     <!--button label="Recalcular"   onClick="recalculo();"/-->
 
