@@ -77,7 +77,50 @@ public class notasEvaluacion extends Rows {
 //         Row row;
 //         row.getZIndex()
     }
+    public static boolean malFormulas = true;
+        public void verificarSistema() {
+//        static estados = false;
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Thread cargar = new Thread(""+periodo.getCodigoper()) {
 
+            public void run() {
+                malFormulas = false;
+                Administrador adm = new Administrador();
+                List notasNot = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + this.getName() + "' order by o.sistema.orden ");
+                List sisFormulas = adm.query("Select o from Sistemacalificacion as o "
+                        + "where o.periodo.codigoper = '" + this.getName() + "' and o.formula <> '' "
+                        + "  order by o.orden ");
+                for (Iterator it = sisFormulas.iterator(); it.hasNext();) {
+                    Sistemacalificacion siCal = (Sistemacalificacion) it.next();
+                    if (verificar(siCal.getFormula(), notasNot)) {
+                        try {
+                            //Messagebox.show("NO INGRESE NOTAS, existe un ERROR en el sistema de notas consulte con el Administrador del Sistema" , "Alerta", Messagebox.OK, Messagebox.ERROR);                         
+                            //return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
+                            System.out.println("ERROR EN LAS FORMULAS...");
+                            malFormulas = true;
+                            break;
+                        } catch (Exception ex) {
+                            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                }
+                 
+
+
+            }
+        };
+        cargar.start();
+
+    }
+ 
+    void limpiarMemoria() {
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+    }
     public Boolean verificar(String formula, List<Notanotas> notas) {
 
         formula = formula.replace("()", "");
@@ -102,6 +145,17 @@ public class notasEvaluacion extends Rows {
     }
 
     public void addRow(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema, Boolean vertical,String separador) {
+        
+        if(malFormulas){
+            try {
+                Messagebox.show("NO INGRESE NOTAS, existe un ERROR en el sistema de notas consulte con el Administrador del Sistema...!" , "Alerta", Messagebox.OK, Messagebox.ERROR);
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }  
+        
         System.out.println("CARGAR NOTAS INI; " + new Date());
 //        int tamanio = 0;
         System.setProperty("java.awt.headless", "true");
@@ -691,6 +745,7 @@ public class notasEvaluacion extends Rows {
             }
           
             System.out.println(".FINALIZO GUARDAR EN: " + new Date());    
+            
               Thread cargar = new Thread("m"+materia.getCodigomap()+"c"+curso.getCodigocur()+"s"+sistema.getCodigosis()+"") {
                 public void run() {
                     Administrador adm = new Administrador();
@@ -711,8 +766,12 @@ public class notasEvaluacion extends Rows {
             cargar.start();
             
             //TENGO QUE SETEAR LAS NOTAS ANTES DE GUARDAR
+            //asdfkas;
             Rows fil = buscarFilas(curso, materia, sistema, listadoEnviar);
-            guardarActualizar(fil.getChildren(), curso, materia);
+            //guardarActualizar(fil.getChildren(), curso, materia);
+            System.out.println("0001 "+new Date());
+             new guardarYactualizarHilo(fil.getChildren(), curso, materia).start();
+            System.out.println("0002 "+new Date()); 
             listadoEnviar = null;
             fil = null;
             col = null;
@@ -729,7 +788,32 @@ public class notasEvaluacion extends Rows {
 
 
     }
+public class guardarYactualizarHilo extends Thread implements Runnable{
 
+	private List notas;
+    private Cursos curso;
+    private MateriaProfesor materia;
+
+	public guardarYactualizarHilo(List c,Cursos cur,MateriaProfesor mp) {
+
+		notas = c;
+        curso = cur;
+        materia = mp;
+        
+	}
+
+        @Override
+	public void run(){
+
+		//Si hay nuevo cliente entonces
+		{
+			//clientes.addElement(nuevocliente)
+            guardarActualizar(notas, curso, materia);
+		}
+	}
+
+}
+    
     public BigDecimal buscarCoincidencia(List<general> general, Matriculas mat, Sistemacalificacion sis) {
         for (Iterator<general> it = general.iterator(); it.hasNext();) {
             general object = it.next();
@@ -876,8 +960,7 @@ public class notasEvaluacion extends Rows {
     }
 
     public String guardarActualizar(List col, Cursos curso, MateriaProfesor materia) {
-        Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Periodo periodo = curso.getPeriodo();
         try {
             System.out.println("...INICIO GUARDAR Y ACTUALIZAR EN: " + new Date());
             Interpreter inter = new Interpreter();
@@ -1285,7 +1368,7 @@ public class notasEvaluacion extends Rows {
                     //INICIO PROCESO DE GUARDAR LAS NOTAS
                     secuencial sec = new secuencial();
                     String del = "Delete from Notasevaluacion where matricula.curso.codigocur = '" + curso.getCodigocur() + "' " + " "
-                            + "and materia.codigo = '" + map.getMateria().getCodigo() + "'  ";
+                            + "and materia.codigo = '" + map.getMateria().getCodigo() + "' and sistemacalificacion.codigosis = '"+sistema.getCodigosis()+"' ";
                     adm.ejecutaSql(del);
                     for (int i = 0; i < aguardar.size(); i++) {
                         try {

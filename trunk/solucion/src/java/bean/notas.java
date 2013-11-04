@@ -35,6 +35,7 @@ public class notas extends Rows {
 //ArrayList listad = new ArrayList();
 
     private Double notaDisciplina = 0.0;
+    private static Boolean malFormulas = false;
     String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero+\"\");" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
     String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero+\"\");             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
     String equival = "public Double equivalencia(Double numero) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero+\"\");" + "       return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
@@ -79,6 +80,43 @@ public class notas extends Rows {
 //         row.getZIndex()
     }
 
+    public void verificarSistema() {
+//        static estados = false;
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        Thread cargar = new Thread(""+periodo.getCodigoper()) {
+
+            public void run() {
+                malFormulas = false;
+                Administrador adm = new Administrador();
+                List notasNot = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + this.getName() + "' order by o.sistema.orden ");
+                List sisFormulas = adm.query("Select o from Sistemacalificacion as o "
+                        + "where o.periodo.codigoper = '" + this.getName() + "' and o.formula <> '' "
+                        + "  order by o.orden ");
+                for (Iterator it = sisFormulas.iterator(); it.hasNext();) {
+                    Sistemacalificacion siCal = (Sistemacalificacion) it.next();
+                    if (verificar(siCal.getFormula(), notasNot)) {
+                        try {
+                            //Messagebox.show("NO INGRESE NOTAS, existe un ERROR en el sistema de notas consulte con el Administrador del Sistema" , "Alerta", Messagebox.OK, Messagebox.ERROR);                         
+                            //return "Revise la formula de ['" + siCal.getNombre() + "'] del Sistema de Calificacion ";
+                            System.out.println("ERROR EN LAS FORMULAS...");
+                            malFormulas = true;
+                            break;
+                        } catch (Exception ex) {
+                            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                }
+                 
+
+
+            }
+        };
+        cargar.start();
+
+    }
+
     public Boolean verificar(String formula, List<Notanotas> notas) {
 
         formula = formula.replace("()", "");
@@ -101,23 +139,33 @@ public class notas extends Rows {
         }
         return false;
     }
-void limpiarMemoria(){
-    System.gc();
-    System.gc();
-    System.gc();
-    System.gc();
-}
-    public void addRow(Cursos curso, MateriaProfesor materia,String separador) {
-        
+
+    void limpiarMemoria() {
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+    }
+
+    public void addRow(Cursos curso, MateriaProfesor materia, String separador) {
+
 //        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
 //        simbolo.getCurrencySymbol();
 //    simbolo.setDecimalSeparator('.');
 //    simbolo.setGroupingSeparator(',');
 //DecimalFormat formateador = new DecimalFormat("###,###.##",simbolo);
-       //21.000.65
-        
+        //21.000.65
+        if(malFormulas){
+            try {
+                Messagebox.show("NO INGRESE NOTAS, existe un ERROR en el sistema de notas consulte con el Administrador del Sistema...!" , "Alerta", Messagebox.OK, Messagebox.ERROR);
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }  
         //String separador2 = separador.substring(1,2);
-        separador = separador.substring(6,7);
+        separador = separador.substring(6, 7);
 
         System.out.println("TOP INI; " + new Date());
         int tamanio = 0;
@@ -179,7 +227,7 @@ void limpiarMemoria(){
         String Shabilitado = "color:black;font-weight:bold;width:27px;font:arial;font-size:11px;text-align:right;";
         String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:27px;font:arial;font-size:11px;text-align:right;background:transparent;font-weigth:bold";
 //        String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
-  //      String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+        //      String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
 //        System.out.println("antes del select"+(new Date()));
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -210,12 +258,12 @@ void limpiarMemoria(){
                         if (valor.equals(0.0)) {
                             notaTexto.setValue(null);
                         } else {
-                            if(truncarNotas){
-                                notaTexto.setValue(new BigDecimal(truncar((Double) dos, 2)));    
-                            }else{
-                                notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));    
+                            if (truncarNotas) {
+                                notaTexto.setValue(new BigDecimal(truncar((Double) dos, 2)));
+                            } else {
+                                notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
                             }
-                            
+
                         }
                         int dat = j - 2;
                         if (((Sistemacalificacion) sistemas.get(dat)).getPromediofinal().equals("PG")) {
@@ -295,8 +343,8 @@ void limpiarMemoria(){
                             });
 
                             //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
-                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+separador+"');");
-                            
+                            notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','" + separador + "');");
+
                             notaTexto.addEventListener("onOK", new EventListener() {
 
                                 public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
@@ -568,8 +616,8 @@ void limpiarMemoria(){
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
-         
-        
+
+
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean noformulasencualitativas = regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
@@ -581,11 +629,11 @@ void limpiarMemoria(){
             inter.eval(truncar);
             inter.eval(prom1);
             inter.eval(equival);
-           
+
             List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
-            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
-                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
-                    + "  order by o.orden ");
+//            List<Sistemacalificacion> sisFormulas = adm.query("Select o from Sistemacalificacion as o "
+//                    + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.formula <> '' "
+//                    + "  order by o.orden ");
 //            System.out.println("1.-"+(new Date()));
 //            for (Iterator<Sistemacalificacion> it = sisFormulas.iterator(); it.hasNext();) {
 //                Sistemacalificacion siCal = it.next();
@@ -654,12 +702,12 @@ void limpiarMemoria(){
                         } else {
                             aCargar = new Double(vaNota);
                         }
-                        if(truncarNotas){
-                                inter.eval("nota.set" + (uno + toda) + "(" + truncar(aCargar, 2) + ");");
-                            }else{
-                                inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");    
+                        if (truncarNotas) {
+                            inter.eval("nota.set" + (uno + toda) + "(" + truncar(aCargar, 2) + ");");
+                        } else {
+                            inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
                         }
-                        
+
                         if (!formula.isEmpty()) {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }
@@ -675,7 +723,16 @@ void limpiarMemoria(){
                 String del = "Delete from Notas where codigonot in  (" + codigosNotasString + ")  ";
                 adm.ejecutaSql(del);
             }
-            recalculoNotas(materia, curso);
+ 
+              Thread cargar = new Thread("m"+materia.getCodigomap()+"c"+curso.getCodigocur()) {
+                public void run() {
+                    String matcod = this.getName().substring(this.getName().indexOf("m")+1,this.getName().indexOf("c"));
+                    String curcod = this.getName().substring(this.getName().indexOf("c")+1,this.getName().indexOf("s"));
+                    recalculoNotas(new MateriaProfesor(new Integer(matcod)), new Cursos(new Integer(curcod)));
+            }
+            };
+            cargar.start();
+            
             System.out.println("FINALIZO EN: " + new Date());
             return "ok";
         } catch (EvalError ex) {
@@ -689,7 +746,7 @@ void limpiarMemoria(){
     public String guardarCualitativas(List col, Cursos curso, MateriaProfesor materia) {
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-            Administrador adm = new Administrador();
+        Administrador adm = new Administrador();
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
@@ -751,12 +808,12 @@ void limpiarMemoria(){
                         } else {
                             aCargar = new Double(vaNota);
                         }
-                        if(truncarNotas){
+                        if (truncarNotas) {
                             inter.eval("nota.set" + (uno + toda) + "(" + truncar(aCargar, 2) + ");");
-                        }else{
+                        } else {
                             inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
                         }
-                      if (!formula.isEmpty() && noformulasencualitativas==false) {
+                        if (!formula.isEmpty() && noformulasencualitativas == false) {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                         }
                     }
@@ -782,11 +839,12 @@ void limpiarMemoria(){
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
-
+            materia = (MateriaProfesor) adm.buscarClave(materia.getCodigomap(), materia.getClass());
+            curso = (Cursos) adm.buscarClave(curso.getCodigocur(), curso.getClass());
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper =  '" + periodo.getCodigoper() + "'  ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
-        
+
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
@@ -804,17 +862,17 @@ void limpiarMemoria(){
         List<MateriaProfesor> maprofes = adm.query("Select o from MateriaProfesor as o "
                 + "where o.formula <> '' and o.formula like '%MA" + materia.getMateria().getCodigo() + "%' "
                 + "and o.curso.codigocur = '" + curso.getCodigocur() + "' ");
-                        Interpreter inter = new Interpreter();
-                        try {
-                inter.eval(redon);
-                inter.eval(truncar);
-                inter.eval(prom1);
-                inter.eval(equival);
+        Interpreter inter = new Interpreter();
+        try {
+            inter.eval(redon);
+            inter.eval(truncar);
+            inter.eval(prom1);
+            inter.eval(equival);
         } catch (Exception e) {
-                            System.out.println("error en evaluar: funciones previas redondeo, prom1"+e);
+            System.out.println("error en evaluar: funciones previas redondeo, prom1" + e);
         }
-            
-        
+
+
         for (Iterator<MateriaProfesor> ita = maprofes.iterator(); ita.hasNext();) {
             try {
                 MateriaProfesor map = ita.next();
@@ -895,9 +953,9 @@ void limpiarMemoria(){
                                 String toda = notas.get(j - 1).getNota() + "";
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
-                                if(truncarNotas){
+                                if (truncarNotas) {
                                     inter.eval("nota.set" + (uno + toda) + "(" + truncar(new Double(object1), 2) + ");");
-                                }else{
+                                } else {
                                     inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), 2) + ");");
                                 }
                             }
@@ -931,24 +989,23 @@ void limpiarMemoria(){
     public Double redondear(Double numero, int decimales) {
         try {
 
-            BigDecimal d = new BigDecimal(numero+"");
+            BigDecimal d = new BigDecimal(numero + "");
             d = d.setScale(decimales, RoundingMode.HALF_UP);
             return d.doubleValue();
         } catch (Exception e) {
             return 0.0;
         }
     }
-    
+
     public Double truncar(Double numero, int decimales) {
         try {
-            BigDecimal d = new BigDecimal(numero+"");
+            BigDecimal d = new BigDecimal(numero + "");
             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
             return d.doubleValue();
         } catch (Exception e) {
             return 0.0;
         }
     }
-
 
     public static Object equivalencia(Object no, List<Equivalencias> equivalencias) {
         Double nota = (Double) no;
@@ -1156,9 +1213,9 @@ void limpiarMemoria(){
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         Double decimales = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
-        
+
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
-        
+
         if (para.size() > 0) {
             ParametrosGlobales param = para.get(0);
             tipo = param.getCvalor();
@@ -1359,20 +1416,20 @@ void limpiarMemoria(){
 
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
-                                if(truncarNotas){
+                                if (truncarNotas) {
                                     inter.eval("nota.set" + (uno + toda) + "(" + truncar(new Double(object1), decimales.intValue()) + ");");
-                                }else{
+                                } else {
                                     inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), decimales.intValue()) + ");");
                                 }
                                 if (existeModificaciones.size() > 0) {
                                     DisciplinaModificada disBuscada = buscarModificada(existeModificaciones, sisPregunta, new Integer(((Integer) vecDato.get(0))));
                                     if (disBuscada != null) {
                                         Double valor = disBuscada.getNota();
-                                            if(truncarNotas){
-                                                inter.eval("nota.set" + (uno + toda) + "(" + truncar(valor, decimales.intValue()) + ");");
-                                            }else{
-                                                inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");
-                                            }
+                                        if (truncarNotas) {
+                                            inter.eval("nota.set" + (uno + toda) + "(" + truncar(valor, decimales.intValue()) + ");");
+                                        } else {
+                                            inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");
+                                        }
                                     }
 
                                 }
@@ -1418,7 +1475,7 @@ void limpiarMemoria(){
         return null;
 
     }
-    
+
     public void nuevaClave() {
         try {
             Administrador adm = new Administrador();
