@@ -4031,7 +4031,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         noTarjeta2.setText(tarjetatxt.getText());
                         btnAnadirTarjeta.doClick();
                     }
-                    errores.setText("");
+                    errores.setText("<html>TARJETA NO REGISTRADA</html>");
+                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                 } else if (tipoIngreso.equals("e")) {
                     if (funcionValida(tarje)) {
                         //BUSCO SI YA HA INGRESADO PRIMERO
@@ -6077,9 +6078,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             btnTicket.doClick();
         } else if (teclaPresionada == evt.VK_F10) {
             btnCobrar.doClick(); //ABRIR COBROS
+            
+            //evt.consume();
         } else if (teclaPresionada == evt.VK_F11) {
             btnCobrar1.doClick(); //ABRIR COBROS
         }
+        try {
+            evt.notify();    
+        } catch (Exception e) {
+        }
+        
     }
     private void contenedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contenedorKeyPressed
         // TODO add your handling code here:
