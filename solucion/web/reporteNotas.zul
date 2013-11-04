@@ -410,6 +410,19 @@ void recalcular(){
  
  
 }
+void recalcular2(){
+   List hoy = adm.query("SELECT o FROM MateriaProfesor AS  o " +
+                " where o.curso.codigocur = '"+(curs.selectedItem.value).getCodigocur()+"' and o.formula <> ''  order by o.orden ");
+                        System.out.println("FIREC:"+new Date());
+                        bean.notas n = new bean.notas();
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            MateriaProfesor materia = (MateriaProfesor) it.next();
+            n.reguardar((curs.selectedItem.value),materia,demo.getText());
+        }
+                System.out.println("FFREC:"+new Date());
+ 
+ 
+}
  void showReport() {
     
  String tipo = reporte.getSelectedItem().getValue();
@@ -856,6 +869,7 @@ void campos(String valor){
       curs.setSelectedIndex(0);
      especialidad.disabled = true;
      filacursos.visible = false;
+     filarecalculos.visible = false;
     filaespecialidad.visible = false;
     filaestudiantes.visible = false;
     filamodalidad.visible = false;
@@ -873,12 +887,14 @@ void campos(String valor){
         if(valor.equals("DIS")){
             curs.disabled = false;
             filacursos.visible = true;
+            filarecalculos.visible = true;
             titulo.value= "Distributivo";
         }else if(valor.equals("DIS2") || valor.equals("CDIS")){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Lista de profesores por Curso";
             filacursos.visible = true;
+            filarecalculos.visible = true;
             filaaportes.visible = true;
             
         }else if(valor.equals("DIS3")){
@@ -900,6 +916,7 @@ void campos(String valor){
              curs.disabled = false;
              estudiantesCombo.disabled = false;
              filacursos.visible = true;
+             filarecalculos.visible = true;
              filaaportes.visible = true;
              filaestudiantes.visible = true;
              
@@ -907,6 +924,7 @@ void campos(String valor){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
              curs.disabled = false;
              filacursos.visible = true;
+             filarecalculos.visible = true;
         }else if(valor.equals("ENC5") || valor.equals("ENC6")){
              titulo.value= "RESULTADO DE LA INVESTIGACIÓN SOCIO-ECONÓMICA";
         }else if(valor.equals("ENCP2")){
@@ -930,6 +948,7 @@ void campos(String valor){
              titulo.value= "Mejores Estudiantes";
              curs.disabled = false;
              filacursos.visible = true;
+             filarecalculos.visible = true;
         }else if(valor.equals("NMAT2") || valor.equals("NMAT") || valor.equals("NMATD") || valor.equals("CCAL5") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
@@ -940,6 +959,7 @@ void campos(String valor){
             materiasCombo.setSelectedIndex(-1);
             curs.setSelectedIndex(0);
             filacursos.visible = true;
+            filarecalculos.visible = true;
             filaaportes.visible = true;
             filamaterias.visible = true;
             
@@ -951,6 +971,7 @@ void campos(String valor){
             estudiantesCombo.setSelectedIndex(-1);
             filaestudiantes.visible = true;
             filacursos.visible = true;
+            filarecalculos.visible = true;
             filaaportes.visible = true;
              
         }else if(valor.equals("APRO")){
@@ -959,6 +980,7 @@ void campos(String valor){
             titulo.value= "Listado de Estudiantes Aprobados/Reprobados";
             filaestudiantes.visible = true;
             filacursos.visible = true;
+            filarecalculos.visible = true;
             filaaportes.visible = true;
 
         }else if(valor.equals("CERT") || valor.equals("CERT3")  || valor.equals("CERT2")   ){
@@ -966,6 +988,7 @@ void campos(String valor){
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Promoción";
              filacursos.visible = true;
+             filarecalculos.visible = true;
             filamaterias.visible = true;
             filaestudiantes.visible = true;
             if(valor.equals("CERT3")){
@@ -977,12 +1000,14 @@ void campos(String valor){
              sistemasCombo.disabled = false;
               filaaportes.visible = true;
               filacursos.visible = true;
+              filarecalculos.visible = true;
         }else if(valor.equals("CERD")  ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Conducta";
              filamodalidad.visible = true;
              filacursos.visible = true;
+             filarecalculos.visible = true;
              filaestudiantes.visible = true;
              filaaportes.visible = true;
              sistemasCombo.disabled = false;
@@ -995,6 +1020,7 @@ void campos(String valor){
              titulo.value= "Cuadro de Calificaciones";
              fila.visible = true;
              filacursos.visible = true;
+             filarecalculos.visible = true;
             filaaportes.visible = true;
             if(valor.equals("CCALP")){
                 titulo.value= "CUADRO FINAL DE CALIFICACIONES";
@@ -1008,6 +1034,7 @@ void campos(String valor){
              sistemasCombo.disabled = false;
              titulo.value= "CUADRO ESTADISTICO DE RENDIMIENTO";
              filacursos.visible = true;
+             filarecalculos.visible = true;
             filaaportes.visible = true;
          
         }else if(valor.equals("RESUL")){
@@ -1030,6 +1057,7 @@ void campos(String valor){
              fila.visible = true;
              hasta.value = new java.math.BigDecimal(6.99);
              filacursos.visible = true;
+             filarecalculos.visible = true;
             filaaportes.visible = true;
              
         }else if(valor.equals("CRES")){
@@ -1038,6 +1066,7 @@ void campos(String valor){
              titulo.value= "Cuadro de Estudiantes a Supletorios";
              hasta.value = new java.math.BigDecimal(6.99);
              filacursos.visible = true;
+             filarecalculos.visible = true;
             filaaportes.visible = true;
              
         }else if(valor.equals("AG") || valor.equals("AG2") ){
@@ -1062,15 +1091,17 @@ void campos(String valor){
         }else if(valor.equals("RECC") ){
            curs.disabled = false;
            filacursos.visible = true;
+           filarecalculos.visible = true;
            titulo.value= "Record Académico";
          }else if(valor.equals("RECC2") ){
            curs.disabled = false;
            filacursos.visible = true;
+           filarecalculos.visible = true;
            titulo.value= "Record Académico";
          }else if(valor.equals("RECC3") || valor.equals("RECC4") || valor.equals("RECC5")  || valor.equals("RECC6")  ){
            curs.disabled = false;
            filacursos.visible = true;
-           
+           filarecalculos.visible = true;
            titulo.value= "Record Académico";
            if(valor.equals("RECC6")){
                 titulo.value= "Mejores por Curso";
@@ -1097,16 +1128,19 @@ void campos(String valor){
             curs.disabled = false;
             titulo.value= "Examenes de Grado";
             filacursos.visible = true;
+            filarecalculos.visible = true;
         }else if(valor.equals("LAG")){
             curs.disabled = false;
             titulo.value= "Listado de Actas de Grado";
              filacursos.visible = true;
+             filarecalculos.visible = true;
         }else if(valor.equals("CNF") || valor.equals("CNF5")  || valor.equals("CNF2") || valor.equals("CNF3") || valor.equals("CNF4") ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
             titulo.value= "Cuadro de Calificaciones";
             fila.visible = true;
              filacursos.visible = true;
+             filarecalculos.visible = true;
             filaaportes.visible = true;
         }else if(valor.equals("EST")){
             curs.disabled = false;
@@ -1114,6 +1148,7 @@ void campos(String valor){
             titulo.value= "Cuadro de Estadístico";
             fila.visible = true;
             filacursos.visible = true;
+            filarecalculos.visible = true;
             filaaportes.visible = true;
         }else if(valor.equals("APREP2")){
             curs.disabled = false;
@@ -1121,6 +1156,7 @@ void campos(String valor){
             titulo.value= "Cuadro de Estadístico";
             fila.visible = true;
             filacursos.visible = true;
+            filarecalculos.visible = true;
             filaaportes.visible = true;
         }else{
             titulo.value= " ";
@@ -1375,9 +1411,18 @@ void campos(String valor){
                                 <listbox id="curs" width="450px"  mold="select" onSelect="buscar2(((Cursos)self.selectedItem.value)); ">
                                     <listitem   forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
                                 </listbox>
-                                <button label="RECALCULAR(30s.)"  onClick="recalcular()"/>
+                                
                             </span>
                         </row>
+                        <row  id="filarecalculos"  style="background:transparent;border:0px">
+                            <span style="float:right"> Recalculos:</span>
+                            <span>
+                                <button label="1.- Materias Incluidas en Formulas(30s.)"  onClick="recalcular()"/>
+                            <button label="2.- Materias con Formulas (31s.)"  onClick="recalcular2()"/>
+                            </span>
+                            
+                        </row>    
+                            
                         <row  id="filaespecialidad"  style="background:transparent;border:0px">
                             <span style="float:right"> Especialidad:</span>
                             <span>
@@ -1509,6 +1554,7 @@ void campos(String valor){
                             <span style="float:right"> Título:</span>
                             <span>
                                 <textbox id="titulo" value=" " cols="30"/>
+                                <decimalbox  id="demo" visible="false" format="#,###.00"/>
                                 <span>
                                     <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
                                         <bandpopup>
@@ -1592,9 +1638,14 @@ void campos(String valor){
 
         <zscript>
             import bean.Permisos;
+            
+             Double v = 99000 / 4.7d;
+            demo.setValue(new BigDecimal(v));
+         
             Permisos per = new Permisos();
             void cargando(){
                     filacursos.visible = false;
+                    filarecalculos.visible = false;
                     filaespecialidad.visible = false;
                     filaestudiantes.visible = false;
                     filamodalidad.visible = false;
