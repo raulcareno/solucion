@@ -727,7 +727,7 @@ public class notas extends Rows {
               Thread cargar = new Thread("m"+materia.getCodigomap()+"c"+curso.getCodigocur()) {
                 public void run() {
                     String matcod = this.getName().substring(this.getName().indexOf("m")+1,this.getName().indexOf("c"));
-                    String curcod = this.getName().substring(this.getName().indexOf("c")+1,this.getName().indexOf("s"));
+                    String curcod = this.getName().substring(this.getName().indexOf("c")+1,this.getName().length());
                     recalculoNotas(new MateriaProfesor(new Integer(matcod)), new Cursos(new Integer(curcod)));
             }
             };
@@ -836,11 +836,10 @@ public class notas extends Rows {
     }
 
     public void recalculoNotas(MateriaProfesor materia, Cursos curso) {
-        Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
             materia = (MateriaProfesor) adm.buscarClave(materia.getCodigomap(), materia.getClass());
             curso = (Cursos) adm.buscarClave(curso.getCodigocur(), curso.getClass());
+            Periodo periodo = curso.getPeriodo();
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper =  '" + periodo.getCodigoper() + "'  ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
