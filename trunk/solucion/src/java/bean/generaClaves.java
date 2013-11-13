@@ -183,7 +183,7 @@ String codigo ="";
 //            }
 //                return;
 //        }
-        String tipo = "REP";
+        String tipo = "EMP";
         
         Permisos c = new Permisos();
         if (tipo.contains("COPIAR")) {

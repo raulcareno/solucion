@@ -1558,7 +1558,8 @@ public class reportesClase {
             q = "Select codigomap, mat.codigomat,notas.materia, " + query + ", 'obs'  from notas, materia_profesor , matriculas mat, estudiantes est "
                     + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                     + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
-                    + "and notas.promedia = true and notas.disciplina = false and notas.materia != 0 and notas.materia != 1 and materia_profesor.seimprime = true  "
+                    + "and notas.promedia = true and notas.disciplina = false "
+                    + "and notas.materia != 0 and notas.materia != 1 and materia_profesor.seimprime = true  "
                     + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' and estado in  ('Matriculado','Recibir Pase')  ) "
                     + "  AND NOTAS.MATERIA NOT IN (SELECT CODIGO FROM GLOBAL WHERE GRUPO = 'MAT' AND DESCRIPCION LIKE '%PROME%')   "
                     + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
@@ -1844,8 +1845,8 @@ public class reportesClase {
 //                                            System.out.println("he quitado la materia como reprobada PASA GRAC: " + materia.getCodigo() + " " + materia + " nota" + val);
 //                                            obs1--;
                                             int Noquitadas = quitarPaso(materiasReprobadas, matriculaNo.getCodigomat(), materia.getCodigo());
-                                System.out.println("PF..he quitado la materia como reprobada: " + materia.getCodigo() + " " + materia + " NOTA: " + val);
-                                obs1 = obs1-Noquitadas;
+                                            System.out.println("PF..he quitado la materia como reprobada: " + materia.getCodigo() + " " + materia + " NOTA: " + val);
+                                            obs1 = obs1-Noquitadas;
                                         }
                                     }
                               
@@ -1893,9 +1894,9 @@ public class reportesClase {
                     }
                 }
             }
-//            if (matricula.contains("HERMIDA")) {
-//                System.out.println("cambios ");
-//            }
+            if (matricula.contains("PARRA")) {
+                System.out.println("cambios ");
+            }
 
             if (obs1 > 0) {
                 if (!aprobadMatriculas.contains(matriculaNo)) {
@@ -1906,7 +1907,19 @@ public class reportesClase {
         nativo = null;
         if (aprobadMatriculas.size() <= 0) {
             materiasReprobadas = new ArrayList<MateriaProfesor>();
+          
         }
+          for (Iterator<MateriaProfesor> it = materiasReprobadas.iterator(); it.hasNext();) {
+                MateriaProfesor mp = it.next();
+                Matriculas mat = (Matriculas)adm.buscarClave(mp.getCodigomap(),Matriculas.class);
+                Global gl = (Global)adm.buscarClave(mp.getOrden(),Global.class);
+                System.out.println("matricula"+mat.getEstudiante()+" "+gl.getDescripcion());
+                  //matR.setCodigomap(matriculaNo.getCodigomat());
+                    //matR.setOrden(materia.getCodigo());
+                    
+                
+            }
+         
         return aprobadMatriculas;
 
     }
