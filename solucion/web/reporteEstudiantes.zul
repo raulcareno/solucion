@@ -1508,7 +1508,7 @@ void campos(String valor){
                             <span style="float:right"> Con Información Verificada: </span>
                             <checkbox id="verificada" />
                         </row>
-                        <row id="filaelecciones">
+                        <row id="filaelecciones" visible="false">
                         <span style="float:right"> Elecciones:</span>
                         <listbox disabled="false" id="eleccionesL" width="300px" mold="select" >
                             <listhead>
