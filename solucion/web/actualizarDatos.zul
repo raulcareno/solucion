@@ -207,7 +207,9 @@ void llenar(Estudiantes estudent){
             if(estudent.getTransporte()!=null){
                 transporte.checked = estudent.getTransporte();
             }
-
+            if(estudent.getAplico()!=null){
+                aplico.checked = estudent.getAplico();
+            }
 
 
  
@@ -471,6 +473,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setEstado(true);
         estudent.setAdventista(false);
         estudent.setTransporte(transporte.checked);
+        estudent.setAplico(aplico.checked);
         estudent.setNobus(nobus.value);
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
@@ -494,6 +497,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setTelefonob(telefonob.checked);
         estudent.setInternet(internet.checked);
         estudent.setCodigo(codigoclave.value);
+        estudent.setObservacion(observacion.value);
         estudent.setMatriculado(true);
   
         if((!estudent.getCodigoest().equals(0))){
@@ -885,7 +889,9 @@ boolean validarRepresentante(){
                                 <span style="float:right"> Toma Transporte:</span>
                                 <span>
                                     <checkbox id="transporte" />
+                                    <checkbox id="aplico" visible="false" />
                                     <textbox id="nobus" maxlength="100" cols="40"   />
+                                    <textbox id="observacion" visible ="false" maxlength="100" cols="40"   />
                                 </span>
                             </row>
                             <row>
