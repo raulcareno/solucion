@@ -29,7 +29,7 @@ import java.io.FileInputStream;
   Boolean guardando = false;
   Session a = Sessions.getCurrent();
   Periodo periodo = (Periodo) a.getAttribute("periodo");
-  Representante peri =  (Representante) a.getAttribute("userRepresentante");
+    Representante peri =  (Representante) a.getAttribute("userRepresentante");
            
 Estudiantes estudianteActual = new Estudiantes();
     Date fec = adm.Date();
@@ -46,7 +46,7 @@ Elecciones eleccionActual = new Elecciones();
        }
        
         void cargarVacio(){
-          foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+         // foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/vacio.gif")));
         }
 cargar(){
       
