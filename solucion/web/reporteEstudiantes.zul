@@ -26,7 +26,10 @@ reportesClase  noti = new reportesClase();
 
 Empleados user = (Empleados)ses.getAttribute("user");
     List cursos = null;
-
+    List elecciones = adm.query("Select o from Elecciones as o where o.estado = true  ");
+    Elecciones seleccioneEleccion = new Elecciones();
+    seleccioneEleccion.setNombre("[SELECCIONE]");
+    elecciones.add(seleccioneEleccion);
     if(user.getTipo().equals("Interna")){
         cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.especialidad.descripcion,o.paralelo.descripcion ");
     }else{
@@ -263,7 +266,8 @@ public JRDataSource resultadosVotacion(){
       String query = " SELECT candidato, COUNT(*) FROM resultados, candidatos, listas, elecciones "+ 
        " WHERE  candidatos.codigo = resultados.candidato " + 
        " AND  listas.codigo = candidatos.lista " +
-       " AND  listas.eleccion = elecciones.codigo AND elecciones.codigo = 1  GROUP BY candidato ORDER BY candidatos.tipocandidato ";
+       " AND  listas.eleccion = elecciones.codigo " + 
+       " AND elecciones.codigo = "+((Elecciones)eleccionesL.selectedItem.value).getCodigo()+"  GROUP BY candidato ORDER BY candidatos.tipocandidato ";
       List hoy = adm.queryNativo(query);
 
    Integer excelente = 0;  Integer muybueno = 0;
@@ -1277,6 +1281,7 @@ void campos(String valor){
      filafechas.visible = false;
      filaaportes.visible = false;
                 filaverificada.visible = false;   
+                filaelecciones.visible = false;   
         if(valor.equals("INS2")){
             titulo.value = "Listado de Inscritos por Internet";
            filacurso.visible = false;
@@ -1286,7 +1291,8 @@ void campos(String valor){
            filacurso.visible = false;
         }
         if(valor.equals("RVOT")){
-            titulo.value = "Califiación de Inscritos por Internet";
+            filaelecciones.visible = true;   
+            titulo.value = "Calificación de Inscritos por Internet";
            filacurso.visible = false;
         }
         if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS99")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
@@ -1502,6 +1508,18 @@ void campos(String valor){
                             <span style="float:right"> Con Información Verificada: </span>
                             <checkbox id="verificada" />
                         </row>
+                        <row id="filaelecciones">
+                        <span style="float:right"> Elecciones:</span>
+                        <listbox disabled="false" id="eleccionesL" width="300px" mold="select" >
+                            <listhead>
+                                <listheader label="Elección Activa"/>
+                            </listhead>
+                            <listitem selected="true"  forEach="${elecciones}" value="${each}">
+                                <listcell label="${each.nombre}" />
+
+                            </listitem>
+                        </listbox>
+                    </row>
                         <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
                             <span style="float:right"> Desde:</span>
                             <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
