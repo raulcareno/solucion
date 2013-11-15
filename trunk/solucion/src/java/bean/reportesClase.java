@@ -9582,7 +9582,7 @@ public class reportesClase {
 //                    row = sheet.createRow((short) x); //fila
                     HSSFCell cellNota = row.createCell((short) (columna + 2));
 
-                    String s = "##00.00";
+                    String s = "###0.00";
                     DecimalFormat decimalFormat = new DecimalFormat(s);
                     //nota.setNota(decimalFormat.format(redondear((Double) dos, 2)));
                     try {
