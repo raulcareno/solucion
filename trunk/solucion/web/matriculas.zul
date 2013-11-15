@@ -197,6 +197,9 @@ void llenar(Estudiantes estudent){
     barrio.value = estudent.getBarrio();
     telefono.value = estudent.getTelefono();
     genero.value = estudent.getGenero();
+     
+    observacione.value = estudent.getObservacion();
+     
     religion.value = estudent.getReligion();
     nacido.value = estudent.getFechanacimiento();
     mail.value = estudent.getMail();
@@ -441,6 +444,7 @@ void llenarMatricula(Matriculas matri){
             otros.value = new BigDecimal(matri.getOtros());
          }catch(Exception e){}
          observacion.value = matri.getObservacion();
+         
          
             if(matri.getCurso() != null){
              try{
@@ -837,7 +841,7 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setCodigo(codigoclave.value);
         estudent.setMatriculado(matriculado.checked);
         estudent.setAplico(aplico.checked);
-            
+        estudent.setObservacion(observacione.value);    
 
 
         if((!estudent.getCodigoest().equals(0))){
@@ -2324,6 +2328,7 @@ public void quitarFila(String codigoBuscar){
                                 <row>
                                     <span style="float:right"> Observación:</span>
                                     <textbox rows="1" id="observacion" cols="65"  readonly="true"  />
+                                    <textbox rows="1" id="observacione" cols="65"  visible ="false" readonly="true"  />
                                 </row>
                                 <row>
 

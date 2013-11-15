@@ -13,9 +13,22 @@
   import jcinform.procesos.Administrador;
   import bean.Permisos;
   import java.math.BigDecimal;
+  import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+    import java.io.InputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+  import miniaturas.*;
+  
+  
+  
   Administrador adm = new Administrador();
   Boolean guardando = false;
   Session a = Sessions.getCurrent();
+  Periodo periodo = (Periodo) a.getAttribute("periodo");
   Representante peri =  (Representante) a.getAttribute("userRepresentante");
            
 Estudiantes estudianteActual = new Estudiantes();
@@ -31,6 +44,10 @@ Elecciones eleccionActual = new Elecciones();
         Executions.sendRedirect("/");
             return;
        }
+       
+        void cargarVacio(){
+          foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+        }
 cargar(){
       
        if(eleccionesL.size()>0){
@@ -105,11 +122,49 @@ cargar(){
                                         rw.appendChild(r);
                                     
                                     }
-                              
+                       
                         
                         }
-
                         filas.appendChild(rw);
+                        
+                        rw = new Row();  
+                          for (Iterator it = listas.iterator(); it.hasNext();) {
+                            Listas lista = (Listas) it.next();
+                                List detalles = adm.query("Select o from Candidatos as o "  + 
+                                        " where o.lista.codigo = '"+lista.getCodigo()+"'  " + 
+                                        " and o.tipocandidato.codigo = '"+tCandidato.getCodigo()+"'  order by o.tipocandidato.codigo ");
+                                    for (Iterator itp = detalles.iterator(); itp.hasNext();) {
+                                        Candidatos dcand = (Candidatos) itp.next();
+                                         Image foto0= new Image();
+                                         FileInputStream fin = null;
+                                         
+                                                if(dcand.getExtension()!= null){
+                                                    try {
+                                                    
+                                                        java.io.File f = new java.io.File(periodo.getInstitucion().getFotos()+"c"+dcand.getCodigo()+"."+dcand.getExtension());
+                                                        fin = new FileInputStream(f);
+                                                        byte[] buffer = new byte[(int) f.length()];
+                                                        fin.read(buffer);
+                                                        fin.close();
+                                                        foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
+                                                    } catch (FileNotFoundException ex) {
+                                                    cargarVacio();
+                                                        Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
+                                                    }
+                                        }else{
+                                                cargarVacio();
+                                        }
+                                         
+                                        rw.setWidth("160px");
+                                        rw.setStyle("background:#FFFFCC");
+                                        rw.appendChild(foto0);
+                                    
+                                    }
+                       
+                        
+                        }
+                        filas.appendChild(rw);
+                        
                           filas.setParent(migrid);
                        //AÑADO UN GRID A LA FILA
                         migrid.setParent(radio);

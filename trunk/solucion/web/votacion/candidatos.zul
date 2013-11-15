@@ -3,6 +3,7 @@
 
     <zscript>
         <![CDATA[
+        import fotos.takePicture;
         import jcinform.persistencia.Global;
         import bean.EventDAO;
         import java.util.ArrayList;
@@ -11,11 +12,24 @@
         import jcinform.procesos.Administrador;
         import bean.Permisos;
         import java.math.BigDecimal;
+          import java.io.FileNotFoundException;
+  import java.io.FileOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+    import java.io.InputStream;
+  import java.io.IOException;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
+  import miniaturas.*;
+
+CrearMiniaturas mini = new CrearMiniaturas();
+  
+        
         Session ses = Sessions.getCurrent();
         Administrador adm = new Administrador();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         
-        static Candidatos empa = new Candidatos();
+        Candidatos empa = new Candidatos();
         Permisos permiso = new Permisos();
  
         Object media = null;
@@ -23,7 +37,8 @@
         List tipos = adm.query("Select o from TipoCandidato as o ");
         //FUNCIONES
         void llenar(Candidatos empa){
-         nombres.value = empa.getNombre();
+            
+            nombres.value = empa.getNombre();
          
         
         if(empa.getLista() != null){
@@ -31,18 +46,6 @@
                             Listas tr0 = ((Listas)((Listitem)listasL.getItems().get(i)).getValue());
                             int primero = tr0.getCodigo();
                             int segundo = empa.getLista().getCodigo();
-                            if(primero == segundo){
-                                listasL.setSelectedItem((Listitem)listasL.getItems().get(i));
-                                break;
-                            }
-                }
-
-        }
-        if(empa.getTipocandidato() != null){
-                    for (int i = 0; i <= listasL.getItems().size(); i++) {
-                            Listas tr0 = ((Listas)((Listitem)listasL.getItems().get(i)).getValue());
-                            int primero = tr0.getCodigo();
-                            int segundo = empa.getTipocandidato().getCodigo();
                             if(primero == segundo){
                                 listasL.setSelectedItem((Listitem)listasL.getItems().get(i));
                                 break;
@@ -66,12 +69,14 @@
         
 }
         void estado(Boolean estado,Boolean modificar){
-        if(modificar){
-            empa = (Candidatos)datos.selectedItem.value;
-        }else{empa.setCodigo(0);}
-         nombres.readonly = estado;
-         tiposL.disabled = estado;
-         listasL.disabled = estado;
+                if(modificar){
+                    empa = (Candidatos)datos.selectedItem.value;
+                }else{
+                    empa.setCodigo(0);
+                }
+                nombres.readonly = estado;
+                tiposL.disabled = estado;
+                listasL.disabled = estado;
         }
 
 
@@ -80,11 +85,15 @@
                     Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                     return;
                 }
-
-             
+            
+                //empa = (Candidatos)datos.selectedItem.value;
                 empa.setNombre(nombres.value);
                 empa.setLista(listasL.selectedItem.value);
                 empa.setTipocandidato(tiposL.selectedItem.value);
+                
+                org.zkoss.image.Image nueva = foto0.getContent();
+                
+                
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
                      
@@ -92,6 +101,22 @@
                     empa.setCodigo(adm.getNuevaClave("Candidatos","codigo"));
                     adm.guardar(empa);
                 }
+                if(!nueva.getName().equals("vacio")){
+                    InputStream objin=nueva.getStreamData();
+                    String  name =  periodo.getInstitucion().getFotos()+"c"+empa.getCodigo()+"."+nueva.getFormat();
+                    FileOutputStream out=new FileOutputStream(name);
+                    DataOutputStream objout=new DataOutputStream(out);
+                    org.zkoss.io.Files.copy(objout,objin);
+                    mini.reducir(periodo.getInstitucion().getFotos(),"c"+empa.getCodigo()+"",nueva.getFormat()+"");
+                    empa.setExtension(nueva.getFormat());
+                    objin = null;
+                    out = null;
+                    objout = null;
+                }else{
+                    empa.setExtension(null);
+                }
+                    adm.actualizar(empa);
+                
                 buscar("");
                 permiso.auditar("Candidatos","Guardar",""+nombres.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -118,7 +143,9 @@
             }
         }
         void move(){
+
             llenar((Candidatos)datos.selectedItem.value);
+            cargarFoto((Candidatos)datos.selectedItem.value);
              modificar.disabled = false;
         }
         void modificar(){
@@ -168,6 +195,36 @@
 
         }
    
+   
+        byte[] datosIm  = null;
+        takePicture t = new takePicture();
+    
+          void cargarFoto(Candidatos empa){
+                FileInputStream fin = null;
+                if(empa.getExtension()!= null){
+                    try {
+
+                        java.io.File f = new java.io.File(periodo.getInstitucion().getFotos()+"c"+empa.getCodigo()+"."+empa.getExtension());
+                        fin = new FileInputStream(f);
+                        byte[] buffer = new byte[(int) f.length()];
+                        fin.read(buffer);
+                        fin.close();
+                        foto0.setContent(new org.zkoss.image.AImage("fotito", buffer));
+                        foto0.visible = true;
+                    } catch (FileNotFoundException ex) {
+                    cargarVacio();
+                        Logger.getLogger("ERROR EN MATRICULAS: ").log(Level.SEVERE, null, ex);
+                    }
+           }else{
+                cargarVacio();
+           }
+          
+        }
+        void cargarVacio(){
+          foto0.setContent(new org.zkoss.image.AImage("vacio", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+        }
+        
+   
            ]]>
     </zscript>
     <groupbox mold="3d" >
@@ -211,7 +268,25 @@
                 </row>
   
 
+                <row>
+                    <button id="subirb" disabled="false" image="/images/subir.png" label="Subir">
+                        <attribute name="onClick">{
+                            Object media = Fileupload.get();
 
+                            if (media instanceof org.zkoss.image.Image) {
+                                    foto0.setContent(media);
+                                    foto0.visible = true;    
+                            } else if (media != null)
+                                    Messagebox.show("Seleccione una Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                    media = null;
+                            }
+                        </attribute>
+                    </button>
+                    <span style="border:1px">
+                        <image border="1" height="117px"  id="foto0"/>
+                                                                    <!--vbox width="50px" height="125px" style="border:1px" id="miimagen"/-->
+                    </span>
+                </row>
 
             </rows>
         </grid>
