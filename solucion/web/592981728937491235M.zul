@@ -43,25 +43,47 @@ public ArrayList certificados(Matriculas matricula,String tipo){
                 "WHERE  mat.estado like '%Matriculado%' " +
                 "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
         List hoy = adm.query(query);
-        
-        for (Iterator it = hoy.iterator(); it.hasNext();) {
-            Matriculas elem = (Matriculas) it.next();
-            detalle.add(elem);
-            per = elem.getCurso().getPeriodo();
-             directorioReportes = per.getInstitucion().getReportes();
+        System.out.println(" NO TIENE MATRICULA "+hoy); 
+        if(hoy.size()>0){
+                for (Iterator it = hoy.iterator(); it.hasNext();) {
+                    Matriculas elem = (Matriculas) it.next();
+                    detalle.add(elem);
+                    per = elem.getCurso().getPeriodo();
+                    directorioReportes = per.getInstitucion().getReportes();
+                }
+                Institucion insts = per.getInstitucion();
+                Map parametros = new HashMap();
+                parametros.put("denominacion", insts.getDenominacion());
+                parametros.put("nombre", insts.getNombre());
+                parametros.put("periodo", per.getDescripcion());
+                parametros.put("slogan", insts.getSlogan());
+                parametros.put("secretaria", insts.getSecretaria());
+                parametros.put("rectora", insts.getRector());
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+                arr.add(ds);
+                arr.add(parametros);
+        }else{
+            Matriculas mat = new Matriculas(-1);
+               detalle.add(mat);
+                //per = elem.getCurso().getPeriodo();
+                //directorioReportes = per.getInstitucion().getReportes();
+                  //Institucion insts = per.getInstitucion();
+                Map parametros = new HashMap();
+                parametros.put("denominacion", ".");
+                parametros.put("nombre", ".");
+                parametros.put("periodo", ".");
+                parametros.put("slogan", ".");
+                parametros.put("secretaria", ".");
+                parametros.put("rectora", ".");
+              
+              JRDataSource ds = new ReporteActaDataSource(detalle);
+                arr.add(ds);
+                arr.add(parametros);
+                
         }
-            Institucion insts = per.getInstitucion();
-            Map parametros = new HashMap();
-            parametros.put("denominacion", insts.getDenominacion());
-            parametros.put("nombre", insts.getNombre());
-            parametros.put("periodo", per.getDescripcion());
-            parametros.put("slogan", insts.getSlogan());
-            parametros.put("secretaria", insts.getSecretaria());
-            parametros.put("rectora", insts.getRector());
-JRDataSource ds = new ReporteActaDataSource(detalle);
+        
             
-            arr.add(ds);
-            arr.add(parametros);
          return  arr;
 }
 void notasd(){
@@ -69,9 +91,9 @@ void notasd(){
             Integer valor =  new Integer(Executions.getCurrent().getParameter("AASL2KSO348934934"));
             codigo = valor+"";
             String tipo =  Executions.getCurrent().getParameter("TP");
-             
+            
             ArrayList arreglo = certificados(new Matriculas(valor),"AM");
-                    datasource = (ReporteActaDataSource) arreglo.get(0);
+             datasource = (ReporteActaDataSource) arreglo.get(0);
                     Map parametros = (HashMap) arreglo.get(1);
                      
                     parametros.put("titulo", "Comprobante de Matricula");

@@ -28,6 +28,7 @@ public class borrar {
 //p.set
     public static void main(String[] args) {
         HashSet a = new HashSet();
+        System.gc();
 //        generalMatriculaMateria ab = new generalMatriculaMateria(1,1);
 //        a.add(ab);
 //        //ab = new generalMatriculaMateria(1,1);

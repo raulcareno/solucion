@@ -25,6 +25,7 @@
   import java.io.IOException;
   import java.util.logging.Level;
   import java.util.logging.Logger;
+  import bean.reportesClase;
 import java.util.Vector;
 import bean.matriculasBean;
 import sources.CustomDataSource;
@@ -458,7 +459,7 @@ void estado(Boolean estado,Boolean modificar){
 
  
  //GUARDO EL ESTUDIANTE
-        
+
         estudent.setRepresentante(representante0);
         
         estudent.setCodigoest(codigo.value);
@@ -515,13 +516,19 @@ void estado(Boolean estado,Boolean modificar){
         btnguardar.disabled=true;
         ses.setAttribute("userEstudiante",estudent);
         //showReport("AM",""+codigomat.value);
+        estudent = null;
+        representante0 = null;
        }catch(Exception e){
                 alert("Error:"+e);
                 System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
                 System.out.println(""+e.getStackTrace()); System.out.println(""+e.getCause());
                 System.out.println(""+e);
         }
-
+        
+        reportesClase rpc = new reportesClase();
+        rpc.limpiarMemoria();
+        rpc = null;
+         
     }
 
    Boolean verificar(String accion){
@@ -1286,8 +1293,7 @@ boolean validarRepresentante(){
             </vbox>
             <zscript>
             <![CDATA[
-      
-            llenar(ses.getAttribute("userEstudiante"));
+                  llenar(ses.getAttribute("userEstudiante"));
             ]]>
             </zscript>
         </window>

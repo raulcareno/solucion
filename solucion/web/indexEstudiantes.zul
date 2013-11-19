@@ -203,6 +203,7 @@ Session a = Sessions.getCurrent();
                     <fisheye image="/images/mistareas.png" onClick='ingresar("/tareasEstudiante.zul")' />
                     <fisheye image="/images/pendientes.png" onClick='ingresarSin("/pendientesEstudiantes.zul")' />
                     <fisheye image="/images/matriculacion.png" onClick='ingresarMatriculas()' />
+                    <fisheye image="/images/actualizarDatos.png" onClick='ingresar("/actualizarDatos.zul")' />
                     <!--fisheye image="/images/ayuda2.png" onClick='ingresar("/ayudafuera.zul")' /-->
                     <fisheye image="/images/salida.png" onClick="salir()" />
 
