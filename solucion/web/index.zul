@@ -508,6 +508,7 @@
             ServiciosComplementarios.visible = per.verificarPermisoReporte("ServiciosComplementarios","ServiciosComplementarios", "Ingresar",true,"MATRICULAS");
             Productos.visible = per.verificarPermisoReporte("Productos","Productos", "Ingresar",true,"MATRICULAS");
             MatriculaAutomatica.visible = per.verificarPermisoReporte("MatriculaAutomatica","MatriculaAutomatica", "Ingresar",true,"MATRICULAS");
+            Parametros_Autoevaluacion.visible = per.verificarPermisoReporte("Parametros_Autoevaluacion","MatriculaAutomatica", "Ingresar",true,"MATRICULAS");
 
             }
         </zscript>
