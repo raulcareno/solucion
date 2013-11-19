@@ -2363,7 +2363,7 @@ public class reportesClase {
         return aprobadMatriculas;
 
     }
-    void limpiarMemoria() {
+    public void limpiarMemoria() {
         System.gc();
         System.gc();
         System.gc();

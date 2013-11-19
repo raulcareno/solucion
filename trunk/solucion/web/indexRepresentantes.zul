@@ -85,6 +85,7 @@ void cambiarEstado(Estudiantes user){
                 adm.actualizar(emp);
         }else{
                 user.setPendientes(false);
+                user.setBloquear(false);
                 adm.actualizar(user);
                 emp = user.getRepresentante();
                 emp.setEstado(false);
