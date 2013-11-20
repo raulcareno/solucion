@@ -9238,6 +9238,14 @@ public class reportesClase {
             noDecimalesDisc = 2;
 
         }
+        
+        Integer noDecimalesPromediosParciales = 2;
+        try {
+            noDecimalesPromediosParciales = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesPromediosParciales = 2;
+
+        }
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
@@ -9583,10 +9591,13 @@ public class reportesClase {
                     HSSFCell cellNota = row.createCell((short) (columna + 2));
 
                     String s = "###0.00";
+                    if(noDecimalesPromediosParciales>2){
+                         s = "###0.000";
+                    }
                     DecimalFormat decimalFormat = new DecimalFormat(s);
-                    //nota.setNota(decimalFormat.format(redondear((Double) dos, 2)));
+                    nota.setNota(decimalFormat.format(redondear((Double) dos, noDecimalesPromediosParciales)));
                     try {
-                        cellNota.setCellValue("" + decimalFormat.format(redondear(new Double(nota.getNota() + ""), 2)));
+                        cellNota.setCellValue("" + decimalFormat.format(redondear(new Double(nota.getNota() + ""), noDecimalesPromediosParciales)));
                     } catch (Exception e) {
                         if (mprofesor.getCuantitativa() == false) {
                             cellNota.setCellValue("APROBADO");
@@ -9647,8 +9658,16 @@ public class reportesClase {
                         }
                         
                     }
+                    
+                      String s = "###0.00";
+                    if(noDecimales>2){
+                         s = "###0.000";
+                    }
+                    DecimalFormat decimalFormat = new DecimalFormat(s);
+                    //nota.setNota(decimalFormat.format(redondear((Double) dos, noDecimalesPromediosParciales)));
+                    
                     HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
-                    cellApr.setCellValue("" + aprovecha);
+                    cellApr.setCellValue("" + decimalFormat.format(aprovecha));
                     cellApr.setCellStyle(stiloContenido);
 
                     HSSFCell cellObss = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4));
