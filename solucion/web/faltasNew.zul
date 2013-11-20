@@ -1,0 +1,215 @@
+
+<?page id="main-page"?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+<zscript>
+<![CDATA[
+import java.math.BigDecimal;
+import bean.faltas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+ import bean.Permisos;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+ Cursos curS = new Cursos(-1);
+ cursos.add(0,curS);
+Permisos permiso = new Permisos();
+faltas no = new faltas();
+Boolean guardando = false;
+
+List equivalen = adm.query("Select o from Equivalencias as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.grupo = 'DI'");
+ /*List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  and o.faltas = true order by o.orden");
+Sistemacalificacion siste = new Sistemacalificacion(-1);
+sistemas.add(0,siste);*/
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"'  and o.faltas = true  order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre(""+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    siste.setNombre("..."+siste.getNombre());
+                    sistemas.add(siste);
+               }
+
+ }
+
+
+ 
+ 
+guardar(){
+   if(guardando)
+            return;
+        guardando = true;
+
+    faltas nso = new faltas();
+    faltas r = (faltas) datos.getRows();
+            Cursos curso = ((Cursos)curs.selectedItem.value);
+         Sistemacalificacion sistema = (Sistemacalificacion)sisis.selectedItem.value;
+                    Boolean seguir=true;
+                    int mm = 1;
+                    do{
+                        System.out.println("******** Ingreso n: "+mm);
+                        String ocupado = "Select o from Cursoocupado as o where o.curso = '" + curso.getCodigocur() + "' "
+                                            + "and o.sistema = '" + sistema.getCodigosis() + "' ";
+                        List ocupando = adm.query(ocupado);
+                        if (ocupando.size() > 0) {
+                                System.out.println("Esperando.... ");
+                                seguir = true;
+                                Thread.sleep(2000);
+                        }else{
+                            seguir = false;
+                        }
+                        mm++;
+                    }while(seguir==true);  
+
+                    Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+                    cO.setCurso(curso.getCodigocur());
+                    cO.setSistema(sistema.getCodigosis());
+                    cO.setTipo(2);
+                      cO.setFecha(adm.Date());
+                    adm.guardar(cO);
+
+    nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value,mates.selectedItem.value);
+    //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
+    adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
+    int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.INFORMATION);
+    guardando = false; 
+    doAdd(((Cursos)curs.selectedItem.value),mates.selectedItem.value);
+
+}
+
+
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Faltas",accion);
+ }
+
+
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' " + 
+         "  order by o.orden");
+        //bd2.getItems().clear();
+        mates.getChildren().clear();
+        
+        Listitem item = new Listitem();
+                        item.setValue(new Global(-1));
+                        item.appendChild(new Listcell("[SELECCIONE]"));
+                        mates.appendChild(item);
+        
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+""));
+                        mates.appendChild(item);
+             }
+
+    }
+doAdd(Cursos curso,MateriaProfesor mp){
+ if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
+Sistemacalificacion sistema = sisis.getSelectedItem().getValue();
+        filas.addFaltas(curso,sistema,mp);
+}
+]]>
+</zscript>
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
+<grid>
+<rows>
+  <row>
+
+                <span style="float:right"> Periodo Trimestre(*):</span>
+                <span>
+                    <listbox id="sisis" mold="select" width="420px"
+                             onSelect="curs.setSelectedIndex(0)">
+                        <listitem forEach="${sistemas}" value="${each}">
+                            <listcell label="${each.nombre}" />
+
+                        </listitem>
+                    </listbox>
+                </span>
+
+            </row>
+            <row>
+                <span style="float:right"> Curso(*):</span>
+
+                <listbox id="curs"  mold="select"  width="420px"
+                             onSelect="buscar2(((Cursos)curs.selectedItem.value));">
+
+                    <listitem forEach="${cursos}" value="${each}">
+                        <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                    </listitem>
+                </listbox>
+
+            </row>
+            
+            <row>
+                 <span style="float:right"> Materias(*):</span>
+                      
+                          
+                                        <listbox id="mates"   mold="select"  width="420px"
+                                                 onSelect='doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
+
+                                            </listitem>
+                                    </listbox >
+                                <button label="Guardar"  id="guardar1" image="/images/guardar.gif" onClick="guardar();"/>
+            </row>
+
+</rows>
+</grid>
+ <grid width="100%" id="datos"  >
+         <columns>
+             <column width="10%" label ="Mat."/>
+             <column width="50%" label ="Estudiante"/>
+             <column width="150px" align="right" label ="(A) Faltas"/>
+             <column width="150px" align="right" label ="(B) Justificadas"/>
+             <column width="150px" align="right" label ="(A-B) Total"/>
+ 
+         </columns>
+         <rows  id="filas" use="bean.faltas">
+         </rows>
+ </grid>
+ <button label="Guardar" visible="false"   id="guardar2"   image="/images/guardar.gif" onClick="guardar();"/>
+  
+</zk>
+	
