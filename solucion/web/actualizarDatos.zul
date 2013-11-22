@@ -11,7 +11,7 @@
     </style>
 
     <div  class="estil" >
-        <window  position="center"  width="700px" mode="overlapped" id="principales" >
+        <window  position="center" onCreate="cargandoInformacion()" width="700px" mode="overlapped" id="principales" >
             <zscript>
             <![CDATA[
   import jcinform.persistencia.Global;
@@ -44,8 +44,8 @@ import org.zkoss.zul.Listbox;
 
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Estudiantes as o where o.cedula = 0");
-    static Estudiantes estudent = new Estudiantes();
-    static Representante representante0 = new Representante();
+     Estudiantes estudent = new Estudiantes();
+     Representante representante0 = new Representante();
     static Matriculas matricula = new Matriculas();
      Session ses = Sessions.getCurrent();
  
@@ -456,7 +456,6 @@ void estado(Boolean estado,Boolean modificar){
             adm.guardar(representante0);
             repreNuevo = true;
          }
-
  
  //GUARDO EL ESTUDIANTE
 
@@ -500,7 +499,6 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setCodigo(codigoclave.value);
         estudent.setObservacion(observacion.value);
         estudent.setMatriculado(true);
-  
         if((!estudent.getCodigoest().equals(0))){
              adm.actualizar(estudent);
    
@@ -509,15 +507,22 @@ void estado(Boolean estado,Boolean modificar){
             adm.guardar(estudent);
             estuNuevo = true;
          }
-        ses.removeAttribute("userEstudiante");
-        ses.setAttribute("userEstudiante",estudent);
-        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
-        principales.detach();
-        btnguardar.disabled=true;
-        ses.setAttribute("userEstudiante",estudent);
-        //showReport("AM",""+codigomat.value);
-        estudent = null;
-        representante0 = null;
+                ses.removeAttribute("userEstudiante");
+                ses.removeAttribute("userRepresentante");
+
+                estudent.setRepresentante(representante0);
+                ses.setAttribute("userEstudiante",estudent);
+                ses.setAttribute("userRepresentante",representante0);
+
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                principales.detach();
+                btnguardar.disabled=true;
+                //showReport("AM",""+codigomat.value);
+                estudent = null;
+                representante0 = null;
+
+              
+        
        }catch(Exception e){
                 alert("Error:"+e);
                 System.out.println(""+e.getCause()); System.out.println(""+e.getLocalizedMessage());                System.out.println(""+e.getMessage());
@@ -1293,7 +1298,13 @@ boolean validarRepresentante(){
             </vbox>
             <zscript>
             <![CDATA[
-                  llenar(ses.getAttribute("userEstudiante"));
+            cargandoInformacion(){
+                Session abc = Sessions.getCurrent();
+                Estudiantes est = abc.getAttribute("userEstudiante");
+                est= adm.buscarClave(est.getCodigoest(),Estudiantes.class);
+                  llenar(est);
+                  est = null;
+                  }
             ]]>
             </zscript>
         </window>

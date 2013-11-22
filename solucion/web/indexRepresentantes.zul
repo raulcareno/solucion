@@ -38,6 +38,8 @@ void cambiarEstado(Estudiantes user){
     Date fechaActual = adm.Date();
     tienePendientes = false;
     mesesPendientes = "";
+     
+     user= adm.buscarClave(user.getCodigoest(),Estudiantes.class);
     String fec = (fechaActual.getYear()+1900) + "-" + (fechaActual.getMonth()+1) + "-"+(fechaActual.getDate())+"";
         List pendientesEncontrados = adm.query("Select o from Asignados  as o " + 
             " where o.matricula.estudiante.codigoest =  '"+user.getCodigoest()+"'  " + 
@@ -92,8 +94,10 @@ void cambiarEstado(Estudiantes user){
                 adm.actualizar(emp);
         
         }
+
          a.removeAttribute("userEstudiante");
          a.setAttribute("userEstudiante",user);
+         user = null;
 }
  
   void ingresarSin(String valor){
@@ -115,9 +119,9 @@ void cambiarEstado(Estudiantes user){
         inc.setSrc(valor);
  }
     cargando(){
-   
-          Session a = Sessions.getCurrent();
-            Representante peri =  (Representante) a.getAttribute("userRepresentante");
+            a = Sessions.getCurrent();
+          //Session a = Sessions.getCurrent();
+            //Representante peri =  (Representante) a.getAttribute("userRepresentante");
             Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
            try{
            List matricula = adm.query("Select o from Matriculas as o " +
@@ -220,7 +224,7 @@ void cambiarEstado(Estudiantes user){
 
        
         Session a = Sessions.getCurrent();
-        Estudiantes periEst =  (Estudiantes) a.getAttribute("userEstudiante");
+        emp2 =  (Estudiantes) a.getAttribute("userEstudiante");
         try{
            /* if(!periEst.getAplico()){
                         Window win34 = (Window) Executions.createComponents("/evaluacionEstudiante.zul", null, null);
