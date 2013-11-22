@@ -55,6 +55,7 @@ Session a = Sessions.getCurrent();
     Date fechaActual = adm.Date();
     tienePendientes = false;
     mesesPendientes = "";
+     user= adm.buscarClave(user.getCodigoest(),Estudiantes.class);
     String fec = (fechaActual.getYear()+1900) + "-" + (fechaActual.getMonth()+1) + "-"+(fechaActual.getDate())+"";
         List pendientesEncontrados = adm.query("Select o from Asignados  as o " + 
             " where o.matricula.estudiante.codigoest =  '"+user.getCodigoest()+"'  " + 

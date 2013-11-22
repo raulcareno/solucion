@@ -111,7 +111,7 @@ guardar(){
 
 void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' " + 
-         "  order by o.orden");
+         "  and o.materia.codigo > 1 order by o.orden");
         //bd2.getItems().clear();
         mates.getChildren().clear();
         
