@@ -59,6 +59,7 @@ public ArrayList certificados(Matriculas matricula,String tipo){
                 parametros.put("slogan", insts.getSlogan());
                 parametros.put("secretaria", insts.getSecretaria());
                 parametros.put("rectora", insts.getRector());
+                parametros.put("jornada", per.getSeccion().getDescripcion() );
                 JRDataSource ds = new ReporteActaDataSource(detalle);
 
                 arr.add(ds);
@@ -76,6 +77,7 @@ public ArrayList certificados(Matriculas matricula,String tipo){
                 parametros.put("slogan", ".");
                 parametros.put("secretaria", ".");
                 parametros.put("rectora", ".");
+                parametros.put("jornada", ".");
               
               JRDataSource ds = new ReporteActaDataSource(detalle);
                 arr.add(ds);

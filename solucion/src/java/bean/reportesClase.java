@@ -5257,6 +5257,8 @@ public class reportesClase {
                     + "order by estudiantes.apellido, notas.orden";
             System.out.println("NOTAS GENERALES" + q);
             List nativo = adm.queryNativo(q);
+            String recomendacion = "";
+            String plan = "";
 
             /*
              * aumentadio
@@ -5312,6 +5314,8 @@ public class reportesClase {
                             coll2.setOrden((buscarOrden(materiaProfesores, mate)));
                             coll2.setMateria(mate.getDescripcion());
                             coll2.setMatricula("" + matriculaNo.getCodigomat());
+                            coll2.setRecomendacion(recomendacion);
+                            coll2.setPlan(plan); 
                             coll2.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                             coll2.setSistema("-" + (ksis) + "" + ((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getEvaluacion().getAbreviatura());
                             coll2.setTipo(((Sistemaevaluacion) sisEvaluaciones.get(ksis)).getSistemacalificacion().getTrimestre().getDescripcion() + " - " + sistema.getNombre());
@@ -5325,8 +5329,25 @@ public class reportesClase {
                             cuantitativa = (Boolean) dos;
                         } else if (j >= 1) {
                             mate = (Global) adm.buscarClave((Integer) dos, Global.class);
+                            try {
+                                 List<Recomendaciones> rec = adm.query(" Select o from Recomendaciones as o"
+                                + " where o.matricula.codigomat = '" + matriculaNo.getCodigomat()+ "' "
+                                + " and o.sistema.codigosis = '" + sistema.getCodigosis() + "' "
+                                + " and o.materia.codigo = '"+mate.getCodigo()+"' ");
+                                if(rec.size()>0){
+                                    recomendacion = rec.get(0).getRecomendacion();
+                                    plan = rec.get(0).getPlan();
+                                }else{
+                                    recomendacion="";
+                                    plan ="";
+                                }
+                            } catch (Exception e) {
+                                System.out.println("recomendaciones error: "+e);
+                            }
+                           
                         } else {
                             matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+                            
                         }
                     }
 

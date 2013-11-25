@@ -27,7 +27,7 @@ public class recomendaciones extends Rows {
         getChildren().clear();
         Label label3 = null;
 
-        Textbox combo = new Textbox();
+        Textbox texto = new Textbox();
         Listitem item = new Listitem("USUALMENTE");
 
 
@@ -42,23 +42,23 @@ public class recomendaciones extends Rows {
                 String q = "SELECT  o from Recomendaciones as o where o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' "
                         + " AND o.sistema.codigosis = '" + sistema.getCodigosis() + "' ";
                 List<Recomendaciones> recom = adm.query(q);
-                 combo = new Textbox();
-                 combo.setCols(70);
-                 combo.setRows(2);
+                 texto = new Textbox();
+                 texto.setCols(70);
+                 texto.setRows(2);
                  //combo.setWidth("300px");
                 if (recom.size() <= 0) {
                     label3 = new Label("" + matriculas1.getCodigomat());
                     row.appendChild(label3);
                     label3 = new Label("" + matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                     row.appendChild(label3);
-                    row.appendChild(combo);
+                    row.appendChild(texto);
                 } else {
                     label3 = new Label("" + matriculas1.getCodigomat());
                     row.appendChild(label3);
                     label3 = new Label("" + matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                     row.appendChild(label3);
-                    combo.setValue(recom.get(0).getRecomendacion() + "");
-                    row.appendChild(combo);
+                    texto.setValue(recom.get(0).getRecomendacion() + "");
+                    row.appendChild(texto);
                 }
                 row.setParent(this);
 
@@ -82,6 +82,7 @@ public class recomendaciones extends Rows {
         Label label3 = null;
 
         Textbox combo = new Textbox();
+        Textbox plan = new Textbox();
         Listitem item = new Listitem("USUALMENTE");
 
 
@@ -98,8 +99,11 @@ public class recomendaciones extends Rows {
                         + " and o.materia.codigo = '"+mateP.getMateria().getCodigo()+"' ";
                 List<Recomendaciones> recom = adm.query(q);
                  combo = new Textbox();
-                 combo.setCols(70);
+                 plan = new Textbox();
+                 combo.setCols(55);
                  combo.setRows(2);
+                 plan.setCols(55);
+                 plan.setRows(2);
                  //combo.setWidth("300px");
                 if (recom.size() <= 0) {
                     label3 = new Label("" + matriculas1.getCodigomat());
@@ -107,6 +111,7 @@ public class recomendaciones extends Rows {
                     label3 = new Label("" + matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                     row.appendChild(label3);
                     row.appendChild(combo);
+                    row.appendChild(plan);
                 } else {
                     label3 = new Label("" + matriculas1.getCodigomat());
                     row.appendChild(label3);
@@ -114,6 +119,9 @@ public class recomendaciones extends Rows {
                     row.appendChild(label3);
                     combo.setValue(recom.get(0).getRecomendacion() + "");
                     row.appendChild(combo);
+                     
+                    plan.setValue(recom.get(0).getPlan() + "");
+                    row.appendChild(plan);
                 }
                 row.setParent(this);
 
@@ -145,17 +153,18 @@ public class recomendaciones extends Rows {
                 nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                 nota.setSistema(sistema);
                 nota.setMateria(mateP.getMateria()); 
-
-                inter.set("nota", nota);
-
+//                inter.set("nota", nota);
                 for (int j = 2; j < labels.size(); j++) {
                     Textbox object1 = (Textbox) labels.get(j);
                     String vaNota = object1.getValue();
-                    nota.setRecomendacion(vaNota);
-                    adm.guardar(nota);
+                    if(j==2){
+                        nota.setRecomendacion(vaNota);
+                    }else{
+                        nota.setPlan(vaNota);
+                    }
                 }
-
-            } catch (EvalError ex) {
+                adm.guardar(nota);
+            } catch (Exception ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
