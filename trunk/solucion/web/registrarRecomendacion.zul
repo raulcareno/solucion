@@ -177,6 +177,7 @@ doAdd(Cursos curso,MateriaProfesor mateP){
             <column width="10px" label ="Mat."/>
             <column width="400px" label ="Estudiante"/>
             <column width="400px" label ="Recomendaciones"/>
+            <column width="400px" label ="Plan Mejoras"/>
               
  
         </columns>

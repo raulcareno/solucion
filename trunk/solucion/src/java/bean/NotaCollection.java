@@ -19,6 +19,7 @@ private String cabecera2;
 private String pie1;
 private String pie2;
 private String noActa,titulo;
+private String recomendacion,plan;
 private Matriculas matriculas;
 private Integer orden;
 
@@ -285,6 +286,22 @@ private String nom1,nom2,nom3,nom4,nom5,nom6,nom7,nom8;
 
     public void setOrden(Integer orden) {
         this.orden = orden;
+    }
+
+    public String getPlan() {
+        return plan;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
+
+    public String getRecomendacion() {
+        return recomendacion;
+    }
+
+    public void setRecomendacion(String recomendacion) {
+        this.recomendacion = recomendacion;
     }
 
 
