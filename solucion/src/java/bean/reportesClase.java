@@ -9205,7 +9205,7 @@ public class reportesClase {
     public int contador1 = 0, contador2 = 0, contador3 = 0, contador4 = 0, contador5 = 0;
     public int contador6 = 0, contador7 = 0, contador8 = 0, contador9 = 0, contador10 = 0, k = 0;
 
-    public void devolverCuadro(Cursos curso, Sistemacalificacion sistema) {
+    public void devolverCuadro(Cursos curso, Sistemacalificacion sistema,String tipo) {
         contador1 = 0;
         contador2 = 0;
         contador3 = 0;
@@ -9408,6 +9408,39 @@ public class reportesClase {
                 + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
                 + " and o.seimprime = true and o.ministerio = true "
                 + " order by o.orden");
+        String matriculasSupletoriadas = "";
+        if(tipo.equals("SUP")){
+             List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
+            if (notaGeneral.size() <= 0) {
+                try {
+                    Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                     
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            String nGeneral = notaGeneral.get(0).getNota();
+            String codigoMapProfesor ="";
+            for (Iterator<MateriaProfesor> it = materiaProfesor.iterator(); it.hasNext();) {
+                MateriaProfesor mp = it.next();
+                codigoMapProfesor += mp.getMateria().getCodigo()+",";
+            }
+            if(codigoMapProfesor.length()>0){
+                codigoMapProfesor = codigoMapProfesor.substring(0, codigoMapProfesor.length()-1);
+            }
+            List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o"
+                    + " where o."+nGeneral+" < 7 and o.materia.codigo in ("+codigoMapProfesor+") "
+                    + " and o.matricula.curso.codigocur = '"+curso.getCodigocur()+"' ");
+            for (Object object : matriculasList) {
+                matriculasSupletoriadas += object+",";
+            }
+            if(matriculasSupletoriadas.length()>0){
+                matriculasSupletoriadas = matriculasSupletoriadas.substring(0, matriculasSupletoriadas.length()-1);
+            }
+            
+            
+        }
   
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notaFinal.get(0).getSistema(), new Matriculas(-1));
         String codigosPerdidos = "";
@@ -9536,6 +9569,17 @@ public class reportesClase {
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
+        if(tipo.equals("SUP")){
+            
+         
+            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
+                + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
+                + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
+                + " and mat.codigomat in ("+matriculasSupletoriadas+") "
+                + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
+        }
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
