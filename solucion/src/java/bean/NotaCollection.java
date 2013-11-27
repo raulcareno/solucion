@@ -9,6 +9,7 @@ public NotaCollection(){}
 
 private String matricula;
 private Object nota;
+private Object equivalencia;
 private String sistema;
 private String materia;
 private String estudiante;
@@ -302,6 +303,14 @@ private String nom1,nom2,nom3,nom4,nom5,nom6,nom7,nom8;
 
     public void setRecomendacion(String recomendacion) {
         this.recomendacion = recomendacion;
+    }
+
+    public Object getEquivalencia() {
+        return equivalencia;
+    }
+
+    public void setEquivalencia(Object equivalencia) {
+        this.equivalencia = equivalencia;
     }
 
 

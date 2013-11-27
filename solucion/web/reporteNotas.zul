@@ -802,6 +802,12 @@ void recalcular2(){
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
                    
+            }else if(tipo.equals("LIBQ1")){
+                    datasource = noti.libretasInforme(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"libretaI.jasper");
+                    parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+                    parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
+                   
             }else if(tipo.equals("CFAL")){
                     datasource = noti.faltas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"faltas.jasper");
@@ -967,7 +973,7 @@ void campos(String valor){
             filaaportes.visible = true;
             filamaterias.visible = true;
             
-        }else if(valor.equals("LIBF") || valor.equals("LIBQ")  || valor.equals("CFAL")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
+        }else if(valor.equals("LIBF")  || valor.equals("CFAL")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
@@ -977,6 +983,18 @@ void campos(String valor){
             filacursos.visible = true;
             filarecalculos.visible = true;
             filaaportes.visible = true;
+             
+        }else if(valor.equals("LIBQ1") || valor.equals("LIBQ")  ){
+            curs.disabled = false;
+            estudiantesCombo.disabled = false;
+            sistemasCombo.disabled = false;
+            titulo.value= "Informe Parcial de Aprendizaje";
+            estudiantesCombo.setSelectedIndex(-1);
+            filaestudiantes.visible = true;
+            filacursos.visible = true;
+            filarecalculos.visible = true;
+            filaaportes.visible = true;
+            titulo.value ="INFORME PARCIAL DE APRENDIZAJES";
              
         }else if(valor.equals("APRO")){
             curs.disabled = false;
@@ -1236,6 +1254,7 @@ void campos(String valor){
                                     <listitem  id="LIB2" label="Libreta de Calificaciones(Pequeño)" value="LIB2" />
                                     <listitem  id="LIB3" label="Libreta de Calificaciones(Con Aprobación o No)" value="LIB3" />
                                     <listitem  id="LIBQ" label="Libreta Quimestral" value="LIBQ" />
+                                    <listitem  id="LIBQ1" label="Informe Parcial de Aprendizajes" value="LIBQ1" />
                                     <listitem id="CCAL"  label="Cuadro de Calificaciones" value="CCAL" />
                                     <listitem id="CCAL2"  label="Cuadro de Calificaciones(2)" value="CCAL2" />
                                     <listitem id="CCAL3"  label="Cuadro de Calificaciones(3)" value="CCAL3" />
