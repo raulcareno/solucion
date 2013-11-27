@@ -324,7 +324,10 @@
                                             <menuseparator></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Parametros_Autoevaluacion" image="/images/textos.png"  label="Parametros Rendimiento" value="/perfil.zul" />
                                             <menuitem onClick="ingresar(self)" id="Registrar_Autoevaluacion" image="/images/notas.png"  label="Registro de Notas de Rendimiento" value="/registrarPerfil.zul" />
+                                            <menuseparator></menuseparator>
+                                            <menuitem onClick="ingresar(self)" id="Parametros_Recomendacion" image="/images/notas.png"  label="Parametros de Recomendaciones" value="/itemRendimiento.zul" />
                                             <menuitem onClick="ingresar(self)" id="Registrar_Recomendacion" image="/images/notas.png"  label="Registro de Recomendaciones" value="/registrarRecomendacion.zul" />
+                                            <menuseparator></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Comentarios" image="/images/comentarios.png"  label="Comentarios" value="/comentarios.zul" />
                                             <menuitem onClick="ingresar(self)" id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
                                         </menupopup>
