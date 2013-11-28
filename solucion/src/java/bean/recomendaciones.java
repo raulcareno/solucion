@@ -121,6 +121,7 @@ public class recomendaciones extends Rows {
         try {
             Item i = new Item(0);
             i.setRecomendacion("[SELECCIONE]");
+            i.setTipo(".");
             adm.guardar(i);
         } catch (Exception e) {
             System.out.println("en crear item 0" + e);
@@ -193,7 +194,7 @@ public class recomendaciones extends Rows {
                         item.setValue(new Item(0));
                         combo.appendChild(item);
                         combo.setSelectedItem(item);
-                        combo.setStyle("font-size:9px;width:230px");
+                        combo.setStyle("font-size:11px;width:230px");
                         for (Iterator<Item> it2 = equivalencias.iterator(); it2.hasNext();) {
                             Item eq = it2.next();
                             item = new Listitem("" + eq.getRecomendacion());
@@ -214,7 +215,7 @@ public class recomendaciones extends Rows {
                         item.setValue(new Item(0));
                         combo.appendChild(item);
                         combo.setSelectedItem(item);
-                        combo.setStyle("font-size:9px;width:230px");
+                        combo.setStyle("font-size:11px;width:230px");
                         for (Iterator<Item> it2 = equivalencias.iterator(); it2.hasNext();) {
                             Item eq = it2.next();
                             item = new Listitem("" + eq.getRecomendacion());
@@ -240,7 +241,7 @@ public class recomendaciones extends Rows {
                         combo.setMold("select");
                         combo.setWidth("550px");
                         combo.setRows(1);
-                        combo.setStyle("font-size:9px;width:230px");
+                        combo.setStyle("font-size:11px;width:230px");
                         for (Iterator<Item> it2 = equivalencias.iterator(); it2.hasNext();) {
                             Item eq = it2.next();
                             item = new Listitem("" + eq.getRecomendacion());
@@ -262,7 +263,7 @@ public class recomendaciones extends Rows {
                         combo.setMold("select");
                         combo.setWidth("550px");
                         combo.setRows(1);
-                        combo.setStyle("font-size:9px;width:230px");
+                        combo.setStyle("font-size:11px;width:230px");
                         for (Iterator<Item> it2 = equivalencias.iterator(); it2.hasNext();) {
                             Item eq = it2.next();
                             item = new Listitem("" + eq.getRecomendacion());
