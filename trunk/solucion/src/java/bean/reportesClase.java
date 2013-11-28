@@ -4984,11 +4984,11 @@ public class reportesClase {
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' "
+                + " and o.seimprime = true and o.orden = '" + sistema.getOrden() + "' "
                 + " and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' order by o.orden ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
-                + "and o.sistema.orden <=  '" + sistema.getOrden() + "'"
+                + "and o.sistema.orden =  '" + sistema.getOrden() + "'"
                 + " and o.sistema.seimprime = true  "
                 + " and o.sistema.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "'   order by o.sistema.orden ");
         if (notas.size() <= 0) {
@@ -4999,19 +4999,19 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        List<Sistemaevaluacion> sisEvaluaciones = adm.query("Select o from Sistemaevaluacion as o "
-                + " where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' "
-                + " and o.espromedio = true ");
-        String notaQuery = "";
-        if (sisEvaluaciones.size() > 0) {
-            for (Sistemaevaluacion notass : sisEvaluaciones) {
-                notaQuery += notass.getNombre() + ",";
-            }
-            notaQuery = notaQuery.substring(0, notaQuery.length() - 1).replace("'", "").replace("(", "").replace(")", "");
-        } else {
-            Messagebox.show("No hay nada que imprimir...! \n Seleccion otro APORTE o BLOQUE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
-            return null;
-        }
+//        List<Sistemaevaluacion> sisEvaluaciones = adm.query("Select o from Sistemaevaluacion as o "
+//                + " where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' "
+//                + " and o.espromedio = true ");
+//        String notaQuery = "";
+//        if (sisEvaluaciones.size() > 0) {
+//            for (Sistemaevaluacion notass : sisEvaluaciones) {
+//                notaQuery += notass.getNombre() + ",";
+//            }
+//            notaQuery = notaQuery.substring(0, notaQuery.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+//        } else {
+//            Messagebox.show("No hay nada que imprimir...! \n Seleccion otro APORTE o BLOQUE", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+//            return null;
+//        }
         String query = "";
         String query2 = "";
         String queryDisciplina = "";
@@ -5071,13 +5071,13 @@ public class reportesClase {
              * aumentadio
              */
 
-            String que = "Select o.matricula,g.codigo,o.cuantitativa, " + notaQuery + " from Notasevaluacion as o, Global as g "
-                    + "where o.materia = g.codigo and o.sistemacalificacion = '" + sistema.getCodigosis() + "'  "
-                    + "and o.matricula = '" + matriculas1.getCodigomat() + "' "
-                    + " and o.materia in (Select x.materia from materia_profesor as x "
-                    + " where x.curso = '" + curso.getCodigocur() + "' and x.seimprime = true ) "
-                    + " order by g.descripcion ";
-            System.out.println("" + que);
+//            String que = "Select o.matricula,g.codigo,o.cuantitativa, " + notaQuery + " from Notasevaluacion as o, Global as g "
+//                    + "where o.materia = g.codigo and o.sistemacalificacion = '" + sistema.getCodigosis() + "'  "
+//                    + "and o.matricula = '" + matriculas1.getCodigomat() + "' "
+//                    + " and o.materia in (Select x.materia from materia_profesor as x "
+//                    + " where x.curso = '" + curso.getCodigocur() + "' and x.seimprime = true ) "
+//                    + " order by g.descripcion ";
+//            System.out.println("" + que);
 
 //            List noEncontradas = adm.queryNativo(que);
             //sisEvaluaciones

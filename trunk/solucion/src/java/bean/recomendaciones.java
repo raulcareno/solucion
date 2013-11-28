@@ -238,9 +238,9 @@ public class recomendaciones extends Rows {
 
                         combo = new Listbox();
                         combo.setMold("select");
-                        combo.setWidth("50px");
+                        combo.setWidth("550px");
                         combo.setRows(1);
-                        combo.setStyle("font-size:9px;width:30px");
+                        combo.setStyle("font-size:9px;width:230px");
                         for (Iterator<Item> it2 = equivalencias.iterator(); it2.hasNext();) {
                             Item eq = it2.next();
                             item = new Listitem("" + eq.getRecomendacion());
@@ -260,9 +260,9 @@ public class recomendaciones extends Rows {
 
                         combo = new Listbox();
                         combo.setMold("select");
-                        combo.setWidth("50px");
+                        combo.setWidth("550px");
                         combo.setRows(1);
-                        combo.setStyle("font-size:9px;width:30px");
+                        combo.setStyle("font-size:9px;width:230px");
                         for (Iterator<Item> it2 = equivalencias.iterator(); it2.hasNext();) {
                             Item eq = it2.next();
                             item = new Listitem("" + eq.getRecomendacion());
