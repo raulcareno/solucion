@@ -9915,6 +9915,14 @@ public class reportesClase {
 
         }
 
+         Integer remedial = 5;
+        try {
+            remedial = regresaVariableParametrosDecimal("REMEDIAL", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            remedial = 5;
+
+        }
+        
         Integer noDecimalesDisc = 2;
         try {
             noDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales).intValue();
@@ -10094,7 +10102,38 @@ public class reportesClase {
                 codigoMapProfesor = codigoMapProfesor.substring(0, codigoMapProfesor.length()-1);
             }
             List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o"
-                    + " where o."+nGeneral+" < 7 and o.materia.codigo in ("+codigoMapProfesor+") "
+                    + " where o."+nGeneral+" < 7 and o."+nGeneral+" >= "+remedial+"  and o.materia.codigo in ("+codigoMapProfesor+") "
+                    + " and o.matricula.curso.codigocur = '"+curso.getCodigocur()+"' ");
+            for (Object object : matriculasList) {
+                matriculasSupletoriadas += object+",";
+            }
+            if(matriculasSupletoriadas.length()>0){
+                matriculasSupletoriadas = matriculasSupletoriadas.substring(0, matriculasSupletoriadas.length()-1);
+            }
+            
+            
+        }else   if(tipo.equals("REM")){
+             List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
+            if (notaGeneral.size() <= 0) {
+                try {
+                    Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                     
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            String nGeneral = notaGeneral.get(0).getNota();
+            String codigoMapProfesor ="";
+            for (Iterator<MateriaProfesor> it = materiaProfesor.iterator(); it.hasNext();) {
+                MateriaProfesor mp = it.next();
+                codigoMapProfesor += mp.getMateria().getCodigo()+",";
+            }
+            if(codigoMapProfesor.length()>0){
+                codigoMapProfesor = codigoMapProfesor.substring(0, codigoMapProfesor.length()-1);
+            }
+            List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o"
+                    + " where o."+nGeneral+" < "+remedial+"  and o.materia.codigo in ("+codigoMapProfesor+") "
                     + " and o.matricula.curso.codigocur = '"+curso.getCodigocur()+"' ");
             for (Object object : matriculasList) {
                 matriculasSupletoriadas += object+",";
@@ -10234,8 +10273,14 @@ public class reportesClase {
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
         if(tipo.equals("SUP")){
-            
-         
+            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
+                + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
+                + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
+                + " and mat.codigomat in ("+matriculasSupletoriadas+") "
+                + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
+        }else if(tipo.equals("REM")){
             q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
