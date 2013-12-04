@@ -250,6 +250,7 @@
                                         <listitem id="Registro_de_Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
                                         <listitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
                                         <listitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltasFuera.zul" />
+                                        <listitem id="Registro_de_Faltas_Materia" image="/images/notas.png"  label="Faltas por Materia" value="/faltasNew.zul" />
                                         <listitem  id="Registro_de_Evaluaciones"  image="/images/notas.png"  label="Registro Notas Evaluaciones" value="/notasEvaluacion.zul"/>
                                         <listitem id="Notas_de_Grado"  image="/images/notas.png"  label="Registro Ex.Grado" value="/cursosIngresonotasGradoFuera.zul" />
                                         <listitem  id="ListaPendientes" image="/images/dinero.gif" label="Estudiantes con Pendientes"   value="/pendientesEstudiantesDobe.zul" />

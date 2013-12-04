@@ -19,9 +19,22 @@ import org.zkoss.zul.Listbox;
 Administrador adm = new Administrador();
 Session ses = Sessions.getCurrent();
 Periodo periodo = (Periodo) ses.getAttribute("periodo");
-List cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
- Cursos curS = new Cursos(-1);
+List cursos = null;
+ Empleados user =  (Empleados)ses.getAttribute("user");
+     if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
+           " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+           Cursos curS = new Cursos(-1);
  cursos.add(0,curS);
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+          " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+          Cursos curS = new Cursos(-1);
+         cursos.add(0,curS);
+    }
+ 
 Permisos permiso = new Permisos();
 faltas no = new faltas();
 Boolean guardando = false;
@@ -113,6 +126,13 @@ void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.curso.codigocur = '"+cur.codigocur+"' " + 
          "  and o.materia.codigo > 1 order by o.orden");
         //bd2.getItems().clear();
+
+          if(user.getTipo().equals("Externa")){
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
+                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%' and o.formula = ''  order by o.orden");
+            }
+        
         mates.getChildren().clear();
         
         Listitem item = new Listitem();
