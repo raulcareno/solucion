@@ -118,7 +118,7 @@ guardar(){
 
 
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Registro de Faltas",accion);
+        return permiso.verificarPermiso("Registro de Faltas Materia",accion);
  }
 
 
