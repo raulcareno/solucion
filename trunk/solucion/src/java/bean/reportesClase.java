@@ -10341,7 +10341,7 @@ public class reportesClase {
                         nota.setNota(val.toString());
 //                        aprovecha+=val;
 //                        System.out.println(matriculaNo+":::"+aprovecha);
-                        if (val == 0.0) {
+                        if (val.equals(new Double(0.0))) {
                             nota.setNota("");
                         }
                     }
@@ -10370,6 +10370,9 @@ public class reportesClase {
                     }
                     DecimalFormat decimalFormat = new DecimalFormat(s);
                     nota.setNota(decimalFormat.format(redondear((Double) dos, noDecimalesPromediosParciales)));
+                    if(dos.equals(new Double(0.0))) {
+                        nota.setNota("");
+                    }
                     try {
                         cellNota.setCellValue("" + decimalFormat.format(redondear(new Double(nota.getNota() + ""), noDecimalesPromediosParciales)));
                     } catch (Exception e) {
