@@ -4335,8 +4335,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 String hasta = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 23:59:59";
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o "
                         + "  where o.numero = " + numeroIngresado.getText() + " "
-                        + " and o.anuladofac = false and o.anulado = false "
+                        + " and (o.anuladofac = false or o.anuladofac is null ) "
+                        + " and (o.anulado = false or o.anulado is null)  "
                         + " and o.fechafin between '" + desde + "' and  '" + hasta + "' ");
+                
                 if (fac == null) {
                     JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido anulado...!", "", JOptionPane.ERROR_MESSAGE);
                     codigoAdministrador.setText("");

@@ -116,6 +116,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         cmbMulta.removeAllItems();
         barreras.setText(empresaObj.getBarreras());
         valorMaximo.setText(empresaObj.getValorMaximo()+"");
+        chkPunto.setSelected(empresaObj.getPunto()); 
         PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
         for (int i = 0; i < services.length; i++) {
             cmbTicket.addItem(services[i].getName());
@@ -414,6 +415,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         horaHasta2 = new javax.swing.JSpinner();
         valorMaximo = new javax.swing.JFormattedTextField();
         jLabel60 = new javax.swing.JLabel();
+        chkPunto = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -1236,6 +1238,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel1.add(jLabel60);
         jLabel60.setBounds(10, 110, 120, 18);
 
+        chkPunto.setText("Punto de Cobro?");
+        chkPunto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        chkPunto.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jPanel1.add(chkPunto);
+        chkPunto.setBounds(0, 210, 140, 23);
+
         jTabbedPane2.addTab("Impresoras y Otros", new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif")), jPanel1); // NOI18N
 
         jPanel2.add(jTabbedPane2);
@@ -1847,7 +1855,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setPuerta2((String)cmbPuerta2.getSelectedItem());
                     empresaObj.setPuerta3((String)cmbPuerta3.getSelectedItem());
                     empresaObj.setPuerta4((String)cmbPuerta4.getSelectedItem());
-
+                    
+                    empresaObj.setPunto(chkPunto.isSelected());
                     empresaObj.setPuerto((String)cmbPuertoPrincipal.getSelectedItem());
                     empresaObj.setLed((String)cmbPuertoLed.getSelectedItem());
                     empresaObj.setBarras((String)cmbPortBarras.getSelectedItem());
@@ -2459,6 +2468,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkBloquearSalida;
     private javax.swing.JCheckBox chkImprime2facturas;
     private javax.swing.JCheckBox chkIpcam;
+    private javax.swing.JCheckBox chkPunto;
     private javax.swing.JCheckBox chkReimprime;
     private javax.swing.JCheckBox chkWebcam;
     private javax.swing.JCheckBox chktrabajanotaventa;

@@ -752,97 +752,6 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Container class="org.jdesktop.swingx.JXTaskPane" name="messenger">
-              <Properties>
-                <Property name="title" type="java.lang.String" value="Mensajes"/>
-              </Properties>
-              <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="messengerKeyPressed"/>
-              </Events>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-                  <JLayeredPaneConstraints x="560" y="30" width="230" height="140" layer="0" position="-1"/>
-                </Constraint>
-              </Constraints>
-              <SubComponents>
-                <Container class="javax.swing.JToolBar" name="jToolBar4">
-                  <Properties>
-                    <Property name="floatable" type="boolean" value="false"/>
-                    <Property name="orientation" type="int" value="1"/>
-                    <Property name="rollover" type="boolean" value="true"/>
-                  </Properties>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                </Container>
-              </SubComponents>
-              <LayoutCode>
-                <CodeStatement>
-                  <CodeExpression id="1_verticalLayout">
-                    <CodeVariable name="verticalLayout" type="4096" declaredType="org.jdesktop.swingx.VerticalLayout"/>
-                    <ExpressionOrigin>
-                      <ExpressionProvider type="CodeConstructor">
-                        <CodeConstructor class="org.jdesktop.swingx.VerticalLayout" parameterTypes=""/>
-                      </ExpressionProvider>
-                    </ExpressionOrigin>
-                  </CodeExpression>
-                  <StatementProvider type="CodeExpression">
-                    <CodeExpression id="1_verticalLayout"/>
-                  </StatementProvider>
-                </CodeStatement>
-                <CodeStatement>
-                  <CodeExpression id="1_verticalLayout"/>
-                  <StatementProvider type="CodeMethod">
-                    <CodeMethod name="setGap" class="org.jdesktop.swingx.VerticalLayout" parameterTypes="int"/>
-                  </StatementProvider>
-                  <Parameters>
-                    <CodeExpression id="2">
-                      <ExpressionOrigin>
-                        <Value type="int" value="2"/>
-                      </ExpressionOrigin>
-                    </CodeExpression>
-                  </Parameters>
-                </CodeStatement>
-                <CodeStatement>
-                  <CodeExpression id="3">
-                    <ExpressionOrigin>
-                      <CodeExpression id="4_messenger">
-                        <CodeVariable name="messenger" type="8194" declaredType="org.jdesktop.swingx.JXTaskPane"/>
-                        <ExpressionOrigin>
-                          <ExpressionProvider type="ComponentRef">
-                            <ComponentRef name="messenger"/>
-                          </ExpressionProvider>
-                        </ExpressionOrigin>
-                      </CodeExpression>
-                      <ExpressionProvider type="CodeMethod">
-                        <CodeMethod name="getContentPane" class="org.jdesktop.swingx.JXTaskPane" parameterTypes=""/>
-                      </ExpressionProvider>
-                    </ExpressionOrigin>
-                  </CodeExpression>
-                  <StatementProvider type="CodeMethod">
-                    <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
-                  </StatementProvider>
-                  <Parameters>
-                    <CodeExpression id="1_verticalLayout"/>
-                  </Parameters>
-                </CodeStatement>
-                <CodeStatement>
-                  <CodeExpression id="3"/>
-                  <StatementProvider type="CodeMethod">
-                    <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
-                  </StatementProvider>
-                  <Parameters>
-                    <CodeExpression id="5_jToolBar4">
-                      <CodeVariable name="jToolBar4" type="8194" declaredType="javax.swing.JToolBar"/>
-                      <ExpressionOrigin>
-                        <ExpressionProvider type="ComponentRef">
-                          <ComponentRef name="jToolBar4"/>
-                        </ExpressionProvider>
-                      </ExpressionOrigin>
-                    </CodeExpression>
-                  </Parameters>
-                </CodeStatement>
-              </LayoutCode>
-            </Container>
             <Container class="javax.swing.JInternalFrame" name="formaTarjetas1">
               <Properties>
                 <Property name="title" type="java.lang.String" value="Registro y Modificaci&#xf3;n de Tarjetas"/>
@@ -3572,27 +3481,27 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton11">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value=".."/>
+                    <Property name="text" type="java.lang.String" value="Iniciar Sock"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="750" y="150" width="30" height="-1"/>
+                      <AbsoluteConstraints x="700" y="290" width="30" height="-1"/>
                     </Constraint>
                   </Constraints>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton13">
+                <Component class="javax.swing.JButton" name="jButton14">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jButton13"/>
+                    <Property name="text" type="java.lang.String" value="llamarSocket"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton13ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton14ActionPerformed"/>
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="690" y="270" width="-1" height="-1"/>
+                      <AbsoluteConstraints x="700" y="310" width="30" height="-1"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -3840,7 +3749,7 @@
               </SubComponents>
               <LayoutCode>
                 <CodeStatement>
-                  <CodeExpression id="6_verticalLayout1">
+                  <CodeExpression id="1_verticalLayout1">
                     <CodeVariable name="verticalLayout1" type="4096" declaredType="org.jdesktop.swingx.VerticalLayout"/>
                     <ExpressionOrigin>
                       <ExpressionProvider type="CodeConstructor">
@@ -3849,16 +3758,16 @@
                     </ExpressionOrigin>
                   </CodeExpression>
                   <StatementProvider type="CodeExpression">
-                    <CodeExpression id="6_verticalLayout1"/>
+                    <CodeExpression id="1_verticalLayout1"/>
                   </StatementProvider>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="6_verticalLayout1"/>
+                  <CodeExpression id="1_verticalLayout1"/>
                   <StatementProvider type="CodeMethod">
                     <CodeMethod name="setGap" class="org.jdesktop.swingx.VerticalLayout" parameterTypes="int"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="7">
+                    <CodeExpression id="2">
                       <ExpressionOrigin>
                         <Value type="int" value="2"/>
                       </ExpressionOrigin>
@@ -3866,9 +3775,9 @@
                   </Parameters>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="8">
+                  <CodeExpression id="3">
                     <ExpressionOrigin>
-                      <CodeExpression id="9_contenedor1">
+                      <CodeExpression id="4_contenedor1">
                         <CodeVariable name="contenedor1" type="8194" declaredType="org.jdesktop.swingx.JXTaskPane"/>
                         <ExpressionOrigin>
                           <ExpressionProvider type="ComponentRef">
@@ -3885,16 +3794,16 @@
                     <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="6_verticalLayout1"/>
+                    <CodeExpression id="1_verticalLayout1"/>
                   </Parameters>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="8"/>
+                  <CodeExpression id="3"/>
                   <StatementProvider type="CodeMethod">
                     <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="10_jToolBar1">
+                    <CodeExpression id="5_jToolBar1">
                       <CodeVariable name="jToolBar1" type="8194" declaredType="javax.swing.JToolBar"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
@@ -4033,7 +3942,7 @@
               </SubComponents>
               <LayoutCode>
                 <CodeStatement>
-                  <CodeExpression id="11_verticalLayout2">
+                  <CodeExpression id="6_verticalLayout2">
                     <CodeVariable name="verticalLayout2" type="4096" declaredType="org.jdesktop.swingx.VerticalLayout"/>
                     <ExpressionOrigin>
                       <ExpressionProvider type="CodeConstructor">
@@ -4042,16 +3951,16 @@
                     </ExpressionOrigin>
                   </CodeExpression>
                   <StatementProvider type="CodeExpression">
-                    <CodeExpression id="11_verticalLayout2"/>
+                    <CodeExpression id="6_verticalLayout2"/>
                   </StatementProvider>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="11_verticalLayout2"/>
+                  <CodeExpression id="6_verticalLayout2"/>
                   <StatementProvider type="CodeMethod">
                     <CodeMethod name="setGap" class="org.jdesktop.swingx.VerticalLayout" parameterTypes="int"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="12">
+                    <CodeExpression id="7">
                       <ExpressionOrigin>
                         <Value type="int" value="2"/>
                       </ExpressionOrigin>
@@ -4059,9 +3968,9 @@
                   </Parameters>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="13">
+                  <CodeExpression id="8">
                     <ExpressionOrigin>
-                      <CodeExpression id="14_contenedor2">
+                      <CodeExpression id="9_contenedor2">
                         <CodeVariable name="contenedor2" type="8194" declaredType="org.jdesktop.swingx.JXTaskPane"/>
                         <ExpressionOrigin>
                           <ExpressionProvider type="ComponentRef">
@@ -4078,16 +3987,16 @@
                     <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="11_verticalLayout2"/>
+                    <CodeExpression id="6_verticalLayout2"/>
                   </Parameters>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="13"/>
+                  <CodeExpression id="8"/>
                   <StatementProvider type="CodeMethod">
                     <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="15_jToolBar2">
+                    <CodeExpression id="10_jToolBar2">
                       <CodeVariable name="jToolBar2" type="8194" declaredType="javax.swing.JToolBar"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">
@@ -4183,7 +4092,7 @@
               </SubComponents>
               <LayoutCode>
                 <CodeStatement>
-                  <CodeExpression id="16_verticalLayout3">
+                  <CodeExpression id="11_verticalLayout3">
                     <CodeVariable name="verticalLayout3" type="4096" declaredType="org.jdesktop.swingx.VerticalLayout"/>
                     <ExpressionOrigin>
                       <ExpressionProvider type="CodeConstructor">
@@ -4192,16 +4101,16 @@
                     </ExpressionOrigin>
                   </CodeExpression>
                   <StatementProvider type="CodeExpression">
-                    <CodeExpression id="16_verticalLayout3"/>
+                    <CodeExpression id="11_verticalLayout3"/>
                   </StatementProvider>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="16_verticalLayout3"/>
+                  <CodeExpression id="11_verticalLayout3"/>
                   <StatementProvider type="CodeMethod">
                     <CodeMethod name="setGap" class="org.jdesktop.swingx.VerticalLayout" parameterTypes="int"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="17">
+                    <CodeExpression id="12">
                       <ExpressionOrigin>
                         <Value type="int" value="2"/>
                       </ExpressionOrigin>
@@ -4209,9 +4118,9 @@
                   </Parameters>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="18">
+                  <CodeExpression id="13">
                     <ExpressionOrigin>
-                      <CodeExpression id="19_contenedor3">
+                      <CodeExpression id="14_contenedor3">
                         <CodeVariable name="contenedor3" type="8194" declaredType="org.jdesktop.swingx.JXTaskPane"/>
                         <ExpressionOrigin>
                           <ExpressionProvider type="ComponentRef">
@@ -4228,16 +4137,16 @@
                     <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="16_verticalLayout3"/>
+                    <CodeExpression id="11_verticalLayout3"/>
                   </Parameters>
                 </CodeStatement>
                 <CodeStatement>
-                  <CodeExpression id="18"/>
+                  <CodeExpression id="13"/>
                   <StatementProvider type="CodeMethod">
                     <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
                   </StatementProvider>
                   <Parameters>
-                    <CodeExpression id="20_jToolBar3">
+                    <CodeExpression id="15_jToolBar3">
                       <CodeVariable name="jToolBar3" type="8194" declaredType="javax.swing.JToolBar"/>
                       <ExpressionOrigin>
                         <ExpressionProvider type="ComponentRef">

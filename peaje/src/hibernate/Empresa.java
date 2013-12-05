@@ -753,6 +753,9 @@ public class Empresa implements Serializable {
     public String barreras="";
     @Transient
     public Boolean seabretic = false;
+    
+    @Transient
+    public Boolean punto = false;
 
     public String getEntra1() {
         return entra1;
@@ -964,6 +967,14 @@ public class Empresa implements Serializable {
 
     public void setReimprimir(Boolean reimprimir) {
         this.reimprimir = reimprimir;
+    }
+
+    public Boolean getPunto() {
+        return punto;
+    }
+
+    public void setPunto(Boolean punto) {
+        this.punto = punto;
     }
     
 

@@ -65,7 +65,7 @@ public class EmpresaPuertosStatic {
         
         public Boolean trabajanotaventa;
         public Boolean imprime2facturas;
-        
+        public Boolean punto;
         public Boolean activa1;
         public Boolean activa2;
         public Boolean activa3;
@@ -728,6 +728,14 @@ public class EmpresaPuertosStatic {
 
     public void setValorMaximo(Double valorMaximo) {
         this.valorMaximo = valorMaximo;
+    }
+
+    public Boolean getPunto() {
+        return punto;
+    }
+
+    public void setPunto(Boolean punto) {
+        this.punto = punto;
     }
         
     

@@ -64,6 +64,7 @@ public class EmpresaPuertos {
     public String salida5;
     public String salida6;
     public String salida7;
+    public Boolean punto;
     public Boolean activa1;
     public Boolean activa2;
     public Boolean activa3;
@@ -123,6 +124,14 @@ public class EmpresaPuertos {
 
     public void setEntra2(String entra2) {
         this.entra2 = entra2;
+    }
+
+    public Boolean getPunto() {
+        return punto;
+    }
+
+    public void setPunto(Boolean punto) {
+        this.punto = punto;
     }
 
     

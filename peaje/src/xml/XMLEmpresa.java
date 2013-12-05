@@ -124,6 +124,7 @@ public class XMLEmpresa {
     private static final String IMPRIME2FACTURAS = "IMPRIME2FACTURAS";
     private static final String DESDE = "DESDE";
     private static final String HASTA = "HASTA";
+    private static final String PUNTO = "PUNTO";
     private static final String VALORMAXIMO = "VALORMAXIMO";
     // Variables
     private Document xmlDoc = null;
@@ -355,6 +356,10 @@ public class XMLEmpresa {
         item = xmlDoc.createElement(VALORMAXIMO);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getValorMaximo() + ""));
         personal.appendChild(item);
+        
+        item = xmlDoc.createElement(PUNTO);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPunto()+ ""));
+        personal.appendChild(item);
 
         //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
 
@@ -481,7 +486,7 @@ public class XMLEmpresa {
         beanEmpleado.setPuerto5(emp.getPuerto5());
         beanEmpleado.setPuerto6(emp.getPuerto6());
         beanEmpleado.setPuerto7(emp.getPuerto7());
-
+        
         beanEmpleado.setPuertatic(emp.getPuertatic());
         beanEmpleado.setPuertafac(emp.getPuertafac());
         beanEmpleado.setIpBarras1(emp.getIpBarras1());
@@ -511,7 +516,7 @@ public class XMLEmpresa {
         beanEmpleado.setDesde(emp.getDesde());
         beanEmpleado.setHasta(emp.getHasta());
         beanEmpleado.setValorMaximo(emp.getValorMaximo());
-
+        beanEmpleado.setPunto(emp.getPunto());
         beanEmpleado.setTrabajanotaventa(emp.getTrabajanotaventa());
         beanEmpleado.setImprime2facturas(emp.getImprime2facturas());
 
@@ -1164,6 +1169,17 @@ public class XMLEmpresa {
                         //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }
 
+                    try {
+                        //------
+                        NodeList PUNTOoutList = firstPersonElement.getElementsByTagName("PUNTO");
+                        Element PUNTOoutElement = (Element) PUNTOoutList.item(0);
+                        NodeList PUNTOoutAgeList = PUNTOoutElement.getChildNodes();
+                        user.setPunto(new Boolean(((Node) PUNTOoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                        user.setPunto(false);
+                    }
+                    
                     //------
 
                 }//end of if clause

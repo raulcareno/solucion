@@ -33,12 +33,12 @@ public class inicio {
         datosConecta = pXml.user;
         String serie2 = cl.encriptar("jc" + serie);
         if (serie2.equals("" + datosConecta.getSerie())) {
-            System.out.println("IGUALES");
+            System.out.println("inicio.java, linea 36 IGUALES");
             //return true;//producto valido
         } else {
-            System.out.println("NO IGUAL");
-            UsuarioActivo.setSerie(serie);
-            return false;
+            System.out.println("inicio.java, linea 39 NO IGUAL");
+//            UsuarioActivo.setSerie(serie);
+//            return false;
         }
         
         try {
