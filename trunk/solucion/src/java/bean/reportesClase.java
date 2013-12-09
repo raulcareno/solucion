@@ -5813,11 +5813,11 @@ public class reportesClase {
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' "
+                + " and o.seimprime = true and o.codigosis = '" + sistema.getCodigosis() + "' "
                 + " and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' order by o.orden ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
-                + "and o.sistema.orden <=  '" + sistema.getOrden() + "'"
+                + "and o.sistema.codigosis =  '" + sistema.getCodigosis() + "'"
                 + " and o.sistema.seimprime = true  "
                 + " and o.sistema.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "'   order by o.sistema.orden ");
         if (notas.size() <= 0) {
@@ -6033,8 +6033,9 @@ public class reportesClase {
                         coll.setMatricula("" + matriculaNo.getCodigomat());
                         coll.setEstudiante(matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
                         coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-                         coll.setRecomendacion(recomendacion);
-                            coll.setPlan(plan);
+                        coll.setRecomendacion(recomendacion.replace("null", ""));
+                        coll.setPlan(plan.replace("null", ""));
+                             
                         coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion() + " - " + ((Sistemacalificacion) sistemas.get(ksis)).getNombre());
                         lisNotasC.add(coll);
 
