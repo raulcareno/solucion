@@ -1247,14 +1247,14 @@ public class frmReportes extends javax.swing.JInternalFrame {
         } else if (cmbTipoReporte.getSelectedItem().toString().contains("(204)")) {
 
             query = "Select o from Cxcobrar as o"
-                    + " where  o.pagada = false "
-                    //" where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.pagada = false "
+                    //+ " where  o.pagada = false "
+                    + " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "' and o.pagada = false "
                     + " order by o.clientes.nombres ";
             System.out.println("SOLO TICKETS: " + query);
             if (cmbClientes.getSelectedIndex() > 0) {
                 query = "Select o from Cxcobrar as o"
-                        + " where  "
-                        //" where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
+                        //+ " where  "
+                        + " where o.factura.fechafin between '" + desde2 + "' and '" + hasta2 + "'  "
                         + "  o.clientes.codigo  = '" + ((Clientes) cmbClientes.getSelectedItem()).getCodigo() + "'  "
                         + " AND o.pagada = false order by o.clientes.nombres ";
             }
