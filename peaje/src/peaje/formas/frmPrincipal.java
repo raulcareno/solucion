@@ -318,10 +318,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         };
         cargar.start();
-        
+
 
     }
-    public void iniciarServidor(){
+
+    public void iniciarServidor() {
         try {
             socketServidor();
         } catch (Exception e) {
@@ -2992,9 +2993,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             clave.setEditable(false);
                             usuariot.setEditable(false);
                             //if(logeado==false){
-                                verificarUsuario();
+                            verificarUsuario();
                             //}
-                            
+
                             procesando.setVisible(false);
                             btnIngresar.setEnabled(true);
 
@@ -3263,6 +3264,32 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         }
     }
 
+    public int devolverHexa(int i) {
+        switch (i) {
+            case 0:
+                return 0x00;
+            case 1:
+                return 0x01;
+            case 2:
+                return 0x02;
+            case 3:
+                return 0x03;
+            case 4:
+                return 0x04;
+            case 5:
+                return 0x05;
+            case 6:
+                return 0x06;
+            case 7:
+                return 0x07;
+            case 8:
+                return 0x08;
+            case 9:
+                return 0x09;
+        }
+        return 0x00;
+    }
+
     public void noDisponibles() {
         try {
             totales.setText("Total: " + empresaObj.getParqueaderos());
@@ -3284,7 +3311,37 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                                 valor = "" + dispo;
                             }
                             LeerTarjeta ta = buscarPuerto("led");
-                            ta.outputSream.write((("XYinforma" + valor).getBytes()));
+                            //ta.outputSream.write((("XYinforma" + valor).getBytes()));
+                            ta.outputSream.write("@".getBytes());
+                            ta.outputSream.write("  corporaciOn nacional edificio    ".getBytes());
+                            Integer a = 0;
+                            a = 7009;
+                            byte[] encerar = {(byte) 0x00, (byte) 0x00};
+                            ta.outputSream.write(encerar);
+                            if(dispo<10){
+                            
+                            if(dispo<0){
+                                
+                                byte[] c = {(byte) 0x00, (byte) 0x00};
+                                ta.outputSream.write(c);
+                            }else{
+                            byte[] c = {(byte) 0x00, (byte)(dispo)};
+                            ta.outputSream.write(c);
+                            }
+  
+                            //devolverHexa();
+                            
+                            }else{
+                                
+                                 String uno = (dispo+"").substring(0,1);
+                                 String dos = (dispo+"").substring(1,(dispo+"").length());
+                                 devolverHexa(new Integer(uno)); 
+                                 devolverHexa(new Integer(dos)); 
+                                 byte[] c = {(byte)devolverHexa(new Integer(uno)),(byte)devolverHexa(new Integer(dos))};
+                                ta.outputSream.write(c);
+                            }
+                            
+
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                             //barrera1.setEnabled(true);
                         } catch (IOException ex) {
@@ -3625,7 +3682,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
         }
-        iniciarServidor();
+        try {
+            iniciarServidor();
+        } catch (Exception e) {
+        }
+
 
     }
 
@@ -3674,7 +3735,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 if (continua == false) {
                     //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                     errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
-                    socketEnviarMensaje("NO PUEDE INGRESAR EN ÉSTE DÌA"); 
+                    socketEnviarMensaje("NO PUEDE INGRESAR EN ÉSTE DÌA");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                     return false;
                 }
@@ -3695,14 +3756,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 } else {
                     //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                     errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
-                    socketEnviarMensaje("NO PUEDE INGRESAR EN ÉSTE HORARIO"); 
+                    socketEnviarMensaje("NO PUEDE INGRESAR EN ÉSTE HORARIO");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                     return false;
                 }
             } else {
                 //JOptionPane.showMessageDialog(getContentPane(), "Su Fecha de tarjeta expiró...! \n Cliente: ", "JCINFORM ", JOptionPane.ERROR_MESSAGE);
                 errores.setText("<html>TARJETA EXPIRADA</html>");
-                socketEnviarMensaje("TARJETA EXPIRADA"); 
+                socketEnviarMensaje("TARJETA EXPIRADA");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                 return false;
             }
@@ -3710,7 +3771,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } else {
             //JOptionPane.showMessageDialog(getContentPane(), "Tarjeta INHABILITADA ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
             errores.setText("<html>TARJETA DESHABILITADA</html>");
-            socketEnviarMensaje("TARJETA DESHABILITADA"); 
+            socketEnviarMensaje("TARJETA DESHABILITADA");
             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
             return false;
         }
@@ -3752,7 +3813,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Factura fac = new Factura();
             if (facturas.size() >= tarje.getIngresos().intValue()) {
                 errores.setText("<html>ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos</p></html>");
-                socketEnviarMensaje("ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos"); 
+                socketEnviarMensaje("ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                 //ultimoIngreso.setText("Último Ingreso: "+facturas.get(facturas.size()-1).getFechaini().getHours()+":"+facturas.get(facturas.size()-1).getFechaini().getMinutes());
                 ultimoIngreso.setText("Último Ingreso: " + facturas.get(facturas.size() - 1).getFechaini().toLocaleString());
@@ -3772,7 +3833,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 adm.guardar(fac);
                 llenarFechayHora(fac, "no");
                 errores.setText("<html>ENTRADA OK...!</html>");
-                 
+
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                 if (empresaObj.getWebcam()) {
                     if (ubicacionDirectorio.contains("build")) {
@@ -3833,7 +3894,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             if (tipoIngreso.equals("e")) {//ESTA ENTRANDO
                 if (facturas.size() >= tarje.getIngresos().intValue()) {
                     errores.setText("<html>ERROR: Tarjeta ya USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ") ingresos</p></html>");
-                    socketEnviarMensaje("ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos"); 
+                    socketEnviarMensaje("ERROR: Tarjeta ya  USADA...! <p>Válida para: (" + tarje.getIngresos().intValue() + ")ingresos");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                     return;
                 } else {
@@ -3990,7 +4051,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     } else {
                         //cargarFoto(fac.getCodigo());
                         errores.setText("<html>ERROR: NO ha registrado el ingreso..!");
-                        socketEnviarMensaje("ERROR: NO ha registrado el ingreso..!"); 
+                        socketEnviarMensaje("ERROR: NO ha registrado el ingreso..!");
                         imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                         return;
                     }
@@ -4050,7 +4111,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         btnAnadirTarjeta.doClick();
                     }
                     errores.setText("<html>TARJETA NO REGISTRADA</html>");
-                    socketEnviarMensaje("TARJETA NO REGISTRADA"); 
+                    socketEnviarMensaje("TARJETA NO REGISTRADA");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                 } else if (tipoIngreso.equals("e")) {
                     if (funcionValida(tarje)) {
@@ -4061,7 +4122,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             ultimoIngreso.setText("Vehiculo Ingreso:" + facturas.get(facturas.size() - 1).getFechaini().toLocaleString() + "");
                             cargarFoto(facturas.get(facturas.size() - 1).getCodigo());
                             errores.setText("<html>Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!</html>");
-                            socketEnviarMensaje("Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!"); 
+                            socketEnviarMensaje("Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!");
                             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             return;
                         }
@@ -4126,7 +4187,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         if (fechaFin == null) {
                             errores.setText("<html>TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)</html>");
                             socketEnviarMensaje("TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)</html>");
- 
+
                             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                         } else {
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
@@ -5940,15 +6001,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     System.out.println("ABRIR PUERTA 1" + new Date());
@@ -6037,10 +6098,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 clave.setEditable(false);
                 usuariot.setEditable(false);
                 verificarUsuario();
-                iniciarServidor();
+
                 procesando.setVisible(false);
                 btnIngresar.setEnabled(true);
                 limpiarMemoria();
+                iniciarServidor();
 
             }
         };
@@ -7049,7 +7111,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         // TODO add your handling code here:
         auditar("", "", "Salio del Sistema");
-        logeado=false;
+        logeado = false;
 //        System.gc();
 //        System.exit(0);
 
@@ -7060,6 +7122,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         habilitarBotones(false);
         clave.requestFocusInWindow();
         cerroSesion = true;
+        btnIngresar.setEnabled(true);
         limpiarMemoria();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
@@ -7130,7 +7193,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             dataInput = new DataInputStream(socket.getInputStream());
                             trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
                                     " " + dataInput.readUTF(), TrayIcon.MessageType.INFO);
-                             Toolkit.getDefaultToolkit().beep();
+                            Toolkit.getDefaultToolkit().beep();
 
                         }
 
