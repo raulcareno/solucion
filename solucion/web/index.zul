@@ -371,6 +371,14 @@
                                                     <menuitem onClick="ingresar(self)" id="SeguimientoPlanificacion"  image="/images/circulo.png"   label="Seguimiento de Planificación" value="/planificacion/registro.zul"    />
                                                 </menupopup>
                                             </menu>
+                                            <menu label="Dobe" image="/images/llave.gif"  >
+                                                <menupopup>
+                                                    <menuitem onClick="ingresar(self)" id="Parametros_dobe"  image="/images/circulo.png"   label="Evaluadores" value="/dobe/parametros.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Cursos_dobe"  image="/images/circulo.png"   label="Cursos" value="/dobe/cursos.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Estudiantes_dobe"  image="/images/circulo.png"   label="Estudiantes" value="/dobe/estudiante.zul"    />
+                                                    
+                                                </menupopup>
+                                            </menu>
                                         </menupopup>
                                         
                                     </menu>
@@ -514,6 +522,10 @@
             MatriculaAutomatica.visible = per.verificarPermisoReporte("MatriculaAutomatica","MatriculaAutomatica", "Ingresar",true,"MATRICULAS");
             Parametros_Autoevaluacion.visible = per.verificarPermisoReporte("Parametros_Autoevaluacion","MatriculaAutomatica", "Ingresar",true,"MATRICULAS");
             Registro_de_Faltas_Materia.visible = per.verificarPermisoReporte("Registro_de_Faltas_Materia","Registro_de_Faltas_Materia", "Ingresar",true,"NOTAS");
+           
+            Cursos_dobe.visible = per.verificarPermisoReporte("Cursos_dobe","Cursos_dobe", "Ingresar",true,"VARIOS");
+            Parametros_dobe.visible = per.verificarPermisoReporte("Parametros_dobe","Parametros_dobe", "Ingresar",true,"VARIOS");
+            Estudiantes_dobe.visible = per.verificarPermisoReporte("Estudiantes_dobe","Estudiantes_dobe", "Ingresar",true,"VARIOS");
             }
         </zscript>
     </div>

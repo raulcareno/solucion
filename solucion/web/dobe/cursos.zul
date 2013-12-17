@@ -7,7 +7,7 @@
         import jcinform.persistencia.Global;
         import bean.EventDAO;
         import java.util.ArrayList;
-        import jcinform.persistencia.Item;
+        import jcinform.persistencia.DobeCursos;
         import jcinform.persistencia.Periodo;
         import jcinform.procesos.Administrador;
         import bean.Permisos;
@@ -15,86 +15,66 @@
         Session ses = Sessions.getCurrent();
         Administrador adm = new Administrador();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
-        List allEvents = adm.query("Select o from Item as o order by o.codigo ");
-        static Item empa = new Item();
+        List allEvents = adm.query("Select o from DobeCursos as o where o.secuencia = 'abc' order by o.codigo ");
+        static DobeCursos empa = new DobeCursos();
         Permisos permiso = new Permisos();
  
         Object media = null;
 
         //FUNCIONES
-        void llenar(Item empa){
-            recomendacion.value = empa.getRecomendacion();
-            abreviatura.value = empa.getAbreviatura();
-            //tipo.value = empa.getRecomendacion();
-            llenarTipo(empa.getTipo());
+        void llenar(DobeCursos empa){
+            nombre.value = empa.getNombre();
+            secuencia.value = empa.getSecuencia();
 
         }
-        void llenarTipo(String tCasa){
-            List l = tipo.getChildren();
-            Boolean estado = false;
-                for (Iterator it = l.iterator(); it.hasNext();) {
-                    Radio object = (Radio)it.next();
-                    if(object.getValue().equals(tCasa)){
-                        object.setSelected(true);
-                        estado = true;
-                        break;
-                    }  
-
-                }
-            if(estado == false){
-                    Radio object = (Radio)l.get(0);
-                    object.setSelected(true);
-            }
-
-
-        }
+ 
         
         void estado(Boolean estado,Boolean modificar){
             if(modificar){
-            empa = (Item)datos.selectedItem.value;
+            empa = (DobeCursos)datos.selectedItem.value;
             }else{empa.setCodigo(0);}
-            recomendacion.readonly = estado;
-            abreviatura.readonly = estado;
+            nombre.readonly = estado;
+            secuencia.readonly = estado;
+
       }
 
 
         void guardar(){
-                if(recomendacion.value==""){
+                if(nombre.value==""){
                     Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                     return;
                 }
 
                 Periodo per = (Periodo) ses.getAttribute("periodo");
-                empa.setRecomendacion(recomendacion.value);
-                empa.setTipo(tipo.selectedItem.value);
-                empa.setAbreviatura(abreviatura.value);
+                empa.setNombre(nombre.value);
+                empa.setSecuencia(secuencia.value);
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
                     List children = datos.selectedItem.children;
                     ((Listcell)children.get(0)).label = empa.getCodigo()+"";
-                    ((Listcell)children.get(1)).label = empa.getRecomendacion()+" ";
+                    ((Listcell)children.get(1)).label = empa.getNombre()+" ";
                 }else{
-                    empa.setCodigo(adm.getNuevaClave("Item","codigo"));
+                    empa.setCodigo(adm.getNuevaClave("DobeCursos","codigo"));
                     adm.guardar(empa);
                 }
-                permiso.auditar("Item","Guardar",""+recomendacion.value);
+                permiso.auditar("DobeCursos","Guardar",""+nombre.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 guardar.disabled=true;
                 agregar.disabled=false;
                 estado(true,false);
-                llenar(new Item(0));
+                llenar(new DobeCursos(0));
 
 
         }
 
         Boolean verificar(String accion){
-         return permiso.verificarPermiso("Parametros_Autoevaluacion",accion);
+         return permiso.verificarPermiso("Cursos_dobe",accion);
 
         }
         void nuevo(){
             if(verificar("Agregar")){
                 guardar.disabled=false;
-                llenar(new Item(0));
+                llenar(new DobeCursos(0));
                 estado(false,false);
                 //alert(empa.getCodigo());
             }else{
@@ -102,7 +82,7 @@
             }
         }
         void move(){
-            llenar((Item)datos.selectedItem.value);
+            llenar((DobeCursos)datos.selectedItem.value);
             modificar.disabled = false;
         }
         void modificar(){
@@ -115,11 +95,11 @@
         void eliminar(){
             if(verificar("Eliminar")){
                 try{
-                    empa = (Item)datos.selectedItem.value;
-                    adm.eliminarObjeto(Item.class, empa.getCodigo());
-                    datos.removeItemAt(datos.getSelectedIndex());
-                    permiso.auditar("Item","Eliminar",""+recomendacion.value);
-                    llenar(new Item(0));
+                    empa = (DobeCursos)datos.selectedItem.value;
+                    adm.eliminarObjeto(DobeCursos.class, empa.getCodigo());
+                    datos.removeDobeCursosAt(datos.getSelectedIndex());
+                    permiso.auditar("DobeCursos","Eliminar",""+nombre.value);
+                    llenar(new DobeCursos(0));
                     Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 }catch(Exception e){
                  Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -130,7 +110,7 @@
         }
  
         void buscar(String p){
-            List empleadosEncontrados = adm.query("Select o from Item as o order by o.tipo, o.recomendacion ");
+            List empleadosEncontrados = adm.query("Select o from DobeCursos as o  order by o.secuencia,  o.nombre ");
             datos = new Listbox();
             int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -139,13 +119,12 @@
 
 
             for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
-                Item acceIt = (Item) it.next();
+                DobeCursos acceIt = (DobeCursos) it.next();
                 Listitem li = new Listitem();
                 li.setValue(acceIt);
                 li.appendChild(new Listcell(acceIt.getCodigo()+" "));
-                li.appendChild(new Listcell(acceIt.getRecomendacion()+" "));
-                li.appendChild(new Listcell(acceIt.getAbreviatura()+" "));
-                li.appendChild(new Listcell(acceIt.getTipo()+" "));
+                li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                li.appendChild(new Listcell(acceIt.getSecuencia()+" "));
                 datos.appendChild(li);
             }
 
@@ -168,23 +147,16 @@
 
         <grid width="100%">
             <rows>
-
+               
                 <row>
-                    <span style="float:right"> Recomendación(*):</span>
-                    <textbox id="recomendacion"  maxlength="200" cols="50" readonly="true"   />   
-                    </row>
-                    <row>
-                    <span style="float:right"> Abreviatura(*):</span>
-                    <textbox id="abreviatura"  maxlength="20" cols="50" readonly="true"   />   
-                          </row>
-                          <row>
-                    <span style="float:right"> Tipo:</span>
-                      <radiogroup Id="tipo" >
-                         <radio selected="true" value="R" label="Recomendacion"/>
-                         <radio value="P" label="Plan Mejora"/>
-                      </radiogroup>
+                    <span style="float:right"> Nombre(*):</span>
+                    <textbox id="nombre"  maxlength="200" cols="50" readonly="true"   />   
                 </row>
-          </rows>
+                 <row>
+                    <span style="float:right"> Secuencia(*):</span>
+                    <intbox id="secuencia"  maxlength="5" cols="50" readonly="true"   />   
+                </row>
+            </rows>
         </grid>
         <vbox>
             <vbox>
@@ -202,7 +174,7 @@
     <groupbox mold="3d" >
         <caption label="Busquedas" />
         <vbox>
-            <hbox> Item:  
+            <hbox> DobeCursos:  
                 <textbox id="buscarText"  maxlength="60" cols="40" />  
                 <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> 
             </hbox>
@@ -210,20 +182,15 @@
                 <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="750px">
                     <listhead>
                         <listheader label="Cod."/>
-                        <listheader label="Recomendaciones"/>
-                        <listheader label="Abreviatura"/>
-                        <listheader label="Tipo"/>
-
+                        <listheader label="Nombres"/>
+                        <listheader visible="false" label="TP"/>
                     </listhead>
                     <listitem  forEach="${allEvents}" value="${each}">
                         <listcell label="${each.codigo}" />
-                        <listcell label="${each.recomendacion}" />
-                        <listcell label="${each.abreviatura}" />
-                        <listcell label="${each.tipo}" />
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.secuencia}" />
                     </listitem>
                 </listbox>
-
-
             </hbox>
         </vbox>
     </groupbox>
