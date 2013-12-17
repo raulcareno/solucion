@@ -1,0 +1,530 @@
+
+<window  width="760px" >
+
+    <zscript>
+           <![CDATA[
+  
+        import jcinform.persistencia.Global;
+        import bean.EventDAO;
+        import java.util.ArrayList;
+        import jcinform.persistencia.*;
+        import jcinform.persistencia.Periodo;
+        import jcinform.procesos.Administrador;
+        import bean.Permisos;
+        import java.math.BigDecimal;
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List allEvents = adm.query("Select o from DobeEstudiantes as o where o.apellidos = 'abc' order by o.codigo ");
+        static DobeEstudiantes empa = new DobeEstudiantes();
+        Permisos permiso = new Permisos();
+ 
+        Object media = null;
+
+        //FUNCIONES
+        void llenar(DobeEstudiantes empa){
+            nombre.value = empa.getNombres();
+            apellidos.value = empa.getApellidos();
+
+        }
+ 
+        
+        void estado(Boolean estado,Boolean modificar){
+            if(modificar){
+            empa = (DobeEstudiantes)datos.selectedItem.value;
+            }else{empa.setCodigo(0);}
+            nombre.readonly = estado;
+            apellidos.readonly = estado;
+
+      }
+
+
+        void guardar(){
+                if(nombre.value==""){
+                    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                }
+
+                Periodo per = (Periodo) ses.getAttribute("periodo");
+                empa.setNombres(nombre.value);
+                empa.setApellidos(apellidos.value);
+                if((!empa.getCodigo().equals(0)) ){
+                    adm.actualizar(empa);
+                    List children = datos.selectedItem.children;
+                    ((Listcell)children.get(0)).label = empa.getCodigo()+"";
+                    ((Listcell)children.get(1)).label = empa.getNombres()+" ";
+                }else{
+                    empa.setCodigo(adm.getNuevaClave("DobeEstudiantes","codigo"));
+                    adm.guardar(empa);
+                }
+                permiso.auditar("DobeEstudiantes","Guardar",""+nombre.value);
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new DobeEstudiantes(0));
+
+
+        }
+
+        Boolean verificar(String accion){
+         return permiso.verificarPermiso("Estudiantes_dobe",accion);
+
+        }
+        void nuevo(){
+            if(verificar("Agregar")){
+                guardar.disabled=false;
+                llenar(new DobeEstudiantes(0));
+                cargarRepresentantes(0);
+                cargarEstructura(0);
+                cargarEstructura1(0);
+                estado(false,false);
+                //alert(empa.getCodigo());
+            }else{
+                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+        void move(){
+            llenar((DobeEstudiantes)datos.selectedItem.value);
+            modificar.disabled = false;
+        }
+        void modificar(){
+            if(verificar("Modificar")){
+                guardar.disabled=false; estado(false,true);
+            }else{
+              Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+        void eliminar(){
+            if(verificar("Eliminar")){
+                try{
+                    empa = (DobeEstudiantes)datos.selectedItem.value;
+                    adm.eliminarObjeto(DobeEstudiantes.class, empa.getCodigo());
+                    datos.removeDobeEstudiantesAt(datos.getSelectedIndex());
+                    permiso.auditar("DobeEstudiantes","Eliminar",""+nombre.value);
+                    llenar(new DobeEstudiantes(0));
+                    Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                }catch(Exception e){
+                 Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
+            }else{
+                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+ 
+        void buscar(String p){
+            List empleadosEncontrados = adm.query("Select o from DobeEstudiantes as o  order by o.apellidos, o.nombres ");
+            datos = new Listbox();
+            int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                 datos.getItems().remove(a);
+            }
+
+
+            for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                DobeEstudiantes acceIt = (DobeEstudiantes) it.next();
+                Listitem li = new Listitem();
+                li.setValue(acceIt);
+                li.appendChild(new Listcell(acceIt.getCodigo()+" "));
+                li.appendChild(new Listcell(acceIt.getNombres()+" "));
+                li.appendChild(new Listcell(acceIt.getApellidos()+" "));
+                datos.appendChild(li);
+            }
+
+        }
+        void cargarEspe(Global g){
+         empa.setEspecialidad(g);
+        }
+        void cargarSec(Global g){
+            empa.setSeccion(g);
+        }
+        void cargarPar(Global g){
+         empa.setParalelo(g);
+        }
+  void cargarRepresentantes(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeRepresentantes as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaRepresentante.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
+                        Textbox txNombres = new Textbox(pregunta.getNombres());
+                        rw.appendChild(txNombres);  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"P"));  
+                        Textbox txTelefono = new Textbox(pregunta.getTelefono());
+                        rw.appendChild(txTelefono);  
+                        filaRepresentante.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeCursos pregunta = (DobeCursos) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboCursos(pregunta));  
+                                Textbox txNombres = new Textbox();
+                                rw.appendChild(txNombres);  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"P"));          
+                                Textbox txTelefono = new Textbox();
+                                rw.appendChild(txTelefono);  
+                                filaRepresentante.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+
+  void cargarEstructura(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeEstructura as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaEstructura.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        
+                        Textbox txNombres = new Textbox(pregunta.getNombres());
+                        rw.appendChild(txNombres);  
+                        
+                        rw.appendChild(llenarComboEstados(preguntas.getDobeRelacion(),"P"));
+                        
+                        Intbox txEdad = new Intbox(pregunta.getEdad());
+                        rw.appendChild(txEdad);  
+                        
+                        rw.appendChild(llenarComboEstados(preguntas.getDobeCivil(),"C"));
+                        
+                        Textbox txInstruccion = new Textbox(pregunta.getInstruccion());
+                        rw.appendChild(txInstruccion);  
+                        
+                        Textbox txOcupacion = new Textbox(pregunta.getOcupacion());
+                        rw.appendChild(txOcupacion);  
+                        
+                        Textbox txLugartrabajo = new Textbox(pregunta.getLugartrabajo());
+                        rw.appendChild(txLugartrabajo);  
+                        
+                        filaEstructura.appendChild(rw);
+
+              }
+                     
+       }else{
+            for (int i = 0; i<=7;i++) {
+                        Row rw = new Row();
+                        
+                        Textbox txNombres = new Textbox("");
+                        rw.appendChild(txNombres);  
+                        
+                        rw.appendChild(llenarComboEstados(new DobeEstados(-1),"P"));
+                        
+                        Intbox txEdad = new Intbox(0);
+                        rw.appendChild(txEdad);  
+                        
+                        rw.appendChild(llenarComboEstados(new DobeEstados(-1),"C"));
+                        
+                        Textbox txInstruccion = new Textbox("");
+                        rw.appendChild(txInstruccion);  
+                        
+                        Textbox txOcupacion = new Textbox("");
+                        rw.appendChild(txOcupacion);  
+                        
+                        Textbox txLugartrabajo = new Textbox("");
+                        rw.appendChild(txLugartrabajo);  
+                        
+                        filaEstructura.appendChild(rw);
+
+              }
+       
+       
+       }
+
+}
+
+ void cargarEstructura1(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeEstructura1 as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaEstructura1.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"C"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"P"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeTipohogar(),"E"));  
+                        Checkbox chTrabaja = new Checkbox();
+                        chTrabaja.setChecked(pregunta.getTrabaja());
+                        rw.appendChild(chTrabaja);  
+                        
+                        Checkbox chRemune = new Checkbox();
+                        chRemune.setChecked(pregunta.getRemunerado());
+                        rw.appendChild(chRemune);  
+                        
+                       
+                        filaEstructura1.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeCursos pregunta = (DobeCursos) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboCursos(pregunta));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"C"));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"P"));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"E"));  
+                                Checkbox chTrabaja = new Checkbox();
+                                chTrabaja.setChecked(false);
+                                rw.appendChild(chTrabaja);  
+
+                                Checkbox chRemune = new Checkbox();
+                                chRemune.setChecked(false);
+                                rw.appendChild(chRemune);  
+
+
+                                filaEstructura1.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+
+
+List listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+
+    Listbox llenarComboCursos(DobeCursos mat){
+            Listbox lista = new Listbox();
+                for (Iterator it = listaCursos.iterator(); it.hasNext();) {
+                        DobeCursos acceIt = (DobeCursos) it.next();
+                            Listitem li = new Listitem();
+                            li.setValue(acceIt);
+                            
+                            Listcell celda = new Listcell(acceIt.getNombre());
+                            li.appendChild(celda);
+                            
+                                if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                    li.setSelected(true);
+                            
+                            lista.appendChild(li);
+                }
+                lista.setMold("select");
+                lista.setStyle("font-size:11px");
+            return lista;
+    }
+List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre ");    
+      Listbox llenarComboEstados(DobeEstados mat, String tipo){
+            Listbox lista = new Listbox();
+                for (Iterator it = listaEstados.iterator(); it.hasNext();) {
+                        DobeEstados acceIt = (DobeEstados) it.next();
+                            Listitem li = new Listitem();
+                            li.setValue(acceIt);
+                            Listcell celda = new Listcell(acceIt.getNombre());
+                            li.appendChild(celda);
+                                if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                    li.setSelected(true);
+                            if(acceIt.getTipo().equals(tipo)){
+                                lista.appendChild(li);
+                            }
+                }
+                lista.setMold("select");
+                lista.setStyle("font-size:11px");
+            return lista;
+    }
+
+        
+  ]]>
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
+
+        <grid width="100%">
+            <rows>
+               
+                <row>
+                    <span style="float:right"> Apellidos(*):</span>
+                    <textbox id="apellidos"  maxlength="50" cols="20" readonly="true"   />   
+                    <span style="float:right"> Nombres(*):</span>
+                    <textbox id="nombre"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+                <row>
+                    <span style="float:right"> Lugar Nac.:</span>
+                    <textbox id="lugarnacimiento"  maxlength="50" cols="20" readonly="true"   />   
+               
+                    <span style="float:right"> Nacionalidad:</span>
+                    <textbox id="nacionalidad"  maxlength="50" cols="20" readonly="true"   />   
+               
+                    <span style="float:right"> Raza:</span>
+                    <textbox id="raza"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+                <row>
+                    <span style="float:right"> Dirección:</span>
+                    <textbox id="direccion"  maxlength="50" cols="20" readonly="true"   />   
+              
+                    <span style="float:right"> Dirección 1 :</span>
+                    <textbox id="direccion1"  maxlength="50" cols="20" readonly="true"   />   
+               
+                    <span style="float:right"> Dirección 2:</span>
+                    <textbox id="direccion2"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+                <row>
+                    <span style="float:right"> Telefono</span>
+                    <textbox id="telefono"  maxlength="50" cols="20" readonly="true"   />   
+               
+                    <span style="float:right"> Celular</span>
+                    <textbox id="celular"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+                <row>
+                    <span style="float:right"> Curso: </span>
+                    <textbox id="curso"  maxlength="50" cols="20" readonly="true"   />   
+               
+                    <span style="float:right"> Año Lectivo</span>
+                    <intbox id="aniolectivo"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+                
+                <row>
+                    <span style="float:right"> Proviene</span>
+                    <textbox id="proviene"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+                <row>
+                    <span style="float:right"> Observación</span>
+                    <textbox id="observacion"  maxlength="50" cols="20" readonly="true"   />   
+                </row>
+               
+            </rows>
+        </grid>
+        <grid>
+            <rows>
+                <row>
+                    <span > 2. DATOS DEL REPRESENTANTE</span>
+                </row>
+                <row>
+                    <grid   id="datosRepresentante">
+                        <columns>
+                            <column  label="Año"/>
+                            <column  label="Apellidos Nombres"/>
+                            <column  label="Relación"/>
+                            <column  label="Teléfono"/>
+                        </columns>
+                        <rows id="filaRepresentante">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
+        <grid>
+            <rows>
+                <row>
+                    <span > 3. ESTRUCTURA FAMILIAR</span>
+                </row>
+                <row>
+                    <grid   id="datosEstructura">
+                        <columns>
+                            <column  label="Apellidos Nombres"/>
+                            <column  label="Relación"/>
+                            <column  label="Edad"/>
+                            <column  label="Estado Civil"/>
+                            <column  label="Instrucción"/>
+                            <column  label="Ocupación"/>
+                            <column  label="Lugar Trabajo"/>
+                        </columns>
+                        <rows id="filaEstructura">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
+        <grid>
+            <rows>
+                <row>
+                    <span >  </span>
+                </row>
+                <row>
+                    <grid   id="datosEstructura1">
+                        <columns>
+                            <column  label="Año"/>
+                            <column  label="Estado Civil Padres"/>
+                            <column  label="En su Hogar vive con"/>
+                            <column  label="Tipo de Hogar"/>
+                            <column  label="Estudiante Trabaja"/>
+                            <column  label="Trabajo Remunerado"/>
+                        </columns>
+                        <rows id="filaEstructura1">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
+        <grid>
+            <rows>
+                <row>
+                    Los padres viven juntos: 
+                    <checkbox id="vivenjuntos"   />
+                    En caso de NO: 
+                    <textbox id="explique" cols="50" rows="2" />
+                </row>
+                <row>
+                    <span style="float:right"> # de Hnos.</span>
+                    <intbox id="hermanos"  maxlength="50" cols="20" readonly="true"   />   
+               
+                    <span style=""> Hombres: </span>
+                    <span>
+                        <intbox id="hombres"  maxlength="2" cols="2" readonly="true"   />   
+               
+                        <span style=""> Mujeres: </span>
+                        <intbox id="mujeres"  maxlength="2" cols="2" readonly="true"   />   
+                    </span>
+                </row>
+                
+            </rows>
+        </grid>
+        
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox mold="3d" >
+        <caption label="Busquedas" />
+        <vbox>
+            <hbox> DobeEstudiantes:  
+                <textbox id="buscarText"  maxlength="60" cols="40" />  
+                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> 
+            </hbox>
+            <hbox>
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="750px">
+                    <listhead>
+                        <listheader label="Cod."/>
+                        <listheader label="Nombress"/>
+                        <listheader visible="false" label="TP"/>
+                    </listhead>
+                    <listitem  forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigo}" />
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.apellidos}" />
+                    </listitem>
+                </listbox>
+            </hbox>
+        </vbox>
+    </groupbox>
+
+</window>
