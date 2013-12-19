@@ -1,5 +1,5 @@
 
-<window  width="760px" >
+<window  width="800px" >
 
     <zscript>
            <![CDATA[
@@ -78,6 +78,7 @@
                 cargarRepresentantes(0);
                 cargarEstructura(0);
                 cargarEstructura1(0);
+                cargarEconomica(0);
                 estado(false,false);
                 //alert(empa.getCodigo());
             }else{
@@ -248,6 +249,60 @@
 }
 
  void cargarEstructura1(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeEstructura1 as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaEstructura1.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"C"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"P"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeTipohogar(),"E"));  
+                        Checkbox chTrabaja = new Checkbox();
+                        chTrabaja.setChecked(pregunta.getTrabaja());
+                        rw.appendChild(chTrabaja);  
+                        
+                        Checkbox chRemune = new Checkbox();
+                        chRemune.setChecked(pregunta.getRemunerado());
+                        rw.appendChild(chRemune);  
+                        
+                       
+                        filaEstructura1.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeCursos pregunta = (DobeCursos) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboCursos(pregunta));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"C"));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"P"));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"E"));  
+                                Checkbox chTrabaja = new Checkbox();
+                                chTrabaja.setChecked(false);
+                                rw.appendChild(chTrabaja);  
+
+                                Checkbox chRemune = new Checkbox();
+                                chRemune.setChecked(false);
+                                rw.appendChild(chRemune);  
+
+
+                                filaEstructura1.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+
+ void cargarEconomica(Integer est){
        
     List preguntas = adm.query("Select o from DobeEstructura1 as o where o.dobeEstudiante.codigo = '"+est+"' " + 
      " order by o.codigo " );
@@ -489,7 +544,61 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 
             </rows>
         </grid>
-        
+         <grid>
+            <rows>
+                <row spans="4">
+                    TRATO AFECTIVO
+                </row>
+                <row>
+                    PADRE     
+                    <listbox mold="select" id="padretrato">
+                        <listitem  selected="true" value="MB" label="Muy Bueno"/>
+                        <listitem value="B" label="Bueno"/>
+                        <listitem value="R" label="Regular"/>
+                        <listitem value="D" label="Deficiente"/>
+	                </listbox>               
+                </row>
+                <row>
+                    MADRE                    
+                    <listbox  mold="select" id="madretrato">
+                        <listitem  selected="true" value="MB" label="Muy Bueno"/>
+                        <listitem value="B" label="Bueno"/>
+                        <listitem value="R" label="Regular"/>
+                        <listitem value="D" label="Deficiente"/>
+	                </listbox>               
+                </row>
+                <row>
+                    REPRESENTANTE
+                    <listbox  mold="select" id="representantetrato">
+                        <listitem selected="true" value="MB" label="Muy Bueno"/>
+                        <listitem value="B" label="Bueno"/>
+                        <listitem value="R" label="Regular"/>
+                        <listitem value="D" label="Deficiente"/>
+	                </listbox>               
+                </row>
+                
+            </rows>
+        </grid>
+         <grid>
+            <rows>
+                <row>
+                    <span >4. CONDICIONES ECONÓMICAS  </span>
+                </row>
+                <row>
+                    <grid   id="datosEconomica">
+                        <columns>
+                            <column  label="AÑO"/>
+                            <column  label="VIVIENDA"/>
+                            <column  label="TIPO VIVIENDA"/>
+                            <column  label="ESTRUCTURA"/>
+                            <column  label="SERVICIOS"/>
+                        </columns>
+                        <rows id="filaEconomica">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
         <vbox>
             <vbox>
                 <hbox>

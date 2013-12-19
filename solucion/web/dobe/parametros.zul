@@ -172,7 +172,9 @@
                         <listitem value="P" label="Parientes"/>
                         <listitem value="C" label="Estado Civil"/>
                         <listitem value="E" label="Estados"/>
-                        <listitem value="V" label="Tipos de Vivienda"/>
+                        <listitem value="TV" label="Tipos de Vivienda"/>
+                        <listitem value="V" label="Vivienda"/>
+                        <listitem value="TE" label="Tipo Estructura"/>
                         <listitem value="S" label="Servicios"/>
                         <listitem value="I" label="Tipos de Ingresos"/>
                         <listitem value="E" label="Tipos de Egresos"/>
