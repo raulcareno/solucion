@@ -120,6 +120,8 @@ public class ReporteCertificadoDataSource implements JRDataSource{
             valor = nodo.getEstudiante().getApellido() + " "+  nodo.getEstudiante().getNombre() ;
         }else if ("fecha".equals(fieldName)) {
             valor = nodo.getFechamat();
+        }else if ("fechaletras".equals(fieldName)) {
+            valor = convertir(nodo.getFechamat());
         }else if ("extension".equals(fieldName)) {
             //valor = nodo.getExtension();
              if(nodo.getExtension()!=null){
