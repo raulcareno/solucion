@@ -244,16 +244,22 @@ public class faltas extends Rows {
                 nota.setMatricula(new Matriculas(new Integer(((Label) labels.get(0)).getValue())));
                 nota.setFaltas(new Integer(((Intbox) labels.get(2)).getValue()));
                 nota.setJustificadas(new Integer(((Intbox) labels.get(3)).getValue()));
-                if(nota.getFaltas()<nota.getJustificadas()){
+                if(nota.getFaltas()<nota.getJustificadas()&&nota.getFaltas()>0){
                     nota.setJustificadas(nota.getFaltas()); 
                 }
+                
                 nota.setTotal(nota.getFaltas()-nota.getJustificadas());
+                if(nota.getTotal()<0){
+                    nota.setTotal(0); 
+                }
+                
                 nota.setMateria(mp.getMateria());
                 nota.setSistema(sistema);
 //                 String vaNota = object1.getValue().toString();
 //                    Integer aCargar = 0;
 //                    if (vaNota.equals("")) {
 //                        aCargar = 0;
+                
 //                    } else {
 //                        aCargar = new Integer(vaNota);
 //                    }

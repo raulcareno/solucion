@@ -304,28 +304,34 @@
 
  void cargarEconomica(Integer est){
        
-    List preguntas = adm.query("Select o from DobeEstructura1 as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+    List preguntas = adm.query("Select o from DobeEconomica as o where o.dobeEstudiante.codigo = '"+est+"' " + 
      " order by o.codigo " );
-       filaEstructura1.getChildren().clear();
+       filaEconomica.getChildren().clear();
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
                       Preguntar pregunta = (Preguntar) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"C"));  
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"P"));  
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeTipohogar(),"E"));  
-                        Checkbox chTrabaja = new Checkbox();
-                        chTrabaja.setChecked(pregunta.getTrabaja());
-                        rw.appendChild(chTrabaja);  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"V"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"TV"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeTipohogar(),"TE"));  
+                        Span s = new Span();
+                                 for(int i = 0; i<listaEstados.size(); i++){
+                                    if((listaEstados.get(i)).getTipo().equals("S")){
+                                        Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
+                                        chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
+                                        chTrabaja.setChecked(false);
+                                        s.appendChild(chTrabaja);
+                                    }
+                                 }
                         
-                        Checkbox chRemune = new Checkbox();
-                        chRemune.setChecked(pregunta.getRemunerado());
-                        rw.appendChild(chRemune);  
+                        rw.appendChild(s);  
+                        
+                        
                         
                        
-                        filaEstructura1.appendChild(rw);
+                        filaEconomica.appendChild(rw);
 
               }
                      
@@ -335,19 +341,26 @@
                             DobeCursos pregunta = (DobeCursos) it.next();
                                 Row rw = new Row();
                                 rw.appendChild(llenarComboCursos(pregunta));  
-                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"C"));  
-                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"P"));  
-                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"E"));  
-                                Checkbox chTrabaja = new Checkbox();
-                                chTrabaja.setChecked(false);
-                                rw.appendChild(chTrabaja);  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"V"));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"TV"));  
+                                rw.appendChild(llenarComboEstados(new DobeEstados(-1),"TE"));  
+                                Span s = new Span();
+                                 for(int i = 0; i<listaEstados.size(); i++){
+                                    if((listaEstados.get(i)).getTipo().equals("S")){
+                                        Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
+                                        chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
+                                        chTrabaja.setChecked(false);
+                                        s.appendChild(chTrabaja);
+                                    }
+                                 
+                                     
+                                 }
+                                 
+                        
+                                rw.appendChild(s);  
 
-                                Checkbox chRemune = new Checkbox();
-                                chRemune.setChecked(false);
-                                rw.appendChild(chRemune);  
 
-
-                                filaEstructura1.appendChild(rw);
+                                filaEconomica.appendChild(rw);
 
                     }
        
