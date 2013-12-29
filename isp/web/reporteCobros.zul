@@ -18,6 +18,8 @@ import jcinform.conexion.*;
 import jcinform.bean.sources.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.joda.time.DateMidnight;
+
 Permisos per = new Permisos();
 
 Administrador adm = new Administrador();
@@ -70,6 +72,10 @@ List nodos = adm.query("Select o from Nodos as o " +
     String tipo = reporte.getSelectedItem().getValue();
            if(tipo.equals("linea")){
                 return;
+           }
+           if(!validar()){
+           
+            return;
            }
             ver.visible = false;
             reportese.visible = true;
@@ -684,8 +690,8 @@ void campos(String valor){
                                     <listitem id="PORESTADO" label="Clientes por Estado " value="PORESTADO" />
                                     <listitem id="PORESTADOPLAN" label="Clientes por Estado y Plan" value="PORESTADOPLAN" />
                                     <listitem id="PORSECTORCLI2" label="Clientes por Sector sin Valor" value="PORSECTORCLI2" />
-                                    <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) [A-Z] " value="PORSECTORCLILETRA" />
-                                    <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos[A-Z] " value="EQUIPOSPORSECTORCLILETRA" />
+                                    <listitem id="PORSECTORCLILETRA" label="Clientes por Sector(Desde-Hasta) (A-Z) " value="PORSECTORCLILETRA" />
+                                    <listitem id="EQUIPOSPORSECTORCLILETRA" label="Clientes por Sector y Equipos(A-Z) " value="EQUIPOSPORSECTORCLILETRA" />
                                     <listitem id="PORNODOSCLI" label="Clientes por Nodos" value="PORNODOSCLI" />
                                     <listitem disabled="true" label="" />
                                     <listitem  disabled="true" id="linea3" label="========INVENTARIOS=================" value="linea2" />
@@ -1134,13 +1140,60 @@ void campos(String valor){
 
 
         <zscript>
+<![CDATA[
+ 
 
             Permisos per = new Permisos();
+ 
             void cargando(){
-            NMAT.visible = per.verificarPermisoReporte("NMAT", "Ingresar");
-            NMATD.visible = per.verificarPermisoReporte("NMATD", "Ingresar");
-   
+
+            for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+                Listitem object = (Listitem)it.next();
+                String valor = object.getValue();
+                String labe = object.getLabel();
+                object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
             }
+            }
+            public Boolean validar(){
+                Date desdeI = desde.value;
+                Date hastaI = hasta.value;
+                Date mesActual = adm.Date();
+                
+                Integer mesPosible = user.getMeses();
+                if(todasfechas.isChecked() && !mesPosible.equals(new Integer(0))){
+                    Messagebox.show("No se le permite seleccionar Todas las Fechas...!", "ISP", Messagebox.OK, Messagebox.ERROR);
+                    return false;
+                }
+                
+                if(mesPosible.equals(new Integer(0))){
+                    return true;
+                }else if(mesPosible.equals(new Integer(100))){ //solo mes actual
+                    if(desdeI.getMonth()== mesActual.getMonth() && desdeI.getYear()== mesActual.getYear() ){
+                        return true;
+                    }else{
+                        Messagebox.show("Fecha (Desde) fuera del rango permitido \n Solo se le permite ver el mes actual ...!", "ISP", Messagebox.OK, Messagebox.ERROR);
+                        return false;
+                    }
+                }else if(mesPosible > 0 && mesPosible < 4 ){ //solo un mes 
+                        DateMidnight jodafec1 = new DateMidnight(mesActual.getYear()+1900, mesActual.getMonth()+1, mesActual.getDate());
+                        DateMidnight ftemp =  jodafec1.minusMonths(mesPosible);
+                        Date fechaLimite = ftemp.toDate();
+                        if(desdeI.compareTo(fechaLimite)==0){
+                            System.out.println("igual");
+                            return true;
+                        }else if(desdeI.compareTo(fechaLimite)>0){
+                            System.out.println("mayor");
+                            return true;
+                        }else if(desdeI.compareTo(fechaLimite)<0){
+                            System.out.println("menor");
+                            Messagebox.show("Fecha (Desde) fuera del rango permitido \n Solo se le permite ver hasta "+mesPosible+" mes(es) atras ...!", "ISP", Messagebox.OK, Messagebox.ERROR);
+                            return false;
+                        }
+                 
+                }
+                return false;
+            }
+            ]]>
         </zscript>
 
 

@@ -57,6 +57,8 @@ public class Empleados implements Serializable {
     private Boolean estado;
     @Column(name = "tipo")
     private String tipo;
+    @Column(name = "meses")
+    private Integer meses;
     @OneToMany(mappedBy = "empleados")
     private Collection<Comisiones> comisionesCollection;
     @OneToMany(mappedBy = "empleados")
@@ -233,6 +235,15 @@ public class Empleados implements Serializable {
     public void setContratosCollection2(Collection<Contratos> contratosCollection2) {
         this.contratosCollection2 = contratosCollection2;
     }
+
+    public Integer getMeses() {
+        return meses;
+    }
+
+    public void setMeses(Integer meses) {
+        this.meses = meses;
+    }
+    
 
     @Override
     public int hashCode() {

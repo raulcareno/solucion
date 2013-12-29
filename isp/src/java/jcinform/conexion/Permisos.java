@@ -89,6 +89,7 @@ public class Permisos {
 
     public void llenar(Empleados user, Empleadossucursal per) {
         Administrador adm = new Administrador();
+
 //        adm.queryNativo(null, Accesos.class)
         //user.getCodigoemp()
         //Window win = (Window) Executions.createComponents("/notasEstudiantes.zul", null, null);
@@ -96,6 +97,7 @@ public class Permisos {
         List listado = adm.query("Select o from Accesos as o where o.perfil.codigo = '" + user.getPerfil().getCodigo() + "'");
         Session a = Sessions.getCurrent();
 
+        a.removeAttribute("accesos");
         a.setAttribute("accesos", listado);
         a.setAttribute("user", user);
         a.setAttribute("sector", per);
@@ -155,6 +157,125 @@ public class Permisos {
             }
         }
         return false;
+
+    }
+    public boolean verificarPermisoReporte(String idVariable, String descripcion, String accion, Boolean pantalla, String grupo) {
+
+        Session a = Sessions.getCurrent();
+        if (idVariable == null) {
+            return true;
+        }
+        idVariable = idVariable.replace("_", " ");
+        List<Accesos> accesosList = (List<Accesos>) a.getAttribute("accesos");
+        Empleados empleadoAc = (Empleados) a.getAttribute("user");
+
+        if (idVariable.equals("-1")) {
+            return true;
+        }
+        if (idVariable.toUpperCase().contains("LINEA")) {
+            return true;
+        }
+        for (Iterator<Accesos> it = accesosList.iterator(); it.hasNext();) {
+            Accesos accesos = it.next();
+            int inicio = accesos.getModulo().indexOf("[");
+            int finales = accesos.getModulo().indexOf("]");
+            String elmodulo = "";
+            try {
+                elmodulo = accesos.getModulo().substring(inicio + 1, finales);
+
+            } catch (Exception e) {
+                //System.out.println("error leve"+e);
+                elmodulo = accesos.getModulo();
+            }
+
+
+            if (elmodulo.equals(idVariable)) {
+//                 System.out.println("MODULO: "+elmodulo);
+                if (accion.equals("Ingresar")) {
+                    return accesos.getIngresar();
+                } else if (accion.equals("Agregar")) {
+                    return accesos.getGuardar();
+                } else if (accion.equals("Modificar")) {
+                    return accesos.getActualizar();
+                } else if (accion.equals("Eliminar")) {
+                    return accesos.getEliminar();
+                }
+            }
+        }
+
+        if (empleadoAc.getPerfil().getNombre().contains("ADMINIS")) {
+            Accesos ac = new Accesos();
+            Administrador adm = new Administrador();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+
+            }
+            ac.setGrupo(grupo);
+
+            ac.setGuardar(true);
+            ac.setIngresar(true);
+            ac.setActualizar(true);
+            ac.setEliminar(Boolean.TRUE);
+            ac.setPerfil(empleadoAc.getPerfil());
+            adm.guardar(ac);
+
+            accesosList.add(ac);
+            a.removeAttribute("accesos");
+            a.setAttribute("accesos", accesosList);
+            
+            //CAMBIO LOS ****************************
+            ac = new Accesos();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+
+            }
+            ac.setGrupo(grupo);
+
+            ac.setGuardar(true);
+            ac.setIngresar(true);
+            ac.setActualizar(true);
+            ac.setEliminar(Boolean.TRUE);
+            ac.setPerfil(null);
+            adm.guardar(ac);
+            //**********************
+            
+            
+
+            return true;
+        } else {
+            Accesos ac = new Accesos();
+            Administrador adm = new Administrador();
+            ac.setCodigoacc(adm.getNuevaClave("Accesos", "codigoacc"));
+            if (pantalla) {
+                ac.setModulo(idVariable);
+                ac.setGrupo("MATRICULAS");
+            } else {
+                ac.setModulo("REP | " + descripcion + " [" + idVariable + "]");
+            }
+            ac.setGrupo(grupo);
+            ac.setGuardar(false);
+            ac.setIngresar(false);
+            ac.setActualizar(false);
+            ac.setEliminar(false);
+            ac.setPerfil(empleadoAc.getPerfil());
+//            if(adm.query("Select o from Accesos as o where o.modulo = '"+ac.getModulo()+"' and perfil is null ").size()>0)
+            adm.guardar(ac);
+            accesosList.add(ac);
+            a.removeAttribute("accesos");
+            a.setAttribute("accesos", accesosList);
+            
+            return false;
+        }
+
+        //return false;
 
     }
 
