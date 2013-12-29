@@ -18,6 +18,7 @@ import jcinform.conexion.*;
 import jcinform.bean.sources.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.joda.time.DateMidnight;
 Permisos per = new Permisos();
 
 Administrador adm = new Administrador();
@@ -66,6 +67,11 @@ cantonTodos.setNombre("- TODOS - ");
            if(tipo.equals("linea")){
                 return;
            }
+            if(!validar()){
+           
+            return;
+           }
+           
             ver.visible = false;
             reportese.visible = true;
             cerrar.setVisible(true);
@@ -393,6 +399,47 @@ void campos(String valor){
              }
 
     }
+    
+    public Boolean validar(){
+                Date desdeI = desde.value;
+                Date hastaI = hasta.value;
+                Date mesActual = adm.Date();
+                
+                Integer mesPosible = user.getMeses();
+                if(todasfechas.isChecked() && !mesPosible.equals(new Integer(0))){
+                    Messagebox.show("No se le permite seleccionar Todas las Fechas...!", "ISP", Messagebox.OK, Messagebox.ERROR);
+                    return false;
+                }
+                
+                if(mesPosible.equals(new Integer(0))){
+                    return true;
+                }else if(mesPosible.equals(new Integer(100))){ //solo mes actual
+                    if(desdeI.getMonth()== mesActual.getMonth() && desdeI.getYear()== mesActual.getYear() ){
+                        return true;
+                    }else{
+                        Messagebox.show("Fecha (Desde) fuera del rango permitido \n Solo se le permite ver el mes actual ...!", "ISP", Messagebox.OK, Messagebox.ERROR);
+                        return false;
+                    }
+                }else if(mesPosible > 0 && mesPosible < 4 ){ //solo un mes 
+                        DateMidnight jodafec1 = new DateMidnight(mesActual.getYear()+1900, mesActual.getMonth()+1, mesActual.getDate());
+                        DateMidnight ftemp =  jodafec1.minusMonths(mesPosible);
+                        Date fechaLimite = ftemp.toDate();
+                        if(desdeI.compareTo(fechaLimite)==0){
+                            System.out.println("igual");
+                            return true;
+                        }else if(desdeI.compareTo(fechaLimite)>0){
+                            System.out.println("mayor");
+                            return true;
+                        }else if(desdeI.compareTo(fechaLimite)<0){
+                            System.out.println("menor");
+                            Messagebox.show("Fecha (Desde) fuera del rango permitido \n Solo se le permite ver hasta "+mesPosible+" mes(es) atras ...!", "ISP", Messagebox.OK, Messagebox.ERROR);
+                            return false;
+                        }
+                 
+                }
+                return false;
+            }
+    
 ]]>
         </zscript>
         <panel width="100%" id="parametros"  height="100%" border="normal">

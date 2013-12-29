@@ -307,8 +307,10 @@ String llenarCeros(String numero){
             cheque.readonly = true;
             tarjeta.readonly = true;
             btnguardar.disabled = true;
-                        generarFacturas gn = new generarFacturas();
-                        gn.comprobarEstados(sucursalEmp.getSucursal(),factu.getContratos());
+        generarFacturas gn = new generarFacturas();
+        gn.comprobarEstados(sucursalEmp.getSucursal(),factu.getContratos());
+ 
+        
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }  
