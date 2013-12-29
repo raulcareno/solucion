@@ -19,7 +19,7 @@ import jcinform.bean.sources.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joda.time.DateMidnight;
-
+import jcinform.bean.generarFacturas;
 Permisos per = new Permisos();
 
 Administrador adm = new Administrador();
@@ -44,7 +44,7 @@ List nodos = adm.query("Select o from Nodos as o " +
      Nodos nSel = new Nodos(-1);
      nSel.setNombre("[TODOS]");
      nodos.add(0,nSel);
-     
+        
  List proveedores2 = adm.query("Select o from Proveedores  as o ");
      
      
@@ -70,6 +70,13 @@ List nodos = adm.query("Select o from Nodos as o " +
  void showReport() {
  try{
     String tipo = reporte.getSelectedItem().getValue();
+        if(tipo.equals("HABILITADOS")){
+            verificar();
+            return;
+        }else if(tipo.equals("AVISADOS")){
+            verificarAvisado();
+            return;
+        }
            if(tipo.equals("linea")){
                 return;
            }
@@ -713,6 +720,8 @@ void campos(String valor){
                                     <listitem id="HISTORIA3" label="Historia Técnica x Sector" value="HISTORIA3" />
                                     <listitem id="HOJARUTA" label="Hoja de Ruta x Empleado" value="HOJARUTA" />
                                     <listitem id="HOJARUTA2" label="Reporte por Estados" value="HOJARUTA2" />
+                                    <listitem id="HABILITADOS" label="Archivo Secure ISP(Estados)" value="HABILITADOS" />
+                                    <listitem id="AVISADOS" label="Archivo Secure ISP(Avisados)" value="AVISADOS" />
                                     
            
                                 </listbox>
@@ -1095,6 +1104,7 @@ void campos(String valor){
                                         </bandpopup>
                                     </bandbox>
                                     <button label="Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+                                     
                                 
                                 </span>
 
@@ -1105,6 +1115,25 @@ void campos(String valor){
                     </rows>
                 </grid>
                 <zscript>
+                    public void verificar(){
+                        generarFacturas gn = new generarFacturas();
+                        
+                        byte[] data = gn.comprobarEstados(sucursalEmp.getSucursal());
+                        Date fec = adm.Date();   
+                        String nombreArchivo = "SECURE"+(fec.getYear()+1900)+""+(fec.getMonth()+1)+""+(fec.getDate())+".csv"; 
+                        Filedownload.save(data, "file", nombreArchivo);
+                        
+                    }
+                    
+                    public void verificarAvisado(){
+                        generarFacturas gn = new generarFacturas();
+                        
+                        byte[] data = gn.comprobarEstadosAviso(sucursalEmp.getSucursal());
+                        Date fec = adm.Date();   
+                        String nombreArchivo = "SECUREAVISADOS"+(fec.getYear()+1900)+""+(fec.getMonth()+1)+""+(fec.getDate())+".csv"; 
+                        Filedownload.save(data, "file", nombreArchivo);
+                        
+                    }
                     public void aumentar(){
                     String tamanio = report.height.replace("px","").replace("%","");
                     Integer t = new Integer(tamanio);

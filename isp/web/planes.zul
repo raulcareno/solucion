@@ -21,15 +21,15 @@
         //SimpleTreeModel stm = new SimpleTreeModel(root);
         //FUNCIONES
         void llenar(Plan equi2){
-        equi = equi2;
-        nombre.value = equi.getNombre();
-        valor.value = equi.getValor();
-        pvp4.value = equi.getPvp4();
-        tipo.value = equi.getTipo(); //home, corporativo
-        dias.value = equi.getDias();
-        fechaaviso.value = equi.getFechaaviso();
-        fechavencimiento.value = equi.getFechavencimiento();
-        nivelcomparticion.value = equi.getNivelcomparticion();//8:1 1:1
+                equi = equi2;
+                nombre.value = equi.getNombre();
+                valor.value = equi.getValor();
+                pvp4.value = equi.getPvp4();
+                tipo.value = equi.getTipo(); //home, corporativo
+                dias.value = equi.getDias();
+                fechaaviso.value = equi.getFechaaviso();
+                fechavencimiento.value = equi.getFechavencimiento();
+                nivelcomparticion.value = equi.getNivelcomparticion();//8:1 1:1
     
         }
         void estado(Boolean estado,Boolean modificar){
@@ -63,19 +63,21 @@
         equi.setSucursal(sucursalEmp.getSucursal());
         equi.setFechaaviso(fechaaviso.value);
         equi.setFechavencimiento(fechavencimiento.value);
- 
         equi.setNivelcomparticion(nivelcomparticion.value);
         
         if((!equi.getCodigo().equals(0)) ){
-        adm.actualizar(equi);
-        List children = datos.selectedItem.children;
-        ((Listcell)children.get(0)).label = equi.getCodigo()+"";
-        ((Listcell)children.get(1)).label = nombre.value+ "" ;
-        permiso.auditar("Planes","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+            adm.actualizar(equi);
+            List children = datos.selectedItem.children;
+            ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+            ((Listcell)children.get(1)).label = nombre.value+ "" ;
+            permiso.auditar("Planes","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
         }else{
-        equi.setCodigo(adm.getNuevaClave("Plan","codigo"));
-        adm.guardar(equi);
-        permiso.auditar("Planes","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+            equi.setCodigo(adm.getNuevaClave("Plan","codigo"));
+            adm.guardar(equi);
+            permiso.auditar("Planes","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+        }
+        if(generarautomatico.isChecked()){
+                adm.ejecutaSql("Update Contratos set automatico = true where plan.codigo = '"+equi.getCodigo()+"' ");
         }
         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         guardar.disabled=true;
@@ -83,6 +85,7 @@
         estado(true,false);
         llenar(new Plan(0));
         buscar("");
+            
         }
 
         Boolean verificar(String accion){
@@ -99,8 +102,9 @@
         }
         }
         void move(){
-        llenar((Plan)datos.selectedItem.value);
-        modificar.disabled = false;
+            generarautomatico.checked= false;
+            llenar((Plan)datos.selectedItem.value);
+            modificar.disabled = false;
         }
         void modificar(){
         if(verificar("Modificar")){
@@ -197,6 +201,15 @@
                         Día Vencimiento(*):
                         <intbox id="fechavencimiento" readonly="true"  />
                     </span>
+                    
+                </row>
+                   <row >
+                       <span></span>
+                       <span>
+                        <checkbox id="generarautomatico" label='¿Actualizar el estado de todos los contratos de este plan a "automático"?' />
+                        
+                        </span>
+                     
                     
                 </row>
                  

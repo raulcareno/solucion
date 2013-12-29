@@ -4,6 +4,7 @@
  */
 package jcinform.bean;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
@@ -89,7 +90,7 @@ public class generarFacturas {
          * saldo,fa.contratos, fa.numero,fa.emision FROM cxcobrar cx, factura fa
          * " + " WHERE fa.clientes = "+codigocli.value+" " + " AND cx.factura =
          * fa.codigo GROUP BY fa.codigo HAVING (SUM(cx.debe) - SUM(cx.haber)) >
-         * 0 order by fa.contratos, fa.fecha ");          *
+         * 0 order by fa.contratos, fa.fecha "); *
          */
 
         String query = "Select o.* from Contratos  as o "
@@ -130,13 +131,12 @@ public class generarFacturas {
                                 + " AND cx.factura = fa.codigo "
                                 + " GROUP BY fa.codigo   "
                                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 ");
-                            if(facEncontradas.size()>0){
-
-                            }
+                        if (facEncontradas.size() > 0) {
+                        }
                     } catch (Exception e) {
                         System.out.println("ERROR ASIGNADO VALOR DE MORA");
                     }
-                    
+
                 }
 
 
@@ -304,7 +304,7 @@ public class generarFacturas {
                 object.setDescuento(BigDecimal.ZERO);
             }
 
-            Equipos eqValorMora = (Equipos) adm.querySimple("Select o from Equipos as o where o.codigo = '"+suc.getEmpresa().getMora()+"' ");
+            Equipos eqValorMora = (Equipos) adm.querySimple("Select o from Equipos as o where o.codigo = '" + suc.getEmpresa().getMora() + "' ");
 
             BigDecimal valor = new BigDecimal(redondear(eqValorMora.getPvp1().doubleValue(), 2));
 //            if (object.getFormapago().equals(3)) {
@@ -356,6 +356,7 @@ public class generarFacturas {
 
         return "OK";
     }
+
     public String anadirCobros(Sucursal suc, Contratos con) { //ESTO ES PARA AÑADIR COBROS PENDIENTES individual
         //seleccionar todos los que no tenga deuda en éste més o periodo
         Administrador adm = new Administrador();
@@ -567,14 +568,13 @@ public class generarFacturas {
 
     }
 
-   
-     //BUSCAR FACTURAS EN CUENTAS POR COBRAR //cerrar día
-    public List buscar(Sucursal suc,Date desde) {
+    //BUSCAR FACTURAS EN CUENTAS POR COBRAR //cerrar día
+    public List buscar(Sucursal suc, Date desde) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
-         
-                String desdestr = convertiraString(desde) + "";
+
+        String desdestr = convertiraString(desde) + "";
         List<Integer> contratos = adm.query("Select o.codigo from Contratos as o "
-                + "where  o.sucursal.codigo =  '" + suc.getCodigo() + "'  " );
+                + "where  o.sucursal.codigo =  '" + suc.getCodigo() + "'  ");
         String contraString = "";
         for (Iterator<Integer> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Integer contratos1 = itContratos.next();
@@ -593,23 +593,22 @@ public class generarFacturas {
                 + "and c.codigo = fa.contratos  "
                 + "  AND cx.factura = fa.codigo  "
                 + "AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  "
-                + " AND cx.fecha between '"+desdestr+"' and '"+desdestr+"' AND cx.haber > 0 "
+                + " AND cx.fecha between '" + desdestr + "' and '" + desdestr + "' AND cx.haber > 0 "
                 + " AND cx.codigo not in (Select cxcobrar from Depositos) GROUP BY cx.codigo "
                 + "   "
                 + " order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
-        System.out.println(""+quer);
+        System.out.println("" + quer);
         List deudas = adm.queryNativo(quer);
 
         return deudas;
     }
 
-    
     //BUSCAR PARA ASIGNAR FACTURA 
     public List buscar(Sucursal suc, Sector uno, Sector dos, String formapago, String estado) {
         //seleccionar todos los que no tenga deuda en éste més o periodo
         String complemento = " and o.formapago = '" + formapago + "' ";
         String complementoSectores = " and o.sector.numero between  " + uno.getNumero() + "  and  " + dos.getNumero() + " ";
-        if(uno.getCodigo().equals(new Integer(-1))){
+        if (uno.getCodigo().equals(new Integer(-1))) {
             complementoSectores = "";
         }
         if (formapago.equals("0")) {
@@ -620,7 +619,7 @@ public class generarFacturas {
             compEstado = "";
         }
         List<Contratos> contratos = adm.query("Select o from Contratos as o "
-                + "where o.sucursal.codigo =  '" + suc.getCodigo() + "'  "+ complementoSectores  + complemento + " " + compEstado);
+                + "where o.sucursal.codigo =  '" + suc.getCodigo() + "'  " + complementoSectores + complemento + " " + compEstado);
         String contraString = "";
         for (Iterator<Contratos> itContratos = contratos.iterator(); itContratos.hasNext();) {
             Contratos contratos1 = itContratos.next();
@@ -748,6 +747,7 @@ public class generarFacturas {
         return deudas;
     }
 //PARA LA PANTALLA GENERAR FACTURAS
+
     public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco) {
         /*
          * if(equi.getFormapago().equals(1)){//SE COBRA EN OFICIONA efe.checked
@@ -799,15 +799,15 @@ public class generarFacturas {
 
         return deudas;
     }
-    
+
     //PARA LA PANTALLA GENERAR FACTURAS 2 Y RECIBOS
-    public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco,String seFactura,Sector sect) {
+    public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco, String seFactura, Sector sect) {
 
         String complementotipoPlan = "o.plan.tipo = '" + tipoPlan + "' ";
-        if(tipoPlan.equals("TODOS")){
+        if (tipoPlan.equals("TODOS")) {
             complementotipoPlan = "o.plan.tipo like '%%' ";
-        } 
-        
+        }
+
         String complementoSector = " and  o.sector.codigo  = '" + sect.getCodigo() + "'  ";
         if (sect.getCodigo().equals(new Integer("-1"))) {
             complementoSector = "";
@@ -815,9 +815,9 @@ public class generarFacturas {
         String complementoFacturar = "";
         if (seFactura.equals(new Integer("-1"))) {
             complementoFacturar = "";
-        }else if (seFactura.equals("SI")) {
+        } else if (seFactura.equals("SI")) {
             complementoFacturar = " and  o.serie3 = '" + seFactura + "'  ";
-        }else if (seFactura.equals("NO")) {
+        } else if (seFactura.equals("NO")) {
             complementoFacturar = " and  o.serie3 = 'NO'  ";
         }
         //seleccionar todos los que no tenga deuda en éste més o periodo
@@ -831,7 +831,7 @@ public class generarFacturas {
             }
         }
         String query = "Select o.codigo from Contratos as o "
-                + "where "+complementotipoPlan+" " + compleDondePaga + ""+ complementoSector+"  " +complementoFacturar
+                + "where " + complementotipoPlan + " " + compleDondePaga + "" + complementoSector + "  " + complementoFacturar
                 + "order by o.clientes.apellidos ";
         List contratos = adm.query(query);
         String contraString = "";
@@ -916,4 +916,161 @@ public class generarFacturas {
             return 0.0;
         }
     }
+
+    public byte[] comprobarEstados(Sucursal suc) { //cambio de estados a clientes por deuda
+
+        String quer = "SELECT fa.contratos FROM cxcobrar cx, factura  fa, contratos c, clientes cli,plan p  "
+                + " WHERE c.codigo = fa.contratos   AND p.codigo = c.plan   "
+                + "  AND cx.factura = fa.codigo AND fa.fecha "
+                + " AND c.automatico = TRUE  "
+                + " AND CURDATE() > CONCAT(YEAR(fa.fecha),'-',MONTH(fa.fecha),'-',p.fechavencimiento) "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
+        String contratosList = "";
+        for (int i = 0; i < deudas.size(); i++) {
+            contratosList += deudas.get(i) + ",";
+
+        }
+        //TENGO QUE ACTUALIZAR A TODOS LOS CONTRATOS QUE SE ENCUENTREN CORTADOS
+        adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and automatico = true ");
+        if (contratosList.length() > 0) {
+            contratosList = contratosList.substring(0, contratosList.length() - 1);
+            contratosList = contratosList.replace("[", "").replace("]", "");
+            adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Cortado' WHERE automatico = true  and estado = 'Activo' and codigo in (" + contratosList + ") ");
+        }
+
+        try {
+            byte[] data = null;
+
+            File outFile = File.createTempFile("secureisp", ".csv");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+            List<Contratos> listado = adm.query("Select o from Contratos as o where o.estado in ('Activo','Cortado','Suspendido') ");
+            for (Iterator<Contratos> it = listado.iterator(); it.hasNext();) {
+                Contratos contratos = it.next();
+                writer.write("" + contratos.getContrato() + ";" + (contratos.getEstado().equals("Activo") ? "habilitado" : "deshabilitado")); // numero de autorización
+                writer.write("\r\n");
+            }
+            listado = null;
+            FileInputStream input;
+            writer.close();
+            try {
+                input = new FileInputStream(outFile);
+                data = new byte[input.available()];
+                input.read(data);
+                input.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return data;
+        } catch (Exception ex) {
+            Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    public byte[] comprobarEstadosAviso(Sucursal suc) { //aviso
+
+        String quer = "SELECT fa.contratos FROM cxcobrar cx, factura  fa, contratos c, clientes cli,plan p  "
+                + " WHERE c.codigo = fa.contratos   AND p.codigo = c.plan   "
+                + "  AND cx.factura = fa.codigo AND fa.fecha "
+                + " AND c.automatico = TRUE AND c.estado in ('Activo','Cortado','Suspendido')  "
+                + " AND CURDATE() > CONCAT(YEAR(fa.fecha),'-',MONTH(fa.fecha),'-',p.fechaaviso)  "
+                + " AND CURDATE() <= CONCAT(YEAR(fa.fecha),'-',MONTH(fa.fecha),'-',p.fechavencimiento)   "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
+        String contratosList = "";
+        for (int i = 0; i < deudas.size(); i++) {
+            contratosList += deudas.get(i) + ",";
+        }
+
+        if (contratosList.length() > 0) {
+            contratosList = contratosList.substring(0, contratosList.length() - 1);
+            contratosList = contratosList.replace("[", "").replace("]", "");
+            try {
+                byte[] data = null;
+
+                File outFile = File.createTempFile("secureisp", ".csv");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+                List<Contratos> listado = adm.query("Select o from Contratos as o where o.codigo in (" + contratosList + ") ");
+                for (Iterator<Contratos> it = listado.iterator(); it.hasNext();) {
+                    Contratos contratos = it.next();
+                    writer.write("" + contratos.getContrato() + ";" + "avisado"); // numero de autorización
+                    writer.write("\r\n");
+                }
+                FileInputStream input;
+                writer.close();
+                try {
+                    input = new FileInputStream(outFile);
+                    data = new byte[input.available()];
+                    input.read(data);
+                    input.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                listado = null;
+
+                return data;
+            } catch (Exception ex) {
+                Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        return null;
+    }
+
+    public byte[] comprobarEstados(Sucursal suc, Contratos contrato) { //GENERACION AUTOMATICA
+
+        String quer = "SELECT fa.contratos FROM cxcobrar cx, factura  fa, contratos c, clientes cli, plan p  "
+                + " WHERE c.codigo = fa.contratos  AND p.codigo = c.plan   "
+                + "  AND cx.factura = fa.codigo "
+                + " AND c.automatico = TRUE  "
+                + " AND CURDATE() > CONCAT(YEAR(fa.fecha),'-',MONTH(fa.fecha),'-',p.fechavencimiento) "
+                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "' "
+                + " and fa.contratos = '" + contrato.getCodigo() + "'  GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
+        List deudas = adm.queryNativo(quer);
+        String contratosList = "";
+        for (int i = 0; i < deudas.size(); i++) {
+            contratosList += deudas.get(i) + ",";
+
+        }
+
+        if (contratosList.length() > 0) {
+            contratosList = contratosList.substring(0, contratosList.length() - 1);
+            contratosList = contratosList.replace("[", "").replace("]", "");
+            adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Cortado' WHERE automatico = true  and codigo in (" + contratosList + ") ");
+        } else {
+            //TENGO QUE ACTUALIZAR A TODOS LOS CONTRATOS QUE SE ENCUENTREN CORTADOS
+            adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
+        }
+
+
+
+
+        return null;
+    }
+//    public void comprobarEstados() {
+//
+//        Thread cargar = new Thread() {
+//            public void run() {
+//                while (true) {
+//
+//                    try {
+//                         
+//
+//
+//                    } catch (Exception ex) {
+//                        Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
+//                    }  
+//                }
+//            }
+//        };
+//        cargar.start();
+//
+//
+//    }
 }
