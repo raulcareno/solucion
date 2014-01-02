@@ -74,6 +74,8 @@ public class Empresa implements Serializable {
     private Boolean aplicasuspension;
     @Column(name = "solofactura")
     private Boolean solofactura;
+    @Column(name = "diasminima")
+    private Integer diasminima;
      
     
     @OneToMany(mappedBy = "empresa")
@@ -305,6 +307,14 @@ public class Empresa implements Serializable {
 
     public void setSucursalCollection(Collection<Sucursal> sucursalCollection) {
         this.sucursalCollection = sucursalCollection;
+    }
+
+    public Integer getDiasminima() {
+        return diasminima;
+    }
+
+    public void setDiasminima(Integer diasminima) {
+        this.diasminima = diasminima;
     }
 
  

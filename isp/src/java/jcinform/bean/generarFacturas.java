@@ -526,6 +526,104 @@ public class generarFacturas {
 
         return "OK";
     }
+    
+     public String generarCobrosProrrateado(Sucursal suc, Contratos con, Date fechaInstalacion) {
+        //seleccionar todos los que no tenga deuda en éste més o periodo
+        int dia = fechaInstalacion.getDate();
+        Date fec = fechaInstalacion;
+        fec.setDate(1);
+        Administrador adm = new Administrador();
+        String mesActualIni = convertiraString(fec);
+        String mesActualFin = convertiraString(ultimoDia(fec));
+        List facturaExistente = adm.query("Select f from Factura as f "
+                + "where f.contratos.codigo = '" + con.getCodigo() + "' "
+                + "and f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "' "
+                + "and f.clientes.codigo = '" + con.getClientes().getCodigo() + "' ");
+        if (facturaExistente.size() > 0) {
+            try {
+                System.out.println("NO SE HA AÑADIDO POR QUE YA TIENE DEDUA PARA EL MES ");
+//                int valor0 = Messagebox.show("Ya se ha añadido una Deuda para éste mes, desea continuar añadiendolo?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+//                if (valor0 == 16) {
+//                } else {
+                    return "";
+//                }
+            } catch (Exception ex) {
+                Logger.getLogger(generarFacturas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        try {
+
+            Contratos object = con;
+            Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));
+            fac.setNumero(null);
+            fac.setEstado(true);
+            fac.setContratos(con);
+            fac.setClientes(object.getClientes());
+            fechaInstalacion.setDate(dia);
+            fac.setFecha(fechaInstalacion);
+            fac.setSucursal(suc);
+            fac.setDescuento(BigDecimal.ZERO);
+            BigDecimal valor = new BigDecimal(redondear(con.getPlan().getValor(), 2)).subtract(object.getDescuento());
+//            if(object.getFormapago().equals(3)){
+//                valor = valor.add(suc.getEmpresa().getInstalacion());
+//            }
+            if (fechaInstalacion.getDate() > 1 && fechaInstalacion.getDate() > suc.getEmpresa().getDiasminima()) {
+                int noDias = object.getPlan().getDias() - fechaInstalacion.getDate();
+                if (noDias > 0) {
+                    if ((fechaInstalacion.getMonth() == adm.Date().getMonth())) {
+                        valor = new BigDecimal(noDias).multiply(valor).divide(new BigDecimal(object.getPlan().getDias()), 2, RoundingMode.HALF_UP);
+                    } else {
+                        valor = new BigDecimal(con.getPlan().getValor()).subtract(object.getDescuento());
+                    }
+                } else {
+                    return "";
+                }
+
+            } else {
+                valor = new BigDecimal(redondear(con.getPlan().getValor(), 2)).subtract(object.getDescuento());
+            }
+            fac.setSubtotal(valor);
+            fac.setDescuento(new BigDecimal(0));
+            fac.setBaseiva(fac.getSubtotal());
+            fac.setPorcentajeiva(suc.getEmpresa().getIva());
+            fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
+            fac.setTotal(fac.getValoriva().add(valor));
+            adm.guardar(fac);
+            Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+            det.setTotal(valor.subtract(object.getDescuento()));
+            det.setPlan(object.getPlan());
+            det.setCantidad(1);
+            det.setMes(fechaInstalacion.getMonth() + 1);
+            det.setAnio(fechaInstalacion.getYear() + 1900);
+            det.setDescripcion("generada");
+            det.setFactura(fac);
+            adm.guardar(det);
+            Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
+            cuenta.setDebe(fac.getTotal());
+            cuenta.setHaber(BigDecimal.ZERO);
+            cuenta.setDeposito(BigDecimal.ZERO);
+            cuenta.setCheque(BigDecimal.ZERO);
+            cuenta.setEfectivo(BigDecimal.ZERO);
+            cuenta.setDescuento(BigDecimal.ZERO);
+            cuenta.setFactura(fac);
+            cuenta.setFecha(fechaInstalacion);
+            cuenta.setNotarjeta("");
+            cuenta.setNocheque("");
+            cuenta.setTotal(fac.getTotal());
+            cuenta.setRtotal(BigDecimal.ZERO);
+            adm.guardar(cuenta);
+
+        } catch (Exception e) {
+            System.out.println("DUPLICADO: " + e.hashCode() + " .." + e);
+            return e.hashCode() + "";
+        }
+        //seleccionar todos los clientes que tengan contrato activo o cortado (verificar si es )??
+
+        //generar en facturas con el número y también en cxc.
+
+        return "OK";
+    }
 
     public static String convertiraString(Date fecha) {
 
@@ -1046,6 +1144,11 @@ public class generarFacturas {
         } else {
             //TENGO QUE ACTUALIZAR A TODOS LOS CONTRATOS QUE SE ENCUENTREN CORTADOS
             adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
+             generarCobrosProrrateado(suc, contrato, new Date());
+             //TOMAR EN CUENTA SI NO ESTA EN FIN DE MES 31
+             //TOMAR EN CUENTA QUE SI ES QUE ESTA ENTRE EL 1 Y EL 5
+             //TOMAR EN CUENTA SI ES QUE NO HA PAGADO EL MES Y QUE NO SE GENERE DOS VECES EL MISMO MES
+             //
         }
 
 
