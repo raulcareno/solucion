@@ -68,12 +68,12 @@ private frmPrincipal princip;
                 {
                     charla.addElement(texto);
                      System.out.println("TEXTO RECIBIDO: "+texto);
-                    if(texto.contains("1")){
-                        System.out.println("ABRIO BARRERA: "+texto);    
-                        princip.barrera1.doClick();
-                    }else{
-                        System.out.println("nada....");
-                    }
+//                    if(texto.contains("1")){
+//                        System.out.println("ABRIO BARRERA: "+texto);    
+//                        princip.barrera1.doClick();
+//                    }else{
+//                        System.out.println("nada....");
+//                    }
                     
                     
                 }
