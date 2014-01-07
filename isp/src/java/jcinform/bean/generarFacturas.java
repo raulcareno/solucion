@@ -1143,8 +1143,12 @@ public class generarFacturas {
             adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Cortado' WHERE automatico = true  and codigo in (" + contratosList + ") ");
         } else {
             //TENGO QUE ACTUALIZAR A TODOS LOS CONTRATOS QUE SE ENCUENTREN CORTADOS
-            adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
-             generarCobrosProrrateado(suc, contrato, new Date());
+            if(contrato.getEstado().equals("Suspendido") || contrato.getEstado().equals("Terminado")){
+                return null;
+            }else{
+                adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
+                generarCobrosProrrateado(suc, contrato, new Date());
+            }
              //TOMAR EN CUENTA SI NO ESTA EN FIN DE MES 31
              //TOMAR EN CUENTA QUE SI ES QUE ESTA ENTRE EL 1 Y EL 5
              //TOMAR EN CUENTA SI ES QUE NO HA PAGADO EL MES Y QUE NO SE GENERE DOS VECES EL MISMO MES
