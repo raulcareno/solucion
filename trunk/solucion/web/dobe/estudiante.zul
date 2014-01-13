@@ -807,7 +807,30 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                     </grid>
                 </row>
                 <row>
-                     
+                     <span>
+                         ¿Repitió algún año? <radiogroup Id="repitio" >
+                                                <radio value="true" label="SI"/>
+                                                <radio value="false" label="NO"/>
+                                            </radiogroup>
+                     </span>
+                </row>
+                <row>
+                     <span>
+                         Describa la razón: <textbox id="larazon"/>
+                     </span>
+                </row>
+                  <row>
+                     <span>
+                         ¿Desertó algún año? <radiogroup Id="deserto" >
+                                                <radio value="true" label="SI"/>
+                                                <radio value="false" label="NO"/>
+                                            </radiogroup>
+                     </span>
+                </row>
+                <row>
+                     <span>
+                         Describa la razón: <textbox id="larazondeserto"/>
+                     </span>
                 </row>
             </rows>
         </grid>
