@@ -564,7 +564,10 @@ public class generarFacturas {
             fac.setFecha(fechaInstalacion);
             fac.setSucursal(suc);
             fac.setDescuento(BigDecimal.ZERO);
+            
+            
             BigDecimal valor = new BigDecimal(redondear(con.getPlan().getValor(), 2)).subtract(object.getDescuento());
+            
 //            if(object.getFormapago().equals(3)){
 //                valor = valor.add(suc.getEmpresa().getInstalacion());
 //            }
@@ -583,6 +586,14 @@ public class generarFacturas {
             } else {
                 valor = new BigDecimal(redondear(con.getPlan().getValor(), 2)).subtract(object.getDescuento());
             }
+            
+            
+            Equipos planmora = (((Equipos)adm.buscarClave(object.getSucursal().getEmpresa().getMora(),Equipos.class)));
+            if(object.getSucursal().getEmpresa().getAplicamora()){
+                if(planmora != null){
+                    valor = valor.add((planmora.getPvp1()));
+                }
+            }
             fac.setSubtotal(valor);
             fac.setDescuento(new BigDecimal(0));
             fac.setBaseiva(fac.getSubtotal());
@@ -590,8 +601,9 @@ public class generarFacturas {
             fac.setValoriva((valor).multiply(suc.getEmpresa().getIva().divide(new BigDecimal(100), 2, RoundingMode.HALF_UP)));
             fac.setTotal(fac.getValoriva().add(valor));
             adm.guardar(fac);
+            
             Detalle det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal(valor.subtract(object.getDescuento()));
+            det.setTotal(valor.subtract(object.getDescuento()).subtract((planmora.getPvp1()))); 
             det.setPlan(object.getPlan());
             det.setCantidad(1);
             det.setMes(fechaInstalacion.getMonth() + 1);
@@ -599,6 +611,19 @@ public class generarFacturas {
             det.setDescripcion("generada");
             det.setFactura(fac);
             adm.guardar(det);
+            //kgkl glj
+            
+            det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+            det.setTotal((planmora.getPvp1())); 
+            det.setPlan(null);
+            det.setEquipos(planmora); 
+            det.setCantidad(1);
+            det.setMes(fechaInstalacion.getMonth() + 1);
+            det.setAnio(fechaInstalacion.getYear() + 1900);
+            det.setDescripcion("generada");
+            det.setFactura(fac);
+            adm.guardar(det);
+            
             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cuenta.setDebe(fac.getTotal());
             cuenta.setHaber(BigDecimal.ZERO);
