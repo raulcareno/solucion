@@ -473,25 +473,45 @@ void guardars(){
                     
   void buscarSoportes(){
                     try{
+                   
                             List ControlequiposEncontrados = adm.query("Select o from Soporte  as o where o.clientes.codigo = '"+codigocli.value+"' order by o.fecha desc ");
-                        
+                      
                         soporte = new Listbox();
                         int a=0;
-                            for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
+                                for (Iterator it =soporte.getItems().iterator(); it.hasNext();) {
                                     soporte.getItems().remove(a);
                                 }
 
-
+                        
                                for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
                                       Soporte  acceIt = (Soporte) it.next();
                                       Listitem li = new Listitem();
                                       li.setValue(acceIt);
+                                 
+                                      try{
                                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                                      }catch(Exception er){}
+                                   
+                                      try{
                                       li.appendChild(new Listcell( (acceIt.getNoorden()==null?' ':acceIt.getNoorden() ) +""));
+                                      }catch(Exception er){}
+                                   
+                                      try{
                                       li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                                      }catch(Exception er){}
+                                    
+                                      try{
                                       li.appendChild(new Listcell(acceIt.getObservacion()+""));
+                                      }catch(Exception er){}
+                                 
+                                      try{
                                       li.appendChild(new Listcell((acceIt.getGenerada()==true?"SI":"NO")));
+                                      }catch(Exception er){}
+                                   
+                                      try{
                                       li.appendChild(new Listcell(acceIt.getEmpleados().getApellidos()+" "+acceIt.getEmpleados().getNombres()));
+                                    
+                                      }catch(Exception er){}
                                       try{
                                             if(acceIt.getTecnico()!= null){
                                                 li.appendChild(new Listcell(acceIt.getTecnico().getApellidos()+" "+acceIt.getTecnico().getNombres()));
@@ -499,20 +519,27 @@ void guardars(){
                                                 li.appendChild(new Listcell(""));
                                             }
                                       }catch(Exception er){}
-                                      
+                               
                                       String estado = "";
                                       Integer valorEstado = acceIt.getEstado();
-                                        if(valorEstado.equals(0)){
-                                            estado = "INGRESADO";
-                                        }else if(valorEstado.equals(1)){
-                                            estado = "RESUELTO";
-                                        }else if(valorEstado.equals(2)){
-                                            estado = "PENDIENTE";
-                                        }else if(valorEstado.equals(3)){
-                                            estado = "AGENDADO";
-                                        }else if(valorEstado.equals(4)){
-                                            estado = "RE-AGENDADO";
-                                        } 
+                                        if(valorEstado != null){
+                                        
+                                        
+                                                if(valorEstado.equals(0)){
+                                                    estado = "INGRESADO";
+                                                }else if(valorEstado.equals(1)){
+                                                    estado = "RESUELTO";
+                                                }else if(valorEstado.equals(2)){
+                                                    estado = "PENDIENTE";
+                                                }else if(valorEstado.equals(3)){
+                                                    estado = "AGENDADO";
+                                                }else if(valorEstado.equals(4)){
+                                                    estado = "RE-AGENDADO";
+                                                } 
+                                        }else{
+                                                estado = "INGRESADO";
+                                        }
+                                   
                                       li.appendChild(new Listcell(estado));
                                       
                                       soporte.appendChild(li);
@@ -520,7 +547,7 @@ void guardars(){
 
                     }catch(Exception e){
                             //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                            System.out.println("FNC: buscarSoporte, No ha seleccionado el Cliente");
+                            System.out.println("FNC: buscarSoporte, No ha seleccionado el Cliente"+e);
 
                         }
                  }
@@ -777,12 +804,12 @@ void guardars(){
                             <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); identificacion.focus();guardars.disabled = false;modificars.disabled = true" />
                             <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>                           
                         </span>		
-                        <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="200px" width="795px">
+                        <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="250px" width="795px">
                             <panelchildren>
                             
                         
 	   
-                                <listbox mold="paging" rows="10" pageSize="10"  
+                                <listbox mold="paging"  height="150px"  
                                          onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
                                     <listhead>
                                         <listheader label="Ticket"/>
