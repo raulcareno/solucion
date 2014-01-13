@@ -79,6 +79,9 @@
                 cargarEstructura(0);
                 cargarEstructura1(0);
                 cargarEconomica(0);
+                cargarIngresos(0);
+                cargarEgresos(0);
+                cargarPsicopedagogicas(0);
                 estado(false,false);
                 //alert(empa.getCodigo());
             }else{
@@ -320,7 +323,7 @@
                                  for(int i = 0; i<listaEstados.size(); i++){
                                     if((listaEstados.get(i)).getTipo().equals("S")){
                                         Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
-                                        chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
+                                      //  chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
                                         chTrabaja.setChecked(false);
                                         s.appendChild(chTrabaja);
                                     }
@@ -348,7 +351,7 @@
                                  for(int i = 0; i<listaEstados.size(); i++){
                                     if((listaEstados.get(i)).getTipo().equals("S")){
                                         Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
-                                        chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
+                                       // chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
                                         chTrabaja.setChecked(false);
                                         s.appendChild(chTrabaja);
                                     }
@@ -368,6 +371,127 @@
        }
 
 }
+
+  void cargarIngresos(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeIngresos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaIngresos.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"IN"));  
+                        Decimalbox txNombres = new Decimalbox(pregunta.getValori());
+                        rw.appendChild(txNombres);  
+                     
+                        filaIngresos.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeEstados as o where o.tipo = 'IN'   ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeEstados pregunta = (DobeEstados) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboEstados(pregunta,"IN"));  
+                                Decimalbox txNombres = new Decimalbox(BigDecimal.ZERO);
+                                rw.appendChild(txNombres);  
+                               
+                                filaIngresos.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+void cargarEgresos(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeIngresos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaEgresos.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"EG"));  
+                        Decimalbox txNombres = new Decimalbox(pregunta.getValori());
+                        rw.appendChild(txNombres);  
+                     
+                        filaEgresos.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeEstados as o where o.tipo = 'EG'   ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeEstados pregunta = (DobeEstados) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboEstados(pregunta,"EG"));  
+                                Decimalbox txNombres = new Decimalbox(BigDecimal.ZERO);
+                                rw.appendChild(txNombres);  
+                               
+                                filaEgresos.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+
+  void cargarPsicopedagogicas(Integer est){
+       
+    List preguntas = adm.query("Select o from DobePsicopedagogico as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+
+       filaPsicopedagogico.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      Preguntar pregunta = (Preguntar) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
+                        Decimalbox txAp = new Decimalbox(pregunta.getAprovechamiento());
+                        rw.appendChild(txAp);  
+                        Decimalbox txCm = new Decimalbox(pregunta.getComportamiento());
+                        rw.appendChild(txCm);  
+                        Intbox txMen = new Intbox(pregunta.getMenores());
+                        rw.appendChild(txMen);  
+                        Intbox txMay = new Intbox(pregunta.getMayores());
+                        rw.appendChild(txMay);  
+                        
+                        filaPsicopedagogico.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeCursos pregunta = (DobeCursos) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboCursos(pregunta));  
+                                Decimalbox txAp = new Decimalbox(BigDecimal.ZERO);
+                                rw.appendChild(txAp);  
+                                Decimalbox txCm = new Decimalbox(BigDecimal.ZERO);
+                                rw.appendChild(txCm);  
+                                Intbox txMen = new Intbox(0);
+                                rw.appendChild(txMen);  
+                                Intbox txMay = new Intbox(0);
+                                rw.appendChild(txMay);  
+                        
+                                filaPsicopedagogico.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+
 
 
 List listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
@@ -391,6 +515,7 @@ List listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia
                 lista.setStyle("font-size:11px");
             return lista;
     }
+
 List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre ");    
       Listbox llenarComboEstados(DobeEstados mat, String tipo){
             Listbox lista = new Listbox();
@@ -410,7 +535,25 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 lista.setStyle("font-size:11px");
             return lista;
     }
-
+ 
+ Listbox llenarComboIngresos(DobeEstados mat, String tipo){
+            Listbox lista = new Listbox();
+                for (Iterator it = listaEstados.iterator(); it.hasNext();) {
+                        DobeEstados acceIt = (DobeEstados) it.next();
+                            Listitem li = new Listitem();
+                            li.setValue(acceIt);
+                            Listcell celda = new Listcell(acceIt.getNombre());
+                            li.appendChild(celda);
+                                if(mat.getCodigo().equals(acceIt.getCodigo()))
+                                    li.setSelected(true);
+                            if(acceIt.getTipo().equals(tipo)){
+                                lista.appendChild(li);
+                            }
+                }
+                lista.setMold("select");
+                lista.setStyle("font-size:11px");
+            return lista;
+    }
         
   ]]>
     </zscript>
@@ -557,7 +700,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 
             </rows>
         </grid>
-         <grid>
+        <grid>
             <rows>
                 <row spans="4">
                     TRATO AFECTIVO
@@ -569,7 +712,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                         <listitem value="B" label="Bueno"/>
                         <listitem value="R" label="Regular"/>
                         <listitem value="D" label="Deficiente"/>
-	                </listbox>               
+                    </listbox>               
                 </row>
                 <row>
                     MADRE                    
@@ -578,7 +721,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                         <listitem value="B" label="Bueno"/>
                         <listitem value="R" label="Regular"/>
                         <listitem value="D" label="Deficiente"/>
-	                </listbox>               
+                    </listbox>               
                 </row>
                 <row>
                     REPRESENTANTE
@@ -587,12 +730,12 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                         <listitem value="B" label="Bueno"/>
                         <listitem value="R" label="Regular"/>
                         <listitem value="D" label="Deficiente"/>
-	                </listbox>               
+                    </listbox>               
                 </row>
                 
             </rows>
         </grid>
-         <grid>
+        <grid>
             <rows>
                 <row>
                     <span >4. CONDICIONES ECONÓMICAS  </span>
@@ -610,8 +753,65 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                         </rows>
                     </grid>
                 </row>
+                <row>
+                    <span >DISTRIBUCIÓN: No. Habitaciones
+                        <intbox id="nohabitaciones"/>  SSHH 
+                        <intbox id="nosshh"/>
+                    </span>
+                </row>
             </rows>
         </grid>
+        
+        <grid>
+            <rows>
+                <row>
+                    <span >  INGRESOS Y EGRESOS </span>
+                </row>
+                <row>
+                    <grid   id="datosIngresos">
+                        <columns>
+                            <column  label="INGRESOS"/>
+                            <column  label="VALOR"/>
+                        </columns>
+                        <rows id="filaIngresos">
+                        </rows>
+                    </grid>
+                    <grid   id="datosEgresos">
+                        <columns>
+                            <column  label="EGRESOS"/>
+                            <column  label="VALOR"/>
+                        </columns>
+                        <rows id="filaEgresos">
+                        </rows>
+                    </grid>
+                </row>
+               
+            </rows>
+        </grid>
+            <grid>
+            <rows>
+                <row>
+                    <span >5. DATOS PSICOPEDAGÓGICOS </span>
+                </row>
+                <row>
+                    <grid   id="datosPsicopedagogicos">
+                        <columns>
+                            <column  label="AÑO DE EDUCACIÓN"/>
+                            <column  label="APROVECHAMIENTO"/>
+                            <column  label="COMPORTAMIENTO"/>
+                            <column  label="# Materias mayor a 7"/>
+                            <column  label="# Materias mayor o igual a 7"/>
+                        </columns>
+                        <rows id="filaPsicopedagogico">
+                        </rows>
+                    </grid>
+                </row>
+                <row>
+                     
+                </row>
+            </rows>
+        </grid>
+        
         <vbox>
             <vbox>
                 <hbox>

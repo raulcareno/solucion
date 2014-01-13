@@ -176,8 +176,8 @@
                         <listitem value="V" label="Vivienda"/>
                         <listitem value="TE" label="Tipo Estructura"/>
                         <listitem value="S" label="Servicios"/>
-                        <listitem value="I" label="Tipos de Ingresos"/>
-                        <listitem value="E" label="Tipos de Egresos"/>
+                        <listitem value="IN" label="Tipos de Ingresos"/>
+                        <listitem value="EG" label="Tipos de Egresos"/>
                         <listitem value="CL" label="Clubes"/>
 <!--P:parientes; C:civil; E:estados; V: vivienda; TP: madera; S: servicios; I:ingresos; E:EGRESOs; CL:CLUBES-->
                     </listbox>
