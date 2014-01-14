@@ -82,6 +82,10 @@
                 cargarIngresos(0);
                 cargarEgresos(0);
                 cargarPsicopedagogicas(0);
+                cargarClub(0);
+                cargarAprendizaje(0);
+                cargarCaracteristicas(0);
+                cargarSocial(0);
                 estado(false,false);
                 //alert(empa.getCodigo());
             }else{
@@ -493,7 +497,188 @@ void cargarEgresos(Integer est){
 }
 
 
+  void cargarClub(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeClub as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaClub.getChildren().clear();
+       if(preguntas.size()>0){
 
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      DobeClub pregunta = (DobeClub) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
+                        Textbox txtClub = new Textbox(pregunta.getNombres());
+                        rw.appendChild(txtClub); 
+                        Textbox txOpcional = new Textbox(pregunta.getNombres());
+                        rw.appendChild(txOpcional); 
+                        Textbox txCali = new Textbox(pregunta.getNombres());
+                        rw.appendChild(txCali); 
+                         
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeGrado(),"GR"));  
+                        filaClub.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeCursos pregunta = (DobeCursos) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboCursos(pregunta));  
+                                    Textbox txtClub = new Textbox("");
+                                    rw.appendChild(txtClub); 
+                                    Textbox txOpcional = new Textbox("");
+                                    rw.appendChild(txOpcional); 
+                                    Textbox txCali = new Textbox("");
+                                    rw.appendChild(txCali); 
+
+                                    //rw.appendChild(llenarComboEstados(pregunta.getDobeGrado(),"GR"));  
+                                    rw.appendChild(llenarComboEstados(new DobeEstados(-1),"GR"));
+                                filaClub.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+  void cargarAprendizaje(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeClub as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaAprendizaje.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      DobeClub pregunta = (DobeClub) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
+                        Checkbox chActivo = new Checkbox();
+                        chActivo.setChecked(pregunta.getActivo());
+                        rw.appendChild(chActivo);  
+                        Checkbox chReflexivo = new Checkbox();
+                        chReflexivo.setChecked(pregunta.getReflexivo());
+                        rw.appendChild(chReflexivo);  
+                        Checkbox chTeorico = new Checkbox();
+                        chTeorico.setChecked(pregunta.getTeorico());
+                        rw.appendChild(chTeorico);  
+                        Checkbox chPrag = new Checkbox();
+                        chPrag.setChecked(pregunta.getPragmatico());
+                        rw.appendChild(chPrag);  
+                          
+                        filaAprendizaje.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeCursos pregunta = (DobeCursos) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboCursos(pregunta));  
+                                  Checkbox chActivo = new Checkbox();
+                                    chActivo.setChecked(false);
+                                    rw.appendChild(chActivo);  
+                                    Checkbox chReflexivo = new Checkbox();
+                                    chReflexivo.setChecked(false);
+                                    rw.appendChild(chReflexivo);  
+                                    Checkbox chTeorico = new Checkbox();
+                                    chTeorico.setChecked(false);
+                                    rw.appendChild(chTeorico);  
+                                    Checkbox chPrag = new Checkbox();
+                                    chPrag.setChecked(false);
+                                    rw.appendChild(chPrag);  
+
+                                    filaAprendizaje.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+
+ void cargarCaracteristicas(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeCaracteristicas as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaCaracteristicas.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      DobeCaracteristicas pregunta = (DobeCaracteristicas) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstado(),"CR"));  
+                         Checkbox chPrag = new Checkbox();
+                            chPrag.setChecked(pregunta.getEstado());
+                            rw.appendChild(chPrag);  
+                        Textbox txNombres = new Textbox(pregunta.getObservacion());
+                        rw.appendChild(txNombres); 
+                     
+                        filaCaracteristicas.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeEstados as o where o.tipo = 'CR'   ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeEstados pregunta = (DobeEstados) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboEstados(pregunta,"CR"));  
+                                Checkbox chPrag = new Checkbox();
+                            chPrag.setChecked(false);
+                            rw.appendChild(chPrag); 
+                                Textbox txNombres = new Textbox("");
+                                rw.appendChild(txNombres);  
+                               
+                                filaCaracteristicas.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
+ void cargarSocial(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeSocial as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaSocial.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      DobeSocial pregunta = (DobeSocial) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstado(),"SO"));  
+                         Checkbox chPrag = new Checkbox();
+                            chPrag.setChecked(pregunta.getEstado());
+                            rw.appendChild(chPrag);  
+                         
+                     
+                        filaSocial.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeEstados as o where o.tipo = 'SO'   ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeEstados pregunta = (DobeEstados) it.next();
+                                Row rw = new Row();
+                                rw.appendChild(llenarComboEstados(pregunta,"SO"));  
+                                Checkbox chPrag = new Checkbox();
+                            chPrag.setChecked(false);
+                            rw.appendChild(chPrag); 
+                               
+                               
+                                filaSocial.appendChild(rw);
+
+                    }
+       
+       
+       }
+
+}
 List listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
 
     Listbox llenarComboCursos(DobeCursos mat){
@@ -834,7 +1019,85 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 </row>
             </rows>
         </grid>
+         <grid>
+            <rows>
+                <row>
+                    <span > 6. CLUBES O ACTIVIDADES PERSONALES</span>
+                </row>
+                <row>
+                    <grid   id="datosClubes">
+                        <columns>
+                            <column  label="Año"/>
+                            <column  label="Club"/>
+                            <column  label="Opcional"/>
+                            <column  label="Calificación"/>
+                            <column  label="Grado"/>
+                        </columns>
+                        <rows id="filaClub">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
+          <grid>
+            <rows>
+                <row>
+                    <span > 7. ESTILOS DE APRENDIZAJE DEL O LA ESTUDIANTE</span>
+                </row>
+                <row>
+                    <grid   id="datosAprendizajes">
+                        <columns>
+                            <column  label="Año"/>
+                            <column  label="Activo"/>
+                            <column  label="Reflexivo"/>
+                            <column  label="Teórico"/>
+                            <column  label="Pragmático"/>
+                        </columns>
+                        <rows id="filaAprendizaje">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
         
+         <grid>
+            <rows>
+                <row>
+                    <span > 9. CARACTERÍSTICAS PERSONALES (madurez y equilibrio emocional)</span>
+                </row>
+                <row>
+                    <grid   id="datosCaracteristica">
+                        <columns>
+                            <column  label="Características"/>
+                            <column  label="Opción"/>
+                            <column  label="Observación"/>
+                            
+                        </columns>
+                        <rows id="filaCaracteristicas">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
+          <grid>
+            <rows>
+                <row>
+                    <span >10. INTERACCIÓN SOCIAL</span>
+                </row>
+                <row>
+                    <grid   id="datosSocial">
+                        <columns>
+                            <column  label="Características"/>
+                            <column  label="Opción"/>
+                            <column  label="Observación"/>
+                            
+                        </columns>
+                        <rows id="filaSocial">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
         <vbox>
             <vbox>
                 <hbox>

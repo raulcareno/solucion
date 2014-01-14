@@ -179,6 +179,10 @@
                         <listitem value="IN" label="Tipos de Ingresos"/>
                         <listitem value="EG" label="Tipos de Egresos"/>
                         <listitem value="CL" label="Clubes"/>
+                        <listitem value="GR" label="Grados(Alto,Med)"/>
+                        <listitem value="CA" label="Calificadores(S,AV,N)"/>
+                        <listitem value="CR" label="Características Personales"/>
+                        <listitem value="SO" label="Interacción Social"/>
 <!--P:parientes; C:civil; E:estados; V: vivienda; TP: madera; S: servicios; I:ingresos; E:EGRESOs; CL:CLUBES-->
                     </listbox>
                 </row>
