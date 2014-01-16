@@ -857,7 +857,17 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
     </zscript>
     <groupbox mold="3d" >
         <caption label="Agregar" />
+   <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
 
+        </vbox>
         <grid width="100%">
             <rows>
                
@@ -916,7 +926,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row>
-                    <span > 2. DATOS DEL REPRESENTANTE</span>
+                    <label  style="font-weight:bold; color: blue" value="2. DATOS DEL REPRESENTANTE"/>
                 </row>
                 <row>
                     <grid   id="datosRepresentante">
@@ -935,7 +945,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row>
-                    <span > 3. ESTRUCTURA FAMILIAR</span>
+                    <label  style="font-weight:bold; color: blue" value="3. ESTRUCTURA FAMILIAR"/>
                 </row>
                 <row>
                     <grid   id="datosEstructura">
@@ -1036,7 +1046,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row>
-                    <span >4. CONDICIONES ECONÓMICAS  </span>
+                    <label  style="font-weight:bold; color: blue" value="4. CONDICIONES ECONÓMICAS  "/>
                 </row>
                 <row>
                     <grid   id="datosEconomica">
@@ -1063,7 +1073,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row>
-                    <span >  INGRESOS Y EGRESOS </span>
+                    <label  style="font-weight:bold; color: blue" value=" INGRESOS Y EGRESOS"/>
                 </row>
                 <row>
                     <grid   id="datosIngresos">
@@ -1089,7 +1099,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
             <grid>
             <rows>
                 <row>
-                    <span >5. DATOS PSICOPEDAGÓGICOS </span>
+                    <label  style="font-weight:bold; color: blue" value="5. DATOS PSICOPEDAGÓGICOS"/>
                 </row>
                 <row>
                     <grid   id="datosPsicopedagogicos">
@@ -1135,7 +1145,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
          <grid>
             <rows>
                 <row>
-                    <span > 6. CLUBES O ACTIVIDADES PERSONALES</span>
+                    <label  style="font-weight:bold; color: blue" value="6. CLUBES O ACTIVIDADES PERSONALES"/>
                 </row>
                 <row>
                     <grid   id="datosClubes">
@@ -1155,7 +1165,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
           <grid>
             <rows>
                 <row>
-                    <span > 7. ESTILOS DE APRENDIZAJE DEL O LA ESTUDIANTE</span>
+                    <label  style="font-weight:bold; color: blue" value="7. ESTILOS DE APRENDIZAJE DEL O LA ESTUDIANTE"/>
                 </row>
                 <row>
                     <grid   id="datosAprendizajes">
@@ -1175,7 +1185,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row>
-                    <span >8. TRANSTORNOS DEL APRENDIZAJE</span>
+                    <label  style="font-weight:bold; color: blue" value="8. TRANSTORNOS DEL APRENDIZAJE"/>
                 </row>
                 <row>
                     <grid   id="datosTranstornos">
@@ -1197,7 +1207,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
          <grid>
             <rows>
                 <row>
-                    <span > 9. CARACTERÍSTICAS PERSONALES (madurez y equilibrio emocional)</span>
+                    <label  style="font-weight:bold; color: blue" value="9. CARACTERÍSTICAS PERSONALES (madurez y equilibrio emocional)"/>
                 </row>
                 <row>
                     <grid   id="datosCaracteristica">
@@ -1216,7 +1226,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
           <grid>
             <rows>
                 <row>
-                    <span >10. INTERACCIÓN SOCIAL</span>
+                    <label  style="font-weight:bold; color: blue" value="10. INTERACCIÓN SOCIAL"/>
                 </row>
                 <row>
                     <grid   id="datosSocial">
@@ -1235,7 +1245,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row>
-                    <span > 11.	FICHA DE NECESIDADES EDUCATIVAS ESPECIALES </span>
+                    <label  style="font-weight:bold; color: blue" value="11.	FICHA DE NECESIDADES EDUCATIVAS ESPECIALES"/>
                 </row>
                 <row>
                     <grid   id="datosNecesidades">
@@ -1255,17 +1265,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
             </rows>
         </grid>
   
-        <vbox>
-            <vbox>
-                <hbox>
-                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                </hbox>
-            </vbox>
-
-        </vbox>
+     
 
     </groupbox>
     <groupbox mold="3d" >
