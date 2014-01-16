@@ -1388,6 +1388,32 @@ public class ReportesClase {
             pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
             pendi.setNotarjeta(cIt.getNotarjeta());
             try {
+               List<Detalle> detalleLocal = adm.query("Select o from Detalle as o "
+                       + " where o.factura.codigo = '" + cIt.getFactura().getCodigo() + "'");
+                    int ii = 0;
+                   
+
+                    pendi.setPlan("");
+                    for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
+                        Detalle detalle = it.next();
+                        String pth = " / ";
+                        if (ii == 0) {
+                            pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
+                        }
+                        if (detalle.getEquipos() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
+                        }
+                        if (detalle.getPlan() != null) {
+                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
+                        }
+                        ii++;
+                    }
+                    detalleLocal = null;
+                        
+            } catch (Exception e) {
+            }
+            
+            try {
                 pendi.setEmpleado(cIt.getEmpleados().getApellidos() + " " + cIt.getEmpleados().getNombres());
             } catch (Exception e) {
 //                pendi.setEmpleado("TODOS");    

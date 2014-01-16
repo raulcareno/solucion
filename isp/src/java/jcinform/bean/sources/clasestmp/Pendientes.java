@@ -323,8 +323,8 @@ public class Pendientes implements Comparable {
     public void setEmision(Date emision) {
         this.emision = emision;
     }
-    
-    
+
+   
 
     @Override
     public int compareTo(Object o) {
