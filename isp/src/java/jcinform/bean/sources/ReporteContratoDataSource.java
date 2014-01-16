@@ -82,13 +82,13 @@ public class ReporteContratoDataSource implements JRDataSource {
             } else if ("descuento".equals(fieldName)) {
                 valor = nodo.getDescuento();
             } else if ("sector".equals(fieldName)) {
-                valor = nodo.getRadios().getNodos().getSector().getNombre() + "";
+                valor = nodo.getSector().getNombre() + "";
             } else if ("radio".equals(fieldName)) {
                 valor = nodo.getRadios().getNombre() + "";
             } else if ("nodo".equals(fieldName)) {
                 valor = nodo.getRadios().getNodos().getNombre() + "";
             } else if ("canton".equals(fieldName)) {
-                valor = nodo.getRadios().getNodos().getSector().getCanton().getNombre() + "";
+                valor = nodo.getSector().getCanton().getNombre() + "";
             } else if ("fecha".equals(fieldName)) {
                 valor = nodo.getFecha();
             } else if ("fechainstalacion".equals(fieldName)) {
