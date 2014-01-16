@@ -12,6 +12,8 @@
         import jcinform.procesos.Administrador;
         import bean.Permisos;
         import java.math.BigDecimal;
+        import org.zkoss.zul.Group;
+        
         Session ses = Sessions.getCurrent();
         Administrador adm = new Administrador();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -86,6 +88,8 @@
                 cargarAprendizaje(0);
                 cargarCaracteristicas(0);
                 cargarSocial(0);
+                cargarTranstornos(0);
+                cargarNecesidades(0);
                 estado(false,false);
                 //alert(empa.getCodigo());
             }else{
@@ -679,6 +683,115 @@ void cargarEgresos(Integer est){
        }
 
 }
+
+
+ void cargarTranstornos(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeTranstornos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaTranstornos.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      DobeSocial pregunta = (DobeSocial) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstado(),"SO"));  
+                         Checkbox chPrag = new Checkbox();
+                            chPrag.setChecked(pregunta.getEstado());
+                            rw.appendChild(chPrag);  
+                         
+                     
+                        filaTranstornos.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeTipos as o where o.tipo = 'T'   ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeTipos pregunta = (DobeTipos) it.next();
+                             Group grupo = new Group();
+                                 Group grupo = new Group((pregunta).getNombre());
+                              grupo.setId(pregunta.getCodigo()+"");
+                              grupo.setStyle("background-color:#FFDDAA");
+                              //if(buscar(matEst,acceIt))
+                              grupo.setParent(filaTranstornos);
+                           List dCursos = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
+                                for (Iterator it3 = dCursos.iterator(); it3.hasNext();) {
+                                       DobeDetalle detalle = (DobeDetalle) it3.next();
+                                        Row rw = new Row();
+                                        Label chPrag = new Label(""+detalle.getNombre());
+                                        rw.appendChild(chPrag); 
+                                           List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                                                for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
+                                                    DobeCursos cur = (DobeCursos) it2.next();
+                                                        Checkbox chCur = new Checkbox();
+                                                                chCur.setChecked(false);
+                                                                rw.appendChild(chCur);  
+                                                }
+                                        filaTranstornos.appendChild(rw);
+                            }
+                            
+
+                    }
+       
+       
+       }
+
+}
+void cargarNecesidades(Integer est){
+       
+    List preguntas = adm.query("Select o from DobeTranstornos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+       filaNecesidades.getChildren().clear();
+       if(preguntas.size()>0){
+
+              for (Iterator it = preguntas.iterator(); it.hasNext();) {
+                      DobeSocial pregunta = (DobeSocial) it.next();
+                        Row rw = new Row();
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstado(),"SO"));  
+                         Checkbox chPrag = new Checkbox();
+                            chPrag.setChecked(pregunta.getEstado());
+                            rw.appendChild(chPrag);  
+                         
+                     
+                        filaNecesidades.appendChild(rw);
+
+              }
+                     
+       }else{
+            List dCursos = adm.query("Select o from DobeTipos as o where o.tipo = 'N'   ");
+                    for (Iterator it = dCursos.iterator(); it.hasNext();) {
+                            DobeTipos pregunta = (DobeTipos) it.next();
+                             Group grupo = new Group();
+                                 Group grupo = new Group((pregunta).getNombre());
+                              grupo.setId(pregunta.getCodigo()+"");
+                              grupo.setStyle("background-color:#FFDDAA");
+                              //if(buscar(matEst,acceIt))
+                              grupo.setParent(filaNecesidades);
+                           List dCursos = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
+                                for (Iterator it3 = dCursos.iterator(); it3.hasNext();) {
+                                       DobeDetalle detalle = (DobeDetalle) it3.next();
+                                        Row rw = new Row();
+                                        Label chPrag = new Label(""+detalle.getNombre());
+                                        rw.appendChild(chPrag); 
+                                           List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                                                for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
+                                                    DobeCursos cur = (DobeCursos) it2.next();
+                                                        Checkbox chCur = new Checkbox();
+                                                                chCur.setChecked(false);
+                                                                rw.appendChild(chCur);  
+                                                }
+                                        filaNecesidades.appendChild(rw);
+                            }
+                            
+
+                    }
+       
+       
+       }
+
+}
+
 List listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
 
     Listbox llenarComboCursos(DobeCursos mat){
@@ -1059,7 +1172,28 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 </row>
             </rows>
         </grid>
-        
+        <grid>
+            <rows>
+                <row>
+                    <span >8. TRANSTORNOS DEL APRENDIZAJE</span>
+                </row>
+                <row>
+                    <grid   id="datosTranstornos">
+                        <columns>
+                            <column  label="TRANSTORNOS"/>
+                            <column  label="8vo."/>
+                            <column  label="9no."/>
+                            <column  label="10mo."/>
+                            <column  label="1ro."/>
+                            <column  label="2do."/>
+                            <column  label="3ro."/>
+                        </columns>
+                        <rows id="filaTranstornos">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
          <grid>
             <rows>
                 <row>
@@ -1098,6 +1232,29 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 </row>
             </rows>
         </grid>
+        <grid>
+            <rows>
+                <row>
+                    <span > 11.	FICHA DE NECESIDADES EDUCATIVAS ESPECIALES </span>
+                </row>
+                <row>
+                    <grid   id="datosNecesidades">
+                        <columns>
+                            <column  label="DESCRIPCION"/>
+                            <column  label="8vo."/>
+                            <column  label="9no."/>
+                            <column  label="10mo."/>
+                            <column  label="1ro."/>
+                            <column  label="2do."/>
+                            <column  label="3ro."/>
+                        </columns>
+                        <rows id="filaNecesidades">
+                        </rows>
+                    </grid>
+                </row>
+            </rows>
+        </grid>
+  
         <vbox>
             <vbox>
                 <hbox>

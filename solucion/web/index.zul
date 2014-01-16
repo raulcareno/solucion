@@ -376,6 +376,8 @@
                                                     <menuitem onClick="ingresar(self)" id="Parametros_dobe"  image="/images/circulo.png"   label="Evaluadores" value="/dobe/parametros.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Cursos_dobe"  image="/images/circulo.png"   label="Cursos" value="/dobe/cursos.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Estudiantes_dobe"  image="/images/circulo.png"   label="Estudiantes" value="/dobe/estudiante.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Tipos_dobe"  image="/images/circulo.png"   label="Tipos" value="/dobe/tipos.zul"    />
+                                                    <menuitem onClick="ingresar(self)" id="Tipos_detalle"  image="/images/circulo.png"   label="Tipos Detalle" value="/dobe/tiposDetalle.zul"    />
                                                     
                                                 </menupopup>
                                             </menu>
@@ -526,6 +528,8 @@
             Cursos_dobe.visible = per.verificarPermisoReporte("Cursos_dobe","Cursos_dobe", "Ingresar",true,"VARIOS");
             Parametros_dobe.visible = per.verificarPermisoReporte("Parametros_dobe","Parametros_dobe", "Ingresar",true,"VARIOS");
             Estudiantes_dobe.visible = per.verificarPermisoReporte("Estudiantes_dobe","Estudiantes_dobe", "Ingresar",true,"VARIOS");
+            Tipos_detalle.visible = per.verificarPermisoReporte("Tipos_detalle","Tipos_detalle", "Ingresar",true,"VARIOS");
+            Tipos_dobe.visible = per.verificarPermisoReporte("Tipos_dobe","Tipos_dobe", "Ingresar",true,"VARIOS");
             }
         </zscript>
     </div>
