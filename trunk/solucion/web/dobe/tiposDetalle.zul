@@ -1,0 +1,250 @@
+
+<window  width="760px" >
+
+    <zscript>
+           <![CDATA[
+  
+        import jcinform.persistencia.*;
+        import bean.EventDAO;
+        import java.util.ArrayList;
+        import jcinform.persistencia.DobeDetalle;
+        import jcinform.persistencia.Periodo;
+        import jcinform.procesos.Administrador;
+        import bean.Permisos;
+        import java.math.BigDecimal;
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List allEvents = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '001' ");
+        
+        static DobeDetalle empa = new DobeDetalle();
+        Permisos permiso = new Permisos();
+ 
+        Object media = null;
+            buscarTipo(String tipo){
+                 //lista = new Listbox();
+                 lista.getChildren().clear();
+                    Listitem li = new Listitem();
+                    li.setValue(new DobeTipos(-1));
+                    Listcell celda = new Listcell("[Seleccione]");
+                    li.appendChild(celda);
+                    li.setSelected(true);
+                     lista.appendChild(li);
+                    List listaCursos = adm.query("Select o from DobeTipos as o where o.tipo = '"+tipo+"' ");
+                        for (Iterator it = listaCursos.iterator(); it.hasNext();) {
+                                DobeTipos acceIt = (DobeTipos) it.next();
+                                    Listitem li = new Listitem();
+                                    li.setValue(acceIt);
+                                    
+                                    Listcell celda = new Listcell(acceIt.getNombre());
+                                    li.appendChild(celda);
+                                    lista.appendChild(li);
+                        }
+                        lista.setMold("select");
+                        lista.setStyle("font-size:11px");
+                }
+
+
+        //FUNCIONES
+        void llenar(DobeDetalle empa){
+            nombre.value = empa.getNombre();
+            //tipo.value = empa.getNombre();
+            //llenarTipo(empa.getTipo());
+
+        }
+        void llenarTipo(String tCasa){
+            List l = tipo.getChildren();
+            Boolean estado = false;
+                for (Iterator it = l.iterator(); it.hasNext();) {
+                    Radio object = (Radio)it.next();
+                    if(object.getValue().equals(tCasa)){
+                        object.setSelected(true);
+                        estado = true;
+                        break;
+                    }  
+
+                }
+            if(estado == false){
+                    Radio object = (Radio)l.get(0);
+                    object.setSelected(true);
+            }
+
+
+        }
+        
+        void estado(Boolean estado,Boolean modificar){
+            if(modificar){
+            empa = (DobeDetalle)datos.selectedItem.value;
+            }else{empa.setCodigo(0);}
+            nombre.readonly = estado;
+
+      }
+
+
+        void guardar(){
+                if(nombre.value==""){
+                    Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    return;
+                }
+
+                Periodo per = (Periodo) ses.getAttribute("periodo");
+                empa.setNombre(nombre.value);
+                empa.setTipo(lista.selectedItem.value);
+                if((!empa.getCodigo().equals(0)) ){
+                    adm.actualizar(empa);
+                    List children = datos.selectedItem.children;
+                    ((Listcell)children.get(0)).label = empa.getCodigo()+"";
+                    ((Listcell)children.get(1)).label = empa.getNombre()+" ";
+                }else{
+                    empa.setCodigo(adm.getNuevaClave("DobeDetalle","codigo"));
+                    adm.guardar(empa);
+                }
+                permiso.auditar("DobeDetalle","Guardar",""+nombre.value);
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                guardar.disabled=true;
+                agregar.disabled=false;
+                estado(true,false);
+                llenar(new DobeDetalle(0));
+
+
+        }
+
+        Boolean verificar(String accion){
+         return permiso.verificarPermiso("Parametros_dobe",accion);
+
+        }
+        void nuevo(){
+            if(verificar("Agregar")){
+                guardar.disabled=false;
+                llenar(new DobeDetalle(0));
+                estado(false,false);
+                //alert(empa.getCodigo());
+            }else{
+                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+        void move(){
+            llenar((DobeDetalle)datos.selectedItem.value);
+            modificar.disabled = false;
+        }
+        void modificar(){
+            if(verificar("Modificar")){
+                guardar.disabled=false; estado(false,true);
+            }else{
+              Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+        void eliminar(){
+            if(verificar("Eliminar")){
+                try{
+                    empa = (DobeDetalle)datos.selectedItem.value;
+                    adm.eliminarObjeto(DobeDetalle.class, empa.getCodigo());
+                    datos.removeDobeDetalleAt(datos.getSelectedIndex());
+                    permiso.auditar("DobeDetalle","Eliminar",""+nombre.value);
+                    llenar(new DobeDetalle(0));
+                    Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                }catch(Exception e){
+                 Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                }
+            }else{
+                Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+            }
+        }
+ 
+        void buscar(){
+    
+                List empleadosEncontrados = adm.query("Select o from DobeDetalle as o  where o.tipo.codigo = '"+(lista.selectedItem.value).getCodigo()+"' order by o.nombre ");
+                datos = new Listbox();
+                //datos.getChildren().clear();
+                int a=0;
+                for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+                for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                    DobeDetalle acceIt = (DobeDetalle) it.next();
+                    Listitem li = new Listitem();
+                    li.setValue(acceIt);
+                    li.appendChild(new Listcell(acceIt.getCodigo()+" "));
+                    li.appendChild(new Listcell(acceIt.getNombre()+" "));
+                    li.appendChild(new Listcell(acceIt.getTipo()+" "));
+                    datos.appendChild(li);
+                }
+
+        }
+        void cargarEspe(Global g){
+         empa.setEspecialidad(g);
+        }
+        void cargarSec(Global g){
+            empa.setSeccion(g);
+        }
+        void cargarPar(Global g){
+         empa.setParalelo(g);
+        }
+        
+        
+  ]]>
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
+
+        <grid width="100%">
+            <rows>
+                <row>
+                    <span style="float:right"> Seleccione primero el Tipo:</span>
+                    <listbox mold="select" onSelect='buscarTipo(self.selectedItem.value)' Id="tipo" >
+                        <listitem selected="true" value="cero" label="[Seleccione]"/>
+                        <listitem value="T" label="TRANSTORNOS"/>
+                        <listitem value="N" label="NECESIDADES EDUCATIVAS"/>
+                    </listbox>
+                </row>
+                <row>
+                    <span style="float:right"> Seleccione el Grupo:</span>
+                    <listbox mold="select" onSelect='buscar()' Id="lista" >
+                        <listitem selected="true" value="cero" label="[Seleccione]"/>
+                    </listbox>
+                </row>
+                <row>
+                    <span style="float:right"> Nombre(*):</span>
+                    <textbox id="nombre"  maxlength="200" cols="50" readonly="true"   />   
+                </row>
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox mold="3d" >
+        <caption label="Busquedas" />
+        <vbox>
+            <hbox> DobeDetalle:  
+                <textbox id="buscarText"  maxlength="60" cols="40" />  
+                <button id="buscar"  label="Buscar" onClick="buscar();"/> 
+            </hbox>
+            <hbox>
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="750px">
+                    <listhead>
+                        <listheader label="Cod."/>
+                        <listheader label="Nombres"/>
+                        <listheader visible="false" label="TP"/>
+                    </listhead>
+                    <listitem  forEach="${allEvents}" value="${each}">
+                        <listcell label="${each.codigo}" />
+                        <listcell label="${each.nombre}" />
+                        <listcell label="${each.tipo}" />
+                    </listitem>
+                </listbox>
+            </hbox>
+        </vbox>
+    </groupbox>
+
+</window>
