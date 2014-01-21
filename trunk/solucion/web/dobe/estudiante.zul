@@ -195,6 +195,89 @@
                            rep.setCodigo(adm.getNuevaClave("DobeEconomica","codigo"));
                            adm.guardar(rep);
                 }
+                //guardo los datos ingresos
+                
+                col  = datosIngresos.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeIngresos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and o.observaciones = 'IN' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeIngresos rep = new DobeIngresos(adm.getNuevaClave("DobeIngresos","codigo"));
+                           rep.setIngresos(((DobeEstados)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setValori((((Decimalbox) labels.get(1)).getValue()));
+                           rep.setObservaciones("IN");
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeIngresos","codigo"));
+                           adm.guardar(rep);
+                }
+                //guardo los datos egresos
+                
+                col  = datosEgresos.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeIngresos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and o.observaciones = 'EG' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeIngresos rep = new DobeIngresos(adm.getNuevaClave("DobeIngresos","codigo"));
+                           rep.setIngresos(((DobeEstados)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setValori((((Decimalbox) labels.get(1)).getValue()));
+                           rep.setObservaciones("EG");
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeIngresos","codigo"));
+                           adm.guardar(rep);
+                }
+                
+                //guardo los datos psicopd
+                 col  = datosPsicopedagogicos.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobePsicopedagogico where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobePsicopedagogico rep = new DobePsicopedagogico(adm.getNuevaClave("DobePsicopedagogico","codigo"));
+                           rep.setDobeCurso(((DobeCursos)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setAprovechaimiento(((Decimalbox) labels.get(1)).getValue());
+                           rep.setComportamiento(((Decimalbox) labels.get(2)).getValue());
+                           rep.setMenores(((Intbox) labels.get(3)).getValue());
+                           rep.setMayores(((Intbox) labels.get(4)).getValue());
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobePsicopedagogico","codigo"));
+                           adm.guardar(rep);
+
+                }
+                 //guardo los datos club
+                 col  = datosClubes.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeClub where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeClub rep = new DobeClub(adm.getNuevaClave("DobeClub","codigo"));
+                           rep.setDobeCurso(((DobeCursos)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setClub(((Textbox) labels.get(1)).getValue());
+                           rep.setOpcional(((Textbox) labels.get(2)).getValue());
+                           rep.setCalificacion(((Textbox) labels.get(3)).getValue());
+                           rep.setDobeGrado(((DobeEstados)((Listbox) labels.get(4)).getSelectedItem().getValue()));
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeClub","codigo"));
+                           adm.guardar(rep);
+
+                }
+                
+                     //guardo los datos aprendizaje
+                 col  = datosAprendizajes.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeAprendizaje where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeAprendizaje rep = new DobeAprendizaje(adm.getNuevaClave("DobeAprendizaje","codigo"));
+                           rep.setDobeCurso(((DobeCursos)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setActivo(((Checkbox) labels.get(1)).isChecked());
+                           rep.setReflexivo(((Checkbox) labels.get(2)).isChecked());
+                           rep.setTeorico(((Checkbox) labels.get(3)).isChecked());
+                           rep.setPragmatico(((Checkbox) labels.get(4)).isChecked());
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeAprendizaje","codigo"));
+                           adm.guardar(rep);
+
+                }
                 
                 permiso.auditar("DobeEstudiantes","Guardar",""+nombre.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
@@ -519,7 +602,7 @@
 
   void cargarIngresos(Integer est){
        
-    List preguntas = adm.query("Select o from DobeIngresos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+    List preguntas = adm.query("Select o from DobeIngresos as o where o.dobeEstudiante.codigo = '"+est+"' and o.observaciones = 'IN' " + 
      " order by o.codigo " );
        filaIngresos.getChildren().clear();
        if(preguntas.size()>0){
@@ -554,7 +637,7 @@
 }
 void cargarEgresos(Integer est){
        
-    List preguntas = adm.query("Select o from DobeIngresos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+    List preguntas = adm.query("Select o from DobeIngresos as o where o.dobeEstudiante.codigo = '"+est+"'  and o.observaciones = 'EG'  " + 
      " order by o.codigo " );
        filaEgresos.getChildren().clear();
        if(preguntas.size()>0){
