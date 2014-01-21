@@ -37,6 +37,28 @@
             }else{empa.setCodigo(0);}
             nombre.readonly = estado;
             apellidos.readonly = estado;
+            nombre.readonly = estado;             
+            lugarnacimiento.readonly = estado;             
+            nacionalidad.readonly = estado;             
+            raza.readonly = estado;             
+            direccion.readonly = estado;             
+            direccion1.readonly = estado;             
+            direccion2.readonly = estado;             
+            telefono.readonly = estado;             
+            celular.readonly = estado;             
+            curso.readonly = estado;             
+            aniolectivo.readonly = estado;             
+            proviene.readonly = estado;             
+            observacion.readonly = estado;             
+            explique.readonly = estado;             
+            hermanos.readonly = estado;             
+            hombres.readonly = estado;             
+            mujeres.readonly = estado;               
+            nohabitaciones.readonly = estado;              
+            nosshh.readonly = estado;              
+            larazon.readonly = estado;              
+            larazondeserto.readonly = estado;              
+            
 
       }
 
@@ -50,6 +72,30 @@
                 Periodo per = (Periodo) ses.getAttribute("periodo");
                 empa.setNombres(nombre.value);
                 empa.setApellidos(apellidos.value);
+       
+                    empa.setLugarnacimiento(lugarnacimiento.value);
+                    empa.setNacionalidad(nacionalidad.value);
+
+                    empa.setRaza(raza.value);             
+                    empa.setDireccion(direccion.value);             
+                    empa.setDireccion1(direccion1.value);             
+                    empa.setDireccion2(direccion2.value);             
+                    empa.setTelefono(telefono.value);             
+                    empa.setCelular(celular.value);             
+                    empa.setCurso(curso.value);             
+                    empa.setAniolectivo(aniolectivo.value);             
+                    empa.setProviene(proviene.value);             
+                    empa.setObservacion(observacion.value);             
+                    empa.setExplique(explique.value);             
+                    empa.setHermanos(hermanos.value);             
+                    empa.setHombres(hombres.value);             
+                    empa.setMujeres(mujeres.value);               
+                    empa.setHabitaciones(nohabitaciones.value);              
+                    empa.setSshh(nosshh.value);              
+                    empa.setObservacionrepitio(larazon.value);              
+                    empa.setObservaciondeserto(larazondeserto.value);   
+                
+                
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
                     List children = datos.selectedItem.children;
@@ -59,6 +105,97 @@
                     empa.setCodigo(adm.getNuevaClave("DobeEstudiantes","codigo"));
                     adm.guardar(empa);
                 }
+                //guardo los datos del representante
+            List col = datosRepresentante.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeRepresentantes where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeRepresentantes rep = new DobeRepresentantes(adm.getNuevaClave("DobeRepresentantes","codigo"));
+                           rep.setDobeCurso(((DobeCursos)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setNombres(((Textbox) labels.get(1)).getValue());
+                           rep.setDobeRelacion(((DobeEstados)((Listbox) labels.get(2)).getSelectedItem().getValue()));
+                           rep.setTelefono(((Textbox) labels.get(3)).getValue());
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeRepresentantes","codigo"));
+                           adm.guardar(rep);
+
+                }
+                 //guardo los datos del estructura 
+                 col  = datosEstructura.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeEstructura where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeEstructura rep = new DobeEstructura(adm.getNuevaClave("DobeEstructura","codigo"));
+                           rep.setNombres(((Textbox) labels.get(0)).getValue());
+                           rep.setDobeRelacion(((DobeEstados)((Listbox) labels.get(1)).getSelectedItem().getValue()));
+                           rep.setEdad(((Intbox) labels.get(2)).getValue());
+                           rep.setDobeCivil(((DobeEstados)((Listbox) labels.get(3)).getSelectedItem().getValue()));
+                           rep.setInstruccion(((Textbox) labels.get(4)).getValue());
+                           rep.setOcupacion(((Textbox) labels.get(5)).getValue());
+                           rep.setLugartrabajo(((Textbox) labels.get(6)).getValue());
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeEstructura","codigo"));
+                           adm.guardar(rep);
+
+                }
+                
+                  //guardo los datos del estructura 1
+                 col  = datosEstructura1.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeEstructura1 where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeEstructura1 rep = new DobeEstructura1(adm.getNuevaClave("DobeEstructura1","codigo"));
+                           rep.setDobeCurso(((DobeCursos)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setDobeCivil(((DobeEstados)((Listbox) labels.get(1)).getSelectedItem().getValue()));
+                           rep.setDobeRelacion(((DobeEstados)((Listbox) labels.get(2)).getSelectedItem().getValue()));
+                           rep.setDobeTipohogar(((DobeEstados)((Listbox) labels.get(3)).getSelectedItem().getValue()));
+                           rep.setTrabaja(((Checkbox) labels.get(4)).isChecked());
+                           rep.setRemunerado(((Checkbox) labels.get(5)).isChecked());
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeEstructura1","codigo"));
+                           adm.guardar(rep);
+
+                }
+                adm.ejecutaSql("Delete from DobeTrato where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                DobeTrato trato = new DobeTrato(adm.getNuevaClave("DobeTrato","codigo"));
+                trato.setPadre(padretrato.selectedItem.value);
+                trato.setMadre(madretrato.selectedItem.value);
+                trato.setRepresentante(representantetrato.selectedItem.value);
+                trato.setDobeEstudiante(empa);
+                adm.guardar(trato);
+                   
+                   
+                //guardo los datos de la economia
+                col  = datosEconomica.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeEconomica where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeEconomica rep = new DobeEconomica(adm.getNuevaClave("DobeEconomica","codigo"));
+                           rep.setDobeCurso(((DobeCursos)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setDobeVivienda(((DobeEstados)((Listbox) labels.get(1)).getSelectedItem().getValue()));
+                           rep.setDobeTipovivienda(((DobeEstados)((Listbox) labels.get(2)).getSelectedItem().getValue()));
+                           rep.setDobeEstructura(((DobeEstados)((Listbox) labels.get(3)).getSelectedItem().getValue()));
+                           Span s = (((Span) labels.get(4)));
+                           String codigos="";
+                                 for(int i = 0; i<s.getChildren().size(); i++){
+                                     Checkbox dat = s.getChildren().get(i); 
+                                     if(dat.isChecked()){
+                                        codigos = dat.getId().replace("CKECO","")+",";
+                                     }
+                                 }
+                                 if(codigos.length()>0){
+                                    codigos = codigos.substring(0,codigos.length()-1);
+                                 }
+                           rep.setDobeServicios(codigos);
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeEconomica","codigo"));
+                           adm.guardar(rep);
+                }
+                
                 permiso.auditar("DobeEstudiantes","Guardar",""+nombre.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 guardar.disabled=true;
@@ -331,7 +468,7 @@
                                  for(int i = 0; i<listaEstados.size(); i++){
                                     if((listaEstados.get(i)).getTipo().equals("S")){
                                         Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
-                                      //  chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
+                                        chTrabaja.setId("CKECO"+(listaEstados.get(i)).getCodigo());
                                         chTrabaja.setChecked(false);
                                         s.appendChild(chTrabaja);
                                     }
@@ -823,11 +960,19 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                             li.setValue(acceIt);
                             Listcell celda = new Listcell(acceIt.getNombre());
                             li.appendChild(celda);
-                                if(mat.getCodigo().equals(acceIt.getCodigo()))
-                                    li.setSelected(true);
+                            if(mat.getCodigo().equals(acceIt.getCodigo())){
+                                li.setSelected(true);
+                            }
                             if(acceIt.getTipo().equals(tipo)){
                                 lista.appendChild(li);
                             }
+                }
+                try{
+                    if(lista.getSelectedIndex() == -1){
+                        lista.setSelectedIndex(0);
+                    }
+                }catch(Exception ar){
+                
                 }
                 lista.setMold("select");
                 lista.setStyle("font-size:11px");
@@ -856,8 +1001,8 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
   ]]>
     </zscript>
     <groupbox mold="3d" >
-        <caption label="Agregar" />
-   <vbox>
+      
+        <vbox>
             <vbox>
                 <hbox>
                     <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
@@ -870,7 +1015,13 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         </vbox>
         <grid width="100%">
             <rows>
-               
+                <row spans="6" style="background:yellow">
+                    <span>
+                        BÚSQUEDA:
+                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteDobe"/>
+                        _INGRESE UN APELLIDO
+                    </span>
+                </row>
                 <row>
                     <span style="float:right"> Apellidos(*):</span>
                     <textbox id="apellidos"  maxlength="50" cols="20" readonly="true"   />   
@@ -1096,7 +1247,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                
             </rows>
         </grid>
-            <grid>
+        <grid>
             <rows>
                 <row>
                     <label  style="font-weight:bold; color: blue" value="5. DATOS PSICOPEDAGÓGICOS"/>
@@ -1114,35 +1265,39 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                         </rows>
                     </grid>
                 </row>
-                <row>
-                     <span>
-                         ¿Repitió algún año? <radiogroup Id="repitio" >
-                                                <radio value="true" label="SI"/>
-                                                <radio value="false" label="NO"/>
-                                            </radiogroup>
-                     </span>
+                <row> 
+                    <span>
+                        ¿Repitió algún año? 
+                        <radiogroup Id="repitio" >
+                            <radio value="true" label="SI"/>
+                            <radio value="false" label="NO"/>
+                        </radiogroup>
+                    </span>
                 </row>
                 <row>
-                     <span>
-                         Describa la razón: <textbox id="larazon"/>
-                     </span>
-                </row>
-                  <row>
-                     <span>
-                         ¿Desertó algún año? <radiogroup Id="deserto" >
-                                                <radio value="true" label="SI"/>
-                                                <radio value="false" label="NO"/>
-                                            </radiogroup>
-                     </span>
+                    <span>
+                        Describa la razón: 
+                        <textbox id="larazon"/>
+                    </span>
                 </row>
                 <row>
-                     <span>
-                         Describa la razón: <textbox id="larazondeserto"/>
-                     </span>
+                    <span>
+                        ¿Desertó algún año? 
+                        <radiogroup  Id="deserto" >
+                            <radio value="true" label="SI"/>
+                            <radio value="false" label="NO"/>
+                        </radiogroup>
+                    </span>
+                </row>
+                <row>
+                    <span>
+                        Describa la razón: 
+                        <textbox id="larazondeserto"/>
+                    </span>
                 </row>
             </rows>
         </grid>
-         <grid>
+        <grid>
             <rows>
                 <row>
                     <label  style="font-weight:bold; color: blue" value="6. CLUBES O ACTIVIDADES PERSONALES"/>
@@ -1162,7 +1317,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 </row>
             </rows>
         </grid>
-          <grid>
+        <grid>
             <rows>
                 <row>
                     <label  style="font-weight:bold; color: blue" value="7. ESTILOS DE APRENDIZAJE DEL O LA ESTUDIANTE"/>
@@ -1204,7 +1359,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 </row>
             </rows>
         </grid>
-         <grid>
+        <grid>
             <rows>
                 <row>
                     <label  style="font-weight:bold; color: blue" value="9. CARACTERÍSTICAS PERSONALES (madurez y equilibrio emocional)"/>
@@ -1223,7 +1378,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 </row>
             </rows>
         </grid>
-          <grid>
+        <grid>
             <rows>
                 <row>
                     <label  style="font-weight:bold; color: blue" value="10. INTERACCIÓN SOCIAL"/>

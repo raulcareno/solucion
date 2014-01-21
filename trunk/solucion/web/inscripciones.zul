@@ -661,8 +661,10 @@ Periodo periodo = periodosListado.selectedItem.value;
 void seleccionPeriodo(){
         
          Periodo per = periodosListado.selectedItem.value;
-                letrasHoy = adm.queryNativo("SELECT * FROM letras WHERE NOW() BETWEEN desde AND hasta " + 
-                    " AND periodo = '"+per.getCodigoper()+"' ",Letras.class);
+         String qr = "SELECT * FROM letras WHERE NOW() BETWEEN desde AND hasta " + 
+                    " AND periodo = '"+per.getCodigoper()+"' ";
+                letrasHoy = adm.queryNativo(qr,Letras.class);
+                    System.out.println(""+qr);
                 letrasparaHoy = "Hoy apellidos que empiezan con: "+((Letras)letrasHoy.get(0)).getLetras();
                 letrasparaHoy = letrasparaHoy.replace(";"," , ");
                 letras.value = "Hoy apellidos que empiezan con: [ "+((Letras)letrasHoy.get(0)).getLetras()+" ]";
