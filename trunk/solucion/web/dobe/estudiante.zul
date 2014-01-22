@@ -184,7 +184,7 @@
                                  for(int i = 0; i<s.getChildren().size(); i++){
                                      Checkbox dat = s.getChildren().get(i); 
                                      if(dat.isChecked()){
-                                        codigos = dat.getId().replace("CKECO","")+",";
+                                        codigos += s.getChildren().get(i).getId().substring(s.getChildren().get(i).getId().indexOf("CKECO")+5)+",";
                                      }
                                  }
                                  if(codigos.length()>0){
@@ -470,7 +470,7 @@
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobeRepresentantes pregunta = (DobeRepresentantes) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
                         Textbox txNombres = new Textbox(pregunta.getNombres());
@@ -510,18 +510,18 @@
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobeEstructura pregunta = (DobeEstructura) it.next();
                         Row rw = new Row();
                         
                         Textbox txNombres = new Textbox(pregunta.getNombres());
                         rw.appendChild(txNombres);  
                         
-                        rw.appendChild(llenarComboEstados(preguntas.getDobeRelacion(),"P"));
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"P"));
                         
                         Intbox txEdad = new Intbox(pregunta.getEdad());
                         rw.appendChild(txEdad);  
                         
-                        rw.appendChild(llenarComboEstados(preguntas.getDobeCivil(),"C"));
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"C"));
                         
                         Textbox txInstruccion = new Textbox(pregunta.getInstruccion());
                         rw.appendChild(txInstruccion);  
@@ -576,7 +576,7 @@
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobeEstructura1 pregunta = (DobeEstructura1) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
                         rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"C"));  
@@ -628,23 +628,27 @@
      " order by o.codigo " );
        filaEconomica.getChildren().clear();
        if(preguntas.size()>0){
-
+                int mas = 0;
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobeEconomica pregunta = (DobeEconomica) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeCivil(),"V"));  
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"TV"));  
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeTipohogar(),"TE"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeVivienda(),"V"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeTipovivienda(),"TV"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstructura(),"TE"));  
                         Span s = new Span();
                                  for(int i = 0; i<listaEstados.size(); i++){
                                     if((listaEstados.get(i)).getTipo().equals("S")){
                                         Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
-                                        chTrabaja.setId("CKECO"+(listaEstados.get(i)).getCodigo());
+                                        chTrabaja.setId(mas+"CKECO"+(listaEstados.get(i)).getCodigo());
                                         chTrabaja.setChecked(false);
+                                        if(pregunta.getDobeServicios().contains(listaEstados.get(i).getCodigo()+"")){
+                                            chTrabaja.setChecked(true);
+                                        }
                                         s.appendChild(chTrabaja);
                                     }
                                  }
+                                 mas ++;
                         
                         rw.appendChild(s);  
                         
@@ -657,6 +661,7 @@
                      
        }else{
             List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+            int mas = 0;
                     for (Iterator it = dCursos.iterator(); it.hasNext();) {
                             DobeCursos pregunta = (DobeCursos) it.next();
                                 Row rw = new Row();
@@ -669,12 +674,14 @@
                                     if((listaEstados.get(i)).getTipo().equals("S")){
                                         Checkbox chTrabaja = new Checkbox((listaEstados.get(i)).getNombre());
                                        // chTrabaja.setId("CK"+(listaEstados.get(i)).getCodigo());
+                                       chTrabaja.setId(mas+"CKECO"+(listaEstados.get(i)).getCodigo());
                                         chTrabaja.setChecked(false);
                                         s.appendChild(chTrabaja);
                                     }
+                                    mas++;
                                  
                                      
-                                 }
+        }
                                  
                         
                                 rw.appendChild(s);  
@@ -697,9 +704,9 @@
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobeIngresos pregunta = (DobeIngresos) it.next();
                         Row rw = new Row();
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"IN"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getIngresos(),"IN"));  
                         Decimalbox txNombres = new Decimalbox(pregunta.getValori());
                         rw.appendChild(txNombres);  
                      
@@ -732,9 +739,9 @@ void cargarEgresos(Integer est){
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobeIngresos pregunta = (DobeIngresos) it.next();
                         Row rw = new Row();
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeRelacion(),"EG"));  
+                        rw.appendChild(llenarComboEstados(pregunta.getIngresos(),"EG"));  
                         Decimalbox txNombres = new Decimalbox(pregunta.getValori());
                         rw.appendChild(txNombres);  
                      
@@ -769,10 +776,10 @@ void cargarEgresos(Integer est){
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      Preguntar pregunta = (Preguntar) it.next();
+                      DobePsicopedagogico pregunta = (DobePsicopedagogico) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
-                        Decimalbox txAp = new Decimalbox(pregunta.getAprovechamiento());
+                        Decimalbox txAp = new Decimalbox(pregunta.getAprovechaimiento());
                         rw.appendChild(txAp);  
                         Decimalbox txCm = new Decimalbox(pregunta.getComportamiento());
                         rw.appendChild(txCm);  
@@ -821,11 +828,11 @@ void cargarEgresos(Integer est){
                       DobeClub pregunta = (DobeClub) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
-                        Textbox txtClub = new Textbox(pregunta.getNombres());
+                        Textbox txtClub = new Textbox(pregunta.getClub());
                         rw.appendChild(txtClub); 
-                        Textbox txOpcional = new Textbox(pregunta.getNombres());
+                        Textbox txOpcional = new Textbox(pregunta.getOpcional());
                         rw.appendChild(txOpcional); 
-                        Textbox txCali = new Textbox(pregunta.getNombres());
+                        Textbox txCali = new Textbox(pregunta.getCalificacion());
                         rw.appendChild(txCali); 
                          
                         rw.appendChild(llenarComboEstados(pregunta.getDobeGrado(),"GR"));  
@@ -858,13 +865,13 @@ void cargarEgresos(Integer est){
 }
   void cargarAprendizaje(Integer est){
        
-    List preguntas = adm.query("Select o from DobeClub as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+    List preguntas = adm.query("Select o from DobeAprendizaje as o where o.dobeEstudiante.codigo = '"+est+"' " + 
      " order by o.codigo " );
        filaAprendizaje.getChildren().clear();
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      DobeClub pregunta = (DobeClub) it.next();
+                      DobeAprendizaje pregunta = (DobeAprendizaje) it.next();
                         Row rw = new Row();
                         rw.appendChild(llenarComboCursos(pregunta.getDobeCurso()));  
                         Checkbox chActivo = new Checkbox();
@@ -1002,15 +1009,35 @@ void cargarEgresos(Integer est){
        if(preguntas.size()>0){
 
               for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      DobeSocial pregunta = (DobeSocial) it.next();
-                        Row rw = new Row();
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstado(),"SO"));  
-                         Checkbox chPrag = new Checkbox();
-                            chPrag.setChecked(pregunta.getEstado());
-                            rw.appendChild(chPrag);  
-                         
-                     
-                        filaTranstornos.appendChild(rw);
+                      DobeTranstornos pregunta = (DobeTranstornos) it.next();
+                      
+                             DobeTipos pregunta = (DobeTipos) it.next();
+                             Group grupo = new Group();
+                                 Group grupo = new Group(pregunta.getDobeDetalle().getTipo().getNombre());
+                                grupo.setId(.getDobeDetalle().getTipo().getCodigo()+"");
+                                grupo.setStyle("background-color:#FFDDAA");
+                                //if(buscar(matEst,acceIt))
+                              grupo.setParent(filaTranstornos);
+                           List dCursos = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
+                                for (Iterator it3 = dCursos.iterator(); it3.hasNext();) {
+                                       DobeDetalle detalle = (DobeDetalle) it3.next();
+                                        Row rw = new Row();
+                                        Label chPrag = new Label(""+detalle.getNombre());
+                                        rw.setValue(detalle);
+                                        rw.appendChild(chPrag); 
+                                           List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                                                for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
+                                                    DobeCursos cur = (DobeCursos) it2.next();
+                                                        Checkbox chCur = new Checkbox();
+                                                        chCur.setName("CUR"+cur.getCodigo());
+                                                        chCur.setChecked(false);
+                                                        rw.appendChild(chCur);  
+                                                }
+                                        filaTranstornos.appendChild(rw);
+                            }
+                            
+                      
+                      
 
               }
                      
@@ -1173,6 +1200,28 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 lista.setStyle("font-size:11px");
             return lista;
     }
+    
+    void buscarEstudiante(DobeEstudiantes valor){
+
+            llenar(valor);
+                cargarRepresentantes((valor).getCodigo());
+                cargarEstructura((valor).getCodigo());
+                cargarEstructura1((valor).getCodigo());
+                cargarEconomica((valor).getCodigo());
+                cargarIngresos((valor).getCodigo());
+                cargarEgresos((valor).getCodigo());
+                cargarPsicopedagogicas((valor).getCodigo());
+                cargarClub((valor).getCodigo());
+                cargarAprendizaje((valor).getCodigo());
+                cargarCaracteristicas((valor).getCodigo());
+                cargarSocial((valor).getCodigo());
+                cargarTranstornos((valor).getCodigo());
+                cargarNecesidades((valor).getCodigo());
+                estado(false,false);
+
+
+
+    }
         
   ]]>
     </zscript>
@@ -1194,7 +1243,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 <row spans="6" style="background:yellow">
                     <span>
                         BÚSQUEDA:
-                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.label)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteDobe"/>
+                        <combobox  cols="35" id="combo" onSelect="buscarEstudiante(self.selectedItem.value)" autodrop="true" buttonVisible="false"  use="bean.AutoCompleteDobe"/>
                         _INGRESE UN APELLIDO
                     </span>
                 </row>
@@ -1599,28 +1648,6 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
      
 
     </groupbox>
-    <groupbox mold="3d" >
-        <caption label="Busquedas" />
-        <vbox>
-            <hbox> DobeEstudiantes:  
-                <textbox id="buscarText"  maxlength="60" cols="40" />  
-                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/> 
-            </hbox>
-            <hbox>
-                <listbox mold="paging" rows="10" pageSize="10" onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="750px">
-                    <listhead>
-                        <listheader label="Cod."/>
-                        <listheader label="Nombress"/>
-                        <listheader visible="false" label="TP"/>
-                    </listhead>
-                    <listitem  forEach="${allEvents}" value="${each}">
-                        <listcell label="${each.codigo}" />
-                        <listcell label="${each.nombre}" />
-                        <listcell label="${each.apellidos}" />
-                    </listitem>
-                </listbox>
-            </hbox>
-        </vbox>
-    </groupbox>
+   
 
 </window>
