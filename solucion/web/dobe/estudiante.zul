@@ -318,7 +318,7 @@
                 
                 //guardo los datos transtornos
                  col  = datosTranstornos.getRows().getChildren();
-                adm.ejecutaSql("Delete from DobeTranstornos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and tipo ="T" ");
+                adm.ejecutaSql("Delete from DobeTranstornos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and tipo ='T' ");
                 for (int i = 0; i < col.size(); i++) {
                         Row object = (Row) col.get(i);
                          List labels = object.getChildren();
@@ -344,7 +344,7 @@
                 
                  //guardo los datos necesidades
                  col  = datosNecesidades.getRows().getChildren();
-                adm.ejecutaSql("Delete from DobeTranstornos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and tipo ="N" ");
+                adm.ejecutaSql("Delete from DobeTranstornos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and tipo ='N' ");
                 for (int i = 0; i < col.size(); i++) {
                         Row object = (Row) col.get(i);
                          List labels = object.getChildren();
@@ -1083,6 +1083,7 @@ void cargarNecesidades(Integer est){
                                 for (Iterator it3 = dCursos.iterator(); it3.hasNext();) {
                                        DobeDetalle detalle = (DobeDetalle) it3.next();
                                         Row rw = new Row();
+                                        rw.setValue(detalle);
                                         Label chPrag = new Label(""+detalle.getNombre());
                                         rw.appendChild(chPrag); 
                                            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
@@ -1090,6 +1091,7 @@ void cargarNecesidades(Integer est){
                                                     DobeCursos cur = (DobeCursos) it2.next();
                                                         Checkbox chCur = new Checkbox();
                                                                 chCur.setChecked(false);
+                                                                chCur.setName("CUR"+cur.getCodigo());
                                                                 rw.appendChild(chCur);  
                                                 }
                                         filaNecesidades.appendChild(rw);
