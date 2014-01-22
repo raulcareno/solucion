@@ -24,17 +24,20 @@
         Object media = null;
 
         //FUNCIONES
-        void llenar(DobeEstudiantes empa){
-            nombre.value = empa.getNombres();
-            apellidos.value = empa.getApellidos();
+        void llenar(DobeEstudiantes empaLlega){
+            empa = empaLlega;
+            nombre.value = empaLlega.getNombres();
+            apellidos.value = empaLlega.getApellidos();
 
         }
  
         
         void estado(Boolean estado,Boolean modificar){
             if(modificar){
-            empa = (DobeEstudiantes)datos.selectedItem.value;
-            }else{empa.setCodigo(0);}
+                //empa = (DobeEstudiantes)datos.selectedItem.value;
+            }else{
+                empa.setCodigo(0);
+            }
             nombre.readonly = estado;
             apellidos.readonly = estado;
             nombre.readonly = estado;             
@@ -64,6 +67,7 @@
 
 
         void guardar(){
+        
                 if(nombre.value==""){
                     Messagebox.show("Ingrese los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                     return;
@@ -94,13 +98,10 @@
                     empa.setSshh(nosshh.value);              
                     empa.setObservacionrepitio(larazon.value);              
                     empa.setObservaciondeserto(larazondeserto.value);   
-                
+                alert(empa.getCodigo()+"");
                 
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
-                    List children = datos.selectedItem.children;
-                    ((Listcell)children.get(0)).label = empa.getCodigo()+"";
-                    ((Listcell)children.get(1)).label = empa.getNombres()+" ";
                 }else{
                     empa.setCodigo(adm.getNuevaClave("DobeEstudiantes","codigo"));
                     adm.guardar(empa);
@@ -373,7 +374,7 @@
                 guardar.disabled=true;
                 agregar.disabled=false;
                 estado(true,false);
-                llenar(new DobeEstudiantes(0));
+                //llenar(new DobeEstudiantes(0));
 
 
         }
@@ -411,7 +412,8 @@
         }
         void modificar(){
             if(verificar("Modificar")){
-                guardar.disabled=false; estado(false,true);
+                guardar.disabled=false; 
+                estado(false,true);
             }else{
               Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             }
@@ -1003,37 +1005,53 @@ void cargarEgresos(Integer est){
 
  void cargarTranstornos(Integer est){
        
-    List preguntas = adm.query("Select o from DobeTranstornos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+    List preguntas = adm.query("Select o from DobeTranstornos as o where o.dobeEstudiante.codigo = '"+est+"'  and o.tipo = 'T'" + 
      " order by o.codigo " );
        filaTranstornos.getChildren().clear();
        if(preguntas.size()>0){
 
-              for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      DobeTranstornos pregunta = (DobeTranstornos) it.next();
-                      
-                             DobeTipos pregunta = (DobeTipos) it.next();
-                             Group grupo = new Group();
-                                 Group grupo = new Group(pregunta.getDobeDetalle().getTipo().getNombre());
-                                grupo.setId(.getDobeDetalle().getTipo().getCodigo()+"");
-                                grupo.setStyle("background-color:#FFDDAA");
-                                //if(buscar(matEst,acceIt))
+        List dTipos = adm.query("Select o from DobeTipos as o where o.tipo = 'T'   ");
+        List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                        for (Iterator it = dTipos.iterator(); it.hasNext();) {
+                                DobeTipos pregunta = (DobeTipos) it.next();
+                                 Group grupo = new Group((pregunta).getNombre());
+                              grupo.setId(pregunta.getCodigo()+"");
+                              grupo.setStyle("background-color:#FFDDAA");
+                              //if(buscar(matEst,acceIt))
                               grupo.setParent(filaTranstornos);
-                           List dCursos = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
-                                for (Iterator it3 = dCursos.iterator(); it3.hasNext();) {
+                         
+                         List dDeta = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
+                                     for (Iterator it3 = dDeta.iterator(); it3.hasNext();) {
                                        DobeDetalle detalle = (DobeDetalle) it3.next();
-                                        Row rw = new Row();
-                                        Label chPrag = new Label(""+detalle.getNombre());
-                                        rw.setValue(detalle);
-                                        rw.appendChild(chPrag); 
-                                           List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
-                                                for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
-                                                    DobeCursos cur = (DobeCursos) it2.next();
-                                                        Checkbox chCur = new Checkbox();
-                                                        chCur.setName("CUR"+cur.getCodigo());
-                                                        chCur.setChecked(false);
-                                                        rw.appendChild(chCur);  
-                                                }
-                                        filaTranstornos.appendChild(rw);
+                                         Row rw = new Row();
+                                          Label chPrag = new Label(""+detalle.getNombre());
+                                           rw.setValue(detalle);
+                                           rw.appendChild(chPrag);
+                                        
+                                            for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
+                                                    DobeCursos curIterado = (DobeCursos) it2.next();
+                                                    List dTras = adm.query("Select o from DobeTranstornos as o where o.dobeDetalle.codigo = '"+detalle.getCodigo()+"' " + 
+                                                                            " and o.dobeCurso.codigo = '"+curIterado.getCodigo()+"'  ");            
+                                                        if(dTras.size()>0){
+                                                                        Checkbox chCur = new Checkbox();
+                                                                        chCur.setName("CUR"+curIterado.getCodigo());
+                                                                        chCur.setChecked(dTras.get(0).getEstado());
+                                                                        rw.appendChild(chCur);  
+                                                                        filaTranstornos.appendChild(rw);
+                                                        }else{
+                                                                        Checkbox chCur = new Checkbox();
+                                                                        chCur.setName("CUR"+curIterado.getCodigo());
+                                                                        chCur.setChecked(false);
+                                                                        rw.appendChild(chCur); 
+                                                                        filaTranstornos.appendChild(rw);
+
+                                                        }
+
+
+                                        }
+                                        
+                                        
+                                       
                             }
                             
                       
@@ -1051,8 +1069,8 @@ void cargarEgresos(Integer est){
                               grupo.setStyle("background-color:#FFDDAA");
                               //if(buscar(matEst,acceIt))
                               grupo.setParent(filaTranstornos);
-                           List dCursos = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
-                                for (Iterator it3 = dCursos.iterator(); it3.hasNext();) {
+                           List dDetalles = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
+                                for (Iterator it3 = dDetalles.iterator(); it3.hasNext();) {
                                        DobeDetalle detalle = (DobeDetalle) it3.next();
                                         Row rw = new Row();
                                         Label chPrag = new Label(""+detalle.getNombre());
@@ -1078,23 +1096,60 @@ void cargarEgresos(Integer est){
 }
 void cargarNecesidades(Integer est){
        
-    List preguntas = adm.query("Select o from DobeTranstornos as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+    List preguntas = adm.query("Select o from DobeTranstornos as o where o.dobeEstudiante.codigo = '"+est+"' and o.tipo = 'N' " + 
      " order by o.codigo " );
        filaNecesidades.getChildren().clear();
        if(preguntas.size()>0){
 
-              for (Iterator it = preguntas.iterator(); it.hasNext();) {
-                      DobeSocial pregunta = (DobeSocial) it.next();
-                        Row rw = new Row();
-                        rw.appendChild(llenarComboEstados(pregunta.getDobeEstado(),"SO"));  
-                         Checkbox chPrag = new Checkbox();
-                            chPrag.setChecked(pregunta.getEstado());
-                            rw.appendChild(chPrag);  
+        List dTipos = adm.query("Select o from DobeTipos as o where o.tipo = 'N'   ");
+        List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                        for (Iterator it = dTipos.iterator(); it.hasNext();) {
+                                DobeTipos pregunta = (DobeTipos) it.next();
+                                 Group grupo = new Group((pregunta).getNombre());
+                              grupo.setId(pregunta.getCodigo()+"");
+                              grupo.setStyle("background-color:#FFDDAA");
+                              //if(buscar(matEst,acceIt))
+                              grupo.setParent(filaNecesidades);
                          
-                     
-                        filaNecesidades.appendChild(rw);
+                         List dDeta = adm.query("Select o from DobeDetalle as o where o.tipo.codigo = '"+pregunta.getCodigo()+"'   ");
+                                     for (Iterator it3 = dDeta.iterator(); it3.hasNext();) {
+                                       DobeDetalle detalle = (DobeDetalle) it3.next();
+                                         Row rw = new Row();
+                                          Label chPrag = new Label(""+detalle.getNombre());
+                                           rw.setValue(detalle);
+                                           rw.appendChild(chPrag);
+                                        
+                                            for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
+                                                    DobeCursos curIterado = (DobeCursos) it2.next();
+                                                    List dTras = adm.query("Select o from DobeTranstornos as o where o.dobeDetalle.codigo = '"+detalle.getCodigo()+"' " + 
+                                                                            " and o.dobeCurso.codigo = '"+curIterado.getCodigo()+"'  ");            
+                                                        if(dTras.size()>0){
+                                                                        Checkbox chCur = new Checkbox();
+                                                                        chCur.setName("CUR"+curIterado.getCodigo());
+                                                                        chCur.setChecked(dTras.get(0).getEstado());
+                                                                        rw.appendChild(chCur);  
+                                                                        filaNecesidades.appendChild(rw);
+                                                        }else{
+                                                                        Checkbox chCur = new Checkbox();
+                                                                        chCur.setName("CUR"+curIterado.getCodigo());
+                                                                        chCur.setChecked(false);
+                                                                        rw.appendChild(chCur); 
+                                                                        filaNecesidades.appendChild(rw);
+
+                                                        }
+
+
+                                        }
+                                        
+                                        
+                                       
+                            }
+                            
+                      
+                      
 
               }
+            
                      
        }else{
             List dCursos = adm.query("Select o from DobeTipos as o where o.tipo = 'N'   ");
@@ -1217,7 +1272,9 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                 cargarSocial((valor).getCodigo());
                 cargarTranstornos((valor).getCodigo());
                 cargarNecesidades((valor).getCodigo());
-                estado(false,false);
+                modificar.disabled = false;
+                //estado(false,false);
+                
 
 
 
