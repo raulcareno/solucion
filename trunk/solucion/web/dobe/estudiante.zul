@@ -279,6 +279,95 @@
 
                 }
                 
+                
+                
+            //guardo los datos caracteristicas
+                 col  = datosCaracteristica.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeCaracteristicas where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeCaracteristicas rep = new DobeCaracteristicas(adm.getNuevaClave("DobeCaracteristicas","codigo"));
+                           rep.setDobeEstado(((DobeEstados)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setEstado(((Checkbox) labels.get(1)).isChecked());
+                           rep.setObservacion(((Textbox) labels.get(2)).getValue());
+                           
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeCaracteristicas","codigo"));
+                           adm.guardar(rep);
+
+                }
+                
+                   
+                
+               //guardo los datos social
+                 col  = datosSocial.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeSocial where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
+                for (int i = 0; i < col.size(); i++) {
+                    Row object = (Row) col.get(i);
+                      List labels = object.getChildren();
+                        DobeSocial rep = new DobeSocial(adm.getNuevaClave("DobeSocial","codigo"));
+                           rep.setDobeEstado(((DobeEstados)((Listbox) labels.get(0)).getSelectedItem().getValue()));
+                           rep.setEstado(((Checkbox) labels.get(1)).isChecked());
+                          
+                           rep.setDobeEstudiante(empa);
+                           rep.setCodigo(adm.getNuevaClave("DobeSocial","codigo"));
+                           adm.guardar(rep);
+
+                }
+                
+                //guardo los datos transtornos
+                 col  = datosTranstornos.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeTranstornos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and tipo ="T" ");
+                for (int i = 0; i < col.size(); i++) {
+                        Row object = (Row) col.get(i);
+                         List labels = object.getChildren();
+                         if(labels.size()>1){
+                              
+                                //listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                                int i =1;
+                                for (Iterator it = listaCursos.iterator(); it.hasNext();) {
+                                        DobeCursos acceIt = (DobeCursos) it.next();
+                                        DobeTranstornos rep = new DobeTranstornos(adm.getNuevaClave("DobeTranstornos","codigo"));
+                                        rep.setDobeDetalle(((DobeDetalle) object.getValue()));        
+                                        rep.setTipo("T");
+                                        rep.setEstado(((Checkbox) labels.get(i)).isChecked());
+                                        rep.setDobeCurso(acceIt);
+                                        rep.setDobeEstudiante(empa);
+                                        rep.setCodigo(adm.getNuevaClave("DobeTranstornos","codigo"));
+                                        adm.guardar(rep);
+                                        i++;
+
+                                }
+                            }
+                }
+                
+                 //guardo los datos necesidades
+                 col  = datosNecesidades.getRows().getChildren();
+                adm.ejecutaSql("Delete from DobeTranstornos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and tipo ="N" ");
+                for (int i = 0; i < col.size(); i++) {
+                        Row object = (Row) col.get(i);
+                         List labels = object.getChildren();
+                         if(labels.size()>1){
+                              
+                                //listaCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
+                                int i =1;
+                                for (Iterator it = listaCursos.iterator(); it.hasNext();) {
+                                        DobeCursos acceIt = (DobeCursos) it.next();
+                                        DobeTranstornos rep = new DobeTranstornos(adm.getNuevaClave("DobeTranstornos","codigo"));
+                                        rep.setDobeDetalle(((DobeDetalle) object.getValue()));        
+                                        rep.setTipo("N");
+                                        rep.setEstado(((Checkbox) labels.get(i)).isChecked());
+                                        rep.setDobeCurso(acceIt);
+                                        rep.setDobeEstudiante(empa);
+                                        rep.setCodigo(adm.getNuevaClave("DobeTranstornos","codigo"));
+                                        adm.guardar(rep);
+                                        i++;
+
+                                }
+                            }
+                }
+                
                 permiso.auditar("DobeEstudiantes","Guardar",""+nombre.value);
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                 guardar.disabled=true;
@@ -940,13 +1029,15 @@ void cargarEgresos(Integer est){
                                        DobeDetalle detalle = (DobeDetalle) it3.next();
                                         Row rw = new Row();
                                         Label chPrag = new Label(""+detalle.getNombre());
+                                        rw.setValue(detalle);
                                         rw.appendChild(chPrag); 
                                            List dCursos = adm.query("Select o from DobeCursos as o order by o.secuencia ");
                                                 for (Iterator it2 = dCursos.iterator(); it2.hasNext();) {
                                                     DobeCursos cur = (DobeCursos) it2.next();
                                                         Checkbox chCur = new Checkbox();
-                                                                chCur.setChecked(false);
-                                                                rw.appendChild(chCur);  
+                                                        chCur.setName("CUR"+cur.getCodigo());
+                                                        chCur.setChecked(false);
+                                                        rw.appendChild(chCur);  
                                                 }
                                         filaTranstornos.appendChild(rw);
                             }
