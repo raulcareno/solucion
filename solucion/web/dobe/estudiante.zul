@@ -25,11 +25,11 @@
 
         //FUNCIONES
         void llenar(DobeEstudiantes empaLlega){
-            empa = empaLlega;
-            nombre.value = empaLlega.getNombres();
-            apellidos.value = empaLlega.getApellidos();
+                empa = empaLlega;
+                nombre.value = empaLlega.getNombres();
+                apellidos.value = empaLlega.getApellidos();
                 lugarnacimiento.value = empa.getLugarnacimiento();
-                 nacionalidad.value = empa.getNacionalidad();
+                nacionalidad.value = empa.getNacionalidad();
                 raza.value = empa.getRaza(); 
                 direccion.value = empa.getDireccion(); 
                 direccion1.value = empa.getDireccion1(); 
@@ -48,6 +48,45 @@
                 nosshh.value= empa.getSshh();  
                 larazon.value= empa.getObservacionrepitio();  
                 larazondeserto.value= empa.getObservaciondeserto();   
+                try{
+                    vivenjuntos.checked = empa.getVivenjuntos();
+                }catch(Exception er){}
+                try{
+                    repitio.setSelectedIndex(1);
+                }catch(Exception er){}
+                try{
+                    deserto.setSelectedIndex(1);
+                }catch(Exception er){}
+                
+                try{
+                    List rag = repitio.getChildren();
+
+
+                    for (Iterator it = rag.iterator(); it.hasNext();) {
+                        Radio object = (Radio)it.next();
+                        boolean val = new Boolean(object.getValue()).booleanValue();;
+                        if(val==empa.getRepitio()){
+                            object.setSelected(true);       
+                            break;
+                        }
+
+                    }
+                }catch(Exception erc){}
+                
+                    
+                try{
+                    List rag = deserto.getChildren();
+                    
+                    for (Iterator it = rag.iterator(); it.hasNext();) {
+                        Radio object = (Radio)it.next();
+                     boolean val = new Boolean(object.getValue()).booleanValue();;
+                        if(val==empa.getDeserto()){
+                            object.setSelected(true);       
+                            break;
+                        }
+
+                    }
+                }catch(Exception erc){}
             
 
         }
@@ -119,6 +158,9 @@
                     empa.setSshh(nosshh.value);              
                     empa.setObservacionrepitio(larazon.value);              
                     empa.setObservaciondeserto(larazondeserto.value);   
+                    empa.setVivenjuntos(vivenjuntos.isChecked());
+                    empa.setRepitio(repitio.isChecked());
+                    empa.setDeserto(deserto.isChecked());
                 
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
@@ -126,6 +168,7 @@
                     empa.setCodigo(adm.getNuevaClave("DobeEstudiantes","codigo"));
                     adm.guardar(empa);
                 }
+                
                 //guardo los datos del representante
             List col = datosRepresentante.getRows().getChildren();
                 adm.ejecutaSql("Delete from DobeRepresentantes where dobeEstudiante.codigo = '"+empa.getCodigo() +"' ");
@@ -219,7 +262,7 @@
                 //guardo los datos ingresos
                 
                 col  = datosIngresos.getRows().getChildren();
-                adm.ejecutaSql("Delete from DobeIngresos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and o.observaciones = 'IN' ");
+                adm.ejecutaSql("Delete from DobeIngresos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and observaciones = 'IN' ");
                 for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
                       List labels = object.getChildren();
@@ -234,7 +277,7 @@
                 //guardo los datos egresos
                 
                 col  = datosEgresos.getRows().getChildren();
-                adm.ejecutaSql("Delete from DobeIngresos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and o.observaciones = 'EG' ");
+                adm.ejecutaSql("Delete from DobeIngresos where dobeEstudiante.codigo = '"+empa.getCodigo() +"' and observaciones = 'EG' ");
                 for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
                       List labels = object.getChildren();
@@ -640,6 +683,45 @@
                     }
        
        
+       }
+
+}
+
+ void cargarTrato(Integer est){
+       
+    List listado = adm.query("Select o from DobeTrato as o where o.dobeEstudiante.codigo = '"+est+"' " + 
+     " order by o.codigo " );
+ 
+       if(listado.size()>0){
+       DobeTrato preguntas = listado.get(0);
+                   for (int i = 0; i <= padretrato.getItems().size(); i++) {
+                                    String cmbIt = ((Listitem)padretrato.getItems().get(i)).getValue();
+                                    if(cmbIt.equals(preguntas.getPadre())){
+                                        padretrato.setSelectedIndex(i);
+                                        break;
+                                    }
+                    }
+                    
+                    for (int i = 0; i <= madretrato.getItems().size(); i++) {
+                                    String cmbIt = ((Listitem)madretrato.getItems().get(i)).getValue();
+                                    if(cmbIt.equals(preguntas.getMadre())){
+                                        madretrato.setSelectedIndex(i);
+                                        break;
+                                    }
+                    }
+                    
+                    for (int i = 0; i <= representantetrato.getItems().size(); i++) {
+                                    String cmbIt = ((Listitem)representantetrato.getItems().get(i)).getValue();
+                                    if(cmbIt.equals(preguntas.getRepresentante())){
+                                        representantetrato.setSelectedIndex(i);
+                                        break;
+                                    }
+                    }
+                  
+             
+                     
+       }else{
+            
        }
 
 }
@@ -1279,9 +1361,11 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
     void buscarEstudiante(DobeEstudiantes valor){
 
             llenar(valor);
+            
                 cargarRepresentantes((valor).getCodigo());
                 cargarEstructura((valor).getCodigo());
                 cargarEstructura1((valor).getCodigo());
+                cargarTrato((valor).getCodigo());
                 cargarEconomica((valor).getCodigo());
                 cargarIngresos((valor).getCodigo());
                 cargarEgresos((valor).getCodigo());

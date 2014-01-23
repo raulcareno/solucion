@@ -19,6 +19,10 @@ public class AutoCompleteDobe extends Combobox {
 
     public AutoCompleteDobe() {
         //	refresh("");
+       Boolean a = new Boolean("true").booleanValue();;
+       a.booleanValue();
+        
+        
         adm = new Administrador();
     }
 
