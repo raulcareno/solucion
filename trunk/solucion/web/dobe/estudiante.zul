@@ -1548,7 +1548,8 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
         <grid>
             <rows>
                 <row spans="4">
-                    TRATO AFECTIVO
+                    
+                    <label  style="font-weight:bold; color: blue" value="TRATO AFECTIVO"/>
                 </row>
                 <row>
                     PADRE     
