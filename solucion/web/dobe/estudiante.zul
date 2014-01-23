@@ -28,6 +28,27 @@
             empa = empaLlega;
             nombre.value = empaLlega.getNombres();
             apellidos.value = empaLlega.getApellidos();
+                lugarnacimiento.value = empa.getLugarnacimiento();
+                 nacionalidad.value = empa.getNacionalidad();
+                raza.value = empa.getRaza(); 
+                direccion.value = empa.getDireccion(); 
+                direccion1.value = empa.getDireccion1(); 
+                direccion2.value = empa.getDireccion2(); 
+                telefono.value= empa.getTelefono(); 
+                celular.value= empa.getCelular(); 
+                curso.value= empa.getCurso(); 
+                aniolectivo.value= empa.getAniolectivo(); 
+                proviene.value= empa.getProviene(); 
+                observacion.value= empa.getObservacion(); 
+                explique.value= empa.getExplique(); 
+                hermanos.value= empa.getHermanos(); 
+                hombres.value= empa.getHombres(); 
+                mujeres.value= empa.getMujeres();   
+                nohabitaciones.value= empa.getHabitaciones();  
+                nosshh.value= empa.getSshh();  
+                larazon.value= empa.getObservacionrepitio();  
+                larazondeserto.value= empa.getObservaciondeserto();   
+            
 
         }
  
@@ -98,7 +119,6 @@
                     empa.setSshh(nosshh.value);              
                     empa.setObservacionrepitio(larazon.value);              
                     empa.setObservaciondeserto(larazondeserto.value);   
-                alert(empa.getCodigo()+"");
                 
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
