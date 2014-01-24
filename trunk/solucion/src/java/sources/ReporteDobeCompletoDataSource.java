@@ -15,6 +15,7 @@ import jcinform.persistencia.Matriculas;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 /**
  *
@@ -42,8 +43,8 @@ public class ReporteDobeCompletoDataSource implements JRDataSource {
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
 
-        Permisos permiso = new Permisos();
-        DobeEstudiantes2 nodo = (DobeEstudiantes2) valorAtual;
+        //Permisos permiso = new Permisos();
+        DobeEstudiantes nodo = (DobeEstudiantes) valorAtual;
         String fieldName = campo.getName();
 
         try {
@@ -107,6 +108,28 @@ public class ReporteDobeCompletoDataSource implements JRDataSource {
                 valor = nodo.getTelefono();
             } else if ("vivenjuntos".equals(fieldName)) {
                 valor = nodo.getVivenjuntos();
+            } else if ("representantes".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getRepresentantes());
+            } else if ("estructura".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getEstructura());
+            } else if ("estructura1".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getEstructura1());
+            } else if ("economicas".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getEconomicas());
+            } else if ("ingresos".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getIngresos());
+            } else if ("egresos".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getEgresos());
+            } else if ("clubes".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getClubes());
+            } else if ("psicopedagogicos".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getPsicopedagogicos());
+            } else if ("aprendizajes".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getAprendizajes());
+            }  else if ("caracteristicas".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getCaracteristicas());
+            }  else if ("social".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getSocial());
             }  else if ("edad".equals(fieldName)) {
                 Date fecha = new Date();
                 int y1 = fecha.getYear();

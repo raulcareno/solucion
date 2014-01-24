@@ -13,6 +13,8 @@
         import bean.Permisos;
         import java.math.BigDecimal;
         import org.zkoss.zul.Group;
+        import sources.*;
+        import net.sf.jasperreports.engine.JRDataSource;
         
         Session ses = Sessions.getCurrent();
         Administrador adm = new Administrador();
@@ -159,8 +161,8 @@
                     empa.setObservacionrepitio(larazon.value);              
                     empa.setObservaciondeserto(larazondeserto.value);   
                     empa.setVivenjuntos(vivenjuntos.isChecked());
-                    empa.setRepitio(repitio.isChecked());
-                    empa.setDeserto(deserto.isChecked());
+                    empa.setRepitio(repitio.getChildren().get(0).isSelected()?true:false);
+                    empa.setDeserto(deserto.getChildren().get(0).isSelected()?true:false);
                 
                 if((!empa.getCodigo().equals(0)) ){
                     adm.actualizar(empa);
@@ -1383,10 +1385,262 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
 
 
     }
+    
+void showReport() {
+            //Preparing parameters
+            Institucion insts = periodo.getInstitucion();
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            parametros.put("fechaFormat", insts.getRector());
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+            parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
+             
+            
+            datasource = cargarDatosReporte(new DobeEstudiantes(empa.getCodigo()),"");
+            report.setSrc(directorioReportes+"dobeCompleto.jasper");
+            parametros.put("titulo", "Certificado de Matricula");
+            
+            //if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+            //}
+      }
+      
+ public JRDataSource cargarDatosReporte(DobeEstudiantes matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        
+        //mostrar respresentantes
+        String query = "SELECT mat FROM DobeEstudiantes AS mat " +
+                "WHERE  mat.codigo =  '"+matricula.getCodigo()+"' ";
+        List dEstu = adm.query(query);
+         
+            for (Iterator it = dEstu.iterator(); it.hasNext();) {
+                DobeEstudiantes elem = (DobeEstudiantes) it.next();
+
+                List rep = adm.query("Select o from DobeRepresentantes as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List repres = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeRepresentantes elem = (DobeRepresentantes) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeCurso().getNombre());
+                            gen.setValor2(elem.getNombres());
+                            gen.setValor3(elem.getDobeRelacion().getNombre());
+                            gen.setValor4(elem.getTelefono());
+                            repres.add(gen);
+
+                        }
+                elem.setRepresentantes(repres);        
+                
+                rep = adm.query("Select o from DobeEstructura as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List estruc = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeEstructura elem = (DobeEstructura) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getNombres());
+                            gen.setValor2(elem.getDobeRelacion().getNombre());
+                            gen.setValor3(elem.getEdad());
+                            gen.setValor4(elem.getDobeCivil().getNombre());
+                            gen.setValor5(elem.getInstruccion());
+                            gen.setValor6(elem.getOcupacion());
+                            gen.setValor7(elem.getLugartrabajo());
+                            estruc.add(gen);
+
+                        }
+                elem.setEstructura(estruc);        
+                
+                rep = adm.query("Select o from DobeEstructura1 as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List estruc1 = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeEstructura1 elem = (DobeEstructura1) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeCurso().getNombre());
+                            gen.setValor2(elem.getDobeCivil().getNombre());
+                            gen.setValor3(elem.getDobeRelacion().getNombre());
+                            gen.setValor4(elem.getDobeTipohogar().getNombre());
+                            gen.setValor5(elem.getTrabaja());
+                            gen.setValor6(elem.getRemunerado());
+                            estruc1.add(gen);
+
+                        }
+                elem.setEstructura1(estruc1);        
+                        
+                //ECONOMICAS o
+                rep = adm.query("Select o from DobeEconomica as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Economicas = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeEconomica elem = (DobeEconomica) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeCurso().getNombre());
+                            gen.setValor2(elem.getDobeVivienda().getNombre());
+                            gen.setValor3(elem.getDobeTipovivienda().getNombre());
+                            gen.setValor4(elem.getDobeEstructura().getNombre());
+                            
+                            String servicios ="";
+                            for(int i = 0; i<listaEstados.size(); i++){
+                                    if((listaEstados.get(i)).getTipo().equals("S")){
+                                        if(elem.getDobeServicios().contains(listaEstados.get(i).getCodigo()+"")){
+                                            servicios +=listaEstados.get(i).getNombre()+",";
+                                        }
+                                    }
+                            }
+                            gen.setValor5(servicios);
+                            Economicas.add(gen);
+
+                        }
+                elem.setEconomicas(Economicas);  
+                
+                    //IngresosS o
+                rep = adm.query("Select o from DobeIngresos as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'  and o.observaciones = 'IN' ");
+                    List Ingresos = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeIngresos elem = (DobeIngresos) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getIngresos().getNombre());
+                            gen.setValor2(elem.getValori());
+                            Ingresos.add(gen);
+                        }
+                elem.setIngresos(Ingresos); 
+                
+                   //EgresosS o
+                rep = adm.query("Select o from DobeIngresos as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'  and o.observaciones = 'EG' ");
+                    List Egresos = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeIngresos elem = (DobeIngresos) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getIngresos().getNombre());
+                            gen.setValor2(elem.getValori());
+                            Egresos.add(gen);
+                        }
+                elem.setEgresos(Egresos); 
+                
+                //PSICOPEDAGOGICAS
+                   rep = adm.query("Select o from DobePsicopedagogico as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Psicopeagogico = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobePsicopedagogico elem = (DobePsicopedagogico) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeCurso().getNombre());
+                            gen.setValor2(elem.getAprovechaimiento());
+                            gen.setValor3(elem.getComportamiento());
+                            gen.setValor4(elem.getMenores());
+                            gen.setValor5(elem.getMayores());
+                            Psicopeagogico.add(gen);
+
+                        }
+                elem.setPsicopedagogicos(Psicopeagogico);       
+                
+                  //ClubeS o
+                rep = adm.query("Select o from DobeClub as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Clubes = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeClub elem = (DobeClub) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeCurso().getNombre());
+                            gen.setValor2(elem.getClub());
+                            gen.setValor3(elem.getOpcional());
+                            gen.setValor4(elem.getCalificacion());
+                            gen.setValor5(elem.getDobeGrado().getNombre());
+                            Clubes.add(gen);
+
+                        }
+                elem.setClubes(Clubes);  
+                
+                  
+                  //Aprendizaje o
+                rep = adm.query("Select o from DobeAprendizaje as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Aprendizajes = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeAprendizaje elem = (DobeAprendizaje) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeCurso().getNombre());
+                            gen.setValor2(elem.getActivo());
+                            gen.setValor3(elem.getReflexivo());
+                            gen.setValor4(elem.getTeorico());
+                            gen.setValor5(elem.getPragmatico());
+                            Aprendizajes.add(gen);
+
+                        }
+                elem.setAprendizajes(Aprendizajes);  
+                
+                
+                      //Caracteristicas o
+                rep = adm.query("Select o from DobeCaracteristicas as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Caracteristicas = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeCaracteristicas elem = (DobeCaracteristicas) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeEstado().getNombre());
+                            gen.setValor2(elem.getObservacion());
+                            gen.setValor3(elem.getEstado());
+                            
+                            Caracteristicass.add(gen);
+
+                        }
+                elem.setCaracteristicas(Caracteristicas);  
+                
+                
+                
+                  //Social o
+                rep = adm.query("Select o from DobeSocial as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Social = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeSocial elem = (DobeSocial) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeEstado().getNombre());
+                            gen.setValor2(elem.getEstado());
+                            
+                            Socials.add(gen);
+
+                        }
+                elem.setSocial(Social);  
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                detalle.add(elem);
+            }
+         
+ 
+//        JRDataSource ds = null;
+       
+        return new ReporteDobeCompletoDataSource(detalle);
+
+}
+
         
   ]]>
     </zscript>
-    <groupbox mold="3d" >
+    <groupbox id="contenido" mold="3d" >
       
         <vbox>
             <vbox>
@@ -1395,6 +1649,7 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
                     <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
                     <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                     <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button  image="/images/imprimir.gif" id="impprimir" label="Imprimir" onClick="showReport(); contenidoReporte.visible=true; contenido.visible=false;" />
                 </hbox>
             </vbox>
 
@@ -1810,6 +2065,16 @@ List listaEstados = adm.query("Select o from DobeEstados as o order by o.nombre 
      
 
     </groupbox>
+      <panel height="800px" visible="true"  id="contenidoReporte">
+        <toolbar align="center">
+            <button width="400px" image="/images/exit.gif" id="Cerrar"  label="CERRAR EL REPORTE"  
+                   onClick="contenidoReporte.visible=false; contenido.visible=true; botones1.visible=true; botones2.visible=true; separador.visible=true;  "/>
+        </toolbar>
+        <panelchildren>
+
+            <jasperreport id="report" />
+        </panelchildren>
+    </panel>
    
 
 </window>
