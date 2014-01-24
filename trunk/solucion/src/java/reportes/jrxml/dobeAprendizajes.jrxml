@@ -115,8 +115,8 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor2}).equals("true")?"SI":"NO"]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor2}).equals("true")?"SI":""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="214" y="0" width="98" height="16" isPrintWhenDetailOverflows="true"/>
@@ -127,8 +127,8 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor3}).equals("true")?"SI":"NO"]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor3}).equals("true")?"SI":""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="312" y="0" width="112" height="16" isPrintWhenDetailOverflows="true"/>
@@ -139,8 +139,8 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor4}).equals("true")?"SI":"NO"]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor4}).equals("true")?"SI":""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="424" y="0" width="70" height="16" isPrintWhenDetailOverflows="true"/>
@@ -151,8 +151,8 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor5}).equals("true")?"SI":"NO"]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor5}).equals("true")?"SI":""]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dobeRepresentantes" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="valor1" class="java.lang.Object"/>
@@ -115,7 +115,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
@@ -127,7 +127,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor3}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
@@ -139,7 +139,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor4}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
@@ -151,7 +151,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor5}]]></textFieldExpression>
 			</textField>
 		</band>
