@@ -130,6 +130,10 @@ public class ReporteDobeCompletoDataSource implements JRDataSource {
                 valor = new JRBeanCollectionDataSource(nodo.getCaracteristicas());
             }  else if ("social".equals(fieldName)) {
                 valor = new JRBeanCollectionDataSource(nodo.getSocial());
+            } else if ("transtornos".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getTranstornos());
+            }   else if ("necesidades".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getTranstornos1());
             }  else if ("edad".equals(fieldName)) {
                 Date fecha = new Date();
                 int y1 = fecha.getYear();

@@ -129,7 +129,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
@@ -141,7 +141,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor3}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
@@ -153,7 +153,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[""+$F{valor4}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
@@ -165,8 +165,8 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor5}).equals("true")?"SI":"NO"]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor5}).equals("true")?"SI":""]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="480" y="0" width="75" height="16" isPrintWhenDetailOverflows="true"/>
@@ -177,8 +177,8 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor6}).equals("true")?"SI":"NO"]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{valor6}).equals("true")?"SI":""]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

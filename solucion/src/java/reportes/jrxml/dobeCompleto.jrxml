@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dobeCompleto" pageWidth="651" pageHeight="963" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="102"/>
+	<property name="ireport.y" value="111"/>
 	<parameter name="pathSubRel" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -99,6 +99,8 @@
 	<field name="aprendizajes" class="java.lang.Object"/>
 	<field name="caracteristicas" class="java.lang.Object"/>
 	<field name="social" class="java.lang.Object"/>
+	<field name="transtornos" class="java.lang.Object"/>
+	<field name="necesidades" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -129,7 +131,7 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="555" splitType="Stretch">
+		<band height="564" splitType="Stretch">
 			<textField isBlankWhenNull="true">
 				<reportElement x="129" y="11" width="169" height="16"/>
 				<textElement verticalAlignment="Middle"/>
@@ -520,6 +522,16 @@
 				<reportElement positionType="Float" x="4" y="511" width="611" height="7"/>
 				<dataSourceExpression><![CDATA[$F{social}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeSocial.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="4" y="441" width="611" height="7"/>
+				<dataSourceExpression><![CDATA[$F{transtornos}]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeTranstornos.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="4" y="549" width="611" height="7"/>
+				<dataSourceExpression><![CDATA[$F{necesidades}]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeNecesidades.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>

@@ -1616,7 +1616,40 @@ void showReport() {
                         }
                 elem.setSocial(Social);  
                 
+                   
+                  //Transtornos o
+                rep = adm.query("Select o from DobeTranstornos as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"' and o.tipo = 'T' ");
+                    List Transtornos = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeTranstornos elem = (DobeTranstornos) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeDetalle().getNombre());
+                            gen.setValor2(elem.getDobeDetalle().getTipo().getNombre());
+                            gen.setValor3(elem.getDobeCurso().getNombre());
+                            gen.setValor4(elem.getEstado());
+                            
+                            Transtornos.add(gen);
+
+                        }
+                elem.setTranstornos(Transtornos);  
                 
+                   //Necesidades o
+                rep = adm.query("Select o from DobeTranstornos as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"' and o.tipo = 'N' ");
+                    List Necesidades = new ArrayList();
+                        for (Iterator it5 = rep.iterator(); it5.hasNext();) {
+                            DobeTranstornos elem = (DobeTranstornos) it5.next();    
+                            General gen = new General();
+                            gen.setValor1(elem.getDobeDetalle().getNombre());
+                            gen.setValor2(elem.getDobeDetalle().getTipo().getNombre());
+                            gen.setValor3(elem.getDobeCurso().getNombre());
+                            gen.setValor4(elem.getEstado());
+                            
+                            Necesidades.add(gen);
+
+                        }
+                elem.setTranstornos1(Necesidades);  
                 
                 
                 
