@@ -108,6 +108,12 @@ public class ReporteDobeCompletoDataSource implements JRDataSource {
                 valor = nodo.getTelefono();
             } else if ("vivenjuntos".equals(fieldName)) {
                 valor = nodo.getVivenjuntos();
+            } else if ("lugarocupa".equals(fieldName)) {
+                valor = nodo.getLugarocupa();
+            } else if ("observacion1".equals(fieldName)) {
+                valor = nodo.getObservacion1();
+            } else if ("observacion2".equals(fieldName)) {
+                valor = nodo.getObservacion2();
             } else if ("representantes".equals(fieldName)) {
                 valor = new JRBeanCollectionDataSource(nodo.getRepresentantes());
             } else if ("estructura".equals(fieldName)) {
@@ -134,6 +140,8 @@ public class ReporteDobeCompletoDataSource implements JRDataSource {
                 valor = new JRBeanCollectionDataSource(nodo.getTranstornos());
             }   else if ("necesidades".equals(fieldName)) {
                 valor = new JRBeanCollectionDataSource(nodo.getTranstornos1());
+            }   else if ("trato".equals(fieldName)) {
+                valor = new JRBeanCollectionDataSource(nodo.getTrato());
             }  else if ("edad".equals(fieldName)) {
                 Date fecha = new Date();
                 int y1 = fecha.getYear();
