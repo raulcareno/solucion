@@ -1591,10 +1591,10 @@ void showReport() {
                             DobeCaracteristicas elem = (DobeCaracteristicas) it5.next();    
                             General gen = new General();
                             gen.setValor1(elem.getDobeEstado().getNombre());
-                            gen.setValor2(elem.getObservacion());
-                            gen.setValor3(elem.getEstado());
+                            gen.setValor2(elem.getEstado());
+                            gen.setValor3(elem.getObservacion());
                             
-                            Caracteristicass.add(gen);
+                            Caracteristicas.add(gen);
 
                         }
                 elem.setCaracteristicas(Caracteristicas);  
@@ -1611,7 +1611,7 @@ void showReport() {
                             gen.setValor1(elem.getDobeEstado().getNombre());
                             gen.setValor2(elem.getEstado());
                             
-                            Socials.add(gen);
+                            Social.add(gen);
 
                         }
                 elem.setSocial(Social);  
