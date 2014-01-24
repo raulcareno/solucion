@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dobeCompleto" pageWidth="651" pageHeight="963" columnWidth="595" leftMargin="36" rightMargin="20" topMargin="72" bottomMargin="28">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dobeCompleto" pageWidth="651" pageHeight="963" columnWidth="595" leftMargin="36" rightMargin="20" topMargin="72" bottomMargin="28" isFloatColumnFooter="true">
+	<property name="ireport.zoom" value="0.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="19"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="pathSubRel" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -85,6 +85,7 @@
 	<field name="telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[telefono]]></fieldDescription>
 	</field>
+	<field name="fecha" class="java.util.Date"/>
 	<field name="vivenjuntos" class="java.lang.Boolean">
 		<fieldDescription><![CDATA[vivenjuntos]]></fieldDescription>
 	</field>
@@ -101,19 +102,21 @@
 	<field name="social" class="java.lang.Object"/>
 	<field name="transtornos" class="java.lang.Object"/>
 	<field name="necesidades" class="java.lang.Object"/>
+	<field name="lugarocupa" class="java.lang.Integer"/>
+	<field name="observacion1" class="java.lang.String">
+		<fieldDescription><![CDATA[observacion]]></fieldDescription>
+	</field>
+	<field name="observacion2" class="java.lang.String">
+		<fieldDescription><![CDATA[observacion]]></fieldDescription>
+	</field>
+	<field name="trato" class="java.lang.Object">
+		<fieldDescription><![CDATA[observacion]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement x="167" y="0" width="195" height="20"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[ITINERARIO ESCOLAR]]></text>
-			</staticText>
-		</band>
+		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band splitType="Stretch"/>
@@ -131,19 +134,19 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="564" splitType="Stretch">
+		<band height="594" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="129" y="11" width="169" height="16"/>
+				<reportElement positionType="Float" x="129" y="11" width="169" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{apellidos}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="413" y="10" width="180" height="16"/>
+				<reportElement positionType="Float" x="413" y="10" width="180" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombres}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="11" width="129" height="16"/>
+				<reportElement positionType="Float" x="0" y="11" width="129" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -151,7 +154,7 @@
 				<text><![CDATA[APELLIDOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="11" width="109" height="16"/>
+				<reportElement positionType="Float" x="302" y="11" width="109" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -159,7 +162,7 @@
 				<text><![CDATA[NOMBRES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="29" width="129" height="16"/>
+				<reportElement positionType="Float" x="1" y="29" width="129" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -167,7 +170,7 @@
 				<text><![CDATA[LUGAR DE NACIMIENTO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="29" width="109" height="16"/>
+				<reportElement positionType="Float" x="302" y="29" width="109" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -175,7 +178,7 @@
 				<text><![CDATA[NACIONALIDAD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="47" width="129" height="16"/>
+				<reportElement positionType="Float" x="0" y="47" width="129" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -183,7 +186,7 @@
 				<text><![CDATA[ETNIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="44" width="109" height="16"/>
+				<reportElement positionType="Float" x="301" y="44" width="109" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -191,7 +194,7 @@
 				<text><![CDATA[DIRECCIÓN DOMIC.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="61" width="129" height="16"/>
+				<reportElement positionType="Float" x="4" y="61" width="129" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -199,7 +202,7 @@
 				<text><![CDATA[TELEFONO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="77" width="129" height="16"/>
+				<reportElement positionType="Float" x="4" y="77" width="129" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -207,7 +210,7 @@
 				<text><![CDATA[CELULAR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="4" y="93" width="129" height="16"/>
+				<reportElement positionType="Float" x="4" y="93" width="129" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -215,12 +218,12 @@
 				<text><![CDATA[OBSERVACIÓN:]]></text>
 			</staticText>
 			<subreport>
-				<reportElement x="0" y="125" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="125" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{representantes}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeRepresentantes.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement x="4" y="109" width="240" height="16"/>
+				<reportElement positionType="Float" x="4" y="109" width="240" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -236,37 +239,37 @@
 				<text><![CDATA[3. ESTRUCTURA FAMILIAR]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="28" width="169" height="16"/>
+				<reportElement positionType="Float" x="130" y="28" width="169" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugarnacimiento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="413" y="28" width="180" height="16"/>
+				<reportElement positionType="Float" x="413" y="28" width="180" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nacionalidad}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="129" y="46" width="169" height="16"/>
+				<reportElement positionType="Float" x="129" y="46" width="169" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{raza}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="412" y="43" width="180" height="16"/>
+				<reportElement positionType="Float" x="412" y="43" width="180" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{direccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="133" y="60" width="169" height="16"/>
+				<reportElement positionType="Float" x="133" y="60" width="169" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="133" y="76" width="169" height="16"/>
+				<reportElement positionType="Float" x="133" y="76" width="169" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{celular}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="133" y="92" width="169" height="16"/>
+				<reportElement positionType="Float" x="133" y="92" width="169" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{observacion}]]></textFieldExpression>
 			</textField>
@@ -279,7 +282,7 @@
 				<text><![CDATA[Padres viven juntos:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="0" y="191" width="129" height="14"/>
+				<reportElement positionType="Float" x="170" y="175" width="77" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -287,7 +290,7 @@
 				<text><![CDATA[Explique: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="206" width="129" height="14"/>
+				<reportElement positionType="Float" x="4" y="196" width="129" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -295,7 +298,7 @@
 				<text><![CDATA[No. de Hermanos]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="236" y="206" width="67" height="14"/>
+				<reportElement positionType="Float" x="167" y="196" width="67" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -303,7 +306,7 @@
 				<text><![CDATA[Hombres: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="359" y="206" width="62" height="14"/>
+				<reportElement positionType="Float" x="269" y="196" width="62" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -311,7 +314,7 @@
 				<text><![CDATA[Mujeres:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="224" width="163" height="14"/>
+				<reportElement positionType="Float" x="374" y="196" width="154" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -319,7 +322,7 @@
 				<text><![CDATA[Lugar que ocupa entre ellos: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="38" y="238" width="129" height="14"/>
+				<reportElement positionType="Float" x="41" y="232" width="129" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -327,7 +330,7 @@
 				<text><![CDATA[Observación:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="256" width="240" height="16"/>
+				<reportElement positionType="Float" x="4" y="265" width="240" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -335,7 +338,7 @@
 				<text><![CDATA[4. CONDICIONES ECONÓMICAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="0" y="300" width="129" height="14"/>
+				<reportElement positionType="Float" x="0" y="308" width="129" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -343,7 +346,7 @@
 				<text><![CDATA[No. Habitaciones]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="233" y="300" width="129" height="14"/>
+				<reportElement positionType="Float" x="233" y="308" width="129" height="14"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -351,7 +354,7 @@
 				<text><![CDATA[SSHH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="321" width="240" height="16"/>
+				<reportElement positionType="Float" x="0" y="363" width="240" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -359,7 +362,7 @@
 				<text><![CDATA[5. DATOS PSICOPEDAGOCIGOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="364" width="340" height="16"/>
+				<reportElement positionType="Float" x="0" y="397" width="340" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -367,23 +370,7 @@
 				<text><![CDATA[6. CLUBES O ACTIVIDADES OPCIONALES EN QUE HA PARTICIPADO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="17" y="348" width="129" height="16"/>
-				<box rightPadding="2"/>
-				<textElement textAlignment="Right">
-					<font pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Desertó algún año:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="Float" x="212" y="348" width="129" height="16"/>
-				<box rightPadding="2"/>
-				<textElement textAlignment="Right">
-					<font pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[¿Que año?]]></text>
-			</staticText>
-			<staticText>
-				<reportElement positionType="Float" x="-2" y="399" width="340" height="16"/>
+				<reportElement positionType="Float" x="0" y="432" width="340" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -391,7 +378,7 @@
 				<text><![CDATA[7. ESTILOS DE APRENDIZAJE DEL O LA ESTUDIANTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="425" width="340" height="16"/>
+				<reportElement positionType="Float" x="0" y="458" width="340" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -399,7 +386,7 @@
 				<text><![CDATA[8. TRASTORNOS DEL APRENDIZAJE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="456" width="340" height="16"/>
+				<reportElement positionType="Float" x="0" y="489" width="340" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -407,7 +394,7 @@
 				<text><![CDATA[9. CARACTERÍSTICAS PERSONALES(madurez y equilibrio emocional)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="4" y="495" width="340" height="16"/>
+				<reportElement positionType="Float" x="0" y="528" width="340" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -415,7 +402,7 @@
 				<text><![CDATA[10. INTERACCIÓN SOCIAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="0" y="533" width="340" height="16"/>
+				<reportElement positionType="Float" x="0" y="566" width="340" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -423,37 +410,37 @@
 				<text><![CDATA[11. FICHA DE NECESIDADES EDUCATIVAS ESPECIALES]]></text>
 			</staticText>
 			<textField>
-				<reportElement positionType="Float" x="133" y="175" width="100" height="14"/>
+				<reportElement positionType="Float" x="133" y="175" width="37" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{vivenjuntos}).equals("true")?"SI":"NO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="130" y="191" width="465" height="14"/>
+				<reportElement positionType="Float" x="247" y="175" width="345" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{explique}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="146" y="206" width="42" height="14"/>
+				<reportElement positionType="Float" x="136" y="196" width="30" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{hermanos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="308" y="206" width="30" height="14"/>
+				<reportElement positionType="Float" x="239" y="196" width="30" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{hombres}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="424" y="206" width="40" height="14"/>
+				<reportElement positionType="Float" x="334" y="196" width="40" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{mujeres}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="133" y="300" width="34" height="14"/>
+				<reportElement positionType="Float" x="133" y="308" width="34" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{habitaciones}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="364" y="300" width="57" height="14"/>
+				<reportElement positionType="Float" x="364" y="308" width="57" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sshh}]]></textFieldExpression>
 			</textField>
@@ -468,22 +455,22 @@
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeEstructura1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="271" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="280" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{economicas}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeEconomicas.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="4" y="290" width="240" height="7"/>
+				<reportElement positionType="Float" x="4" y="299" width="240" height="7"/>
 				<dataSourceExpression><![CDATA[$F{ingresos}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeIngresos.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="296" y="290" width="240" height="7"/>
+				<reportElement positionType="Float" x="296" y="299" width="240" height="7"/>
 				<dataSourceExpression><![CDATA[$F{egresos}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeIngresos.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement positionType="Float" x="16" y="278" width="240" height="16"/>
+				<reportElement positionType="Float" x="16" y="287" width="240" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -491,7 +478,7 @@
 				<text><![CDATA[INGRESOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="298" y="278" width="240" height="16"/>
+				<reportElement positionType="Float" x="298" y="287" width="240" height="16"/>
 				<box rightPadding="2"/>
 				<textElement>
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -499,40 +486,94 @@
 				<text><![CDATA[EGRESOS]]></text>
 			</staticText>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="338" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="380" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{psicopedagogicos}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobePsicopedagogico.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="380" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="413" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{clubes}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeClubes.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="415" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="448" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{aprendizajes}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeAprendizajes.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="472" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="505" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{caracteristicas}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeCaracteristicas.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="511" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="544" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{social}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeSocial.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="441" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="474" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{transtornos}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeTranstornos.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="549" width="595" height="7"/>
+				<reportElement positionType="Float" x="0" y="587" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{necesidades}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeNecesidades.jasper"]]></subreportExpression>
 			</subreport>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="170" y="232" width="426" height="29" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{observacion1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="528" y="196" width="23" height="14"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{lugarocupa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="432" y="92" width="113" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proviene}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="37" y="324" width="129" height="14"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Observación:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="166" y="324" width="426" height="36" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{observacion2}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="1" y="219" width="595" height="7"/>
+				<dataSourceExpression><![CDATA[$F{trato}]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeTrato.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="417" y="63" width="100" height="16" isPrintWhenDetailOverflows="true"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="308" y="63" width="109" height="16"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA NACIMIENTO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="303" y="93" width="129" height="16"/>
+				<box rightPadding="2"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[ESC./COLE PROVIENE:]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

@@ -32,6 +32,7 @@
                 apellidos.value = empaLlega.getApellidos();
                 lugarnacimiento.value = empa.getLugarnacimiento();
                 nacionalidad.value = empa.getNacionalidad();
+                fecha.value = empa.getFecha();
                 raza.value = empa.getRaza(); 
                 direccion.value = empa.getDireccion(); 
                 direccion1.value = empa.getDireccion1(); 
@@ -50,6 +51,7 @@
                 nosshh.value= empa.getSshh();  
                 larazon.value= empa.getObservacionrepitio();  
                 larazondeserto.value= empa.getObservaciondeserto();   
+                lugarocupa.value= empa.getLugarocupa();   
                 try{
                     vivenjuntos.checked = empa.getVivenjuntos();
                 }catch(Exception er){}
@@ -105,6 +107,7 @@
             nombre.readonly = estado;             
             lugarnacimiento.readonly = estado;             
             nacionalidad.readonly = estado;             
+            fecha.disabled = estado;             
             raza.readonly = estado;             
             direccion.readonly = estado;             
             direccion1.readonly = estado;             
@@ -122,7 +125,10 @@
             nohabitaciones.readonly = estado;              
             nosshh.readonly = estado;              
             larazon.readonly = estado;              
-            larazondeserto.readonly = estado;              
+            larazondeserto.readonly = estado;    
+            observacion1.readonly = estado;    
+            observacion2.readonly = estado;    
+            lugarocupa.readonly = estado;    
             
 
       }
@@ -141,7 +147,7 @@
        
                     empa.setLugarnacimiento(lugarnacimiento.value);
                     empa.setNacionalidad(nacionalidad.value);
-
+                    empa.setFecha(fecha.value);      
                     empa.setRaza(raza.value);             
                     empa.setDireccion(direccion.value);             
                     empa.setDireccion1(direccion1.value);             
@@ -160,6 +166,9 @@
                     empa.setSshh(nosshh.value);              
                     empa.setObservacionrepitio(larazon.value);              
                     empa.setObservaciondeserto(larazondeserto.value);   
+                    empa.setObservacion1(observacion1.value);   
+                    empa.setObservacion2(observacion2.value);   
+                    empa.setLugarocupa(lugarocupa.value);   
                     empa.setVivenjuntos(vivenjuntos.isChecked());
                     empa.setRepitio(repitio.getChildren().get(0).isSelected()?true:false);
                     empa.setDeserto(deserto.getChildren().get(0).isSelected()?true:false);
@@ -1600,8 +1609,33 @@ void showReport() {
                 elem.setCaracteristicas(Caracteristicas);  
                 
                 
-                
-                  //Social o
+                  //Trato o
+                rep = adm.query("Select o from DobeTrato as o " + 
+                                " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
+                    List Trato = new ArrayList();
+                    if(rep.size()>0){
+                            DobeTrato elem = rep.get(0);
+                            General gen = new General();
+                            gen.setValor1("PADRE");
+                            gen.setValor2(elem.getPadre());
+                            Trato.add(gen);
+                             gen = new General();
+                            gen.setValor1("MADRE");
+                            gen.setValor2(elem.getMadre());
+                            Trato.add(gen);
+                             gen = new General();
+                            gen.setValor1("REPRESENTANTE");
+                            gen.setValor2(elem.getRepresentante());
+                            Trato.add(gen);
+                    }
+                     
+
+ 
+                elem.setTrato(Trato);  
+                 
+               
+               
+               //Social o
                 rep = adm.query("Select o from DobeSocial as o " + 
                                 " where o.dobeEstudiante.codigo = '"+elem.getCodigo()+"'");
                     List Social = new ArrayList();
@@ -1701,16 +1735,20 @@ void showReport() {
                     <textbox id="apellidos"  maxlength="50" cols="20" readonly="true"   />   
                     <span style="float:right"> Nombres(*):</span>
                     <textbox id="nombre"  maxlength="50" cols="20" readonly="true"   />   
+                      <span style="float:right"> Raza:</span>
+                    <textbox id="raza"  maxlength="50" cols="20" readonly="true"   />
                 </row>
                 <row>
                     <span style="float:right"> Lugar Nac.:</span>
                     <textbox id="lugarnacimiento"  maxlength="50" cols="20" readonly="true"   />   
                
+                    <span style="float:right"> Fecha:</span>
+                    <datebox id="fecha"  />   
+                    
                     <span style="float:right"> Nacionalidad:</span>
                     <textbox id="nacionalidad"  maxlength="50" cols="20" readonly="true"   />   
                
-                    <span style="float:right"> Raza:</span>
-                    <textbox id="raza"  maxlength="50" cols="20" readonly="true"   />   
+                    
                 </row>
                 <row>
                     <span style="float:right"> Dirección:</span>
@@ -1830,6 +1868,12 @@ void showReport() {
                         <intbox id="mujeres"  maxlength="2" cols="2" readonly="true"   />   
                     </span>
                 </row>
+                <row>
+                    <span style="float:right"> Lugar que ocupa: </span>
+                    <intbox id="lugarocupa"  maxlength="50" cols="20" readonly="true"   />   
+               
+                   
+                </row>
                 
             </rows>
         </grid>
@@ -1866,7 +1910,10 @@ void showReport() {
                         <listitem value="D" label="Deficiente"/>
                     </listbox>               
                 </row>
-                
+                 <row>
+                    <span style="float:right"> Observaciones: </span>
+                    <textbox id="observacion1" rows="2"  cols="50" readonly="true"   />   
+                </row>
             </rows>
         </grid>
         <grid>
@@ -1919,7 +1966,10 @@ void showReport() {
                         </rows>
                     </grid>
                 </row>
-               
+                <row>
+                    <span style="float:right"> Observaciones: </span>
+                    <textbox id="observacion2" rows="2"  cols="50" readonly="true"   />   
+                </row>
             </rows>
         </grid>
         <grid>
