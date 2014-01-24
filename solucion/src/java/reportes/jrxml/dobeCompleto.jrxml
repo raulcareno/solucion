@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dobeCompleto" pageWidth="651" pageHeight="963" columnWidth="611" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dobeCompleto" pageWidth="651" pageHeight="963" columnWidth="595" leftMargin="36" rightMargin="20" topMargin="72" bottomMargin="28">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="111"/>
+	<property name="ireport.y" value="19"/>
 	<parameter name="pathSubRel" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
@@ -138,7 +138,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{apellidos}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="431" y="10" width="180" height="16"/>
+				<reportElement x="413" y="10" width="180" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombres}]]></textFieldExpression>
 			</textField>
@@ -151,7 +151,7 @@
 				<text><![CDATA[APELLIDOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="11" width="129" height="16"/>
+				<reportElement x="302" y="11" width="109" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -167,7 +167,7 @@
 				<text><![CDATA[LUGAR DE NACIMIENTO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="302" y="29" width="129" height="16"/>
+				<reportElement x="302" y="29" width="109" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -183,7 +183,7 @@
 				<text><![CDATA[ETNIA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="44" width="129" height="16"/>
+				<reportElement x="301" y="44" width="109" height="16"/>
 				<box rightPadding="2"/>
 				<textElement textAlignment="Right">
 					<font pdfFontName="Helvetica-Bold"/>
@@ -215,7 +215,7 @@
 				<text><![CDATA[OBSERVACIÓN:]]></text>
 			</staticText>
 			<subreport>
-				<reportElement x="0" y="125" width="611" height="7"/>
+				<reportElement x="0" y="125" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{representantes}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeRepresentantes.jasper"]]></subreportExpression>
 			</subreport>
@@ -241,7 +241,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugarnacimiento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="431" y="28" width="180" height="16"/>
+				<reportElement x="413" y="28" width="180" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nacionalidad}]]></textFieldExpression>
 			</textField>
@@ -251,7 +251,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{raza}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="430" y="43" width="180" height="16"/>
+				<reportElement x="412" y="43" width="180" height="16"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{direccion}]]></textFieldExpression>
 			</textField>
@@ -428,7 +428,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[(""+$F{vivenjuntos}).equals("true")?"SI":"NO"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="130" y="191" width="470" height="14"/>
+				<reportElement positionType="Float" x="130" y="191" width="465" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{explique}]]></textFieldExpression>
 			</textField>
@@ -458,17 +458,17 @@
 				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{sshh}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="153" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="153" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{estructura}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeEstructura.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="0" y="165" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="165" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{estructura1}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeEstructura1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="4" y="271" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="271" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{economicas}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeEconomicas.jasper"]]></subreportExpression>
 			</subreport>
@@ -499,37 +499,37 @@
 				<text><![CDATA[EGRESOS]]></text>
 			</staticText>
 			<subreport>
-				<reportElement positionType="Float" x="1" y="338" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="338" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{psicopedagogicos}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobePsicopedagogico.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="1" y="380" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="380" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{clubes}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeClubes.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="4" y="415" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="415" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{aprendizajes}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeAprendizajes.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="-1" y="472" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="472" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{caracteristicas}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeCaracteristicas.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="4" y="511" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="511" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{social}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeSocial.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="4" y="441" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="441" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{transtornos}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeTranstornos.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement positionType="Float" x="4" y="549" width="611" height="7"/>
+				<reportElement positionType="Float" x="0" y="549" width="595" height="7"/>
 				<dataSourceExpression><![CDATA[$F{necesidades}]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{pathSubRel} + "dobeNecesidades.jasper"]]></subreportExpression>
 			</subreport>
