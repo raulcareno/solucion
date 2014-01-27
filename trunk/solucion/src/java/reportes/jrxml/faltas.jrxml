@@ -39,7 +39,7 @@
 	<parameter name="ranf5" class="java.lang.Double" isForPrompting="false"/>
 	<parameter name="faltas" class="java.lang.Boolean"/>
 	<field name="tipo" class="java.lang.String"/>
-	<field name="nota" class="java.math.BigDecimal"/>
+	<field name="nota" class="java.lang.Integer"/>
 	<field name="sistema" class="java.lang.String"/>
 	<field name="materia" class="java.lang.String"/>
 	<field name="sello" class="java.io.InputStream"/>
@@ -275,7 +275,7 @@
 						</cellContents>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
-				<measure name="notaMeasure" class="java.math.BigDecimal" calculation="Sum">
+				<measure name="notaMeasure" class="java.lang.Integer" calculation="Sum">
 					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
 				</measure>
 				<crosstabCell width="22" height="16">
@@ -286,7 +286,7 @@
 						<textField>
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="22" height="16"/>
 							<textElement verticalAlignment="Middle"/>
-							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -298,7 +298,7 @@
 						<textField>
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="22" height="16"/>
 							<textElement verticalAlignment="Middle"/>
-							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
