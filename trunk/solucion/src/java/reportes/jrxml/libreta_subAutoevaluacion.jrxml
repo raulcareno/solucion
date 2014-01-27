@@ -72,7 +72,7 @@
 	<summary>
 		<band height="47" splitType="Stretch">
 			<crosstab>
-				<reportElement key="crosstab-1" x="0" y="4" width="777" height="41"/>
+				<reportElement key="crosstab-1" x="0" y="0" width="782" height="47"/>
 				<crosstabHeaderCell>
 					<cellContents backcolor="#F9F9FB" mode="Opaque">
 						<box>
@@ -82,7 +82,7 @@
 							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<staticText>
-							<reportElement key="staticText-2" x="0" y="0" width="245" height="16"/>
+							<reportElement key="staticText-2" x="0" y="0" width="200" height="19"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -90,13 +90,13 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font size="9" isBold="true"/>
+								<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 							</textElement>
 							<text><![CDATA[Evaluación]]></text>
 						</staticText>
 					</cellContents>
 				</crosstabHeaderCell>
-				<rowGroup name="materia" width="245">
+				<rowGroup name="materia" width="200">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{materia}]]></bucketExpression>
 					</bucket>
@@ -109,7 +109,7 @@
 								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="0" width="245" height="18"/>
+								<reportElement key="textField" x="0" y="0" width="200" height="18"/>
 								<box leftPadding="2">
 									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -117,7 +117,7 @@
 									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font fontName="SansSerif"/>
+									<font fontName="SansSerif" size="8"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}]]></textFieldExpression>
 							</textField>
@@ -127,7 +127,7 @@
 						<cellContents/>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="sistema" height="16" headerPosition="Stretch">
+				<columnGroup name="sistema" height="19" headerPosition="Stretch">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{tipo}]]></bucketExpression>
 					</bucket>
@@ -140,7 +140,7 @@
 								<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isBlankWhenNull="true">
-								<reportElement key="textField" mode="Opaque" x="0" y="0" width="83" height="16" backcolor="#F9F9FB"/>
+								<reportElement key="textField" mode="Opaque" x="0" y="0" width="51" height="19" backcolor="#F9F9FB"/>
 								<box>
 									<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -148,7 +148,7 @@
 									<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+									<font fontName="SansSerif" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{sistema}]]></textFieldExpression>
 							</textField>
@@ -161,7 +161,7 @@
 				<measure name="nota_Nothing" class="java.lang.Object">
 					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
 				</measure>
-				<crosstabCell width="83" height="18">
+				<crosstabCell width="51" height="18">
 					<cellContents mode="Transparent">
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -170,7 +170,7 @@
 							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField isBlankWhenNull="false">
-							<reportElement key="textField-1" x="0" y="0" width="83" height="18"/>
+							<reportElement key="textField-1" x="0" y="0" width="51" height="18"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -178,7 +178,7 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
-								<font fontName="SansSerif" size="9"/>
+								<font fontName="SansSerif" size="8"/>
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[$V{nota_Nothing}]]></textFieldExpression>
 						</textField>
