@@ -6308,7 +6308,7 @@ public class reportesClase {
             //IMPRIMO LAS FALTAS
             q = "Select o from Resultadoperfil as o where  "
                     + "  o.matricula.codigomat = '" + matriculas1.getCodigomat() + "' "
-                    + "and o.periodo.codigosis <= '" + sistema.getOrden() + "'   "
+                    + "and o.periodo.orden <= '" + sistema.getOrden() + "'   "
                     + " order by o.codigo "
                     + " ";
 //                System.out.println(""+q);
