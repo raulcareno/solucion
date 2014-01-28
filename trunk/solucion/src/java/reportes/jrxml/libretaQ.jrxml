@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="51"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -73,53 +73,61 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="120" splitType="Stretch">
+			<band height="69" splitType="Stretch">
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField" positionType="Float" x="418" y="40" width="170" height="13" isRemoveLineWhenBlank="true"/>
+					<reportElement key="textField" positionType="Float" x="444" y="40" width="166" height="13" isRemoveLineWhenBlank="true"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{firma1}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement key="textField" positionType="Float" x="597" y="40" width="170" height="13" isRemoveLineWhenBlank="true"/>
+					<reportElement key="textField" positionType="Float" x="613" y="40" width="154" height="13" isRemoveLineWhenBlank="true"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{firma3}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" positionType="Float" x="417" y="54" width="170" height="15"/>
+					<reportElement key="textField" positionType="Float" x="443" y="54" width="166" height="15"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{cargo1}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" positionType="Float" x="598" y="54" width="170" height="15"/>
+					<reportElement key="textField" positionType="Float" x="614" y="54" width="154" height="15"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Center" verticalAlignment="Top"/>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="9"/>
+					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{cargo3}]]></textFieldExpression>
 				</textField>
 				<subreport isUsingCache="true">
-					<reportElement key="subreport-2" mode="Opaque" x="9" y="15" width="182" height="49" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+					<reportElement key="subreport-2" mode="Opaque" x="9" y="15" width="168" height="49" isRemoveLineWhenBlank="true" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
 					<subreportParameter name="listaFaltas">
 						<subreportParameterExpression><![CDATA[$F{listaFaltas}]]></subreportParameterExpression>
 					</subreportParameter>
@@ -205,7 +213,7 @@
 					<text><![CDATA[LE]]></text>
 				</staticText>
 				<subreport isUsingCache="true">
-					<reportElement key="subreport-2" mode="Opaque" x="11" y="71" width="304" height="49" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
+					<reportElement key="subreport-2" mode="Opaque" x="177" y="15" width="266" height="49" forecolor="#FFFFFF" backcolor="#FFFFFF"/>
 					<subreportParameter name="listaFaltas">
 						<subreportParameterExpression><![CDATA[$F{listaFaltas}]]></subreportParameterExpression>
 					</subreportParameter>
