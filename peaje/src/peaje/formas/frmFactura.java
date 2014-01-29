@@ -219,6 +219,26 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
+        frmCuponesClientes = new javax.swing.JInternalFrame();
+        identificacion3 = new javax.swing.JFormattedTextField();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel46 = new javax.swing.JLabel();
+        jLabel47 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        nombres3 = new javax.swing.JFormattedTextField();
+        panelencontrados4 = new javax.swing.JPanel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        encontrados4 = new javax.swing.JList();
+        telefono3 = new javax.swing.JFormattedTextField();
+        direccion3 = new javax.swing.JFormattedTextField();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        Nocupones = new javax.swing.JSpinner();
+        jLabel49 = new javax.swing.JLabel();
+        cliente3 = new javax.swing.JFormattedTextField();
+        btnNuevoCliente3 = new javax.swing.JButton();
+        jLabel50 = new javax.swing.JLabel();
+        adescontar = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -291,6 +311,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnAplicarDscto = new javax.swing.JButton();
         chkEsNotaVenta = new javax.swing.JCheckBox();
         verBot = new javax.swing.JToggleButton();
+        btnAplicarCupon = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -469,6 +490,168 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel5.setLayout(null);
 
+        frmCuponesClientes.setTitle("Al que se aplica el Cupon");
+        frmCuponesClientes.setOpaque(true);
+        frmCuponesClientes.setVisible(false);
+        frmCuponesClientes.getContentPane().setLayout(null);
+
+        identificacion3.setEditable(false);
+        identificacion3.setText("9999999999999");
+        identificacion3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                identificacion3ActionPerformed(evt);
+            }
+        });
+        identificacion3.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                identificacion3FocusLost(evt);
+            }
+        });
+        identificacion3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                identificacion3KeyPressed(evt);
+            }
+        });
+        frmCuponesClientes.getContentPane().add(identificacion3);
+        identificacion3.setBounds(80, 10, 110, 20);
+
+        jLabel45.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel45.setText("CI/RUC: ");
+        frmCuponesClientes.getContentPane().add(jLabel45);
+        jLabel45.setBounds(0, 10, 80, 20);
+
+        jLabel46.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel46.setText("Cliente: ");
+        frmCuponesClientes.getContentPane().add(jLabel46);
+        jLabel46.setBounds(0, 30, 80, 20);
+
+        jLabel47.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel47.setText("Dirección: ");
+        frmCuponesClientes.getContentPane().add(jLabel47);
+        jLabel47.setBounds(0, 50, 80, 20);
+
+        jLabel48.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel48.setText("Teléfono: ");
+        frmCuponesClientes.getContentPane().add(jLabel48);
+        jLabel48.setBounds(0, 70, 80, 20);
+
+        nombres3.setEditable(false);
+        nombres3.setText("CONSUMIDOR FINAL");
+        nombres3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombres3KeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                nombres3KeyReleased(evt);
+            }
+        });
+        frmCuponesClientes.getContentPane().add(nombres3);
+        nombres3.setBounds(80, 30, 250, 20);
+
+        panelencontrados4.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
+        panelencontrados4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelencontrados4.setLayout(null);
+
+        encontrados4.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Lista Clientes" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        encontrados4.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        encontrados4.setAlignmentX(0.2F);
+        encontrados4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                encontrados4MouseClicked(evt);
+            }
+        });
+        encontrados4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                encontrados4KeyPressed(evt);
+            }
+        });
+        jScrollPane12.setViewportView(encontrados4);
+
+        panelencontrados4.add(jScrollPane12);
+        jScrollPane12.setBounds(10, 10, 230, 90);
+
+        frmCuponesClientes.getContentPane().add(panelencontrados4);
+        panelencontrados4.setBounds(80, 50, 250, 110);
+
+        telefono3.setEditable(false);
+        telefono3.setText("9999999999999");
+        frmCuponesClientes.getContentPane().add(telefono3);
+        telefono3.setBounds(80, 70, 140, 20);
+
+        direccion3.setEditable(false);
+        direccion3.setText("S/D");
+        frmCuponesClientes.getContentPane().add(direccion3);
+        direccion3.setBounds(80, 50, 190, 20);
+
+        jButton6.setText("Aplicar Cupones");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        frmCuponesClientes.getContentPane().add(jButton6);
+        jButton6.setBounds(40, 160, 150, 30);
+
+        jButton7.setText("Salir");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        frmCuponesClientes.getContentPane().add(jButton7);
+        jButton7.setBounds(190, 160, 120, 30);
+
+        Nocupones.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        Nocupones.setValue(new Integer(0));
+        Nocupones.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                NocuponesStateChanged(evt);
+            }
+        });
+        frmCuponesClientes.getContentPane().add(Nocupones);
+        Nocupones.setBounds(110, 130, 60, 30);
+
+        jLabel49.setText("No. Cupones");
+        frmCuponesClientes.getContentPane().add(jLabel49);
+        jLabel49.setBounds(40, 130, 80, 14);
+
+        cliente3.setEditable(false);
+        cliente3.setBorder(null);
+        cliente3.setText("1");
+        cliente3.setEnabled(false);
+        cliente3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        frmCuponesClientes.getContentPane().add(cliente3);
+        cliente3.setBounds(190, 10, 20, 20);
+
+        btnNuevoCliente3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
+        btnNuevoCliente3.setText("Crear o Buscar Cliente");
+        btnNuevoCliente3.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnNuevoCliente3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoCliente3ActionPerformed(evt);
+            }
+        });
+        frmCuponesClientes.getContentPane().add(btnNuevoCliente3);
+        btnNuevoCliente3.setBounds(40, 90, 270, 30);
+
+        jLabel50.setText("A descontar: ");
+        frmCuponesClientes.getContentPane().add(jLabel50);
+        jLabel50.setBounds(190, 130, 70, 14);
+
+        adescontar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adescontar.setForeground(new java.awt.Color(255, 0, 51));
+        adescontar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        adescontar.setText("0.0");
+        frmCuponesClientes.getContentPane().add(adescontar);
+        adescontar.setBounds(260, 130, 70, 30);
+
+        jPanel5.add(frmCuponesClientes);
+        frmCuponesClientes.setBounds(20, 160, 360, 230);
+
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
 
@@ -616,7 +799,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel5.setBounds(150, 30, 140, 20);
 
         jPanel5.add(jPanel1);
-        jPanel1.setBounds(10, 10, 290, 160);
+        jPanel1.setBounds(10, 5, 290, 160);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel2.setLayout(null);
@@ -733,6 +916,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnNuevoCliente.setBounds(40, 100, 230, 30);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.gif"))); // NOI18N
+        jButton3.setText("Limpiar y Nuevo");
         jButton3.setMargin(new java.awt.Insets(1, 1, 1, 1));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -740,10 +924,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(jButton3);
-        jButton3.setBounds(210, 10, 30, 23);
+        jButton3.setBounds(210, 10, 130, 23);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(310, 10, 360, 160);
+        jPanel2.setBounds(310, 5, 360, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -984,7 +1168,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAgregar);
-        btnAgregar.setBounds(230, 130, 60, 50);
+        btnAgregar.setBounds(70, 130, 58, 50);
 
         total.setEditable(false);
         total.setBorder(null);
@@ -994,7 +1178,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         total.setCaretColor(new java.awt.Color(0, 204, 0));
         total.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel4.add(total);
-        total.setBounds(170, 70, 170, 50);
+        total.setBounds(190, 130, 170, 50);
 
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir.setMnemonic('S');
@@ -1014,7 +1198,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnSalir);
-        btnSalir.setBounds(290, 130, 60, 50);
+        btnSalir.setBounds(10, 130, 58, 50);
 
         descuento.setEditable(false);
         descuento.setBorder(null);
@@ -1024,17 +1208,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
         descuento.setCaretColor(new java.awt.Color(0, 204, 0));
         descuento.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jPanel4.add(descuento);
-        descuento.setBounds(210, 10, 130, 50);
+        descuento.setBounds(220, 50, 130, 40);
 
         jLabel33.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(255, 0, 0));
         jLabel33.setLabelFor(total);
-        jLabel33.setText("A PAGAR:");
+        jLabel33.setText("A PAGAR");
         jPanel4.add(jLabel33);
-        jLabel33.setBounds(50, 80, 120, 30);
+        jLabel33.setBounds(240, 90, 120, 30);
 
         btnAplicarDscto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btnAplicarDscto.setForeground(new java.awt.Color(102, 102, 102));
         btnAplicarDscto.setText("Aplicar Dscto.:");
         btnAplicarDscto.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnAplicarDscto.addActionListener(new java.awt.event.ActionListener() {
@@ -1043,13 +1226,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAplicarDscto);
-        btnAplicarDscto.setBounds(10, 20, 130, 30);
+        btnAplicarDscto.setBounds(10, 10, 130, 30);
 
         chkEsNotaVenta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chkEsNotaVenta.setForeground(new java.awt.Color(255, 51, 51));
         chkEsNotaVenta.setText("ES NOTA DE VENTA");
         jPanel4.add(chkEsNotaVenta);
-        chkEsNotaVenta.setBounds(10, 50, 140, 23);
+        chkEsNotaVenta.setBounds(10, 100, 140, 23);
 
         verBot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arriba.png"))); // NOI18N
         verBot.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/abajo.png"))); // NOI18N
@@ -1059,7 +1242,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(verBot);
-        verBot.setBounds(170, 130, 60, 50);
+        verBot.setBounds(130, 130, 58, 50);
+
+        btnAplicarCupon.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAplicarCupon.setText("Aplicar Cupones");
+        btnAplicarCupon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAplicarCuponActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnAplicarCupon);
+        btnAplicarCupon.setBounds(220, 10, 130, 30);
 
         jPanel5.add(jPanel4);
         jPanel4.setBounds(310, 170, 360, 190);
@@ -1688,6 +1881,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    Clientes clienteCupon = new Clientes();
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
@@ -1756,6 +1950,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     facActual.setTotal(new BigDecimal(totalv));
                     facActual.setSubtotal(new BigDecimal(subtotalv));
                     facActual.setIva(new BigDecimal(ivav1));
+                    try {
+                        facActual.setClientetic(clienteCupon); 
+                        facActual.setCupones((Integer)Nocupones.getValue()); 
+                    } catch (Exception e) {
+                        System.out.println("error en guardar el cliente cupon"+e);
+                    }
 
                     Date fecTiempo = new Date();
                     fecTiempo.setHours(tiempo.getDate().getHours());
@@ -1891,7 +2091,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
             guardando = false;
         }
-limpiarMemoria();
+        limpiarMemoria();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
@@ -1922,7 +2122,7 @@ limpiarMemoria();
                     Factura fac1 = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + detalle1.getFactura().getCodigo() + " ");
                     observacion = fac1.getObservacion();
                     detalle1.setFactura(fac1);
-                    System.out.println("SUBTOTAL: "+ detalle1.getSubtotal());
+                    System.out.println("SUBTOTAL: " + detalle1.getSubtotal());
                     detalle.add(detalle1);
                 }
                 ds = new FacturaDetalleSource(detalle);
@@ -2399,39 +2599,39 @@ limpiarMemoria();
                     } catch (Exception ab) {
                     }
                 }
-                minutosEntreSalidayActual =null;
+                minutosEntreSalidayActual = null;
                 return;
             }
 
 //                        int valor = JOptionPane.showConfirmDialog(this, ,"JCINFORM",JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new Object[] { "opcion 1", "opcion 2", "opcion 3" },"opcion 1" );
-            if(empresaObj.getReimprimir()){
-            int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
-                    "JCINFORM",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null, // null para icono por defecto.
-                    new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
-                    "NO");
-            System.out.println("" + seleccion);
+            if (empresaObj.getReimprimir()) {
+                int seleccion = JOptionPane.showOptionDialog(this, "TICKET YA FACTURADO \n ¿Desea volver a imprimir la factura?",
+                        "JCINFORM",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null, // null para icono por defecto.
+                        new Object[]{"SI", "NO", "Cancelar"}, // null para YES, NO y CANCEL
+                        "NO");
+                System.out.println("" + seleccion);
 
-            if (0 == seleccion) {
-                try {
-                    Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-                    imprimir(fac.getCodigo(), emp, 0, false, new Clientes());
-                } catch (Exception ex) {
-                    Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+                if (0 == seleccion) {
+                    try {
+                        Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+                        imprimir(fac.getCodigo(), emp, 0, false, new Clientes());
+                    } catch (Exception ex) {
+                        Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
-            noTicket.setText("");
-            noTicket.requestFocusInWindow();
-            return;
-            }else{
+                noTicket.setText("");
+                noTicket.requestFocusInWindow();
+                return;
+            } else {
                 JOptionPane.showMessageDialog(this, "EL TICKET YA HA SIDO FACTURADO");
                 noTicket.setText("");
                 noTicket.requestFocusInWindow();
                 return;
             }
-            
+
         }
         ingreso.setDate(fac.getFechaini());
         salida.setDate(new Date());
@@ -2611,6 +2811,7 @@ limpiarMemoria();
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + new Integer(noTicket.getText().trim()) + "' ");
                 if (fac != null) {
                     btnAplicarDscto.setEnabled(true);
+                    btnAplicarCupon.setEnabled(true);
                     llenarFactura(fac);
                     try {
                         cargarFoto(fac.getCodigo());
@@ -2625,7 +2826,7 @@ limpiarMemoria();
                     placa.setText(null);
                     tiempo.setDate(null);
                 }
-                 fac = null;
+                fac = null;
                 guardando = false;
             } catch (Exception e) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, e);
@@ -2657,16 +2858,25 @@ limpiarMemoria();
                 || evt.getKeyCode() == evt.VK_F12) {
             principal.tecla(evt.getKeyCode());
         }
-        
+
     }//GEN-LAST:event_noTicketKeyPressed
-   public void limpiarMemoria() {
-        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    public void limpiarMemoria() {
+        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         System.gc();
         System.gc();
         System.gc();
         System.gc();
-        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
+
+    public void llenarCliente4(Clientes nCliente) {
+        cliente3.setText("" + nCliente.getCodigo());
+        identificacion3.setText(nCliente.getIdentificacion());
+        nombres3.setText(nCliente.getNombres());
+        direccion3.setText(nCliente.getDireccion());
+        telefono3.setText(nCliente.getTelefono());
+    }
+
     public void llenarCliente(Clientes nCliente) {
         cliente.setText("" + nCliente.getCodigo());
         identificacion.setText(nCliente.getIdentificacion());
@@ -2800,6 +3010,7 @@ limpiarMemoria();
             Factura fac = (Factura) this.encontrados1.getSelectedValue();
             descuento.setText("0.0");
             btnAplicarDscto.setEnabled(true);
+            btnAplicarCupon.setEnabled(true);
             llenarFactura(fac);
             noTicket.setText(fac.getTicket());
         }
@@ -2814,6 +3025,7 @@ limpiarMemoria();
 
             descuento.setText("0.0");
             btnAplicarDscto.setEnabled(true);
+            btnAplicarCupon.setEnabled(true);
             llenarFactura(fac);
             try {
                 cargarFoto(fac.getCodigo());
@@ -3056,7 +3268,7 @@ limpiarMemoria();
                 det.setCantidad((Integer) productos.getValueAt(i, 1));
                 det.setDetalle((String) productos.getValueAt(i, 2));
                 det.setSubtotal((BigDecimal) productos.getValueAt(i, 3));
-                System.out.println("A CARGAR: "+(BigDecimal) productos.getValueAt(i, 3));
+                System.out.println("A CARGAR: " + (BigDecimal) productos.getValueAt(i, 3));
                 det.setIva(det.getSubtotal().multiply(new BigDecimal(empresaObj.getIva() / 100)));
                 det.setTotal(det.getSubtotal().add(det.getIva()));
                 det.setFactura(facActual);
@@ -3129,7 +3341,7 @@ limpiarMemoria();
             obj[0] = asigRub.getCodigo();
             obj[1] = Integer.parseInt(txtCantidad.getText());
             obj[2] = asigRub.getDescripcion();
-            obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText())).setScale(2, RoundingMode.HALF_UP) ; 
+            obj[3] = new BigDecimal(asigRub.getValor() * Integer.parseInt(txtCantidad.getText())).setScale(2, RoundingMode.HALF_UP);
             dtm.addRow(obj);
             productos.setModel(dtm);
             sumar();
@@ -3824,7 +4036,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             return;
         }
         btnAplicarDscto.setEnabled(false);
-        List<Descuento> des = adm.query("Select o from Descuento as o");
+        btnAplicarCupon.setEnabled(false);
+        List<Descuento> des = adm.query("Select o from Descuento as o where o.nombre like '%cliente%'");
         for (Iterator<Descuento> it = des.iterator(); it.hasNext();) {
             Descuento descuento1 = it.next();
             if (descuento1.getTipo().equals("1")) {
@@ -4338,7 +4551,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                         + " and (o.anuladofac = false or o.anuladofac is null ) "
                         + " and (o.anulado = false or o.anulado is null)  "
                         + " and o.fechafin between '" + desde + "' and  '" + hasta + "' ");
-                
+
                 if (fac == null) {
                     JOptionPane.showMessageDialog(this, "El # de Factura ya ha sido anulado...!", "", JOptionPane.ERROR_MESSAGE);
                     codigoAdministrador.setText("");
@@ -4561,7 +4774,240 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
 
     }//GEN-LAST:event_btnAnularFacturaActionPerformed
+
+    private void identificacion3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_identificacion3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_identificacion3ActionPerformed
+
+    private void identificacion3FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_identificacion3FocusLost
+        // TODO add your handling code here:
+        try {
+            Clientes cliObj = (Clientes) adm.querySimple("Select o from Clientes as o "
+                    + "where o.identificacion like '" + identificacion3.getText().trim() + "%' ");
+            if (cliObj != null) {
+                cliente3.setText(cliObj.getCodigo() + "");
+                identificacion3.setText(cliObj.getIdentificacion());
+                nombres3.setText(cliObj.getNombres());
+                direccion3.setText(cliObj.getDireccion());
+                telefono3.setText(cliObj.getTelefono());
+            }
+
+        } catch (Exception e) {
+            System.out.println("BUSCAR CEDULA UNICA " + e);
+        }
+
+    }//GEN-LAST:event_identificacion3FocusLost
+
+    private void identificacion3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_identificacion3KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            nombres3.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_identificacion3KeyPressed
+
+    private void nombres3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres3KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_DOWN) {
+            encontrados4.setSelectedIndex(0);
+            encontrados4.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            panelencontrados4.setVisible(false);
+        }
+
+    }//GEN-LAST:event_nombres3KeyPressed
+
+    private void nombres3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres3KeyReleased
+        // TODO add your handling code here:
+        if (!nombres3.getText().isEmpty()) {
+
+            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres3.getText().trim() + "%' order by o.nombres ", 0, 10);
+            if (encon.size() > 0) {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados4.setModel(dtm);
+                int j = 0;
+                for (Clientes est : encon) {
+                    dtm.add(j, est);
+                    j++;
+                }
+                encontrados4.setModel(dtm);
+                this.panelencontrados4.setVisible(true);
+            } else {
+                DefaultListModel dtm = new DefaultListModel();
+                dtm.removeAllElements();
+                encontrados4.setModel(dtm);
+                this.panelencontrados4.setVisible(false);
+            }
+
+        } else {
+            DefaultListModel dtm = new DefaultListModel();
+            dtm.removeAllElements();
+            encontrados4.setModel(dtm);
+            this.panelencontrados4.setVisible(false);
+        }
+
+    }//GEN-LAST:event_nombres3KeyReleased
+
+    private void encontrados4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_encontrados4MouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.panelencontrados4.setVisible(false);
+            Clientes est = (Clientes) this.encontrados4.getSelectedValue();
+            llenarCliente4(est);
+            est = null;
+        }
+    }//GEN-LAST:event_encontrados4MouseClicked
+
+    private void encontrados4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados4KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            this.panelencontrados4.setVisible(false);
+            Clientes est = (Clientes) this.encontrados4.getSelectedValue();
+            llenarCliente4(est);
+            est = null;
+
+
+        }
+        if (evt.getKeyCode() == evt.VK_UP && encontrados4.getSelectedIndex() == 0) {
+            this.nombres3.requestFocusInWindow();
+        }
+        if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            this.panelencontrados4.setVisible(false);
+
+        }
+        principal.tecla(evt.getKeyCode());
+
+    }//GEN-LAST:event_encontrados4KeyPressed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try{ 
+            
+            if (((Integer)Nocupones.getValue()).intValue()<=0) {
+                JOptionPane.showMessageDialog(this, "Ingrese el No. de Cupones...!", "", JOptionPane.ERROR_MESSAGE);
+                Nocupones.requestFocusInWindow();
+                return;
+            }
+            
+            if (identificacion3.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el nombre del Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (identificacion3.getText().contains("9999999")) {
+                JOptionPane.showMessageDialog(this, "Cambie primero el Cliente ...!", "", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // TODO add your handling code here:
+            if (cliente3.getText().equals("0")) {
+                try {
+                    clienteCupon = new Clientes();
+                    clienteCupon.setCodigo(adm.getNuevaClave("Clientes", "codigo"));
+                    clienteCupon.setDireccion(direccion.getText());
+                    clienteCupon.setIdentificacion(identificacion.getText());
+                    clienteCupon.setTelefono(telefono.getText());
+                    clienteCupon.setNombres(nombres.getText());
+                    adm.guardar(clienteCupon);
+
+                    //            //cliente.setText(""+nuevoCl.getCodigo());
+                    //            identificacion.setText("9999999999999");
+                    //            nombres.setText("CONSUMIDOR FINAL");
+                    //            direccion.setText("S/D");
+                    //            telefono.setText("9999999999999");
+                    //            cliente.setText("1");
+                    //            facActual.setClientes(nuevoCl);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    //facActual.setClientes(new Clientes(new Integer(cliente.getText())));
+                    clienteCupon = new Clientes();
+                    clienteCupon.setCodigo(new Integer(cliente.getText()));
+                    clienteCupon.setDireccion(direccion.getText());
+                    clienteCupon.setIdentificacion(identificacion.getText());
+                    clienteCupon.setTelefono(telefono.getText());
+                    clienteCupon.setNombres(nombres.getText());
+                    adm.actualizar(clienteCupon);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+            frmCuponesClientes.setVisible(false);
+
+            Integer nocupo = (Integer) Nocupones.getValue();
+            descuento.setText(redondear(descuento1.getValor().doubleValue() * nocupo, 2) + "");
+            adescontar.setText(redondear(descuento1.getValor().doubleValue() * nocupo, 2) + "");
+
+            BigDecimal tot = new BigDecimal(total.getText());
+            BigDecimal nuevoTotal = tot.subtract(new BigDecimal(redondear(descuento1.getValor().doubleValue() * nocupo, 2)));
+            if (redondear(descuento1.getValor().doubleValue() * nocupo, 2) >= tot.doubleValue()) {
+                descuento.setText(total.getText() + "");
+                total.setText("0.0");
+            } else {
+                total.setText(redondear(nuevoTotal.doubleValue(), 2) + "");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        frmCuponesClientes.setVisible(false);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void btnAplicarCuponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAplicarCuponActionPerformed
+        try {
+            // TODO add your handling code here:
+            // TODO add your handling code here:
+
+            btnAplicarCupon.setEnabled(false);
+            btnAplicarDscto.setEnabled(false);
+
+            List<Descuento> des = adm.query("Select o from Descuento as o where o.nombre like '%cupon%'");
+            if (des.size() <= 0) {
+                JOptionPane.showMessageDialog(this, "Cree un descuento con nombre 'cupon' ");
+            } else {
+                frmCuponesClientes.setVisible(true);
+                panelencontrados4.setVisible(false);
+                for (Iterator<Descuento> it = des.iterator(); it.hasNext();) {
+                    descuento1 = it.next();
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAplicarCuponActionPerformed
+    Descuento descuento1 = new Descuento();
+
+    void calcularDescuentoCupon() {
+        Integer nocupo = (Integer) Nocupones.getValue();
+
+        adescontar.setText(redondear(descuento1.getValor().doubleValue() * nocupo, 2) + "");
+
+
+    }
+    private void btnNuevoCliente3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoCliente3ActionPerformed
+        // TODO add your handling code here:
+        identificacion3.setEditable(true);
+        nombres3.setEditable(true);
+        direccion3.setEditable(true);
+        telefono3.setEditable(true);
+        llenarCliente4(new Clientes(0));
+//            cliente.setEditable(true);
+        identificacion3.requestFocusInWindow();
+    }//GEN-LAST:event_btnNuevoCliente3ActionPerformed
+
+    private void NocuponesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_NocuponesStateChanged
+        // TODO add your handling code here:
+        calcularDescuentoCupon();
+    }//GEN-LAST:event_NocuponesStateChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSpinner Nocupones;
+    private javax.swing.JLabel adescontar;
     private javax.swing.JPanel botonesVer;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
@@ -4570,12 +5016,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton btnAgregar4;
     private javax.swing.JButton btnAnadirProducto;
     private javax.swing.JButton btnAnularFactura;
+    private javax.swing.JButton btnAplicarCupon;
     private javax.swing.JButton btnAplicarDscto;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnMulta;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoCliente1;
     private javax.swing.JButton btnNuevoCliente2;
+    private javax.swing.JButton btnNuevoCliente3;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir1;
     private javax.swing.JButton btnSalir2;
@@ -4584,6 +5032,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField cliente;
     private javax.swing.JFormattedTextField cliente1;
     private javax.swing.JFormattedTextField cliente2;
+    public javax.swing.JFormattedTextField cliente3;
     private javax.swing.JComboBox cmbProductos;
     private javax.swing.JComboBox cmbUsuarios;
     public javax.swing.JFormattedTextField codigo;
@@ -4597,12 +5046,15 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField direccion;
     private javax.swing.JFormattedTextField direccion1;
     private javax.swing.JFormattedTextField direccion2;
+    public javax.swing.JFormattedTextField direccion3;
     private javax.swing.JList encontrados;
     private javax.swing.JList encontrados1;
     private javax.swing.JList encontrados2;
     private javax.swing.JList encontrados3;
+    private javax.swing.JList encontrados4;
     private javax.swing.JDialog formaBusqueda;
     private javax.swing.JInternalFrame frmAnular;
+    private javax.swing.JInternalFrame frmCuponesClientes;
     private javax.swing.JInternalFrame frmEliminar;
     private javax.swing.JButton frmGuardarAnulado;
     private javax.swing.JButton frmGuardarAnulado1;
@@ -4612,11 +5064,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField identificacion;
     private javax.swing.JFormattedTextField identificacion1;
     private javax.swing.JFormattedTextField identificacion2;
+    public javax.swing.JFormattedTextField identificacion3;
     public com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -4656,7 +5111,13 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -4678,6 +5139,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -4692,6 +5154,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;
     private javax.swing.JFormattedTextField nombres2;
+    public javax.swing.JFormattedTextField nombres3;
     private javax.swing.JFormattedTextField numeroIngresado;
     private javax.swing.JTextArea observacion;
     private javax.swing.JTextArea observacion1;
@@ -4701,12 +5164,14 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JPanel panelencontrados1;
     private javax.swing.JPanel panelencontrados2;
     private javax.swing.JPanel panelencontrados3;
+    private javax.swing.JPanel panelencontrados4;
     public javax.swing.JFormattedTextField placa;
     private javax.swing.JTable productos;
     public com.toedter.calendar.JDateChooser salida;
     public javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JFormattedTextField telefono2;
+    public javax.swing.JFormattedTextField telefono3;
     private javax.swing.JTable ticketsPendientes;
     public com.toedter.calendar.JDateChooser tiempo;
     public javax.swing.JFormattedTextField total;

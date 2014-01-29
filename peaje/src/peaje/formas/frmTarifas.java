@@ -1740,7 +1740,7 @@ private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN
             this.btnModificar3.setLabel("Modificar");
             btnAgregar3.setMnemonic('N');
             btnModificar3.setMnemonic('M');
-            btnAgregar3.setEnabled(false);
+            //btnAgregar3.setEnabled(false);
 
             habilitar3(false);
             //            btnBuscar.setEnabled(true);

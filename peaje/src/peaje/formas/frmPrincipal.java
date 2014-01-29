@@ -5072,7 +5072,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
             frmFactura usu = new frmFactura(this, true, this, adm);
-            usu.setSize(716, 507);
+            usu.setSize(799, 556); //799, 556
             usu.chkEsNotaVenta.setSelected(empresaObj.getTrabajanotaventa());
             usu.setLocation(0, 0);
             usu.setName("formaFactura");
@@ -5929,15 +5929,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     System.out.println("ABRIR PUERTA 2" + new Date());
                     try {

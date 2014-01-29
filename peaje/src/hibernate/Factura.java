@@ -97,7 +97,15 @@ public class Factura implements Serializable {
     private Boolean yasalio;
         @Column(name = "esnota")
     private Boolean esnota;
-
+   @JoinColumn(name = "clientedes", referencedColumnName = "codigo")
+    @ManyToOne
+    private Clientes clientedes;
+   @JoinColumn(name = "clientetic", referencedColumnName = "codigo")
+    @ManyToOne
+    private Clientes clientetic;
+   
+@Column(name = "cupones")
+    private Integer cupones;
 //    @OneToMany(mappedBy = "factura")
 //    private Collection<Detalle> detalleCollection;
 
@@ -314,6 +322,30 @@ public class Factura implements Serializable {
 
     public void setUsuarioa(Usuarios usuarioa) {
         this.usuarioa = usuarioa;
+    }
+
+    public Clientes getClientedes() {
+        return clientedes;
+    }
+
+    public void setClientedes(Clientes clientedes) {
+        this.clientedes = clientedes;
+    }
+
+    public Clientes getClientetic() {
+        return clientetic;
+    }
+
+    public void setClientetic(Clientes clientetic) {
+        this.clientetic = clientetic;
+    }
+
+    public Integer getCupones() {
+        return cupones;
+    }
+
+    public void setCupones(Integer cupones) {
+        this.cupones = cupones;
     }
     
     
