@@ -815,6 +815,9 @@ void recalcular2(){
             }else if(tipo.equals("CFAL")){
                     datasource = noti.faltas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"faltas.jasper");
+            }else if(tipo.equals("CFALM")){
+                    datasource = noti.faltasM(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"faltasM.jasper");
             }else if(tipo.equals("LIBQ")){
                    //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
 
@@ -977,7 +980,7 @@ void campos(String valor){
             filaaportes.visible = true;
             filamaterias.visible = true;
             
-        }else if(valor.equals("LIBF")  || valor.equals("CFAL")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
+        }else if(valor.equals("LIBF")  || valor.equals("CFALM")  || valor.equals("CFAL")  || valor.equals("LIB") || valor.equals("LIB2") || valor.equals("LIB3")){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
             sistemasCombo.disabled = false;
@@ -1280,6 +1283,7 @@ void campos(String valor){
                                     <listitem  id="CNF4" label="Cuadro Final(10)" value="CNF4" />
                                     <listitem  id="CDIS" label="Cuadro de Disciplinas" value="CDIS"/>
                                     <listitem  id="CFAL" label="Cuadro de Faltas" value="CFAL"/>
+                                    <listitem  id="CFALM" label="Cuadro de Faltas x Materia" value="CFALM"/>
 
                                     
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
