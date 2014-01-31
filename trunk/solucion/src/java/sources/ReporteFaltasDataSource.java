@@ -64,7 +64,7 @@ public class ReporteFaltasDataSource implements JRDataSource{
                 }else{
                 }
             }catch(Exception ex){
-                System.out.println("Error en foto:"+ex);
+                //System.out.println("Error en foto:"+ex);
             }
         }else    if ("nota".equals(fieldName)) {
            valor = nodo.getNota();
@@ -74,6 +74,7 @@ public class ReporteFaltasDataSource implements JRDataSource{
            valor = nodo.getMateria();
         }
 } catch (Exception e) {
+    e.printStackTrace();
             System.out.println("EN DATASOURCE"+e);
         }
         return valor;
