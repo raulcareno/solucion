@@ -612,17 +612,18 @@ public class generarFacturas {
             det.setFactura(fac);
             adm.guardar(det);
             //kgkl glj
-            
-            det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
-            det.setTotal((planmora.getPvp1())); 
-            det.setPlan(null);
-            det.setEquipos(planmora); 
-            det.setCantidad(1);
-            det.setMes(fechaInstalacion.getMonth() + 1);
-            det.setAnio(fechaInstalacion.getYear() + 1900);
-            det.setDescripcion("generada");
-            det.setFactura(fac);
-            adm.guardar(det);
+            if(object.getSucursal().getEmpresa().getAplicamora()){
+                det = new Detalle(adm.getNuevaClave("Detalle", "codigo"));
+                det.setTotal((planmora.getPvp1())); 
+                det.setPlan(null);
+                det.setEquipos(planmora); 
+                det.setCantidad(1);
+                det.setMes(fechaInstalacion.getMonth() + 1);
+                det.setAnio(fechaInstalacion.getYear() + 1900);
+                det.setDescripcion("generada");
+                det.setFactura(fac);
+                adm.guardar(det);
+            }
             
             Cxcobrar cuenta = new Cxcobrar(adm.getNuevaClave("Cxcobrar", "codigo"));
             cuenta.setDebe(fac.getTotal());
@@ -1171,8 +1172,8 @@ public class generarFacturas {
             if(contrato.getEstado().equals("Suspendido") || contrato.getEstado().equals("Terminado")){
                 return null;
             }else{
-                adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
-                generarCobrosProrrateado(suc, contrato, new Date());
+                adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado in ('Cortado','Pendiente') and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
+                generarCobrosProrrateado(suc, contrato, adm.Date());
             }
              //TOMAR EN CUENTA SI NO ESTA EN FIN DE MES 31
              //TOMAR EN CUENTA QUE SI ES QUE ESTA ENTRE EL 1 Y EL 5

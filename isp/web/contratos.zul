@@ -529,7 +529,7 @@ Boolean validar(){
     equi.setTipocuenta(tipocuenta.value); //varchar 
     equi.setDiapago(new Integer(diapago.value));//integer
   
-    equi.setSerie3(facturar.selectedItem.value);   
+    equi.setSerie3("SI");   
     
    
     try{
@@ -2897,10 +2897,10 @@ void llamar(){
                                             <comboitem label="Fibra Óptica" value="Fibra Óptica" />
                                             <comboitem label="Medio Inalambrico" value="Medio Inalambrico" />
                                          </combobox>
-                                          <span style="float:right"> <label id="facturarlbl" value="Facturar:" />  </span>
+                                          <span style="float:right"> <label visible="false" id="facturarlbl" value="Facturar:" />  </span>
                                            <radiogroup id="facturar" >
-                                            <radio selected="true"   id="si" value="SI" label="SI" style="font-weight:bold2" />
-                                            <radio  id="no"  value="NO"  label="NO" style="font-weight:bold2" />
+                                            <radio selected="true"  visible="false"   id="si" value="SI" label="SI" style="font-weight:bold2" />
+                                            <radio  id="no"  value="NO"   visible="false"  label="NO" style="font-weight:bold2" />
                                           </radiogroup>
                                                            
                                         </row>
