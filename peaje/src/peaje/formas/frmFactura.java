@@ -318,8 +318,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         btnMulta = new javax.swing.JButton();
         btnAgregar2 = new javax.swing.JButton();
-        btnAgregar3 = new javax.swing.JButton();
         btnAplicarCupon = new javax.swing.JButton();
+        btnAgregar3 = new javax.swing.JButton();
         btnAplicarDescuento2 = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         total = new javax.swing.JFormattedTextField();
@@ -672,7 +672,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         frmDescuentosClientes.setBackground(new java.awt.Color(153, 204, 255));
         frmDescuentosClientes.setTitle("DESCUENTOS");
         frmDescuentosClientes.setOpaque(true);
-        frmDescuentosClientes.setVisible(true);
+        frmDescuentosClientes.setVisible(false);
         frmDescuentosClientes.getContentPane().setLayout(null);
 
         identificacion4.setEditable(false);
@@ -1277,6 +1277,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         botonesVer.add(btnAgregar2);
 
+        btnAplicarCupon.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAplicarCupon.setText("Cupones");
+        btnAplicarCupon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAplicarCuponActionPerformed(evt);
+            }
+        });
+        botonesVer.add(btnAplicarCupon);
+
         btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/sello.png"))); // NOI18N
         btnAgregar3.setMnemonic('G');
         btnAgregar3.setText("Sellado");
@@ -1297,15 +1306,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         botonesVer.add(btnAgregar3);
-
-        btnAplicarCupon.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAplicarCupon.setText("Cupones");
-        btnAplicarCupon.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAplicarCuponActionPerformed(evt);
-            }
-        });
-        botonesVer.add(btnAplicarCupon);
 
         btnAplicarDescuento2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAplicarDescuento2.setText("Dsctos.");
@@ -2118,7 +2118,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
                     try {
                         facActual.setClientedes(clienteDscto);
-                        //facActual.setCupones((Integer) Nocupones.getValue());
+                        facActual.setFactura(noFactura.getText());
                     } catch (Exception e) {
                         System.out.println("error en guardar el cliente cupon" + e);
                     }
@@ -5197,6 +5197,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         nombres4.setText("");
         identificacion4.setText("");
         cliente4.setText("0");
+        noFactura.setText(""); 
         try {
             if (codigo.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Ingrese un Ticket y presione ENTER ...!", "", JOptionPane.ERROR_MESSAGE);

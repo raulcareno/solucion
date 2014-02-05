@@ -1229,7 +1229,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     + "and (o.ticket is not null or o.placa like '%NO CLIENTE%') "
                     + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
                     + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
-                    + " ";
+                    + " order by o.clientedes.nombres ";
             System.out.println("SOLO TICKETS: " + query);
             if (cmbUsuarios.getSelectedIndex() > 0) {
                 query = "Select o from Factura as o"

@@ -54,6 +54,8 @@ public class Factura implements Serializable {
     private Integer dias;
     @Column(name = "placa")
     private String placa;
+    @Column(name = "factura")
+    private String factura;
     @Column(name = "fecha")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
@@ -346,6 +348,14 @@ public class Factura implements Serializable {
 
     public void setCupones(Integer cupones) {
         this.cupones = cupones;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
     }
     
     
