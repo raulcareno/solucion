@@ -672,7 +672,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         frmDescuentosClientes.setBackground(new java.awt.Color(153, 204, 255));
         frmDescuentosClientes.setTitle("DESCUENTOS");
         frmDescuentosClientes.setOpaque(true);
-        frmDescuentosClientes.setVisible(false);
+        frmDescuentosClientes.setVisible(true);
         frmDescuentosClientes.getContentPane().setLayout(null);
 
         identificacion4.setEditable(false);
@@ -5348,6 +5348,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                     BigDecimal tot = new BigDecimal(total.getText());
                     BigDecimal nuevoTotal = tot.subtract(descuento1.getValor());
                     total.setText(redondear(nuevoTotal.doubleValue(), 2) + "");
+                    if(descuento1.getValor().doubleValue()>=tot.doubleValue()){
+                            descuento.setText(tot+ "");    
+                            total.setText("0.0");    
+                    }
 
                 }
             }
