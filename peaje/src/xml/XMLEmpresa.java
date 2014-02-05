@@ -96,6 +96,7 @@ public class XMLEmpresa {
     private static final String ACTIVA7 = "ACTIVA7";
     private static final String BLOQUEAR = "BLOQUEAR";
     private static final String BLOQUEARSALIDA = "BLOQUEARSALIDA";
+    private static final String BLOQUEARENTRADA = "BLOQUEARENTRADA";
     private static final String PUERTA1 = "PUERTA1";
     private static final String PUERTA2 = "PUERTA2";
     private static final String PUERTA3 = "PUERTA3";
@@ -319,6 +320,10 @@ public class XMLEmpresa {
         item = xmlDoc.createElement(BLOQUEARSALIDA);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearsalida() + ""));
         personal.appendChild(item);
+        
+        item = xmlDoc.createElement(BLOQUEARENTRADA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearentrada()+ ""));
+        personal.appendChild(item);
 
         item = xmlDoc.createElement(BARRERAS);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBarreras() + ""));
@@ -510,6 +515,7 @@ public class XMLEmpresa {
         beanEmpleado.setEntra2(emp.getEntra2());
         beanEmpleado.setBloquear(emp.getBloquear());
         beanEmpleado.setBloquearsalida(emp.getBloquearsalida());
+        beanEmpleado.setBloquearentrada(emp.getBloquearentrada());
         beanEmpleado.setBarreras(emp.getBarreras());
         beanEmpleado.setRetardoEntrada(emp.getRetardoEntrada());
         beanEmpleado.setRetardoSalida(emp.getRetardoSalida());
@@ -780,6 +786,18 @@ public class XMLEmpresa {
                     } catch (Exception parserConfigurationException) {
                         //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                         user.setBloquearsalida(false);
+                    }
+                    
+                      //------
+                    try {
+                        //------
+                        NodeList BLOQUEARENTRADAoutList = firstPersonElement.getElementsByTagName("BLOQUEARENTRADA");
+                        Element BLOQUEARENTRADAoutElement = (Element) BLOQUEARENTRADAoutList.item(0);
+                        NodeList BLOQUEARENTRADAoutAgeList = BLOQUEARENTRADAoutElement.getChildNodes();
+                        user.setBloquearentrada(new Boolean(((Node) BLOQUEARENTRADAoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                        user.setBloquearentrada(true);
                     }
                     //------
                     try {
