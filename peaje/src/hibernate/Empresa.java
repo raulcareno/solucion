@@ -789,6 +789,8 @@ public class Empresa implements Serializable {
     public Boolean bloquear = false;
     @Transient
     public Boolean bloquearsalida = false;
+    @Transient
+    public Boolean bloquearentrada = false;
     
     @Transient
     public String puertatic;
@@ -828,6 +830,14 @@ public class Empresa implements Serializable {
 
     public void setBloquear(Boolean bloquear) {
         this.bloquear = bloquear;
+    }
+
+    public Boolean getBloquearentrada() {
+        return bloquearentrada;
+    }
+
+    public void setBloquearentrada(Boolean bloquearentrada) {
+        this.bloquearentrada = bloquearentrada;
     }
 
     public Boolean getSeabrefac() {
