@@ -82,6 +82,7 @@ public class EmpresaPuertosStatic {
         public Boolean activa14; 
         public Boolean bloquear;
         public Boolean bloquearsalida;
+        public Boolean bloquearentrada;
         public String puerta1;
         public String puerta2;
         public String puerta3;
@@ -629,6 +630,14 @@ public class EmpresaPuertosStatic {
 
     public void setBloquearsalida(Boolean bloquearsalida) {
         this.bloquearsalida = bloquearsalida;
+    }
+
+    public Boolean getBloquearentrada() {
+        return bloquearentrada;
+    }
+
+    public void setBloquearentrada(Boolean bloquearentrada) {
+        this.bloquearentrada = bloquearentrada;
     }
 
     public String getBarreras() {

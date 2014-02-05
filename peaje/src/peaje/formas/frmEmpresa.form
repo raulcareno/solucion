@@ -927,6 +927,7 @@
                     <Component class="javax.swing.JCheckBox" name="chkBloquear">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Bloquear Pulsador al llenarse"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Se bloquea el bot&#xf3;n al llenar el parqueadero y ya no emite tickets"/>
                       </Properties>
                       <BindingProperties>
                         <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.bloquear}" target="chkBloquear" targetPath="selected" updateStrategy="0" immediately="false"/>
@@ -943,13 +944,14 @@
                     <Component class="javax.swing.JCheckBox" name="chkBloquearSalida">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Bloquear Salida si no ha Ingresado"/>
+                        <Property name="toolTipText" type="java.lang.String" value="El usuario no puede ingresar, si es que no ha marcado la salid"/>
                       </Properties>
                       <BindingProperties>
                         <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.bloquearsalida}" target="chkBloquearSalida" targetPath="selected" updateStrategy="0" immediately="false"/>
                       </BindingProperties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="10" y="130" width="210" height="18"/>
+                          <AbsoluteConstraints x="10" y="130" width="200" height="18"/>
                         </Constraint>
                       </Constraints>
                     </Component>
@@ -1081,6 +1083,23 @@
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                           <AbsoluteConstraints x="230" y="190" width="160" height="20"/>
+                        </Constraint>
+                      </Constraints>
+                    </Component>
+                    <Component class="javax.swing.JCheckBox" name="chkBloquearEntrada">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Bloquear Entrada si no ha Salido"/>
+                        <Property name="toolTipText" type="java.lang.String" value="El usuario de tarjeta no puede ingresar mientras no marque la salida"/>
+                      </Properties>
+                      <BindingProperties>
+                        <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.bloquearentrada}" target="chkBloquearEntrada" targetPath="selected" updateStrategy="0" immediately="false"/>
+                      </BindingProperties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkBloquearEntradaActionPerformed"/>
+                      </Events>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                          <AbsoluteConstraints x="210" y="130" width="180" height="18"/>
                         </Constraint>
                       </Constraints>
                     </Component>

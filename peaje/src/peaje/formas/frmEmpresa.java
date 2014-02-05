@@ -395,6 +395,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         chktrabajanotaventa = new javax.swing.JCheckBox();
         chkImprime2facturas = new javax.swing.JCheckBox();
         chkReimprime = new javax.swing.JCheckBox();
+        chkBloquearEntrada = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         cmbTicket = new javax.swing.JComboBox();
@@ -976,6 +977,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel51.setBounds(40, 90, 80, 20);
 
         chkBloquear.setText("Bloquear Pulsador al llenarse");
+        chkBloquear.setToolTipText("Se bloquea el botón al llenar el parqueadero y ya no emite tickets");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.bloquear}"), chkBloquear, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
@@ -989,12 +991,13 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         chkBloquear.setBounds(10, 110, 180, 18);
 
         chkBloquearSalida.setText("Bloquear Salida si no ha Ingresado");
+        chkBloquearSalida.setToolTipText("El usuario no puede ingresar, si es que no ha marcado la salid");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.bloquearsalida}"), chkBloquearSalida, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
         jPanel6.add(chkBloquearSalida);
-        chkBloquearSalida.setBounds(10, 130, 210, 18);
+        chkBloquearSalida.setBounds(10, 130, 200, 18);
 
         barreras.setToolTipText("");
         jPanel6.add(barreras);
@@ -1073,6 +1076,20 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jPanel6.add(chkReimprime);
         chkReimprime.setBounds(230, 190, 160, 20);
+
+        chkBloquearEntrada.setText("Bloquear Entrada si no ha Salido");
+        chkBloquearEntrada.setToolTipText("El usuario de tarjeta no puede ingresar mientras no marque la salida");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.bloquearentrada}"), chkBloquearEntrada, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkBloquearEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkBloquearEntradaActionPerformed(evt);
+            }
+        });
+        jPanel6.add(chkBloquearEntrada);
+        chkBloquearEntrada.setBounds(210, 130, 180, 18);
 
         jTabbedPane2.addTab("Configuraciones", new javax.swing.ImageIcon(getClass().getResource("/images/admin1.gif")), jPanel6); // NOI18N
 
@@ -1873,6 +1890,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setImprime2facturas(chkImprime2facturas.isSelected());
                     empresaObj.setTrabajanotaventa(chktrabajanotaventa.isSelected());
                     empresaObj.setBloquearsalida(chkBloquearSalida.isSelected());
+                    empresaObj.setBloquearentrada(chkBloquearEntrada.isSelected());
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
                     empresaObj.setPuertatic((String)cmbPuertaTicket.getSelectedItem());
@@ -2452,6 +2470,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_horaHasta2KeyPressed
 
+    private void chkBloquearEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBloquearEntradaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkBloquearEntradaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField barreras;
     private javax.swing.JButton btnAgregar;
@@ -2465,6 +2487,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkActivo3;
     private javax.swing.JCheckBox chkActivo4;
     private javax.swing.JCheckBox chkBloquear;
+    private javax.swing.JCheckBox chkBloquearEntrada;
     private javax.swing.JCheckBox chkBloquearSalida;
     private javax.swing.JCheckBox chkImprime2facturas;
     private javax.swing.JCheckBox chkIpcam;

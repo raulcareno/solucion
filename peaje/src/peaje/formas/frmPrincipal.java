@@ -3318,29 +3318,29 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             a = 7009;
                             byte[] encerar = {(byte) 0x00, (byte) 0x00};
                             ta.outputSream.write(encerar);
-                            if(dispo<10){
-                            
-                            if(dispo<0){
-                                
-                                byte[] c = {(byte) 0x00, (byte) 0x00};
+                            if (dispo < 10) {
+
+                                if (dispo < 0) {
+
+                                    byte[] c = {(byte) 0x00, (byte) 0x00};
+                                    ta.outputSream.write(c);
+                                } else {
+                                    byte[] c = {(byte) 0x00, (byte) (dispo)};
+                                    ta.outputSream.write(c);
+                                }
+
+                                //devolverHexa();
+
+                            } else {
+
+                                String uno = (dispo + "").substring(0, 1);
+                                String dos = (dispo + "").substring(1, (dispo + "").length());
+                                devolverHexa(new Integer(uno));
+                                devolverHexa(new Integer(dos));
+                                byte[] c = {(byte) devolverHexa(new Integer(uno)), (byte) devolverHexa(new Integer(dos))};
                                 ta.outputSream.write(c);
-                            }else{
-                            byte[] c = {(byte) 0x00, (byte)(dispo)};
-                            ta.outputSream.write(c);
                             }
-  
-                            //devolverHexa();
-                            
-                            }else{
-                                
-                                 String uno = (dispo+"").substring(0,1);
-                                 String dos = (dispo+"").substring(1,(dispo+"").length());
-                                 devolverHexa(new Integer(uno)); 
-                                 devolverHexa(new Integer(dos)); 
-                                 byte[] c = {(byte)devolverHexa(new Integer(uno)),(byte)devolverHexa(new Integer(dos))};
-                                ta.outputSream.write(c);
-                            }
-                            
+
 
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                             //barrera1.setEnabled(true);
@@ -3373,6 +3373,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setSale2(emp.getSale2());
         empresaObj.setBloquear(emp.getBloquear());
         empresaObj.setBloquearsalida(emp.getBloquearsalida());
+        empresaObj.setBloquearentrada(emp.getBloquearentrada());
         empresaObj.setPunto(emp.getPunto());
         empresaObj.setActiva1(emp.getActiva1());
         empresaObj.setActiva2(emp.getActiva2());
@@ -4118,15 +4119,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         //BUSCO SI YA HA INGRESADO PRIMERO
                         List<Factura> facturas = adm.query("Select o from Factura as o where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
-                        if (facturas.size() > 0) {
-                            ultimoIngreso.setText("Vehiculo Ingreso:" + facturas.get(facturas.size() - 1).getFechaini().toLocaleString() + "");
-                            cargarFoto(facturas.get(facturas.size() - 1).getCodigo());
-                            errores.setText("<html>Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!</html>");
-                            socketEnviarMensaje("Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!");
-                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
-                            return;
+                        if(empresaObj.getBloquearentrada()){//BLOQUEAR LA ENTRADA SI NO HA SALIDO.
+                            if (facturas.size() > 0) {
+                                ultimoIngreso.setText("Vehiculo Ingreso:" + facturas.get(facturas.size() - 1).getFechaini().toLocaleString() + "");
+                                cargarFoto(facturas.get(facturas.size() - 1).getCodigo());
+                                errores.setText("<html>Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!</html>");
+                                socketEnviarMensaje("Tarjeta Usada, Tiene que marcar la salida para volver a Ingresar...!");
+                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                                return;
+                            }
+                            funcionSiEntra(tarje, puertoViene);
+                        }else{
+                            funcionSiEntra(tarje, puertoViene);    
                         }
-                        funcionSiEntra(tarje, puertoViene);
+                        
                     } else {
                         return;
                     }

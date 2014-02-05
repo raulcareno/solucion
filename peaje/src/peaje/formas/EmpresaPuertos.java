@@ -101,6 +101,7 @@ public class EmpresaPuertos {
     public Double multa;
     public Boolean bloquear;
     public Boolean bloquearsalida;
+    public Boolean bloquearentrada;
     public String puertoBarras1;
     public String puertoBarras2;
     public String ipBarras1;
@@ -642,6 +643,15 @@ public class EmpresaPuertos {
     public void setBloquearsalida(Boolean bloquearsalida) {
         this.bloquearsalida = bloquearsalida;
     }
+
+    public Boolean getBloquearentrada() {
+        return bloquearentrada;
+    }
+
+    public void setBloquearentrada(Boolean bloquearentrada) {
+        this.bloquearentrada = bloquearentrada;
+    }
+    
 
     public String getBarreras() {
         return barreras;
