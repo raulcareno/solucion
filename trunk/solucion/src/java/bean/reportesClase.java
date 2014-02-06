@@ -5819,28 +5819,8 @@ public class reportesClase {
             matriculas.add(matri);
         }
         ArrayList lisFaltas = new ArrayList();
-//        for (Matriculas matriculas1 : matriculas) {
-            //IMPRIMO EL CUADRO DE EQUIVALENCIAS DE FALTAS
 
-
-            //IMPRIMO LAS FALTAS
-//               String q = "Select " + query4 + ", tri.descripcion from disciplina, sistemacalificacion  sis, trimestres tri "
-//                        + "where matricula = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
-//                        + "and sis.orden <= '" + sistema.getOrden() + "'   AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
-//                        + "  group by tri.codigotrim  order by  tri.codigotrim, sis.orden "
-//                        + " ";
-            /*
-             * SELECT matricula,SUM(faltas), SUM(justificadas), SUM(total)  FROM faltas 
-WHERE matricula IN (SELECT codigomat FROM matriculas WHERE curso =123) AND sistema = 32 
-GROUP BY matricula
-             */
-//            String q = "Select  f.matricula, SUM(f.faltas), SUM(f.justificadas), SUM(f.total) from faltas f "
-//                    + " where matricula.codigomat in (Select o.codigomat from Matriculas as o where  o.estado in ('Matriculado','Recibir Pase')  "
-//                    + " and o.curso.codigocur = '" + curso.getCodigocur() + "' )"
-//                    + " and f.sistema.orden <= '" + sistema.getOrden() + "'   "
-//                    + " group by f.matricula "
-//                    + " ";
-        String q ="SELECT o.codigomat, e.apellido,e.nombre, m.descripcion, SUM(f.faltas), SUM(f.justificadas), SUM(f.total)   "
+        String q ="SELECT o.codigomat, e.apellido,e.nombre, m.descripcion, SUM(f.faltas), SUM(f.justificadas), SUM(f.total), m.codigo   "
                 + " FROM faltas f, matriculas o, sistemacalificacion s, estudiantes e, GLOBAL m   "
                 + "WHERE m.codigo = f.materia AND e.codigoest = o.estudiante AND s.codigosis = f.sistema "
                 + " AND o.codigomat = f.matricula AND o.curso =  '"+curso.getCodigocur()+"'  "
@@ -5860,6 +5840,15 @@ GROUP BY matricula
                 est.setNombre(vec.get(2)+"");
                 matriculas1.setCurso(curso);
                 matriculas1.setEstudiante(est); 
+                List<MateriaProfesor> mp = adm.query("Select o from MateriaProfesor as o "
+                        + "where o.materia.codigo =  '"+vec.get(7)+"' and o.curso.codigocur = '"+curso.getCodigocur()+"'  ");
+                int NoHoras = 100;
+                if(mp.size()>0){
+                    NoHoras = mp.get(0).getHoras();    
+                    if(NoHoras<=0){
+                        NoHoras = 100;
+                    }
+                }
                 
                     NotaCollection coll = new NotaCollection();
                     coll.setNota(((BigDecimal)vec.get(4)).intValue());
@@ -5881,7 +5870,7 @@ GROUP BY matricula
                     
                     int totalFaltas = (((BigDecimal)vec.get(5)).divide(new BigDecimal(2))).intValue()+ ((BigDecimal)vec.get(4)).intValue();
                     coll = new NotaCollection();
-                    coll.setNota((totalFaltas*100/200));
+                    coll.setNota((totalFaltas*100/NoHoras));
                     coll.setMateria("%");
                     coll.setMatricula("" +vec.get(0));
                     coll.setMatriculas(matriculas1);
@@ -5894,47 +5883,6 @@ GROUP BY matricula
             }
 
 
-//            q = "Select " + query3 + "  from disciplina, sistemacalificacion "
-//                    + "where matricula = '" + matriculas1.getCodigomat() + "'  "
-//                    + "and sistemacalificacion.orden <= '" + sistema.getOrden() + "' "
-//                    + "and sistemacalificacion.codigosis =  sistema  and sistemacalificacion.seimprime = true  "
-//                    + " group by matricula ";
-//            //SELECT * FROM disciplina, sistemacalificacion WHERE sistemacalificacion.codigosis =  sistema
-//////                 System.out.println(""+q);
-//            nativo = adm.queryNativo(q);
-//            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-//                Vector vec = (Vector) itna.next();
-//                int ksis = 0;
-//                for (int j = 0; j < vec.size(); j++) {
-//                    Object dos = vec.get(j);
-//                    NotaCollection coll = new NotaCollection();
-//                    coll.setNota(dos);
-//                    coll.setMateria(equivalenciasFaltas.get(ksis).getAbreviatura());
-//                    coll.setMatricula("" + matriculas1.getCodigomat());
-//                    coll.setMatriculas(matriculas1);
-//                    coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
-//                    coll.setSistema("Totales");
-//                    lisFaltas.add(coll);
-//                    ksis++;
-//                }
-                //row.setParent(this);
-//            }
-//            if (nativo.size() <= 0) {
-//
-//                for (int i = 0; i < equivalenciasFaltas.size(); i++) {
-//                    NotaCollection coll = new NotaCollection();
-//                    coll.setNota(0);
-//                    coll.setMateria(equivalenciasFaltas.get(i).getAbreviatura());
-//                    coll.setMatricula("" + matriculas1.getCodigomat());
-//                    coll.setMatriculas(matriculas1);
-//                    coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
-//                    coll.setSistema("Totales");
-//                    lisFaltas.add(coll);
-//
-//                }
-//                //row.setParent(this);
-//
-//            }
 
 
 ////        }
