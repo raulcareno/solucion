@@ -95,6 +95,7 @@ void llenar(MateriaProfesor estudent){
     opcional.checked = estudent.getOpcional();
     cuantitativa.checked = estudent.getCuantitativa();
     ingcualitativo.checked = estudent.getIngcualitativo();
+    horas.value = estudent.getHoras();
     orden.value = estudent.getOrden();
     formula.value = estudent.getFormula();
     
@@ -173,6 +174,7 @@ void estado(Boolean estado,Boolean modificar){
     opcional.disabled = estado;
     cuantitativa.disabled = estado;
     ingcualitativo.disabled = estado;
+    horas.disabled = estado;
     orden.readonly = estado;
     mates.disabled = estado;
     matesg.disabled = estado;
@@ -200,6 +202,7 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setOpcional(opcional.checked); //ingresan disciplina
         matricula.setCuantitativa(cuantitativa.checked);
         matricula.setIngcualitativo(ingcualitativo.checked);
+        matricula.setHoras(horas.value);
         try{
             if(matesg.selectedIndex > 0){
                 matricula.setGrupo(matesg.selectedItem.value);
@@ -640,6 +643,10 @@ llenarGrid(Empleados emp){
                                         
                                         Intbox tx = new Intbox(acceIt.getOrden());
                                         row.appendChild(tx);
+                                        
+                                        Intbox txh = new Intbox(acceIt.getHoras());
+                                        row.appendChild(txh);
+                                        
                                         Textbox formu = new Textbox(acceIt.getFormula());
                                         row.appendChild(formu);
 
@@ -772,7 +779,8 @@ void guardarp(){
                                   mateProfe.setSeimprime(((Checkbox)labels.get(6)).isChecked());
                                   mateProfe.setIngcualitativo(((Checkbox)labels.get(7)).isChecked());
                                   mateProfe.setOrden((((Intbox)labels.get(8)).value));
-                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  mateProfe.setHoras((((Intbox)labels.get(9)).value));
+                                  mateProfe.setFormula((((Textbox)labels.get(10)).value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1))
                                             adm.actualizar(mateProfe);
@@ -895,6 +903,8 @@ llenarGrid3(Cursos cur){
                                         ch.setChecked(acceIt.getIngcualitativo());
                                         row.appendChild(ch);   
 
+                                        Intbox txh = new Intbox(acceIt.getHoras());
+                                        row.appendChild(txh);
                                         
                                         Textbox formu = new Textbox(acceIt.getFormula());
                                         row.appendChild(formu);
@@ -966,7 +976,9 @@ llenarGrid3P(Cursos cur){
                                       ch = new Checkbox();
                                         ch.setChecked(acceIt.getIngcualitativo());
                                         row.appendChild(ch);   
-
+                                        
+                                        Intbox txh = new Intbox(acceIt.getHoras());
+                                        row.appendChild(txh);
                                         
                                         Textbox formu = new Textbox(acceIt.getFormula());
                                         row.appendChild(formu);
@@ -1267,7 +1279,8 @@ void guardarc(){
                                   mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
                                   mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
                                   mateProfe.setIngcualitativo(((Checkbox)labels.get(8)).isChecked());
-                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  mateProfe.setHoras(((Intbox)labels.get(9)).value);
+                                  mateProfe.setFormula((((Textbox)labels.get(10)).value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
                                             adm.actualizar(mateProfe);
@@ -1308,8 +1321,8 @@ void guardarcP(){
                                   Global matSelec = ((Listbox)labels.get(2)).selectedItem.value;
                                   Empleados empSelec = ((Listbox)labels.get(3)).selectedItem.value;
                                   Global grupoSelec = null;
-                                  if(((Listbox)labels.get(11)).selectedIndex >0){
-                                    grupoSelec = ((Listbox)labels.get(11)).selectedItem.value;
+                                  if(((Listbox)labels.get(12)).selectedIndex >0){
+                                    grupoSelec = ((Listbox)labels.get(12)).selectedItem.value;
                                   }  
                                   
                                   mateProfe.setEmpleado(empSelec);
@@ -1322,7 +1335,8 @@ void guardarcP(){
                                   mateProfe.setOpcional(((Checkbox)labels.get(6)).isChecked()); //ingresan disciplina
                                   mateProfe.setSeimprime(((Checkbox)labels.get(7)).isChecked());
                                   mateProfe.setIngcualitativo(((Checkbox)labels.get(8)).isChecked());
-                                  mateProfe.setFormula((((Textbox)labels.get(9)).value));
+                                  mateProfe.setHoras(((Intbox)labels.get(9)).value);
+                                  mateProfe.setFormula((((Textbox)labels.get(10)).value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
                                             adm.actualizar(mateProfe);
@@ -1427,6 +1441,7 @@ void guardarcP(){
                                         </html>
                                     </popup>
                                 <checkbox  label="Ingresan Cualitativamente" id="ingcualitativo"  disabled="true"   />
+                                No.Horas Anuales: <intbox id="horas"  disabled="true"   />
                             </span>
                         </row>
 
@@ -1603,6 +1618,7 @@ void guardarcP(){
                                     <column  width="15px" label="Impr"/>
                                     <column  width="15px" label="Ing.Cual."/>
                                     <column  width="15px" label="Orden"/>
+                                    <column  width="15px" label="Horas"/>
                                     <column  width="30px" label="Formula"/>
                                     <column  width="30px" label="Opción"/>
                                 </columns>
@@ -1651,6 +1667,7 @@ void guardarcP(){
                                     <column  width="18px" label="Disc."/>
                                     <column  width="15px" label="Impr"/>
                                     <column  width="15px" label="Ing.Cual."/>
+                                    <column  width="15px" label="Horas"/>
                                     <column  width="30px" label="Formula"/>
                                     <column  width="30px" label="Opción"/>
                                 </columns>
@@ -1688,7 +1705,7 @@ void guardarcP(){
                                         <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
                                     </listitem>
                                     <listitem selected="true"   value="-1">
-                                        <listcell label="[Seleccione]" />
+                                        <listcell label="[Seleccione...]" />
                                     </listitem>
                                 </listbox>
                                 <button image="/images/guardar.gif" id="guardarcP" label="Guardar"    onClick="guardarcP();"/>
@@ -1706,6 +1723,7 @@ void guardarcP(){
                                     <column  width="18px" label="Disc."/>
                                     <column  width="15px" label="Impr"/>
                                     <column  width="15px" label="Ing.Cual."/>
+                                    <column  width="15px" label="Horas"/>
                                     <column  width="30px" label="Formula"/>
                                     <column  width="30px" label="Opción"/>
                                     <column  width="30px" label="Grupo"/>
