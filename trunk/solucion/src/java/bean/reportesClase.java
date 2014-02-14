@@ -5868,7 +5868,8 @@ public class reportesClase {
                     coll.setSistema(vec.get(3)+" ");
                     lisFaltas.add(coll);
                     
-                    int totalFaltas = (((BigDecimal)vec.get(5)).divide(new BigDecimal(2))).intValue()+ ((BigDecimal)vec.get(4)).intValue();
+                    //int totalFaltas = (((BigDecimal)vec.get(5)).divide(new BigDecimal(2))).intValue()+ ((BigDecimal)vec.get(4)).intValue();
+                    int totalFaltas = ((BigDecimal)vec.get(4)).intValue();
                     coll = new NotaCollection();
                     coll.setNota((totalFaltas*100/NoHoras));
                     coll.setMateria("%");
