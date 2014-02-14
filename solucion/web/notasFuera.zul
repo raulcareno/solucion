@@ -133,7 +133,7 @@ guardando = false;
 
 void buscar2(Cursos cur){
         List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' and o.curso.codigocur = '"+cur.codigocur+"' " + 
-            " and (o.materia.descripcion not like '%disciplina%' and o.materia.descripcion not like '%comportamental%') order by o.orden");
+            " and (o.materia.descripcion not like '%disciplina%' and  o.materia.codigo not in (0,1)) order by o.orden");
         //bd2.getItems().clear();
     mates.getChildren().clear();
     datos.getRows().getChildren().clear();
