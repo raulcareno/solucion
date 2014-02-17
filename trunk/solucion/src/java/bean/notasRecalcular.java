@@ -682,7 +682,7 @@ ArrayList grid = null;
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
-
+Interpreter inter = new Interpreter();
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper =  '" + periodo.getCodigoper() + "'  ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where  o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
@@ -723,7 +723,7 @@ ArrayList grid = null;
                 if (ma.length() > 0) {
                     ma = ma.substring(0, ma.length() - 1);
                 }
-                Interpreter inter = new Interpreter();
+                
                 inter.eval(redon);
                 inter.eval(truncar);
                 inter.eval(prom1);
