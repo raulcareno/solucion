@@ -37,7 +37,7 @@ Session a = Sessions.getCurrent();
 
  void ingresar(String valor){
     cambiarEstado(emp);
-     if(emp.getPendientes() || emp.getBloquear()){
+     if(emp.getPendientes()){
             Messagebox.show("Proceso bloqueado por la Administración por: " + 
                                     " FALTA DE DOCUMENTOS o SALDOS PENDIENTES.  " + 
                                     " Acerquese a las oficinas para solucionar los procesos pendientes que tiene con la Institución..!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
