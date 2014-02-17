@@ -1537,7 +1537,7 @@ public class guardarYactualizarHilo extends Thread implements Runnable{
             ParametrosGlobales param = para.get(0);
             tipo = param.getCvalor();
         }
-
+Interpreter inter = new Interpreter();
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.sistema.esdisciplina = true "
@@ -1631,7 +1631,7 @@ public class guardarYactualizarHilo extends Thread implements Runnable{
                 if (ma.length() > 0) {
                     ma = ma.substring(0, ma.length() - 1);
                 }
-                Interpreter inter = new Interpreter();
+                
                 try {
                     //1 DISCIPLINA INSPECTOR
                     //0 disciplina
