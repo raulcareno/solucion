@@ -195,7 +195,7 @@ public class notas extends Rows {
         getChildren().clear();
         Decimalbox notaTexto = null;
         Label label3 = null;
-
+Interpreter inter = new Interpreter();
         String q = "Select distinct matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notas on matriculas.codigomat = notas.matricula "
@@ -221,7 +221,6 @@ public class notas extends Rows {
                     + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
                     + "and o.grupo = 'AP' ");
         }
-
         List nativo = adm.queryNativo(q);
         Row row = new Row();
         String Shabilitado = "color:black;font-weight:bold;width:27px;font:arial;font-size:11px;text-align:right;";
@@ -376,7 +375,7 @@ public class notas extends Rows {
                                 notaTexto.setDisabled(true);
                                 notaTexto.setStyle(Sdeshabilitado);
                             }
-                            Interpreter inter = new Interpreter();
+                            
 
                             try {//valido si es que es una nota de supletorio o remedial 
                                 inter.eval("Double pg = " + pg);
@@ -595,7 +594,7 @@ public void reguardar(Cursos curso, MateriaProfesor materia, String separador){
 //        }  
         //String separador2 = separador.substring(1,2);
         separador = separador.substring(6, 7);
-
+Interpreter inter = new Interpreter();
         System.out.println("TOP INI; " + new Date());
         int tamanio = 0;
         Session ses = Sessions.getCurrent();
@@ -796,7 +795,7 @@ public void reguardar(Cursos curso, MateriaProfesor materia, String separador){
                                 notaTexto.setDisabled(true);
                                 notaTexto.setStyle(Sdeshabilitado);
                             }
-                            Interpreter inter = new Interpreter();
+                            
 
                             try {//valido si es que es una nota de supletorio o remedial 
                                 inter.eval("Double pg = " + pg);
@@ -1665,6 +1664,7 @@ public void reguardar(Cursos curso, MateriaProfesor materia, String separador){
         } else {
             listaLlega.add(curso0);
         }
+        Interpreter inter = new Interpreter();
         for (Iterator<Cursos> ita = listaLlega.iterator(); ita.hasNext();) {
             Cursos ActualCurso = ita.next();
             List<DisciplinaModificada> existeModificaciones = adm.query("Select o from DisciplinaModificada as o "
@@ -1738,7 +1738,7 @@ public void reguardar(Cursos curso, MateriaProfesor materia, String separador){
                 if (ma.length() > 0) {
                     ma = ma.substring(0, ma.length() - 1);
                 }
-                Interpreter inter = new Interpreter();
+                
                 try {
                     //1 DISCIPLINA INSPECTOR
                     //0 disciplina
