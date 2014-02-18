@@ -462,6 +462,7 @@ void recalcular2(){
         for (Iterator it = equivalencias.iterator(); it.hasNext();) {
             Equivalencias equivalencias1 = (Equivalencias)it.next();
             parametros.put("eq"+m,""+equivalencias1.getNombre()+"");
+            parametros.put("abre"+m,""+equivalencias1.getAbreviatura()+"");
             parametros.put("ran"+m,equivalencias1.getValorminimo());
             parametros.put("ranf"+m,equivalencias1.getValormaximo());
             
