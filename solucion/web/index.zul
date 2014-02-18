@@ -273,7 +273,7 @@
                                             <menuitem onClick="ingresar(self)" id="Auditoria" image="/images/auditoria.gif" label="Auditoria" value="/auditoria.zul"/>
                                             <menuitem onClick="ingresar(self)" id="Empleados" image="/images/pensum.png" label="Empleados" value="/empleados.zul" />
                                             <menuitem onClick="ingresar(self)" id="EmpleadosPeriodos" image="/images/eperiodo.png" label="Asignar Periodos" value="/empleadoPeriodo.zul" />
-                                            <menuitem onClick="ingresar(self)" id="EmpleadosCursos" image="/images/eperiodo.png" label="Asignar Cursos (Solo a Secretaria)" value="/cursosEmpleados.zul" />
+                                            <menuitem onClick="ingresar(self)" id="AsignarCursosSecretaria" image="/images/eperiodo.png" label="Asignar Cursos (Solo a Secretaria)" value="/cursosEmpleados.zul" />
                                             <menuitem onClick="ingresar(self)" id="Equivalencias" image="/images/equivalencias.png"  label="Equivalencias y Rangos(S,MB, FJ,FI)" value="/equivalencias.zul" />
                                             <menuitem onClick="ingresar(self)" id="Globales" label="Globales" image="/images/run.gif"  value="/globales.zul" />
                                             <menuitem onClick="ingresar(self)" id="Institucion" label="Institución" image="/images/institucion.png"  value="/institucion.zul" />
@@ -332,7 +332,7 @@
                                             <menuitem onClick="ingresar(self)" id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
                                         </menupopup>
                                     </menu>
-                          
+
                                     <menu image="/images/birrete.gif"  label="Grados" ><!--GRADOS-->
                                         <menupopup   >
                                             <menuitem onClick="ingresar(self)" id="Notas_Primero_Quinto" image="/images/llave.gif"  label="Record Academico" value="/notasRecord.zul"/>
@@ -470,6 +470,16 @@
  
             Cursos.visible = per.verificarPermisoReporte("Cursos","Cursos", "Ingresar",true,"MATRICULAS");
             Matricular.visible = per.verificarPermisoReporte("Matricular","Matricular", "Ingresar",true,"MATRICULAS");
+            Actualizacion.visible = per.verificarPermisoReporte("Actualizacion","Actualizacion", "Ingresar",true,"MATRICULAS");
+            SorteoInscritos.visible = per.verificarPermisoReporte("SorteoInscritos","SorteoInscritos", "Ingresar",true,"MATRICULAS");
+            AsignarCursosSecretaria.visible = per.verificarPermisoReporte("AsignarCursosSecretaria","AsignarCursosSecretaria", "Ingresar",true,"MATRICULAS");
+            Encuesta.visible = per.verificarPermisoReporte("Encuesta","Encuesta", "Ingresar",true,"MATRICULAS");
+            EncuestaEstudiantes.visible = per.verificarPermisoReporte("EncuestaEstudiantes","EncuestaEstudiantes", "Ingresar",true,"MATRICULAS");
+            Registro_de_Dias.visible = per.verificarPermisoReporte("Registro_de_Dias","Registro_de_Dias", "Ingresar",true,"MATRICULAS");
+            Parametros_Autoevaluacion.visible = per.verificarPermisoReporte("Parametros_Autoevaluacion","Parametros_Autoevaluacion", "Ingresar",true,"MATRICULAS");
+            Registrar_Autoevaluacion.visible = per.verificarPermisoReporte("Registrar_Autoevaluacion","Registrar_Autoevaluacion", "Ingresar",true,"MATRICULAS");
+            Comentarios.visible = per.verificarPermisoReporte("Comentarios","Comentarios", "Ingresar",true,"MATRICULAS");
+            Tareas.visible = per.verificarPermisoReporte("Tareas","Tareas", "Ingresar",true,"MATRICULAS");
             Matricular2.visible = per.verificarPermisoReporte("ReasignarCursos","ReasignarCursos", "Ingresar",true,"MATRICULAS");
             Pendientes.visible = per.verificarPermisoReporte("Pendientes","Pendientes", "Ingresar",true,"MATRICULAS");
             ListaPendientes.visible = per.verificarPermisoReporte("ListaPendientes","ListaPendientes", "Ingresar",true,"MATRICULAS");
