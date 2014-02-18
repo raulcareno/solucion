@@ -5851,7 +5851,7 @@ public class reportesClase {
                 }
                 
                     NotaCollection coll = new NotaCollection();
-                    coll.setNota(((BigDecimal)vec.get(4)).intValue());
+                    coll.setNota(((BigDecimal)vec.get(4)));
                     coll.setMateria("F.I.");
                     coll.setMatricula("" +vec.get(0));
                     coll.setMatriculas(matriculas1);
@@ -5860,7 +5860,7 @@ public class reportesClase {
                     lisFaltas.add(coll);
                     
                     coll = new NotaCollection();
-                    coll.setNota(((BigDecimal)vec.get(5)).intValue());
+                    coll.setNota(((BigDecimal)vec.get(5)));
                     coll.setMateria("F.J.");
                     coll.setMatricula("" +vec.get(0));
                     coll.setMatriculas(matriculas1);
@@ -5869,9 +5869,9 @@ public class reportesClase {
                     lisFaltas.add(coll);
                     
                     //int totalFaltas = (((BigDecimal)vec.get(5)).divide(new BigDecimal(2))).intValue()+ ((BigDecimal)vec.get(4)).intValue();
-                    int totalFaltas = ((BigDecimal)vec.get(4)).intValue();
+                    BigDecimal totalFaltas = ((BigDecimal)vec.get(4));
                     coll = new NotaCollection();
-                    coll.setNota((totalFaltas*100/NoHoras));
+                    coll.setNota((totalFaltas.multiply(new BigDecimal(100)).divide(new BigDecimal(NoHoras), 2, RoundingMode.HALF_UP)));
                     coll.setMateria("%");
                     coll.setMatricula("" +vec.get(0));
                     coll.setMatriculas(matriculas1);
