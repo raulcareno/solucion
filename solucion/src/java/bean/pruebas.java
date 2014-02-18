@@ -31,8 +31,96 @@ public class pruebas {
             return 0.0;
         }
     }
+    public Double redondear2(Double numero, int decimales) {
+        try {
+
+ 
+            BigDecimal d = new BigDecimal(numero);
+            d = d.setScale(decimales, RoundingMode.HALF_UP);
+            return d.doubleValue();
+        } catch (Exception e) {
+            return 0.0;
+        }
+    }
 
     public static void main(String[] args) {
+//        String punto = "8.5";
+//        String coma = "8,5";
+//        int tipo = 0;
+//        String separador = "";
+//           try {
+//            Decimalbox x = new Decimalbox();
+//               System.out.println(""+x.getAttribute("Locale"));
+//            x.setFormat("###,###.##");
+//            Double v = 99000/4.7d;
+//            x.setValue(new BigDecimal(v)); 
+//               System.out.println(""+x.getValue());
+//            //Decimalbox x = new Decimalbox(coma);
+//            tipo = 2;
+//            separador = ",";
+//        } catch (Exception e) {
+//            System.out.println("no es coma "+e);
+//        }
+//           try {
+//            Decimalbox x = new Decimalbox();
+//            x.setFormat("###,###.##");
+//            x.setValue(new BigDecimal("5.2")); 
+//            tipo = 1;
+//            separador = ".";
+//        } catch (Exception e) {
+//            System.out.println("no es punto "+e);
+//        }
+//    
+//
+//        System.out.println("" + (tipo == 1 ? "es punto" : "es coma") + " " + separador);
+//
+//        if (true) {
+//            return;
+//        }
+//
+//
+//        try {
+//            InetAddress ping;
+//            String ip = "192.168.10.1"; // Ip de la máquina remota 
+//            int sum = 0;
+//            ping = InetAddress.getByName(ip);
+//            while (sum >= 0) {
+//
+//
+//                if (ping.isReachable(5000)) {
+//                    System.out.println(ip + " - responde..!");
+//                } else {
+//                    System.out.println(ip + " - no responde!");
+//                }
+//                try {
+//                    Thread.sleep(500);
+//                } catch (InterruptedException ex) {
+//                    Logger.getLogger(pruebas.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                sum += 1000;
+//                if (sum == 5000) {
+//                    try {
+//                        System.gc();
+//                        System.out.println("");
+//                        Thread.sleep(5000);
+//                        sum = 0;
+//                        System.gc();
+//                    } catch (InterruptedException ex) {
+//                        Logger.getLogger(pruebas.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//                System.gc();
+//            }
+//        } catch (IOException ex) {
+//            System.out.println(ex);
+//        }
+        //Long i=Long.parseLong("001EEEA7",10);
+        //System.out.println("DECIMALE: "+i);
+        pruebas p = new pruebas();
+        System.out.println("STRING "+p.redondear(8.459, 2));
+        System.out.println("DOUBLE "+p.redondear2(8.459, 2));
+ 
+    //public static void main(String[] args) {
         String dato = "000CKECO123";
         System.out.println(""+dato.indexOf("CKECO"));
         dato = dato.substring(dato.indexOf("CKECO")+5);
@@ -111,15 +199,17 @@ public class pruebas {
 //        System.out.println("DECIMALE: "+i);
 //        pruebas p = new pruebas();
 //        System.out.println(""+p.redondear(8.255, 2));
+ 
 //          double siete = 7.44;
 //          double ocho = 8.255;
 //          System.out.println(""+siete*1);
 //          System.out.println(""+ocho*1);
+//          
 //          BigDecimal d = new BigDecimal(7.43+"");
 //          System.out.println(""+d);
-//            //BigDecimal d = new BigDecimal(resultado);
+//           //BigDecimal d = new BigDecimal(resultado);
 //            //d = d.setScale(2, RoundingMode.DOWN);
-//            d= d.setScale(2, BigDecimal.ROUND_DOWN);
+//           // d= d.setScale(2, BigDecimal.ROUND_DOWN);
 //          System.out.println(""+d);
 
 
