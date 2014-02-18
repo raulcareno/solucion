@@ -61,6 +61,7 @@ public class generarFacturas {
                         adm.guardar(pro);
                     } catch (Exception e) {
                         System.out.println("" + e);
+                        
                     }
 
 

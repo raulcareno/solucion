@@ -27,17 +27,44 @@
     }
 
 anular(){
-            
+            try{
                Integer num = numerofactura.value;
                Sucursal suc = sucursalEmp.getSucursal();
             String vali = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
             List siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
-               if(siExiste.size()>0){
-                                Messagebox.show("El # de la factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-                                numerofactura.setRawValue(null);
-                                numerofactura.focus();
-                                return;        
-                            }
+            List siExistePagos = adm.query("Select o from Cxcobrar as o " + 
+                " where o.haber > 0 and o.factura.numero = '"+vali+"' ");
+                 if(siExistePagos.size()>0){
+                    Messagebox.show("El # de la factura ya TIENE PAGOS, NO la podrá ANULAR...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    numerofactura.setRawValue(null);
+                    numerofactura.focus();
+                    siExistePagos = null;
+                    return;        
+                 }
+            
+                if(siExiste.size()>0){
+                int valor0 = Messagebox.show("El # de factura ya existe, ¿Desea eliminar el número de factura y conservar la deuda?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                
+                 if(valor0 == 16){
+                    Factura facAnula = siExiste.get(0);
+                    facAnula.setNumero(null);
+                    adm.actualizar(facAnula);
+                    facAnula = null;
+                    siExiste = null;
+                    
+                    //quitarFila(aButton.getId());
+                 }else{
+                    numerofactura.setRawValue(null);
+                    numerofactura.focus();
+                    return;   
+                 }
+                
+                     /* Messagebox.show("El # de la factura ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    numerofactura.setRawValue(null);
+                    numerofactura.focus();
+                    return;   */
+                    
+                }
             Factura fac = new Factura(adm.getNuevaClave("Factura", "codigo"));                
             fac.setNumero(vali);
             fac.setClientes(new Clientes(0));
@@ -72,6 +99,10 @@ anular(){
    numerofactura.setRawValue(null);
    observacion.setRawValue(null);
    numerofactura.focus();
+   }catch(Exception ax){
+   ax.printStackTrace();
+   alert("aa"+ax);
+   }
 }
 
 ]]>
