@@ -18,6 +18,7 @@ import jcinform.procesos.Administrador;
 import net.sf.jasperreports.engine.JRDataSource;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.Region;
+import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.*;
@@ -4459,6 +4460,7 @@ public class reportesClase {
         String cargo2 = regresaVariableParametros("CAR2", parametrosGlobales);
         String firma3 = regresaVariableParametros("FIR3", parametrosGlobales);
         String cargo3 = regresaVariableParametros("CAR3", parametrosGlobales);
+        Boolean validarPendientes = regresaVariableParametrosLogico("VALIDARPENDIENTES", parametrosGlobales);
         Boolean promCuantitativo = regresaVariableParametrosLogico("PROMCUAN", parametrosGlobales);
         Boolean discCuantitativo = regresaVariableParametrosLogico("DISCCUAN", parametrosGlobales);
 
@@ -4522,15 +4524,34 @@ public class reportesClase {
         for (int i = 0; i < sistemas.size(); i++) {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
-
+        if(validarPendientes){
+            buscarPendientes(curso.getCodigocur()); 
+            //matriculadosListPendientes
+        }
 
         List<Nota> lisNotas = new ArrayList();
         ArrayList lisNotasC = new ArrayList();
         List<Matriculas> matriculas = new ArrayList();
         if (matri.getCodigomat().equals(-2)) {
             matriculas = adm.query("Select o from Matriculas as o where  o.estado in ('Matriculado','Recibir Pase')  and o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.estudiante.apellido ");
+            
+                for (Iterator<Matriculas> it1 = matriculadosListPendientes.iterator(); it1.hasNext();) {
+                    Matriculas matriculas2 = it1.next();
+                    matriculas.remove(matriculas2);//ELIMINO LOS ESTUDIANTES QUE ESTAN EN MATRICULADOSLISPENDIENTES DE MATRICULAS
+                    
+                }
+   
         } else {
             matriculas.add(matri);
+             for (Iterator<Matriculas> it1 = matriculadosListPendientes.iterator(); it1.hasNext();) {
+                    Matriculas matriculas2 = it1.next();
+                    matriculas.remove(matriculas2);//ELIMINO LOS ESTUDIANTES QUE ESTAN EN MATRICULADOSLISPENDIENTES DE MATRICULAS
+                    
+                }
+             if(matriculas.size()<=0){
+                     Messagebox.show("El estudiante tiene rubros pendientes...! \n No se puede imprimir ", "[VALIDARPENDIENTES]Administrador Educativo..", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                    return null;
+                }
         }
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
@@ -4943,6 +4964,28 @@ public class reportesClase {
         lisNotas = null;
         return ds;
 
+    }
+    List matriculadosListPendientes = new ArrayList();
+
+    void buscarPendientes(Integer curso) {
+        Administrador adm = new Administrador();
+        Date fechaActual = adm.Date();
+        String fec = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + "";
+        List pendientesEncontrados = adm.query("Select o from Asignados  as o "
+                + " where o.matricula.curso.codigocur = '" + curso + "'  "
+                + " and o.fechai <= '" + fec + "' and o.estado = true order by o.fechai");
+        matriculadosListPendientes = new ArrayList();
+        for (int i = 0; i < pendientesEncontrados.size(); i++) {
+            Asignados asi = (Asignados) pendientesEncontrados.get(i);
+            DateMidnight inicial = new DateMidnight(asi.getFechai());
+            inicial = inicial.plusDays(10);
+            DateMidnight finale = new DateMidnight(fechaActual);
+            if (inicial.compareTo(finale) > 0) {
+            } else {
+                matriculadosListPendientes.add(asi.getMatricula());
+            }
+        }
+        
     }
 
     public JRDataSource libretasInforme(Cursos curso, Matriculas matri, Sistemacalificacion sistema) throws InterruptedException {
@@ -5558,7 +5601,8 @@ public class reportesClase {
         return ds;
 
     }
- public JRDataSource faltas(Cursos curso, Matriculas matri, Sistemacalificacion sistema) throws InterruptedException {
+
+    public JRDataSource faltas(Cursos curso, Matriculas matri, Sistemacalificacion sistema) throws InterruptedException {
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -5796,7 +5840,7 @@ public class reportesClase {
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
         }
-        
+
 //        for (Notanotas notass : notas) {
 //            query2 += "round(cast(avg(" + notass.getNota() + ") as decimal(9,4))," + numeroDecimales.intValue() + "),";
 //        }
@@ -5820,68 +5864,68 @@ public class reportesClase {
         }
         ArrayList lisFaltas = new ArrayList();
 
-        String q ="SELECT o.codigomat, e.apellido,e.nombre, m.descripcion, SUM(f.faltas), SUM(f.justificadas), SUM(f.total), m.codigo   "
+        String q = "SELECT o.codigomat, e.apellido,e.nombre, m.descripcion, SUM(f.faltas), SUM(f.justificadas), SUM(f.total), m.codigo   "
                 + " FROM faltas f, matriculas o, sistemacalificacion s, estudiantes e, GLOBAL m   "
                 + "WHERE m.codigo = f.materia AND e.codigoest = o.estudiante AND s.codigosis = f.sistema "
-                + " AND o.codigomat = f.matricula AND o.curso =  '"+curso.getCodigocur()+"'  "
+                + " AND o.codigomat = f.matricula AND o.curso =  '" + curso.getCodigocur() + "'  "
                 + " AND  s.orden   <= '" + sistema.getOrden() + "'   "
                 + " GROUP BY matricula,m.descripcion ORDER BY e.apellido, e.nombre,m.descripcion ";
 //                
-            System.out.println("" + q);
-            List nativo = adm.queryNativo(q);
-            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-                Vector vec = (Vector) itna.next();
-                int ksis = 0;
+        System.out.println("" + q);
+        List nativo = adm.queryNativo(q);
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            int ksis = 0;
 //                for (int j = 0; j < vec.size() - 1; j++) {
 //                    Object dos = vec.get(j);
-                Matriculas matriculas1 = new Matriculas((Integer)vec.get(0));
-                Estudiantes est = new Estudiantes();
-                est.setApellido(vec.get(1)+"");
-                est.setNombre(vec.get(2)+"");
-                matriculas1.setCurso(curso);
-                matriculas1.setEstudiante(est); 
-                List<MateriaProfesor> mp = adm.query("Select o from MateriaProfesor as o "
-                        + "where o.materia.codigo =  '"+vec.get(7)+"' and o.curso.codigocur = '"+curso.getCodigocur()+"'  ");
-                int NoHoras = 100;
-                if(mp.size()>0){
-                    NoHoras = mp.get(0).getHoras();    
-                    if(NoHoras<=0){
-                        NoHoras = 100;
-                    }
+            Matriculas matriculas1 = new Matriculas((Integer) vec.get(0));
+            Estudiantes est = new Estudiantes();
+            est.setApellido(vec.get(1) + "");
+            est.setNombre(vec.get(2) + "");
+            matriculas1.setCurso(curso);
+            matriculas1.setEstudiante(est);
+            List<MateriaProfesor> mp = adm.query("Select o from MateriaProfesor as o "
+                    + "where o.materia.codigo =  '" + vec.get(7) + "' and o.curso.codigocur = '" + curso.getCodigocur() + "'  ");
+            int NoHoras = 100;
+            if (mp.size() > 0) {
+                NoHoras = mp.get(0).getHoras();
+                if (NoHoras <= 0) {
+                    NoHoras = 100;
                 }
-                
-                    NotaCollection coll = new NotaCollection();
-                    coll.setNota(((BigDecimal)vec.get(4)));
-                    coll.setMateria("F.I.");
-                    coll.setMatricula("" +vec.get(0));
-                    coll.setMatriculas(matriculas1);
-                    coll.setEstudiante(vec.get(1)+" "+vec.get(2)+" ");
-                    coll.setSistema(vec.get(3)+" ");
-                    lisFaltas.add(coll);
-                    
-                    coll = new NotaCollection();
-                    coll.setNota(((BigDecimal)vec.get(5)));
-                    coll.setMateria("F.J.");
-                    coll.setMatricula("" +vec.get(0));
-                    coll.setMatriculas(matriculas1);
-                    coll.setEstudiante(vec.get(1)+" "+vec.get(2)+" ");
-                    coll.setSistema(vec.get(3)+" ");
-                    lisFaltas.add(coll);
-                    
-                    //int totalFaltas = (((BigDecimal)vec.get(5)).divide(new BigDecimal(2))).intValue()+ ((BigDecimal)vec.get(4)).intValue();
-                    BigDecimal totalFaltas = ((BigDecimal)vec.get(4));
-                    coll = new NotaCollection();
-                    coll.setNota((totalFaltas.multiply(new BigDecimal(100)).divide(new BigDecimal(NoHoras), 2, RoundingMode.HALF_UP)));
-                    coll.setMateria("%");
-                    coll.setMatricula("" +vec.get(0));
-                    coll.setMatriculas(matriculas1);
-                    coll.setEstudiante(vec.get(1)+" "+vec.get(2)+" ");
-                    coll.setSistema(vec.get(3)+" ");
-                    lisFaltas.add(coll);
+            }
+
+            NotaCollection coll = new NotaCollection();
+            coll.setNota(((BigDecimal) vec.get(4)));
+            coll.setMateria("F.I.");
+            coll.setMatricula("" + vec.get(0));
+            coll.setMatriculas(matriculas1);
+            coll.setEstudiante(vec.get(1) + " " + vec.get(2) + " ");
+            coll.setSistema(vec.get(3) + " ");
+            lisFaltas.add(coll);
+
+            coll = new NotaCollection();
+            coll.setNota(((BigDecimal) vec.get(5)));
+            coll.setMateria("F.J.");
+            coll.setMatricula("" + vec.get(0));
+            coll.setMatriculas(matriculas1);
+            coll.setEstudiante(vec.get(1) + " " + vec.get(2) + " ");
+            coll.setSistema(vec.get(3) + " ");
+            lisFaltas.add(coll);
+
+            //int totalFaltas = (((BigDecimal)vec.get(5)).divide(new BigDecimal(2))).intValue()+ ((BigDecimal)vec.get(4)).intValue();
+            BigDecimal totalFaltas = ((BigDecimal) vec.get(4));
+            coll = new NotaCollection();
+            coll.setNota((totalFaltas.multiply(new BigDecimal(100)).divide(new BigDecimal(NoHoras), 2, RoundingMode.HALF_UP)));
+            coll.setMateria("%");
+            coll.setMatricula("" + vec.get(0));
+            coll.setMatriculas(matriculas1);
+            coll.setEstudiante(vec.get(1) + " " + vec.get(2) + " ");
+            coll.setSistema(vec.get(3) + " ");
+            lisFaltas.add(coll);
 
 //                }
-                //row.setParent(this);
-            }
+            //row.setParent(this);
+        }
 
 
 
@@ -6186,26 +6230,26 @@ public class reportesClase {
                                     + " and o.materia.codigo = '" + mate.getCodigo() + "' ");
                             if (rec.size() > 0) {
                                 try {
-                                    if(rec.get(0).getItemRecomendacion()==null){
+                                    if (rec.get(0).getItemRecomendacion() == null) {
                                         recomendacion = rec.get(0).getRecomendacion();
-                                    }else{
+                                    } else {
                                         recomendacion = rec.get(0).getItemRecomendacion().getRecomendacion();
-                                        if(rec.get(0).getItemRecomendacion().getCodigo().equals(new Integer(0))){
-                                            recomendacion="";
+                                        if (rec.get(0).getItemRecomendacion().getCodigo().equals(new Integer(0))) {
+                                            recomendacion = "";
                                         }
                                     }
                                 } catch (Exception ar) {
                                 }
                                 try {
-                                    if(rec.get(0).getItemPlan()==null){
+                                    if (rec.get(0).getItemPlan() == null) {
                                         plan = rec.get(0).getPlan();
-                                    }else{
+                                    } else {
                                         plan = rec.get(0).getItemPlan().getRecomendacion();
-                                        if(rec.get(0).getItemPlan().getCodigo().equals(new Integer(0))){
-                                            plan="";
+                                        if (rec.get(0).getItemPlan().getCodigo().equals(new Integer(0))) {
+                                            plan = "";
                                         }
                                     }
-                                    
+
                                 } catch (Exception ar) {
                                 }
 
