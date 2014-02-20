@@ -165,7 +165,8 @@ materiasCombo.setSelectedIndex(0);
         
         
     }
-    void buscar22(Global cur){
+
+void buscar22(Global cur){
     
      String tipo = reporte.getSelectedItem().getValue();
            if(tipo.equals("RECE")){
