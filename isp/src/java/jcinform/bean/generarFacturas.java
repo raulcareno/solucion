@@ -1122,7 +1122,11 @@ public class generarFacturas {
                 List<Contratos> listado = adm.query("Select o from Contratos as o where o.codigo in (" + contratosList + ") ");
                 for (Iterator<Contratos> it = listado.iterator(); it.hasNext();) {
                     Contratos contratos = it.next();
-                    writer.write("" + contratos.getContrato() + ";" + "avisado"); // numero de autorización
+                    if(contratos.getEstado().equals("Activo")){
+                        writer.write("" + contratos.getContrato() + ";" + "avisado"); // numero de autorización    
+                    }else{
+                        writer.write("" + contratos.getContrato() + ";" + "deshabilitado"); // numero de autorización
+                    }
                     writer.write("\r\n");
                 }
                 FileInputStream input;
@@ -1170,10 +1174,10 @@ public class generarFacturas {
             adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Cortado' WHERE automatico = true  and codigo in (" + contratosList + ") ");
         } else {
             //TENGO QUE ACTUALIZAR A TODOS LOS CONTRATOS QUE SE ENCUENTREN CORTADOS
-            if(contrato.getEstado().equals("Suspendido") || contrato.getEstado().equals("Terminado")){
+            if(contrato.getEstado().equals("Suspendido") || contrato.getEstado().equals("Terminado") || contrato.getEstado().equals("Pendiente")){
                 return null;
             }else{
-                adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado in ('Cortado','Pendiente') and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
+                adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado in ('Cortado') and codigo = '" + contrato.getCodigo() + "' and automatico = true ");
                 generarCobrosProrrateado(suc, contrato, adm.Date());
             }
              //TOMAR EN CUENTA SI NO ESTA EN FIN DE MES 31
