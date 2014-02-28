@@ -182,6 +182,6 @@ public class ReadExcelMigrarNotas {
     public static void main(String[] args) {
         // TODO code application logic here
         ReadExcelMigrarNotas excel = new ReadExcelMigrarNotas();
-        excel.leerArchivoExcel("E:\\SISTEMA\\tercerobachi.xls");
+        excel.leerArchivoExcel("E:\\SISTEMA\\primerobachi.xls");
     }
 }
