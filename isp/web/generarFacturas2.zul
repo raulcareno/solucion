@@ -130,7 +130,7 @@
         
         }
         //tipoGeneracion
-            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),tipo.value,dondepaga.selectedItem.value+"",ban,tipoGeneracion.selectedItem.value,sec);
+            List facEncontradas =  gen.buscar(sucursalEmp.getSucursal(),tipo.value,dondepaga.selectedItem.value+"",ban,tipoGeneracion.selectedItem.value,sec,estadoList.selectedItem.value);
             facturasDatos.getRows().getChildren().clear();
             if(facEncontradas == null){
                 return;
@@ -621,6 +621,17 @@ void generarRecibos(){
                                     </vbox>
                                 </bandpopup>
                             </bandbox>
+
+                        </row>
+                         <row visible = "true" >
+                            <span style="float:right"> Estado: </span>
+                                        <listbox id="estadoList" width="250px" mold="select" >
+                                                <listitem label="TODOS" selected="true" value="[TODOS]" />
+                                                <listitem value="Activo" label="Activo" />
+                                                <listitem value="Cortado" label="Cortado" />
+                                                <listitem value="Terminado" label="Terminado" />
+                                                <listitem value="Suspendido" label="Suspendido" />
+                                        </listbox>
 
                         </row>
                         </rows>
