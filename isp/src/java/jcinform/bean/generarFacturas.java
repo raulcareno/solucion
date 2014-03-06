@@ -926,11 +926,15 @@ public class generarFacturas {
     }
 
     //PARA LA PANTALLA GENERAR FACTURAS 2 Y RECIBOS
-    public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco, String seFactura, Sector sect) {
+    public List buscar(Sucursal suc, String tipoPlan, String dondepaga, Bancos banco, String seFactura, Sector sect,String estado) {
 
         String complementotipoPlan = "o.plan.tipo = '" + tipoPlan + "' ";
         if (tipoPlan.equals("TODOS")) {
             complementotipoPlan = "o.plan.tipo like '%%' ";
+        }
+        String complementotipoEstado = "and o.estado = '" + estado + "' ";
+        if (estado.contains("TODOS")) {
+            complementotipoEstado = " and o.estado like '%%' ";
         }
 
         String complementoSector = " and  o.sector.codigo  = '" + sect.getCodigo() + "'  ";
@@ -957,7 +961,7 @@ public class generarFacturas {
         }
         String query = "Select o.codigo from Contratos as o "
                 + "where " + complementotipoPlan + " " + compleDondePaga + "" + complementoSector + "  " + complementoFacturar
-                + "order by o.clientes.apellidos ";
+                + complementotipoEstado + " order by o.clientes.apellidos ";
         List contratos = adm.query(query);
         String contraString = "";
         contraString = contratos.toString().replace("[", "").replace("]", "");
