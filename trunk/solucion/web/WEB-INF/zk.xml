@@ -26,15 +26,15 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 	-->
 		<!-- Turn on the following if you want a different timeout
 			Note: The unit is seconds (while that of web.xml is minute)-->
-	<!--session-config>
+	<session-config>
 
-		<session-timeout>900</session-timeout>
+		<!--session-timeout>900</session-timeout>
         <timer-keep-alive>true</timer-keep-alive>
         <timer-as-inactive>true</timer-as-inactive>
         <device-type>ajax</device-type>
-        <automatic-timeout/>
-        <max-desktops-per-session>2</max-desktops-per-session>
-	</session-config-->
+        <automatic-timeout/-->
+        <max-desktops-per-session>1</max-desktops-per-session>
+	</session-config>
 
 
      <library-property>
