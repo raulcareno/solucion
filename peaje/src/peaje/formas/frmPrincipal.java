@@ -3374,6 +3374,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setBloquear(emp.getBloquear());
         empresaObj.setBloquearsalida(emp.getBloquearsalida());
         empresaObj.setBloquearentrada(emp.getBloquearentrada());
+        empresaObj.setBloquearhorariosalida(emp.getBloquearhorariosalida());
         empresaObj.setPunto(emp.getPunto());
         empresaObj.setActiva1(emp.getActiva1());
         empresaObj.setActiva2(emp.getActiva2());
@@ -3735,8 +3736,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 if (continua == false) {
                     //JOptionPane.showMessageDialog(getContentPane(), "Día NO hábil para ingresar ...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                    errores.setText("<html>NO PUEDE INGRESAR EN ÉSTE DÌA</html>");
-                    socketEnviarMensaje("NO PUEDE INGRESAR EN ÉSTE DÌA");
+                    errores.setText("<html>NO puede ingresar en éste día</html>");
+                    socketEnviarMensaje("NO puede ingresar en éste día");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                     return false;
                 }
@@ -3756,8 +3757,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 } else {
                     //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                    errores.setText("<html>NO PUEDE INGRESAR EN ESTE HORARIO </html>");
-                    socketEnviarMensaje("NO PUEDE INGRESAR EN ÉSTE HORARIO");
+                    errores.setText("<html>NO puede ingresar/salir en éste horario</html>");
+                    socketEnviarMensaje("NO puede ingresar/salir en éste horario");
                     imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
                     return false;
                 }
@@ -3940,7 +3941,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                     cargarFoto(fac.getCodigo());
                 }
-            } else {//ESTA SALIENDO REGISTRO EL USUARIO QUE PERMITIÓ EL INGRESO
+            } else {//ESTA SALIENDO REGISTRO EL USUARIO QUE PERMITIÓ EL INGRESO********************
                 if (facturas.size() > 0) {
 
                     fac = facturas.get(0);
@@ -4138,17 +4139,24 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                 } else if (tipoIngreso.equals("s")) {
                     if (tarje.getSalida()) {
+                        
                         List<Factura> facturas = adm.query("Select o from Factura as o"
                                 + " where o.tarjetas.tarjeta = '" + tarje.getTarjeta() + "' "
                                 + "and o.fechafin is null  ");
                         if (facturas.size() > 0) {
-                            funcionSiSale(tarje, puertoViene, "s");
+                            if (funcionValida(tarje)) {
+                                funcionSiSale(tarje, puertoViene, "s");
+                            }
                         } else {
-                            funcionSiSale(tarje, puertoViene, "e");
+                            if (funcionValida(tarje)) {
+                                funcionSiSale(tarje, puertoViene, "e");
+                            }
                         }
 
                     } else {
-                        funcionSiSale(tarje, puertoViene, "s");
+                        if (funcionValida(tarje)) {
+                            funcionSiSale(tarje, puertoViene, "s");
+                        }
                     }
                 }
             } catch (Exception ex) {

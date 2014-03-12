@@ -101,6 +101,7 @@ public class EmpresaPuertos {
     public Double multa;
     public Boolean bloquear;
     public Boolean bloquearsalida;
+    public Boolean bloquearhorariosalida;
     public Boolean bloquearentrada;
     public String puertoBarras1;
     public String puertoBarras2;
@@ -751,6 +752,14 @@ public class EmpresaPuertos {
 
     public void setHasta(Date hasta) {
         this.hasta = hasta;
+    }
+
+    public Boolean getBloquearhorariosalida() {
+        return bloquearhorariosalida;
+    }
+
+    public void setBloquearhorariosalida(Boolean bloquearhorariosalida) {
+        this.bloquearhorariosalida = bloquearhorariosalida;
     }
     
              

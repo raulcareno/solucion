@@ -1103,6 +1103,23 @@
                         </Constraint>
                       </Constraints>
                     </Component>
+                    <Component class="javax.swing.JCheckBox" name="chkBloquearHorarioSalida">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Validar Horario tambi&#xe9;n en salida?"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Si un veh&#xed;culo no ha salido en el horario, no podr&#xe1; salir "/>
+                      </Properties>
+                      <BindingProperties>
+                        <BindingProperty name="selected" source="Form" sourcePath="${usuarioObj.bloquearhorariosalida}" target="chkBloquearHorarioSalida" targetPath="selected" updateStrategy="0" immediately="false"/>
+                      </BindingProperties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkBloquearHorarioSalidaActionPerformed"/>
+                      </Events>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+                          <AbsoluteConstraints x="210" y="110" width="200" height="18"/>
+                        </Constraint>
+                      </Constraints>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel1">

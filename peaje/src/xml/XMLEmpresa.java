@@ -96,6 +96,7 @@ public class XMLEmpresa {
     private static final String ACTIVA7 = "ACTIVA7";
     private static final String BLOQUEAR = "BLOQUEAR";
     private static final String BLOQUEARSALIDA = "BLOQUEARSALIDA";
+    private static final String BLOQUEARHORARIOSALIDA = "BLOQUEARHORARIOSALIDA";
     private static final String BLOQUEARENTRADA = "BLOQUEARENTRADA";
     private static final String PUERTA1 = "PUERTA1";
     private static final String PUERTA2 = "PUERTA2";
@@ -321,6 +322,10 @@ public class XMLEmpresa {
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearsalida() + ""));
         personal.appendChild(item);
         
+        item = xmlDoc.createElement(BLOQUEARHORARIOSALIDA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearhorariosalida() + ""));
+        personal.appendChild(item);
+        
         item = xmlDoc.createElement(BLOQUEARENTRADA);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getBloquearentrada()+ ""));
         personal.appendChild(item);
@@ -515,6 +520,7 @@ public class XMLEmpresa {
         beanEmpleado.setEntra2(emp.getEntra2());
         beanEmpleado.setBloquear(emp.getBloquear());
         beanEmpleado.setBloquearsalida(emp.getBloquearsalida());
+        beanEmpleado.setBloquearhorariosalida(emp.getBloquearhorariosalida());
         beanEmpleado.setBloquearentrada(emp.getBloquearentrada());
         beanEmpleado.setBarreras(emp.getBarreras());
         beanEmpleado.setRetardoEntrada(emp.getRetardoEntrada());
@@ -786,6 +792,19 @@ public class XMLEmpresa {
                     } catch (Exception parserConfigurationException) {
                         //  System.out.println("ERROR LECTURA"+parserConfigurationException);
                         user.setBloquearsalida(false);
+                    }
+                    
+                    
+                         //------
+                    try {
+                        //------
+                        NodeList BLOQUEARHORARIOSALIDA2outList = firstPersonElement.getElementsByTagName("BLOQUEARHORARIOSALIDA");
+                        Element BLOQUEARHORARIOSALIDA2outElement = (Element) BLOQUEARHORARIOSALIDA2outList.item(0);
+                        NodeList BLOQUEARHORARIOSALIDA2outAgeList = BLOQUEARHORARIOSALIDA2outElement.getChildNodes();
+                        user.setBloquearhorariosalida(new Boolean(((Node) BLOQUEARHORARIOSALIDA2outAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        //  System.out.println("ERROR LECTURA"+parserConfigurationException);
+                        user.setBloquearhorariosalida(false);
                     }
                     
                       //------

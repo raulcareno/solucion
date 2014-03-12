@@ -83,6 +83,7 @@ public class EmpresaPuertosStatic {
         public Boolean bloquear;
         public Boolean bloquearsalida;
         public Boolean bloquearentrada;
+        public Boolean bloquearhorariosalida;
         public String puerta1;
         public String puerta2;
         public String puerta3;
@@ -745,6 +746,14 @@ public class EmpresaPuertosStatic {
 
     public void setPunto(Boolean punto) {
         this.punto = punto;
+    }
+
+    public Boolean getBloquearhorariosalida() {
+        return bloquearhorariosalida;
+    }
+
+    public void setBloquearhorariosalida(Boolean bloquearhorariosalida) {
+        this.bloquearhorariosalida = bloquearhorariosalida;
     }
         
     

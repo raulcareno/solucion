@@ -791,6 +791,8 @@ public class Empresa implements Serializable {
     public Boolean bloquearsalida = false;
     @Transient
     public Boolean bloquearentrada = false;
+    @Transient
+    public Boolean bloquearhorariosalida  = false;
     
     @Transient
     public String puertatic;
@@ -985,6 +987,14 @@ public class Empresa implements Serializable {
 
     public void setPunto(Boolean punto) {
         this.punto = punto;
+    }
+
+    public Boolean getBloquearhorariosalida() {
+        return bloquearhorariosalida;
+    }
+
+    public void setBloquearhorariosalida(Boolean bloquearhorariosalida) {
+        this.bloquearhorariosalida = bloquearhorariosalida;
     }
     
 

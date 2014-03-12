@@ -396,6 +396,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         chkImprime2facturas = new javax.swing.JCheckBox();
         chkReimprime = new javax.swing.JCheckBox();
         chkBloquearEntrada = new javax.swing.JCheckBox();
+        chkBloquearHorarioSalida = new javax.swing.JCheckBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         cmbTicket = new javax.swing.JComboBox();
@@ -1090,6 +1091,20 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         });
         jPanel6.add(chkBloquearEntrada);
         chkBloquearEntrada.setBounds(210, 130, 180, 18);
+
+        chkBloquearHorarioSalida.setText("Validar Horario también en salida?");
+        chkBloquearHorarioSalida.setToolTipText("Si un vehículo no ha salido en el horario, no podrá salir ");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.bloquearhorariosalida}"), chkBloquearHorarioSalida, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        chkBloquearHorarioSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkBloquearHorarioSalidaActionPerformed(evt);
+            }
+        });
+        jPanel6.add(chkBloquearHorarioSalida);
+        chkBloquearHorarioSalida.setBounds(210, 110, 200, 18);
 
         jTabbedPane2.addTab("Configuraciones", new javax.swing.ImageIcon(getClass().getResource("/images/admin1.gif")), jPanel6); // NOI18N
 
@@ -1891,6 +1906,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setTrabajanotaventa(chktrabajanotaventa.isSelected());
                     empresaObj.setBloquearsalida(chkBloquearSalida.isSelected());
                     empresaObj.setBloquearentrada(chkBloquearEntrada.isSelected());
+                    empresaObj.setBloquearhorariosalida(chkBloquearHorarioSalida.isSelected());
+                    
                     empresaObj.setSeabretic(seabreticket.isSelected());
                     empresaObj.setSeabrefac(seabrefactura.isSelected());
                     empresaObj.setPuertatic((String)cmbPuertaTicket.getSelectedItem());
@@ -2474,6 +2491,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_chkBloquearEntradaActionPerformed
 
+    private void chkBloquearHorarioSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBloquearHorarioSalidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkBloquearHorarioSalidaActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField barreras;
     private javax.swing.JButton btnAgregar;
@@ -2488,6 +2509,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkActivo4;
     private javax.swing.JCheckBox chkBloquear;
     private javax.swing.JCheckBox chkBloquearEntrada;
+    private javax.swing.JCheckBox chkBloquearHorarioSalida;
     private javax.swing.JCheckBox chkBloquearSalida;
     private javax.swing.JCheckBox chkImprime2facturas;
     private javax.swing.JCheckBox chkIpcam;
