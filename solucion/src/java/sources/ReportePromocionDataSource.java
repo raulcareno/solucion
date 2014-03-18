@@ -379,19 +379,53 @@ public class ReportePromocionDataSource implements JRDataSource {
                     System.out.println("erroren" + e);
                 }
                 
-            } else if ("equivaleDisciplina".equals(fieldName)) {
+            } else if ("equivaleAprovechamientoAbreviatura".equals(fieldName)) {
                 try {
-                    if (nodo.getCabeceraTexto() != null) {
-                        valor = " " + nodo.getCabeceraTexto();
-                    } else {
-                        valor = " " + devolverNombre(equ, nodo.getDisciplina()).getNombre();
-                    }
+                    valor = " " + devolverNombre(equ, nodo.getAprovechamiento()).getAbreviatura();
                 } catch (Exception e) {
                     valor = "";
                     System.out.println("erroren" + e);
                 }
                 
-            } else if ("sello".equals(fieldName)) {
+            } else if ("equivaleDisciplina".equals(fieldName)) {
+                try {
+//                    if (nodo.getCabeceraTexto() != null) {
+//                        valor = " " + nodo.getCabeceraTexto();
+//                    } else {
+                        valor = " " + devolverNombreDisciplina(equ2, nodo.getDisciplina()).getNombre();
+//                    }
+                } catch (Exception e) {
+                    valor = "";
+                    System.out.println("erroren" + e);
+                }
+                
+            } else if ("equivaleDisciplinaAbreviatura".equals(fieldName)) {
+                try {
+                  
+                        valor = " " + devolverNombreDisciplina(equ2, nodo.getDisciplina()).getAbreviatura();
+                  
+                } catch (Exception e) {
+                    valor = "";
+                    System.out.println("erroren" + e);
+                }
+                
+            }  else if ("equivalenciaNota".equals(fieldName)) {
+                try {
+                    valor = " " + devolverNombre(equ,(Double) nodo.getNota()).getNombre();
+                } catch (Exception e) {
+                    valor = "";
+                    System.out.println("erroren" + e);
+                }
+                
+            } else if ("equivalenciaNotaAbreviatura".equals(fieldName)) {
+                try {
+                    valor = " " + devolverNombre(equ,(Double) nodo.getNota()).getAbreviatura();
+                } catch (Exception e) {
+                    valor = "";
+                    System.out.println("erroren" + e);
+                }
+                
+            }else if ("sello".equals(fieldName)) {
                 try {
                     byte[] bImage = nodo.getMatricula().getCurso().getPeriodo().getInstitucion().getEscudo();
                     if (bImage != null) {
