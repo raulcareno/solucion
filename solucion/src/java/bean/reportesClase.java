@@ -4524,8 +4524,8 @@ public class reportesClase {
         for (int i = 0; i < sistemas.size(); i++) {
             values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
         }
-        if(validarPendientes){
-            buscarPendientes(curso.getCodigocur()); 
+        if (validarPendientes) {
+            buscarPendientes(curso.getCodigocur());
             //matriculadosListPendientes
         }
 
@@ -4534,24 +4534,24 @@ public class reportesClase {
         List<Matriculas> matriculas = new ArrayList();
         if (matri.getCodigomat().equals(-2)) {
             matriculas = adm.query("Select o from Matriculas as o where  o.estado in ('Matriculado','Recibir Pase')  and o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.estudiante.apellido ");
-            
-                for (Iterator<Matriculas> it1 = matriculadosListPendientes.iterator(); it1.hasNext();) {
-                    Matriculas matriculas2 = it1.next();
-                    matriculas.remove(matriculas2);//ELIMINO LOS ESTUDIANTES QUE ESTAN EN MATRICULADOSLISPENDIENTES DE MATRICULAS
-                    
-                }
-   
+
+            for (Iterator<Matriculas> it1 = matriculadosListPendientes.iterator(); it1.hasNext();) {
+                Matriculas matriculas2 = it1.next();
+                matriculas.remove(matriculas2);//ELIMINO LOS ESTUDIANTES QUE ESTAN EN MATRICULADOSLISPENDIENTES DE MATRICULAS
+
+            }
+
         } else {
             matriculas.add(matri);
-             for (Iterator<Matriculas> it1 = matriculadosListPendientes.iterator(); it1.hasNext();) {
-                    Matriculas matriculas2 = it1.next();
-                    matriculas.remove(matriculas2);//ELIMINO LOS ESTUDIANTES QUE ESTAN EN MATRICULADOSLISPENDIENTES DE MATRICULAS
-                    
-                }
-             if(matriculas.size()<=0){
-                     Messagebox.show("El estudiante tiene rubros pendientes...! \n No se puede imprimir ", "[VALIDARPENDIENTES]Administrador Educativo..", Messagebox.CANCEL, Messagebox.EXCLAMATION);
-                    return null;
-                }
+            for (Iterator<Matriculas> it1 = matriculadosListPendientes.iterator(); it1.hasNext();) {
+                Matriculas matriculas2 = it1.next();
+                matriculas.remove(matriculas2);//ELIMINO LOS ESTUDIANTES QUE ESTAN EN MATRICULADOSLISPENDIENTES DE MATRICULAS
+
+            }
+            if (matriculas.size() <= 0) {
+                Messagebox.show("El estudiante tiene rubros pendientes...! \n No se puede imprimir ", "[VALIDARPENDIENTES]Administrador Educativo..", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                return null;
+            }
         }
         for (Matriculas matriculas1 : matriculas) {
             //Matriculas matriculas1 = itm.next();
@@ -4985,7 +4985,7 @@ public class reportesClase {
                 matriculadosListPendientes.add(asi.getMatricula());
             }
         }
-        
+
     }
 
     public JRDataSource libretasInforme(Cursos curso, Matriculas matri, Sistemacalificacion sistema) throws InterruptedException {
@@ -10069,7 +10069,33 @@ public class reportesClase {
     public int contador1 = 0, contador2 = 0, contador3 = 0, contador4 = 0, contador5 = 0;
     public int contador6 = 0, contador7 = 0, contador8 = 0, contador9 = 0, contador10 = 0, k = 0;
 
-    public void devolverCuadro(Cursos curso, Sistemacalificacion sistema, String tipo) {
+    public Equivalencias devolverNombre(List<Equivalencias> equiva, Double codigo) {
+
+        for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
+            Equivalencias equivalencias = it.next();
+            if (equivalencias.getValorminimo() <= codigo && codigo <= equivalencias.getValormaximo()) {
+                return equivalencias;
+            }
+        }
+        return equiva.get(0);
+
+
+    }
+
+    public Equivalencias devolverNombreDisciplina(List<Equivalencias> equiva, Double codigo) {
+
+        for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
+            Equivalencias equivalencias = it.next();
+            if (equivalencias.getValorminimo() <= codigo && codigo <= equivalencias.getValormaximo()) {
+                return equivalencias;
+            }
+        }
+        return equiva.get(0);
+
+
+    }
+
+    public void devolverCuadro(Cursos curso, Sistemacalificacion sistema, String tipo,boolean incluyeEquivalencias) {
         contador1 = 0;
         contador2 = 0;
         contador3 = 0;
@@ -10081,6 +10107,7 @@ public class reportesClase {
         contador9 = 0;
         contador10 = 0;
         k = 0;
+         
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
@@ -10096,12 +10123,12 @@ public class reportesClase {
         List<Sistemacalificacion> sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.orden <= '" + sistema.getOrden() + "' "
-                + "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
+                //+ "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.seimprime = true and o.espromedio =true order by o.orden ");
 
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
-                + "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' "
+                //+ "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' "
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
                 + "and o.sistema.espromedio = true "
                 + "order by o.sistema.orden ");
@@ -10413,6 +10440,14 @@ public class reportesClase {
         cellComp.setCellValue("COMPORTAMIENTO");
         cellComp.setCellStyle(stiloCabeceras);
         materiasCabecera++;
+
+        if (incluyeEquivalencias) {
+            sheet.autoSizeColumn((short) materiasCabecera);
+            HSSFCell cellCompEq = row.createCell((short) materiasCabecera);
+            cellCompEq.setCellValue("EQ.");
+            cellCompEq.setCellStyle(stiloCabeceras);
+            materiasCabecera++;
+        }
 //
 //        for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesorOpcionales.iterator(); ImapTitulos.hasNext();) {
 //            MateriaProfesor acaMateriaProfesor = ImapTitulos.next();
@@ -10429,8 +10464,15 @@ public class reportesClase {
         celdaDisciplina.setCellStyle(stiloCabeceras);
         // row = sheet.createRow((short) 7);
         materiasCabecera++;
-        sheet.autoSizeColumn((short) materiasCabecera);
-
+        
+         if (incluyeEquivalencias) {
+            sheet.autoSizeColumn((short) materiasCabecera);
+            HSSFCell cellCompEq = row.createCell((short) materiasCabecera);
+            cellCompEq.setCellValue("EQ.");
+            cellCompEq.setCellStyle(stiloCabeceras);
+            materiasCabecera++;
+        }
+//        sheet.autoSizeColumn((short) materiasCabecera);
         HSSFCell cellObs = row.createCell((short) materiasCabecera);
         cellObs.setCellValue("OBSERVACION");
         cellObs.setCellStyle(stiloCabeceras);
@@ -10619,6 +10661,15 @@ public class reportesClase {
                     HSSFCell cellDisc = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 2));
                     cellDisc.setCellValue("" + equivalencia(disciplina, equivalencias2));
                     cellDisc.setCellStyle(stiloContenido);
+                    int m=0;
+                     if (incluyeEquivalencias) {
+                         HSSFCell cellDiscE = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
+                        cellDiscE.setCellValue("" + devolverNombreDisciplina(equivalencias2,disciplina.doubleValue()).getNombre());
+                        cellDiscE.setCellStyle(stiloContenido);
+                        sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 3), (short) 5000);
+                        m=1;
+                    }
+                    
                     String query2 = "round(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
                     if (truncarNotas) {
                         query2 = "truncate(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
@@ -10644,17 +10695,24 @@ public class reportesClase {
                     DecimalFormat decimalFormat = new DecimalFormat(s);
                     //nota.setNota(decimalFormat.format(redondear((Double) dos, noDecimalesPromediosParciales)));
 
-                    HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
+                    HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3+m));
                     cellApr.setCellValue("" + decimalFormat.format(aprovecha));
                     cellApr.setCellStyle(stiloContenido);
+                    
+                     if (incluyeEquivalencias) {
+                         HSSFCell cellDiscE = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4+m));
+                        cellDiscE.setCellValue("" + devolverNombre(equivalencias,aprovecha.doubleValue()).getAbreviatura());
+                        cellDiscE.setCellStyle(stiloContenido);
+                        m++;
+                    }
 
-                    HSSFCell cellObss = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4));
+                    HSSFCell cellObss = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4+m));
                     if (perdidos.contains(matriculaNo.getCodigomat())) {
                         cellObss.setCellValue("PIERDE EL AÑO");
                     } else {
                         cellObss.setCellValue("");
                     }
-                    sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 4), (short) 5000);
+                    sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 4+m), (short) 5000);
                     cellObss.setCellStyle(stiloContenido);
 
 
