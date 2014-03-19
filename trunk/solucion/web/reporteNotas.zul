@@ -660,15 +660,15 @@ void recalcular2(){
                     report.setSrc(directorioReportes+"cuadrocalificacionesPrimaria.jasper");
             }else if(tipo.equals("CCALB")){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),"");
+                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),"",incluirabreviatura.checked);
                     //report.setSrc(directorioReportes+"cuadrocalificacionesPrimaria.jasper");
             }else if(tipo.equals("CCALB1")){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),"SUP");
+                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),"SUP",incluirabreviatura.checked);
                     //report.setSrc(directorioReportes+"cuadrocalificacionesPrimaria.jasper");
             }else if(tipo.equals("CCALB2")){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
-                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),"REM");
+                    noti.devolverCuadro(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),"REM",incluirabreviatura.checked);
                     //report.setSrc(directorioReportes+"cuadrocalificacionesPrimaria.jasper");
             }else if(tipo.equals("CCAL")){
                     //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
@@ -904,6 +904,7 @@ void campos(String valor){
      incluirfaltas.visible = false;
      incluirfaltasydias.visible = false;
      incluirpromedio.visible = false;
+     incluirabreviatura.visible = false;
      filaempleados.visible = false;
      numeroEstudiantes.visible = false;
      filafecha.visible = false;
@@ -1051,6 +1052,7 @@ void campos(String valor){
              incluirfaltas.visible = true;
              incluirfaltasydias.visible = true;
              incluirpromedio.visible = true;
+             incluirabreviatura.visible = true;
              curs.disabled = false;
              sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Calificaciones";
@@ -1389,6 +1391,7 @@ void campos(String valor){
                                     <checkbox visible="false" checked="true" id="incluirpromedio" label="El Promedio" style="color:blue" />
                                     <checkbox visible="false" onCheck="incluirfaltasydias.checked = false;"  id="incluirfaltas" label=" Las Faltas" style="color:blue" />
                                     <checkbox visible="false" onCheck="incluirfaltas.checked = false;" id="incluirfaltasydias" label="Los Días Laborados y Faltas" style="color:blue" />
+                                    <checkbox visible="false" id="incluirabreviatura" label="Incluir Abreviaturas" style="color:blue" />
                                 </span>
                             </vbox>
                          
