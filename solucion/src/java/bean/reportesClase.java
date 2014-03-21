@@ -6864,7 +6864,7 @@ public class reportesClase {
             nativo = adm.queryNativo(q);
             //cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion() + " " + matriculas1.getCurso().getEspecialidad().getDescripcion() + " " + matriculas1.getCurso().getParalelo().getDescripcion());
             cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
-                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion());
+                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Boolean cuantitativa = false;
@@ -7170,7 +7170,7 @@ public class reportesClase {
             nativo = adm.queryNativo(q);
             //cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion() + " " + matriculas1.getCurso().getEspecialidad().getDescripcion() + " " + matriculas1.getCurso().getParalelo().getDescripcion());
             cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
-                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion());
+                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Boolean cuantitativa = false;

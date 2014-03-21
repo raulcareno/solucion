@@ -39,6 +39,7 @@ void llenar(Cursos empa){
     tutor.value = empa.getTutor();
     cedulatut.value = empa.getCedulatut();
     acta.value = empa.getActa();
+    siguiente.value = empa.getSiguiente();
 
 if(empa.getParalelo()!=null){
           for (int i = 0; i <= paralelosL.getItems().size(); i++) {
@@ -94,6 +95,7 @@ void estado(Boolean estado,Boolean modificar){
         hasta.disabled = estado;
         tutor.readonly = estado;
         acta.readonly = estado;
+        siguiente.readonly = estado;
         cedulatut.readonly = estado;
         inspector.readonly = estado;
         cedulaiden.readonly= estado;
@@ -131,6 +133,7 @@ guardando = true;
         empa.setParalelo(paralelosL.selectedItem.value);
         empa.setTitulo(tituloL.selectedItem.value);
         empa.setActa(acta.value);
+        empa.setSiguiente(siguiente.value);
  
         empa.setInicial(desde.value);
         empa.setFinali(hasta.value);
@@ -398,6 +401,13 @@ void cargarPar(Global g){
                     <span>Desde:
                         <datebox disabled="true" format="dd/MMM/yyyy" id="desde"/> Hasta:
                         <datebox  disabled="true"  format="dd/MMM/yyyy"  id="hasta"/>
+                    </span>
+                </row>
+                 <row>
+                    <span style="float:right"> Siguiente curso:</span>
+                    <span>
+                        <textbox id="siguiente" maxlength="200" cols="40"  readonly="true"  />
+
                     </span>
                 </row>
 
