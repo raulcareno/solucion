@@ -286,6 +286,8 @@ public class ReportePromocionDataSource implements JRDataSource {
                 valor = num.numeros(parte_entera_numero) + " " + parte_decimal_cadena + " " + devolverNombre(equ, (Double) nodo.getDisciplina()).getNombre();
             } else if ("curso".equals(fieldName)) {
                 valor = nodo.getMatricula().getCurso().getDescripcion();
+            }  else if ("siguiente".equals(fieldName)) {
+                valor = nodo.getMatricula().getCurso().getSiguiente();
             } else if ("edad".equals(fieldName)) {
                 valor = nodo.getMatricula().getFolio();
             } else if ("paralelo".equals(fieldName)) {
