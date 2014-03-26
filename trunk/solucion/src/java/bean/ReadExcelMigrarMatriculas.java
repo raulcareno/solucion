@@ -38,7 +38,7 @@ public class ReadExcelMigrarMatriculas {
                 Cursos cursoActual = new Cursos();
                 List<Cursos> cursosEn = adm.query("Select o from Cursos as o where o.descripcion = '" + hoja.getName() + "'");
                 if (cursosEn.size() > 0) {
-                    cursosEn.get(0);
+                    cursoActual = cursosEn.get(0);
                 } else {
                     cursoActual.setCodigocur(adm.getNuevaClave("Cursos", "codigocur"));
                     cursoActual.setSecuencia(orden);
@@ -46,14 +46,15 @@ public class ReadExcelMigrarMatriculas {
                     adm.guardar(cursoActual);
                     orden++;
                 }
-                for (int fila = 4; fila < numFilas; fila++) { // Recorre cada 
+                for (int fila = 9; fila < numFilas; fila++) { // Recorre cada 
 
-                    String estutidante = hoja.getCell(2, fila).getContents();
+                    String estutidante = hoja.getCell(1, fila).getContents();
                     if (!estutidante.trim().equals("")) {
 
                         System.out.println("" + estutidante + " ");
                         String genero = hoja.getCell(3, fila).getContents();
                         System.out.print("GENE:" + genero + " ");
+                        genero ="Masculino";
                         Estudiantes est = new Estudiantes();
                         est.setCodigoest(adm.getNuevaClave("Estudiantes", "codigoest"));
                         est.setApellido(estutidante);
@@ -86,6 +87,6 @@ public class ReadExcelMigrarMatriculas {
     public static void main(String[] args) {
         // TODO code application logic here
         ReadExcelMigrarMatriculas excel = new ReadExcelMigrarMatriculas();
-        excel.leerArchivoExcel("E:\\listado.xls");
+        excel.leerArchivoExcel("E:\\listado2.xls");
     }
 }
