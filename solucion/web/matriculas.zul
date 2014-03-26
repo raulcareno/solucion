@@ -1700,7 +1700,7 @@ public void quitarFila(String codigoBuscar){
                                     <span style="float:right"> Codigo :</span>
                                     <span>
                                         <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
-                                        Identificación:
+                                        Cédula:
                                         <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                                                         
                                     </span>

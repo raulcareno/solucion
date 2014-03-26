@@ -152,7 +152,7 @@ public class generaClaves {
 //        int val = Messagebox.show("¿Seguro de eliminar, puede causar la pérdida de notas, si ya tiene registrado?", "Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
 //         TODO code application logic here
         Administrador adm = new Administrador();
-        int f = 0;
+        int f = 1;
         if(f==0){
             
             List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = 4  "
@@ -183,7 +183,7 @@ public class generaClaves {
             }
                 return;
         }
-        String tipo = "EMP";
+        String tipo = "REP";
         
         Permisos c = new Permisos();
         if (tipo.contains("COPIAR")) {
