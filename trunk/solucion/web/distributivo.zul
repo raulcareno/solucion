@@ -742,8 +742,9 @@ llenarGrid2(Integer n){
                                         ch.setChecked(false);
                                         row.appendChild(ch); 
 
-                                     Intbox tx = new Intbox(0);
-                                        row.appendChild(tx);
+                                     Intbox tx2 = new Intbox(0);
+                                        row.appendChild(tx2);
+                                        
                                      Textbox formu = new Textbox("");
                                         row.appendChild(formu);
 
@@ -1152,10 +1153,12 @@ llenarGrid23(Integer n){
                                      ch = new Checkbox();
                                         ch.setChecked(false);
                                         row.appendChild(ch);
-
+                                        Intbox txh = new Intbox(0);
+                                        row.appendChild(txh);
                                 
                                      Textbox formu = new Textbox("");
                                         row.appendChild(formu);
+                                        
                                     Toolbarbutton aButton = new Toolbarbutton("_");
                                          row.appendChild(aButton);
                                     filas3.appendChild(row);
@@ -1195,7 +1198,8 @@ llenarGrid23P(Integer n){
                                         ch.setChecked(false);
                                         row.appendChild(ch);
 
-                                
+                                  Intbox txh = new Intbox(0);
+                                        row.appendChild(txh);
                                      Textbox formu = new Textbox("");
                                         row.appendChild(formu);
                                     Toolbarbutton aButton = new Toolbarbutton("_");
@@ -1686,7 +1690,7 @@ void guardarcP(){
                                         <listcell label="${each.apellidos} ${each.nombres}" />
                                     </listitem>
                                 </listbox>
-                                <button label="Setear Profesor" onClick="setear()"/>
+                                <button label="Setear Profesor 2" onClick="setear()"/>
                             </span>
                         </row>
                     </rows>
@@ -1743,7 +1747,7 @@ void guardarcP(){
                                         <listcell label="${each.apellidos} ${each.nombres}" />
                                     </listitem>
                                 </listbox>
-                                <button label="Setear Profesor" onClick="setearP()"/>
+                                <button label="Setear Profesor 3" onClick="setearP()"/>
                             </span>
                         </row>
                     </rows>
