@@ -279,7 +279,7 @@ void grupo(String tipo){
                 <row  id="rnombre">
                     <span style="float:right"> <label id="lblnombre" value="Nombre(*):" /></span>
                     <span>
-                    <textbox id="nombre"  maxlength="60" cols="40" readonly="true"   />   
+                    <textbox id="nombre"  maxlength="200" cols="40" readonly="true"   />   
                     <checkbox id="esfj" label="Es F. Justificada" onCheck="esfi.checked = false;" />
                     <checkbox id="esfi" label="Es F. Injustificada" onCheck="esfj.checked = false;" />
                     </span>
