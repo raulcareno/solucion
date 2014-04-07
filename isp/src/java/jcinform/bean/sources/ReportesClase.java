@@ -15,6 +15,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Listitem;
 
 /**
@@ -1385,6 +1386,11 @@ public class ReportesClase {
             pendi.setValorabonoban(cIt.getBancario() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getBancario());
             pendi.setNumeroretencion(cIt.getNumeroretencion());
             pendi.setNumerotransferencia(cIt.getNotransferencia());
+            pendi.setFechadeposito(cIt.getFechadeposito());
+            pendi.setFechacheque(cIt.getFechacheque());
+            pendi.setNodeposito(cIt.getNocuentaban()); 
+            pendi.setBancocheque(cIt.getBancocheque().getNombre());
+            pendi.setBancodeposito(cIt.getBancodep().getNombre()); 
             pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
             pendi.setNotarjeta(cIt.getNotarjeta());
             try {

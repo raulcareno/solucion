@@ -96,8 +96,10 @@ public class Contratos implements Serializable {
     private String serie3;
       @Column(name = "tipoplan")
     private String tipoplan;
-      @Column(name = "automatico")
+    @Column(name = "automatico")
     private Boolean automatico= true;
+    @Column(name = "supertel")
+    private Boolean supertel= false;
     @JoinColumn(name = "sucursal", referencedColumnName = "codigo")
     @ManyToOne
     private Sucursal sucursal;
@@ -477,6 +479,14 @@ public class Contratos implements Serializable {
 
     public void setAutomatico(Boolean automatico) {
         this.automatico = automatico;
+    }
+
+    public Boolean getSupertel() {
+        return supertel;
+    }
+
+    public void setSupertel(Boolean supertel) {
+        this.supertel = supertel;
     }
     
     

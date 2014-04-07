@@ -120,6 +120,16 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                 row.appendChild(new Label(contratos1.getDireccion()+""));
                                 
                                 row.appendChild(llenarCombo(contratos1.getFormapago()));
+                                
+                                Checkbox ch2 = new Checkbox(""); 
+                                try{
+                                  if(contratos1.getSupertel())
+                                    ch2.setChecked(true);
+                                }catch(Exception ab){
+                                    ch2.setChecked(false);
+                                }
+                                
+                                row.appendChild(ch2);
                                  
                                 row.setValue(contratos1);
                             try{
@@ -191,6 +201,25 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                  
                  }
     }
+    
+    void seleccionarTodos2(Checkbox estado,Integer tipo){
+                if(tipo == 0){
+                       List col = facturasDatos.getRows().getChildren();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        ((Checkbox) labels.get(5)).setChecked(estado.isChecked());
+                               }
+                 }else{
+                        List col = facturasDatosAsignados.getRows().getChildren();
+                              for (int i = 0; i < col.size(); i++) {
+                                     Row object = (Row) col.get(i);
+                                      List labels = object.getChildren();
+                                        ((Checkbox) labels.get(5)).setChecked(estado.isChecked());
+                               }
+                 
+                 }
+    }
    
  
     
@@ -209,6 +238,7 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                         
                           
                         contraActualizar.setFormapago(new Integer(((Listbox) labels.get(4)).selectedItem.value+""));
+                        contraActualizar.setSupertel((( (Checkbox) labels.get(5)).isChecked()));
                          
                         adm.actualizar(contraActualizar);
         }
@@ -329,13 +359,16 @@ List empleadosList = adm.query("Select o from Empleados as o ");
                                 </grid>
                                 <grid height="450px"     fixedLayout="true"  id="facturasDatos" >
                                     <columns>
-                                        <column  width="40px" >
+                                        <column visible="false"  width="40px" >
                                             <checkbox id="todos" label="Facturar" onCheck="seleccionarTodos(self,0)" />
                                         </column>
                                         <column sort="auto" width="40px"   label="Contrato"/>
                                         <column sort="auto" width="120px"   label="Cliente "/>
                                         <column sort="auto" width="120px"   label="Dirección"/>
                                         <column sort="auto" width="120px"   label="Forma Pago"/>
+                                        <column  width="40px" >
+                                            <checkbox id="todos2" label="Supertel" onCheck="seleccionarTodos2(self,0)" />
+                                        </column>
                                     </columns>
                                     <rows id="filasFac">
                                     </rows>

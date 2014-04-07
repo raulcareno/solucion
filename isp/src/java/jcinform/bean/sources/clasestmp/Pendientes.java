@@ -20,6 +20,11 @@ public class Pendientes implements Comparable {
     String factura;
     String telefono;
     Date fecha, fechapago,emision;
+    Date fechacheque;
+    String bancocheque;
+    Date fechadeposito;
+    String bancodeposito;
+    String nodeposito;
     BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
     BigDecimal enplanes,enequipos,eninstalaciones;
     BigDecimal valorabonoret, subtotal,iva;
@@ -323,6 +328,48 @@ public class Pendientes implements Comparable {
     public void setEmision(Date emision) {
         this.emision = emision;
     }
+
+    public String getBancocheque() {
+        return bancocheque;
+    }
+
+    public void setBancocheque(String bancocheque) {
+        this.bancocheque = bancocheque;
+    }
+
+    public String getBancodeposito() {
+        return bancodeposito;
+    }
+
+    public void setBancodeposito(String bancodeposito) {
+        this.bancodeposito = bancodeposito;
+    }
+
+    public Date getFechacheque() {
+        return fechacheque;
+    }
+
+    public void setFechacheque(Date fechacheque) {
+        this.fechacheque = fechacheque;
+    }
+
+    public Date getFechadeposito() {
+        return fechadeposito;
+    }
+
+    public void setFechadeposito(Date fechadeposito) {
+        this.fechadeposito = fechadeposito;
+    }
+
+    public String getNodeposito() {
+        return nodeposito;
+    }
+
+    public void setNodeposito(String nodeposito) {
+        this.nodeposito = nodeposito;
+    }
+
+    
 
    
 

@@ -184,6 +184,7 @@
                     <span>
                         <combobox id="tipo">
                             <comboitem label="HOME" />
+                            <comboitem label="RESIDENCIAL" />
                             <comboitem label="BASICO" />
                             <comboitem label="CORPORATIVO" />
                             <comboitem label="PREMIUM" />

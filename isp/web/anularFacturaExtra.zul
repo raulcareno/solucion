@@ -48,6 +48,7 @@ anular(){
                  if(valor0 == 16){
                     Factura facAnula = siExiste.get(0);
                     facAnula.setNumero(null);
+                    facAnula.setEmision(null);
                     adm.actualizar(facAnula);
                     facAnula = null;
                     siExiste = null;
@@ -70,6 +71,7 @@ anular(){
             fac.setClientes(new Clientes(0));
             fac.setEstado(true);
             fac.setFecha(fechaanula.value);
+            fac.setEmision(fechaanula.value);
             fac.setContratos(new Contratos(1111));
             fac.setSector(new Sector(1));
             fac.setSucursal(sucursalEmp.getSucursal());
@@ -123,11 +125,12 @@ anular(){
                     <textbox constraint="no empty: Debe ingresar una observación para continuar" id="observacion" rows="2" maxlength="60" cols="40" />
                 </row>
                 <row>
-                    Fecha: <datebox format="dd/MM/yyyy" onCreate="self.value = adm.Date()" id="fechaanula"/>
+                    Fecha: 
+                    <datebox format="dd/MM/yyyy" onCreate="self.value = adm.Date()" id="fechaanula"/>
                 </row>
                 <row>
                     <span></span>
-                    <button id="CONT"  label="ANULAR FACTURA" onClick="numerofactura.focus(); numerofactura.getValue();  observacion.focus(); observacion.getValue();  anular();"/>
+                    <button id="CONT"  label="ANULAR FACTURA." onClick="numerofactura.focus(); numerofactura.getValue();  observacion.focus(); observacion.getValue();  anular();"/>
                                  
                 </row>         
             </rows>
