@@ -166,6 +166,7 @@ void llenar(Contratos  equi2){
     fechainstalacion.value = equi.getFechainstalacion();
     autorizado.checked = equi.getAutorizado();
     automatico.checked = equi.getAutomatico();
+    supertel.checked = equi.getSupertel();
     usuario.value = equi.getUsuario();
     ip.value = equi.getIp();
     nocuenta.value = equi.getNocuenta();
@@ -345,6 +346,7 @@ void estado(Boolean estado,Boolean modificar){
     fechainstalacion.disabled = estado;
     autorizado.disabled = estado;
     automatico.disabled = estado;
+    supertel.disabled = estado;
     usuario.readonly = estado;
     ip.readonly = estado;
     clave.readonly = estado;
@@ -503,6 +505,7 @@ Boolean validar(){
     equi.setFechainstalacion(fechainstalacion.value);
     equi.setAutorizado(autorizado.isChecked());
     equi.setAutomatico(automatico.isChecked());
+    equi.setSupertel(supertel.isChecked());
     equi.setUsuario(usuario.value);
     equi.setIp(ip.value);
     equi.setClave(clave.value);
@@ -2719,7 +2722,13 @@ void llamar(){
                                             <span style="float:right">
                                                 <label style="font-weight:bold2" value=" Estado Automático:" />
                                             </span>
-                                            <checkbox id="automatico" />
+                                            <span>
+                                                <checkbox id="automatico" />
+                                                <span>
+                                                    <label style="font-weight:bold2" value=" Supertel:" />
+                                                </span>
+                                                    <checkbox id="supertel" />
+                                            </span>
                                         </row>
                     
                                         <row>

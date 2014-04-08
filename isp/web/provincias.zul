@@ -1,8 +1,7 @@
-<window   border="normal">
+<window   border="normal"
+ >
 
  <zscript>
-      <![CDATA[
-      
   import bean.EventDAO; 
   import java.util.ArrayList; 
   import jcinform.persistencia.*;
@@ -12,35 +11,22 @@
 
   Session ses = Sessions.getCurrent();
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Canton as o");
-    List provincias2 = adm.query("Select o from Provincia as o ");
-    static Canton equi = new Canton();
+    List allEvents = adm.query("Select o from Provincia as o");
+    static Provincia equi = new Provincia();
     Permisos permiso = new Permisos();
-    
+    //SimpleTreeModel stm = new SimpleTreeModel(root);
 //FUNCIONES
-void llenar(Canton equi2){
-     equi = equi2;
+void llenar(Provincia equi2){
+   equi = equi2;
     nombre.value = equi.getNombre();
     
-           if(equi2.getProvincia() != null){
-             try{
-                      for (int i = 0; i <= provincias.getItems().size(); i++) {
-                                    Provincia tr0 = ((Provincia)((Listitem)provincias.getItems().get(i)).getValue());
-                                    int primero = tr0.getCodigo();
-                                    int segundo = equi2.getProvincia().getCodigo();
-                                    if(primero == segundo){
-                                        provincias.setSelectedItem((Listitem)provincias.getItems().get(i));
-                                        bd1.value = equi2.getProvincia().getNombre();
-                                        break;
-                                    }
-                           }
-                 }catch(Exception err){System.out.println("ERROR no tiene cursos asignados COMBO CURSOS: "+err);}
 
-            }
- }
+
+    
+}
 void estado(Boolean estado,Boolean modificar){
     if(modificar){
-        equi = (Canton)datos.selectedItem.value;
+        equi = (Provincia)datos.selectedItem.value;
     }
     nombre.readonly = estado;
  
@@ -54,25 +40,25 @@ void estado(Boolean estado,Boolean modificar){
             return;
     }
         equi.setNombre(nombre.value);
-        equi.setProvincia(provincias.selectedItem.value);
+        
         if((!equi.getCodigo().equals(0)) ){
              adm.actualizar(equi);
                 List children = datos.selectedItem.children;
                   ((Listcell)children.get(0)).label = equi.getCodigo()+"";
                   ((Listcell)children.get(1)).label = nombre.value+ "" ;
-                  permiso.auditar("Cantones","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+                  permiso.auditar("Provincia","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
          }else{
-                equi.setCodigo(adm.getNuevaClave("Canton","codigo"));
+                equi.setCodigo(adm.getNuevaClave("Provincia","codigo"));
                 adm.guardar(equi);
-                permiso.auditar("Cantones","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+                permiso.auditar("Provincia","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
          }
                 Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                     guardar.disabled=true;
                     agregar.disabled=false;
                     estado(true,false);
-                    llenar(new Canton(0));
+                    llenar(new Provincia(0));
                     buscar("");
-}
+    }
 
  Boolean verificar(String accion){
         return permiso.verificarPermiso("Cantones",accion);
@@ -80,7 +66,7 @@ void estado(Boolean estado,Boolean modificar){
  void nuevo(){
     if(verificar("Agregar")){
        guardar.disabled=false;
-        llenar(new Canton(0));
+        llenar(new Provincia(0));
         estado(false,false);
         
     }else{
@@ -88,7 +74,7 @@ void estado(Boolean estado,Boolean modificar){
     }
 }
  void move(){
-        llenar((Canton)datos.selectedItem.value);
+        llenar((Provincia)datos.selectedItem.value);
         modificar.disabled = false;
   }
 void modificar(){
@@ -101,11 +87,11 @@ void modificar(){
 void eliminar(){
   if(verificar("Eliminar")){
         try{
-             equi = (Canton)datos.selectedItem.value;
-             adm.eliminarObjeto(Canton.class, equi.getCodigo());
-             permiso.auditar("Cantones","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+             equi = (Provincia)datos.selectedItem.value;
+             adm.eliminarObjeto(Provincia.class, equi.getCodigo());
+             permiso.auditar("Provincia","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
             datos.removeItemAt(datos.getSelectedIndex());
-            llenar(new Canton(0));
+            llenar(new Provincia(0));
                 Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
         }catch(Exception e){
             Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -117,7 +103,7 @@ void eliminar(){
    void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Canton as o   order by o.nombre");
+        List equivaEncontrados = adm.query("Select o from Provincia as o   order by o.nombre");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -126,48 +112,26 @@ void eliminar(){
    
        
                for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
-                      Canton acceIt = (Canton) it.next();
+                      Provincia acceIt = (Provincia) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getCodigo()+""));
                       li.appendChild(new Listcell(acceIt.getNombre()+" "));
-                      try{
-                      li.appendChild(new Listcell(acceIt.getProvincia().getNombre()+" "));
-                      }catch(Exception axn){}
                       datos.appendChild(li);
              }
 
     }
-void cargar(Canton g){
+void cargar(Provincia g){
 equi.setPerfil(g);
 }
-  ]]>
   </zscript>
 <groupbox mold="3d" >
-       <caption label="Agregar Cantones" />
+       <caption label="Agregar Provincia" />
 	
 <grid width="100%">
 <rows> 
- <row>  
-                    <span style="float:right"> Provincia(*):</span>
-                    <bandbox  width="400px" readonly="true"  id="bd1">
-                        <bandpopup>
-                            <vbox>
-                                <listbox id="provincias" width="660px" rows="10"
-                                         onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
-                                    <listitem selected="true" forEach="${provincias2}" value="${each}">
-                                        <listcell label="${each.nombre}" />
-                                    </listitem>
-                                </listbox>
-                            </vbox>
-                        </bandpopup>
-                    </bandbox>
-                </row>
-<row>
-    <span style="float:right"> Nombre(*):</span>
-        <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />   
-        
-        </row>
+<row><span style="float:right"> Nombre(*):</span>
+        <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />   </row>
  
 
 </rows>
@@ -188,7 +152,6 @@ equi.setPerfil(g);
 <groupbox width="100%" mold="3d" >
 
        <caption label="Busquedas" />
-       <button  id="buscar"  label="Buscar"  onClick='buscar("");'/>
 <vbox>
    
     <hbox width="100%">
@@ -196,13 +159,11 @@ equi.setPerfil(g);
 			<listhead>
                                 <listheader label="Código"/>
                                 <listheader label="Nombre"/>
-                                <listheader label="Provincia"/>
 
 			</listhead>
 			<listitem forEach="${allEvents}" value="${each}">
                            <listcell label="${each.codigo}" />
                            <listcell label="${each.nombre}" />
-                           <listcell label="${each.provincia.nombre}" />
             </listitem>
 		</listbox>
 

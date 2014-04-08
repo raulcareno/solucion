@@ -1106,9 +1106,9 @@ public class ReportesClase {
         String desdestr = convertiraString(desde);
         String hastastr = convertiraString(hasta);
 
-        contratosList = adm.query("Select o from Contratos as o WHERE  o.fechainstalacion between '" + desdestr + "' "
+        contratosList = adm.query("Select o from Contratos as o WHERE o.supertel = true and o.fechainstalacion between '" + desdestr + "' "
                 + " and '" + hastastr + "' " + "  " + estadoComp + complemento2
-                + " order by o.clientes.apellidos");
+                + " order by o.sector.canton.provincia.nombre, o.sector.canton.nombre, o.sector.nombre, o.clientes.apellidos");
 
 
         List<Contratos> detalles = new ArrayList();

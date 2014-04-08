@@ -39,6 +39,7 @@
     <class>jcinform.persistencia.Archivosbanco</class>
     <class>jcinform.persistencia.Seriesempleados</class>
     <class>jcinform.persistencia.Depositos</class>
+    <class>jcinform.persistencia.Provincia</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!--property name="toplink.jdbc.user" value="root"/>

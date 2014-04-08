@@ -7,17 +7,26 @@ package jcinform.persistencia;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author Familia Jadan Cahueñ
  */
 @Entity
-@Table(name = "canton")
+@Table(name = "Provincia")
 @NamedQueries({
-    @NamedQuery(name = "Canton.findAll", query = "SELECT c FROM Canton c")})
-public class Canton implements Serializable {
+    @NamedQuery(name = "Provincia.findAll", query = "SELECT c FROM Provincia c")})
+public class Provincia implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,18 +35,12 @@ public class Canton implements Serializable {
     private Integer codigo;
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(mappedBy = "canton")
-    private Collection<Sector> sectorCollection;
-    
-    @JoinColumn(name = "provincia", referencedColumnName = "codigo")
-    @ManyToOne
-    private Provincia provincia;
-    
-    
-    public Canton() {
+  
+
+    public Provincia() {
     }
 
-    public Canton(Integer codigo) {
+    public Provincia(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -56,22 +59,7 @@ public class Canton implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public Provincia getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(Provincia provincia) {
-        this.provincia = provincia;
-    }
-
-    public Collection<Sector> getSectorCollection() {
-        return sectorCollection;
-    }
-
-    public void setSectorCollection(Collection<Sector> sectorCollection) {
-        this.sectorCollection = sectorCollection;
-    }
+ 
 
     @Override
     public int hashCode() {
@@ -83,10 +71,10 @@ public class Canton implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Canton)) {
+        if (!(object instanceof Provincia)) {
             return false;
         }
-        Canton other = (Canton) object;
+        Provincia other = (Provincia) object;
         if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
             return false;
         }

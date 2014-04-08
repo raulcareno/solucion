@@ -76,7 +76,7 @@ void guardar(){
         <hbox>
         </hbox>
     </vbox>
-    <grid id="datos" >
+    <grid height="400px" id="datos" >
         <columns>
             <column  label="Cod"/>
             <column  label="Módulo"/>

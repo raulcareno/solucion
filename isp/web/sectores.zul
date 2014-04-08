@@ -1,6 +1,6 @@
 
 <window   border="normal"
- >
+>
 
     <zscript>    <![CDATA[
   import bean.EventDAO; 
@@ -155,12 +155,13 @@ equi.setPerfil(g);
 	
         <grid width="100%">
             <rows>
-                <row>   <span style="float:right"> Canton(*):</span>
+                <row>  
+                    <span style="float:right"> Canton(*):</span>
                     <bandbox  width="400px" readonly="true"  id="bd1">
                         <bandpopup>
                             <vbox>
                                 <listbox id="cantones" width="660px" rows="10"
-                                  onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
+                                         onSelect="bd1.value=self.selectedItem.label;bd1.closeDropdown();">
                                     <listitem selected="true" forEach="${cantones2}" value="${each}">
                                         <listcell label="${each.nombre}" />
                                     </listitem>
