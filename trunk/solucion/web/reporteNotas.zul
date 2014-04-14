@@ -532,7 +532,7 @@ void recalcular2(){
                     datasource = noti.promocion(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"promocion.jasper");
             }else if(tipo.equals("CERT2")){
-                    datasource = noti.promocion2(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue());
+                    datasource = noti.promocion2(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(), promediohorizontal.checked);
                     report.setSrc(directorioReportes+"promocion2.jasper");
             }else if(tipo.equals("CERT3")){
                     datasource = noti.promocion3(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),fecha.value);
@@ -887,6 +887,7 @@ void campos(String valor){
         sistemasCombo.disabled = true;
       filaencuestar.visible == false;
       fila.visible = false;
+      filapromocion.visible = false;
       filarangos.visible = false;
       filamodalidad.visible = false;
       sistemasCombo.setSelectedIndex(0);
@@ -1031,6 +1032,10 @@ void campos(String valor){
             if(valor.equals("CERT3")){
                 filafecha.visible = true;
             }
+            if(valor.equals("CERT2")){
+                filapromocion.visible = true;
+            }
+            
         }else if(valor.equals("PROC")  ){
              titulo.value= "Promedios x Curso y Materia";
              curs.disabled = false;
@@ -1394,6 +1399,11 @@ void campos(String valor){
                                     <checkbox visible="false" id="incluirabreviatura" label="Incluir Abreviaturas" style="color:blue" />
                                 </span>
                             </vbox>
+                         
+                        </row>
+                         <row  style="background:transparent;border:0px" id="filapromocion" visible="false">
+                                 .  
+                                 <checkbox  checked="false" id="promediohorizontal" label="Promoción con promedio horizontal PROM 1Q Y 2Q" style="color:blue" />
                          
                         </row>
                         <row id="filarangos" visible="false" spans="2">

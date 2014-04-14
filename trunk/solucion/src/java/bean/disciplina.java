@@ -32,31 +32,9 @@ public class disciplina extends Rows {
     String redon = "public Double redondear(Double numero, int decimales) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "        d = d.setScale(decimales, java.math.RoundingMode.HALF_UP);" + "        return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
     String truncar = "public Double truncar(Double numero, int decimales) {         try {             java.math.BigDecimal d = new java.math.BigDecimal(numero);             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);             return d.doubleValue();         } catch (Exception e) {             return 0.0;         }     }";
     String equival = "public Double equivalencia(Double numero) {" + "" + "try{" + "                java.math.BigDecimal d = new java.math.BigDecimal(numero);" + "       return d.doubleValue();" + "        }catch(Exception e){" + "            return 0.0;" + "        }" + "     }";
-  String prom1 = "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19, Double va20, Double va21, Double va22, Double va23, Double va24){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++;  if(va20 >0) cont++;  if(va21 >0) cont++;  if(va22 >0) cont++;  if(va23 >0) cont++; if(va24 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19+va20+va21+va22+va23+va24)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19, Double va20, Double va21, Double va22, Double va23){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++;  if(va20 >0) cont++;  if(va21 >0) cont++;  if(va22 >0) cont++;  if(va23 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19+va20+va21+va22+va23)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19, Double va20, Double va21, Double va22){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++;  if(va20 >0) cont++;  if(va21 >0) cont++;  if(va22 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19+va20+va21+va22)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19, Double va20, Double va21){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++;  if(va20 >0) cont++;  if(va21 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19+va20+va21)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19, Double va20){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++;  if(va20 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19+va20)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18, Double va19){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++; if(va18 >0) cont++; if(va19 >0) cont++; if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17+va18+va19)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16, Double va17, Double va18){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;        if(va17 >0) cont++;  if(va18 >0) cont++;  if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16+va17)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15, Double va16){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;         if(va16 >0) cont++;         if(cont==0) cont = 1;           return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15+va16)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14, Double va15){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;        if(va15 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14+va15)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13, Double va14){          int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;        if(va14 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13+va14)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12, Double va13){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;         if(va13 >0) cont++;            if(cont==0) cont = 1;       return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12+va13)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11, Double va12){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;        if(va12 >0) cont++;     if(cont==0) cont = 1;      return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11+va12)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10, Double va11){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;          if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;        if(va11 >0) cont++;      if(cont==0) cont = 1;       return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10+va11)/cont;    } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9, Double va10){         int cont = 0;          if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;         if(va10 >0) cont++;          if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5+va6+va7+va8+va9+va10)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8, Double va9){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;          if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(va9 >0) cont++;    if(cont==0) cont = 1;        return (va1+va2+va3+va4+va5+va6+va7+va8+va9)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7, Double va8){        int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(va8 >0) cont++;        if(cont==0) cont = 1;            return (va1+va2+va3+va4+va5+va6+va7+va8)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6, Double va7){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;         if(va7 >0) cont++;        if(cont==0) cont = 1;            return (va1+va2+va3+va4+va5+va6+va7)/cont;    } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5, Double va6){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;        if(va6 >0) cont++;      if(cont==0) cont = 1;       return (va1+va2+va3+va4+va5+va6)/cont;     }"
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4, Double va5){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;         if(va4 >0) cont++;        if(va5 >0) cont++;       if(cont==0) cont = 1;         return (va1+va2+va3+va4+va5)/cont;     } "
-            + "  Double promedio (Double va1, Double va2, Double va3, Double va4){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;    if(va4 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3+va4)/cont;     }  "
-            + "  Double promedio (Double va1, Double va2, Double va3){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;        if(va3 >0) cont++;      if(cont==0) cont = 1;      return (va1+va2+va3)/cont;     } "
-            + "  Double promedio (Double va1, Double va2){         int cont = 0;         if(va1 >0) cont++;  if(va2 >0) cont++;       if(cont==0) cont = 1;         return (va1+va2)/cont; } "
-            + "  Double promedio (Double va1){         int cont = 0;         if(va1 >0) cont++;       if(cont==0) cont = 1;       return (va1)/cont; } ";
-
-
+    String prom1 = metodos.prom1;
+    String prom2 = metodos.prom2;
+ 
     public disciplina() {
     }
 
@@ -75,14 +53,14 @@ public class disciplina extends Rows {
                 + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "order by o.sistema.orden ");
         equ = adm.query("Select o from Equivalencias as o"
-                    + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
-                    + "and o.grupo = 'DR' ");
+                + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
+                + "and o.grupo = 'DR' ");
         String query = "";
-          List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         Boolean esCualitativa = regresaVariableParametrosLogico("DISCCUALITATIVA", parametrosGlobales);
         String Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
-        String  Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
+        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
         }
@@ -127,103 +105,103 @@ public class disciplina extends Rows {
             int t = vec.size() - 1;
             Boolean deshabilitado = false;
             String color = "black";
-            if(!esCualitativa){
-                   for (int j = 0; j < vec.size(); j++) {
-                Object dos = vec.get(j);
-                label = new Decimalbox();
-                label3 = new Label();
-                try {
-                    if (dos.equals(null)) {
+            if (!esCualitativa) {
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    label = new Decimalbox();
+                    label3 = new Label();
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new Double(0.0);
+                        }
+                    } catch (Exception e) {
                         dos = new Double(0.0);
-                    }
-                } catch (Exception e) {
-                    dos = new Double(0.0);
 //                                if(j==t)
 //                                 dos = new String(" ");
-                }
+                    }
 //                             if(j==t)
 //                                label.setValue(""+dos);
 //                             else 
-                if (j >= 2) {//si no es no matricl ani nombre del estudiante
-                    Double valor = (Double) dos;
-                    if (valor.equals(0.0)) {
-                        label.setValue(new BigDecimal(0));
-                    } else {
-                        label.setValue(new BigDecimal(redondear((Double) dos, 2)));
-                    }
-                    //label.setValue(""+redondear((Double) dos,2));
-                } else {
-                    String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
-                    valor = valor.replace("[Emitir Pase]", "(PE)");
-                    valor = valor.replace("[Retirado]", "(R)");
-                    valor = valor.replace("[Recibir Pase]", "(PR)");
-                    valor = valor.replace("[Matriculado]", "");
-                    label3.setValue("" + valor);
-                    //label.setValue(""+dos);
-                }
-                if (j == 0) {
-                    label3.setStyle("width:15px;font-size:11px;font:arial; ");
-//                    label3.setReadonly(true);
-                    row.appendChild(label3);
-                } else if (j == 1) {
-                    label3.setStyle("width:300px;font-size:11px;font:arial; ");
-//                    label3.setReadonly(true);
-                    if (label3.getValue().contains("(PE)")) {
-                        label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
-                        color = "red";
-                        deshabilitado = true;
-                    } else if (label3.getValue().contains("(R)")) {
-                        label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
-                        color = "blue";
-                        deshabilitado = true;
-                    }
-                    row.appendChild(label3);
-                } else {
-                    if (!deshabilitado) {
-
-                        Date fechaActual = new Date();
-                        DateMidnight actual = new DateMidnight(fechaActual);
-                        int dat = j - 2;
-                        DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
-                        DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
-                        if (empleado.getTipo().equals("Interna")) {
-                            inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
-                            finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
-
-                        }
-
-                        if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
-                            label.setDisabled(false);
-                            label.setStyle("color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;");
+                    if (j >= 2) {//si no es no matricl ani nombre del estudiante
+                        Double valor = (Double) dos;
+                        if (valor.equals(0.0)) {
+                            label.setValue(new BigDecimal(0));
                         } else {
-                            label.setDisabled(true);
-                            label.setStyle("color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
-
+                            label.setValue(new BigDecimal(redondear((Double) dos, 2)));
                         }
+                        //label.setValue(""+redondear((Double) dos,2));
+                    } else {
+                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                        valor = valor.replace("[Emitir Pase]", "(PE)");
+                        valor = valor.replace("[Retirado]", "(R)");
+                        valor = valor.replace("[Recibir Pase]", "(PR)");
+                        valor = valor.replace("[Matriculado]", "");
+                        label3.setValue("" + valor);
+                        //label.setValue(""+dos);
+                    }
+                    if (j == 0) {
+                        label3.setStyle("width:15px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                        row.appendChild(label3);
+                    } else if (j == 1) {
+                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                        if (label3.getValue().contains("(PE)")) {
+                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                            color = "red";
+                            deshabilitado = true;
+                        } else if (label3.getValue().contains("(R)")) {
+                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                            color = "blue";
+                            deshabilitado = true;
+                        }
+                        row.appendChild(label3);
+                    } else {
+                        if (!deshabilitado) {
 
-                        try {
-                            Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
+                            Date fechaActual = new Date();
+                            DateMidnight actual = new DateMidnight(fechaActual);
+                            int dat = j - 2;
+                            DateMidnight inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainicial());
+                            DateMidnight finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechafinal());
+                            if (empleado.getTipo().equals("Interna")) {
+                                inicial = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechainti());
+                                finale = new DateMidnight(((Sistemacalificacion) sistemas.get(dat)).getFechaintf());
+
+                            }
+
+                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+                                label.setDisabled(false);
+                                label.setStyle("color:black;font-weight:bold;width:30px;font:arial;font-size:12px;text-align:right;");
+                            } else {
+                                label.setDisabled(true);
+                                label.setStyle("color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+
+                            }
+
+                            try {
+                                Date fecha = ((Sistemacalificacion) sistemas.get(dat)).getFechainicial();
 //                            System.out.println("FECHA INICIAL: "+fecha);
-                            if (fecha.getDate() == 0) {
+                                if (fecha.getDate() == 0) {
+                                    label.setDisabled(true);
+                                    label.setStyle("color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                                }
+                            } catch (Exception z) {
                                 label.setDisabled(true);
                                 label.setStyle("color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
                             }
-                        } catch (Exception z) {
+
+
+                        } else {
                             label.setDisabled(true);
-                            label.setStyle("color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                            label.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
                         }
-
-
-                    } else {
-                        label.setDisabled(true);
-                        label.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
-                    }
 //                    label.setReadonly(true);
-                    row.appendChild(label);
-                }
+                        row.appendChild(label);
+                    }
 
-            }
-            }else{ // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
+                }
+            } else { // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
                 Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
                 Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
                 Listbox combo = new Listbox();
@@ -356,9 +334,9 @@ public class disciplina extends Rows {
                 }
 
 
-                
+
             }
-         
+
 
             row.setParent(this);
         }
@@ -378,6 +356,7 @@ public class disciplina extends Rows {
             inter.eval(redon);
             inter.eval(truncar);
             inter.eval(prom1);
+            inter.eval(prom2);
             inter.eval(equival);
             for (Iterator<Notanotas> it = notas.iterator(); it.hasNext();) {
                 Notanotas notanotas = it.next();
@@ -401,23 +380,23 @@ public class disciplina extends Rows {
             for (int j = 2; j < labels.size(); j++) {
                 //Decimalbox object1 = (Decimalbox) labels.get(j);
                 String vaNota = "";//object1.getValue().toString();
-                  Listbox  objectListBox = null;
-                   Decimalbox  objectDecimalBox = null;
+                Listbox objectListBox = null;
+                Decimalbox objectDecimalBox = null;
 //                   String vaNota="";
-                   if(labels.get(j) instanceof Listbox){
-                       objectListBox = (Listbox) labels.get(j);
-                       vaNota = ((Equivalencias) objectListBox.getSelectedItem().getValue()).getNota().toString();
-                   }else{
-                       objectDecimalBox = (Decimalbox) labels.get(j);
-                       vaNota = objectDecimalBox.getValue().toString();
-                   }
-                
+                if (labels.get(j) instanceof Listbox) {
+                    objectListBox = (Listbox) labels.get(j);
+                    vaNota = ((Equivalencias) objectListBox.getSelectedItem().getValue()).getNota().toString();
+                } else {
+                    objectDecimalBox = (Decimalbox) labels.get(j);
+                    vaNota = objectDecimalBox.getValue().toString();
+                }
+
                 String formula = notas.get(j - 2).getSistema().getFormuladisciplina(); // EN CASO DE FORMULA
                 formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                 String toda = notas.get(j - 2).getNota() + "";
 
                 toda = toda.substring(1, toda.length());
-                
+
                 Double aCargar = 0.0;
                 if (vaNota.equals("")) {
                     aCargar = 0.0;
@@ -441,6 +420,7 @@ public class disciplina extends Rows {
             inter.eval(redon);
             inter.eval(truncar);
             inter.eval(prom1);
+            inter.eval(prom2);
             inter.eval(equival);
         } catch (Exception e) {
             System.out.println("" + e);
@@ -501,18 +481,18 @@ public class disciplina extends Rows {
                 inter.set("nota", nota);
                 int ta = labels.size() - 1;
                 for (int j = 2; j < labels.size(); j++) {
-                    String vaNota ="";
-                    Listbox  objectListBox = null;
-                   Decimalbox  objectDecimalBox = null;
+                    String vaNota = "";
+                    Listbox objectListBox = null;
+                    Decimalbox objectDecimalBox = null;
 //                   String vaNota="";
-                   if(labels.get(j) instanceof Listbox){
-                       objectListBox = (Listbox) labels.get(j);
-                       vaNota = ((Equivalencias) objectListBox.getSelectedItem().getValue()).getNota().toString();
-                   }else{
-                       objectDecimalBox = (Decimalbox) labels.get(j);
-                       vaNota = objectDecimalBox.getValue().toString();
-                   }
-                    
+                    if (labels.get(j) instanceof Listbox) {
+                        objectListBox = (Listbox) labels.get(j);
+                        vaNota = ((Equivalencias) objectListBox.getSelectedItem().getValue()).getNota().toString();
+                    } else {
+                        objectDecimalBox = (Decimalbox) labels.get(j);
+                        vaNota = objectDecimalBox.getValue().toString();
+                    }
+
 //                    Decimalbox object1 = (Decimalbox) labels.get(j);
                     String formula = notas.get(j - 2).getSistema().getFormuladisciplina();// EN CASO DE FORMULA
                     formula = formula.replace("no", "nota.getNo");//EN CASO DE QUE HAYA FORMULA
@@ -535,16 +515,16 @@ public class disciplina extends Rows {
 //              Label object1 = (Label) labels.get(ta);
 //              nota.setObservacion(object1.getValue()+"");
                 adm.guardar(nota);
-               
+
                 //System.out.println("FINALIZO EN: "+new Date());
                 //return "ok";
             } catch (EvalError ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-            
+            }
+
         }
         recalculoNotas(materia, curso);
-          System.out.println("FINZALI EN: " + new Date());
+        System.out.println("FINZALI EN: " + new Date());
         return "ok";
 
 
@@ -552,7 +532,7 @@ public class disciplina extends Rows {
     }
 
     public void recalculoNotas(MateriaProfesor materia, Cursos curso) {
-             Session ses = Sessions.getCurrent();
+        Session ses = Sessions.getCurrent();
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
 
@@ -594,6 +574,7 @@ public class disciplina extends Rows {
                 inter.eval(redon);
                 inter.eval(truncar);
                 inter.eval(prom1);
+                inter.eval(prom2);
                 inter.eval(equival);
                 try {
                     for (Iterator<Global> it = Nmaterias.iterator(); it.hasNext();) {
@@ -605,7 +586,7 @@ public class disciplina extends Rows {
                                 + "where matriculas.curso = '" + curso.getCodigocur() + "'  "
                                 + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
                                 + "order by estudiantes.apellido";
-System.out.println("EL QUERY DE REALCULO: "+q);
+                        System.out.println("EL QUERY DE REALCULO: " + q);
                         List nativo = adm.queryNativo(q);
 //                        System.out.println("recalculo 1: " + q);
 //                        System.out.println("recalculo 2: " + nativo.size());
@@ -827,7 +808,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
             return 0.0;
         }
     }
-    
+
     public Double truncar(Double numero, int decimales) {
         try {
             BigDecimal d = new BigDecimal(numero);
@@ -1065,6 +1046,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                     + "order by o.estudiante.apellido ");
             Interpreter inter = new Interpreter();
             inter.eval(prom1);
+            inter.eval(prom2);
             inter.eval(redon);
             inter.eval(truncar);
             inter.eval(equival);
@@ -1072,7 +1054,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                 Matriculas matriculas1 = itm.next();
                 String query3 = "";
                 int w = 1;
-                
+
                 for (int i = 0; i < equivalenciasFaltas.size(); i++) {
                     query3 += "sum(nota" + w + "),";
                     parameters.put("f" + (i + 1), equivalenciasFaltas.get(i).getAbreviatura());
@@ -1105,7 +1087,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                 }
                 int i = 0;
                 Double promProfesor = 0.0;
-                String formu="";
+                String formu = "";
                 for (Iterator<MateriaProfesor> it = lista.iterator(); it.hasNext();) {
                     MateriaProfesor MateriaProfesor = it.next();
                     parameters.put("n" + (i + 1), MateriaProfesor.getMateria().getDescripcion());
@@ -1128,7 +1110,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                         inter.eval("nota.setN" + (i + 1) + "(" + val + ")");
                         coll = (NotaDisciplina) inter.get("nota");
                         promProfesor += val;
-                        formu +=  val+",";
+                        formu += val + ",";
 
                     } else {
 //                                        inter.eval("nota.setN" + (i + 1) + "(0.0)");
@@ -1138,15 +1120,16 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                     i++;
 
                 }
-                if(formu.length()>0)
+                if (formu.length() > 0) {
                     formu = formu.substring(0, formu.length() - 1);
-                else
-                    formu ="0";
-                inter.eval("Double valCal =  promedio("+formu+")  ");
+                } else {
+                    formu = "0";
+                }
+                inter.eval("Double valCal =  promedio(" + formu + ")  ");
                 Double valorF = (Double) inter.get("valCal");
                 //coll.setProfesores(promProfesor / lista.size());
                 coll.setProfesores(valorF);
-                 
+
 
                 q = "Select " + query + "  from Notas notas " + //SACO LA DISCIPLINA DEL INSPECTOR CODIGO = 1
                         "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
@@ -1154,7 +1137,7 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                         + " and notas.disciplina = true  "
                         + " ";
                 nativo = adm.queryNativo(q);
-                
+
                 if (nativo.size() > 0) {
                     Vector vec = (Vector) nativo.get(0);
                     inter.set("nota", coll);
@@ -1169,29 +1152,29 @@ System.out.println("EL QUERY DE REALCULO: "+q);
                     coll.setInspector(notaBase);
                 }
                 Double notaInspector = coll.getInspector();
-                
+
                 if (tipo.contains("MITAD")) {//SUMA ENTRE PROMEDIOS DIVIDIDO PARA 2
                     //coll.setFinali( (promProfesor / lista.size() + notaInspector) / 2);
-                    inter.eval("Double prom1 = promedio(promedio("+formu+") , "+notaInspector+" ) ");
+                    inter.eval("Double prom1 = promedio(promedio(" + formu + ") , " + notaInspector + " ) ");
                     Double valorMit = (Double) inter.get("prom1");
                     //coll.setProfesores(promProfesor / lista.size());
                     coll.setFinali(valorMit);
                 } else if (tipo.contains("PROMEDIO")) {//
-                     //coll.setFinali((promProfesor + notaInspector) / (lista.size() + 1));
-                        inter.eval("Double prom2 =  promedio("+formu+" , "+notaInspector+" ) ");
-                        Double valorMit = (Double) inter.get("prom2");
-                        coll.setFinali(valorMit);
-                     
+                    //coll.setFinali((promProfesor + notaInspector) / (lista.size() + 1));
+                    inter.eval("Double prom2 =  promedio(" + formu + " , " + notaInspector + " ) ");
+                    Double valorMit = (Double) inter.get("prom2");
+                    coll.setFinali(valorMit);
+
                 } else if (tipo.contains("SUMATORIA")) {//PROMEDIO DE PROFESORES + PROMEDIO DE INSPECCION
                     //coll.setFinali(promProfesor / lista.size() + notaInspector);
-                      inter.eval("Double prom3 =  promedio("+formu+") + "+notaInspector+" ");
-                        Double valorMit = (Double) inter.get("prom3");
-                        coll.setFinali(valorMit);
+                    inter.eval("Double prom3 =  promedio(" + formu + ") + " + notaInspector + " ");
+                    Double valorMit = (Double) inter.get("prom3");
+                    coll.setFinali(valorMit);
                 } else if (tipo.contains("PROMEDIADA")) {//SUMA SOLO LAS MATERIAS Y LAS DIVIDE PARA LOS QUE INGRESARON
                     //coll.setFinali((promProfesor) / lista.size());
-                        inter.eval("Double prom4 =  promedio("+formu+")");
-                        Double valorMit = (Double) inter.get("prom4");
-                        coll.setFinali(valorMit);
+                    inter.eval("Double prom4 =  promedio(" + formu + ")");
+                    Double valorMit = (Double) inter.get("prom4");
+                    coll.setFinali(valorMit);
                 } else if (tipo.contains("INGRESADA")) {
                     q = "Select " + query + "  from Notas notas "
                             + "where notas.matricula = '" + matriculas1.getCodigomat() + "' "
@@ -1227,9 +1210,8 @@ System.out.println("EL QUERY DE REALCULO: "+q);
 
         return null;
     }
-    
-    
-        public String regresaVariable(String variable, List<Textos> textos) {
+
+    public String regresaVariable(String variable, List<Textos> textos) {
         String dato = "";
         for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
             Textos textos1 = it.next();
@@ -1271,7 +1253,8 @@ System.out.println("EL QUERY DE REALCULO: "+q);
         }
         return false;
     }
-   public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
+
+    public Equivalencias devolverNombre(List<Equivalencias> equiva, Integer codigo) {
 
         for (Iterator<Equivalencias> it = equiva.iterator(); it.hasNext();) {
             Equivalencias equivalencias = it.next();
@@ -1283,6 +1266,4 @@ System.out.println("EL QUERY DE REALCULO: "+q);
 
 
     }
-    
-    
 }
