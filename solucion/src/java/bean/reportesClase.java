@@ -6427,7 +6427,7 @@ public class reportesClase {
                 //IMPRIMO LAS FALTAS
                 q = "Select " + query4 + ",sis.abreviatura from disciplina, sistemacalificacion  sis, trimestres tri "
                         + "where matricula = '" + matriculas1.getCodigomat() + "' and sis.trimestre = tri.codigotrim   "
-                        + "and sis.orden <= '" + sistema.getOrden() + "'   AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
+                        + "and sis.orden <= '" + sistema.getOrden() + "' AND sis.trimestre = '"+sistema.getTrimestre().getCodigotrim()+"'  AND sis.codigosis = disciplina.sistema  and sis.seimprime = true  "
                         + "  group by sis.codigosis order by  tri.codigotrim, sis.orden "
                         + " ";
 //                System.out.println(""+q);
@@ -6865,6 +6865,10 @@ public class reportesClase {
             //cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion() + " " + matriculas1.getCurso().getEspecialidad().getDescripcion() + " " + matriculas1.getCurso().getParalelo().getDescripcion());
             cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
                     + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
+            piea = piea.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
+                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
+            pier = pier.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
+                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
                 Boolean cuantitativa = false;
@@ -6973,7 +6977,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource promocion2(Cursos curso, Matriculas matri) { //CON DECIMALES
+    public JRDataSource promocion2(Cursos curso, Matriculas matri, Boolean horizontal) { //CON DECIMALES
 //     int tamanio=0; -2
         Administrador adm = new Administrador();
 
@@ -6993,6 +6997,12 @@ public class reportesClase {
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
+        List<Notanotas> notasPG = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
+                + "and o.sistema.promediofinal = 'PG' ");
+        List<Notanotas> notash = adm.query("Select o from Notanotas as o "
+                + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
+                + "and o.sistema.promedioparcial = true and o.sistema.promediofinal = 'NI' ");
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema(), matri);
         String codigosPerdidos = "";
         for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
@@ -7090,11 +7100,50 @@ public class reportesClase {
             String piea = aprobado;
             String pier = reprobado;
             boolean estadoEstudiante = true;
-            //PARA CARGAR EL APROVECHAMIENTO
-            String valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
-            if (truncarNotas) {
-                valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            //aquí selecciono si es horizonal en el caso del 1q y el 2q o en vertical de todas las materias en su nota final
+            
+             String verificardorSupletorio = "Select notas." +  notasPG.get(0).getNota() + " from notas "
+                    + " "
+                    + "where   notas." +  notasPG.get(0).getNota() + " < 7   "
+                    + " and notas.matricula = '" + matriculas1.getCodigomat() + "' "
+                    + "and notas.seimprime = true "
+                    + "and notas.promedia = true "
+                    + "and notas.cuantitativa = true "
+                    + "and notas.disciplina = false   and notas.materia != 0 ";
+            System.out.println("" + verificardorSupletorio);
+            List listMateriasSupletorio = adm.queryNativo(verificardorSupletorio);
+            
+            String valorAnadir2 = "";
+            if(horizontal.booleanValue()==false){
+                //PARA CARGAR EL APROVECHAMIENTO
+                valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                if (truncarNotas) {
+                    valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                }
+            }else{
+                //PARA CARGAR EL APROVECHAMIENTO en 1q y 2q
+                String aPromediar = "";
+                int contador=0;
+                for (Iterator<Notanotas> it = notash.iterator(); it.hasNext();) {
+                    Notanotas notah1 = it.next();
+                        
+                        if (truncarNotas) {
+                            valorAnadir2 += " truncate(cast(avg(CAST(" + notah1.getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") +";
+                        }else{
+                            valorAnadir2 += " round(cast(avg(CAST(" + notah1.getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") +";        
+                        }
+                        contador++;
+                    
+                }
+                valorAnadir2 = "round( CAST( ("+valorAnadir2.substring(0, valorAnadir2.length()-1)+")/"+contador+"  AS DECIMAL(8,3))," + 3 + ") ";
+                    if(listMateriasSupletorio.size()>0){
+                        valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                        if (truncarNotas) {
+                            valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                        }
+                    }
             }
+            
 
             String q = "Select " + valorAnadir2 + " from matriculas "
                     + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
@@ -7170,6 +7219,10 @@ public class reportesClase {
             nativo = adm.queryNativo(q);
             //cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion() + " " + matriculas1.getCurso().getEspecialidad().getDescripcion() + " " + matriculas1.getCurso().getParalelo().getDescripcion());
             cabe1 = cabe1.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
+                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
+            piea = piea.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
+                    + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
+            pier = pier.replace("[estudiante]", matriculas1.getEstudiante().getApellido() + ""
                     + " " + matriculas1.getEstudiante().getNombre()).replace("[curso]", matriculas1.getCurso().getDescripcion()).replace("[especialidad]", matriculas1.getCurso().getEspecialidad().getDescripcion()).replace("[paralelo]", matriculas1.getCurso().getParalelo().getDescripcion()).replace("[siguientecurso]",matriculas1.getCurso().getSiguiente());
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
                 Vector vec = (Vector) itna.next();
