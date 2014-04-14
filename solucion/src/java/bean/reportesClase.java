@@ -737,6 +737,13 @@ public class reportesClase {
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+         Integer noDecimalesProme = 3;
+        try {
+            noDecimalesProme = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesProme = 3;
+
+        }
         Double numeroDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
@@ -872,7 +879,11 @@ public class reportesClase {
                             //IMPRIMO EL PROMEDIO ******************************* 
                             if (incluyepromedio) {
                                 Object promedioFinal = null;
-                                String query2 = "round(cast(avg(" + query + ") as decimal(9,4))," + 2 + ")";
+                                String query2 = "round(cast(avg(" + query + ") as decimal(9,"+noDecimalesProme+"))," + noDecimalesProme + ")";
+                                if(truncarNotas){
+                                        query2 = "truncate(cast(avg(" + query + ") as decimal(9,"+noDecimalesProme+"))," + noDecimalesProme + ")";
+                                }
+                                 //query2 = "round(cast(avg(" + query + ") as decimal(9,4))," + 2 + ")";
                                 q = "Select matricula," + query2 + "  from notas "
                                         + "where notas.matricula = '" + matriculaNo.getCodigomat() + "' "
                                         + "and notas.seimprime = true "
@@ -7116,9 +7127,9 @@ public class reportesClase {
             String valorAnadir2 = "";
             if(horizontal.booleanValue()==false){
                 //PARA CARGAR EL APROVECHAMIENTO
-                valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,"+noDecimalesProme+"))) as decimal(8,"+noDecimalesProme+"))," + noDecimales + ") ";
                 if (truncarNotas) {
-                    valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                    valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,"+noDecimalesProme+"))) as decimal(8,"+noDecimalesProme+"))," + noDecimales+ ") ";
                 }
             }else{
                 //PARA CARGAR EL APROVECHAMIENTO en 1q y 2q
@@ -7128,18 +7139,18 @@ public class reportesClase {
                     Notanotas notah1 = it.next();
                         
                         if (truncarNotas) {
-                            valorAnadir2 += " truncate(cast(avg(CAST(" + notah1.getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") +";
+                            valorAnadir2 += " truncate(cast(avg(CAST(" + notah1.getNota() + "  AS DECIMAL(8,"+noDecimalesProme+"))) as decimal(8,"+noDecimalesProme+"))," + noDecimales + ") +";
                         }else{
-                            valorAnadir2 += " round(cast(avg(CAST(" + notah1.getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") +";        
+                            valorAnadir2 += " round(cast(avg(CAST(" + notah1.getNota() + "  AS DECIMAL(8,"+noDecimalesProme+"))) as decimal(8,"+noDecimalesProme+"))," + noDecimales + ") +";        
                         }
                         contador++;
                     
                 }
-                valorAnadir2 = "round( CAST( ("+valorAnadir2.substring(0, valorAnadir2.length()-1)+")/"+contador+"  AS DECIMAL(8,3))," + 3 + ") ";
+                valorAnadir2 = "truncate( CAST( ("+valorAnadir2.substring(0, valorAnadir2.length()-1)+")/"+contador+"  AS DECIMAL(8,3))," + noDecimales + ") ";
                     if(listMateriasSupletorio.size()>0){
-                        valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                        valorAnadir2 = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,"+noDecimalesProme+"))) as decimal(8,"+noDecimalesProme+"))," + noDecimales + ") ";
                         if (truncarNotas) {
-                            valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+                            valorAnadir2 = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,"+noDecimalesProme+"))) as decimal(8,"+noDecimalesProme+"))," + noDecimales + ") ";
                         }
                     }
             }
