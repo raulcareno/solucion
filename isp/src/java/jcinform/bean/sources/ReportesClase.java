@@ -1389,8 +1389,12 @@ public class ReportesClase {
             pendi.setFechadeposito(cIt.getFechadeposito());
             pendi.setFechacheque(cIt.getFechacheque());
             pendi.setNodeposito(cIt.getNocuentaban()); 
-            pendi.setBancocheque(cIt.getBancocheque().getNombre());
+            try{
+                pendi.setBancocheque(cIt.getBancocheque().getNombre());
+            }catch(Exception ax){}
+            try{
             pendi.setBancodeposito(cIt.getBancodep().getNombre()); 
+            }catch(Exception ax){}
             pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
             pendi.setNotarjeta(cIt.getNotarjeta());
             try {
