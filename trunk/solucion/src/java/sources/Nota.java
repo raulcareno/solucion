@@ -33,7 +33,8 @@ private Object disciplinaFinal;
 private Double aprovechamiento;
 private Double sumatoria;
 private Integer diasAsistidos;
-private Double disciplina;
+//private Double disciplina;
+private Object disciplina;
 private String disciplinaS;
 
 //para examenes de grado
@@ -222,13 +223,21 @@ private BigDecimal disciplina2;
         this.optativa = optativa;
     }
 
-    public Double getDisciplina() {
+    public Object getDisciplina() {
         return disciplina;
     }
 
-    public void setDisciplina(Double disciplina) {
+    public void setDisciplina(Object disciplina) {
         this.disciplina = disciplina;
     }
+
+//    public Double getDisciplina() {
+//        return disciplina;
+//    }
+//
+//    public void setDisciplina(Double disciplina) {
+//        this.disciplina = disciplina;
+//    }
 
     public Object getDisciplinaFinal() {
         return disciplinaFinal;
