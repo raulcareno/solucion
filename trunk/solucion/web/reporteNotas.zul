@@ -775,6 +775,22 @@ void recalcular2(){
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
                     parametros = (HashMap) arreglo.get(1);
                     report.setSrc(directorioReportes+"actaslistado.jasper");
+ 
+            }else if(tipo.equals("LAG1")){
+                    ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"actaslistado1.jasper");
+            }else if(tipo.equals("LAG2")){
+                    ArrayList arreglo = noti.actaGradoTodosPorCurso(curs.getSelectedItem().getValue());
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"actaslistado2.jasper");
+            }else if(tipo.equals("LAG3")){
+                    ArrayList arreglo = noti.actaGradoTodosPorCurso(curs.getSelectedItem().getValue());
+                    datasource = (ActaGeneralDataSource) arreglo.get(0);
+                    parametros = (HashMap) arreglo.get(1);
+                    report.setSrc(directorioReportes+"actaslistado3.jasper");
             }else if(tipo.equals("LAG1")){
                     ArrayList arreglo = noti.actaGradoTodos(curs.getSelectedItem().getValue());
                     datasource = (ActaGeneralDataSource) arreglo.get(0);
@@ -1172,7 +1188,19 @@ void campos(String valor){
             titulo.value= "Examenes de Grado";
             filacursos.visible = true;
             filarecalculos.visible = true;
-        }else if(valor.equals("LAG") || valor.equals("LAG1")){
+
+        }else if(valor.equals("LAG") || valor.equals("LAG1") ){
+
+            curs.disabled = false;
+            titulo.value= "Listado de Actas de Grado";
+             filacursos.visible = true;
+             filarecalculos.visible = true;
+        }else if(valor.equals("LAG2") || valor.equals("LAG3") ){
+            curs.disabled = false;
+            titulo.value= "Listado de Actas de Grado";
+             filacursos.visible = true;
+             filarecalculos.visible = true;
+        }else if(valor.equals("LAG2")){
             curs.disabled = false;
             titulo.value= "Listado de Actas de Grado";
              filacursos.visible = true;
@@ -1310,8 +1338,10 @@ void campos(String valor){
                                     <listitem  id="CAG" label="Copia de Acta de Grado" value="CAG"/>
                                     <listitem  id="CAG2" label="Copia de Acta de Grado(Suspendidos)" value="CAG2"/>
                                     <listitem  id="APRO" label="Listado de Estudiantes Aprobados" value="APRO"/>
-                                    <listitem  id="LAG" label="Listado de Actas de Grado" value="LAG"/>
-                                    <listitem  id="LAG1" label="Listado de Actas de Grado Record" value="LAG1"/>
+                                    <listitem  id="LAG" label="Listado de Actas de Grado Global" value="LAG"/>
+                                    <listitem  id="LAG1" label="Listado de Actas de Grado Record Global" value="LAG1"/>
+                                    <listitem  id="LAG2" label="Listado de Actas de Grado x Curso" value="LAG2"/>
+                                    <listitem  id="LAG3" label="Listado de Actas de Grado Record x Curso" value="LAG3"/>
                                     <listitem  id="NOMA" label="Nómina Oficial de Graduados" value="NOMA"/>
                                     <listitem  id="NOMAS" label="Nómina Oficial de Graduados(Suspendidos)" value="NOMAS"/>
                                     <listitem  id="NOMA1" label="Cuadro de resumen de Calificaciones del Acta" value="NOMA1"/>
