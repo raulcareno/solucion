@@ -3993,7 +3993,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         try {
             // TODO add your handling code here:
             Accesos permisos = null;
-            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'AnularTickets' "
+            List<Accesos> accesosL = adm.query("Select o from Accesos as o " + "where o.pantalla = 'TarifaCero' "
                     + "and o.global.codigo  = '" + principal.usuarioActual.getGlobal().getCodigo() + "' and o.ingresar = true  ");
             if (accesosL.size() > 0) {
                 permisos = accesosL.get(0);

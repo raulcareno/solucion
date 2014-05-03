@@ -42,6 +42,7 @@ class CamaraWeb {
             if (video != null) {
                 componente = video;
             }
+            limpiarMemoria();
         } catch (Exception e) {
             System.out.println("error en la comunicacion con la webcam REVISE VFW: "+e);
              lger.logger(frmPrincipal.class.getName(), e+"");
@@ -53,7 +54,14 @@ class CamaraWeb {
         this.componente.setBounds(x, y, alto, ancho);
         return componente;
     }
-
+ public void limpiarMemoria() {
+//        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+//        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    }
     public int Fotografiar(String Carpeta, Boolean NombreAutomatico, String NombreValoNull) {
         Buffer buf = null;
         Image img = null;
@@ -87,11 +95,14 @@ class CamaraWeb {
             formato = "JPEG";
             try {
                 ImageIO.write((RenderedImage) img, formato, imagenArch);
+                limpiarMemoria();
                 return 1;
             } catch (IOException ioe) {
+                limpiarMemoria();
                 return 0;
             }
         }
+        limpiarMemoria();
         return 0;
     }
 }

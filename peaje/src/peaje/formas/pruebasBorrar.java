@@ -9,11 +9,14 @@ package peaje.formas;
     import java.util.logging.Logger;
     public class pruebasBorrar {
         public static void main(String args[]) {
-            Monitor monitor = new Monitor();
-            Escribir hola = new Escribir("hola", 0, monitor);
-            hola.start();
-            Escribir adios = new Escribir("adiós", 1, monitor);
+//            Monitor monitor = new Monitor();
+//            Escribir hola = new Escribir("hola", 0, monitor);
+//            hola.start();
+//            Escribir adios = new Escribir("adiós", 1, monitor);
 //           adios.start();
+            claves c = new claves();
+            System.out.println(""+c.encriptar("peaje@2011"));
+            System.out.println(""+c.desencriptar("O1ZzXv0Dhac="));
        }
    }
    class Escribir extends Thread {

@@ -3299,6 +3299,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
             ocupados.setText("Ocupados: " + val2.intValue());
             final int dispo = (empresaObj.getParqueaderos() - val2.intValue());
+            final String empOb = "   "+empresaObj.getNombre()+"   ";
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
             if (empresaObj.getLed() != null && !empresaObj.getLed().equals("") && !empresaObj.getLed().equals("null")) {
                 Thread cargar = new Thread() {
@@ -3313,7 +3314,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             LeerTarjeta ta = buscarPuerto("led");
                             //ta.outputSream.write((("XYinforma" + valor).getBytes()));
                             ta.outputSream.write("@".getBytes());
-                            ta.outputSream.write("  corporaciOn nacional edificio    ".getBytes());
+                            ta.outputSream.write("   centro corporativo atahualpa   ".getBytes());
                             Integer a = 0;
                             a = 7009;
                             byte[] encerar = {(byte) 0x00, (byte) 0x00};
@@ -4171,6 +4172,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
         }
+        limpiarMemoria();
     }
 
     public void buscarTarjetaValidarSalida(String puertoViene, String noticket) {//VALIDO LA SALIDA CON CODIGO DE  BARRAS
@@ -5943,15 +5945,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("2".getBytes());
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("2".getBytes());
                     //TEMPORAL
                     System.out.println("ABRIR PUERTA 2" + new Date());
                     try {
@@ -6015,15 +6017,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("1".getBytes());
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("1".getBytes());
                     //TEMPORAL
                     //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                     System.out.println("ABRIR PUERTA 1" + new Date());

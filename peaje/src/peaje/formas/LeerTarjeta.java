@@ -245,7 +245,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             tarjeta = tarjeta.toUpperCase();
             //System.out.println("VAL: TARJETA: " + tarjeta);
             //System.out.println("" + tarjeta);
-            if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("Ingenieria")) {
+            if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.toUpperCase().contains("INGENIE")) {
                 if (habilitado) {
                     //if (tarjeta.contains("AEIOUA")) {
                     try {
@@ -329,7 +329,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         } else {
 
-            if (tarjeta.contains("AEIOUAE1") || tarjeta.contains("Ingenier")) {//*******PULSA EL BOTÓN 1 E INTENTA ABRIR LA BARRERA
+            if (tarjeta.contains("AEIOUAE1") || tarjeta.toUpperCase().contains("INGENIER")) {//*******PULSA EL BOTÓN 1 E INTENTA ABRIR LA BARRERA
                 if (habilitado) {
                     try {
                         System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
