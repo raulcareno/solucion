@@ -3371,6 +3371,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 };
                 cargar.start();
             }
+con=null;
+val2=null;
 
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);

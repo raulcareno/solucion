@@ -420,6 +420,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         System.gc();
         System.gc();
+        System.runFinalization();
         System.gc();
         System.gc();
 //        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);

@@ -155,6 +155,15 @@ public class frmTicket extends javax.swing.JInternalFrame {
     }
 
     public void limpiar() {
+     
+        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
+        System.gc();
+        System.gc();
+        System.runFinalization();
+        System.gc();
+        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+     
     }
 
     // </editor-fold >
@@ -376,6 +385,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     
                     
                     imprimir(fac.getCodigo(), emp);
+                    emp = null;
                 if(empresaObj.getSeabretic()){
                         if (empresaObj.getRetardoEntrada() != null) {
                                 if (empresaObj.getRetardoEntrada().length() > 0) {
@@ -398,6 +408,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                         Thread.sleep(20);                            
                         ta.outputSream.write(empresaObj.getPuertatic().getBytes());
                         //TEMPORAL
+                        ta = null;
                     } catch (Exception ex) {
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -433,6 +444,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     }
                     principal.cargarFoto(fac.getCodigo());
                     System.gc();
+                    limpiar();
                     this.setVisible(false);
                      guardando = false;
                 } catch (Exception ex) {
@@ -445,6 +457,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     btnSalir.setEnabled(true);
                     btnAgregar.setVisible(true);
                    guardando = false;
+                   limpiar();
                     return;
                 }
             } else {
