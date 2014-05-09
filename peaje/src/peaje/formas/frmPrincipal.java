@@ -376,6 +376,37 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         barrera7 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         contenedor = new javax.swing.JDesktopPane();
+        frmClientes1 = new javax.swing.JInternalFrame();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        nombres = new javax.swing.JFormattedTextField();
+        direccion = new javax.swing.JFormattedTextField();
+        jLabel12 = new javax.swing.JLabel();
+        codigo = new javax.swing.JFormattedTextField();
+        jLabel5 = new javax.swing.JLabel();
+        telefono = new javax.swing.JFormattedTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tarjetas = new javax.swing.JTable();
+        btnNuevaTarjeta = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tarifas = new javax.swing.JList();
+        txtValor = new javax.swing.JTextField();
+        btnLote = new javax.swing.JButton();
+        btnLote1 = new javax.swing.JButton();
+        jLabel32 = new javax.swing.JLabel();
+        descuento = new javax.swing.JFormattedTextField();
+        jLabel34 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        btnBuscar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         frmIngresarSistema = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
         clave = new javax.swing.JPasswordField();
@@ -483,35 +514,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         txtGracia1 = new javax.swing.JFormattedTextField();
         nocontar1 = new javax.swing.JCheckBox();
         salida1 = new javax.swing.JCheckBox();
-        frmClientes1 = new javax.swing.JInternalFrame();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        nombres = new javax.swing.JFormattedTextField();
-        direccion = new javax.swing.JFormattedTextField();
-        jLabel12 = new javax.swing.JLabel();
-        codigo = new javax.swing.JFormattedTextField();
-        jLabel5 = new javax.swing.JLabel();
-        telefono = new javax.swing.JFormattedTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tarjetas = new javax.swing.JTable();
-        btnNuevaTarjeta = new javax.swing.JButton();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        tarifas = new javax.swing.JList();
-        txtValor = new javax.swing.JTextField();
-        btnLote = new javax.swing.JButton();
-        btnLote1 = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        btnBuscar = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnSalir = new javax.swing.JButton();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         frmLoteTarjetas = new javax.swing.JInternalFrame();
         panelencontrados = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -924,6 +926,332 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 contenedorKeyPressed(evt);
             }
         });
+
+        frmClientes1.setTitle("Registro y Modifación de Clientes");
+        frmClientes1.setAutoscrolls(true);
+        frmClientes1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
+        frmClientes1.setVisible(false);
+        frmClientes1.getContentPane().setLayout(null);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel4.setLayout(null);
+
+        jLabel4.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("CI/RUC");
+        jPanel4.add(jLabel4);
+        jLabel4.setBounds(10, 10, 60, 14);
+
+        nombres.setEditable(false);
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombres}"), nombres, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombresKeyPressed(evt);
+            }
+        });
+        jPanel4.add(nombres);
+        nombres.setBounds(80, 30, 310, 20);
+
+        direccion.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.direccion}"), direccion, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        direccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                direccionKeyPressed(evt);
+            }
+        });
+        jPanel4.add(direccion);
+        direccion.setBounds(80, 50, 310, 20);
+
+        jLabel12.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel12.setText("Nombres:");
+        jPanel4.add(jLabel12);
+        jLabel12.setBounds(10, 30, 60, 14);
+
+        codigo.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.identificacion}"), codigo, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        codigo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                codigoFocusLost(evt);
+            }
+        });
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoKeyPressed(evt);
+            }
+        });
+        jPanel4.add(codigo);
+        codigo.setBounds(80, 10, 100, 20);
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Dirección:");
+        jPanel4.add(jLabel5);
+        jLabel5.setBounds(10, 50, 60, 14);
+
+        telefono.setEditable(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.telefono}"), telefono, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telefonoKeyPressed(evt);
+            }
+        });
+        jPanel4.add(telefono);
+        telefono.setBounds(80, 70, 160, 20);
+
+        tarjetas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Habilitada", "Tarjeta", "Desde", "Hasta"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.util.Date.class, java.util.Date.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tarjetas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tarjetasMouseClicked(evt);
+            }
+        });
+        tarjetas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tarjetasKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tarjetas);
+
+        jPanel4.add(jScrollPane1);
+        jScrollPane1.setBounds(10, 210, 380, 100);
+
+        btnNuevaTarjeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/File3.gif"))); // NOI18N
+        btnNuevaTarjeta.setText("Añadir Nueva Tarjeta");
+        btnNuevaTarjeta.setEnabled(false);
+        btnNuevaTarjeta.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnNuevaTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevaTarjetaActionPerformed(evt);
+            }
+        });
+        btnNuevaTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnNuevaTarjetaKeyPressed(evt);
+            }
+        });
+        jPanel4.add(btnNuevaTarjeta);
+        btnNuevaTarjeta.setBounds(10, 170, 170, 30);
+
+        jLabel7.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Valor Inc IVA:");
+        jPanel4.add(jLabel7);
+        jLabel7.setBounds(240, 90, 70, 14);
+
+        jLabel9.setForeground(new java.awt.Color(0, 51, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel9.setText("Tarifa: ");
+        jPanel4.add(jLabel9);
+        jLabel9.setBounds(20, 90, 50, 14);
+
+        tarifas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                tarifasValueChanged(evt);
+            }
+        });
+        tarifas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tarifasKeyPressed(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tarifas);
+
+        jPanel4.add(jScrollPane4);
+        jScrollPane4.setBounds(80, 90, 160, 40);
+
+        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtValorKeyPressed(evt);
+            }
+        });
+        jPanel4.add(txtValor);
+        txtValor.setBounds(240, 110, 70, 20);
+
+        btnLote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/todo.gif"))); // NOI18N
+        btnLote.setMnemonic('B');
+        btnLote.setText("Modificar Lote");
+        btnLote.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnLote.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnLote.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoteActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnLote);
+        btnLote.setBounds(290, 170, 100, 30);
+
+        btnLote1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/todo.gif"))); // NOI18N
+        btnLote1.setMnemonic('B');
+        btnLote1.setText("Añadir X Lote");
+        btnLote1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnLote1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnLote1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnLote1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLote1ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnLote1);
+        btnLote1.setBounds(180, 170, 110, 30);
+
+        jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel32.setText("Teléfono:");
+        jPanel4.add(jLabel32);
+        jLabel32.setBounds(10, 70, 60, 14);
+
+        descuento.setText("0");
+        descuento.setEnabled(false);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.descuento}"), descuento, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jPanel4.add(descuento);
+        descuento.setBounds(80, 130, 120, 20);
+
+        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel34.setText("Dscto:");
+        jPanel4.add(jLabel34);
+        jLabel34.setBounds(10, 130, 60, 14);
+
+        frmClientes1.getContentPane().add(jPanel4);
+        jPanel4.setBounds(10, 50, 400, 320);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel5.setLayout(null);
+
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
+        btnBuscar.setMnemonic('B');
+        btnBuscar.setText("Buscar");
+        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBuscar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnBuscar);
+        btnBuscar.setBounds(80, 10, 60, 50);
+
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
+        btnAgregar.setMnemonic('N');
+        btnAgregar.setText("Nuevo");
+        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnAgregar);
+        btnAgregar.setBounds(140, 10, 60, 50);
+
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        btnModificar.setMnemonic('M');
+        btnModificar.setText("Modificar");
+        btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificar.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnModificar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnModificar);
+        btnModificar.setBounds(200, 10, 60, 50);
+
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar.setMnemonic('E');
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnEliminar);
+        btnEliminar.setBounds(260, 10, 60, 50);
+
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir.setMnemonic('S');
+        btnSalir.setText("Salir");
+        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalirKeyPressed(evt);
+            }
+        });
+        jPanel5.add(btnSalir);
+        btnSalir.setBounds(320, 10, 60, 50);
+
+        frmClientes1.getContentPane().add(jPanel5);
+        jPanel5.setBounds(20, 380, 390, 70);
+
+        jPanel6.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
+        jPanel6.setOpaque(false);
+        jPanel6.setLayout(null);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel11.setText("Catálogo de Clientes ..::..");
+        jPanel6.add(jLabel11);
+        jLabel11.setBounds(10, 0, 270, 15);
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel13.setText("Busqueda, Creación,Modificación,  Clientes ..::..");
+        jPanel6.add(jLabel13);
+        jLabel13.setBounds(10, 20, 250, 13);
+
+        frmClientes1.getContentPane().add(jPanel6);
+        jPanel6.setBounds(0, 0, 430, 40);
+
+        frmClientes1.setBounds(5, 5, 440, 490);
+        contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmIngresarSistema.setTitle("Seguridad");
         frmIngresarSistema.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/unlock.gif"))); // NOI18N
@@ -1672,318 +2000,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         frmLote.setBounds(5, 5, 650, 540);
         contenedor.add(frmLote, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        frmClientes1.setTitle("Registro y Modifación de Clientes");
-        frmClientes1.setAutoscrolls(true);
-        frmClientes1.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
-        frmClientes1.setVisible(false);
-        frmClientes1.getContentPane().setLayout(null);
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel4.setLayout(null);
-
-        jLabel4.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("CI/RUC");
-        jPanel4.add(jLabel4);
-        jLabel4.setBounds(10, 10, 60, 14);
-
-        nombres.setEditable(false);
-
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombres}"), nombres, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        nombres.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                nombresKeyPressed(evt);
-            }
-        });
-        jPanel4.add(nombres);
-        nombres.setBounds(80, 30, 310, 20);
-
-        direccion.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.direccion}"), direccion, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        direccion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                direccionKeyPressed(evt);
-            }
-        });
-        jPanel4.add(direccion);
-        direccion.setBounds(80, 50, 310, 20);
-
-        jLabel12.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Nombres:");
-        jPanel4.add(jLabel12);
-        jLabel12.setBounds(10, 30, 60, 14);
-
-        codigo.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.identificacion}"), codigo, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        codigo.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                codigoFocusLost(evt);
-            }
-        });
-        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                codigoKeyPressed(evt);
-            }
-        });
-        jPanel4.add(codigo);
-        codigo.setBounds(80, 10, 100, 20);
-
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Dirección:");
-        jPanel4.add(jLabel5);
-        jLabel5.setBounds(10, 50, 60, 14);
-
-        telefono.setEditable(false);
-
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.telefono}"), telefono, org.jdesktop.beansbinding.BeanProperty.create("value"));
-        bindingGroup.addBinding(binding);
-
-        telefono.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                telefonoKeyPressed(evt);
-            }
-        });
-        jPanel4.add(telefono);
-        telefono.setBounds(80, 70, 160, 20);
-
-        tarjetas.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Habilitada", "Tarjeta", "Desde", "Hasta"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.util.Date.class, java.util.Date.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tarjetas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tarjetasMouseClicked(evt);
-            }
-        });
-        tarjetas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tarjetasKeyPressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tarjetas);
-
-        jPanel4.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 180, 380, 90);
-
-        btnNuevaTarjeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/File3.gif"))); // NOI18N
-        btnNuevaTarjeta.setText("Añadir Nueva Tarjeta");
-        btnNuevaTarjeta.setEnabled(false);
-        btnNuevaTarjeta.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnNuevaTarjeta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevaTarjetaActionPerformed(evt);
-            }
-        });
-        btnNuevaTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnNuevaTarjetaKeyPressed(evt);
-            }
-        });
-        jPanel4.add(btnNuevaTarjeta);
-        btnNuevaTarjeta.setBounds(10, 150, 170, 30);
-
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel15.setText("Teléfono:");
-        jPanel4.add(jLabel15);
-        jLabel15.setBounds(10, 70, 60, 14);
-
-        jLabel7.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("Valor Inc IVA:");
-        jPanel4.add(jLabel7);
-        jLabel7.setBounds(300, 100, 70, 14);
-
-        jLabel9.setForeground(new java.awt.Color(0, 51, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Tarifa: ");
-        jPanel4.add(jLabel9);
-        jLabel9.setBounds(20, 90, 50, 14);
-
-        tarifas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                tarifasValueChanged(evt);
-            }
-        });
-        tarifas.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                tarifasKeyPressed(evt);
-            }
-        });
-        jScrollPane4.setViewportView(tarifas);
-
-        jPanel4.add(jScrollPane4);
-        jScrollPane4.setBounds(80, 90, 220, 50);
-
-        txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtValorKeyPressed(evt);
-            }
-        });
-        jPanel4.add(txtValor);
-        txtValor.setBounds(310, 120, 50, 20);
-
-        btnLote.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/todo.gif"))); // NOI18N
-        btnLote.setMnemonic('B');
-        btnLote.setText("Modificar Lote");
-        btnLote.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnLote.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnLote.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnLote.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoteActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnLote);
-        btnLote.setBounds(290, 150, 110, 30);
-
-        btnLote1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/todo.gif"))); // NOI18N
-        btnLote1.setMnemonic('B');
-        btnLote1.setText("Añadir X Lote");
-        btnLote1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnLote1.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnLote1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnLote1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLote1ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnLote1);
-        btnLote1.setBounds(180, 150, 110, 30);
-
-        frmClientes1.getContentPane().add(jPanel4);
-        jPanel4.setBounds(10, 50, 400, 280);
-
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        jPanel5.setLayout(null);
-
-        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
-        btnBuscar.setMnemonic('B');
-        btnBuscar.setText("Buscar");
-        btnBuscar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnBuscar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnBuscar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-        jPanel5.add(btnBuscar);
-        btnBuscar.setBounds(80, 10, 60, 50);
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
-        btnAgregar.setMnemonic('N');
-        btnAgregar.setText("Nuevo");
-        btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-        jPanel5.add(btnAgregar);
-        btnAgregar.setBounds(140, 10, 60, 50);
-
-        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
-        btnModificar.setMnemonic('M');
-        btnModificar.setText("Modificar");
-        btnModificar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnModificar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnModificar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
-            }
-        });
-        jPanel5.add(btnModificar);
-        btnModificar.setBounds(200, 10, 60, 50);
-
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
-        btnEliminar.setMnemonic('E');
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminar.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-        jPanel5.add(btnEliminar);
-        btnEliminar.setBounds(260, 10, 60, 50);
-
-        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
-        btnSalir.setMnemonic('S');
-        btnSalir.setText("Salir");
-        btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-        btnSalir.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnSalirKeyPressed(evt);
-            }
-        });
-        jPanel5.add(btnSalir);
-        btnSalir.setBounds(320, 10, 60, 50);
-
-        frmClientes1.getContentPane().add(jPanel5);
-        jPanel5.setBounds(20, 340, 390, 70);
-
-        jPanel6.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
-        jPanel6.setOpaque(false);
-        jPanel6.setLayout(null);
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel11.setText("Catálogo de Clientes ..::..");
-        jPanel6.add(jLabel11);
-        jLabel11.setBounds(10, 0, 270, 15);
-
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel13.setText("Busqueda, Creación,Modificación,  Clientes ..::..");
-        jPanel6.add(jLabel13);
-        jLabel13.setBounds(10, 20, 250, 13);
-
-        frmClientes1.getContentPane().add(jPanel6);
-        jPanel6.setBounds(0, 0, 430, 40);
-
-        frmClientes1.setBounds(5, 5, 440, 450);
-        contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
         frmLoteTarjetas.setMaximizable(true);
         frmLoteTarjetas.setTitle("Ingreso de Tarjetas por Lotes");
         frmLoteTarjetas.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/File3.gif"))); // NOI18N
@@ -2694,7 +2710,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar1.setOrientation(1);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2776,7 +2792,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar2.setOrientation(1);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2880,7 +2896,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+            jToolBar3.setOrientation(1);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -5325,7 +5341,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         direccion.setEditable(estado);
         telefono.setEditable(estado);
         tarjetas.setEnabled(estado);
-
+        descuento.setEnabled(estado);
         btnNuevaTarjeta.setEnabled(estado);
     }
 
@@ -5336,6 +5352,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
         dtm.getDataVector().removeAllElements();
         tarjetas.setModel(dtm);
+        descuento.setText("0"); 
 
     }
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -5375,6 +5392,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     clienteObj.setNombres(nombres.getText());
                     clienteObj.setTelefono(telefono.getText());
                     clienteObj.setIdentificacion(codigo.getText());
+                    clienteObj.setDescuento(new BigDecimal(descuento.getText()));
                     if (modificar) {
                         try {
                             adm.actualizar(clienteObj);
@@ -5426,7 +5444,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             fechaFin.setYear(fechaFin.getYear() + 1);
                             tarjeta.setHasta(fechaFin);
                             tarjeta.setIngresos(20);
-
+                            descuento.setText("0"); 
                             llenarTarjeta();
                             formaTarjetas1.setVisible(true);
                         } catch (Exception ex) {
@@ -5642,6 +5660,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                 }
                 txtValor.setText(clienteObj.getValor().setScale(2) + "");
+                descuento.setText(clienteObj.getDescuento().setScale(2) + "");
 
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -5693,6 +5712,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 }
                 txtValor.setText(clienteObj.getValor().setScale(2) + "");
+                descuento.setText(clienteObj.getDescuento().setScale(2) + "");
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -7388,6 +7408,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private org.jdesktop.swingx.JXTaskPane contenedor2;
     private org.jdesktop.swingx.JXTaskPane contenedor3;
     private javax.swing.JTextArea descripcionTarjeta;
+    private javax.swing.JFormattedTextField descuento;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JPanel diasHabiles1;
     private javax.swing.JPanel diasHabiles2;
@@ -7443,7 +7464,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -7462,7 +7482,9 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
