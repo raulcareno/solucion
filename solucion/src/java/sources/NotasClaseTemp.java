@@ -85,6 +85,7 @@ public class NotasClaseTemp {
         this.estado = estado;
     }
     public Double aprovechamiento;
+    public Double dq1,dq2,da;
     public Object aprovechamientos;
     public Double disciplina;
     public String disciplinaAbreviatura;
@@ -217,6 +218,30 @@ public class NotasClaseTemp {
 
     public void setAprovechamientos(Object aprovechamientos) {
         this.aprovechamientos = aprovechamientos;
+    }
+
+    public Double getDa() {
+        return da;
+    }
+
+    public void setDa(Double da) {
+        this.da = da;
+    }
+
+    public Double getDq1() {
+        return dq1;
+    }
+
+    public void setDq1(Double dq1) {
+        this.dq1 = dq1;
+    }
+
+    public Double getDq2() {
+        return dq2;
+    }
+
+    public void setDq2(Double dq2) {
+        this.dq2 = dq2;
     }
     
     
