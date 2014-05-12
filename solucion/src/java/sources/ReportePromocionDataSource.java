@@ -258,6 +258,39 @@ public class ReportePromocionDataSource implements JRDataSource {
                 }
                 
                 
+            }  else if ("q1".equals(fieldName)) {
+                if (nodo.getMateriaProfesor().getCuantitativa() == true) {
+                    valor = redondear((Double) nodo.getQ1(), nodo.getNoDecimalesPromeParciales()).doubleValue();
+                } else {
+                    //valor = nodo.getNotaCuali();
+                }
+                if (valor.equals("")) {
+                    valor = "0";
+                }
+                
+                
+            }  else if ("q2".equals(fieldName)) {
+                if (nodo.getMateriaProfesor().getCuantitativa() == true) {
+                    valor = redondear((Double) nodo.getQ2(), nodo.getNoDecimalesPromeParciales()).doubleValue();
+                } else {
+                    //valor = nodo.getNotaCuali();
+                }
+                if (valor.equals("")) {
+                    valor = "0";
+                }
+                
+                
+            }  else if ("sum".equals(fieldName)) {
+                if (nodo.getMateriaProfesor().getCuantitativa() == true) {
+                    valor = redondear((Double) nodo.getSum(), nodo.getNoDecimalesPromeParciales()).doubleValue();
+                } else {
+                    //valor = nodo.getNotaCuali();
+                }
+                if (valor.equals("")) {
+                    valor = "0";
+                }
+                
+                
             } else if ("aprovechamiento".equals(fieldName)) {
                 valor = nodo.getAprovechamiento();
             }  else if ("aprovechamientos".equals(fieldName)) {
