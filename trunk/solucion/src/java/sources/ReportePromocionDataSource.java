@@ -258,7 +258,11 @@ public class ReportePromocionDataSource implements JRDataSource {
                 }
                 
                 
-            }  else if ("q1".equals(fieldName)) {
+            }  else if ("dq1".equals(fieldName)) {
+               valor = nodo.getDq1();
+            }  else if ("dq2".equals(fieldName)) {
+               valor = nodo.getDq2();
+            }   else if ("dq1".equals(fieldName)) {
                 if (nodo.getMateriaProfesor().getCuantitativa() == true) {
                     valor = redondear((Double) nodo.getQ1(), nodo.getNoDecimalesPromeParciales()).doubleValue();
                 } else {
@@ -272,6 +276,17 @@ public class ReportePromocionDataSource implements JRDataSource {
             }  else if ("q2".equals(fieldName)) {
                 if (nodo.getMateriaProfesor().getCuantitativa() == true) {
                     valor = redondear((Double) nodo.getQ2(), nodo.getNoDecimalesPromeParciales()).doubleValue();
+                } else {
+                    //valor = nodo.getNotaCuali();
+                }
+                if (valor.equals("")) {
+                    valor = "0";
+                }
+                
+                
+            }  else if ("q1".equals(fieldName)) {
+                if (nodo.getMateriaProfesor().getCuantitativa() == true) {
+                    valor = redondear((Double) nodo.getQ1(), nodo.getNoDecimalesPromeParciales()).doubleValue();
                 } else {
                     //valor = nodo.getNotaCuali();
                 }

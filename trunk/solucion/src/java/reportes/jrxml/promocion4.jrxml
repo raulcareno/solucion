@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="158"/>
-	<property name="ireport.y" value="124"/>
+	<property name="ireport.x" value="108"/>
+	<property name="ireport.y" value="375"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -53,6 +53,8 @@
 	<field name="q1" class="java.lang.Object"/>
 	<field name="q2" class="java.lang.Object"/>
 	<field name="sum" class="java.lang.Object"/>
+	<field name="dq1" class="java.lang.Object"/>
+	<field name="dq2" class="java.lang.Object"/>
 	<group name="estudiantes" isStartNewPage="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{matricula}]]></groupExpression>
 		<groupHeader>
@@ -355,20 +357,6 @@
 					<text><![CDATA[Alcanza los aprendizajes requeridos]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="377" y="16" width="157" height="16"/>
-					<box leftPadding="1" rightPadding="1">
-						<pen lineWidth="0.25"/>
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" isBold="false"/>
-					</textElement>
-					<text><![CDATA[189]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="377" y="32" width="157" height="16"/>
 					<box leftPadding="1" rightPadding="1">
 						<pen lineWidth="0.25"/>
@@ -392,7 +380,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[I]]></text>
 				</staticText>
@@ -406,7 +394,7 @@
 						<rightPen lineWidth="0.25"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9" isBold="true"/>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[II]]></text>
 				</staticText>
@@ -437,34 +425,6 @@
 						<font size="9"/>
 					</textElement>
 					<text><![CDATA[200]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="377" y="64" width="78" height="16"/>
-					<box leftPadding="1" rightPadding="1">
-						<pen lineWidth="0.25"/>
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-					<text><![CDATA[0]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="455" y="64" width="79" height="16"/>
-					<box leftPadding="1" rightPadding="1">
-						<pen lineWidth="0.25"/>
-						<topPen lineWidth="0.25"/>
-						<leftPen lineWidth="0.25"/>
-						<bottomPen lineWidth="0.25"/>
-						<rightPen lineWidth="0.25"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="9"/>
-					</textElement>
-					<text><![CDATA[11]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="39" y="96" width="338" height="16"/>
@@ -534,6 +494,48 @@
 					</textElement>
 					<text><![CDATA[Quevedo, Marzo, 14 - 2014]]></text>
 				</staticText>
+				<textField pattern="###0">
+					<reportElement x="377" y="64" width="78" height="16"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[new Double(""+$F{dq1})]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="455" y="64" width="79" height="16"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[new Double(""+$F{dq2})]]></textFieldExpression>
+				</textField>
+				<textField pattern="###0">
+					<reportElement x="377" y="16" width="157" height="16"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression class="java.lang.Double"><![CDATA[new Double(200) - new Double(""+$F{dq1}) - new Double(""+$F{dq2})]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>
@@ -553,19 +555,6 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["INSTITUCIÓN:" + $P{denominacion}+" "+$P{nombre}]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement key="image-1" x="16" y="0" width="57" height="66" forecolor="#000000"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<graphicElement>
-					<pen lineWidth="0.0" lineStyle="Solid"/>
-				</graphicElement>
-				<imageExpression class="java.io.InputStream"><![CDATA[$F{sello}]]></imageExpression>
-			</image>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-4" x="39" y="135" width="487" height="16"/>
 				<box leftPadding="4" rightPadding="4">
@@ -657,8 +646,12 @@
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[CODIGO AMIE 12H00816]]></text>
+				<text><![CDATA[CODIGO AMIE 12H00718]]></text>
 			</staticText>
+			<image onErrorType="Blank">
+				<reportElement x="8" y="6" width="50" height="58"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\REPORTES\\escudo.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -788,7 +781,7 @@
 	</detail>
 	<columnFooter>
 		<band height="133" splitType="Stretch">
-			<image>
+			<image onErrorType="Blank">
 				<reportElement x="0" y="-76" width="236" height="198"/>
 				<imageExpression class="java.lang.String"><![CDATA["C:\\REPORTES\\ecuadoramalavida.jpg"]]></imageExpression>
 			</image>
@@ -818,23 +811,10 @@
 				</textElement>
 				<text><![CDATA[APOYO SEGUIMIENTO ]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="302" y="31" width="226" height="18"/>
-				<box>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="11"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{secretaria}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement key="staticText-13" x="316" y="49" width="197" height="16"/>
 				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -847,7 +827,7 @@
 			<staticText>
 				<reportElement key="staticText-12" x="28" y="49" width="197" height="16"/>
 				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -855,21 +835,8 @@
 				<textElement textAlignment="Center">
 					<font fontName="Arial"/>
 				</textElement>
-				<text><![CDATA[DIRECTORA]]></text>
+				<text><![CDATA[DIRECTOR(A)]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="16" y="31" width="225" height="18"/>
-				<box>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="11"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{rectora}]]></textFieldExpression>
-			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
