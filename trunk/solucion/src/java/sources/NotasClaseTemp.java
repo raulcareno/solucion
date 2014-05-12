@@ -149,6 +149,7 @@ public class NotasClaseTemp {
         this.materia = materia;
     }
     private Object nota;
+    private Object q1,q2,sum;
 
     public Object getNota() {
         return nota;
@@ -157,6 +158,31 @@ public class NotasClaseTemp {
     public void setNota(Object nota) {
         this.nota = nota;
     }
+
+    public Object getQ1() {
+        return q1;
+    }
+
+    public void setQ1(Object q1) {
+        this.q1 = q1;
+    }
+
+    public Object getQ2() {
+        return q2;
+    }
+
+    public void setQ2(Object q2) {
+        this.q2 = q2;
+    }
+
+    public Object getSum() {
+        return sum;
+    }
+
+    public void setSum(Object sum) {
+        this.sum = sum;
+    }
+    
     private String notaCuali;
 
     public String getNotaCuali() {

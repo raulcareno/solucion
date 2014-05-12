@@ -537,6 +537,9 @@ void recalcular2(){
             }else if(tipo.equals("CERT3")){
                     datasource = noti.promocion3(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),fecha.value);
                     report.setSrc(directorioReportes+"notafinal.jasper");
+            }else if(tipo.equals("CERT4")){
+                    datasource = noti.promocion4(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(), promediohorizontal.checked);
+                    report.setSrc(directorioReportes+"promocion4.jasper");
             }else if(tipo.equals("CERD")){
             
                     List matric = new ArrayList();
@@ -1037,7 +1040,7 @@ void campos(String valor){
             filarecalculos.visible = true;
             filaaportes.visible = true;
 
-        }else if(valor.equals("CERT") || valor.equals("CERT3")  || valor.equals("CERT2")   ){
+        }else if(valor.equals("CERT") || valor.equals("CERT3") || valor.equals("CERT4")  || valor.equals("CERT2")   ){
             curs.disabled = false;
             estudiantesCombo.disabled = false;
              titulo.value= "Certificado de Promoción";
@@ -1331,6 +1334,7 @@ void campos(String valor){
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
+                                    <listitem  id="CERT4" label="Certificado de Promoción(con decimales en notas 2)" value="CERT4"/>
                                     <listitem  id="CERT3" label="Notas de Promoción" value="CERT3"/>
                                     
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
