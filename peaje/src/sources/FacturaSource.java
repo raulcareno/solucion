@@ -53,6 +53,8 @@ public class FacturaSource implements JRDataSource {
                 valor = nodo.getNumero();
             }else if("numero".equals(fieldName)) {
                 valor = nodo.getNumero();
+            }else if("facturadescuento".equals(fieldName)) {
+                valor = nodo.getFactura();
             }else if("codigo".equals(fieldName)) {
                 valor = nodo.getCodigo();
             } else if ("fecha".equals(fieldName)) {
