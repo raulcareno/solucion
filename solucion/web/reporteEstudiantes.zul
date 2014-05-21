@@ -993,6 +993,13 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     parametros.put("tutor", ""+(curs.getSelectedItem().getValue()).getTutor());
                     }catch(Exception exs){}
                     
+            }else if(tipo.equals("CAT")){
+                    datasource = certificados(listadoCursos,"CAT",listadoEstudiantes);
+                    report.setSrc(directorioReportes+"certificadoAsistencia.jasper");
+                    parametros.put("titulo", "Certificado de Asistencia");
+                    try{
+                        parametros.put("tutor", ""+(curs.getSelectedItem().getValue()).getTutor());
+                    }catch(Exception exs){}
             }else if(tipo.equals("CD")){
                     datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoconducta.jasper");
@@ -1340,6 +1347,8 @@ void campos(String valor){
         }
         if(valor.equals("CM") ||  valor.equals("CM2") )
             titulo.value = "Certificado de Matricula";
+        if(valor.equals("CAT"))
+            titulo.value = "Certificado de Asistencia";
         if(valor.equals("CC") ||  valor.equals("CP") )
             titulo.value = "Certificado";
         if(valor.equals("AM"))
@@ -1439,6 +1448,7 @@ void campos(String valor){
                                 <listitem  id="CAD" label="Certificado de Aprov. Y Disciplina" value="CAD" />
                                 <listitem  id="CH" label="Certificado de Historial de Matriculas con Actual" value="CH" />
                                 <listitem  id="CAP" label="Certificado de Años Aprobados" value="CAP" />
+                                <listitem  id="CAT" label="Certificado de Asistencia" value="CAT" />
                                 <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
                                 <listitem  id="INS" label="Inscritos" value="INS" />
                                 <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
@@ -1697,6 +1707,7 @@ void campos(String valor){
             LREP3.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             CEREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
             LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+            CAS.visible = per.verificarPermisoReporte("CAT", "Ingresar");
             LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
             LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
             LASI2.visible = per.verificarPermisoReporte("LASI", "Ingresar");

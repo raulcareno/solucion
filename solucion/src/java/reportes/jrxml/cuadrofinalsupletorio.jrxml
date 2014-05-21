@@ -372,10 +372,10 @@
 					<measureExpression><![CDATA[$F{profesor}]]></measureExpression>
 				</measure>
 				<measure name="suma" class="java.lang.Double" calculation="Sum">
-					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M")  || $F{nota}.toString().contains("Re") || $F{nota}.toString().contains("P") || $F{nota}.toString().contains("Sup") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R") || $F{nota}.toString().equals("."))?new Double($F{nota}.toString()):new Double(0))]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M")  || $F{nota}.toString().contains("Re") || $F{nota}.toString().contains("P") || $F{nota}.toString().contains("Sup") || $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("A")  || $F{nota}.toString().contains("E")  || $F{nota}.toString().contains("C") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R") || $F{nota}.toString().equals("."))?new Double($F{nota}.toString()):new Double(0))]]></measureExpression>
 				</measure>
 				<measure name="riesgos" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().equals(".") ||  $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("B") || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R"))?new Integer(1):null)]]></measureExpression>
+					<measureExpression><![CDATA[(!$F{nota}.equals("")  && !($F{nota}.toString().contains("M") || $F{nota}.toString().equals(".") ||  $F{nota}.toString().contains("S") || $F{nota}.toString().contains("D") || $F{nota}.toString().contains("A")  || $F{nota}.toString().contains("E")  || $F{nota}.toString().contains("C") || $F{nota}.toString().contains("B")  || $F{nota}.toString().contains("I")  || $F{nota}.toString().contains("R"))?new Integer(1):null)]]></measureExpression>
 				</measure>
 				<crosstabCell width="30" height="12">
 					<cellContents mode="Transparent">

@@ -872,7 +872,7 @@ boolean validarRepresentante(){
                                                                                 
                                 </row>
                                 <row>
-                                    <span style="float:right"> Identificación:</span>
+                                    <span style="float:right"> Cédula:</span>
                                     <span>
                                         <intbox   cols="5"  visible="false"    id="codigo"  />
                                         <textbox visible="false"    id="codigoclave"  />

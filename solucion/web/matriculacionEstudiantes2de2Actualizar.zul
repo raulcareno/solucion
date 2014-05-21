@@ -1245,7 +1245,7 @@ boolean validarRepresentante(){
                                         <span style="float:right"> Codigo :</span>
                                         <span>
                                             <intbox  maxlength="14" cols="5"  disabled="true"  readonly="false" id="codigo"  />
-                                            Identificación:
+                                            Cédula:
                                             <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="false" id="cedula"  />
                                                                         
                                         </span>
@@ -1732,7 +1732,7 @@ boolean validarRepresentante(){
                                 <rows>
                                         
                                     <row>
-                                        <span style="float:right"> Identificación:</span>
+                                        <span style="float:right"> Cédula:</span>
                                         <textbox maxlength="10" cols="13"  readonly="false" id="cedulapa"  />
                                     </row>
                                     <row>

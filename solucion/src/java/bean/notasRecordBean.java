@@ -71,13 +71,14 @@ public class notasRecordBean extends Rows {
         return false;
     }
 
-    public void addRow(Cursos curso) {
+    public void addRow(Cursos curso,String separador) {
 
         // int tamanio = 0;
         //Session ses = Sessions.getCurrent();
         //Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
         String query = "";
+        separador = separador.substring(6, 7);
         query = "primerob,segundob,tercerob,cuartob,quintob,sextob,septimob,primero,segundo,tercero,cuarto,quinto,sexto,primerobd,segundobd,tercerobd,cuartobd,quintobd,sextobd,septimobd,primerod,segundod,tercerd,cuartod,quintod,sextod ";
         getChildren().clear();
         Decimalbox notaValor = null;
@@ -136,16 +137,27 @@ public class notasRecordBean extends Rows {
 
                         public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
                             //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
-                            try {
-                              
-                                    ((Decimalbox) event.getTarget()).setStyle("width:25px;font:arial;font-size:11px;text-align:right;");
-                                  
-                            } catch (Exception e) {
-                                ((Decimalbox) event.getTarget()).setValue(new BigDecimal(0));
-                            }
+                           try {
+                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+                                        if (valor > 20.0) {
+
+                                            ((Decimalbox) event.getTarget()).setFocus(true);
+                                            ((Decimalbox) event.getTarget()).focus();
+                                            ((Decimalbox) event.getTarget()).setValue(null);
+                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + 20 + " o 10] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+//                                             Robot b = new Robot();
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+//                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
+
+                                        }
+                                    } catch (Exception e) {
+                                        ((Decimalbox) event.getTarget()).setValue(null);
+                                    }
 
                         }
                     });
+                    notaValor.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','" + separador + "');");
                     notaValor.addEventListener("onFocus", new EventListener() {
 
                         public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
@@ -229,6 +241,9 @@ public class notasRecordBean extends Rows {
                     nota.setTercerob(aCargar);
                     //4
                     object1 = (Decimalbox) labels.get(5);
+                    if(object1.getValue()==(null)){
+                        object1.setValue(new BigDecimal(0));
+                    }
                     vaNota = object1.getValue().toString();
                     aCargar = 0.0;
                     if (vaNota.equals("")) {

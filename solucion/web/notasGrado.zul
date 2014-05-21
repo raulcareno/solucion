@@ -54,7 +54,9 @@ guardar(){
         liberar();
   
      //GUARDO NOTAS DEL ACTA DE UNA VEZ
-            filasActa.addRow(mat);
+     String separador = ""+ demo.getText();
+        filas.addRow(mat,separador);
+        filasActa.addRow(mat,separador);
         notasActa notasAc = new notasActa();
         notasActa rAc = (notasActa) datosActa.getRows();
         String resultado = notasAc.guardar(rAc.getChildren(),mat);
@@ -76,6 +78,7 @@ guardar(){
         <rows id="filas" use="bean.notasGrado">
         </rows>
     </grid>
+    <decimalbox  id="demo" visible="false" format="#,###.00"/>
     <button label="Guardar"  image="/images/guardar.gif" onClick="guardar(); ingresoexamenesGrado.detach();"/>
     <grid  id="datosActa" >
         <columns>
@@ -95,10 +98,15 @@ guardar(){
 
 void notas(){
         Cursos mat = ingresoexamenesGrado.getAttribute("curso");
-        filas.addRow(mat);
+        String separador = ""+ demo.getText();
+        filas.addRow(mat,separador);
 }
+    Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
 
         ]]>
     </zscript>
+      
+    
 </window>
 
