@@ -16,10 +16,8 @@ import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Decimalbox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.*;
 
 public class notasGrado extends Rows {
 //ArrayList listad = new ArrayList();
@@ -29,7 +27,8 @@ public class notasGrado extends Rows {
 //        todos.setDescripcion("[TODOS]");
     }
 
-    public void addRow(Cursos curso) {
+    public void addRow(Cursos curso,String separador) {
+                separador = separador.substring(6, 7);
         Administrador adm = new Administrador();
         List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o"
                 + " where o.curso.codigocur = '" + curso.getCodigocur() + "' order by o.codigo ");
@@ -62,7 +61,7 @@ public class notasGrado extends Rows {
         query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
         getChildren().clear();
         Label label3 = null;
-        Decimalbox label = null;
+        Decimalbox txtNumero = null;
         String q = "Select matriculas.codigomat,concat(estudiantes.apellido,' ',estudiantes.nombre), " + query + "  from matriculas "
                 + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
                 + "left join notasgrado on matriculas.codigomat = notasgrado.matricula "
@@ -83,7 +82,7 @@ public class notasGrado extends Rows {
             row = new Row();
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
-                label = new Decimalbox();
+                txtNumero = new Decimalbox();
                 label3 = new Label();
                 try {
                     if (dos.equals(null)) {
@@ -95,12 +94,40 @@ public class notasGrado extends Rows {
                 if (j >= 2) {
                     Double valor = (Double) dos;
                     if (valor.equals(0.0)) {
-                        label.setReadonly((Boolean)estados.get(j));
-                        label.setValue(new BigDecimal(0));
+                        txtNumero.setReadonly((Boolean)estados.get(j));
+                        txtNumero.setValue(new BigDecimal(0));
                     } else {
-                        label.setReadonly((Boolean)estados.get(j));
-                        label.setValue(new BigDecimal(redondear((Double) dos, 3)));
+                        txtNumero.setReadonly((Boolean)estados.get(j));
+                        txtNumero.setValue(new BigDecimal(redondear((Double) dos, 3)));
                     }
+                      txtNumero.addEventListener("onBlur", new EventListener() {
+
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
+                                    try {
+                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+                                        if (valor > 10) {
+
+                                            ((Decimalbox) event.getTarget()).setFocus(true);
+                                            ((Decimalbox) event.getTarget()).focus();
+                                            ((Decimalbox) event.getTarget()).setValue(null);
+                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + 10 + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+//                                             Robot b = new Robot();
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+//                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
+
+                                        }
+                                    } catch (Exception e) {
+                                        ((Decimalbox) event.getTarget()).setValue(null);
+                                    }
+
+                                }
+                            });
+
+                            //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            txtNumero.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','" + separador + "');");
+
 
                 } else {
                     String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
@@ -116,10 +143,10 @@ public class notasGrado extends Rows {
                     row.appendChild(label3);
                 } else if (j == (vec.size() - 1)) {
 //                    label.setDisabled(true);
-                    row.appendChild(label);
+                    row.appendChild(txtNumero);
                 } else {
 
-                    row.appendChild(label);
+                    row.appendChild(txtNumero);
                 }
 //                row.appendChild(label);
 //                                 System.out.print(","+dos);
@@ -173,12 +200,16 @@ public class notasGrado extends Rows {
                     
                     for (int j = 2; j < labels.size(); j++) {
                         Decimalbox object1 = (Decimalbox) labels.get(j);
+                        if(object1.getValue()==(null)){
+                            object1.setValue(new BigDecimal(0));
+                        }
                         String formula = notas.get(j - 2).getFormula(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getColumna() + "";
                         String uno = toda.substring(0, 1).toUpperCase();
                         toda = toda.substring(1, toda.length());
                         String vaNota = object1.getValue().toString();
+                        
                         Double aCargar = 0.0;
                         if (vaNota.equals("")) {
                             aCargar = 0.0;

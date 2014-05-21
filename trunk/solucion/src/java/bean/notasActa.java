@@ -17,12 +17,8 @@ import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Decimalbox;
-import org.zkoss.zul.Intbox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.*;
 
 public class notasActa extends Rows {
 //ArrayList listad = new ArrayList();
@@ -31,8 +27,10 @@ public class notasActa extends Rows {
 //        todos.setDescripcion("[TODOS]");
     }
 
-    public void addRow(Cursos curso) {
+    public void addRow(Cursos curso,String separador) {
+        
         Administrador adm = new Administrador();
+                separador = separador.substring(6, 7);
           Session ses = Sessions.getCurrent();
      Periodo periodo = (Periodo) ses.getAttribute("periodo");
         List<Actagrado> notas = adm.query("Select o from Actagrado as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigo ");
@@ -188,6 +186,34 @@ public class notasActa extends Rows {
                         }
 
                     }
+                    txtNota.addEventListener("onBlur", new EventListener() {
+
+                                public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception {
+                                    //int show = Messagebox.show("Seguro que deséa Concertar una cita?" + ((Decimalbox)event.getTarget()).etValue(), "Alerta", Messagebox.OK, Messagebox.ERROR);
+                                    try {
+                                        Double valor = ((Decimalbox) event.getTarget()).getValue().doubleValue();
+                                        if (valor > 10) {
+
+                                            ((Decimalbox) event.getTarget()).setFocus(true);
+                                            ((Decimalbox) event.getTarget()).focus();
+                                            ((Decimalbox) event.getTarget()).setValue(null);
+                                            Messagebox.show("ERROR 0001: Nota MAYOR a [" + 10 + "] \n Fuera del rango establecido", "ERROR DE VALIDACION", Messagebox.CANCEL, Messagebox.ERROR);
+//                                             Robot b = new Robot();
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_SHIFT);
+//                                                b.keyPress(java.awt.event.KeyEvent.VK_TAB);
+//                                                b.keyRelease(java.awt.event.KeyEvent.VK_SHIFT);
+
+                                        }
+                                    } catch (Exception e) {
+                                        ((Decimalbox) event.getTarget()).setValue(null);
+                                    }
+
+                                }
+                            });
+
+                            //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            txtNota.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','" + separador + "');");
+
                     
                     
                 } else if(j==0) {

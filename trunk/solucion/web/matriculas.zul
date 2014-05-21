@@ -1180,6 +1180,19 @@ ParametrosGlobales para = new ParametrosGlobales();
         return permiso.verificarPermiso("Matricular",accion);
 
     }
+    void validarNumerodeCedula(String strCedula){
+    if((strCedula+"").equals("")){
+        return;
+    }
+            ValidarCampos val = new ValidarCampos();
+            int valor= val.validaRucCedula(strCedula);
+
+            if(valor<0){
+                     Messagebox.show("El Número de CED. están incorrectos, corrija para poder continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                     cedula.focus();
+            }
+    }
+    
  void nuevo(){
     if(verificar("Agregar")){
        try{
@@ -1701,7 +1714,7 @@ public void quitarFila(String codigoBuscar){
                                     <span>
                                         <intbox  maxlength="14" cols="5"  disabled="true"  readonly="true" id="codigo"  />
                                         Cédula:
-                                        <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
+                                        <textbox maxlength="10" cols="13" onBlur="validarNumerodeCedula(self.value);" onChange="verificarCedula(self.value)" readonly="true" id="cedula"  />
                                                                         
                                     </span>
                                 </row>
@@ -1914,7 +1927,7 @@ public void quitarFila(String codigoBuscar){
                             <rows>
                                         
                                 <row>
-                                    <span style="float:right"> Identificación:</span>
+                                    <span style="float:right"> Cédula:</span>
                                     <textbox maxlength="10" cols="13"  readonly="true" id="cedulapa"  />
                                 </row>
                                 <row>
@@ -1967,7 +1980,7 @@ public void quitarFila(String codigoBuscar){
                             <rows>
  
                                 <row>
-                                    <span style="float:right"> Identificación:</span>
+                                    <span style="float:right"> Cédula:</span>
                                     <textbox maxlength="10" cols="13"  readonly="true" id="cedulama"  />
                                 </row>
 
@@ -2401,7 +2414,7 @@ public void quitarFila(String codigoBuscar){
                                 </row>
                                      
                                 <row>
-                                    <span style="float:right"> Identificación:</span>
+                                    <span style="float:right"> Cédula:</span>
                                     <textbox maxlength="13" cols="10"   readonly="true" id="cedulare"  />
 
                                 </row>

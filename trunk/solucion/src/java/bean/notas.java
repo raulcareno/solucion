@@ -20,9 +20,11 @@ import jcinform.persistencia.*;
 import jcinform.procesos.Administrador;
 
 import org.joda.time.DateMidnight;
+import org.zkoss.zk.ui.Execution;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Decimalbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
@@ -582,6 +584,14 @@ public class notas extends Rows {
 
     public Rows devolverRow(Cursos curso, MateriaProfesor materia, String separador) {
         Rows filas = new Rows();
+         
+           
+//         <script type="text/javascript"> 
+//    function refrescar() 
+//    { 
+//        location.reload(true); 
+//    } 
+//    </script> 
 //        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
 //        simbolo.getCurrencySymbol();
 //    simbolo.setDecimalSeparator('.');

@@ -10396,7 +10396,7 @@ public class reportesClase {
                 + "AND  notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "' "
                 + " AND notas.matricula = mat.codigomat  "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' "
-                + " and estado in ('Matriculado','Recibir Pase','Emitir Pase','Retirado') )"
+                + " and estado in ('Matriculado','Recibir Pase') )"
                 + "and notas.disciplina = false and materia_profesor.seimprime = true  "
                 + "GROUP BY notas.materia "
                 + "order by materia_profesor.orden ";
@@ -10509,7 +10509,7 @@ public class reportesClase {
                     + "AND  notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + mateProfesor.getCurso().getCodigocur() + "' "
                     + " AND notas.matricula = mat.codigomat  "
                     + "and matricula in (select codigomat from matriculas where  curso  =  '" + mateProfesor.getCurso().getCodigocur() + "' "
-                    + " and estado in ('Matriculado','Recibir Pase','Emitir Pase','Retirado') )"
+                    + " and estado in ('Matriculado','Recibir Pase') )"
                     + " and notas.disciplina = false and materia_profesor.seimprime = true  "
                     + " and notas.materia = '" + mateProfesor.getMateria().getCodigo() + "' "
                     + " GROUP BY notas.materia "

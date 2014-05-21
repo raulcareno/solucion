@@ -37,7 +37,9 @@ guardar(){
      Cursos mat = principalGrado.getAttribute("curso");
     String resultado = nso.guardar(r.getChildren(),mat);
     if(resultado.equals("ok")){
-    filas.addRow(mat);
+
+        String separador = ""+ demo.getText();
+        filas.addRow(mat,separador);
         Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
      }else{
         Messagebox.show(resultado, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -61,6 +63,7 @@ guardar(){
         <rows id="filas" use="bean.notasActa">
         </rows>
     </grid>
+<decimalbox  id="demo" visible="false" format="#,###.00"/>
 <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
 <!--separator bar="true"/>
 IMPRESIÓN
@@ -72,8 +75,11 @@ IMPRESIÓN
 
 void notas(){
         Cursos mat = principalGrado.getAttribute("curso");
-        filas.addRow(mat);
+        String separador = ""+ demo.getText();
+        filas.addRow(mat,separador);
 }
+    Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
 
 ]]>
 </zscript>

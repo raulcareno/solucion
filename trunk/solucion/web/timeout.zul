@@ -5,6 +5,8 @@
     <zscript >
 
   String bsession = Executions.getCurrent().getNativeRequest().toString();
+  //Clients.evalJavaScript("location.reload(true)");
+  
       if(bsession.contains("loginEstudiantes.zul") || bsession.contains("indexEstudiantes.zul") ){
         Executions.sendRedirect("loginEstudiantes.zul");
      }else if(bsession.contains("login.zul") || bsession.contains("index.zul") ){
@@ -14,6 +16,7 @@
      }else if(bsession.contains("inscripciones.zul") || bsession.contains("592981728937491235.zul")){
         Executions.sendRedirect("inscripciones.zul");
      }else{
+        
         Executions.sendRedirect("login.zul");
      }
 

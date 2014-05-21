@@ -70,8 +70,8 @@ guardar(){
 
 
 void doAdd(Cursos curso){
-
-                filas.addRow(curso);
+                String separador = ""+ demo.getText();
+                filas.addRow(curso,separador);
 
 }
 
@@ -91,6 +91,7 @@ void doAdd(Cursos curso){
                 </listbox>
                 <!--button label="Ejecutar"   image="/images/run.gif" onClick="doAdd(((Cursos)curs.selectedItem.value))"/-->
                     <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+                    <decimalbox  id="demo" visible="false" format="#,###.00"/>
             </row>
 
 
@@ -118,5 +119,13 @@ void doAdd(Cursos curso){
     </grid>
 
     <button label="Guardar"  image="/images/guardar.gif" onClick="guardar();"/>
+     <zscript>
+        <![CDATA[
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+         
+        
+]]>
+    </zscript>
 </window>
 
