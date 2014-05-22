@@ -1334,7 +1334,7 @@ void campos(String valor){
                                     <listitem  id="linea0281" label="============ACTAS Y CERTIFICADOS=============" value="linea2801" />
                                     <listitem  id="CERT" label="Certificado de Promoción" value="CERT"/>
                                     <listitem  id="CERT2" label="Certificado de Promoción(con decimales en notas)" value="CERT2"/>
-                                    <listitem  id="CERT4" label="Certificado de Promoción(con decimales en notas 2)" value="CERT4"/>
+                                    <listitem  id="CERT4" label="Certificado de Promoción(1Q 2Q SUM PF)" value="CERT4"/>
                                     <listitem  id="CERT3" label="Notas de Promoción" value="CERT3"/>
                                     
                                     <listitem  id="AG" label="Acta de Grado" value="AG"/>
