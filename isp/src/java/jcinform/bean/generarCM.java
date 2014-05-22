@@ -388,18 +388,18 @@ writer.write("\r\n");
                     }else{
                         noCliente = noCliente.replace(",", "").replace(".", "");
                         while (noCliente.length() < 30) {
-                            noCliente = "." + noCliente;
+                            noCliente = noCliente+".";
                         }
                     }
                     
-                    if(noCuenta.length()>8){
-                         noCuenta = noCuenta.substring(0,8);
-                    }else{
-                        noCuenta = noCuenta.replace(",", "").replace(".", "").replace("-", "");
-                        while (noCuenta.length() < 8) {
-                            noCuenta = "0" + noCuenta;
-                        }
-                    }
+//                    if(noCuenta.length()>8){
+//                         noCuenta = noCuenta.substring(0,8);
+//                    }else{
+//                        noCuenta = noCuenta.replace(",", "").replace(".", "").replace("-", "");
+//                        while (noCuenta.length() < 8) {
+//                            noCuenta = "0" + noCuenta;
+//                        }
+//                    }
                     
                     if(noEmpresa.length()>10){
                          noEmpresa = noEmpresa.substring(0,10);
@@ -409,22 +409,22 @@ writer.write("\r\n");
                             noEmpresa = "." + noEmpresa;
                         }
                     }
-                      try {
-
-                        noContrato = noContrato.replace(",", "").replace(".", "");
-                        while (noContrato.length() < 15) {
-                            noContrato = "0" + noContrato;
-                        }
-                    } catch (Exception e) {
-                    }
-                    try {
-
-                        valor = valor.replace(",", "").replace(".", "");
-                        while (valor.length() < 15) {
-                            valor = "0" + valor;
-                        }
-                    } catch (Exception e) {
-                    }
+//                      try {
+//
+//                        noContrato = noContrato.replace(",", "").replace(".", "");
+//                        while (noContrato.length() < 15) {
+//                            noContrato = "0" + noContrato;
+//                        }
+//                    } catch (Exception e) {
+//                    }
+//                    try {
+//
+//                        valor = valor.replace(",", "").replace(".", "");
+//                        while (valor.length() < 15) {
+//                            valor = "0" + valor;
+//                        }
+//                    } catch (Exception e) {
+//                    }
                     try {
 
                         base = base.replace(",", "").replace(".", "");
@@ -460,23 +460,28 @@ writer.write("\r\n");
                             telefono = "0" + telefono;
                         }
                     }
+                      String fecha = "";
+                      try {
+                        fecha = fac.getFactura().getFecha().toLocaleString().substring(0,10) +"";
+                    } catch (Exception e) {
+                        fecha = "";
+                    }
                        
-                    writer.write("5" // cobro
-                            + "OCP" 
-                            + "OC" 
-                            + "" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "10" : "00") // tipo de cuenta aho, cTE
-                            + "" + noCuenta // cuenta del banco
-                            + "" + valor // valor adeudado
-                            + noContrato // no de contrato/o numero de cliente
-                            + noEmpresa+ iva1 
-                            + "CU" // CU: DEBITO A CUENTAS RE: RECAUDADCIONES X CANALES ELECTRONICOS
-                            + "USD" // moneda
-                            + noCliente
-                            + "  "//dos espacios en blanco /no aplica
-                            + "  "//dos espacios en blanco /no aplica
-                            + fac.getFactura().getContratos().getClientes().getTipoidentificacion() //C R P
-                            + identificacion
-                            + telefono);
+                    writer.write("CU;" 
+                            + "30;" + (fac.getFactura().getContratos().getTipocuenta().equals("AHO") ? "10;" : "00;") // tipo de cuenta aho, cTE
+                            + "" + noCuenta+";" // cuenta del banco
+                            + "" + valor+";" // valor adeudado
+                            + noContrato+";" // no de contrato/o numero de cliente
+                            //+ noEmpresa+ iva1 
+                            //+ "CU" // CU: DEBITO A CUENTAS RE: RECAUDADCIONES X CANALES ELECTRONICOS
+                            //+ "USD" // moneda
+                           // + "  "//dos espacios en blanco /no aplica
+                            //+ "  "//dos espacios en blanco /no aplica
+                            + fac.getFactura().getContratos().getClientes().getTipoidentificacion()+";" //C R P
+                            + identificacion+";"
+                            + noCliente+";"
+                            + telefono +";"
+                            + ".");
 writer.write("\r\n");
 //                    writer.newLine(); // Esto es un salto de linea
                 }

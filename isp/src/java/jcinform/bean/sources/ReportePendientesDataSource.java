@@ -117,6 +117,8 @@ public class ReportePendientesDataSource implements JRDataSource {
                 valor = nodo.getContrato();
             }   else if ("fechainstalacion".equals(fieldName)) {
                 valor = nodo.getContratos().getFecha();
+            }  else if ("fechafinal".equals(fieldName)) {
+                valor = nodo.getContratos().getFechafinal();
             }   else if ("formapago".equals(fieldName)) {
                 valor = (nodo.getContratos().getFormapago().equals(1)?"Oficina":nodo.getContratos().getFormapago().equals(2)?"Debito":"Domicilio");
             }   else if ("empleado".equals(fieldName)) {

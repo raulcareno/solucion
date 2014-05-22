@@ -441,6 +441,8 @@ generaArch.disabled = false;
        String nombreArchivo = "NDE"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+"_01.txt"; 
        if((bancosList.selectedItem.value).getNombre().toLowerCase().contains("bolivariano")){
             nombreArchivo = "REC_BBOL"+(fec.getYear()+1900)+""+(fec.getMonth()==11 || fec.getMonth()==10 ? (fec.getMonth()+1)+"":"0"+(fec.getMonth()+1))+""+(fec.getDate()<10?"0"+fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa():fec.getDate()+""+((Bancos)bancosList.selectedItem.value).getEmpresa())+".BIZ"; 
+       }else if((bancosList.selectedItem.value).getNombre().toLowerCase().contains("pacif")){
+            nombreArchivo = "PACIFICO.csv"; 
        }
        Filedownload.save(data, "file", ""+nombreArchivo);
          
