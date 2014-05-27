@@ -5413,8 +5413,8 @@ boolean descuentoCLiente = descuentoClienteTexto2.isVisible();
             try {
                 //facActual.setClientes(new Clientes(new Integer(cliente.getText())));
                 clienteDscto = new Clientes();
-                clienteDscto.setCodigo(new Integer(cliente4.getText()));
-                clienteDscto.setNombres(nombres4.getText());
+                clienteDscto = (Clientes)adm.buscarClave(new Integer(cliente4.getText()),Clientes.class);
+
             } catch (Exception ex) {
                 Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
             }
