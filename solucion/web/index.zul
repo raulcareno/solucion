@@ -319,6 +319,7 @@
                                             <menuitem onClick="ingresar(self)" id="Registro_de_Faltas_Materia" image="/images/notas.png"  label="Registro de Faltas por Materia" value="/faltasNew.zul" />
                                             <menuitem onClick="ingresar(self)" id="Registro_de_Dias" image="/images/notas.png"  label="Días Laborados x Periodo" value="/dias.zul" />
                                             <menuitem onClick="ingresar(self)" id="Registro_de_Evaluaciones" label="Registro de Notas Evaluaciones"  image="/images/notas.png" value="/notasEvaluacion.zul" />
+                                            <menuitem onClick="ingresar(self)" id="Eliminar_de_Evaluaciones" label="Eliminar de Notas Evaluaciones"  image="/images/notas.png" value="/notasEvaluacionEliminar.zul" />
                                             <menuseparator ></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                                             <menuseparator></menuseparator>

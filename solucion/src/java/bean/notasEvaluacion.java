@@ -22,13 +22,7 @@ import org.joda.time.DateMidnight;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.EventListener;
-import org.zkoss.zul.Decimalbox;
-import org.zkoss.zul.Label;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.Row;
-import org.zkoss.zul.Rows;
+import org.zkoss.zul.*;
 
 public class notasEvaluacion extends Rows {
 //ArrayList listad = new ArrayList();
@@ -1805,4 +1799,494 @@ Interpreter inter = new Interpreter();
 
 
     }
+    
+       public void addRowEliminarRepetidos(Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema, Boolean vertical,String separador) {
+        
+        if(malFormulas){
+            try {
+                Messagebox.show("NO INGRESE NOTAS, existe un ERROR en el sistema de notas consulte con el Administrador del Sistema...!" , "Alerta", Messagebox.OK, Messagebox.ERROR);
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }  
+        
+        System.out.println("CARGAR NOTAS INI; " + new Date());
+//        int tamanio = 0;
+        System.setProperty("java.awt.headless", "true");
+        Session ses = Sessions.getCurrent();
+        Empleados empleado = (Empleados) ses.getAttribute("user");
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        separador = separador.substring(6,7);
+
+//     if(listad==null){
+        Administrador adm = new Administrador();
+        sistema = (Sistemacalificacion) adm.buscarClave(sistema.getCodigosis(), Sistemacalificacion.class);
+        List<Sistemaevaluacion> notas = adm.query("Select o from Sistemaevaluacion as o  "
+                + "where o.sistemacalificacion.codigosis = '" + sistema.getCodigosis() + "' order by o.orden ");
+        String query = "";
+        if (notas.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado SUB APORTES en la pantalla APORTES...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        for (Sistemaevaluacion notass : notas) {
+            query += notass.getNombre() + ",";
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+
+//        tamanio = sistemas.size();
+        //List<Matriculas> matriculas = adm.query("Select o from Matriculas as o ");
+        getChildren().clear();
+        Decimalbox notaTexto = null;
+        Label label3 = null;
+        Listbox combo = new Listbox();
+
+        String q = "Select distinct codigonot,"
+                + "concat(estudiantes.apellido,' ',estudiantes.nombre,'[',matriculas.estado,']'), " + query + "  from matriculas "
+                + "left join  estudiantes on matriculas.estudiante = estudiantes.codigoest "
+                + "left join notasevaluacion on matriculas.codigomat = notasevaluacion.matricula "
+                + "and notasevaluacion.materia = '" + materia.getMateria().getCodigo() + "'  "
+                + " and notasevaluacion.sistemacalificacion = '" + sistema.getCodigosis() + "' "
+                + "where matriculas.curso = '" + curso.getCodigocur() + "' "
+                + " and (matriculas.estado = 'Matriculado' or matriculas.estado  = 'Recibir Pase'  "
+                + "or matriculas.estado  = 'Emitir Pase'  or matriculas.estado  = 'Retirado' ) "
+                + "order by estudiantes.apellido";
+//        System.out.println("" + q);
+        ParametrosGlobales para = (ParametrosGlobales) adm.buscarClave(new Integer(1), ParametrosGlobales.class);
+
+
+        List<Equivalencias> equ = null;
+//        System.out.println("" + q);
+
+
+        equ = adm.query("Select o from Equivalencias as o"
+                + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
+                + "and o.grupo = 'AP' ");
+        
+        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
+        List nativo = adm.queryNativo(q);
+        Row row = new Row();
+        String Shabilitado = "color:black;font-weight:bold;width:27px;font:arial;font-size:11px;text-align:right;";
+        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:27px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
+//        String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:23px;font:arial;font-size:9px;text-align:right;background:transparent;font-weigth:bold";
+        String ShabilitadoCombo = "color:black;font-weight:bold;width:38px;font:arial;font-size:9px;text-align:right;";
+        String SdeshabilitadoCombo = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:38px;font:arial;font-size:9px;text-align:right;background:transparent;font-weigth:bold";
+
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            row = new Row();
+            Boolean deshabilitado = false;
+            String color = "black";
+            int kk = 0;
+            if (!materia.getIngcualitativo()) {
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    notaTexto = new Decimalbox();
+                   // notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
+                    if (vertical) {
+                        notaTexto.setTabindex(kk);
+                    }
+                    label3 = new Label();
+//                 label.setAttribute("onBlur", "alert(this)");
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new Double(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new Double(0.0);
+                    }
+                    if (j >= 2) {
+                        Double valor = (Double) dos;
+                        if (notas.get(kk).getEsdisciplina()) {
+
+
+                            Listitem item = new Listitem("");
+                            notaTexto = new Decimalbox();
+                            if (vertical) {
+                                combo.setTabindex(kk);
+                            }
+//                            System.out.println("" + kk);
+                            label3 = new Label();
+
+
+                            if (dos == null) {
+                                dos = equ.get(0);
+                            }
+
+
+                            combo = new Listbox();
+                            combo.setMold("select");
+                            combo.setWidth("40px");
+
+                            combo.setRows(1);
+                            combo.setStyle("font-size:8px;width:30px");
+                            for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
+                                Equivalencias equivalencias = it2.next();
+                                item = new Listitem("" + equivalencias.getAbreviatura());
+                                item.setValue(equivalencias);
+                                combo.appendChild(item);
+
+                            }
+                            if (dos instanceof Double) {
+                                dos = devolverNombre(equ, (((Double) dos).intValue()));
+                            }
+                            item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
+                            item.setValue(dos);
+                            combo.appendChild(item);
+                            combo.setSelectedItem(item);
+                        } else {
+                            if (valor.equals(0.0)) {
+                                notaTexto.setValue(null);
+                            } else {
+                                notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                            }
+                        }
+
+
+                    } else {
+                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                        valor = valor.replace("[Emitir Pase]", "(PE)");
+                        valor = valor.replace("[Retirado]", "(R)");
+                        valor = valor.replace("[Recibir Pase]", "(PR)");
+                        valor = valor.replace("[Matriculado]", "");
+                        label3.setValue("" + valor);
+                    }
+//                                 label.setAttribute(q, dos);
+
+                    if (j == 0) {
+                        
+                        label3.setStyle(" ");
+//                    label3.setReadonly(true);
+                        row.appendChild(label3);
+                    } else if (j == 1) {
+                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                        if (label3.getValue().contains("(PE)")) {
+                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                            color = "red";
+                            deshabilitado = true;
+                        } else if (label3.getValue().contains("(R)")) {
+                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                            color = "blue";
+                            deshabilitado = true;
+                        }
+
+                        row.appendChild(label3);
+                    } else {
+                        if (!deshabilitado) {
+                            Date fechaActual = new Date();
+                            DateMidnight actual = new DateMidnight(fechaActual);
+                            int dat = j - 2;
+                            DateMidnight inicial = new DateMidnight(sistema.getFechainicial());
+                            DateMidnight finale = new DateMidnight(sistema.getFechafinal());
+                            if (empleado.getTipo().equals("Interna")) {
+                                inicial = new DateMidnight(sistema.getFechainti());
+                                finale = new DateMidnight(sistema.getFechaintf());
+
+                            }
+                            final double limite = sistema.getNotalimite();
+                            //asdfsdfasd
+                            //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','"+simbolo.getDecimalSeparator()+"');");
+                            
+                                
+                                notaTexto.setStyle(Shabilitado);
+                           
+
+                            try {
+                                Date fecha = sistema.getFechainicial();
+                                if (empleado.getTipo().equals("Interna")) {
+                                    fecha = sistema.getFechainti();
+
+
+                                }
+//                         
+                            } catch (Exception z) {
+                                notaTexto.setDisabled(true);
+                                notaTexto.setStyle(Sdeshabilitado);
+                            }
+
+
+                        } else {
+                            notaTexto.setDisabled(true);
+                            notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+
+                        }
+//                        if(sistema.getAbreviatura().equals("Prom")){
+//                            notaTexto.setDisabled(true);    
+//                            notaTexto.setStyle(Sdeshabilitado);    
+//                            combo.setDisabled(true);
+//                            combo.setStyle(s);
+//                                
+//                            }
+                        
+                            if((vec.size()-1)==j){
+                                notaTexto.setDisabled(true);
+                                notaTexto.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+                            }
+                                               
+                            
+                        if (notas.get(kk).getEsdisciplina()) {
+                            row.appendChild(combo);
+                        } else {
+                            row.appendChild(notaTexto);
+                        }
+                        if((vec.size()-1)==j){
+                                Checkbox ch = new Checkbox();
+                            row.appendChild(ch);
+                       }     
+                        kk++;
+
+
+                         
+
+                    }
+
+                    //row.appendChild(label);
+//                                 System.out.print(","+dos);
+                }
+            } else { // SI LA MATERIA ES CUALITATIVA APLICO UN COMBOBOX
+                Shabilitado = "color:black;font-weight:bold;width:45px;font:arial;font-size:12px;";
+                Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:45px;font:arial;font-size:11px;background:transparent;font-weigth:bold";
+                combo = new Listbox();
+                Listitem item = new Listitem("");
+
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    notaTexto = new Decimalbox();
+                    if (vertical) {
+                        combo.setTabindex(kk);
+                    }
+                    label3 = new Label();
+//                 label.setAttribute("onBlur", "alert(this)");
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new Double(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new Double(0.0);
+                    }
+                    if (j >= 2) {
+
+                        if (dos == null) {
+                            dos = equ.get(0);
+                        }
+                        combo = new Listbox();
+                        combo.setMold("select");
+                        combo.setWidth("15px");
+                        combo.setRows(1);
+                        if (vertical) {
+                            combo.setTabindex(kk);
+                        }
+                        combo.setStyle("font-size:8px;width:15px");
+                        for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
+                            Equivalencias equivalencias = it2.next();
+                            item = new Listitem("" + equivalencias.getAbreviatura());
+                            item.setValue(equivalencias);
+                            combo.appendChild(item);
+
+                        }
+                        if (dos instanceof Double) {
+                            dos = devolverNombre(equ, (((Double) dos).intValue()));
+                        }
+                        item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
+                        item.setValue(dos);
+                        combo.appendChild(item);
+                        combo.setSelectedItem(item);
+//                        Double valor = (Double) dos;
+//                        if (valor.equals(0.0)) {
+//                            notaTexto.setValue(new BigDecimal(0));
+//                        } else {
+//                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+//                        }
+
+                    } else {
+                        String valor = dos.toString().replace("(", "").replace(")", "").replace("\"", "").replace(",", "");
+                        valor = valor.replace("[Emitir Pase]", "(PE)");
+                        valor = valor.replace("[Retirado]", "(R)");
+                        valor = valor.replace("[Recibir Pase]", "(PR)");
+                        valor = valor.replace("[Matriculado]", "");
+                        label3.setValue("" + valor);
+                    }
+//                                 label.setAttribute(q, dos);
+
+                    if (j == 0) {
+                        label3.setStyle(" ");
+//                    label3.setReadonly(true);
+                        row.appendChild(label3);
+                    } else if (j == 1) {
+                        label3.setStyle("width:300px;font-size:11px;font:arial; ");
+//                    label3.setReadonly(true);
+                        if (label3.getValue().contains("(PE)")) {
+                            label3.setStyle("color:red;width:300px;font-size:11px;font:arial; ");
+                            color = "red";
+                            deshabilitado = true;
+                        } else if (label3.getValue().contains("(R)")) {
+                            label3.setStyle("color:blue;width:300px;font-size:11px;font:arial; ");
+                            color = "blue";
+                            deshabilitado = true;
+                        }
+
+                        row.appendChild(label3);
+                    } else {
+                        if (!deshabilitado) {
+                            Date fechaActual = new Date();
+                            DateMidnight actual = new DateMidnight(fechaActual);
+                            int dat = j - 2;
+                            DateMidnight inicial = new DateMidnight(sistema.getFechainicial());
+                            DateMidnight finale = new DateMidnight(sistema.getFechafinal());
+                            if (empleado.getTipo().equals("Interna")) {
+                                inicial = new DateMidnight(sistema.getFechainti());
+                                finale = new DateMidnight(sistema.getFechaintf());
+
+                            }
+                            final double limite = sistema.getNotalimite();
+
+                            if (actual.compareTo(finale) <= 0 && actual.compareTo(inicial) >= 0) {
+                                combo.setDisabled(false);
+                                combo.setStyle(ShabilitadoCombo);
+                            } else {
+                                combo.setDisabled(true);
+                                combo.setStyle(SdeshabilitadoCombo);
+
+                            }
+
+                            try {
+                                Date fecha = sistema.getFechainicial();
+                                if (empleado.getTipo().equals("Interna")) {
+                                    fecha = sistema.getFechainti();
+
+
+                                }
+//                            System.out.println("FECHA INICIAL: "+fecha);
+                                if (fecha.getDate() == 0) {
+                                    combo.setDisabled(true);
+                                    combo.setStyle(SdeshabilitadoCombo);
+                                }
+                            } catch (Exception z) {
+                                combo.setDisabled(true);
+                                combo.setStyle(SdeshabilitadoCombo);
+                            }
+
+                        } else {
+                            combo.setDisabled(true);
+                            combo.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
+
+                        }
+//                        if(sistema.getAbreviatura().equals("Prom")){
+//                                combo.setDisabled(true);
+//                                combo.setStyle(SdeshabilitadoCombo);  
+//                            }
+                        row.appendChild(combo);
+
+                    }
+
+                    //row.appendChild(label);
+//                                 System.out.print(","+dos);
+                }
+
+
+            }
+
+            row.setParent(this);
+        }
+        nativo = null;
+        System.out.println("CARGA NOTAS FIN; " + new Date());
+        adm = null;
+        ses = null;
+        periodo = null;
+        notas = null;
+        equ = null;
+
+    }
+      public void seleccionar(List lis,Boolean seleccionar){
+    //List lis = getChildren();
+           for (int i = 0; i < lis.size(); i++) {
+                try {
+                    Row object = (Row) lis.get(i);
+                    List labels = object.getChildren();
+                    ((Checkbox) labels.get(labels.size()-1)).setChecked(seleccionar);
+                    
+                    //adm.guardar(nota);
+
+                } catch (Exception ex) {
+                    Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+    }
+      
+  public boolean verificarDuplicidad(List lis,String nombreLlega){
+    //List lis = getChildren();
+      int numeroRepeticiones = 0;
+           for (int i = 0; i < lis.size(); i++) {
+                try {
+                    Row object = (Row) lis.get(i);
+                    List labels = object.getChildren();
+                    
+//                    if(((Checkbox) labels.get(labels.size()-1)).isChecked()){
+                        String nombre = ((Label) labels.get(1)).getValue();
+                        if(nombre.equals(nombreLlega)){
+                            numeroRepeticiones++;
+                        }
+//                    }
+                    //adm.guardar(nota);
+
+                } catch (Exception ex) {
+                    Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+           if(numeroRepeticiones>1){
+               return true;
+           }
+           lis = null;
+           return false;
+    }
+      
+      public String eliminarRepetidos(List col, Cursos curso, MateriaProfesor materia, Sistemacalificacion sistema) {
+        try {
+            System.out.println(".INICIO GUARDAR EN: " + new Date());
+
+            Administrador adm = new Administrador();
+        String listNoTieneDuplicados="";
+            for (int i = 0; i < col.size(); i++) {
+                try {
+                    Row object = (Row) col.get(i);
+                    List labels = object.getChildren();
+                    boolean valor = ((Checkbox) labels.get(labels.size()-1)).isChecked();
+                    String id = ((Label) labels.get(0)).getValue();
+                    String nombre = ((Label) labels.get(1)).getValue();
+                    System.out.println(""+valor);
+                    if(valor){
+                        if(verificarDuplicidad(col,nombre)){
+                            adm.eliminarObjeto(Notasevaluacion.class,(id));    
+                        }else{
+                            listNoTieneDuplicados += nombre+", ";
+                        }
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+         
+            System.gc();
+            System.out.println("RETORNO OK::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
+            if(listNoTieneDuplicados.length()>1){
+                return "No se encontraro duplicados de: "+ listNoTieneDuplicados;    
+            }else{
+                return "";
+            }
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(notasEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+            return "Error en:  " + ex;
+        }
+
+
+    }
+
 }
