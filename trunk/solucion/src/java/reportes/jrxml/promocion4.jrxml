@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="119"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -611,7 +611,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[INFORME CUATITATIVO FINAL]]></text>
+				<text><![CDATA[INFORME CUANTITATIVO FINAL]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="39" y="83" width="489" height="18" isPrintWhenDetailOverflows="true"/>

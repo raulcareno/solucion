@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page id="main-page"?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+ 
+ 
+    <zscript>
+        <![CDATA[
+import bean.reportesClase;
+import java.math.BigDecimal;
+import bean.notasEvaluacion;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import sources.*;
+import bean.Permisos;
+import net.sf.jasperreports.engine.JRDataSource;
+import bean.exportarExcel;
+
+import org.zkoss.zul.Auxhead;
+import org.zkoss.zul.Auxheader;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Column;
+import org.zkoss.zul.Columns;
+
+Administrador adm = new Administrador();
+exportarExcel exp = new exportarExcel();
+
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+reportesClase noti = new reportesClase();
+Boolean guardando = false;
+Empleados user =  (Empleados)ses.getAttribute("user");
+List cursos = null;
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' " + 
+           " order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o " +
+          " where o.empleado.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+          " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+    }
+
+
+ Permisos permiso = new Permisos();
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' and o.codigo = -1 ");
+reportesClase no = new reportesClase();
+
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre(""+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    siste.setNombre(" .  ."+siste.getNombre());
+                    sistemas.add(siste);
+               }
+
+ }
+
+
+
+
+
+
+
+List siseval = new ArrayList();
+List evaluaciones = adm.query("Select o from Evaluacion as o where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigoeva  ");
+String[][] cabes = new String[evaluaciones.size()][2];
+
+int k=0;
+
+ for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
+              Evaluacion trime = (Evaluacion) it.next();
+              List siseval0 = adm.query("Select o from Sistemaevaluacion as o " +
+              " where o.evaluacion.codigoeva = '"+ trime.getCodigoeva() +"' and o.sistemacalificacion.codigosis = 40   order by o.orden");
+              int orden = 0;
+              int codigo=0;
+
+              if(siseval0.size() >0 ){
+                  orden = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getOrden();
+                  codigo = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getCodigosis();
+                  cabes[k][0]= trime.getDescripcion();
+                   cabes[k][1]= siseval0.size()+"";
+              }else{
+                   cabes[k][1]= 1+"";
+              }
+
+
+
+              for (Iterator it2 = siseval0.iterator(); it2.hasNext();){
+                    Sistemaevaluacion siste = (Sistemaevaluacion) it2.next();
+                    siseval.add(siste);
+               }
+k++;
+ }
+
+String[][] values = new String[siseval.size()][2];
+          for (int i=0;i<siseval.size();i++) {
+             values[i][0]= ((Sistemaevaluacion)siseval.get(i)).getAbreviatura();
+             values[i][1]= "number";
+          }
+
+void recalculo(){
+notas nso1 = new notas();
+nso1.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
+
+}
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Evaluaciones",accion);
+
+    }
+    notasEvaluacion nso = new notasEvaluacion();
+guardar(){
+
+  int val = Messagebox.show("¿Seguro de eliminar los registros seleccionados, luego no se podrá recuperar las notas seleccionadas?", "Estimado: "+user,  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+  if(val != 16){
+    return;
+  }
+  
+  int val2 = Messagebox.show("¿Seguro que Desea continuar, recuerde que los SELECCIONADOS se BORRARÁN?", "Estimado: "+user,  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+  if(val2 != 16){
+    return;
+  }
+
+if(guardando)
+    return;
+
+guardando = true;
+  guardar1.disabled=false;
+  //guardar2.disabled=false;
+
+    notasEvaluacion r = (notasEvaluacion) datos.getRows();
+     Cursos curso = ((Cursos)curs.selectedItem.value);
+     MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
+     Sistemacalificacion sistemaCalificacion = ((Sistemacalificacion)sisevalCombo.selectedItem.value);
+      
+       Boolean seguir=true;
+       int mm = 1;
+        String resultado = "";
+                resultado = nso.eliminarRepetidos(r.getChildren(),curso,materia,sistemaCalificacion);
+             
+        //if(resultado.equals("ok")){
+            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),sisevalCombo.getSelectedItem().getValue());
+            Messagebox.show("Registro Eliminado con éxito...!"+resultado, "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            permiso.auditar("Eliminar Notas Evaluación","EliminarDuplicados",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria())+" "+sisevalCombo.selectedItem.value;
+/*          }else{
+            Messagebox.show(resultado, "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+         } */
+   guardar1.disabled=false;
+   guardando = false;
+}
+
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+          if(user.getTipo().equals("Interna")){
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+            }else{
+                empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+                        " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
+                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%' and o.formula = ''  order by o.orden");
+            }
+        mates.getChildren().clear();
+        try{ 
+        
+             datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(""+ab);}
+             bd2.value = "";
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        mates.appendChild(item);
+             }
+    }
+
+void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
+            if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                //guardar2.disabled=true;
+            }
+
+                filas.addRowEliminarRepetidos(curso,materia,sistCali,vertical.checked,demo.getText());
+                   if(periodo.getCerrado()){
+                        guardar1.disabled = true;
+                        //guardar2.disabled = true;
+                    }
+
+}
+
+        void showReport(String tipo) {
+            //Preparing parameters
+            reportes.visible = true;
+            Institucion insts = periodo.getInstitucion();
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+            
+            if(tipo.equals("AM")){
+               ArrayList arreglo = noti.notasdAportes(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sisevalCombo.getSelectedItem().getValue());
+                    datasource = (ReporteNotasDataSource) arreglo.get(0);
+                     parametros = (HashMap) arreglo.get(1);
+                    MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+                    try{
+                    parametros.put("materia", mate.getMateria().getDescripcion());
+                    parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                    parametros.put("titulo", "Notas Registradas");
+                    parametros.put("aporte",((Sistemacalificacion)sisevalCombo.selectedItem.value).getNombre());
+                    parametros.put("trimestre",((Sistemacalificacion)sisevalCombo.selectedItem.value).getTrimestre().getDescripcion());
+                    }catch(Exception ab){
+                        System.out.println("erro "+ab);
+                    }
+                    
+                    report.setSrc(directorioReportes+"notasporAportes.jasper");
+
+               }else if(tipo.equals("TOT")){
+               Sistemacalificacion sis = sisevalCombo.getSelectedItem().getValue();
+               sis.setOrden(100);
+                                    ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sis);
+                                        datasource = (ReporteNotasDataSource) arreglo.get(0);
+                                        parametros = (HashMap) arreglo.get(1);
+                                        parametros.put("perseleccionado", sisevalCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sisevalCombo.getSelectedItem().getValue().getNombre()+"");
+                                        MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+                                        parametros.put("materia", mate.getMateria().getDescripcion());
+                                        parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                                        report.setSrc(directorioReportes+"notaspor.jasper");
+                                        parametros.put("titulo", "Calificaciones por materia");
+
+                    }
+
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+        }
+
+        //PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+        if(tipo.equals("CM")){
+             ds = new ReporteCertificadoDataSource(detalle);
+        }else{
+              ds = new ReporteActaDataSource(detalle);
+        }
+        return ds;
+
+}
+void generar(){
+try{datos.getChildren().clear();}catch(Exception ab){System.out.println(ab+"");}
+try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.println(ab+"");}
+        datos = new Grid();
+        // ************************************************************************************************************** 
+            siseval = new ArrayList();
+            evaluaciones = adm.query("Select o from Evaluacion as o where  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.codigoeva  ");
+            String[][] cabes = new String[evaluaciones.size()][2];
+            int k=0;
+             for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
+                          Evaluacion trime = (Evaluacion) it.next();
+                          List siseval0 = adm.query("Select o from Sistemaevaluacion as o " +
+                          " where o.evaluacion.codigoeva = '"+ trime.getCodigoeva() +"' and o.sistemacalificacion.codigosis = '"+((Sistemacalificacion)sisevalCombo.selectedItem.value).getCodigosis()+"'   order by o.orden");
+                          int orden = 0;
+                          int codigo=0;
+
+                          if(siseval0.size() >0 ){
+                              orden = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getOrden();
+                              codigo = ((Sistemaevaluacion) siseval0.get(siseval0.size()-1)).getCodigosis();
+                              cabes[k][0]= trime.getDescripcion();
+                              if(!((MateriaProfesor)mates.selectedItem.value).getCuantitativa())
+                                    cabes[k][0]= trime.getDescripcion2();
+                               cabes[k][1]= siseval0.size()+"";
+                          }else{
+                               cabes[k][1]= 1+"";
+                          }
+
+
+
+                          for (Iterator it2 = siseval0.iterator(); it2.hasNext();){
+                                Sistemaevaluacion siste = (Sistemaevaluacion) it2.next();
+                                siseval.add(siste);
+                           }
+            k++;
+             }
+
+            String[][] values = new String[siseval.size()][2];
+                      for (int i=0;i<siseval.size();i++) {
+                         values[i][0]= ((Sistemaevaluacion)siseval.get(i)).getAbreviatura();
+                         values[i][1]= "number";
+                      }
+
+        
+        
+        // ****************************************************************************************************************
+        
+        
+        
+        Auxhead auh = new Auxhead();
+        Auxheader aud = new Auxheader();
+        Textbox est = new Textbox(" ");
+        est.setCols(50);
+        est.setStyle("background: transparent;border:0px");
+        est.setReadonly(true);
+        est.setParent(aud);
+        aud.setColspan(2);
+        aud.setParent(auh);
+        for (String[] strings : cabes) {
+                    aud = new Auxheader(strings[0]);
+                    aud.setColspan(new Integer(strings[1]));
+                    aud.setParent(auh);
+        }
+        aud = new Auxheader("PROM");
+        aud.setParent(auh);
+        aud = new Auxheader(".");
+        aud.setParent(auh);
+        auh.setParent(datos);
+         Columns cols = new Columns();
+         datos.appendChild(cols);
+         Column matCol = new Column("Matriculas");
+         datos.getColumns().appendChild(matCol);
+         Column  estCol = new Column("Estudiante");
+         datos.getColumns().appendChild(estCol);
+         for (String[] strings : values ){
+                    matCol = new Column(strings[0]);
+                    matCol.setAlign("right");
+                    datos.getColumns().appendChild(matCol);
+              
+        }
+         estCol = new Column("PF");
+         datos.getColumns().appendChild(estCol);
+         
+         Column estColSele = new Column("Selec");
+         datos.getColumns().appendChild(estColSele);
+         
+           Rows filasR = new bean.notasEvaluacion();
+           filasR.setId("filas");
+           filasR.setParent(datos);
+          
+          
+}
+ void seleccionar(Boolean estado){
+     notasEvaluacion r = (notasEvaluacion) datos.getRows();
+        filas.seleccionar(r.getChildren(),estado);
+        //r = null;
+    }
+
+    public static void export_to_csv(Grid datos) {
+    
+     //Rows filas = datos.getRows().getChildren();
+     //Columns columnas = datos.getColumns();
+      exp.exportarAExcel(datos,sisevalCombo.selectedItem.value);
+     /* System.out.println();
+        String s = ";\t";
+        StringBuffer sb = new StringBuffer();
+        for (Object head : listbox.getHeads()) {
+            String h = "";
+            for (Object header : ((Listhead) head).getChildren()) {
+                h += ((Listheader) header).getLabel() + s;
+            }
+            sb.append(h + "\n");
+        }
+            for (Object item : listbox.getItems()) {
+                String i = "";
+                for (Object cell : ((Listitem) item).getChildren()) {
+                    i += ((Listcell) cell).getLabel() + s;
+                }
+                sb.append(i + "\n");
+            }
+        Filedownload.save(sb.toString().getBytes(), "application/vnd.ms-excel", "formato.csv"); 
+        */
+ }
+
+
+
+]]>
+    </zscript>
+    
+
+<grid onClientInfo="onClientInfo(event)" visible="false">
+    <rows>
+        <row><intbox id="alto"/> ancho: <intbox id="ancho"/></row>
+    </rows>
+ 
+    <zscript>
+     void onClientInfo(ClientInfoEvent evt) {
+         alto.setValue(evt.getScreenHeight());
+         ancho.setValue(evt.getScreenWidth());
+     }
+    </zscript>
+</grid>
+    <panel  id="notasEvaluacioningreso" >
+        <panelchildren>
+
+            <grid>
+                <rows>
+                    <row>
+                        <span style="float:right"> Curso(*):</span>
+                        <bandbox  width="150px"  readonly="true"  id="bd1">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs" height="300px" width="420px"
+                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();datos.getChildren().clear();">
+
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
+                        <span style="float:right"> Materias(*):</span>
+                        <span>
+                            <bandbox  width="150px" readonly="true"  id="bd2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="mates" height="300px"  width="420px"
+                                                 onSelect="bd2.value=self.selectedItem.label;bd2.closeDropdown();datos.getChildren().clear(); sisevalCombo.selectedIndex = -1;bd5.value = null; ">
+
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
+
+                                            </listitem>
+                                        </listbox>
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                            
+                            <span> Aporte: </span>
+
+                            <bandbox  width="150px" readonly="true"  id="bd5">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="sisevalCombo" width="450px" 
+                                        onSelect = 'bd5.value=self.selectedItem.label;bd5.closeDropdown();generar();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),((Sistemacalificacion)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");' >
+                                            <listitem  forEach="${sistemas}" value="${each}">
+                                                <listcell label="${each.nombre}" />
+                                            </listitem>
+                                        </listbox>
+                                        
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                                                        <decimalbox  id="demo" visible="false" format="#,###.00"/>
+                            
+                             <image src="/images/information.png" height="16px" width="16px" tooltip="direcciont" popup="direcciont" style="cursor: pointer" />
+                                    <popup id="direcciont" width="300px">
+                                        <html>
+                                        Si desea ingresar de Forma vertical, seleccione aquí
+                                        </html>
+                                    </popup>
+                            <checkbox id="vertical" visible="false" label="Vertical" />
+                            <button label="Borrar Seleccioandos" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
+                              <checkbox label="Seleccionar Todo" visible="false" onCheck='seleccionar(self.isChecked())' />
+                            <!--button label="Formato CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(datos)"/-->
+                        </span>
+                    </row>
+
+                </rows>
+            </grid>
+            <grid height="100px"   id="datos" >
+                <auxhead>
+                    
+                    <auxheader colspan="2">
+                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                    </auxheader>
+                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                    <auxheader>
+                        Prom.
+                    </auxheader>
+                </auxhead>
+                <columns>
+                    <column width="10px"  label ="Mat."/>
+                    <column width="300px" label ="Estudiante"/>
+                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                    <column width="300px" label ="PF"/>
+                    <column width="300px" label ="PF"/>
+                </columns>
+                <rows id="filas" use="bean.notasEvaluacion">
+                </rows>
+            </grid>
+            
+        </panelchildren>
+    </panel>
+
+   
+      <zscript>
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+        nso.verificarSistema();   
+    </zscript>
+    <!--button label="Recalcular"   onClick="recalculo();"/-->
+
+</zk>
+
