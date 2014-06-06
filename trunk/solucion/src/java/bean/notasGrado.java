@@ -27,7 +27,7 @@ public class notasGrado extends Rows {
 //        todos.setDescripcion("[TODOS]");
     }
 
-    public void addRow(Cursos curso,String separador) {
+    public void addRow(Cursos curso,String separador,Boolean vertical) {
                 separador = separador.substring(6, 7);
         Administrador adm = new Administrador();
         List<Materiasgrado> notas = adm.query("Select o from Materiasgrado as o"
@@ -83,6 +83,7 @@ public class notasGrado extends Rows {
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 txtNumero = new Decimalbox();
+                txtNumero.setTabindex(j);
                 label3 = new Label();
                 try {
                     if (dos.equals(null)) {

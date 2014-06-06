@@ -336,7 +336,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
         est.setStyle("background: transparent;border:0px");
         est.setReadonly(true);
         est.setParent(aud);
-        aud.setColspan(2);
+        aud.setColspan(1);
         aud.setParent(auh);
         for (String[] strings : cabes) {
                     aud = new Auxheader(strings[0]);
@@ -349,6 +349,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
          Columns cols = new Columns();
          datos.appendChild(cols);
          Column matCol = new Column("Matriculas");
+         matCol.setVisible(false);
          datos.getColumns().appendChild(matCol);
          Column  estCol = new Column("Estudiante");
          datos.getColumns().appendChild(estCol);
@@ -484,7 +485,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
             </grid>
             <grid height="100px"   id="datos" >
                 <auxhead>
-                    <auxheader colspan="2">
+                    <auxheader colspan="1">
                         <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
                     </auxheader>
                     <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
@@ -493,7 +494,7 @@ try{datos.getRows().getChildren().clear(); }catch(Exception ab){System.out.print
                     </auxheader>
                 </auxhead>
                 <columns>
-                    <column width="10px"   label ="Mat."/>
+                    <column width="10px" visible="false"  label ="Mat."/>
                     <column width="300px" label ="Estudiante"/>
                     <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
                     <column width="300px" label ="PF"/>

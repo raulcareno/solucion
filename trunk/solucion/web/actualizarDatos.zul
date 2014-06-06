@@ -599,7 +599,7 @@ valor = valor.substring(ini+1, fin);
     }
  
   void verificarCedula(String valor){
-      if(valor.length()>9){
+      /* if(valor.length()>9){
             List empleados = adm.query("Select o from Estudiantes as o where o.cedula = '"+valor+"' ");
             if(empleados.size()>0){
                 Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -614,7 +614,7 @@ valor = valor.substring(ini+1, fin);
                 estudent = new Estudiantes(0);
             }
 
-        }
+        } */
     }
 
 
@@ -734,6 +734,19 @@ boolean validarRepresentante(){
     }
     return true;
 }
+
+void validarNumerodeCedula(String strCedula){
+    if((strCedula+"").equals("")){
+        return;
+    }
+            ValidarCampos val = new ValidarCampos();
+            int valor= val.validaRucCedula(strCedula);
+
+            if(valor<0){
+                     Messagebox.show("El Número de CED. están incorrectos, corrija para poder continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);                                      
+                     cedula.focus();
+            }
+    }
   ]]>
             </zscript>
       
@@ -752,12 +765,12 @@ boolean validarRepresentante(){
 
                                 </row>
                                 <row>
-                                    <span style="float:right"> Identificación:</span>
+                                    <span style="float:right"> Cédula: <span style="color:red;font-weight:bold">(sin guión):</span></span>
                                     <span>
                                         <intbox   cols="5"  visible="false"    id="codigo"  />
                                         <textbox visible="false"    id="codigoclave"  />
                                                                          
-                                        <textbox maxlength="20" cols="13" onChange="verificarCedula(self.value)"  id="cedula"  />
+                                        <textbox  maxlength="20" cols="13" onBlur="validarNumerodeCedula(self.value);" onChange='self.value = self.value.replace("-","");'  id="cedula"  />
                                     (no obligatorio)
                                     </span>
                                 </row>
