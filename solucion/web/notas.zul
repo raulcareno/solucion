@@ -334,13 +334,13 @@ public JRDataSource certificados(Matriculas matricula,String tipo){
             <grid height="100px"  id="datos" >
 
                 <auxhead >
-                    <auxheader colspan="2">
+                    <auxheader colspan="1">
                         <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
                     </auxheader>
                     <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
                 </auxhead>
                 <columns>
-                    <column width="10px"   label ="Mat."/>
+                    <column width="10px" visible="false"  label ="Mat."/>
                     <column width="300px" label ="Estudiante"/>
                     <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
                 </columns>

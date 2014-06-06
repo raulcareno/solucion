@@ -218,13 +218,14 @@ public class notasEvaluacion extends Rows {
 //        String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:23px;font:arial;font-size:9px;text-align:right;background:transparent;font-weigth:bold";
         String ShabilitadoCombo = "color:black;font-weight:bold;width:38px;font:arial;font-size:9px;text-align:right;";
         String SdeshabilitadoCombo = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:38px;font:arial;font-size:9px;text-align:right;background:transparent;font-weigth:bold";
-
+int numero =0;
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
             Boolean deshabilitado = false;
             String color = "black";
             int kk = 0;
+            numero++;
             if (!materia.getIngcualitativo()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
@@ -296,6 +297,14 @@ public class notasEvaluacion extends Rows {
                         valor = valor.replace("[Retirado]", "(R)");
                         valor = valor.replace("[Recibir Pase]", "(PR)");
                         valor = valor.replace("[Matriculado]", "");
+                         if(j==1){
+                            if(numero<10){
+                                valor = "0"+numero+"|\t"+valor;
+                            }else{
+                               valor = numero+"|\t"+valor;
+                            }
+                        }
+                        
                         label3.setValue("" + valor);
                     }
 //                                 label.setAttribute(q, dos);

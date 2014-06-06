@@ -234,6 +234,7 @@ public class notas extends Rows {
         //      String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
 //        System.out.println("antes del select"+(new Date()));
+        int numero = 0;
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
@@ -242,6 +243,7 @@ public class notas extends Rows {
             Double pg = 0.0;
             Double sup = 0.0;
             Double rem = 0.0;
+            numero++;
             if (materia.getCuantitativa()) {
                 for (int j = 0; j < vec.size(); j++) {
                     Object dos = vec.get(j);
@@ -284,6 +286,13 @@ public class notas extends Rows {
                         valor = valor.replace("[Retirado]", "(R)");
                         valor = valor.replace("[Recibir Pase]", "(PR)");
                         valor = valor.replace("[Matriculado]", "");
+                        if(j==1){
+                            if(numero<10){
+                                valor = "0"+numero+"|\t"+valor;
+                            }else{
+                               valor = numero+"|\t"+valor;
+                            }
+                        }
                         label3.setValue("" + valor);
                     }
 //                                 label.setAttribute(q, dos);

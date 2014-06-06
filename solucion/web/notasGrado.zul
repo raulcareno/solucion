@@ -55,7 +55,7 @@ guardar(){
   
      //GUARDO NOTAS DEL ACTA DE UNA VEZ
      String separador = ""+ demo.getText();
-        filas.addRow(mat,separador);
+        filas.addRow(mat,separador,false);
         filasActa.addRow(mat,separador);
         notasActa notasAc = new notasActa();
         notasActa rAc = (notasActa) datosActa.getRows();
@@ -99,7 +99,7 @@ guardar(){
 void notas(){
         Cursos mat = ingresoexamenesGrado.getAttribute("curso");
         String separador = ""+ demo.getText();
-        filas.addRow(mat,separador);
+        filas.addRow(mat,separador,false);
 }
     Double v = 99000 / 4.7d;
         demo.setValue(new BigDecimal(v));
