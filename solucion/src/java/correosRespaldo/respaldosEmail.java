@@ -73,7 +73,7 @@ static class SMTPAuthentication extends javax.mail.Authenticator{
     public PasswordAuthentication getPasswordAuthentication(){ 
 //        AdministradorSistema bs = new AdministradorSistema();
         String username = "jcinform@gmail.com";
-        String password = "samiismael@1920";
+        String password = "samiismael@2020";
 //        String username = ""+this.user;
 //        String password = ""+this.pass;
         return new PasswordAuthentication(username, password);
