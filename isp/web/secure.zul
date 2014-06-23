@@ -1,0 +1,206 @@
+
+<window   border="normal">
+
+    <zscript>
+        import bean.EventDAO; 
+        import java.util.ArrayList; 
+        import jcinform.persistencia.*;
+        import jcinform.conexion.*;
+        import jcinform.bean.*;
+        import java.math.BigDecimal;
+        import java.util.ArrayList;
+        import procesosAdicionales.*;
+        //exportarExcel exp = new exportarExcel();
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        List allEvents = adm.query("Select o from Bancos as o");
+        static Bancos equi = new Bancos();
+        Permisos permiso = new Permisos();
+        //SimpleTreeModel stm = new SimpleTreeModel(root);
+        //FUNCIONES
+        void llenar(Bancos equi2){
+        equi = equi2;
+        nombre.value = equi.getNombre();
+        cuenta.value = equi.getCuenta();
+        cod.value = equi.getCod();
+    
+
+
+    
+        }
+        void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+        equi = (Bancos)datos.selectedItem.value;
+        }
+        nombre.readonly = estado;
+        cuenta.readonly = estado;
+        cod.readonly = estado;
+
+        }
+
+
+        void guardar(){
+        if(nombre.value.equals("")){
+        Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+        return;
+        }
+        equi.setNombre(nombre.value);
+        equi.setCuenta(cuenta.value);
+        equi.setCod(cod.value);
+        
+        if((!equi.getCodigo().equals(0)) ){
+        adm.actualizar(equi);
+        List children = datos.selectedItem.children;
+        ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+        ((Listcell)children.get(1)).label = nombre.value+ "" ;
+        permiso.auditar("Bancos","Actualizar",""+equi.getCodigo()+" - "+equi.getNombre());
+        }else{
+        equi.setCodigo(adm.getNuevaClave("Bancos","codigo"));
+        adm.guardar(equi);
+        permiso.auditar("Bancos","Guardar",""+equi.getCodigo()+" - "+equi.getNombre());
+        }
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        guardar.disabled=true;
+        agregar.disabled=false;
+        estado(true,false);
+        llenar(new Bancos(0));
+        buscar("");
+        }
+
+        Boolean verificar(String accion){
+        return permiso.verificarPermiso("Bancos",accion);
+        }
+        void nuevo(){
+        if(verificar("Agregar")){
+        guardar.disabled=false;
+        llenar(new Bancos(0));
+        estado(false,false);
+        
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void move(){
+        llenar((Bancos)datos.selectedItem.value);
+        modificar.disabled = false;
+        }
+        void modificar(){
+        if(verificar("Modificar")){
+        guardar.disabled=false; estado(false,true);
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void eliminar(){
+        if(verificar("Eliminar")){
+        try{
+        equi = (Bancos)datos.selectedItem.value;
+        adm.eliminarObjeto(Bancos.class, equi.getCodigo());
+        permiso.auditar("Bancos","Eliminar",""+equi.getCodigo()+" - "+equi.getNombre());
+        datos.removeItemAt(datos.getSelectedIndex());
+        llenar(new Bancos(0));
+        Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void buscar(String p){
+
+      
+        List equivaEncontrados = adm.query("Select o from Bancos as o   order by o.nombre");
+        datos = new Listbox();
+        int a=0;
+        for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+        datos.getItems().remove(a);
+        }
+   
+       
+        for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+        Bancos acceIt = (Bancos) it.next();
+        Listitem li = new Listitem();
+        li.setValue(acceIt);
+        li.appendChild(new Listcell(acceIt.getCodigo()+""));
+        li.appendChild(new Listcell(acceIt.getNombre()+" "));
+        li.appendChild(new Listcell(acceIt.getCod()+" "));
+        datos.appendChild(li);
+        }
+
+        }
+        void cargar(Bancos g){
+        equi.setBancos(g);
+        }
+        
+        public static void export_to_csv(Listbox listbox) {
+        //exp.exportar(listbox);
+        //return;
+        String s = ";\t";
+        StringBuffer sb = new StringBuffer();
+        for (Object head : listbox.getHeads()) {
+        String h = "";
+        for (Object header : ((Listhead) head).getChildren()) {
+        h += ((Listheader) header).getLabel() + s;
+        }
+        sb.append(h + "\n");
+        }
+        for (Object item : listbox.getItems()) {
+        String i = "";
+        for (Object cell : ((Listitem) item).getChildren()) {
+        i += ((Listcell) cell).getLabel() + s;
+        }
+        sb.append(i + "\n");
+        }
+        Filedownload.save(sb.toString().getBytes(), "application/vnd.ms-excel", "archivo.xls");
+        }
+        
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Verificar Secure" />
+	
+        <grid width="100%">
+            <rows> 
+                <row>
+                    <combobox id="tipo" >
+                        <comboitem label="Habilitado"/>
+                        <comboitem label="Deshabilitado"/>
+                    </combobox>
+                </row>
+                <row>  
+                    <span>
+                        <button id="subirb" disabled="false" image="/images/subir.png" label="Subir">
+                            <attribute name="onClick">{
+                                Object media = Fileupload.get();
+                                SubirDatosSecure sec = new SubirDatosSecure();
+                                ArrayList ar = sec.leerArchivoExcel(media,tipo.selectedItem.label);
+                
+                                for (Iterator it = ar.iterator(); it.hasNext();) {
+                                String dato = it.next();
+                                Listitem li = new Listitem();
+                                li.appendChild(new Listcell(" - "+dato));
+                                resultados.appendChild(li);
+                                }
+
+                         
+                                                               
+                                }
+                            </attribute>
+                        </button>
+                        <button label="Exportar CVS,xls"  image="/images/excel.gif"   onClick="export_to_csv(resultados)"/>
+                    </span>
+                </row>
+                <row>
+                    <listbox id="resultados" >
+    
+                    </listbox>
+
+                </row>
+            </rows>
+        </grid>
+        
+
+    </groupbox>
+   
+
+</window>

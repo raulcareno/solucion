@@ -199,6 +199,7 @@ void ingresarSoporte(Soporte sop){
                                     <menuitem  value="/equipos.zul"   image="/images/equipos2.png" label="Equipos/Productos" onClick='ingresar(self,"Equipos")' />
                                     <menuitem image="/images/calendario.png" value="/actualizarSeries.zul"  label="Actualizar Series" onClick='ingresar(self,"Generacion Cobros")' />
                                     <menuitem value="/asignarSeriesEmpleados.zul" image="/images/equipos.png" label="Inventario Empleados" onClick='ingresar(self,"Compras")' />
+                                    <menuitem value="/secure.zul" image="/images/equipos.png" label="Consolidar Secure" onClick='ingresar(self,"Secure")' />
                                 </menupopup>
                             </menu>
                             <menu label="Cobros" image="/images/cobros.png" >
