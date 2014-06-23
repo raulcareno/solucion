@@ -84,7 +84,13 @@ public class ReporteFacturaDataSource implements JRDataSource {
                     } else if (valor.equals(3)) {
                         valor = "Domicilio";
                     } else if (valor.equals(2)) {
-                        valor = "Débito";
+                        try{
+                            valor = "Débito "+nodo.getFactura().getContratos().getBancos().getNombre();
+                        }catch(Exception e) {
+                            valor = "Débito ";
+                        }
+                        
+                        
                     } else {
                         valor = "";
                     }

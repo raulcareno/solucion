@@ -109,15 +109,22 @@ List nodos = adm.query("Select o from Nodos as o " +
            String directorioReportes = empresa.getReportes();
             JRDataSource datasource = null;
            if(tipo.equals("CXCLI")){
+                  Set items3 = tipoplanList.getSelectedItems();
+                  List listaTipoPlanes = new ArrayList(items3);
+                    if(listaTipoPlanes.size()<=0){
+                        alert("Seleccione al menos un plan");
+                        return;
+                    }
+           
                 Integer cclientev = ccliente.value;
                 if(cclientev != null ){
                 }else{
                         cclientev = -1; //TODOS LOS CLIENTES
                 }
                 if(cclientev.equals(-1)){
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value),estadoContrato.selectedItem.value);
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),sectorList.selectedItem.value,cant.selectedItem.value,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value),estadoContrato.selectedItem.value,listaTipoPlanes);
                 }else{
-                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value),estadoContrato.selectedItem.value);
+                        datasource = reportes.facturasPendientes(new Clientes(cclientev),null,null,desde.value, hasta.value,todasfechas.isChecked(),new Integer(formapago.selectedItem.value),estadoContrato.selectedItem.value,listaTipoPlanes);
                 }
                 
                 
@@ -223,7 +230,14 @@ List nodos = adm.query("Select o from Nodos as o " +
                     alert("Seleccione al menos un plan");
                     return;
                     }
-                  datasource = reportes.clientesxestadoplan(estadoContrato.selectedItem.value,listPlanes,tipoplanList.selectedItem.value);
+                    Set items3 = tipoplanList.getSelectedItems();
+                        List listaTipoPlanes = new ArrayList(items3);
+                    if(listaTipoPlanes.size()<=0){
+                        alert("Seleccione al menos un plan");
+                        return;
+                    }
+                    
+                  datasource = reportes.clientesxestadoplan(estadoContrato.selectedItem.value,listPlanes,listaTipoPlanes);
                   report.setSrc(directorioReportes+"listacontratosestadoyplan.jasper");
             }else if(tipo.equals("PORSECTORCLILETRA")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,sectorList2.selectedItem.value,desdeletra.selectedItem.value,hastaletra.selectedItem.value,estadoContrato.selectedItem.value);
@@ -448,6 +462,7 @@ void campos(String valor){
             desde.value = fec; 
         }else if(valor.equals("CXCLI") ){
             titulo.value= "Cuentas por Pagar";
+            filatipoplan.visible = true;
             filaclientes.visible=true;
             filaclientes1.visible=true;
             filacanton.visible=true;
@@ -884,7 +899,7 @@ void campos(String valor){
                         </row>
                         <row visible = "false" id="filatipoplan">
                             <span style="float:right"> Tipo(*):</span>
-                            <listbox mold="select" id="tipoplanList" width="250px">
+                            <listbox  height="150px" id="tipoplanList" width="250px"  multiple="true" checkmark="true" >
                                 <listitem selected="true" value="TODOS" label="TODOS" />
                                 <listitem  value="HOME" label="HOME" />
                                 <listitem value="BASICO" label="BASICO" />
@@ -897,7 +912,7 @@ void campos(String valor){
                         </row>
                         <row visible = "false" id="filaplan">
                             <span style="float:right"> Plan(*):</span>
-                            <listbox height="80px" id="planList" width="250px" multiple="true" checkmark="true" >
+                            <listbox height="150px" id="planList" width="250px" multiple="true" checkmark="true" >
                                 <listitem forEach="${planes}" value="${each}">
                                     <listcell label="${each.nombre}" />
                                 </listitem>

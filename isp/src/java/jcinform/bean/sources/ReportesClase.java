@@ -76,19 +76,41 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource clientesxestadoplan(String estado, List planes, String tipo) {
+    public JRDataSource clientesxestadoplan(String estado, List planes, List tipo) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String comple = "";
         String complemento2 = "";
-        if (!tipo.equals("TODOS")) {
-            comple = " and o.plan.tipo = '" + tipo + "' ";
+         String tiposString =""; 
+        for (Iterator it = tipo.iterator(); it.hasNext();) {
+            //Object object = it.next();
+            Listitem object = (Listitem) it.next();
+                //if (((Plan) object.getValue()).getCodigo().equals(-1)) {
+            if(!(object.getValue()+"").contains("TODOS")){
+                tiposString +="'"+object.getValue()+"'"+",";
+            }
+           
+            
         }
+         if(tiposString.length()>0){
+             tiposString = tiposString.substring(0, tiposString.length()-1);
+             //comple = " and o.plan.tipo = '" + tipo + "' ";
+             comple = " and o.plan.tipo in ("+tiposString+") ";
+             
+         }else{
+             comple =" ";
+         }
+        
+//        if (!tipo.equals("TODOS")) {
+//            comple = " and o.plan.tipo = '" + tipo + "' ";
+//        }
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
         Boolean todoslosPlanes = false;
+       
+        
         String codigosPlanes = "";
         if (planes != null) {
             for (Iterator it = planes.iterator(); it.hasNext();) {
@@ -363,9 +385,30 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, String estado) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, String estado,List tipo) {
         Administrador adm = new Administrador();
-
+        String comple = "";
+          String tiposString =""; 
+        for (Iterator it = tipo.iterator(); it.hasNext();) {
+            //Object object = it.next();
+            Listitem object = (Listitem) it.next();
+                //if (((Plan) object.getValue()).getCodigo().equals(-1)) {
+            if(!(object.getValue()+"").contains("TODOS")){
+                tiposString +="'"+object.getValue()+"'"+",";
+            }
+           
+            
+        }
+         if(tiposString.length()>0){
+             tiposString = tiposString.substring(0, tiposString.length()-1);
+             //comple = " and o.plan.tipo = '" + tipo + "' ";
+             comple = " and o.plan.tipo in ("+tiposString+") ";
+             
+         }else{
+             comple =" ";
+         }
+        
+        
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
@@ -389,13 +432,13 @@ public class ReportesClase {
                 if (canton.getCodigo().equals(-1)) {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago + " " + estadoComp
+                            + " " + formaPago + " " + estadoComp +" "+comple
                             + "order by o.clientes.apellidos");
 
                 } else {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago + " " + estadoComp
+                            + " " + formaPago + " " + estadoComp +" "+comple
                             + " order by o.clientes.apellidos");
 
                 }
@@ -403,7 +446,7 @@ public class ReportesClase {
 
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                        + " " + formaPago + " " + estadoComp
+                        + " " + formaPago + " " + estadoComp +" "+comple
                         + " order by o.clientes.apellidos");
 
 
@@ -411,7 +454,7 @@ public class ReportesClase {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                         + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                        + " " + formaPago + " " + estadoComp
+                        + " " + formaPago + " " + estadoComp +" "+comple
                         + " order by o.clientes.apellidos");
 
             }
