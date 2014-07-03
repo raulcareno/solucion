@@ -52,6 +52,21 @@
                     <a:bind value="inobjeto.instalacion"/>
                     <decimalbox id="instalacion" onChange="update();"/>
                 </row>
+                <row>
+                    <span style="float:right"> URL Maps:</span>
+                    <a:bind value="inobjeto.url"/>
+                    <textbox id="url" onChange="update();"/>
+                </row>
+                <row>
+                    <span style="float:right"> Latitud:</span>
+                    <a:bind value="inobjeto.latitud"/>
+                    <textbox id="latitud" onChange="update();"/>
+                </row>
+                <row>
+                    <span style="float:right"> Longitud:</span>
+                    <a:bind value="inobjeto.longitud"/>
+                    <textbox id="longitud" onChange="update();"/>
+                </row>
             </rows>
         </grid>
         <grid align="center" width="100%">

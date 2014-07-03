@@ -178,6 +178,8 @@ void llenar(Contratos  equi2){
     telefonoi.value = equi.getTelefono();
     telefono.value = equi.getTelefonof();
     tipoplan.value = equi.getTipoplan();
+    latitud.value = equi.getLatitud();
+    longitud.value = equi.getLongitud();
     try{
         if(equi.getDiapago() == null){
             diapago.value  = "1";
@@ -337,6 +339,8 @@ void estado(Boolean estado,Boolean modificar){
     fecha.disabled = estado;
     tipoplan.disabled = estado;
     nocuenta.readonly = estado;
+    latitud.readonly = estado;
+    longitud.readonly = estado;
     tipocuenta.disabled = estado;
     diapago.disabled = estado;
     direccioni.readonly = estado;
@@ -529,6 +533,8 @@ Boolean validar(){
     equi.setTelefono(telefonoi.value);
     equi.setFormapago(new Integer(formapago.selectedItem.value)); //integer
     equi.setNocuenta(nocuenta.value); //varchar
+    equi.setLatitud(latitud.value); //varchar
+    equi.setLongitud(longitud.value); //varchar
     equi.setTipocuenta(tipocuenta.value); //varchar 
     equi.setDiapago(new Integer(diapago.value));//integer
   
@@ -972,6 +978,17 @@ if(sihay==0){
                     estado(true,false);
                     sumar();
                     buscarSeries(equi);
+}
+
+vermapa(){
+            final Window win = (Window) Executions.createComponents("maps.zul", null, null);
+            win.setMaximizable(true);
+            win.setClosable(true);
+            win.setMaximized(true);
+            win.setAttribute("latitud", latitud.value+"");
+            win.setAttribute("longitud", longitud.value+"");
+            win.setTitle("Datos de ubicación");
+            win.doModal();
 }
 
  Boolean verificar(String accion){
@@ -2922,11 +2939,18 @@ void llamar(){
                                             <comboitem label="Fibra Óptica" value="Fibra Óptica" />
                                             <comboitem label="Medio Inalambrico" value="Medio Inalambrico" />
                                          </combobox>
-                                          <span style="float:right"> <label visible="false" id="facturarlbl" value="Facturar:" />  </span>
+                                          <span style="float:right"> <label  value="Latitud:" />  <label visible="false" id="facturarlbl" value="Facturar:" />  </span>
+                                           <span>
+                                           <textbox cols="3"    readonly="false" id="latitud" />
+                                           <label  value="Longitud: " /> 
+                                           <textbox cols="3"    readonly="false" id="longitud" />
+                                           <button label="..." onClick="vermapa()"/>
+                                           
                                            <radiogroup id="facturar" >
                                             <radio selected="true"  visible="false"   id="si" value="SI" label="SI" style="font-weight:bold2" />
                                             <radio  id="no"  value="NO"   visible="false"  label="NO" style="font-weight:bold2" />
                                           </radiogroup>
+                                          </span>
                                                            
                                         </row>
                                         <row visible="true">

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window   onCreate="cargar()" width="650px" id="maps">
+           <style>
+            .MyGridRowHeight
+            tr.z-row td.z-row-inner
+            {
+            border:1px solid white;
+            border-right:1px solid transparent;
+            padding:0px;
+            } 
+    </style>
+        <zscript>
+            <![CDATA[
+  import jcinform.persistencia.*;
+  import jcinform.conexion.*;
+  import jcinform.bean.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+  import java.util.HashMap;
+    import java.util.Map;
+    import java.math.BigDecimal;
+    import jcinform.bean.sources.*;
+
+    Session ses = Sessions.getCurrent();
+    
+    Empleados usuarioActual = ses.getAttribute("user");
+    Empresa empresa = ses.getAttribute("empresa");
+
+]]>
+        </zscript>
+
+      <tabbox context="derecho" id="mytab" width="100%" height="600px">
+                            <tabs id="tbs">
+                            </tabs>
+                            <tabpanels id="tps" >
+                              
+                            </tabpanels>
+                        </tabbox>
+ 
+          
+        <zscript>
+            void cargar(){
+            
+            try{
+                    String latitud = maps.getAttribute("latitud");
+                    String longitud = maps.getAttribute("longitud");
+               if(latitud.equals("") || longitud.equals("")){
+                    latitud = empresa.getLatitud();
+                    longitud = empresa.getLongitud();
+               }
+            String enviar = empresa.getUrl().replace("latitud",latitud).replace("longitud",longitud);
+                                   Tab newtb= new Tab("Mapa");
+                                    newtb.setSelected(true);
+                                    newtb.setClosable(false);
+                                    newtb.setParent(tbs);
+
+                                    Tabpanel newtpl = new Tabpanel();
+                                    Iframe f = new Iframe(enviar);
+                                    System.out.println(""+enviar);
+                                    f.setWidth("100%");
+                                    f.setHeight("100%");
+                                    newtpl.appendChild(f);
+                                    newtpl.setParent(tps);
+                                 
+             }catch(Exception e){
+                     System.out.println("ERROR EN FACTURA "+e);
+             }
+            
+                    
+            }
+        </zscript>
+    </window>
+</zk>

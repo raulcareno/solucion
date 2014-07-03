@@ -68,6 +68,10 @@ public class Contratos implements Serializable {
     private String ip;
     @Column(name = "usuario")
     private String usuario;
+    @Column(name = "latitud")
+    private String latitud;
+    @Column(name = "longitud")
+    private String longitud;
     @Column(name = "clave")
     private String clave;
     @Column(name = "autorizado")
@@ -487,6 +491,22 @@ public class Contratos implements Serializable {
 
     public void setSupertel(Boolean supertel) {
         this.supertel = supertel;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
     
     

@@ -46,6 +46,12 @@ public class Empresa implements Serializable {
     private String reportes;
     @Column(name = "fotos")
     private String fotos;
+    @Column(name = "url")
+    private String url;
+    @Column(name = "latitud")
+    private String latitud;
+    @Column(name = "longitud")
+    private String longitud;
     @Column(name = "usuariomail")
     private String usuariomail;
     @Column(name = "clavemail")
@@ -315,6 +321,30 @@ public class Empresa implements Serializable {
 
     public void setDiasminima(Integer diasminima) {
         this.diasminima = diasminima;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
 
  
