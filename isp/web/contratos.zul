@@ -2944,7 +2944,7 @@ void llamar(){
                                            <textbox cols="3"    readonly="false" id="latitud" />
                                            <label  value="Longitud: " /> 
                                            <textbox cols="3"    readonly="false" id="longitud" />
-                                           <button label="..." onClick="vermapa()"/>
+                                           <button label="mapa" onClick="vermapa()"/>
                                            
                                            <radiogroup id="facturar" >
                                             <radio selected="true"  visible="false"   id="si" value="SI" label="SI" style="font-weight:bold2" />

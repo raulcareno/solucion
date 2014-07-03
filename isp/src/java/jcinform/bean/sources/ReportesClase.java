@@ -500,14 +500,130 @@ public class ReportesClase {
                 }
 
             }
+             facEncontradas = null;
 
         }
         System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        detalles = null;
+        clientes = null;
+       
+     limpiarMemoria();
+        
         return ds;
     }
 
-    public JRDataSource facturasEmitidas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
+     public void limpiarMemoria() {
+        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
+        System.gc();
+        System.gc();
+        System.gc();
+        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    }
+    public JRDataSource facturasEmitidasSupertel(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
+        Administrador adm = new Administrador();
+        List<Clientes> clientes = new ArrayList<Clientes>();
+        String desdestr = convertiraString(desde) + "";
+        String hastastr = convertiraString(hasta) + "";
+        String compleme = " and fa.fecha between '" + desdestr + "' and  '" + hastastr + "' ";
+        if (todasLasFechas) {
+            compleme = "";
+        }
+        String formaPago = " and o.formapago = '" + formapago + "' ";
+        String documentoComple = " ";
+        if (!documento.equals(new Integer(0))) {
+            documentoComple = " and fa.numero like '%" + (documento.equals(new Integer(1)) ? "FAC" : "REC") + "%'";
+        }
+
+        if (formapago.equals(0)) {
+            formaPago = " and o.formapago in (0,1,2,3) ";
+        }
+        if (sec.getCodigo().equals(-1)) {
+
+            if (canton.getCodigo().equals(-1)) {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' and o.supertel = true  "
+                        + " " + formaPago
+                        + "order by o.clientes.apellidos");
+
+            } else {
+                clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                        + "where o.sector.canton.codigo = '" + canton.getCodigo() + "'  and o.supertel = true  and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                        + " " + formaPago
+                        + " order by o.clientes.apellidos");
+
+            }
+        } else if (canton.getCodigo().equals(-1)) {
+
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.supertel = true  "
+                    + " " + formaPago
+                    + " order by o.clientes.apellidos");
+
+
+        } else {
+            clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
+                    + "where o.sector.codigo = '" + sec.getCodigo() + "'  and o.supertel = true  "
+                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                    + " " + formaPago
+                    + " order by o.clientes.apellidos");
+
+        }
+
+        ArrayList detalles = new ArrayList();
+        String codClientes = "";
+        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+            Clientes clientes1 = itCli.next();
+            codClientes += clientes1.getCodigo() + ",";
+
+        }
+        clientes =null;
+        if (codClientes.length() > 0) {
+            codClientes = codClientes.substring(0, codClientes.length() - 1);
+        }
+        String quer;
+//        for (Iterator<Clientes> itCli = clientes.iterator(); itCli.hasNext();) {
+//            Clientes clientes1 = itCli.next();
+        quer = "SELECT fa.codigo, fa.fecha, fa.total,  fa.total, fa.contratos, fa.contratos "
+                + "FROM Factura fa "
+                + " WHERE  fa.clientes  in (" + codClientes + ")  "
+                + compleme + documentoComple
+                + "  order by  fa.fecha ";
+        System.out.println("" + quer);
+        List facEncontradas = adm.queryNativo(quer);
+
+        if (facEncontradas.size() > 0) {
+            Pendientes pendi = null;
+            for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                Vector vec = (Vector) itna.next();
+                pendi = new Pendientes();
+
+                pendi.setFactura("" + vec.get(0));
+                Date d = (Date) vec.get(1);
+                pendi.setFecha(d);
+                Contratos c = (Contratos) adm.buscarClave(vec.get(4), Contratos.class);
+                pendi.setContratos(c);
+                pendi.setCliente(c.getClientes());
+                pendi.setPlan(c.getPlan() + "");
+                pendi.setDireccion(c.getDireccion());
+                pendi.setContrato(c.getContrato() + "");
+                pendi.setTelefono(c.getTelefono() + " " + c.getTelefonof());
+                pendi.setTotal((BigDecimal) vec.get(2));
+                pendi.setSaldo((BigDecimal) vec.get(3));
+                detalles.add(pendi);
+            }
+
+        }
+
+//        }
+        System.out.println("" + quer);
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        detalles = null;
+        limpiarMemoria();
+        return ds;
+    }
+        public JRDataSource facturasEmitidas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         String desdestr = convertiraString(desde) + "";
@@ -682,10 +798,16 @@ public class ReportesClase {
                 }
 
             }
+              facEncontradas = null;
 
         }
         System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        detalles = null; 
+        clientes = null;
+      
+        limpiarMemoria();
+         
         return ds;
     }
 
