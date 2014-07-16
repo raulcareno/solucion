@@ -12,14 +12,23 @@
   import org.zkoss.image.Image;
   import java.math.BigDecimal;
   import java.math.RoundingMode;
+  import siscontrol.cnx.*;
     Administrador adm = new Administrador();
  Session ses = Sessions.getCurrent();
   
     Permisos permiso = new Permisos();
-    List perfiles = adm.query("Select o from Productos as o order by o.nombre, o.modelo ");
+    List perfiles = adm.query("Select o from Productos as o where o.codigo = 0 order by o.nombre ");
     //List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
     Object media = null;
-
+Empleados emp = ses.getAttribute("user");
+            if(emp==null){
+                Executions.sendRedirect("login.zul");
+            }
+            
+  Empresa empresa = ses.getAttribute("empresa");
+  String directorioReportes = empresa.getReportes();
+            
+            
 //FUNCIONES
 void cargarFoto(byte[] imageData){
   foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
@@ -265,6 +274,7 @@ Boolean validarSeriesAju(){
 
 
  void guardar(){
+  secuencial sec = new secuencial();
    List colValida = opciones.getRows().getChildren();
       if(colValida.size() <= 0){
           Messagebox.show("No ha ingresado productos...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
@@ -297,27 +307,49 @@ Boolean validarSeriesAju(){
        Factura cabeceraFactura = new Factura();
        cabeceraFactura.setCodigo(adm.getNuevaClave("Factura","codigo"));
        cabeceraFactura.setCliente(empa);
-       cabeceraFactura.setNumero(factura.value);
+       //cabeceraFactura.setNumero();
        cabeceraFactura.setFecha(fecha.value);
        cabeceraFactura.setObservaciones(observacion.value);
-       //cabeceraFactura.setCantidad(new BigDecimal(0));
-       cabeceraFactura.setTotal(new BigDecimal(0));
+       cabeceraFactura.setCantidad(new BigDecimal(0));
+       cabeceraFactura.setEmpleado(emp);
+                        Boolean pasar = true;
+                        Integer numero = adm.getNuevaClave("Factura","numero");
+                        while(pasar){
+                            List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
+                            if(sihay.size()<=0){//no existe el numero y paso
+                                pasar = false;
+                                cabeceraFactura.setNumero(numero);
+                                factura.value = numero;
+                            }else{//existe el numero y sumo en uno
+                                numero++;
+                            }
+
+                        }
+                    
+
+        cabeceraFactura.setSubtotal(totalFinal.getValue());
+        cabeceraFactura.setSubtotal1(totalFinal2.getValue());
+        cabeceraFactura.setDescuento(descuento.getValue());
+        cabeceraFactura.setIva(iva.getValue());
+        cabeceraFactura.setTotal(total.getValue());
+        
+
        adm.guardar(cabeceraFactura);
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
                     Detalle det = new Detalle();
-                     det.setCodigo(adm.getNuevaClave("Detalle","codigo"));
+                     det.setCodigo(sec.generarClave());
                      det.setFactura(cabeceraFactura);
                      List labels = object.getChildren();
                          det.setProducto((Productos)object.getValue());
                          det.setCantidad(((Decimalbox) labels.get(0)).getValue());
-                         det.setDescripcion(((Intbox) labels.get(1)).getValue());
+                         det.setDescripcion(((Label) labels.get(1)).getValue());
                          det.setValor(((Decimalbox) labels.get(2)).getValue());                         
                          det.setSubtotal(((Decimalbox) labels.get(3)).getValue());
                          //Button bu = ((Button) labels.get(3));
-                         cabeceraFactura.setCantidad(cabeceraFactura.getCantidad()+det.getCantidad());
-                         cabeceraFactura.setTotal(cabeceraFactura.getTotal().add(det.getCosto()));
+                         cabeceraFactura.setCantidad(cabeceraFactura.getCantidad().add(det.getCantidad()));
+
                        adm.guardar(det);
              }
       adm.actualizar(cabeceraFactura);
@@ -327,6 +359,7 @@ Boolean validarSeriesAju(){
                 //permiso.auditar("Factura"+documento.selectedItem.value,"Guardar","FAC"+factura.value+" USD:"+ cabeceraFactura.getTotal() + " PROV:"+idproveedores.value);
                     guardar.disabled=true;
                     agregar.disabled=false;
+                    imprimir.disabled = false;
                     estado(true,false);
                     add.disabled = false;
                    // llenar(new Factura(0));
@@ -478,7 +511,24 @@ llenarGrid(){
  seriespanel.visible = false;       
 }
 
-
+  public void imprimir(){
+            try{
+                   Map parameters = new HashMap();
+                   List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + 11 + "'");
+                   ArrayList detalles = new ArrayList();
+                   for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
+                        Detalle det = itAbono.next();
+                         detalles.add(det);
+                   }
+                   ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
+                   reportelocal.setSrc(directorioReportes+"proforma.jasper");
+                   reportelocal.setParameters(parameters);
+                   reportelocal.setDatasource(ds);
+                   reportelocal.setType("pdf");
+            }catch(Exception  ex){
+                System.out.println("EXXX: "+ex);
+            }
+  }
 llenarGridActualizar(){
                
                     Row row = new Row();
@@ -570,6 +620,7 @@ void tipoDocumento(String tipo){
         <tabs>
             <tab id="registro" label="Registro" />
             <tab id="busqueda" label="Busquedas" />
+            <tab id="reporteVer" label="Reporte" />
         </tabs>
         <tabpanels>
             <tabpanel>
@@ -577,7 +628,7 @@ void tipoDocumento(String tipo){
                     <rows>
                        
                         <row id="compras1" style="background-color:cyan">
-                            <span style="float:right"> Cliente: </span> 
+                            <span style="float:right; font-weight:bold"> <label value="Buscar Cliente: " style="font-weight:bold" /><image  src="/images/auditoria.gif" /> </span> 
                             <span>
                                  
                                 <combobox  cols="35"  id="clientesBusqueda" onOK='factura.focus();' 
@@ -591,10 +642,13 @@ void tipoDocumento(String tipo){
                                            autodrop="true" buttonVisible="false"  
                                            use="siscontrol.autoCompletarClientes"/>
                                 <intbox  readonly="true" visible="false"  cols="1" id="idproveedores" />
-                                <image  src="/images/auditoria.gif" /> 
+                                
                             </span>
                             <span>No.Proforma</span> 
-                            <span><decimalbox id="noproforma" onOK="buscar()"/></span>
+                            <span> <intbox  readonly="true"  id="factura"/> 
+                            <span> Fecha:</span>
+                            <datebox id="fecha" format="dd/MM/yyyy hh:mm:ss" onCreate="self.value = adm.Date()"/>
+                            </span>
                         </row>
                         <row>
                             <span style="float:right">    Cédula: </span> 
@@ -618,17 +672,7 @@ void tipoDocumento(String tipo){
                             <textbox id="referencia" readonly="true" cols="35" />
                                 
                         </row>
-                        <row>
-                            <span style="float:right"> Fecha Comp/Ven:</span>
-                            
-                            <datebox id="fecha" format="dd/MM/yyyy hh:mm:ss" onCreate="self.value = adm.Date()"/>
-                            <span> No. Proforma</span> 
-                            <intbox  readonly="true"  id="factura"/>
-                             
-                        </row>
-                        
-                       
-                 
+                    
                        
                         <row spans="4">
                             <grid  width="98%" id="anadir">
@@ -702,46 +746,47 @@ void tipoDocumento(String tipo){
                                             <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
                                             <!--textbox value="" onFocus="vu.focus()" readonly="true" id="productod" cols="50" /-->
                                             <combobox  cols="35" id="productod" onOK='vu.focus();' 
-                                                       onSelect="llenarEquipo(self.selectedItem.value); " 
+                                                       onSelect=" if(self.selectedItem!=null){ llenarEquipo(self.selectedItem.value);} " 
                                                        autodrop="true" buttonVisible="false"  
                                                        use="siscontrol.autoCompletarProductos"/>
                                             <zscript>
                                                 llenarEquipo(Productos es){
-                                                idproducto.value = es.getCodigo(); 
-                                                vu.value  = es.getPvp1();  
-                                                 int a=0;
-                                                for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
-                                                        valores.getItems().remove(a);
-                                                    }
-                                                      Listitem li = new Listitem();
-                                                      li.setValue(es.getPvp1());
-                                                      li.appendChild(new Listcell(es.getPvp1()+""));
-                                                      valores.appendChild(li);
+                                                        idproducto.value = es.getCodigo(); 
+                                                        vu.value  = es.getPvp1();  
+                                                         int a=0;
+                                                        for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
+                                                                valores.getItems().remove(a);
+                                                            }
+                                                              Listitem li = new Listitem();
+                                                              li.setValue(es.getPvp1());
+                                                              li.appendChild(new Listcell(es.getPvp1()+""));
+                                                              valores.appendChild(li);
+
+                                                        Listitem li2 = new Listitem();
+                                                              li2.setValue(es.getPvp2());
+                                                              li2.appendChild(new Listcell(es.getPvp2()+""));
+                                                              valores.appendChild(li2);
+
+
+                                                        Listitem li3 = new Listitem();
+                                                              li3.setValue(es.getPvp3());
+                                                              li3.appendChild(new Listcell(es.getPvp3()+""));
+                                                              valores.appendChild(li3);
                                                 
-                                                Listitem li2 = new Listitem();
-                                                      li2.setValue(es.getPvp2());
-                                                      li2.appendChild(new Listcell(es.getPvp2()+""));
-                                                      valores.appendChild(li2);
-                                                 
-                                                
-                                                Listitem li3 = new Listitem();
-                                                      li3.setValue(es.getPvp3());
-                                                      li3.appendChild(new Listcell(es.getPvp3()+""));
-                                                      valores.appendChild(li3);
- 
-                                                    calcularTotal();
+                                                            valores.setSelectedIndex(0);
+                                                            calcularTotal();
                                                 }
-                                                calcularTotal(){
+                                   calcularTotal(){
                                                 try{
                                                     vt.value = cantidad.value.multiply(vu.value);
                                                 }catch(Exception abc){}
-                                                }
+                                  }
                                             </zscript>
  
                                        
                                         </span>
                                         
-                                        <listbox mold="select" onSelect=" vu.value  = self.selectedItem.value; calcularTotal();"  id="valores" width="60px">
+                                        <listbox mold="select" onSelect=' try{ if(self.selectedItem!=null){ vu.value  = self.selectedItem.value;} }catch(Exception ax){alert(ax+"");System.println(""+ax);} calcularTotal();'  id="valores" width="60px">
                                             <listitem  >
                                               
                                             </listitem>
@@ -781,7 +826,7 @@ void tipoDocumento(String tipo){
                         </row>
                         <row spans="4">
                           
-                            <grid height="200px"  width="98%" id="opciones">
+                            <grid height="150px"  width="98%" id="opciones">
                                 <columns sizable="true">
                                     <column label="CANTIDAD" width="80px" />
                                     <column label="EQUIPO" />
@@ -805,7 +850,7 @@ void tipoDocumento(String tipo){
                             <grid>
                                 <rows>
                                     <row>
-                                        Subtotal: 
+                                        Subtotal:
                                         <decimalbox id="totalFinal" readonly="true"  value="0" />            
                                         
                                     </row>
@@ -840,8 +885,9 @@ void tipoDocumento(String tipo){
                     <hbox>
                         <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                         <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo(); clientesBusqueda.focus();" />
-                        <!--button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/-->
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/copiar.png" id="copiar"  label="Modificar" disabled="true"  onClick="copiar()"/>
+                        <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();"/>
                     </hbox>
                 </vbox>
 
@@ -966,7 +1012,9 @@ void tipoDocumento(String tipo){
 
 
             </tabpanel>
-
+   <tabpanel>
+                    <jasperreport height="330px" id="reportelocal" />
+                </tabpanel>
         </tabpanels>
 
 

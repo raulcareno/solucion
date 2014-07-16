@@ -177,7 +177,7 @@ void ingresar(Menuitem item,String pantalla ){
             
                 <panel>
                     <panelchildren>
-                        <tabbox context="derecho" id="mytab" width="100%" height="600px">
+                        <tabbox context="derecho" id="mytab" width="100%" height="650px">
                             <tabs id="tbs">
                                 <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
                             </tabs>
