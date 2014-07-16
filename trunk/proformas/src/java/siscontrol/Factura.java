@@ -61,6 +61,8 @@ public class Factura implements Serializable {
     private BigDecimal iva;
     @Column(name = "total")
     private BigDecimal total;
+    @Column(name = "subtotal1")
+    private BigDecimal subtotal1;
     @Column(name = "estado")
     private String estado;
     @Column(name = "tipo")
@@ -69,7 +71,7 @@ public class Factura implements Serializable {
     @Column(name = "observaciones")
     private String observaciones;
     @Column(name = "numero")
-    private String numero;
+    private Integer numero;
     @JoinColumn(name = "cliente", referencedColumnName = "codigo")
     @ManyToOne(fetch = FetchType.LAZY)
     private Clientes cliente;
@@ -77,6 +79,10 @@ public class Factura implements Serializable {
     private List<Detalle> detalleList;
     @Column(name = "cantidad")
     private BigDecimal cantidad;
+    @JoinColumn(name = "empleado", referencedColumnName = "codigo")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Empleados empleado;
+    
     public Factura() {
     }
 
@@ -156,11 +162,11 @@ public class Factura implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public String getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 
@@ -170,6 +176,14 @@ public class Factura implements Serializable {
 
     public void setCliente(Clientes cliente) {
         this.cliente = cliente;
+    }
+
+    public Empleados getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
     }
 
     public BigDecimal getCantidad() {
@@ -188,6 +202,15 @@ public class Factura implements Serializable {
     public void setDetalleList(List<Detalle> detalleList) {
         this.detalleList = detalleList;
     }
+
+    public BigDecimal getSubtotal1() {
+        return subtotal1;
+    }
+
+    public void setSubtotal1(BigDecimal subtotal1) {
+        this.subtotal1 = subtotal1;
+    }
+    
 
     @Override
     public int hashCode() {

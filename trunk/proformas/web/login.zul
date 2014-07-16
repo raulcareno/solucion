@@ -54,7 +54,7 @@ void verificar(){
 error.visible = false;
   Empleados user =adm.ingresoSistema(usuario.value, clave.value);
   
-  if(user != null){
+            if(user != null){
              
      
                     permisos.llenar(user);
@@ -64,8 +64,8 @@ error.visible = false;
                 
             }else{
                 //Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
-             String command2 = "animar('"+loginWin.getUuid()+"')";
-             Clients.evalJavaScript(command2);
+                String command2 = "animar('"+loginWin.getUuid()+"')";
+                 Clients.evalJavaScript(command2);
                 error.visible = true;
                 usuario.focus();
              }
