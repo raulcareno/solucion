@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+   
+ 
+    <window onCreate="cargar()" id="crearEmpleados">
+        <zscript>
+            <![CDATA[
+import siscontrol.*;
+ import siscontrol.cnx.*;
+  import java.util.ArrayList;
+  import org.zkoss.image.AImage;
+  import org.zkoss.image.Image;
+    Administrador adm = new Administrador();
+    List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
+    static Empleados empa = new Empleados();
+    Permisos permiso = new Permisos();
+    
+    Object media = null;
+Boolean instanciadaContratos = false;
+//FUNCIONES
+void cargarFoto(byte[] imageData){
+  foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+}
+void cargarVacio(){
+  foto0.setContent(new org.zkoss.image.AImage("t", desktop.webApp.getResourceAsStream("/fotos/vacio.gif")));
+}
+
+//FUNCIONES
+void llenar(Empleados empa){
+    codigo.value = empa.getCodigo();
+    nombres.value = empa.getNombres();
+    usuario.value = empa.getUsuario();
+    clave.value = permiso.decriptar(empa.getClave());
+ 
+        
+
+}
+void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+            empa = (Empleados)datos.selectedItem.value;
+        }
+
+   
+    nombres.readonly = estado;
+   
+    usuario.readonly = estado;
+    clave.readonly = estado;
+   
+
+}
+
+
+ void guardar(){
+
+
+ if(nombres.value =="" || usuario.value == "" || clave.value == "" ){
+    Messagebox.show("Registre los campos con (*) para continuar...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+    return;
+ }
+        empa.setCodigo(codigo.value);
+        empa.setNombres(nombres.value);
+        empa.setUsuario(usuario.value);
+        empa.setClave(permiso.encriptar(clave.value));
+ 
+
+        if((!empa.getCodigo().equals(0)) ){
+             adm.actualizar(empa);
+             try{
+             buscar("");
+                  }catch(Exception e){}
+         }else{
+
+             adm.guardar(empa);
+             buscar("");
+         }
+      
+         
+              Boolean a = true;
+            if(a){
+                Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Empleados","Guardar",""+nombres.value+" "+nombres.value);
+                    guardar.disabled=true;
+                    agregar.disabled=false;
+                    estado(true,false);
+                    llenar(new Empleados(0));
+                    
+            }else{
+                Messagebox.show("No se pudo almacenar...X", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+            }    try{
+        
+         }catch(Exception error){
+         System.out.println("error en cargar cliente hacia contratos"+error);
+         
+         }
+
+    }
+ 
+   Boolean verificar(String accion){
+        return true;
+
+    }
+ void nuevo(){
+    if(verificar("Agregar")){
+          
+          guardar.disabled=false; llenar(new Empleados(0));estado(false,false);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+ void move(){
+        llenar((Empleados)datos.selectedItem.value);
+        modificar.disabled = false;
+     
+  }
+void modificar(){
+  if(verificar("Modificar")){
+       guardar.disabled=false; estado(false,true);
+    }else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+void eliminar(){
+  if(verificar("Eliminar")){
+        try{
+             empa = (Empleados)datos.selectedItem.value;
+             adm.eliminarObjeto(Empleados.class, empa.getCodigo());
+             permiso.auditar("Empleados","Eliminar",""+nombres.value+" "+nombres.value);
+            datos.removeItemAt(datos.getSelectedIndex());
+            llenar(new Empleados(0));
+                Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+            Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+}else{
+            Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+    }
+}
+  void verificarCedula(String valor){
+      if(valor.length()>9){
+            List empleados = adm.query("Select o from Empleados as o where o.identificacion = '"+valor+"' ");
+            if(empleados.size()>0){
+                Messagebox.show("Número de Identificación ya registrado...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+
+                for(Iterator it = empleados.iterator(); it.hasNext();) {
+                      Empleados object = (Empleados)it.next();
+                        empa = object;
+                 }
+            llenar(empa);
+
+            }else{
+                empa = new Empleados(0);
+
+            }
+
+        }
+        if(usuario.value==""){
+                    usuario.value = (valor);
+                    clave.value = (valor);
+                }
+    }
+  void buscar(String p){
+        List empleadosEncontrados = adm.query("Select o from Empleados as o where o.nombres like '%"+p+"%' order by o.nombres");
+        datos = new Listbox();
+        int a=0;
+            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                    datos.getItems().remove(a);
+                }
+
+
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Empleados acceIt = (Empleados) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getNombres()));
+                      li.appendChild(new Listcell(acceIt.getUsuario()+""));
+                      datos.appendChild(li);
+             }
+
+    }
+
+]]>
+        </zscript>
+
+
+
+                    <grid width="100%">
+                        <rows>
+
+                            <row>
+                                <span style="float:right"> Nombres(*):</span>
+                                <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                                </row>
+                                <row>
+                                <span style="float:right"> Usuario:</span>
+                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                            </row>
+                            <row>
+                                
+                                <span style="float:right"> Clave:</span>
+                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                            </row>
+                        
+                          
+                           
+                         
+
+                      
+                        </rows>
+                    </grid>
+                    <intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+                    <vbox>
+                        <hbox>
+                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                        </hbox>
+                    </vbox>
+
+
+        
+                    <groupbox  width="100%" mold="3d" >
+
+                        <caption label="Busquedas" />
+                        <vbox>
+                            <hbox>  Nombres:
+                                <textbox id="buscarText"  maxlength="60" cols="40" />
+                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                            </hbox>
+                            <hbox>
+                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                                    <listhead>
+                                        <listheader label="Cod."/>
+                                        <listheader label="Nombres"/>
+                                        <listheader label="Usuario"/>
+
+                                    </listhead>
+                                    <listitem forEach="${allEvents}" value="${each}">
+                                        <listcell label="${each.codigo}" />
+                                        <listcell label="${each.nombres}" />
+                                        <listcell label="${each.usuario}" />
+                                    </listitem>
+                                </listbox>
+
+
+                            </hbox>
+                        </vbox>
+                    </groupbox>
+
+
+
+        <zscript>
+            void cargar(){
+            try{
+                    instanciadaContratos = crearEmpleados.getAttribute("nuevo");
+             }catch(Exception e){
+                    instanciadaContratos = false;
+             }
+                    
+            }
+        </zscript>
+    </window>
+</zk>

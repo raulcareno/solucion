@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul">
+    <window onCreate="cargar()">
+        <zscript>
+import siscontrol.*;
+ import siscontrol.cnx.*;
+  
+
+Administrador adm = new Administrador();
+Session a = Sessions.getCurrent();
+ void cargar(){
+        
+        Empleados emp = a.getAttribute("user");
+        Permisos permiso = new Permisos();
+        usuario.value = emp.getUsuario();
+        clave.value = permiso.decriptar(emp.getClave());
+        confirmar.value = permiso.decriptar(emp.getClave());
+       
+ 
+ }
+void guardar(){
+         if(!confirmar.getValue().equals(clave.getValue())){
+            Messagebox.show("ERROR: CLAVES NO COINCIDEN...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+            return;
+         }
+          Empleados emp = a.getAttribute("user");
+          Permisos permiso = new Permisos();
+         emp.setUsuario(usuario.value);
+         emp.setClave(permiso.encriptar(clave.value));
+         adm.actualizar(emp);
+            Messagebox.show("Datos Actualizados con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            a.setAttribute("user",emp);
+ }
+
+        </zscript>
+ 
+        <grid width="50%" >
+            <rows>
+                <row spans="2">
+            Modificar su clave
+                </row>
+                <row>
+            Usuario:
+                    <textbox id="usuario" maxlength="20" constraint="no empty:Usuario es requerido"  cols="15"  />
+
+                </row>
+                <row>
+            Clave:
+                    <textbox id="clave"  type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"  />
+                </row>
+                <row>
+            Confirmar Clave:
+                    <textbox id="confirmar"  type="password" constraint="no empty:Clave es requerido"  maxlength="20" cols="15"  />
+                </row>
+    
+
+            </rows>
+        </grid>
+        <button label="Guardar"  image="/images/guardar.gif" onClick="usuario.getValue(); clave.getValue(); confirmar.getValue();guardar();"/>
+    </window>
+</zk>
