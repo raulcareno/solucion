@@ -70,7 +70,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
 
         jButton3.setFont(new java.awt.Font("Arial Unicode MS", 1, 12)); // NOI18N
         jButton3.setForeground(new java.awt.Color(51, 51, 51));
-        jButton3.setText("www.jcinform.com");
+        jButton3.setText("www.siscontrol.com.ec");
         jButton3.setBorder(null);
         jButton3.setContentAreaFilled(false);
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -83,10 +83,10 @@ public class acerca  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel2.add(jButton3);
-        jButton3.setBounds(10, 0, 140, 14);
+        jButton3.setBounds(0, 0, 160, 14);
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(50, 80, 140, 20);
+        jPanel2.setBounds(50, 80, 150, 20);
 
         imageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
         getContentPane().add(imageLabel);
@@ -129,16 +129,16 @@ public class acerca  extends javax.swing.JInternalFrame  {
         jPanel1.add(homepageLabel);
         homepageLabel.setBounds(10, 60, 70, 14);
 
-        appHomepageLabel1.setText("080-162 211");
+        appHomepageLabel1.setText("0980-162 211/ 0996-038 706");
         jPanel1.add(appHomepageLabel1);
         appHomepageLabel1.setBounds(80, 100, 143, 14);
 
-        appHomepageLabel3.setText("jcinform@gmail.com");
+        appHomepageLabel3.setText("info@siscontrol.com.ec");
         jPanel1.add(appHomepageLabel3);
         appHomepageLabel3.setBounds(80, 80, 143, 14);
 
         jButton2.setForeground(new java.awt.Color(0, 0, 255));
-        jButton2.setText("http://www.jcinform.com");
+        jButton2.setText("http://www.siscontrol.com.ec");
         jButton2.setBorder(null);
         jButton2.setContentAreaFilled(false);
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -151,7 +151,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel1.add(jButton2);
-        jButton2.setBounds(80, 40, 140, 14);
+        jButton2.setBounds(70, 40, 150, 14);
 
         homepageLabel1.setFont(homepageLabel1.getFont().deriveFont(homepageLabel1.getFont().getStyle() | java.awt.Font.BOLD));
         homepageLabel1.setText("Web:");
@@ -164,9 +164,9 @@ public class acerca  extends javax.swing.JInternalFrame  {
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane1.setEnabled(false);
 
-        todos.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         todos.setEditable(false);
-        todos.setText("Todos los derechos reservados a JCINFORM Soluciones Informáticas. Prohibida la reproducción total o parcial de éste software.");
+        todos.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        todos.setText("Todos los derechos reservados a SISCONTROL Soluciones Integradas de Seguridad y Control. Prohibida la reproducción total o parcial de éste software.");
         todos.setSelectedTextColor(new java.awt.Color(51, 51, 51));
         todos.setSelectionColor(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(todos);
@@ -194,7 +194,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
 void abrirurl(){
      try {
             // TODO add your handling code here:
-            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"http://www.jcinform.com");
+            Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+"http://www.siscontrol.com.ec");
         } catch (IOException ex) {
             Logger.getLogger(acerca.class.getName()).log(Level.SEVERE, null, ex);
         }

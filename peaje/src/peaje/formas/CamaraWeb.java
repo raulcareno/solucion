@@ -33,6 +33,7 @@ class CamaraWeb {
     CamaraWeb() {
         Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
         try {
+            CaptureDeviceInfo deviceInfo = CaptureDeviceManager.getDevice("vfw://1");
             ml = new MediaLocator("vfw:Microsoft WDM Image Capture (Win32):0");
             //ml = new MediaLocator("vfw://0");
             //MediaLocator ml = new MediaLocator("vfw:Microsoft WDM Image Capture (Win32):0");

@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <NonVisualComponents>
@@ -39,7 +39,7 @@
     <Container class="javax.swing.JPanel" name="jPanel2">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="50" y="80" width="140" height="20"/>
+          <AbsoluteConstraints x="50" y="80" width="150" height="20"/>
         </Constraint>
       </Constraints>
 
@@ -55,7 +55,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="www.jcinform.com"/>
+            <Property name="text" type="java.lang.String" value="www.siscontrol.com.ec"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
@@ -74,7 +74,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="10" y="0" width="140" height="14"/>
+              <AbsoluteConstraints x="0" y="0" width="160" height="14"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -218,7 +218,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="appHomepageLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="080-162 211"/>
+            <Property name="text" type="java.lang.String" value="0980-162 211/ 0996-038 706"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
@@ -232,7 +232,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="appHomepageLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jcinform@gmail.com"/>
+            <Property name="text" type="java.lang.String" value="info@siscontrol.com.ec"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
@@ -249,7 +249,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="0" red="0" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="http://www.jcinform.com"/>
+            <Property name="text" type="java.lang.String" value="http://www.siscontrol.com.ec"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>
@@ -268,7 +268,7 @@
           </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="80" y="40" width="140" height="-1"/>
+              <AbsoluteConstraints x="70" y="40" width="150" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -315,11 +315,11 @@
       <SubComponents>
         <Component class="javax.swing.JTextPane" name="todos">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="f0" green="f0" id="Button.background" palette="3" red="f0" type="palette"/>
             </Property>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" value="Todos los derechos reservados a JCINFORM Soluciones Inform&#xe1;ticas. Prohibida la reproducci&#xf3;n total o parcial de &#xe9;ste software."/>
+            <Property name="text" type="java.lang.String" value="Todos los derechos reservados a SISCONTROL Soluciones Integradas de Seguridad y Control. Prohibida la reproducci&#xf3;n total o parcial de &#xe9;ste software."/>
             <Property name="selectedTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>

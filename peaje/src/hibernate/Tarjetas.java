@@ -34,6 +34,8 @@ public class Tarjetas implements Serializable {
     @Basic(optional = false)
     @Column(name = "tarjeta")
     private String tarjeta;
+    @Column(name = "tarjetaNo")
+    private String tarjetaNo;
     @Column(name = "Lunes")
     private Boolean lunes;
     @Column(name = "Martes")
@@ -258,6 +260,15 @@ public class Tarjetas implements Serializable {
     public void setNocontar(Boolean nocontar) {
         this.nocontar = nocontar;
     }
+
+    public String getTarjetaNo() {
+        return tarjetaNo;
+    }
+
+    public void setTarjetaNo(String tarjetaNo) {
+        this.tarjetaNo = tarjetaNo;
+    }
+    
 
 //    public Collection<Factura> getFacturaCollection() {
 //        return facturaCollection;

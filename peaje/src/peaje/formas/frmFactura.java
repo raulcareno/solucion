@@ -675,7 +675,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         frmDescuentosClientes.setBackground(new java.awt.Color(153, 204, 255));
         frmDescuentosClientes.setTitle("DESCUENTOS");
         frmDescuentosClientes.setOpaque(true);
-        frmDescuentosClientes.setVisible(true);
+        frmDescuentosClientes.setVisible(false);
         frmDescuentosClientes.getContentPane().setLayout(null);
 
         identificacion4.setEditable(false);
@@ -3059,6 +3059,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         System.gc();
         System.gc();
         System.gc();
+         Runtime.getRuntime().runFinalization();
+         Runtime.getRuntime().gc();
         System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
 
@@ -4788,7 +4790,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 facNueva.setUsuario(principal.getUsuario());
                 facNueva.setClientes(null);
                 facNueva.setDias(fac.getDias());
-                facNueva.setTiempo(fac.getTiempo());
+                
                 facNueva.setObservacion("Anulo tick: " + fac.getTicket() + "fac: " + fac.getNumero());
                 facNueva.setNocontar(false);
                 facNueva.setAnuladofac(false);
@@ -4797,44 +4799,49 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 facNueva.setEsnota(chkEsNotaVenta.isSelected());
                 facNueva.setTarifa0(false);
                 facNueva.setSellado(false);
-                Boolean pasar = true;
-                Integer numero = new Integer(emp.getDocumentoticket()) + 1;
-                while (pasar) {
-                    List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
-                    if (sihay.size() <= 0) {
-                        pasar = false;
-                        facNueva.setTicket("" + numero);
-                        emp.setDocumentoticket((numero) + "");
-                        adm.actualizar(emp);//GUARDO EMPRESA
+//                Boolean pasar = true;
+//                Integer numero = new Integer(emp.getDocumentoticket()) + 1;
+                String numeroFacturaAnulad = fac.getNumero();
+//                while (pasar) {
+//                    List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
+//                    if (sihay.size() <= 0) {
+//                        pasar = false;
+                        facNueva.setTicket("" + fac.getTicket());
+//                        emp.setDocumentoticket((ticketAnuladoActual) + "");
+//                        adm.actualizar(emp);//GUARDO EMPRESA
+                        facNueva.setFechafin(null);
+                        facNueva.setTiempo(null); 
+                        facNueva.setNumero(null);
                         adm.guardar(facNueva); // GUARDO FACTURA
-                        noTicket.setText(numero + "");
+                        noTicket.setText(fac.getTicket() + "");
                         codigo.setText(facNueva.getCodigo() + "");
-                    } else {
-                        numero++;
-                    }
+//                    } else {
+//                        numero++;
+//                    }
+//
+//                }
+//                Integer numeroFactura = new Integer(emp.getDocumentofac()) + 1;
+//                while (pasar) {
+//                    List sihay = adm.query("Select o from Factura as o where o.numero = '" + numeroFactura + "'");
+//                    if (sihay.size() <= 0) {
+//                        pasar = false;
+//                        facNueva.setNumero(null);
+//                        emp.setDocumentofac((numeroFactura) + "");
+//                        adm.actualizar(emp);//GUARDO EMPRESA
+//                        adm.actualizar(facNueva); // GUARDO FACTURA
+//                    } else {
+//                        numeroFactura++;
+//                    }
 
-                }
-                Integer numeroFactura = new Integer(emp.getDocumentofac()) + 1;
-                while (pasar) {
-                    List sihay = adm.query("Select o from Factura as o where o.numero = '" + numeroFactura + "'");
-                    if (sihay.size() <= 0) {
-                        pasar = false;
-                        facNueva.setNumero("" + numeroFactura);
-                        emp.setDocumentofac((numeroFactura) + "");
-                        adm.actualizar(emp);//GUARDO EMPRESA
-                        adm.actualizar(facNueva); // GUARDO FACTURA
-                    } else {
-                        numeroFactura++;
-                    }
-
-                }
+//                }
                 fac.setAnulado(true);
                 fac.setAnuladofac(true);
+                fac.setTicket(null);
+                fac.setTotal(new BigDecimal(0)); 
                 fac.setUsuarioa(usuAnula); //FALTA CARGAR EL USUARIO QUE CARGÓ SU CLAVE
                 adm.actualizar(fac);//GUARDO EMPRESA
                 codigo.setText(facNueva.getCodigo() + "");
                 //llenarFactura(facNueva); 
-
                 /**
                  * CARGO LOS DATOS
                  */
