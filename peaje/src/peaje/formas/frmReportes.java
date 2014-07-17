@@ -528,10 +528,10 @@ public class frmReportes extends javax.swing.JInternalFrame {
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
 
-            List<Control> fac = adm.query(query);
+            List<ControlDuplicidad> fac = adm.query(query);
             ArrayList detalle = new ArrayList();
-            for (Iterator<Control> it = fac.iterator(); it.hasNext();) {
-                Control factura = it.next();
+            for (Iterator<ControlDuplicidad> it = fac.iterator(); it.hasNext();) {
+                ControlDuplicidad factura = it.next();
                 detalle.add(factura);
             }
             AperturasSource ds = new AperturasSource(detalle);

@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  *
  * @author Geovanny
  */
-public class Control {
+public class ControlDuplicidad {
     //fichero TMP
 
     private String appPath = System.getProperties().getProperty("user.dir");
@@ -31,7 +31,7 @@ public class Control {
     /**
      * Constructor de clase
      */
-    public Control() {
+    public ControlDuplicidad() {
     }
 
     ;

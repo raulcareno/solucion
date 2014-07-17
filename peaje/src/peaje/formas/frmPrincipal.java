@@ -1,8 +1,6 @@
 package peaje.formas;
 
 //import camaraIP.tomarImage;
-import chatear.cliente.ControlCliente;
-import chatear.cliente.PanelCliente;
 import chatear.servidor.HiloDeCliente;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
@@ -81,7 +79,6 @@ import sources.FacturaDetalleSource;
 import sources.FacturaSource;
 import xml.XMLEmpresa;
 import chatear.cliente.leerTcpIp;
-import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.UnknownHostException;
