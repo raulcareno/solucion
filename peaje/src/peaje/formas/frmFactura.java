@@ -278,6 +278,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
         dias2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        noTarjeta = new javax.swing.JFormattedTextField();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel54 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -856,19 +859,19 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane3.setBounds(10, 10, 180, 90);
 
         jPanel1.add(panelencontrados1);
-        panelencontrados1.setBounds(70, 50, 200, 110);
+        panelencontrados1.setBounds(70, 70, 210, 110);
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
         ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(ingreso);
-        ingreso.setBounds(70, 50, 210, 20);
+        ingreso.setBounds(70, 70, 210, 20);
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("TICKET No: ");
+        jLabel7.setText("Tarjeta: ");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 10, 60, 14);
+        jLabel7.setBounds(10, 30, 60, 14);
 
         noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         noTicket.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -885,40 +888,40 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(noTicket);
-        noTicket.setBounds(70, 10, 90, 21);
+        noTicket.setBounds(70, 8, 90, 21);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Tiempo: ");
         jPanel1.add(jLabel13);
-        jLabel13.setBounds(20, 90, 50, 20);
+        jLabel13.setBounds(20, 110, 50, 20);
 
         salida.setBackground(new java.awt.Color(255, 255, 255));
         salida.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
         salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(salida);
-        salida.setBounds(70, 70, 210, 20);
+        salida.setBounds(70, 90, 210, 20);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel17.setText("Ingreso: ");
         jPanel1.add(jLabel17);
-        jLabel17.setBounds(10, 50, 60, 20);
+        jLabel17.setBounds(10, 70, 60, 20);
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(204, 0, 0));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel19.setText("Salida: ");
         jPanel1.add(jLabel19);
-        jLabel19.setBounds(20, 70, 50, 20);
+        jLabel19.setBounds(20, 90, 50, 20);
 
         tiempo.setBackground(new java.awt.Color(255, 255, 255));
         tiempo.setDateFormatString("HH:mm");
         tiempo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(tiempo);
-        tiempo.setBounds(70, 90, 110, 20);
+        tiempo.setBounds(70, 110, 110, 20);
 
         placa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -929,12 +932,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(placa);
-        placa.setBounds(70, 30, 80, 20);
+        placa.setBounds(70, 50, 80, 20);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Placa: ");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 30, 50, 14);
+        jLabel12.setBounds(20, 50, 50, 14);
 
         codigo.setEditable(false);
         codigo.setBorder(null);
@@ -947,30 +950,57 @@ public class frmFactura extends javax.swing.JInternalFrame {
         dias.setForeground(new java.awt.Color(0, 0, 204));
         dias.setText("DIA(s)");
         jPanel1.add(dias);
-        dias.setBounds(130, 110, 60, 20);
+        dias.setBounds(130, 130, 60, 20);
 
         dias1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         dias1.setForeground(new java.awt.Color(204, 0, 0));
         dias1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias1.setText("0");
         jPanel1.add(dias1);
-        dias1.setBounds(80, 110, 40, 20);
+        dias1.setBounds(80, 130, 40, 20);
 
         dias2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         dias2.setForeground(new java.awt.Color(0, 0, 204));
         dias2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         dias2.setText("MAYOR A:");
         jPanel1.add(dias2);
-        dias2.setBounds(10, 110, 60, 20);
+        dias2.setBounds(10, 130, 60, 20);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel3.setText("Digite y luego Enter");
         jPanel1.add(jLabel3);
         jLabel3.setBounds(160, 10, 130, 20);
 
-        jLabel5.setText("En caso de pérdida Ticket");
+        jLabel5.setText("Sobrepaso de tiempo");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(150, 30, 140, 20);
+        jLabel5.setBounds(160, 30, 140, 20);
+
+        noTarjeta.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        noTarjeta.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                noTarjetaFocusGained(evt);
+            }
+        });
+        noTarjeta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                noTarjetaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                noTarjetaKeyReleased(evt);
+            }
+        });
+        jPanel1.add(noTarjeta);
+        noTarjeta.setBounds(70, 29, 90, 21);
+
+        jLabel52.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel52.setText("TICKET No: ");
+        jPanel1.add(jLabel52);
+        jLabel52.setBounds(10, 10, 60, 14);
+
+        jLabel54.setText("En caso de pérdida Ticket");
+        jPanel1.add(jLabel54);
+        jLabel54.setBounds(150, 50, 140, 20);
 
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 5, 290, 160);
@@ -5476,6 +5506,84 @@ boolean descuentoCLiente = descuentoClienteTexto2.isVisible();
             btnAplica.requestFocusInWindow();
         }
     }//GEN-LAST:event_noFacturaKeyPressed
+
+    private void noTarjetaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_noTarjetaFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_noTarjetaFocusGained
+
+    private void noTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyPressed
+        // TODO add your handling code here:
+        
+
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            clienteDscto = new Clientes();
+            clienteCupon = new Clientes();
+            try {
+                descuento.setText("0.0");
+
+                ingreso.setDate(null);
+                salida.setDate(null);
+                placa.setText(null);
+                tiempo.setDate(null);
+
+                Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.tarjeta = '" + new Integer(noTarjeta.getText().trim()) + "' ");
+                if (fac != null) {
+                    btnAplicarDscto.setEnabled(true);
+                    btnAplicarCupon.setEnabled(true);
+                    btnAplicarDescuento2.setEnabled(true);
+                    llenarFactura(fac);
+                    try {
+                        cargarFoto(fac.getCodigo());
+                    } catch (Exception es) {
+                        System.out.println("NO SE CARGO FOTO");
+                    }
+
+
+                } else {
+                    ingreso.setDate(null);
+                    salida.setDate(null);
+                    placa.setText(null);
+                    tiempo.setDate(null);
+                }
+                fac = null;
+                guardando = false;
+            } catch (Exception e) {
+                Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, e);
+                ingreso.setDate(null);
+                salida.setDate(null);
+                placa.setText(null);
+                tiempo.setDate(null);
+                guardando = false;
+
+            }
+            limpiarMemoria();
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            principal.contenedor.requestFocus();
+            //principal = null;
+            //empresaObj = null;
+            limpiarMemoria();
+            this.setVisible(false);
+        } else if (evt.getKeyCode() == evt.VK_F1
+                || evt.getKeyCode() == evt.VK_F2
+                || evt.getKeyCode() == evt.VK_F3
+                || evt.getKeyCode() == evt.VK_F4
+                || evt.getKeyCode() == evt.VK_F5
+                || evt.getKeyCode() == evt.VK_F6
+                || evt.getKeyCode() == evt.VK_F7
+                || evt.getKeyCode() == evt.VK_F8
+                || evt.getKeyCode() == evt.VK_F9
+                || evt.getKeyCode() == evt.VK_F10
+                || evt.getKeyCode() == evt.VK_F11
+                || evt.getKeyCode() == evt.VK_F12) {
+            principal.tecla(evt.getKeyCode());
+        }
+
+    }//GEN-LAST:event_noTarjetaKeyPressed
+
+    private void noTarjetaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_noTarjetaKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner Nocupones;
     private javax.swing.JLabel adescontar;
@@ -5600,7 +5708,9 @@ boolean descuentoCLiente = descuentoClienteTexto2.isVisible();
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -5636,6 +5746,7 @@ boolean descuentoCLiente = descuentoClienteTexto2.isVisible();
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel miBotonImagen;
     private javax.swing.JFormattedTextField noFactura;
+    public javax.swing.JFormattedTextField noTarjeta;
     public javax.swing.JFormattedTextField noTicket;
     public javax.swing.JFormattedTextField nombres;
     private javax.swing.JFormattedTextField nombres1;

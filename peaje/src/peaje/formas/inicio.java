@@ -59,6 +59,11 @@ public class inicio {
     }
 
     public static void main(String args[]) {
+        
+         if( new Control().comprobar()==false  )
+        {
+            System.exit(0);//SALGO PORQUE YA EXISTE UAN INSTANCIA DEL PROGRAMA ABIERTA
+        }
         if (comprobar()) {
             new frmPrincipal().show();
         } else {
