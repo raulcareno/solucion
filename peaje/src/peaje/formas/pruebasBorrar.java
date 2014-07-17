@@ -15,8 +15,8 @@ package peaje.formas;
 //            Escribir adios = new Escribir("adiós", 1, monitor);
 //           adios.start();
             claves c = new claves();
-            System.out.println(""+c.encriptar("peaje@2011"));
-            System.out.println(""+c.desencriptar("O1ZzXv0Dhac="));
+            System.out.println(""+c.encriptar("peaje@2020"));
+            System.out.println(""+c.desencriptar(""));
        }
    }
    class Escribir extends Thread {

@@ -569,6 +569,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel47 = new javax.swing.JLabel();
         salida2 = new javax.swing.JCheckBox();
         jLabel54 = new javax.swing.JLabel();
+        crear = new javax.swing.JCheckBox();
         frmRespaldarBase = new javax.swing.JInternalFrame();
         btnRespaldoWindows = new javax.swing.JButton();
         btnRespaldoLinux = new javax.swing.JButton();
@@ -1317,7 +1318,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(jLabel14);
         jLabel14.setBounds(240, 10, 20, 14);
 
-        panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+        panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
         panelHoras.setForeground(new java.awt.Color(0, 51, 255));
         panelHoras.setLayout(null);
 
@@ -1340,7 +1341,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(panelHoras);
         panelHoras.setBounds(30, 120, 160, 80);
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 102, 204))); // NOI18N
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
         jPanel7.setLayout(null);
 
         jLabel18.setText("Hasta: ");
@@ -2011,7 +2012,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         frmLoteTarjetas.getContentPane().add(nombres1);
-        nombres1.setBounds(180, 10, 350, 20);
+        nombres1.setBounds(180, 10, 220, 20);
 
         tablaTarjetas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2304,6 +2305,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel54.setText("Tarjeta Leída:");
         frmLoteTarjetas.getContentPane().add(jLabel54);
         jLabel54.setBounds(20, 70, 80, 14);
+
+        crear.setText("Crear un Cliente por Tarjeta");
+        frmLoteTarjetas.getContentPane().add(crear);
+        crear.setBounds(420, 10, 190, 23);
 
         frmLoteTarjetas.setBounds(5, 5, 610, 460);
         contenedor.add(frmLoteTarjetas, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2801,7 +2806,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar1.setFloatable(false);
-            jToolBar1.setOrientation(1);
+            jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar1.setRollover(true);
 
             btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
@@ -2883,7 +2888,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar2.setFloatable(false);
-            jToolBar2.setOrientation(1);
+            jToolBar2.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar2.setRollover(true);
 
             btnUsuarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/User3.gif"))); // NOI18N
@@ -2987,7 +2992,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
 
             jToolBar3.setFloatable(false);
-            jToolBar3.setOrientation(1);
+            jToolBar3.setOrientation(javax.swing.SwingConstants.VERTICAL);
             jToolBar3.setRollover(true);
 
             btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/help.gif"))); // NOI18N
@@ -5326,6 +5331,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codigoFocusLost
         // TODO add your handling code here:
+        validarNumerodeCedula(codigo.getText());
         try {
             clienteObj = (Clientes) adm.querySimple("Select o from Clientes as o "
                     + "where o.identificacion = '" + codigo.getText().trim() + "' ");
@@ -5338,6 +5344,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         } catch (Exception e) {
             System.out.println("BUSCAR CEDULA UNICA " + e);
+            e.printStackTrace();
         }
 }//GEN-LAST:event_codigoFocusLost
 
@@ -5774,13 +5781,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 ListModel datos = tarifas.getModel();
                 for (int i = 0; i < datos.getSize(); i++) {
                     Productos object = (Productos) datos.getElementAt(i);
-                    if (g.getCodigo().equals(object.getCodigo())) {
-                        tarifas.setSelectedIndex(i);
-                        break;
+                    try{
+                        if (g.getCodigo().equals(object.getCodigo())) {
+                            tarifas.setSelectedIndex(i);
+                            break;
+                        }
+                    }catch(Exception ex){
+                        
                     }
                 }
-                txtValor.setText(clienteObj.getValor().setScale(2) + "");
-                descuento.setText(clienteObj.getDescuento().setScale(2) + "");
+                try {
+                    codigo.setText(clienteObj.getCodigo()+""); 
+                } catch (Exception e) {
+                }
+                try {
+                    txtValor.setText(clienteObj.getValor().setScale(2) + "");
+                    descuento.setText(clienteObj.getDescuento().setScale(2) + "");    
+                } catch (Exception e) {
+                }
+                
                 seleccionarEncontrada((String) busquedaTabla.getValueAt(fila, 2));
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -5841,14 +5860,27 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 ListModel datos = tarifas.getModel();
                 for (int i = 0; i < datos.getSize(); i++) {
                     Productos object = (Productos) datos.getElementAt(i);
-                    if (g.getCodigo().equals(object.getCodigo())) {
+                    try{
+                       if (g.getCodigo().equals(object.getCodigo())) {
                         tarifas.setSelectedIndex(i);
                         break;
+                    }  
+                    }catch(Exception er){
+                        System.out.println("error en busquedaTabla, no tiene producto el cliente para tarjeta mensual: "+er);
+                        //er.printStackTrace();
                     }
+                   
 
                 }
-                txtValor.setText(clienteObj.getValor().setScale(2) + "");
-                descuento.setText(clienteObj.getDescuento().setScale(2) + "");
+                try {
+                    codigo.setText(clienteObj.getCodigo()+""); 
+                } catch (Exception e) {
+                }
+                try {
+                    txtValor.setText(clienteObj.getValor().setScale(2) + "");
+                    descuento.setText(clienteObj.getDescuento().setScale(2) + "");    
+                } catch (Exception e) {
+                }
                 seleccionarEncontrada((String) busquedaTabla.getValueAt(fila, 2));
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -6958,9 +6990,12 @@ private void horaHasta2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
 private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambios1ActionPerformed
 // TODO add your handling code here:
-    if (clienteCod.getText() == null || clienteCod.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
-        return;
+    if (clienteCod.getText() == null || clienteCod.getText().isEmpty() ) {
+        if(!crear.isSelected()){
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            return;
+        } 
+        
     }
     int filas = tablaTarjetas.getRowCount();
     if (filas <= 0) {
@@ -6992,7 +7027,17 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
             tarActu.setHorainicio((Date) horaDesde2.getValue());
             tarActu.setHorafin((Date) horaHasta2.getValue());
             tarActu.setHabilitada(activa2.isSelected());
-            tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
+            if(crear.isSelected()){
+                Clientes nuevoCliente = new Clientes((adm.getNuevaClave("Clientes", "codigo")));
+                nuevoCliente.setNombres(tarjetaNo); 
+                nuevoCliente.setValor(BigDecimal.ZERO);
+                nuevoCliente.setDescuento(BigDecimal.ZERO); 
+                adm.guardar(nuevoCliente); 
+                tarActu.setClientes(nuevoCliente);
+            }else{
+                tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
+            }
+            
             tarActu.setFacturar(facturar2.isSelected());
             tarActu.setNocontar(nocontar2.isSelected());
             tarActu.setSalida(salida2.isSelected());
@@ -7666,6 +7711,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private org.jdesktop.swingx.JXTaskPane contenedor1;
     private org.jdesktop.swingx.JXTaskPane contenedor2;
     private org.jdesktop.swingx.JXTaskPane contenedor3;
+    private javax.swing.JCheckBox crear;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JFormattedTextField descuento;
     private javax.swing.JPanel diasHabiles;
@@ -8249,5 +8295,18 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    void validarNumerodeCedula(String strCedula){
+    if((strCedula+"").equals("")){
+        return;
+    }
+            ValidarCampos val = new ValidarCampos();
+            int valor= val.validaRucCedula(strCedula);
+
+            if(valor<0){
+                     JOptionPane.showMessageDialog(this,"El Número de CED. están incorrectos, corrija para poder continuar ...!");                                      
+                     //codigo.requestFocusInWindow();
+            }
     }
 }
