@@ -372,7 +372,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
         jScrollPane14 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tarjetasCliente = new javax.swing.JTable();
         cmbProductos = new javax.swing.JComboBox();
         btnAnadirProducto = new javax.swing.JButton();
         txtCantidad = new javax.swing.JFormattedTextField();
@@ -1005,7 +1005,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel54.setBounds(150, 50, 140, 20);
 
         jPanel5.add(jPanel1);
-        jPanel1.setBounds(10, 5, 290, 160);
+        jPanel1.setBounds(10, 5, 340, 160);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel2.setLayout(null);
@@ -1133,7 +1133,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jButton3.setBounds(210, 10, 130, 23);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(310, 5, 360, 160);
+        jPanel2.setBounds(360, 5, 360, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -1450,7 +1450,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel4.add(btnAplicarDscto);
-        btnAplicarDscto.setBounds(100, 10, 130, 30);
+        btnAplicarDscto.setBounds(330, 10, 20, 30);
 
         chkEsNotaVenta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         chkEsNotaVenta.setForeground(new java.awt.Color(255, 51, 51));
@@ -1469,7 +1469,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         verBot.setBounds(130, 130, 58, 50);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(310, 170, 360, 190);
+        jPanel4.setBounds(360, 170, 360, 190);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
@@ -1483,7 +1483,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel12.add(miBotonImagen, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel12);
-        jPanel12.setBounds(10, 170, 290, 190);
+        jPanel12.setBounds(10, 170, 340, 190);
 
         jTabbedPane1.addTab("TICKETS", jPanel5);
 
@@ -1751,19 +1751,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         hastaF.setBackground(new java.awt.Color(255, 255, 255));
         hastaF.setDate(new Date());
-        hastaF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel8.add(hastaF);
-        hastaF.setBounds(220, 70, 130, 20);
+        hastaF.setBounds(210, 70, 120, 20);
 
         desdeF.setBackground(new java.awt.Color(255, 255, 255));
         desdeF.setDate(new Date());
-        desdeF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel8.add(desdeF);
-        desdeF.setBounds(50, 70, 120, 20);
+        desdeF.setBounds(50, 70, 100, 20);
 
         jLabel30.setText("Hasta:");
         jPanel8.add(jLabel30);
-        jLabel30.setBounds(180, 70, 40, 14);
+        jLabel30.setBounds(160, 70, 40, 14);
 
         jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel31.setText("Fechas de Validez de Tarjeta");
@@ -1774,23 +1772,23 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel8.add(jLabel32);
         jLabel32.setBounds(10, 70, 37, 14);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tarjetasCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Tarjeta", "#", "Cambiar Fecha"
+                "...", "Tarjeta", "#", "Desde", "Hasta", "Cambiar Fecha"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1801,12 +1799,18 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane14.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(0).setResizable(false);
-        jTable1.getColumnModel().getColumn(2).setPreferredWidth(30);
+        jScrollPane14.setViewportView(tarjetasCliente);
+        tarjetasCliente.getColumnModel().getColumn(0).setMinWidth(0);
+        tarjetasCliente.getColumnModel().getColumn(0).setPreferredWidth(0);
+        tarjetasCliente.getColumnModel().getColumn(0).setMaxWidth(0);
+        tarjetasCliente.getColumnModel().getColumn(1).setResizable(false);
+        tarjetasCliente.getColumnModel().getColumn(1).setPreferredWidth(50);
+        tarjetasCliente.getColumnModel().getColumn(2).setResizable(false);
+        tarjetasCliente.getColumnModel().getColumn(2).setPreferredWidth(50);
+        tarjetasCliente.getColumnModel().getColumn(5).setPreferredWidth(30);
 
         jPanel8.add(jScrollPane14);
-        jScrollPane14.setBounds(10, 100, 370, 100);
+        jScrollPane14.setBounds(10, 100, 510, 100);
 
         jPanel6.add(jPanel8);
         jPanel8.setBounds(20, 180, 710, 210);
@@ -2385,6 +2389,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     detalle.add(detalle1);
                 }
                 ds = new FacturaDetalleSource(detalle);
+                fac = null;
             } else {
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
                 observacion = fac.getObservacion();
@@ -2395,6 +2400,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 detalle.add(fac);
                 cli = cli1;
                 ds = new FacturaSource(detalle);
+                fac = null;
 
             }
             parametros.put("ruc", cli.getIdentificacion());
@@ -2443,6 +2449,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
+            emp = null;
 
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
 //            viewer.show();
@@ -3366,10 +3373,41 @@ public class frmFactura extends javax.swing.JInternalFrame {
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
             cargarGrid(est.getProductos(), est.getValor());
-
+            cargarTarjetas(est.getCodigo()); 
         }
     }//GEN-LAST:event_encontrados2MouseClicked
 
+    public void cargarTarjetas(Integer codigoCli){
+        try {
+            List<Tarjetas> tar = adm.query("Select o from Tarjetas as o "
+                             + " where o.clientes.codigo = '" + (codigoCli) + "' ");
+              DefaultTableModel dtm = (DefaultTableModel) this.tarjetasCliente.getModel();
+                dtm.getDataVector().removeAllElements();
+                 tarjetasCliente.setModel(dtm);
+            if(tar.size()>0){
+              
+                //tarjetasCliente.setModel(dtm2); 
+                tarjetasCliente.repaint();
+                for (Iterator<Tarjetas> it = tar.iterator(); it.hasNext();) {
+                    Tarjetas tarjetas = it.next();
+                     Object[] obj = new Object[10];
+                     obj[0] = tarjetas;
+                     obj[1] = tarjetas.getTarjeta();
+                     obj[2] = tarjetas.getTarjetaNo();
+                     obj[3] = tarjetas.getDesde().toLocaleString();
+                     obj[4] = tarjetas.getHasta().toLocaleString();
+                     obj[5] = false;
+                     dtm.addRow(obj);
+                     tarjetasCliente.setModel(dtm);
+                }
+            }else{
+                tarjetasCliente.repaint();
+            }
+                     
+        } catch (Exception ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void encontrados2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_encontrados2KeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
@@ -3377,8 +3415,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             Clientes est = (Clientes) this.encontrados2.getSelectedValue();
             llenarCliente2(est);
             cargarGrid(est.getProductos(), est.getValor());
-
-
+            cargarTarjetas(est.getCodigo()); 
         }
         if (evt.getKeyCode() == evt.VK_UP && encontrados2.getSelectedIndex() == 0) {
             this.nombres1.requestFocusInWindow();
@@ -3393,7 +3430,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_identificacion1ActionPerformed
     public void cargarGrid(Productos pro, BigDecimal valor) {
-        Productos asigRub = pro;
+        try {
+             Productos asigRub = pro;
         DefaultTableModel dtm = (DefaultTableModel) this.productos.getModel();
         Object[] obj = new Object[10];
         obj[0] = asigRub.getCodigo();
@@ -3402,7 +3440,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         obj[3] = valor.setScale(2, RoundingMode.UP);
         dtm.addRow(obj);
         productos.setModel(dtm);
-        sumar();
+        sumar(); 
+        } catch (Exception e) {
+            System.out.println("no tiene producto cargado");
+        }
+      
 
     }
 
@@ -3429,6 +3471,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 direccion1.setText(cliObj.getDireccion());
                 telefono1.setText(cliObj.getTelefono());
                 cargarGrid(cliObj.getProductos(), cliObj.getValor());
+                cargarTarjetas(cliObj.getCodigo()); 
             }
 
         } catch (Exception e) {
@@ -3552,9 +3595,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 }
 
             }
-            
-            
-            
+
+
+
             int dia = 0;
             try {
                 dia = new Integer(dias1.getText());
@@ -3577,6 +3620,22 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 adm.guardar(det);
             }
             imprimir(facActual.getCodigo(), emp, dia, true, cli);
+            
+            /*APLICAR CAMBIOS A TARJETAS*/
+             int filasTar = tarjetasCliente.getRowCount();
+            for (int i = 0; i < filasTar; i++) {
+                Boolean aplicar = ((Boolean) tarjetasCliente.getValueAt(i, 5));
+                if(aplicar){
+                    Tarjetas tar =((Tarjetas) tarjetasCliente.getValueAt(i, 0));
+                    tar.setHabilitada(true); 
+                    tar.setDesde(desdeF.getDate());
+                    tar.setHasta(hastaF.getDate());
+                    adm.actualizar(tar);
+                }
+                
+                 
+            }
+            
             /**
              * cordillera
              */
@@ -3594,10 +3653,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
             principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
             principal.contenedor.requestFocus();
             emp = null;
-            this.setVisible(false);
+            facActual = null;
+//            this.setVisible(false);
             //principal = null;
             //empresaObj = null;
-            System.gc();
+            DefaultTableModel dtm2 = (DefaultTableModel) this.tarjetasCliente.getModel();
+                dtm2.getDataVector().removeAllElements();
+                tarjetasCliente.setModel(dtm2); 
+                tarjetasCliente.repaint();
+            jTabbedPane1.setSelectedIndex(0);
+            limpiarMemoria();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -5849,7 +5914,6 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel miBotonImagen;
     private javax.swing.JFormattedTextField noFactura;
     public javax.swing.JFormattedTextField noTarjeta;
@@ -5873,6 +5937,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField placa;
     private javax.swing.JTable productos;
     public com.toedter.calendar.JDateChooser salida;
+    private javax.swing.JTable tarjetasCliente;
     public javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField telefono1;
     private javax.swing.JFormattedTextField telefono2;
