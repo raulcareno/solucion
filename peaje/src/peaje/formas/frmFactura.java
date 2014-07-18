@@ -371,6 +371,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel30 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         cmbProductos = new javax.swing.JComboBox();
         btnAnadirProducto = new javax.swing.JButton();
         txtCantidad = new javax.swing.JFormattedTextField();
@@ -1622,7 +1624,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnNuevoCliente1.setBounds(40, 100, 230, 30);
 
         jPanel6.add(jPanel7);
-        jPanel7.setBounds(20, 10, 270, 160);
+        jPanel7.setBounds(18, 5, 270, 160);
 
         productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1658,7 +1660,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         productos.getColumnModel().getColumn(0).setHeaderValue("...");
 
         jPanel6.add(jScrollPane1);
-        jScrollPane1.setBounds(300, 50, 350, 120);
+        jScrollPane1.setBounds(300, 40, 410, 120);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel8.setLayout(null);
@@ -1680,7 +1682,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(btnAgregar1);
-        btnAgregar1.setBounds(450, 120, 60, 50);
+        btnAgregar1.setBounds(570, 120, 60, 50);
 
         btnSalir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir1.setMnemonic('S');
@@ -1699,80 +1701,115 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(btnSalir1);
-        btnSalir1.setBounds(510, 120, 60, 50);
+        btnSalir1.setBounds(630, 120, 60, 50);
 
-        txtTotal1.setBorder(null);
         txtTotal1.setEditable(false);
+        txtTotal1.setBorder(null);
         txtTotal1.setForeground(new java.awt.Color(51, 153, 0));
         txtTotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtTotal1.setText("0.0");
         txtTotal1.setCaretColor(new java.awt.Color(0, 204, 0));
         txtTotal1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jPanel8.add(txtTotal1);
-        txtTotal1.setBounds(140, 60, 140, 40);
+        txtTotal1.setBounds(550, 60, 140, 40);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 0, 0));
         jLabel6.setLabelFor(total);
         jLabel6.setText("A PAGAR:");
         jPanel8.add(jLabel6);
-        jLabel6.setBounds(10, 70, 130, 30);
+        jLabel6.setBounds(420, 70, 130, 30);
 
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("IVA:");
         jPanel8.add(jLabel25);
-        jLabel25.setBounds(60, 40, 90, 14);
+        jLabel25.setBounds(480, 40, 90, 14);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("SUBTOTAL:");
         jPanel8.add(jLabel26);
-        jLabel26.setBounds(70, 10, 80, 14);
+        jLabel26.setBounds(490, 10, 80, 14);
 
         txtSubtotal.setEditable(false);
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSubtotal.setText("0.0");
         jPanel8.add(txtSubtotal);
-        txtSubtotal.setBounds(160, 10, 110, 20);
+        txtSubtotal.setBounds(580, 10, 110, 20);
 
         txtIva.setEditable(false);
         txtIva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtIva.setText("0.0");
         jPanel8.add(txtIva);
-        txtIva.setBounds(160, 30, 110, 20);
+        txtIva.setBounds(580, 30, 110, 20);
 
         observacionF.setColumns(20);
         observacionF.setRows(5);
         jScrollPane8.setViewportView(observacionF);
 
         jPanel8.add(jScrollPane8);
-        jScrollPane8.setBounds(20, 120, 340, 60);
+        jScrollPane8.setBounds(10, 10, 420, 40);
 
         hastaF.setBackground(new java.awt.Color(255, 255, 255));
         hastaF.setDate(new Date());
         hastaF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel8.add(hastaF);
-        hastaF.setBounds(420, 50, 150, 20);
+        hastaF.setBounds(220, 70, 130, 20);
 
         desdeF.setBackground(new java.awt.Color(255, 255, 255));
         desdeF.setDate(new Date());
         desdeF.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel8.add(desdeF);
-        desdeF.setBounds(420, 30, 150, 20);
+        desdeF.setBounds(50, 70, 120, 20);
 
         jLabel30.setText("Hasta:");
         jPanel8.add(jLabel30);
-        jLabel30.setBounds(380, 50, 40, 14);
+        jLabel30.setBounds(180, 70, 40, 14);
 
+        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel31.setText("Fechas de Validez de Tarjeta");
         jPanel8.add(jLabel31);
-        jLabel31.setBounds(400, 10, 140, 14);
+        jLabel31.setBounds(10, 57, 200, 14);
 
         jLabel32.setText("Desde: ");
         jPanel8.add(jLabel32);
-        jLabel32.setBounds(380, 30, 37, 14);
+        jLabel32.setBounds(10, 70, 37, 14);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Tarjeta", "#", "Cambiar Fecha"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane14.setViewportView(jTable1);
+        jTable1.getColumnModel().getColumn(0).setResizable(false);
+        jTable1.getColumnModel().getColumn(2).setPreferredWidth(30);
+
+        jPanel8.add(jScrollPane14);
+        jScrollPane14.setBounds(10, 100, 370, 100);
 
         jPanel6.add(jPanel8);
-        jPanel8.setBounds(20, 190, 630, 190);
+        jPanel8.setBounds(20, 180, 710, 210);
 
         cmbProductos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1780,7 +1817,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(cmbProductos);
-        cmbProductos.setBounds(300, 30, 240, 20);
+        cmbProductos.setBounds(300, 20, 300, 20);
 
         btnAnadirProducto.setText("Añadir");
         btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -1794,7 +1831,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(btnAnadirProducto);
-        btnAnadirProducto.setBounds(590, 30, 63, 20);
+        btnAnadirProducto.setBounds(650, 20, 63, 20);
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("1");
@@ -1805,20 +1842,21 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(txtCantidad);
-        txtCantidad.setBounds(540, 30, 50, 20);
+        txtCantidad.setBounds(600, 20, 50, 20);
 
         jLabel23.setText("Productos disponibles");
         jPanel6.add(jLabel23);
-        jLabel23.setBounds(300, 10, 190, 14);
+        jLabel23.setBounds(300, 5, 190, 14);
 
         jLabel24.setText("Cantidad");
         jPanel6.add(jLabel24);
-        jLabel24.setBounds(540, 10, 50, 14);
+        jLabel24.setBounds(600, 0, 50, 20);
 
         jLabel27.setForeground(new java.awt.Color(255, 51, 0));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Para QUITAR un elemento seleccione y presione SUPRIMIR");
         jPanel6.add(jLabel27);
-        jLabel27.setBounds(300, 170, 310, 14);
+        jLabel27.setBounds(310, 160, 400, 14);
 
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
 
@@ -2089,7 +2127,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jTabbedPane1.addTab("COBRAR SELLADOS", jPanel11);
 
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 42, 700, 420);
+        jTabbedPane1.setBounds(10, 42, 750, 430);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -5801,6 +5839,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -5810,6 +5849,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel miBotonImagen;
     private javax.swing.JFormattedTextField noFactura;
     public javax.swing.JFormattedTextField noTarjeta;
