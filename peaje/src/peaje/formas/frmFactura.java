@@ -281,6 +281,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         noTarjeta = new javax.swing.JFormattedTextField();
         jLabel52 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -973,11 +974,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel3);
         jLabel3.setBounds(160, 10, 130, 20);
 
-        jLabel5.setText("Sobrepaso de tiempo");
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel5.setText("en caso de sobrepaso de tiempo");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(160, 30, 140, 20);
+        jLabel5.setBounds(210, 30, 150, 20);
 
-        noTarjeta.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        noTarjeta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         noTarjeta.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 noTarjetaFocusGained(evt);
@@ -992,7 +994,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(noTarjeta);
-        noTarjeta.setBounds(70, 29, 90, 21);
+        noTarjeta.setBounds(70, 29, 80, 20);
 
         jLabel52.setForeground(new java.awt.Color(0, 0, 153));
         jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1004,8 +1006,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel54);
         jLabel54.setBounds(150, 50, 140, 20);
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 102, 153));
+        jButton1.setText("Generar");
+        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(150, 30, 55, 20);
+
         jPanel5.add(jPanel1);
-        jPanel1.setBounds(10, 5, 340, 160);
+        jPanel1.setBounds(10, 5, 360, 160);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel2.setLayout(null);
@@ -1133,7 +1147,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jButton3.setBounds(210, 10, 130, 23);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(360, 5, 360, 160);
+        jPanel2.setBounds(380, 5, 350, 160);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel4.setLayout(null);
@@ -1469,7 +1483,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         verBot.setBounds(130, 130, 58, 50);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(360, 170, 360, 190);
+        jPanel4.setBounds(370, 170, 380, 190);
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
@@ -1483,7 +1497,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel12.add(miBotonImagen, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel12);
-        jPanel12.setBounds(10, 170, 340, 190);
+        jPanel12.setBounds(10, 170, 350, 190);
 
         jTabbedPane1.addTab("TICKETS", jPanel5);
 
@@ -5636,7 +5650,37 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private void noTarjetaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
-            clienteDscto = new Clientes();
+         
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            principal.contenedor.requestFocus();
+            //principal = null;
+            //empresaObj = null;
+            limpiarMemoria();
+            this.setVisible(false);
+        } else if (evt.getKeyCode() == evt.VK_F1
+                || evt.getKeyCode() == evt.VK_F2
+                || evt.getKeyCode() == evt.VK_F3
+                || evt.getKeyCode() == evt.VK_F4
+                || evt.getKeyCode() == evt.VK_F5
+                || evt.getKeyCode() == evt.VK_F6
+                || evt.getKeyCode() == evt.VK_F7
+                || evt.getKeyCode() == evt.VK_F8
+                || evt.getKeyCode() == evt.VK_F9
+                || evt.getKeyCode() == evt.VK_F10
+                || evt.getKeyCode() == evt.VK_F11
+                || evt.getKeyCode() == evt.VK_F12) {
+            principal.tecla(evt.getKeyCode());
+        }
+
+    }//GEN-LAST:event_noTarjetaKeyPressed
+
+    private void noTarjetaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_noTarjetaKeyReleased
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+           clienteDscto = new Clientes();
             clienteCupon = new Clientes();
             try {
                 descuento.setText("0.0");
@@ -5727,32 +5771,8 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
             }
             limpiarMemoria();
-        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
-            principal.contenedor.requestFocus();
-            //principal = null;
-            //empresaObj = null;
-            limpiarMemoria();
-            this.setVisible(false);
-        } else if (evt.getKeyCode() == evt.VK_F1
-                || evt.getKeyCode() == evt.VK_F2
-                || evt.getKeyCode() == evt.VK_F3
-                || evt.getKeyCode() == evt.VK_F4
-                || evt.getKeyCode() == evt.VK_F5
-                || evt.getKeyCode() == evt.VK_F6
-                || evt.getKeyCode() == evt.VK_F7
-                || evt.getKeyCode() == evt.VK_F8
-                || evt.getKeyCode() == evt.VK_F9
-                || evt.getKeyCode() == evt.VK_F10
-                || evt.getKeyCode() == evt.VK_F11
-                || evt.getKeyCode() == evt.VK_F12) {
-            principal.tecla(evt.getKeyCode());
-        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    }//GEN-LAST:event_noTarjetaKeyPressed
-
-    private void noTarjetaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_noTarjetaKeyReleased
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner Nocupones;
     private javax.swing.JLabel adescontar;
@@ -5823,6 +5843,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField identificacion3;
     public javax.swing.JFormattedTextField identificacion4;
     public com.toedter.calendar.JDateChooser ingreso;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
