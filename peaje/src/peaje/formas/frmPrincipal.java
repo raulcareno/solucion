@@ -5226,6 +5226,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         ((frmFactura) component).placa.setText(null);
                         ((frmFactura) component).tiempo.setDate(null);
                         ((frmFactura) component).noTicket.setText("");
+                        ((frmFactura) component).noTarjeta.setText("");
                         ((frmFactura) component).codigo.setText("");
                         ((frmFactura) component).total.setText("0.0");
                         ((frmFactura) component).codigo.setText("");

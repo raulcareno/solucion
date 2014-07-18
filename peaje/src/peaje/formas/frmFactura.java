@@ -281,7 +281,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         noTarjeta = new javax.swing.JFormattedTextField();
         jLabel52 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnGenerar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -877,6 +877,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel7.setBounds(10, 30, 60, 14);
 
         noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        noTicket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noTicketActionPerformed(evt);
+            }
+        });
         noTicket.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 noTicketFocusGained(evt);
@@ -1006,17 +1011,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel54);
         jLabel54.setBounds(150, 50, 140, 20);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 102, 153));
-        jButton1.setText("Generar");
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerar.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
+        btnGenerar.setForeground(new java.awt.Color(0, 102, 153));
+        btnGenerar.setText("Generar");
+        btnGenerar.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGenerarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(150, 30, 55, 20);
+        jPanel1.add(btnGenerar);
+        btnGenerar.setBounds(150, 30, 55, 20);
 
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 5, 360, 160);
@@ -5678,7 +5683,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         // TODO add your handling code here:
     }//GEN-LAST:event_noTarjetaKeyReleased
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
         // TODO add your handling code here:
            clienteDscto = new Clientes();
             clienteCupon = new Clientes();
@@ -5696,10 +5701,17 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 Factura fac = null;
                 if (facList.size() > 0) {
                     fac = facList.get(0);
-                } else {
+                    if(fac.getTicket()==null){
+                        fac.setFechafin(new Date());
+                        fac.setAnulado(false); 
+                        adm.actualizar(fac); 
+                    }
+                    
+                } 
+                
                     Tarjetas tar = (Tarjetas) adm.querySimple("Select o from Tarjetas as o "
                             + " where o.tarjeta = '" + (noTarjeta.getText().trim()) + "' ");
-                    if (tar != null) {
+                    if (tar != null && fac.getTicket()==null) {
                         fac = new Factura();
                         fac.setTarjetas(tar);
                         fac.setFecha(new Date());
@@ -5740,11 +5752,12 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 //                        adm.guardar(fac);
                     }
 
-                }
+                
                 if (fac != null) {
                     btnAplicarDscto.setEnabled(true);
                     btnAplicarCupon.setEnabled(true);
                     btnAplicarDescuento2.setEnabled(true);
+                    noTicket.setText(fac.getTicket());
                     llenarFactura(fac);
                     try {
                         cargarFoto(fac.getCodigo());
@@ -5771,7 +5784,11 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
 
             }
             limpiarMemoria();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnGenerarActionPerformed
+
+    private void noTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noTicketActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_noTicketActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner Nocupones;
@@ -5789,6 +5806,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton btnAplicarDescuento2;
     private javax.swing.JButton btnAplicarDscto;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnGenerar;
     private javax.swing.JButton btnMulta;
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnNuevoCliente1;
@@ -5843,7 +5861,6 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField identificacion3;
     public javax.swing.JFormattedTextField identificacion4;
     public com.toedter.calendar.JDateChooser ingreso;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
