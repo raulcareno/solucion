@@ -5698,7 +5698,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 List<Factura> facList = adm.query("Select o from Factura as o "
                         + " where o.tarjetas.tarjeta = '" + (noTarjeta.getText().trim()) + "' "
                         + " and o.fechafin is null ");
-                Factura fac = null;
+                Factura fac = new Factura();
                 if (facList.size() > 0) {
                     fac = facList.get(0);
                     if(fac.getTicket()==null){
