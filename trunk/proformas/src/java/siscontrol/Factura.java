@@ -210,7 +210,7 @@ public class Factura implements Serializable {
     public void setSubtotal1(BigDecimal subtotal1) {
         this.subtotal1 = subtotal1;
     }
-    
+
 
     @Override
     public int hashCode() {

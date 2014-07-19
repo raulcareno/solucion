@@ -37,7 +37,7 @@
         a.removeAttribute("user");
         a.removeAttribute("periodo");
 //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
-a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
+//a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
         //a.invalidate();
 
 

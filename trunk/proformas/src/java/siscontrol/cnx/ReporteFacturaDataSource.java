@@ -48,10 +48,12 @@ public class ReporteFacturaDataSource implements JRDataSource {
                 String razon = nodo.getFactura().getCliente().getRazonsocial();
                 //if(!razon.equals("") && !razon.equals("null") && razon.length()>0 )
                 if (razon != null && !razon.isEmpty()) {
-                    valor = nodo.getFactura().getCliente().getRazonsocial();
+                    valor = nodo.getFactura().getCliente().getRazonsocial()+" | "+nodo.getFactura().getCliente().getNombres();
                 }
             } else if ("ruc".equals(fieldName)) {
                 valor = nodo.getFactura().getCliente().getCedula();
+            } else if ("email".equals(fieldName)) {
+                valor = nodo.getFactura().getCliente().getEmail();
             }  else if ("direccion".equals(fieldName)) {
                 valor = nodo.getFactura().getCliente().getDireccion();
             } else if ("numero".equals(fieldName)) {
@@ -62,10 +64,17 @@ public class ReporteFacturaDataSource implements JRDataSource {
                 valor = nodo.getFactura().getCliente().getTelefono();
             }   else if ("cantidad".equals(fieldName)) {
                 valor = nodo.getCantidad();
-            } else if ("valor".equals(fieldName)) {
-                    valor = nodo.getValor();
-
-            } else if ("subtotal".equals(fieldName)) {
+            }  else if ("descripcion".equals(fieldName)) {
+                valor = nodo.getDescripcion();
+            }  else if ("vu".equals(fieldName)) {
+                valor = nodo.getSubtotal();
+            }  else if ("vt".equals(fieldName)) {
+                valor = nodo.getValor();
+            }  else if ("observacion".equals(fieldName)) {
+                valor = nodo.getProducto().getDescripcion();
+            }  else if ("item".equals(fieldName)) {
+                valor = nodo.getProducto().getCode();
+            }else if ("subtotal".equals(fieldName)) {
                 valor = nodo.getFactura().getSubtotal();
             } else if ("baseiva".equals(fieldName)) {
                 valor = nodo.getFactura().getSubtotal1();

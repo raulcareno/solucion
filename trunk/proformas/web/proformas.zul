@@ -20,8 +20,8 @@
     List perfiles = adm.query("Select o from Productos as o where o.codigo = 0 order by o.nombre ");
     //List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
     Object media = null;
-Empleados emp = ses.getAttribute("user");
-            if(emp==null){
+Empleados usuario = ses.getAttribute("user");
+            if(usuario==null){
                 Executions.sendRedirect("login.zul");
             }
             
@@ -514,6 +514,9 @@ llenarGrid(){
   public void imprimir(){
             try{
                    Map parameters = new HashMap();
+                   parameters.put("ruc",empresa.getRuc());
+                   parameters.put("usuario",usuario.getNombres());
+                   parameters.put("cargo",usuario.getCargo());
                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + 11 + "'");
                    ArrayList detalles = new ArrayList();
                    for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {

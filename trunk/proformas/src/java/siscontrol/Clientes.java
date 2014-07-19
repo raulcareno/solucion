@@ -49,6 +49,8 @@ public class Clientes implements Serializable {
     private String direccion;
     @Column(name = "telefono")
     private String telefono;
+    @Column(name = "email")
+    private String email;
     @Lob
     @Column(name = "referencia")
     private String referencia;
@@ -77,7 +79,14 @@ public class Clientes implements Serializable {
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
     public String getNombres() {
         return nombres;
     }
@@ -151,5 +160,7 @@ public class Clientes implements Serializable {
     public String toString() {
         return "siscontrol.Clientes[ codigo=" + codigo + " ]";
     }
+
+ 
     
 }
