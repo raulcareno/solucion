@@ -32,6 +32,8 @@ void llenar(Empleados empa){
     codigo.value = empa.getCodigo();
     nombres.value = empa.getNombres();
     usuario.value = empa.getUsuario();
+    email.value = empa.getEmail();
+    cargo.value = empa.getCargo();
     clave.value = permiso.decriptar(empa.getClave());
  
         
@@ -47,6 +49,8 @@ void estado(Boolean estado,Boolean modificar){
    
     usuario.readonly = estado;
     clave.readonly = estado;
+    email.readonly= estado;
+    cargo.readonly = estado;
    
 
 }
@@ -61,6 +65,8 @@ void estado(Boolean estado,Boolean modificar){
  }
         empa.setCodigo(codigo.value);
         empa.setNombres(nombres.value);
+        empa.setEmail(email.value);
+        empa.setCargo(cargo.value);
         empa.setUsuario(usuario.value);
         empa.setClave(permiso.encriptar(clave.value));
  
@@ -186,79 +192,87 @@ void eliminar(){
 
 
 
-                    <grid width="100%">
-                        <rows>
+        <grid width="100%">
+            <rows>
 
-                            <row>
-                                <span style="float:right"> Nombres(*):</span>
-                                <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
-                                </row>
-                                <row>
-                                <span style="float:right"> Usuario:</span>
-                                <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
-                            </row>
-                            <row>
+                <row>
+                    <span style="float:right"> Nombres(*):</span>
+                    <textbox id="nombres"  maxlength="60" cols="40" readonly="true"   />
+                </row>
+                <row>
+                    <span style="float:right"> Usuario:</span>
+                    <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
+                </row>
+                <row>
+                    <span style="float:right"> Cargo:</span>
+                    <textbox id="cargo" maxlength="100" cols="15" readonly="true"  />
+                </row>
+                  <row>
+                    <span style="float:right"> Email: </span>
+                    <textbox id="email" maxlength="200" cols="15" readonly="true"  />
+                </row>
+                <row>
                                 
-                                <span style="float:right"> Clave:</span>
-                                <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
-                            </row>
+                    <span style="float:right"> Clave:</span>
+                    <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                </row>
                         
                           
                            
                          
 
                       
-                        </rows>
-                    </grid>
-                    <intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
-                    <vbox>
-                        <hbox>
-                            <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                            <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                            <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                            <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                        </hbox>
-                    </vbox>
+            </rows>
+        </grid>
+        <intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+        <vbox>
+            <hbox>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+            </hbox>
+        </vbox>
 
 
         
-                    <groupbox  width="100%" mold="3d" >
+        <groupbox  width="100%" mold="3d" >
 
-                        <caption label="Busquedas" />
-                        <vbox>
-                            <hbox>  Nombres:
-                                <textbox id="buscarText"  maxlength="60" cols="40" />
-                                <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                            </hbox>
-                            <hbox>
-                                <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
-                                    <listhead>
-                                        <listheader label="Cod."/>
-                                        <listheader label="Nombres"/>
-                                        <listheader label="Usuario"/>
+            <caption label="Busquedas" />
+            <vbox>
+                <hbox>  Nombres:
+                    <textbox id="buscarText"  maxlength="60" cols="40" />
+                    <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
+                </hbox>
+                <hbox>
+                    <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                        <listhead>
+                            <listheader label="Cod."/>
+                            <listheader label="Nombres"/>
+                            <listheader label="Usuario"/>
 
-                                    </listhead>
-                                    <listitem forEach="${allEvents}" value="${each}">
-                                        <listcell label="${each.codigo}" />
-                                        <listcell label="${each.nombres}" />
-                                        <listcell label="${each.usuario}" />
-                                    </listitem>
-                                </listbox>
+                        </listhead>
+                        <listitem forEach="${allEvents}" value="${each}">
+                            <listcell label="${each.codigo}" />
+                            <listcell label="${each.nombres}" />
+                            <listcell label="${each.usuario}" />
+                        </listitem>
+                    </listbox>
 
 
-                            </hbox>
-                        </vbox>
-                    </groupbox>
+                </hbox>
+            </vbox>
+        </groupbox>
 
 
 
         <zscript>
             void cargar(){
             try{
-                    instanciadaContratos = crearEmpleados.getAttribute("nuevo");
-             }catch(Exception e){
-                    instanciadaContratos = false;
-             }
+            instanciadaContratos = crearEmpleados.getAttribute("nuevo");
+            }catch(Exception e){
+            instanciadaContratos = false;
+            }
                     
             }
         </zscript>

@@ -40,6 +40,10 @@ public class Empleados implements Serializable {
     private String usuario;
     @Column(name = "clave")
     private String clave;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "cargo")
+    private String cargo;
 
     public Empleados() {
     }
@@ -79,6 +83,23 @@ public class Empleados implements Serializable {
     public void setClave(String clave) {
         this.clave = clave;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+    
 
     @Override
     public int hashCode() {
