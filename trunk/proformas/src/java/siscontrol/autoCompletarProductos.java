@@ -82,7 +82,13 @@ public class autoCompletarProductos extends Combobox {
                 //new Comboitem(estudiantes.getApellidos() + " " + estudiantes.getNombres() + " [" + estudiantes.getCodigo() + "]").setParent(this);
                 Comboitem c = new Comboitem();
                 c.setValue(estudiantes);
-                c.setLabel((estudiantes.getNombre() +" | " + estudiantes.getDescripcion()));
+                c.setLabel((estudiantes.getNombre())+"");
+                if(estudiantes.getDescripcion().length()>100){
+                    c.setDescription(estudiantes.getDescripcion().substring(0, 100)+"...");    
+                }else{
+                    c.setDescription(estudiantes.getDescripcion());    
+                }
+                
                 c.setParent(this);
 
             }

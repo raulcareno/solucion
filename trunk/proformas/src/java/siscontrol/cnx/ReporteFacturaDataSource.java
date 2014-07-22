@@ -67,9 +67,9 @@ public class ReporteFacturaDataSource implements JRDataSource {
             }  else if ("descripcion".equals(fieldName)) {
                 valor = nodo.getDescripcion();
             }  else if ("vu".equals(fieldName)) {
-                valor = nodo.getSubtotal();
-            }  else if ("vt".equals(fieldName)) {
                 valor = nodo.getValor();
+            }  else if ("vt".equals(fieldName)) {
+                valor = nodo.getSubtotal();
             }  else if ("observacion".equals(fieldName)) {
                 valor = nodo.getProducto().getDescripcion();
             }  else if ("item".equals(fieldName)) {

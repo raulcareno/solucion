@@ -42,12 +42,24 @@ void cargarVacio(){
 void llenar(Factura empa){
 
     codigo.value = empa.getCodigo();
-    factura.value = empa.getFactura();
+    factura.value = empa.getNumero();
     fecha.value = empa.getFecha();
     if(empa.getFecha()==null){
         fecha.value = adm.Date();
     }
-    observacion.value = empa.getSeries();
+    observacion.value = empa.getObservaciones();
+ 
+    try{ 
+      CodigoFactura.value = empa.getCodigo();
+       idproveedores.value = empa.getCliente().getCodigo(); 
+       cedula.value = empa.getCliente().getCedula(); 
+       direccion.value = empa.getCliente().getDireccion(); 
+       telefono.value = empa.getCliente().getTelefono();
+       nombres.value = empa.getCliente().getNombres();
+       referencia.value = empa.getCliente().getReferencia();
+       razonsocial.value = empa.getCliente().getRazonsocial(); 
+       
+   }catch(Exception ex){}
  
     /* compra  productos, cantidad  costo pvp1 */
 filas.getChildren().clear();
@@ -56,32 +68,27 @@ filas.getChildren().clear();
                       Detalle acceIt = (Detalle) it.next();
                         try{
                             Row row = new Row();
-                                   Doublebox dou = new Doublebox(0);
+                                    Decimalbox dou = new Decimalbox(new BigDecimal(0));
                                     dou.setStyle("float:right;text-align:right");
-                                    dou.setValue(acceIt.getCosto());
-                                    Intbox intb = new Intbox(acceIt.getCantidad());
+                                    dou.setValue(acceIt.getValor());
+                                    
+                                    Decimalbox intb = new Decimalbox(acceIt.getCantidad());
                                     intb.setCols(3);
-                                     intb.setStyle("float:right;text-align:right");
-                                    Label prod = new Label(acceIt.getProductos().getNombre() +" "+ acceIt.getProductos().getModelo()+" "+acceIt.getProductos().getMarcas());
+                                    intb.setStyle("float:right;text-align:right");
+                                    Label prod = new Label(acceIt.getProducto().getNombre() +" ");
                                     row.appendChild(intb);
                                     row.appendChild(prod);
                                     row.appendChild(dou);
-                                    //SELECCIONO LAS SERIES INGRESADAS A ÉSTE DETALLE
-                                    List series = adm.query("Select o from Series as o  " + 
-                                    " where o.detalle.codigo = '"+acceIt.getCodigo()+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
-                                    ArrayList seriesA = new ArrayList();
-                                    for (Iterator it = series.iterator(); it.hasNext();) {
-                                            Series serIt = (Series) it.next();
-                                            seriesA.add(serIt.getSerie());
-                                    }
-
+                                    dou = new Decimalbox(new BigDecimal(0));
+                                    dou.setStyle("float:right;text-align:right");
+                                    dou.setValue(acceIt.getSubtotal());
+                                    row.appendChild(dou);
 
                                     Button aButton = null;
                                     aButton = new Button("quitar");
                                     aButton.setImage("/images/quitar.gif");
                                     aButton.setHeight("5px");
-                                    aButton.setAttribute("series"+acceIt.getProductos().getCodigo(),seriesA);
-                                    aButton.setId("id"+acceIt.getProductos().getCodigo());
+                                    aButton.setId("id"+acceIt.getProducto().getCodigo());
                                     aButton.setDisabled(true);
                                     aButton.addEventListener("onClick", new EventListener() {
                                         public void onEvent(Event event) throws Exception {
@@ -95,42 +102,10 @@ filas.getChildren().clear();
                                     row.appendChild(aButton);
                                     
                                     
-                             Button aButtons = null;
-                            aButtons = new Button("series");
-                            aButtons.setImage("/images/series.png");
-                            aButtons.setHeight("5px");
-                            aButtons.setId("ids"+acceIt.getProductos().getCodigo());
-                            aButtons.setAttribute("series"+acceIt.getProductos().getCodigo(),seriesA);
-                            aButtons.addEventListener("onClick", new EventListener() {
-                                public void onEvent(Event event) throws Exception {
-                                        //quitarFila(aButtons.getId());
-                                        ArrayList series = aButtons.getAttribute("series"+aButtons.getId().replace("ids",""));
-                                              seriespanel.visible = true;
-                                              actualizar.visible = true; 
-                                              continuar.visible = false;
-                                              seriespanel.setAttribute("productoid",aButtons.getId().replace("ids",""));
-                                               filas2.getChildren().clear();
-                                              int i = 0;
-                                              for (Iterator it = series.iterator(); it.hasNext();) {
-                                                    String object = (String) it.next();
-                                                      Row row = new Row();
-                                                       Textbox t = new Textbox(object);
-                                                           t.focus();    t.setId("cod"+i);   t.setCols(14);
-                                                        t.setReadonly(true);
-                                                            row.appendChild(new Label((i+1)+".- "));
-                                                            row.appendChild(t);
-                                                            filas2.appendChild(row);
-                                                            if(i==0)
-                                                                t.focus();
-                                                                i++;
-                                             }
-                                }
-                            });
-                            row.appendChild(aButtons);
+                     
                                     
                                     
-                                    
-                                    row.setValue(new Productos(acceIt.getProductos().getCodigo())); 
+                                    row.setValue(new Productos(acceIt.getProducto().getCodigo())); 
 
                             filas.appendChild(row);
 
@@ -311,7 +286,7 @@ Boolean validarSeriesAju(){
        cabeceraFactura.setFecha(fecha.value);
        cabeceraFactura.setObservaciones(observacion.value);
        cabeceraFactura.setCantidad(new BigDecimal(0));
-       cabeceraFactura.setEmpleado(emp);
+       cabeceraFactura.setEmpleado(usuario);
                         Boolean pasar = true;
                         Integer numero = adm.getNuevaClave("Factura","numero");
                         while(pasar){
@@ -335,6 +310,7 @@ Boolean validarSeriesAju(){
         
 
        adm.guardar(cabeceraFactura);
+       CodigoFactura.value = cabeceraFactura.getCodigo();
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
                     Row object = (Row) col.get(i);
@@ -447,7 +423,7 @@ empa.setProductos(g);
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.setSelected(true);
-                      li.appendChild(new Listcell(acceIt.getNombre()+" "+ acceIt.getMarcas()+" "+acceIt.getModelo()));
+                      li.appendChild(new Listcell(acceIt.getNombre()+" "));
                       eq.appendChild(li);
              }
     return eq;
@@ -517,7 +493,7 @@ llenarGrid(){
                    parameters.put("ruc",empresa.getRuc());
                    parameters.put("usuario",usuario.getNombres());
                    parameters.put("cargo",usuario.getCargo());
-                   List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + 11 + "'");
+                   List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + CodigoFactura.value + "'");
                    ArrayList detalles = new ArrayList();
                    for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
                         Detalle det = itAbono.next();
@@ -528,6 +504,7 @@ llenarGrid(){
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
+                   reporteVer.setSelected(true);
             }catch(Exception  ex){
                 System.out.println("EXXX: "+ex);
             }
@@ -631,7 +608,10 @@ void tipoDocumento(String tipo){
                     <rows>
                        
                         <row id="compras1" style="background-color:cyan">
-                            <span style="float:right; font-weight:bold"> <label value="Buscar Cliente: " style="font-weight:bold" /><image  src="/images/auditoria.gif" /> </span> 
+                            <span style="float:right; font-weight:bold"> 
+                                <label value="Buscar Cliente: " style="font-weight:bold" />
+                                <image  src="/images/auditoria.gif" /> 
+                            </span> 
                             <span>
                                  
                                 <combobox  cols="35"  id="clientesBusqueda" onOK='factura.focus();' 
@@ -648,9 +628,11 @@ void tipoDocumento(String tipo){
                                 
                             </span>
                             <span>No.Proforma</span> 
-                            <span> <intbox  readonly="true"  id="factura"/> 
-                            <span> Fecha:</span>
-                            <datebox id="fecha" format="dd/MM/yyyy hh:mm:ss" onCreate="self.value = adm.Date()"/>
+                            <span> 
+                                <intbox  readonly="true"  id="factura"/> 
+                                <span> Fecha:</span>
+                                <datebox id="fecha" format="dd/MM/yyyy hh:mm:ss" onCreate="self.value = adm.Date()"/>
+                                <intbox  readonly="true"  id="CodigoFactura"/> 
                             </span>
                         </row>
                         <row>
@@ -754,36 +736,36 @@ void tipoDocumento(String tipo){
                                                        use="siscontrol.autoCompletarProductos"/>
                                             <zscript>
                                                 llenarEquipo(Productos es){
-                                                        idproducto.value = es.getCodigo(); 
-                                                        vu.value  = es.getPvp1();  
-                                                         int a=0;
-                                                        for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
-                                                                valores.getItems().remove(a);
-                                                            }
-                                                              Listitem li = new Listitem();
-                                                              li.setValue(es.getPvp1());
-                                                              li.appendChild(new Listcell(es.getPvp1()+""));
-                                                              valores.appendChild(li);
-
-                                                        Listitem li2 = new Listitem();
-                                                              li2.setValue(es.getPvp2());
-                                                              li2.appendChild(new Listcell(es.getPvp2()+""));
-                                                              valores.appendChild(li2);
-
-
-                                                        Listitem li3 = new Listitem();
-                                                              li3.setValue(es.getPvp3());
-                                                              li3.appendChild(new Listcell(es.getPvp3()+""));
-                                                              valores.appendChild(li3);
-                                                
-                                                            valores.setSelectedIndex(0);
-                                                            calcularTotal();
+                                                idproducto.value = es.getCodigo(); 
+                                                vu.value  = es.getPvp1();  
+                                                int a=0;
+                                                for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
+                                                valores.getItems().remove(a);
                                                 }
-                                   calcularTotal(){
+                                                Listitem li = new Listitem();
+                                                li.setValue(es.getPvp1());
+                                                li.appendChild(new Listcell(es.getPvp1()+""));
+                                                valores.appendChild(li);
+
+                                                Listitem li2 = new Listitem();
+                                                li2.setValue(es.getPvp2());
+                                                li2.appendChild(new Listcell(es.getPvp2()+""));
+                                                valores.appendChild(li2);
+
+
+                                                Listitem li3 = new Listitem();
+                                                li3.setValue(es.getPvp3());
+                                                li3.appendChild(new Listcell(es.getPvp3()+""));
+                                                valores.appendChild(li3);
+                                                
+                                                valores.setSelectedIndex(0);
+                                                calcularTotal();
+                                                }
+                                                calcularTotal(){
                                                 try{
-                                                    vt.value = cantidad.value.multiply(vu.value);
+                                                vt.value = cantidad.value.multiply(vu.value);
                                                 }catch(Exception abc){}
-                                  }
+                                                }
                                             </zscript>
  
                                        
@@ -871,7 +853,7 @@ void tipoDocumento(String tipo){
                                         <decimalbox id="iva" readonly="true"  value="0"  />            
                                     </row>
                                     <row>
-                                    Total:
+                                        Total:
                                         <decimalbox id="total"  readonly="true"  value="0" />            
                                     </row>
                                 </rows>
@@ -896,24 +878,18 @@ void tipoDocumento(String tipo){
 
 
             </tabpanel>
-
             <tabpanel>
-
                 <groupbox  width="100%" mold="3d" >
-
-                    <caption label="Busquedas" />
                     <vbox>
                         <hbox>
                             <zscript>
                               <![CDATA[
-                                  void buscar(String p){
-                                    String fechaDe = jcinform.bean.generarFacturas.convertiraString(desde.value);
-                                    String fechaHa = jcinform.bean.generarFacturas.convertiraString(hasta.value);
-                                    String q = "Select o.* from Factura as o, Proveedores prov " 
-                                        +" where prov.codigo = o.proveedores and prov.razonsocial like '%" + proveedor.value + "%' and o.factura like '"+ p +"%' and o.fecha between '"+fechaDe+"' and  '"+fechaHa+"'  "  + 
-                                        " and o.sucursal = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.factura";
+                                  void buscar2(String p){
+                                    String q = "Select o from Factura as o " 
+                                        +" where (o.cliente.nombres like '%"+buscarCliente.value+"%' or o.cliente.razonsocial like '%"+buscarCliente.value+"%' ) "  + 
+                                        " order by o.numero";
                                     System.out.println(q);
-                                        List FacturaEncontrados = adm.queryNativo(q,Factura.class);
+                                        List FacturaEncontrados = adm.query(q);
                                         datos = new Listbox();
                                         int a=0;
                                             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -923,82 +899,61 @@ void tipoDocumento(String tipo){
                                                       Factura acceIt = (Factura) it.next();
                                                       Listitem li = new Listitem();
                                                       li.setValue(acceIt);
-                                                      li.appendChild(new Listcell(acceIt.getFactura()+""));
-                                                      try{
-                                                        li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
-                                                      }catch(Exception err){
-                                                        li.appendChild(new Listcell("* AJUSTE"));
-                                                      }
-                                                      li.appendChild(new Listcell(acceIt.getSeries()+""));
-                                                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
+                                                      li.appendChild(new Listcell(acceIt.getNumero()+""));
+                                                      li.appendChild(new Listcell(acceIt.getCliente().getRazonsocial()+" | "+acceIt.getCliente().getNombres()));
                                                       li.appendChild(new Listcell(acceIt.getTotal()+""));
                                                       li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
+                                                      datos.appendChild(li);
+                                             }
 
+                                    } 
+                                       void buscar1(Integer p){
+                                    String q = "Select o from Factura as o " 
+                                        + " where o.numero like '%"+p+"%' " 
+                                        + " order by o.numero";
+                                    System.out.println(q);
+                                        List FacturaEncontrados = adm.query(q);
+                                        datos = new Listbox();
+                                        int a=0;
+                                            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+                                                    datos.getItems().remove(a);
+                                                }
+                                               for (Iterator it = FacturaEncontrados.iterator(); it.hasNext();) {
+                                                      Factura acceIt = (Factura) it.next();
+                                                      Listitem li = new Listitem();
+                                                      li.setValue(acceIt);
+                                                      li.appendChild(new Listcell(acceIt.getNumero()+""));
+                                                      li.appendChild(new Listcell(acceIt.getCliente().getRazonsocial()+" | "+acceIt.getCliente().getNombres()));
+                                                      li.appendChild(new Listcell(acceIt.getTotal()+""));
+                                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
                                                       datos.appendChild(li);
                                              }
 
                                     } 
                                     
-                                void buscarSerie(String p){
-                                    String fechaDe = jcinform.bean.generarFacturas.convertiraString(desde.value);
-                                    String fechaHa = jcinform.bean.generarFacturas.convertiraString(hasta.value);
-                                     
-                                     
-                                  List FacturaEncontrados = adm.query("Select distinct o.detalle.factura from Series as o " + 
-                                        " where o.serie like '"+p+"%'");
-                                        datos = new Listbox();
-                                        int a=0;
-                                            for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
-                                                    datos.getItems().remove(a);
-                                                }
-                                               for (Iterator it = FacturaEncontrados.iterator(); it.hasNext();) {
-                                                      Factura acceIt = (Factura) it.next();
-                                                      Listitem li = new Listitem();
-                                                      li.setValue(acceIt);
-                                                      li.appendChild(new Listcell(acceIt.getFactura()+""));
-                                                      try{
-                                                        li.appendChild(new Listcell(acceIt.getProveedores().getRazonsocial()+""));
-                                                      }catch(Exception err){
-                                                        li.appendChild(new Listcell("* AJUSTE"));
-                                                      }
-                                                      li.appendChild(new Listcell(acceIt.getSeries()+""));
-                                                      li.appendChild(new Listcell(acceIt.getCantidad()+""));
-                                                      li.appendChild(new Listcell(acceIt.getTotal()+""));
-                                                      li.appendChild(new Listcell(acceIt.getFecha().toLocaleString()+""));
-
-                                                      datos.appendChild(li);
-                                             }
-
-                                    } 
+                      
                                     ]]>
                             </zscript>
                             
-                            No.Factura:
-                            <textbox id="buscarText"  maxlength="60" cols="10" />
-                            Proveedor:
-                            <textbox id="proveedor"  maxlength="60" cols="10" />
-                            Fechas:
+                            No.Proforma:
+                            <intbox id="buscarProforma"  constraint="no empty:Número es requerido"   maxlength="60" cols="10" />
+                            <button id="buscar1" label="..." onClick="buscarProforma.getValue(); buscar1(buscarProforma.getValue());"/>
+                            Cliente:
+                            <textbox id="buscarCliente"  maxlength="60" cols="10" />
+                            <button id="buscar2"  label="..." onClick="buscar2(buscarCliente.getValue());"/>
+                            Fechas 
                             Desde: 
                             <datebox id="desde" onCreate="Date fec = adm.Date(); fec.setDate(1); self.value = fec;"/> Hasta: 
                             <datebox id="hasta"  onCreate="self.value = adm.Date()"/>
-                            <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
-                        </hbox>
-                        <hbox>
-                            Búsqueda por serie:    
-                            <textbox id="buscarSerie"  maxlength="60" cols="10" /> 
-                            <button id="buscarser"  label="Buscar" onClick="buscarSerie(buscarSerie.getValue());"/>
+                            <button id="buscar3"  label="..." onClick="buscar(buscarCliente.getValue());"/>
                         </hbox>
                         <hbox>
                             <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                                 <listhead>
-                                    <listheader label="Factura"/>
-                                    <listheader label="Nombre"/>
-                                    <listheader label="Observación"/>
-                                    <listheader label="Cantidad"/>
-                                    <listheader label="Precio"/>
-                                    <listheader label="Fecha"/>
-                                    <listheader label="Asignado"/>
-
+                                    <listheader label="No.Proforma"/>
+                                    <listheader label="Razon Social | Nombre"/>
+                                    <listheader label="Total"/>
+                                    <listheader label="Enviada"/>
                                 </listhead>
                                 <listitem forEach="${allEvents2}" value="${each}">
                                     <!--listcell label="${each.codigo}" />
@@ -1015,9 +970,9 @@ void tipoDocumento(String tipo){
 
 
             </tabpanel>
-   <tabpanel>
-                    <jasperreport height="330px" id="reportelocal" />
-                </tabpanel>
+            <tabpanel>
+                <jasperreport height="530px" id="reportelocal" />
+            </tabpanel>
         </tabpanels>
 
 

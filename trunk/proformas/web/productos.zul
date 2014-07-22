@@ -13,7 +13,7 @@ import siscontrol.*;
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Productos as o where o.identificacion = 0");
+    List allEvents = adm.query("Select o from Productos as o where o.codigo = 0");
     static Productos empa = new Productos();
     Permisos permiso = new Permisos();
     
@@ -215,7 +215,7 @@ void eliminar(){
                 </row>
                 <row>
                     <span style="float:right"> Descripcion:</span>
-                    <textbox id="descripcion" maxlength="200" rows="2" cols="40" readonly="true"  />
+                    <textbox id="descripcion" rows="2" cols="40" readonly="true"  />
                 </row>
                 <row>
                     <span style="float:right"> Pvp1</span>
