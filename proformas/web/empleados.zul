@@ -13,7 +13,7 @@ import siscontrol.*;
   import org.zkoss.image.AImage;
   import org.zkoss.image.Image;
     Administrador adm = new Administrador();
-    List allEvents = adm.query("Select o from Empleados as o where o.identificacion = 0");
+    List allEvents = adm.query("Select o from Empleados as o where o.codigo = 0");
     static Empleados empa = new Empleados();
     Permisos permiso = new Permisos();
     
@@ -203,18 +203,18 @@ void eliminar(){
                     <span style="float:right"> Usuario:</span>
                     <textbox id="usuario" maxlength="30" cols="15" readonly="true"  />
                 </row>
-                <row>
-                    <span style="float:right"> Cargo:</span>
-                    <textbox id="cargo" maxlength="100" cols="15" readonly="true"  />
-                </row>
-                  <row>
-                    <span style="float:right"> Email: </span>
-                    <textbox id="email" maxlength="200" cols="15" readonly="true"  />
-                </row>
-                <row>
+                              <row>
                                 
                     <span style="float:right"> Clave:</span>
                     <textbox id="clave" type="password" maxlength="30" cols="15" readonly="true"  />
+                </row>
+                  <row>
+                    <span style="float:right"> Cargo:</span>
+                    <textbox id="cargo" maxlength="100" cols="20" readonly="true"  />
+                </row>
+                  <row>
+                    <span style="float:right"> Email: </span>
+                    <textbox id="email" maxlength="200" cols="20" readonly="true"  />
                 </row>
                         
                           

@@ -259,10 +259,7 @@ Boolean validarSeriesAju(){
         Messagebox.show("Registre todos los campos para continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
         return;
      }
-      if(observacion.value == "" ){
-        Messagebox.show("Registre todos los campos para continuar ...!", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
-        return;
-      }
+   
             Clientes empa = new Clientes();
             empa.setCodigo(idproveedores.value);
             empa.setNombres(nombres.value);
@@ -271,7 +268,7 @@ Boolean validarSeriesAju(){
             empa.setDireccion(direccion.value);
             empa.setTelefono(telefono.value);
             empa.setReferencia(referencia.value);
-        if(empa.getCodigo() == 0){ 
+        if(empa.getCodigo() == null || empa.getCodigo() ==0 ){ 
             empa.setCodigo(adm.getNuevaClave("Clientes","codigo"));
             adm.guardar(empa);
          }else{
@@ -638,7 +635,7 @@ void tipoDocumento(String tipo){
                         <row>
                             <span style="float:right">    Cédula: </span> 
                             <textbox id="cedula" readonly="true"  />
-                            <span style="float:right">    Nombres: </span> 
+                            <span style="float:right">    (*)Nombres: </span> 
                             <textbox id="nombres"  readonly="true" cols="35"/>
                             
                             
