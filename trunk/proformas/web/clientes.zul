@@ -36,6 +36,7 @@ void llenar(Clientes empa){
     direccion.value = empa.getDireccion();
     telefono.value = empa.getTelefono();
     referencia.value = empa.getReferencia();
+    email.value = empa.getEmail();
     
  
         
@@ -48,7 +49,7 @@ void estado(Boolean estado,Boolean modificar){
 
    
     nombres.readonly = estado;
-   
+   email.readonly = estado;
     razonsocial.readonly = estado;
     cedula.readonly = estado;
     direccion.readonly = estado;
@@ -75,6 +76,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setDireccion(direccion.value);
         empa.setTelefono(telefono.value);
         empa.setReferencia(referencia.value);
+        empa.setEmail(email.value);
 
  
 
@@ -213,6 +215,10 @@ void eliminar(){
                 <row>
                     <span style="float:right"> Razonsocial:</span>
                     <textbox id="razonsocial" maxlength="200"   cols="40" readonly="true"  />
+                </row>
+                <row>
+                    <span style="float:right"> Email:</span>
+                    <textbox id="email" maxlength="200"   cols="40" readonly="true"  />
                 </row>
                 <row>
                     <span style="float:right"> Dirección</span>

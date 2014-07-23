@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="acee93e3-0f8b-44cf-9010-3213c62684c8">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Proforma0052" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="acee93e3-0f8b-44cf-9010-3213c62684c8">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="353"/>
+	<property name="ireport.y" value="240"/>
 	<parameter name="usuario" class="java.lang.String"/>
 	<parameter name="cargo" class="java.lang.String"/>
 	<parameter name="ruc" class="java.lang.String"/>
+	<parameter name="reportes" class="java.lang.String"/>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="ruc" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
@@ -30,7 +31,7 @@
 		<band height="128" splitType="Stretch">
 			<image>
 				<reportElement x="14" y="5" width="472" height="52" uuid="5b70237b-27c7-4d48-b6bc-4730d890e9c7"/>
-				<imageExpression><![CDATA["C:\\reportes\\info.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportes}+"info.jpg"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="82" y="73" width="386" height="16" uuid="bc755f23-e29d-4e77-8150-e841202e4fa1"/>
@@ -75,13 +76,15 @@
 				<textFieldExpression><![CDATA[$F{ruc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="86" y="50" width="465" height="16" uuid="3b4ea145-ef50-4c95-9c58-3b1bbb84f436"/>
+				<reportElement x="86" y="50" width="262" height="33" uuid="3b4ea145-ef50-4c95-9c58-3b1bbb84f436"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="432" y="34" width="116" height="16" uuid="e7833206-798f-4e04-9bf6-7fdbd4f1785a"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="404" y="34" width="144" height="16" uuid="e7833206-798f-4e04-9bf6-7fdbd4f1785a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
 			</textField>
 			<textField pattern="&apos;DM, Quito &apos;MMMMM dd, yyyy" isBlankWhenNull="true">
@@ -111,21 +114,21 @@
 				<text><![CDATA[Dirección:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="348" y="34" width="84" height="16" uuid="cbba6feb-d8c4-4158-a2f2-607e192d3ed3"/>
+				<reportElement x="348" y="34" width="56" height="16" uuid="cbba6feb-d8c4-4158-a2f2-607e192d3ed3"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Teléfonos: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="348" y="0" width="84" height="20" uuid="c2190b12-828b-4e02-9a15-4257263f2e2c"/>
+				<reportElement x="348" y="0" width="70" height="20" uuid="c2190b12-828b-4e02-9a15-4257263f2e2c"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Proforma No.: ]]></text>
 			</staticText>
 			<textField pattern="000000">
-				<reportElement x="432" y="0" width="116" height="20" forecolor="#CC0000" uuid="4465165e-9085-4776-b321-8a2720cd40c7"/>
+				<reportElement x="418" y="0" width="130" height="20" forecolor="#CC0000" uuid="4465165e-9085-4776-b321-8a2720cd40c7"/>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
@@ -157,7 +160,7 @@
 				<text><![CDATA[Cant.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="124" y="0" width="318" height="16" uuid="d4af2bcb-ae47-44e0-94b6-e00a38474fd9"/>
+				<reportElement x="132" y="0" width="310" height="16" uuid="d4af2bcb-ae47-44e0-94b6-e00a38474fd9"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -199,7 +202,7 @@
 				<text><![CDATA[V/T]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="52" y="0" width="72" height="16" uuid="aaef597c-1699-44af-b795-2109ee75c9d5"/>
+				<reportElement x="52" y="0" width="80" height="16" uuid="aaef597c-1699-44af-b795-2109ee75c9d5"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -231,7 +234,7 @@
 				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="124" y="0" width="318" height="16" uuid="5c71216a-23ef-42cd-a9f0-6a16e7391dbc"/>
+				<reportElement x="132" y="0" width="310" height="16" uuid="5c71216a-23ef-42cd-a9f0-6a16e7391dbc"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -243,7 +246,7 @@
 				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="52" y="0" width="72" height="16" uuid="2994be5c-b79d-4ffe-aa61-fa2280feb1cf"/>
+				<reportElement x="52" y="0" width="80" height="16" uuid="2994be5c-b79d-4ffe-aa61-fa2280feb1cf"/>
 				<box leftPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -281,7 +284,7 @@
 				<textFieldExpression><![CDATA[$F{vt}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="124" y="16" width="318" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="d3e4467a-c977-474c-9f05-b89a1b1ca8eb">
+				<reportElement stretchType="RelativeToBandHeight" x="132" y="16" width="310" height="16" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="d3e4467a-c977-474c-9f05-b89a1b1ca8eb">
 					<printWhenExpression><![CDATA[($F{observacion}+"").length() > 2]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2">
@@ -343,7 +346,7 @@
 				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
-				<reportElement stretchType="RelativeToBandHeight" x="52" y="16" width="72" height="16" isRemoveLineWhenBlank="true" uuid="cf9ee3d7-384d-496a-8ecb-e86338aa31fe">
+				<reportElement stretchType="RelativeToBandHeight" x="52" y="16" width="80" height="16" isRemoveLineWhenBlank="true" uuid="cf9ee3d7-384d-496a-8ecb-e86338aa31fe">
 					<printWhenExpression><![CDATA[($F{observacion}+"").length()>2]]></printWhenExpression>
 				</reportElement>
 				<box leftPadding="2">
@@ -386,23 +389,23 @@
 			</staticText>
 			<image>
 				<reportElement x="36" y="80" width="88" height="50" uuid="d8787b3d-f63e-412b-9300-4a5c9e236ee6"/>
-				<imageExpression><![CDATA["C:\\reportes\\1.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportes}+"1.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="146" y="80" width="60" height="50" uuid="fa836519-526d-48fb-b000-82b5ae1d45c8"/>
-				<imageExpression><![CDATA["C:\\reportes\\2.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportes}+"2.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="234" y="80" width="64" height="50" uuid="3b70de3a-2517-4726-ab1b-bc3ac2c7b29f"/>
-				<imageExpression><![CDATA["C:\\reportes\\3.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportes}+"3.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="342" y="80" width="72" height="50" uuid="2ea09160-3cae-4f50-85d7-a7d3ca98592d"/>
-				<imageExpression><![CDATA["C:\\reportes\\4.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportes}+"4.jpg"]]></imageExpression>
 			</image>
 			<image>
 				<reportElement x="440" y="80" width="63" height="50" uuid="ed3e1913-14a2-4b8d-936d-e53eb1a8483e"/>
-				<imageExpression><![CDATA["C:\\reportes\\5.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{reportes}+"5.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</pageFooter>

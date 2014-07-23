@@ -5,6 +5,7 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import org.zkoss.zkex.zul.Jasperreport;
 import siscontrol.cnx.email.SendAuthentication;
 
 /**

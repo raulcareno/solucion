@@ -58,7 +58,7 @@ void llenar(Factura empa){
        nombres.value = empa.getCliente().getNombres();
        referencia.value = empa.getCliente().getReferencia();
        razonsocial.value = empa.getCliente().getRazonsocial(); 
-       
+       email.value = empa.getCliente().getEmail();
    }catch(Exception ex){}
  
     /* compra  productos, cantidad  costo pvp1 */
@@ -268,6 +268,7 @@ Boolean validarSeriesAju(){
             empa.setDireccion(direccion.value);
             empa.setTelefono(telefono.value);
             empa.setReferencia(referencia.value);
+            empa.setEmail(email.value);
         if(empa.getCodigo() == null || empa.getCodigo() ==0 ){ 
             empa.setCodigo(adm.getNuevaClave("Clientes","codigo"));
             adm.guardar(empa);
@@ -349,10 +350,18 @@ Boolean validarSeriesAju(){
     }
  void nuevo(){
     if(verificar("Agregar")){
-          
+          try{ 
+            idproveedores.value = 0; 
+            cedula.value = ""; 
+            direccion.value = ""; 
+            telefono.value = "";
+            nombres.value = "";
+            referencia.value = "";
+            razonsocial.value = "";
+            email.value = "";
+         }catch(Exception ex){}
+         clientesBusqueda.disabled=false; 
           guardar.disabled=false; 
-          //llenar(new Factura(0));
-          //estado(false,false);
           cantidad.setReadonly(false);
           nombres.setReadonly(false);
           direccion.setReadonly(false);
@@ -360,7 +369,7 @@ Boolean validarSeriesAju(){
           referencia.setReadonly(false);
           razonsocial.setReadonly(false);
           cedula.setReadonly(false);
-          
+          email.setReadonly(false);
           observacion.setReadonly(false);
           fecha.setDisabled(false);
           filas.getChildren().clear();
@@ -490,6 +499,7 @@ llenarGrid(){
                    parameters.put("ruc",empresa.getRuc());
                    parameters.put("usuario",usuario.getNombres());
                    parameters.put("cargo",usuario.getCargo());
+                   parameters.put("reportes",directorioReportes);
                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + CodigoFactura.value + "'");
                    ArrayList detalles = new ArrayList();
                    for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
@@ -501,6 +511,7 @@ llenarGrid(){
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
+                   reportelocal.setName("proforma No. "+factura.value);
                    reporteVer.setSelected(true);
             }catch(Exception  ex){
                 System.out.println("EXXX: "+ex);
@@ -611,14 +622,16 @@ void tipoDocumento(String tipo){
                             </span> 
                             <span>
                                  
-                                <combobox  cols="35"  id="clientesBusqueda" onOK='factura.focus();' 
+                                <combobox  cols="35" disabled="true"  id="clientesBusqueda" onOK='factura.focus();' 
                                            onSelect="try{ idproveedores.value = (self.selectedItem.value).getCodigo(); 
                                                         cedula.value = (self.selectedItem.value).getCedula(); 
                                                         direccion.value = (self.selectedItem.value).getDireccion(); 
                                                         telefono.value = (self.selectedItem.value).getTelefono();
                                                         nombres.value = (self.selectedItem.value).getNombres();
                                                         referencia.value = (self.selectedItem.value).getReferencia();
-                                                        razonsocial.value = (self.selectedItem.value).getRazonsocial(); }catch(Exception ex){}" 
+                                                        razonsocial.value = (self.selectedItem.value).getRazonsocial(); 
+                                                        email.value = (self.selectedItem.value).getEmail();
+                                                         }catch(Exception ex){}" 
                                            autodrop="true" buttonVisible="false"  
                                            use="siscontrol.autoCompletarClientes"/>
                                 <intbox  readonly="true" visible="false"  cols="1" id="idproveedores" />
@@ -644,7 +657,11 @@ void tipoDocumento(String tipo){
                             <span style="float:right">    Razón Social: </span> 
                             <textbox id="razonsocial" readonly="true"  cols="35" />
                             <span style="float:right">     Dirección:</span>  
-                            <textbox id="direccion" readonly="true"   cols="35"/>
+                            <span>
+                                <textbox id="direccion" readonly="true"   cols="20"/>
+                                <span>     Email:</span>  
+                                <textbox id="email" readonly="true"   cols="20"/>
+                            </span>
                             
                         </row>
                         <row>
@@ -825,9 +842,26 @@ void tipoDocumento(String tipo){
                         </row>
                         <row visible="true" id="observacionrow">
                             <span style="float:right"> Observación: </span>
-                            <span>
-                                <textbox  readonly="true" rows="4"  cols="60" id="observacion"/>
-                            </span>
+                            <grid>
+                                <rows>
+                                    <row>
+                                        <textbox  readonly="true" rows="4"  cols="60" id="observacion"/>
+                                    </row>
+                                    <row>
+                                        <vbox>
+                                            <hbox>
+                                                <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                                                <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo(); clientesBusqueda.focus();" />
+                                                <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                                                <button  image="/images/copiar.png" id="copiar"  label="Modificar" disabled="true"  onClick="copiar()"/>
+                                                <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();"/>
+                                            </hbox>
+                                        </vbox>
+                                    </row>
+                                </rows>
+                            </grid>
+
+                            
                             <span></span>
                             <grid>
                                 <rows>
@@ -863,15 +897,7 @@ void tipoDocumento(String tipo){
                     </rows>
                 </grid>
 
-                <vbox>
-                    <hbox>
-                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo(); clientesBusqueda.focus();" />
-                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                        <button  image="/images/copiar.png" id="copiar"  label="Modificar" disabled="true"  onClick="copiar()"/>
-                        <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();"/>
-                    </hbox>
-                </vbox>
+                
 
 
             </tabpanel>
