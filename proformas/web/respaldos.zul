@@ -23,8 +23,7 @@ Administrador adm = new Administrador();
 respaldosEmail respal = new respaldosEmail();
   Empleados usuarioActual = ses.getAttribute("user");
    Empresa empresa = ses.getAttribute("empresa");
-    Empleadossucursal sucursalEmp = ses.getAttribute("sector");
-       Permisos permiso = new Permisos();
+         Permisos permiso = new Permisos();
  public void  respaldar(){
 
   try{
@@ -161,7 +160,7 @@ permiso.auditar("Respaldos de BD","Respaldar",""+new Date().toLocaleString());
            System.out.println(em);
            
            }
-            direccion.value = empresa.getFotos();
+            direccion.value = empresa.getReportes();
             }
         </zscript>
     </window>

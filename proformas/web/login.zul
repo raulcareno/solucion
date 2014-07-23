@@ -45,7 +45,7 @@
  Permisos permisos = new Permisos();
  
 cargar(){
-    derechos.value = "Todos los derechos reservados a SISCONTROL, derecho de copia @2009-"+ ((adm.Date()).getYear()+1900) +", web: ";
+    derechos.value = "Todos los derechos reservados a SISCONTROL, derecho de copia @2014-"+ ((adm.Date()).getYear()+1900) +", web: ";
 }
  
 
@@ -146,9 +146,9 @@ void verificarSistema(){
                         <span>
                             <label id="derechos" style="font-size:10px"  />
                             <html>
-                                &lt;a href=&quot;http://www.siscontrol.com&quot; target=&quot;_blank&quot;&gt;http://www.siscontrol.com&lt;/a&gt;
+                                &lt;a href=&quot;http://www.siscontrol.com.ec&quot; target=&quot;_blank&quot;&gt;http://www.siscontrol.com.ec&lt;/a&gt;
                             </html>
-                            <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>
+                            <label style="font-size:10px;color:blue" value ="ver.1.1 act.01/07/2014"/>
                              
                         </span>
                     </row>
