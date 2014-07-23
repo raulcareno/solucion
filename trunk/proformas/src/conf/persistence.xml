@@ -9,7 +9,10 @@
     <class>siscontrol.Productos</class>
     <class>siscontrol.Clientes</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
+      <property name="eclipselink.cache.type.default" value="NONE"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proformas?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value="jcinform@2020"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

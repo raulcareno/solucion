@@ -89,7 +89,7 @@ filas.getChildren().clear();
                                     aButton.setImage("/images/quitar.gif");
                                     aButton.setHeight("5px");
                                     aButton.setId("id"+acceIt.getProducto().getCodigo());
-                                    aButton.setDisabled(true);
+                                    aButton.setDisabled(false);
                                     aButton.addEventListener("onClick", new EventListener() {
                                         public void onEvent(Event event) throws Exception {
                                                 seriespanel.visible = false;
@@ -278,14 +278,20 @@ Boolean validarSeriesAju(){
  
     
        Factura cabeceraFactura = new Factura();
-       cabeceraFactura.setCodigo(adm.getNuevaClave("Factura","codigo"));
+       cabeceraFactura.setCodigo(CodigoFactura.value);
        cabeceraFactura.setCliente(empa);
-       //cabeceraFactura.setNumero();
        cabeceraFactura.setFecha(fecha.value);
        cabeceraFactura.setObservaciones(observacion.value);
        cabeceraFactura.setCantidad(new BigDecimal(0));
        cabeceraFactura.setEmpleado(usuario);
-                        Boolean pasar = true;
+        cabeceraFactura.setSubtotal(totalFinal.getValue());
+        cabeceraFactura.setSubtotal1(totalFinal2.getValue());
+        cabeceraFactura.setDescuento(descuento.getValue());
+        cabeceraFactura.setIva(iva.getValue());
+        cabeceraFactura.setTotal(total.getValue());
+        if(cabeceraFactura.getCodigo() == 0){
+            cabeceraFactura.setCodigo(adm.getNuevaClave("Factura","codigo"));
+               Boolean pasar = true;
                         Integer numero = adm.getNuevaClave("Factura","numero");
                         while(pasar){
                             List sihay = adm.query("Select o from Factura as o where o.numero = '"+numero+"'"); 
@@ -298,16 +304,17 @@ Boolean validarSeriesAju(){
                             }
 
                         }
-                    
-
-        cabeceraFactura.setSubtotal(totalFinal.getValue());
-        cabeceraFactura.setSubtotal1(totalFinal2.getValue());
-        cabeceraFactura.setDescuento(descuento.getValue());
-        cabeceraFactura.setIva(iva.getValue());
-        cabeceraFactura.setTotal(total.getValue());
+            
+            adm.guardar(cabeceraFactura);
+            
+        }else{
+            cabeceraFactura.setNumero(factura.value);
+            adm.ejecutaSql("Delete from Detalle as o where o.factura.codigo = '"+cabeceraFactura.getCodigo()+"'");
+            adm.actualizar(cabeceraFactura);
+        }
         
 
-       adm.guardar(cabeceraFactura);
+       
        CodigoFactura.value = cabeceraFactura.getCodigo();
             List col = opciones.getRows().getChildren();
              for (int i = 0; i < col.size(); i++) {
@@ -373,6 +380,7 @@ Boolean validarSeriesAju(){
           observacion.setReadonly(false);
           fecha.setDisabled(false);
           filas.getChildren().clear();
+          CodigoFactura.value = 0;
           
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -382,10 +390,24 @@ Boolean validarSeriesAju(){
         llenar((Factura)datos.selectedItem.value);
         modificar.disabled = false;
         registro.setSelected(true);
+        sumarTotal("");
   }
 void modificar(){
   if(verificar("Modificar")){
        guardar.disabled=false; estado(false,true);
+       imprimir.disabled = true;
+          cantidad.setReadonly(false);
+          nombres.setReadonly(false);
+          direccion.setReadonly(false);
+          telefono.setReadonly(false);
+          referencia.setReadonly(false);
+          razonsocial.setReadonly(false);
+          cedula.setReadonly(false);
+          email.setReadonly(false);
+          observacion.setReadonly(false);
+          fecha.setDisabled(false);
+          clientesBusqueda.setDisabled(false);
+       
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -642,7 +664,7 @@ void tipoDocumento(String tipo){
                                 <intbox  readonly="true"  id="factura"/> 
                                 <span> Fecha:</span>
                                 <datebox id="fecha" format="dd/MM/yyyy hh:mm:ss" onCreate="self.value = adm.Date()"/>
-                                <intbox  readonly="true"  id="CodigoFactura"/> 
+                                <intbox visible="false" readonly="true"  id="CodigoFactura"/> 
                             </span>
                         </row>
                         <row>
