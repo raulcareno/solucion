@@ -226,18 +226,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             men.add(acerca);
 
-            trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Informaticas \n Sistema de Parking \n www.jcinform.com ", men);
+            trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Integradas de Seguridad y Control \n Sistema de Parking \n www.siscontrol.com.ec ", men);
             if (SystemTray.isSupported()) {
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon.setImageAutoSize(true);
                 trayIcon.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         //System.out.println("In here");
-                        trayIcon.displayMessage("JCINFORM - SOLUCIONES INFORMATICAS \n Sistema de Parking \n ", "www.jcinform.com", TrayIcon.MessageType.INFO);
+                        trayIcon.displayMessage("SISCONTROL - Soluciones Integradas de Seguridad y Control \n Sistema de Parking \n ", "www.siscontrol.com.ec", TrayIcon.MessageType.INFO);
 //                        frmLogin.show(true);
                     }
                 });
-                trayIcon.displayMessage("Bienvenidos al Sistema", " Sistema de Parking \n www.jcinform.com ", TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Bienvenidos al Sistema", " City Park \n www.siscontrol.com.ec ", TrayIcon.MessageType.INFO);
                 try {
                     tray.add(trayIcon);
                 } catch (AWTException e) {
@@ -3222,36 +3222,43 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto1());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto1(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto2());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto2(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto3());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto3(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto4());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto4(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto5());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto5(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto6());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto6(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getPuerto7());
+                            lger.logger("ABIERTO: " + empresaObj.getPuerto7(), "OK");
 //                        read.add(reader);
                         }
 
@@ -3259,38 +3266,45 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida1());
                             temppuertoText.addItem(empresaObj.getSalida1());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida1(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida2());
                             temppuertoText.addItem(empresaObj.getSalida2());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida2(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida3());
                             temppuertoText.addItem(empresaObj.getSalida3());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida3(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida4());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida4(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida5());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida5(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida6());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida6(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("ABIERTO: " + empresaObj.getSalida7());
+                            lger.logger("ABIERTO: " + empresaObj.getSalida7(), "OK");
 //                        read.add(reader);
                         }
 //                        else if (portId.getName().equals("COM10")) {
@@ -3598,7 +3612,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                             clave.setText("");
 
-                            JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(this, "No puede ingresar en éste horario", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                             clave.requestFocusInWindow();;
                             return;
 
@@ -3610,7 +3624,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     usuariot.setEnabled(true);
 
                     clave.setText("");
-                    JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se ha cargado su horario de trabajo\n solicite a un administrador que realice éste proceso", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                     clave.requestFocusInWindow();;
                     System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
                     if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
@@ -3794,7 +3808,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             clave.setText("");
             logeado = false;
-            JOptionPane.showMessageDialog(this, "Usuario o Clave incorrecta", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Usuario o Clave incorrecta", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
             clave.requestFocusInWindow();
 
 
@@ -5041,7 +5055,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -5065,7 +5079,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -5120,7 +5134,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmTarifas usu = new frmTarifas(this, true, this, adm);
@@ -5143,7 +5157,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             try {
@@ -5209,7 +5223,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             try {
@@ -5272,7 +5286,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmReportes usu = new frmReportes(this, adm);
@@ -5296,7 +5310,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             acerca usu = new acerca(this, true, empresaObj);
@@ -5644,7 +5658,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (permisos.getEliminar()) {        // TODO add your handling code here:
-            int conf = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el registro? ", "JCINFORM", JOptionPane.OK_CANCEL_OPTION);
+            int conf = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar el registro? ", "SISCONTROL", JOptionPane.OK_CANCEL_OPTION);
             if (conf == JOptionPane.OK_OPTION) {
                 try {
                     auditar("Clientes", "" + clienteObj.getNombres(), "ELIMINAR");
@@ -5913,7 +5927,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmPrivilegios usu = new frmPrivilegios(this, true, this, adm);
@@ -5952,12 +5966,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 accesosL = null;
 
                 int seleccion = JOptionPane.showOptionDialog(this, "SE BORRARÁ LA CONFIGURACIÓN ACTUAL DEL SISTEMA \n ¿SEGURO QUE DESEA CONTINUAR?",
-                        "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
+                        "SISCONTROL", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                         new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                 if (0 == seleccion) {
                     seleccion = JOptionPane.showOptionDialog(this, "¿ESTÁ UD. SEGURO QUE DESEA CONTINUAR SE BORRARÁ LA CONFIGURACIÓN? \n NO PODRÁ USAR EL SISTEMA, HASTA QUE VUELVA A CONFIGURARLO "
                             + "\\n ESTO TENDRÁ UN COSTO (USD) POR REINSTALACION, PARA SALIR PRESIONE ( NO ) ",
-                            "JCINFORM", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
+                            "SISCONTROL", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
                             new Object[]{"SI", "NO", "Cancelar"}, "NO");// null para YES, NO y CANCEL
                     if (0 == seleccion) {
                         WorkingDirectory w = new WorkingDirectory();
@@ -5978,7 +5992,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
 
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -6558,7 +6572,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -6889,7 +6903,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 auditar("Tarjetas", "" + noTarjeta.getText(), "ELIMINAR TARJETA");
             } catch (Exception ex) {
                 int valor = JOptionPane.showConfirmDialog(this, "No se puede eliminar la tarjeta debido a que ya tiene movimientos(ya ha sido usada) \n"
-                        + " ¿Desea Eliminar los movimientos para poder borrar la tarjeta? ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                        + " ¿Desea Eliminar los movimientos para poder borrar la tarjeta? ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 if (valor == 0) {
                     try {
                         adm.ejecutaSql("Delete from Factura where tarjetas.tarjeta = '" + noTarjeta.getText().trim() + "'");
@@ -6993,14 +7007,14 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
     if (clienteCod.getText() == null || clienteCod.getText().isEmpty() ) {
         if(!crear.isSelected()){
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
             return;
         } 
         
     }
     int filas = tablaTarjetas.getRowCount();
     if (filas <= 0) {
-        JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
         return;
     }
     for (int i = 0; i < filas; i++) {
@@ -7147,7 +7161,7 @@ private void btnAnadirTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//
 
 
     if (noTarjeta2.getText() == null || noTarjeta2.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
         return;
     } else {
         Object[] obj = new Object[3];
@@ -7295,7 +7309,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 permisos = accesosL.get(0);
                 accesosL = null;
             } else {
-                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "No tiene permisos para ingresar a esta pantalla ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             frmFacturaTarifas usu = new frmFacturaTarifas(this, true, this, adm);
@@ -7499,7 +7513,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     public void seleccionarEncontrada(String valor) {
         int filas = tarjetas.getRowCount();
         if (filas <= 0) {
-            //JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ", "JCINFORM", JOptionPane.ERROR_MESSAGE);
+            //JOptionPane.showMessageDialog(this, "No hay nada que guardar...! ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
             return;
         }
         for (int i = 0; i < filas; i++) {
