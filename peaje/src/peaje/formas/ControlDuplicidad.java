@@ -44,6 +44,7 @@ public class ControlDuplicidad {
             long tiempo = leer();//
             long res = restarTiempo(tiempo);
             if (res < segundos) {
+                System.out.println("duplicidad en programa");
                 JOptionPane.showMessageDialog(null, "Error: La aplicacion ya esta en ejecución,\n No puede ejecutar dos aplicaciones al mismo tiempo","www.siscontrol.com.ec",JOptionPane.ERROR_MESSAGE);
                 return false;
             } else {
