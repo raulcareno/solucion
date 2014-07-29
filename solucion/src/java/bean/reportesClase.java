@@ -2379,7 +2379,7 @@ public class reportesClase {
     public List<Matriculas> cuadroverificarCompleto(Cursos curso, Sistemacalificacion sistema, Matriculas matriculaActual) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
-           Interpreter inter = new Interpreter();
+        Interpreter inter = new Interpreter();
 //        Session ses = Sessions.getCurrent();
         Periodo periodo = curso.getPeriodo();
         materiasReprobadas = new ArrayList<MateriaProfesor>();
@@ -2506,59 +2506,49 @@ public class reportesClase {
                     }
                     matricula = matriculaNo.toString();
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-                     String estado= "";
-                     String pg= "",sp="",rm="",gr="",pf="";
-                    for (int sis = 0; sis <= sistemas.size()-1; sis++) {
+                    String estado = "";
+                    String pg = "", sp = "", rm = "", gr = "", pf = "";
+                    for (int sis = 0; sis <= sistemas.size() - 1; sis++) {
                         dos = vec.get(j);
                         if (truncarNotas) {
                             val = truncar((Double) dos, 2);
                         } else {
                             val = redondear((Double) dos, 2);
                         }
-                           try {
-                        if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("SM")) {
-                                inter.eval("Object sm =" +dos+ ";");             
-                        } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("PG")) {
-                            inter.eval("Object pg =" +val+ ";");             
-                            pg= (val>=7?"A":(val<5?"RM":val<=0?"PE":"SP"));
-                        } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("SU")) {
-                            inter.eval("Object sp =" +dos+ ";");             
-                            sp= (pg=="SP"?(val>=7?"A":val<=0?"SP":"RM"):pg); //??
-//                            if(sp=="A"){
-//                                pg="A";
-//                            }
-                        } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("RE")) {
-                            inter.eval("Object rm =" +dos+ ";"); 
-                            rm= (pg=="RM" || sp=="RM"?(val>=7?"A":val<=0?"RM":"GR"):pg); //??
-//                            if(rm=="A"){
-//                                pg="A";
-//                            }
-                        } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("GR")) { //fin remedial
-                            inter.eval("Object gr =" +dos+ ";"); 
-                            gr= (pg=="GR"  || rm=="GR" || sp=="GR"?(val>=7?"A":val<=0?"GR":"R"):pg); //??
-//                            if(gr=="A"){
-//                                pg="A";
-//                            }
-                        } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("PF")) {
-                            inter.eval("Object pf =" +dos+ ";"); 
-                            obs ="";
-                            if(pg=="A"){
-                                obs ="aprobado";
-                            }else if(pg=="SP" && sp=="A"){
-                                obs ="aprobado";
-                            }else if(pg=="RM" && rm=="A"){
-                                obs ="aprobado";
-                            }else if(gr=="GR" && gr=="A"){
-                                obs ="aprobado";
-                            }else{
-                                obs="pendiente";
-                            }
-                            //pf= (val>=7 && pg=="A"?"A":"R");
-                        }//fin gracia
-                        j++;
-                                    } catch (EvalError ex) {
-                                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-                            }
+                        try {
+                            if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("SM")) {
+                                inter.eval("Object sm =" + dos + ";");
+                            } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("PG")) {
+                                inter.eval("Object pg =" + val + ";");
+                                pg = (val >= 7 ? "A" : (val < 5 ? "RM" : val <= 0 ? "PE" : "SP"));
+                            } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("SU")) {
+                                inter.eval("Object sp =" + dos + ";");
+                                sp = (pg == "SP" ? (val >= 7 ? "A" : val <= 0 ? "SP" : "RM") : pg); //??
+                            } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("RE")) {
+                                inter.eval("Object rm =" + dos + ";");
+                                rm = (pg == "RM" || sp == "RM" ? (val >= 7 ? "A" : val <= 0 ? "RM" : "GR") : pg); //??
+                            } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("GR")) { //fin remedial
+                                inter.eval("Object gr =" + dos + ";");
+                                gr = (pg == "GR" || rm == "GR" || sp == "GR" ? (val >= 7 ? "A" : val <= 0 ? "GR" : "R") : pg); //??
+                            } else if (((Sistemacalificacion) sistemas.get(sis)).getPromediofinal().equals("PF")) {
+                                inter.eval("Object pf =" + dos + ";");
+                                obs = "";
+                                if (pg == "A") {
+                                    obs = "aprobado";
+                                } else if (pg == "SP" && sp == "A") {
+                                    obs = "aprobado";
+                                } else if (pg == "RM" && rm == "A") {
+                                    obs = "aprobado";
+                                } else if (gr == "GR" && gr == "A") {
+                                    obs = "aprobado";
+                                } else {
+                                    obs = "pendiente";
+                                }
+                            }//fin gracia
+                            j++;
+                        } catch (EvalError ex) {
+                            Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
 
                 } else if (j == 1) {
@@ -2900,8 +2890,7 @@ public class reportesClase {
             }
         }
         List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
-                + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
-                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PF' ");
         if (notaFinal.size() <= 0) {
             try {
                 Messagebox.show("No ha parametrizado el Promedio Final o General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
@@ -2920,6 +2909,46 @@ public class reportesClase {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+        List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
+        if (notaGeneral.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        String nGeneral = notaGeneral.get(0).getNota();
+
+        List<Notanotas> notaSupletorio = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'SU' ");
+        if (notaSupletorio.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        String nSup = notaSupletorio.get(0).getNota();
+
+
+        List<Notanotas> notaRemedial = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'RE' ");
+        if (notaRemedial.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        String nRem = notaRemedial.get(0).getNota();
+
+
+
 // List<Notanotas> notasRequeridas = adm.query("Select o from Notanotas as o "
 //                    + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
 //                    + " and o.sistema.requerida = true "
@@ -2946,6 +2975,37 @@ public class reportesClase {
         Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
         Double valorPromedioGeneral = regresaVariableParametrosDecimal("VALORPROMEDIOGENERAL", parametrosGlobales);
 
+
+        Integer remedial = 5;
+        try {
+            remedial = regresaVariableParametrosDecimal("REMEDIAL", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            remedial = 5;
+
+        }
+        Integer noDecimalesDisc = 2;
+        try {
+            noDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesDisc = 2;
+
+        }
+
+        Integer noDecimales = 3;
+        try {
+            noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimales = 3;
+
+        }
+        Integer noDecimalesPromediosParciales = 2;
+        try {
+            noDecimalesPromediosParciales = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesPromediosParciales = 2;
+
+        }
+
         if (valorPromedioGeneral <= 0) {
             valorPromedioGeneral = sumaAprueba;
         }
@@ -2970,7 +3030,7 @@ public class reportesClase {
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
                 + " and notas.disciplina = false and materia_profesor.seimprime = true  "
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
-                + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
+                + " and notas.materia >0 order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
@@ -2985,7 +3045,7 @@ public class reportesClase {
             MateriaProfesor mprofesor = null;
             MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
-            Double disciplina = 0.0;
+            Object disciplina = 0.0;
             Double sumatoria = 0.0;
             String obs = "";
             Boolean sn = false;
@@ -3058,47 +3118,93 @@ public class reportesClase {
 //                    }
                     //int tamaSistema = sistemas.size() - 1;
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-                    if (nota.getSistema().getPromediofinal().equals("SM")) {
-                        if (val < sumaPierde && validaConPromedioGeneral == false) {
-                            obs = "Pierde";
-                        } else if (val < sumaAprueba) {
-                            obs = "SP";
-                        }
-                        sumatoria = val;
-                    } else if (nota.getSistema().getPromediofinal().equals("PG")) {
+//                    if (nota.getSistema().getPromediofinal().equals("SM")) {
+//                        if (val < sumaPierde && validaConPromedioGeneral == false) {
+//                            obs = "Pierde";
+//                        } else if (val < sumaAprueba) {
+//                            obs = "SP";
+//                        }
+//                        sumatoria = val;
+//                    } else 
+                    if (nota.getSistema().getPromediofinal().equals("PG")) {
                         if (validaConPromedioGeneral) {
-                            if (val < valorPromedioGeneral && val < 5) {
-                                obs = "RM";
-                            } else if (val < valorPromedioGeneral && val < 7) {
-                                obs = "SP";
-                            } else {
+                            List notasListRem = adm.queryNativo("Select  CAST(AVG(o." + nRem + ")as decimal (9,3)) from Notas as o"
+                                    + " where o.materia =  " + materiaNo.getCodigo() + " and  "
+                                    + " o.matricula = '" + matriculaNo.getCodigomat() + "' ");
+                            BigDecimal nRemNota = (BigDecimal) ((Vector) notasListRem.get(0)).get(0);
+                            List notasListSup = adm.queryNativo("Select  CAST(AVG(o." + nSup + ")as decimal (9,3)) from Notas as o"
+                                    + " where o.materia =  " + materiaNo.getCodigo() + " and  "
+                                    + " o.matricula = '" + matriculaNo.getCodigomat() + "' ");
+                            BigDecimal nSupNota = (BigDecimal) ((Vector) notasListSup.get(0)).get(0);
+
+                            if (val >= 7) {
                                 obs = "";
+                            } else if (val < 7 && val >=5) {
+                                obs = "SP";
+                                if (nSupNota.doubleValue() >= 7) {
+                                    obs = "";
+                                }else if(nSupNota.doubleValue()==0){ 
+                                    obs="SP";
+                                }else  if(nSupNota.doubleValue()>0){ 
+                                    obs = "RM";
+                                    if (nRemNota.doubleValue() >= 7) {
+                                        obs = "";
+                                    } else if(nRemNota.doubleValue()>0 && nRemNota.doubleValue() < 7){
+                                        obs = "GR";//falta validar si hay examen de gracia
+                                    }else{
+                                        obs = "RM";//falta validar si hay examen de gracia
+                                    }
+                                }
+
+                            } else if (val < 5 && val >0) {
+                                obs = "RM";
+
+                                if (nRemNota.doubleValue() >= 7) {
+                                    obs = "";
+                                }else{
+                                    obs="GR";
+                                }
+
+                            } else if (val == 0) {
+                                sn = true;
+                                
+                            } else {
+                                 obs="";
+
                             }
+
+
+//                            if (val < valorPromedioGeneral && val < 5) {
+//                                obs = "RM";
+//                            } else if (val < valorPromedioGeneral && val < 7) {
+//                                obs = "SP";
+//                            } else {
+//                                obs = "";
+//                            }
                             //sumatoria = val;
                         }
-                    } else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
-                        if (validaConPromedioGeneral == false) {
-                            if (sumatoria < sumaAprueba) {
-                                try {
-                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
-                                    if (val < valor && val > 0.0) {
-                                        obs = "Pierde";
-                                    } else if (val == 0) {
-                                        obs = "SP";
-                                    } else {
-                                        obs = "";
-                                    }
-                                } catch (Exception e) {
-                                    //System.out.println("" + e);
-                                }
-                            } else {
-                                obs = "";
-                            }
-                        }
                     }
-                    if (sn == false && val == 0 && nota.getSistema().getRequerida() == true) {
-                        sn = true;
-                    }
+//                    else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
+//                        if (validaConPromedioGeneral == false) {
+//                            if (sumatoria < sumaAprueba) {
+//                                try {
+//                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
+//                                    if (val < valor && val > 0.0) {
+//                                        obs = "Pierde";
+//                                    } else if (val == 0) {
+//                                        obs = "SP";
+//                                    } else {
+//                                        obs = "";
+//                                    }
+//                                } catch (Exception e) {
+//                                    //System.out.println("" + e);
+//                                }
+//                            } else {
+//                                obs = "";
+//                            }
+//                        }
+//                    }
+
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
@@ -3106,26 +3212,53 @@ public class reportesClase {
                 } else if (j == 1) {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-                    if (matriculaNo.toString().contains("AYERVE MONTÚFAR")) {
-                        System.out.println("..");
-                    }
-                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-                    if (valor.size() > 0) {
-                        aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
-                    }
-//                    String querAprov = "SELECT (" + nfinal.getNota() + ")  FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE ";
-//                    List valor = adm.queryNativo(querAprov);
-//                    System.out.println("APROVECHAMIENTO: "+querAprov);
+
+//                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
 //                    if (valor.size() > 0) {
-//                        aprovecha = (Double) ((((Vector) valor.get(0)).get(0)));
+//                        aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
 //                    }
-                    //System.out.println("SELECT CAST(("+nfinal.getNota()+")as decimal (9,0)) FROM notas WHERE matricula = '"+matriculaNo.getCodigomat()+"' AND materia = 0 ");
-                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
-//                    System.out.println("" + valor);
+// 
+//                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
+////                    System.out.println("" + valor);
+//                    if (valor.size() > 0) {
+//                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+//                    }
+
+
+                    List valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9," + noDecimalesDisc + ")) "
+                            + " FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     if (valor.size() > 0) {
                         disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
                     }
-//                    disciplina = aprovecha;
+
+                    disciplina = equivalencia(disciplina, equivalenciasDisc);
+                    //devolverNombreDisciplina(equivalenciasDisc, disciplina.doubleValue()).getNombre());
+
+
+                    String query2 = "round(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
+                    if (truncarNotas) {
+                        query2 = "truncate(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
+                    }
+                    //CAST(AVG(" + nfinal.getNota() + ")as decimal (9,"+noDecimales+"))
+                    valor = adm.queryNativo("SELECT " + query2 + " FROM notas "
+                            + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
+                            + "AND disciplina = FALSE AND  promedia = TRUE "
+                            + "AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                    if (valor.size() > 0) {
+                        if (truncarNotas) {
+                            aprovecha = truncar(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), noDecimales);
+                        } else {
+                            aprovecha = redondear(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), noDecimales);
+                        }
+
+                    }
+
+//                    String s = "###0.00";
+//                    if (noDecimales > 2) {
+//                        s = "###0.000";
+//                    }
+//                    DecimalFormat decimalFormat = new DecimalFormat(s);
+
 
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
@@ -11340,6 +11473,19 @@ public class reportesClase {
                 }
             }
             String nGeneral = notaGeneral.get(0).getNota();
+
+            List<Notanotas> notaSupletorio = adm.query("Select o from Notanotas as o "
+                    + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'SU' ");
+            if (notaSupletorio.size() <= 0) {
+                try {
+                    Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            String nSup = notaSupletorio.get(0).getNota();
+
             String codigoMapProfesor = "";
             for (Iterator<MateriaProfesor> it = materiaProfesor.iterator(); it.hasNext();) {
                 MateriaProfesor mp = it.next();
@@ -11349,7 +11495,7 @@ public class reportesClase {
                 codigoMapProfesor = codigoMapProfesor.substring(0, codigoMapProfesor.length() - 1);
             }
             List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o"
-                    + " where o." + nGeneral + " < " + remedial + "  and o.materia.codigo in (" + codigoMapProfesor + ") "
+                    + " where (o." + nGeneral + " < " + remedial + " or  o." + nSup + " < " + 7 + " ) and o.materia.codigo in (" + codigoMapProfesor + ") "
                     + " and o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' ");
             for (Object object : matriculasList) {
                 matriculasSupletoriadas += object + ",";
@@ -11503,664 +11649,23 @@ public class reportesClase {
                 + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
-        if (tipo.equals("SUP")) {
-            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
-                    + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                    + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
-                    + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
-                    + " and mat.codigomat in (" + matriculasSupletoriadas + ") "
-                    + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
-        } else if (tipo.equals("REM")) {
-            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
-                    + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                    + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
-                    + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
-                    + " and mat.codigomat in (" + matriculasSupletoriadas + ") "
-                    + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
-        }
-        System.out.println("cuadro final: " + q);
-        List nativo = adm.queryNativo(q);
-        List<Nota> lisNotas = new ArrayList();
-        int cont = 0;
-        int conteoMateriasBloque = 0;
-        String matricula = "";
-        int columna = 0;
-        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
-            Vector vec = (Vector) itna.next();
-            //row = new Row();
-            Matriculas matriculaNo = null;
-            Global materiaNo = null;
-            MateriaProfesor mprofesor = null;
-            MateriaProfesor mprofesor1 = null;
-            Double aprovecha = 0.0;
-            Double disciplina = 0.0;
-            int ksis = 0;
-
-            for (int j = 0; j < vec.size(); j++) {
-                Object dos = vec.get(j);
-                Double val = 0.0;
-                Nota nota = new Nota();
-                try {
-                    if (dos.equals(null)) {
-                        dos = new Double(0.0);
-                    }
-                } catch (Exception e) {
-                    dos = new Double(0.0);
-                }
-                if (j >= 3) {
-                    if (truncarNotas) {
-                        val = truncar((Double) dos, 2);
-                    } else {
-                        val = redondear((Double) dos, 2);
-                    }
-                    nota.setMatricula(matriculaNo);
-                    nota.setMateria(materiaNo);
-                    nota.setContador(cont);
-                    matricula = matriculaNo.toString();
-                    //nota.setNota(val);
-
-                    if (mprofesor.getCuantitativa() == false) {
-
-                        if (mprofesor.getMateria().getCodigo().equals(new Integer(0))) {
-                            nota.setNota(equivalencia(dos, equivalencias2));
-                        } else {
-                            nota.setNota(equivalencia(dos, equivalencias));
-                        }
-                    } else {
-                        nota.setNota(val.toString());
-//                        aprovecha+=val;
-//                        System.out.println(matriculaNo+":::"+aprovecha);
-                        if (val.equals(new Double(0.0))) {
-                            nota.setNota("");
-                        }
-                    }
-                    if (val >= desde && val <= hasta) {
-                    } else {
-                        //nota.setNota("");
-                    }
-                    int tamaSistema = sistemas.size() - 1;
-                    if (ksis == tamaSistema) {
-                        nota.setMprofesor(mprofesor);
-                    } else {
-                        mprofesor1.getEmpleado().setApellidos("");
-                        mprofesor1.getEmpleado().setNombres("");
-                        nota.setMprofesor(mprofesor1);
-                    }
-                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
-                    nota.setAprovechamiento(aprovecha);
-                    nota.setDisciplina(disciplina);
-                    lisNotas.add(nota);
-//                    row = sheet.createRow((short) x); //fila
-                    HSSFCell cellNota = row.createCell((short) (columna + 2));
-
-                    String s = "###0.00";
-                    if (noDecimalesPromediosParciales > 2) {
-                        s = "###0.000";
-                    }
-                    DecimalFormat decimalFormat = new DecimalFormat(s);
-                    nota.setNota(decimalFormat.format(redondear((Double) dos, noDecimalesPromediosParciales)));
-                    if (dos.equals(new Double(0.0))) {
-                        nota.setNota("");
-                    }
-                    try {
-                        cellNota.setCellValue("" + decimalFormat.format(redondear(new Double(nota.getNota() + ""), noDecimalesPromediosParciales)));
-                    } catch (Exception e) {
-                        if (mprofesor.getCuantitativa() == false) {
-                            cellNota.setCellValue("APROBADO");
-                            if (ksis == 0) {
-                                sheet.addMergedRegion(new Region(x, (short) (columna + 2), x, (short) ((columna + 2) + sistemas.size() - 1)));
-                            }
-                        } else {
-                            cellNota.setCellValue("" + nota.getNota());
-                        }
-                    }
-//                    System.out.println("VALORCELDA:"+cellNota.getStringCellValue()+"");
-                    cellNota.setCellStyle(stiloContenido);
-                    sheet.setColumnWidth((short) (columna + 2), (short) 1250);
-                    ksis++;
-                    columna++;
-                } else if (j == 1) {
-
-                    matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-
-                    //AÑADO LA MATRICULA COMO CELDA AL EXCELS
-                    if (!matriculaNo.toString().equals(matricula)) {
-                        row = sheet.createRow((short) (x + 1));
-                    }
-
-                    HSSFCell cellOrden = row.createCell((short) 0);
-                    cellOrden.setCellValue("" + (cont));
-                    cellOrden.setCellStyle(stiloContenido);
-
-                    HSSFCell cell = row.createCell((short) 1);
-                    cell.setCellValue("" + matriculaNo.getEstudiante().getApellido() + " " + matriculaNo.getEstudiante().getNombre());
-                    cell.setCellStyle(stiloContenido);
-
-
-
-
-                    List valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9," + noDecimalesDisc + ")) "
-                            + " FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
-                    if (valor.size() > 0) {
-                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
-                    }
-                    HSSFCell cellDisc = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 2));
-                    cellDisc.setCellValue("" + equivalencia(disciplina, equivalencias2));
-                    cellDisc.setCellStyle(stiloContenido);
-                    int m = 0;
-                    if (incluyeEquivalencias) {
-                        HSSFCell cellDiscE = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3));
-                        cellDiscE.setCellValue("" + devolverNombreDisciplina(equivalencias2, disciplina.doubleValue()).getNombre());
-                        cellDiscE.setCellStyle(stiloContenido);
-                        sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 3), (short) 5000);
-                        m = 1;
-                    }
-
-                    String query2 = "round(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
-                    if (truncarNotas) {
-                        query2 = "truncate(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
-                    }
-                    //CAST(AVG(" + nfinal.getNota() + ")as decimal (9,"+noDecimales+"))
-                    valor = adm.queryNativo("SELECT " + query2 + " FROM notas "
-                            + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
-                            + "AND disciplina = FALSE AND  promedia = TRUE "
-                            + "AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-                    if (valor.size() > 0) {
-                        if (truncarNotas) {
-                            aprovecha = truncar(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), noDecimales);
-                        } else {
-                            aprovecha = redondear(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), noDecimales);
-                        }
-
-                    }
-
-                    String s = "###0.00";
-                    if (noDecimales > 2) {
-                        s = "###0.000";
-                    }
-                    DecimalFormat decimalFormat = new DecimalFormat(s);
-                    //nota.setNota(decimalFormat.format(redondear((Double) dos, noDecimalesPromediosParciales)));
-
-                    HSSFCell cellApr = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 3 + m));
-                    cellApr.setCellValue("" + decimalFormat.format(aprovecha));
-                    cellApr.setCellStyle(stiloContenido);
-
-                    if (incluyeEquivalencias) {
-                        HSSFCell cellDiscE = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4 + m));
-                        cellDiscE.setCellValue("" + devolverNombre(equivalencias, aprovecha.doubleValue()).getAbreviatura());
-                        cellDiscE.setCellStyle(stiloContenido);
-                        m++;
-                    }
-
-                    HSSFCell cellObss = row.createCell((short) (materiaProfesor.size() * sistemas.size() + 4 + m));
-                    if (perdidos.contains(matriculaNo.getCodigomat())) {
-                        if (tipo.equals("SUP")) {
-                            cellObss.setCellValue("SP");
-                        } else if (tipo.equals("RM")) {
-                            cellObss.setCellValue("RM");
-                        } else {
-                            cellObss.setCellValue("PIERDE EL AÑO");
-                        }
-
-                    } else {
-                        cellObss.setCellValue("");
-                    }
-                    sheet.setColumnWidth((short) (materiaProfesor.size() * sistemas.size() + 4 + m), (short) 5000);
-                    cellObss.setCellStyle(stiloContenido);
-
-
-                } else if (j == 2) {
-                    materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
-                } else if (j == 0) {
-                    mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
-                    mprofesor1 = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
-                }
-                if (matriculaNo != null && j > 1) {
-                    if (!matriculaNo.toString().equals(matricula)) {
-                        cont++;
-                        x++;
-                        columna = 0;
-//                        if(x!=9)
-
-                    }
-                }
-
-
-            }
-        }
-
-        sheet.setColumnWidth((short) (1), (short) 10000);
-
-        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        String firma1 = regresaVariableParametros("FIR1", parametrosGlobales);
-        String cargo1 = regresaVariableParametros("CAR1", parametrosGlobales);
-//                String firma2 = regresaVariableParametros("FIR2", parametrosGlobales);
-//                String cargo2 = regresaVariableParametros("CAR2", parametrosGlobales);
-        String firma3 = regresaVariableParametros("FIR3", parametrosGlobales);
-        String cargo3 = regresaVariableParametros("CAR3", parametrosGlobales);
-
-
-        try {
-            firma1 = firma1.replace("[RECTOR]", periodo.getInstitucion().getRector()).replace("[INSPECTOR]", curso.getInspector()).replace("[TUTOR]", curso.getTutor()).replace("[SECRETARIA]", periodo.getInstitucion().getSecretaria());
-
-            firma3 = firma3.replace("[RECTOR]", periodo.getInstitucion().getRector()).replace("[INSPECTOR]", curso.getInspector()).replace("[TUTOR]", curso.getTutor()).replace("[SECRETARIA]", periodo.getInstitucion().getSecretaria());
-
-
-        } catch (Exception e) {
-            System.out.println("FALTA PARAMETROS DE FIRMAS: DE LIBRETA" + e);
-        }
-
-        row = sheet.createRow((short) (x + 7));
-        row.createCell((short) 1).setCellValue("" + firma1);//;
-        row.createCell((short) 14).setCellValue("" + firma3);//;
-
-        row = sheet.createRow((short) (x + 8));
-        row.createCell((short) 1).setCellValue("" + cargo1);//;
-        row.createCell((short) 14).setCellValue("" + cargo3);//;
-
-
-
-
-
-        try {
-//            response.setContentType("application/vnd.ms-excel");
-//            ServletOutputStream outputStream = response.getOutputStream();
-//            wb.write(outputStream);
-//            outputStream.flush();
-//            outputStream.close();
-            try {
-                File outFile = File.createTempFile("cuadro_basica", ".xls");
-                FileOutputStream elFichero = new FileOutputStream(outFile);
-                wb.write(elFichero);
-                elFichero.close();
-
-                Filedownload.save(outFile, "application/vnd.ms-excel");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } catch (Exception ex) {
-        }
-
-    }
-
-    public void devolverCuadroEstado(Cursos curso, Sistemacalificacion sistema, String tipo, boolean incluyeEquivalencias) {
-        contador1 = 0;
-        contador2 = 0;
-        contador3 = 0;
-        contador4 = 0;
-        contador5 = 0;
-        contador6 = 0;
-        contador7 = 0;
-        contador8 = 0;
-        contador9 = 0;
-        contador10 = 0;
-        k = 0;
-
-        Administrador adm = new Administrador();
-        Session ses = Sessions.getCurrent();
-        Periodo periodo = (Periodo) ses.getAttribute("periodo");
-
-//        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
-//                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.grupo = 'AP'");
-
-        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
-                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        List<Equivalencias> equivalencias2 = adm.query("Select o from Equivalencias as o "
-                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-
-        List<Sistemacalificacion> sistemas = adm.query("Select o from Sistemacalificacion as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + "and o.orden <= '" + sistema.getOrden() + "' "
-                //+ "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
-                + "and o.seimprime = true and o.espromedio =true order by o.orden ");
-
-        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
-                + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
-                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + "and o.sistema.espromedio = true "
-                + "order by o.sistema.orden ");
-
-        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
-                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        Integer noDecimales = 3;
-        try {
-            noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
-        } catch (Exception a) {
-            noDecimales = 3;
-
-        }
-
-        Integer remedial = 5;
-        try {
-            remedial = regresaVariableParametrosDecimal("REMEDIAL", parametrosGlobales).intValue();
-        } catch (Exception a) {
-            remedial = 5;
-
-        }
-
-        Integer noDecimalesDisc = 2;
-        try {
-            noDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales).intValue();
-        } catch (Exception a) {
-            noDecimalesDisc = 2;
-
-        }
-
-        Integer noDecimalesPromediosParciales = 2;
-        try {
-            noDecimalesPromediosParciales = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
-        } catch (Exception a) {
-            noDecimalesPromediosParciales = 2;
-
-        }
-        List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
-                + "where  o.sistema.codigosis = '" + sistema.getCodigosis() + "'  "
-                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true");
-        Double desde = 0d;
-        Double hasta = 0d;
-
-        if (notaFinal.size() <= 0) {
-            try {
-                Messagebox.show("No ha parametrizado el Promedio Final en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
-                // return null;
-            } catch (InterruptedException ex) {
-                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        Notanotas nfinal = notaFinal.get(0);
-
-
-
-        int eqTamano = equivalencias.size();
-
-        sistema = (Sistemacalificacion) adm.buscarClave(sistema.getCodigosis(), Sistemacalificacion.class);
-
-        HSSFWorkbook wb = new HSSFWorkbook();
-        HSSFSheet sheet = wb.createSheet("cuadro");
-        HSSFPrintSetup ps = sheet.getPrintSetup();
-        sheet.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
-        sheet.getPrintSetup().setLandscape(true);
-        sheet.setAutobreaks(true);
-        ps.setFitHeight((short) 1);
-        ps.setFitWidth((short) 1);
-        HSSFCellStyle stiloCabeceras = wb.createCellStyle();
-        HSSFCellStyle stiloContenido = wb.createCellStyle();
-        HSSFCellStyle stiloTitulo = wb.createCellStyle();
-        HSSFCellStyle stiloSubTitulo = wb.createCellStyle();
-
-        sheet.setFitToPage(true);
-
-        //style.setFillForegroundColor(HSSFColor.LIME.index);
-        //style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-        stiloCabeceras.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
-        stiloCabeceras.setVerticalAlignment(HSSFCellStyle.ALIGN_CENTER_SELECTION);
-        stiloCabeceras.setBorderRight((short) 1);
-        stiloCabeceras.setBorderBottom((short) 1);
-        stiloCabeceras.setBorderLeft((short) 1);
-        stiloCabeceras.setBorderTop((short) 1);
-
-
-        stiloContenido.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
-        stiloContenido.setVerticalAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
-        stiloContenido.setBorderRight((short) 1);
-        stiloContenido.setBorderBottom((short) 1);
-        stiloContenido.setBorderLeft((short) 1);
-        stiloContenido.setBorderTop((short) 1);
-
-        HSSFFont fuenteTitulo = wb.createFont();
-        fuenteTitulo.setFontHeightInPoints((short) 15);
-        fuenteTitulo.setFontName("Arial");
-        fuenteTitulo.setColor(HSSFFont.COLOR_NORMAL);
-        fuenteTitulo.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        fuenteTitulo.setItalic(false);
-
-        HSSFFont fuenteSubTitulo = wb.createFont();
-        fuenteSubTitulo.setFontHeightInPoints((short) 11);
-        fuenteSubTitulo.setFontName("Arial");
-        fuenteSubTitulo.setColor(HSSFFont.COLOR_NORMAL);
-        fuenteSubTitulo.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        fuenteSubTitulo.setItalic(false);
-
-        HSSFFont defaultFont = wb.createFont();
-        defaultFont.setFontHeightInPoints((short) 7);
-        defaultFont.setFontName("Arial");
-        defaultFont.setColor(HSSFFont.COLOR_NORMAL);
-        defaultFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        defaultFont.setItalic(false);
-
-        HSSFFont defaultFont2 = wb.createFont();
-        defaultFont2.setFontHeightInPoints((short) 8);
-        defaultFont2.setFontName("Arial");
-        defaultFont2.setColor(HSSFFont.COLOR_NORMAL);
-        defaultFont2.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
-        defaultFont2.setItalic(false);
-
-        stiloCabeceras.setFont(defaultFont);
-        stiloContenido.setFont(defaultFont2);
-        stiloTitulo.setFont(fuenteTitulo);
-
-        HSSFRow row = sheet.createRow((short) 0);//fila
-
-        HSSFCell cellInst = row.createCell((short) 1);
-        cellInst.setCellValue("" + periodo.getInstitucion().getDenominacion() + " " + periodo.getInstitucion().getNombre());
-        cellInst.setCellStyle(stiloTitulo);
-
-        HSSFCell cellCuadroCal = row.createCell((short) 18);
-        cellCuadroCal.setCellValue("CUADRO FINAL DE CALIFICACIONES");
-        cellCuadroCal.setCellStyle(stiloTitulo);
-
-
-        row = sheet.createRow((short) 1);//fila
-        row.setHeight((short) 100);
-        row.setRowStyle(stiloTitulo);
-        row = sheet.createRow((short) 2);//fila
-        row.setHeight((short) 100);
-        row.setRowStyle(stiloTitulo);
-        row = sheet.createRow((short) 3);//fila
-        row.setHeight((short) 100);
-        row.setRowStyle(stiloTitulo);
-
-        row = sheet.createRow((short) 6);//fila
-        row.setHeight((short) 100);
-        row.setRowStyle(stiloTitulo);
-
-        row = sheet.createRow((short) 7);//fila
-        row.setHeight((short) 100);
-        row.setRowStyle(stiloTitulo);
-
-
-        row = sheet.createRow((short) 4);//fila
-
-        stiloSubTitulo.setFont(fuenteSubTitulo);
-        HSSFCell cellCurso = row.createCell((short) 1);
-        cellCurso.setCellValue("" + curso);
-        cellCurso.setCellStyle(stiloSubTitulo);
-
-        HSSFCell cellAnio = row.createCell((short) 18);
-        cellAnio.setCellValue("AÑO LECTIVO: " + periodo.getDescripcion());
-        cellAnio.setCellStyle(stiloSubTitulo);
-
-
-
-        row = sheet.createRow((short) 5);//fila
-
-        HSSFCell cellJornada = row.createCell((short) 18);
-        cellJornada.setCellValue("JORNADA: " + periodo.getSeccion().getDescripcion());
-        cellJornada.setCellStyle(stiloSubTitulo);
-
-
-
-        List<MateriaProfesor> materiaProfesor = adm.query("Select o from MateriaProfesor as o "
-                + " where o.curso.codigocur = '" + curso.getCodigocur() + "' "
-                + " and o.seimprime = true and o.ministerio = true "
-                + " order by o.orden");
-
-        String matriculasSupletoriadas = "";
-
-        List<Matriculas> listaMatriculasPerdidos = cuadroverificarCompleto(curso, notaFinal.get(0).getSistema(), new Matriculas(-1));
-        String codigosPerdidos = "";
-        ArrayList perdidos = new ArrayList();
-        for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
-            Matriculas matriculas = it.next();
-            codigosPerdidos = matriculas.getCodigomat() + "," + codigosPerdidos;
-            perdidos.add(matriculas.getCodigomat());
-
-        }
-
-//        List<Matriculas> matriculados = adm.query("Select o from Matriculas as o "
-//                + " where o.curso.codigocur = " + curso.getCodigocur() + "");
-        String query = "";
-        for (Notanotas notass : notas) {
-            query += notass.getNota() + ",";
-
-        }
-        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
-
-        row = sheet.createRow((short) 7);//fila
-        sheet.autoSizeColumn((short) 0);
-        //row.createCell((short) 0).setCellValue("Orden");//columna
-
-        HSSFCell cellOrd = row.createCell((short) 0);
-        cellOrd.setCellValue("Ord.");
-        cellOrd.setCellStyle(stiloCabeceras);
-        sheet.autoSizeColumn((short) 0);
-
-        // row = sheet.createRow((short) 7);//fila
-        //      sheet.autoSizeColumn((short) 1);
-
-        sheet.addMergedRegion(new Region(7, (short) 0, 8, (short) 0));
-        sheet.addMergedRegion(new Region(7, (short) 1, 8, (short) 1));
-
-        HSSFCell cellApe = row.createCell((short) 1, 1);
-        cellApe.setCellValue("APELLIDOS Y NOMBRES");
-        cellApe.setCellStyle(stiloCabeceras);
-        sheet.autoSizeColumn((short) 1);
-
-        int materiasCabecera = 2;
-
-        for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesor.iterator(); ImapTitulos.hasNext();) {
-            MateriaProfesor acaMateriaProfesor = ImapTitulos.next();
-            // row = sheet.createRow((short) 7);
-            HSSFCell cell = row.createCell((short) materiasCabecera);
-            cell.setCellValue("" + acaMateriaProfesor.getMateria().getDescripcion());
-            cell.setCellStyle(stiloCabeceras);
-            //anado celdas segun el tamaño de sub sistemas
-            for (int sis = 0; sis < sistemas.size() - 1; sis++) {
-                HSSFCell cellVacio = row.createCell((short) (materiasCabecera + sis + 1));
-                cellVacio.setCellValue("");
-                cellVacio.setCellStyle(stiloCabeceras);
-            }
-            sheet.addMergedRegion(new Region(7, (short) materiasCabecera, 7, (short) (materiasCabecera + sistemas.size() - 1)));
-            materiasCabecera++;
-            //le añado 2 celdas mas ya que voy a combinar 
-            //materiasCabecera++;
-            materiasCabecera = materiasCabecera + sistemas.size() - 1;
-            //sistemas.size()
-            sheet.autoSizeColumn((short) materiasCabecera);
-        }
-        //row = sheet.createRow((short) 7);
-        sheet.autoSizeColumn((short) materiasCabecera);
-        HSSFCell cellComp = row.createCell((short) materiasCabecera);
-        cellComp.setCellValue("COMPORTAMIENTO");
-        cellComp.setCellStyle(stiloCabeceras);
-        materiasCabecera++;
-
-        if (incluyeEquivalencias) {
-            sheet.autoSizeColumn((short) materiasCabecera);
-            HSSFCell cellCompEq = row.createCell((short) materiasCabecera);
-            cellCompEq.setCellValue("EQ.");
-            cellCompEq.setCellStyle(stiloCabeceras);
-            materiasCabecera++;
-        }
-//
-//        for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesorOpcionales.iterator(); ImapTitulos.hasNext();) {
-//            MateriaProfesor acaMateriaProfesor = ImapTitulos.next();
-//            row = sheet.createRow((short) 7);
-//            sheet.autoSizeColumn((short) materiasCabecera);
-//            row.createCell((short) materiasCabecera).setCellValue("" + acaMateriaProfesor.getMateria().getDescripcion());
-//
-//            materiasCabecera++;
+//        if (tipo.equals("SUP")) {
+//            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
+//                    + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+//                    + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
+//                    + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
+//                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
+//                    + " and mat.codigomat in (" + matriculasSupletoriadas + ") "
+//                    + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
+//        } else if (tipo.equals("REM")) {
+//            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
+//                    + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+//                    + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
+//                    + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
+//                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
+//                    + " and mat.codigomat in (" + matriculasSupletoriadas + ") "
+//                    + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 //        }
-        // row = sheet.createRow((short) 7);
-        sheet.autoSizeColumn((short) materiasCabecera);
-        HSSFCell celdaDisciplina = row.createCell((short) materiasCabecera);
-        celdaDisciplina.setCellValue("PROM.");
-        celdaDisciplina.setCellStyle(stiloCabeceras);
-        // row = sheet.createRow((short) 7);
-        materiasCabecera++;
-
-        if (incluyeEquivalencias) {
-            sheet.autoSizeColumn((short) materiasCabecera);
-            HSSFCell cellCompEq = row.createCell((short) materiasCabecera);
-            cellCompEq.setCellValue("EQ.");
-            cellCompEq.setCellStyle(stiloCabeceras);
-            materiasCabecera++;
-        }
-//        sheet.autoSizeColumn((short) materiasCabecera);
-        HSSFCell cellObs = row.createCell((short) materiasCabecera);
-        cellObs.setCellValue("OBSERVACION");
-        cellObs.setCellStyle(stiloCabeceras);
-
-        row = sheet.createRow((short) 8);//fila
-        HSSFCell cellOrd2 = row.createCell((short) 0);
-        cellOrd2.setCellValue("");//
-        cellOrd2.setCellStyle(stiloCabeceras);
-        HSSFCell cellOrd3 = row.createCell((short) 1);
-        cellOrd3.setCellValue("");//
-        cellOrd3.setCellStyle(stiloCabeceras);
-
-        materiasCabecera = 2;
-        //PONGO LOS SISTEMAS DE CALIFICAICONES PG, PF, SUM, GRACIA, ETC.
-        for (Iterator<MateriaProfesor> ImapTitulos = materiaProfesor.iterator(); ImapTitulos.hasNext();) {
-            MateriaProfesor acaMateriaProfesor = ImapTitulos.next();
-            for (Iterator<Sistemacalificacion> it = sistemas.iterator(); it.hasNext();) {
-                Sistemacalificacion sistemacalificacion = it.next();
-                // row = sheet.createRow((short) 8);
-                HSSFCell cell = row.createCell((short) materiasCabecera);
-                cell.setCellValue("" + sistemacalificacion.getAbreviatura());
-                cell.setCellStyle(stiloCabeceras);
-                sheet.autoSizeColumn((short) materiasCabecera);
-                materiasCabecera++;
-            }
-        }
-
-        //HSSFCellStyle.ALIGN_CENTER)
-        int x = 8;
-        int y = 1;
-        Double sumaPromedio = 0.0;
-//        List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
-        //              + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
-        System.out.println("TRUNCAR NOTAS: " + truncarNotas);
-        String q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
-                + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
-                + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
-                + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
-
-        if (tipo.equals("SUP")) {
-            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
-                    + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                    + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
-                    + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
-                    + " and mat.codigomat in (" + matriculasSupletoriadas + ") "
-                    + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
-        } else if (tipo.equals("REM")) {
-            q = "Select codigomap, matricula,notas.materia, " + query + "  from notas, materia_profesor , matriculas mat, estudiantes est "
-                    + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
-                    + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
-                    + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                    + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
-                    + " and mat.codigomat in (" + matriculasSupletoriadas + ") "
-                    + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
-        }
         System.out.println("cuadro final: " + q);
         List nativo = adm.queryNativo(q);
         List<Nota> lisNotas = new ArrayList();
@@ -12339,7 +11844,7 @@ public class reportesClase {
                     if (perdidos.contains(matriculaNo.getCodigomat())) {
                         if (tipo.equals("SUP")) {
                             cellObss.setCellValue("SP");
-                        } else if (tipo.equals("RM")) {
+                        } else if (tipo.equals("REM")) {
                             cellObss.setCellValue("RM");
                         } else {
                             cellObss.setCellValue("PIERDE EL AÑO");
