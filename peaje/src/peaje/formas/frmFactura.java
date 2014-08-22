@@ -95,6 +95,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         panelencontrados.setVisible(false);
         panelencontrados1.setVisible(false);
         botonesVer.setVisible(false);
+        correcto.setVisible(false);
+                incorrecto.setVisible(false);
     }
 
     public frmFactura(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
@@ -134,6 +136,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
             fefin.setMonth(f);
             hastaF.setDate(fefin);
             botonesVer.setVisible(false);
+            correcto.setVisible(false);
+                incorrecto.setVisible(false);
 
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
@@ -297,6 +301,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente = new javax.swing.JFormattedTextField();
         btnNuevoCliente = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        incorrecto = new javax.swing.JLabel();
+        correcto = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         frmEliminar = new javax.swing.JInternalFrame();
         jLabel28 = new javax.swing.JLabel();
@@ -1037,7 +1043,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel14.setText("CI/RUC: ");
         jPanel2.add(jLabel14);
-        jLabel14.setBounds(0, 10, 80, 20);
+        jLabel14.setBounds(30, 10, 50, 20);
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Dirección: ");
@@ -1096,6 +1102,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         identificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                identificacionKeyReleased(evt);
+            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 identificacionKeyPressed(evt);
             }
@@ -1125,12 +1134,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cliente.setBorder(null);
         cliente.setText("1");
         cliente.setEnabled(false);
-        cliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cliente.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jPanel2.add(cliente);
-        cliente.setBounds(190, 10, 20, 20);
+        cliente.setBounds(10, 10, 30, 20);
 
         btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
-        btnNuevoCliente.setText("CREAR O BUSCAR CLIENTE");
+        btnNuevoCliente.setText("Crear o Buscar Cliente");
         btnNuevoCliente.setMargin(new java.awt.Insets(2, 2, 2, 2));
         btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1138,7 +1147,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(btnNuevoCliente);
-        btnNuevoCliente.setBounds(40, 100, 230, 30);
+        btnNuevoCliente.setBounds(10, 100, 150, 30);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.gif"))); // NOI18N
         jButton3.setText("Limpiar y Nuevo");
@@ -1149,7 +1158,19 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(jButton3);
-        jButton3.setBounds(210, 10, 130, 23);
+        jButton3.setBounds(160, 100, 120, 30);
+
+        incorrecto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        incorrecto.setForeground(new java.awt.Color(204, 0, 0));
+        incorrecto.setText("INCORRECTO...!");
+        jPanel2.add(incorrecto);
+        incorrecto.setBounds(210, 10, 100, 20);
+
+        correcto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        correcto.setForeground(new java.awt.Color(51, 153, 0));
+        correcto.setText("OK...!");
+        jPanel2.add(correcto);
+        correcto.setBounds(210, 10, 130, 20);
 
         jPanel5.add(jPanel2);
         jPanel2.setBounds(380, 5, 350, 160);
@@ -2278,13 +2299,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     }
 
                     if (facActual.getTotal().doubleValue() > 0) {
+                        System.out.println("LLEGO A IMPRIMIR");
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
-                        Thread.sleep(5000);
+                        System.out.println("........");
+                        //Thread.sleep(5000);
                         //CORDILLERA
                         if (empresaObj.getImprime2facturas()) {
                             System.out.println("mando a imprimir otra vez");
                             imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         }
+                    }else{
+                        System.out.println("no se imprime valor menor o igual a cero");
                     }
                     if (empresaObj.getSeabrefac()) {
                         if (empresaObj.getRetardoSalida() != null) {
@@ -5790,6 +5815,25 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         // TODO add your handling code here:
     }//GEN-LAST:event_noTicketActionPerformed
 
+    private void identificacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_identificacionKeyReleased
+        // TODO add your handling code here:
+        String strCedula = identificacion.getText();
+        if(strCedula.length() >9){
+             ValidarCampos val = new ValidarCampos();
+            int valor= val.validaRucCedula(strCedula);
+            if(valor<0){
+                incorrecto.setVisible(true);
+                correcto.setVisible(false);
+            }else{
+                correcto.setVisible(true);
+                incorrecto.setVisible(false);
+            }
+        }else{
+                correcto.setVisible(false);
+                incorrecto.setVisible(false);
+        }
+    }//GEN-LAST:event_identificacionKeyReleased
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner Nocupones;
     private javax.swing.JLabel adescontar;
@@ -5827,6 +5871,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField codigo;
     private javax.swing.JPasswordField codigoAdministrador;
     private javax.swing.JFormattedTextField codigoBuscar;
+    private javax.swing.JLabel correcto;
     public javax.swing.JFormattedTextField descuento;
     private javax.swing.JLabel descuentoClienteTexto1;
     private javax.swing.JLabel descuentoClienteTexto2;
@@ -5860,6 +5905,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JFormattedTextField identificacion2;
     public javax.swing.JFormattedTextField identificacion3;
     public javax.swing.JFormattedTextField identificacion4;
+    private javax.swing.JLabel incorrecto;
     public com.toedter.calendar.JDateChooser ingreso;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

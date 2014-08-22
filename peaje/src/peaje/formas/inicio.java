@@ -60,10 +60,10 @@ public class inicio {
 
     public static void main(String args[]) {
         
-         if( new ControlDuplicidad().comprobar()==false  )
-        {
-            System.exit(0);//SALGO PORQUE YA EXISTE UAN INSTANCIA DEL PROGRAMA ABIERTA
-        }
+//         if( new ControlDuplicidad().comprobar()==false  )
+//        {
+//            System.exit(0);//SALGO PORQUE YA EXISTE UAN INSTANCIA DEL PROGRAMA ABIERTA
+//        }
         if (comprobar()) {
             new frmPrincipal().show();
         } else {

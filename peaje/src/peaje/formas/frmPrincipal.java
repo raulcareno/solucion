@@ -167,7 +167,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        this.addKeyListener(this);
 //        this.setVisible(true);
 //        this.setVisible(true);
-
+        
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 //JOptionPane.showMessageDialog(puertoBase, "mensaje");
@@ -297,7 +297,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
         }
-
+correcto.setVisible(false);
+                incorrecto.setVisible(false);
         clave.requestFocusInWindow();
         Thread cargar = new Thread() {
             public void run() {
@@ -398,6 +399,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         tarjetas = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         jLabel55 = new javax.swing.JLabel();
+        incorrecto = new javax.swing.JLabel();
+        correcto = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -1015,6 +1018,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                codigoKeyReleased(evt);
+            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 codigoKeyPressed(evt);
             }
@@ -1157,6 +1163,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel55.setText("Valor Inc IVA:");
         jPanel4.add(jLabel55);
         jLabel55.setBounds(250, 70, 70, 14);
+
+        incorrecto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        incorrecto.setForeground(new java.awt.Color(204, 0, 0));
+        incorrecto.setText("INCORRECTO...!");
+        jPanel4.add(incorrecto);
+        incorrecto.setBounds(250, 10, 100, 20);
+
+        correcto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        correcto.setForeground(new java.awt.Color(51, 153, 0));
+        correcto.setText("OK...!");
+        jPanel4.add(correcto);
+        correcto.setBounds(250, 10, 130, 20);
 
         frmClientes1.getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 50, 750, 320);
@@ -7567,6 +7585,25 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             buscarClientes.dispose();
         }
     }//GEN-LAST:event_codigoBuscar1KeyPressed
+
+    private void codigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyReleased
+        // TODO add your handling code here:
+         String strCedula = codigo.getText();
+        if(strCedula.length() >9){
+             ValidarCampos val = new ValidarCampos();
+            int valor= val.validaRucCedula(strCedula);
+            if(valor<0){
+                incorrecto.setVisible(true);
+                correcto.setVisible(false);
+            }else{
+                correcto.setVisible(true);
+                incorrecto.setVisible(false);
+            }
+        }else{
+                correcto.setVisible(false);
+                incorrecto.setVisible(false);
+        }
+    }//GEN-LAST:event_codigoKeyReleased
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -7726,6 +7763,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private org.jdesktop.swingx.JXTaskPane contenedor1;
     private org.jdesktop.swingx.JXTaskPane contenedor2;
     private org.jdesktop.swingx.JXTaskPane contenedor3;
+    private javax.swing.JLabel correcto;
     private javax.swing.JCheckBox crear;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JFormattedTextField descuento;
@@ -7762,6 +7800,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JSpinner horaHasta1;
     private javax.swing.JSpinner horaHasta2;
     private javax.swing.JLabel imAviso;
+    private javax.swing.JLabel incorrecto;
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;
     private javax.swing.JSpinner ingresos2;
@@ -8319,9 +8358,12 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             ValidarCampos val = new ValidarCampos();
             int valor= val.validaRucCedula(strCedula);
 
-            if(valor<0){
-                     JOptionPane.showMessageDialog(this,"El Número de CED. están incorrectos, corrija para poder continuar ...!");                                      
-                     //codigo.requestFocusInWindow();
+             if(valor<0){
+                incorrecto.setVisible(true);
+                correcto.setVisible(false);
+            }else{
+                correcto.setVisible(true);
+                incorrecto.setVisible(false);
             }
     }
 }
