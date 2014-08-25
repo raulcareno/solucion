@@ -206,27 +206,38 @@ public class ReporteNotasDataSource implements JRDataSource {
                 valor = nodo.getSumatoria();
             } else if ("observacion".equals(fieldName)) {
                 try {
-                    if (nodo.getMatricula().getEstado().equals("Retirado")) {
-                        valor = ("Retirado:" + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)) + " " + nodo.getMatricula().getObservacion();
-                    } else if (nodo.getMatricula().getEstado().equals("Emitir Pase")) {
-                        valor = "Pase Emitido: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
-                    } else if (nodo.getMatricula().getEstado().equals("Recibir Pase")) {
-                        valor = "Pase Recibido: " + nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                    if(nodo.getObservacion()==null){
+                        nodo.setObservacion(""); 
+                    }
+                    if (nodo.getObservacion().length() <= 0) {
+                        if (nodo.getMatricula().getEstado().equals("Retirado")) {
+                            valor = ("Retirado:" + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11)) + " " + nodo.getMatricula().getObservacion();
+                        } else if (nodo.getMatricula().getEstado().equals("Emitir Pase")) {
+                            valor = "Pase Emitido: " + nodo.getMatricula().getFecharet().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                        } else if (nodo.getMatricula().getEstado().equals("Recibir Pase")) {
+                            valor = "Pase Recibido: " + nodo.getMatricula().getFechamat().toLocaleString().substring(0, 11) + " " + nodo.getMatricula().getObservacion();
+                        } else {
+                            valor = "";
+                        }
                     } else {
-                        valor = "";
+                        valor = nodo.getObservacion();
                     }
                 } catch (Exception e) {
-                    valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado:"+nodo.getMatricula().getFecharet() : "");
+                    valor = (nodo.getMatricula().getEstado().equals("Retirado") ? "Retirado:" + nodo.getMatricula().getFecharet() : "");
                 }
+                if(nodo.getObservacion().length()<=0){
                 if (nodo.getMatricula().getEstado().equals("Matriculado")) {
-                    try{
-                    if(nodo.getObservacion().contains("SIN")){
-                        valor = nodo.getObservacion()+""+valor;
-                    }else{
-                        valor = nodo.getObservacion()+"";
+                    try {
+                        if (nodo.getObservacion().contains("SIN")) {
+                            valor = nodo.getObservacion() + "" + valor;
+                        } else {
+                            valor = nodo.getObservacion() + "";
+                        }
+                    } catch (Exception e) {
+                        valor = "";
                     }
-                    }catch(Exception e){valor = "";}
-                } 
+                }
+                }
 
             } else if ("observacion1".equals(fieldName)) {
                 try {
