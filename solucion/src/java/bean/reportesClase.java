@@ -3139,37 +3139,37 @@ public class reportesClase {
 
                             if (val >= 7) {
                                 obs = "";
-                            } else if (val < 7 && val >=5) {
+                            } else if (val < 7 && val >= 5) {
                                 obs = "SP";
                                 if (nSupNota.doubleValue() >= 7) {
                                     obs = "";
-                                }else if(nSupNota.doubleValue()==0){ 
-                                    obs="SP";
-                                }else  if(nSupNota.doubleValue()>0){ 
+                                } else if (nSupNota.doubleValue() == 0) {
+                                    obs = "SP";
+                                } else if (nSupNota.doubleValue() > 0) {
                                     obs = "RM";
                                     if (nRemNota.doubleValue() >= 7) {
                                         obs = "";
-                                    } else if(nRemNota.doubleValue()>0 && nRemNota.doubleValue() < 7){
+                                    } else if (nRemNota.doubleValue() > 0 && nRemNota.doubleValue() < 7) {
                                         obs = "GR";//falta validar si hay examen de gracia
-                                    }else{
+                                    } else {
                                         obs = "RM";//falta validar si hay examen de gracia
                                     }
                                 }
 
-                            } else if (val < 5 && val >0) {
+                            } else if (val < 5 && val > 0) {
                                 obs = "RM";
 
                                 if (nRemNota.doubleValue() >= 7) {
                                     obs = "";
-                                }else{
-                                    obs="GR";
+                                } else {
+                                    obs = "GR";
                                 }
 
                             } else if (val == 0) {
                                 sn = true;
-                                
+
                             } else {
-                                 obs="";
+                                obs = "";
 
                             }
 
@@ -3184,6 +3184,445 @@ public class reportesClase {
                             //sumatoria = val;
                         }
                     }
+//                    else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
+//                        if (validaConPromedioGeneral == false) {
+//                            if (sumatoria < sumaAprueba) {
+//                                try {
+//                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
+//                                    if (val < valor && val > 0.0) {
+//                                        obs = "Pierde";
+//                                    } else if (val == 0) {
+//                                        obs = "SP";
+//                                    } else {
+//                                        obs = "";
+//                                    }
+//                                } catch (Exception e) {
+//                                    //System.out.println("" + e);
+//                                }
+//                            } else {
+//                                obs = "";
+//                            }
+//                        }
+//                    }
+
+                    nota.setAprovechamiento(aprovecha);
+                    nota.setDisciplina(disciplina);
+                    lisNotas.add(nota);
+                    ksis++;
+                } else if (j == 1) {
+
+                    matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
+
+//                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+//                    if (valor.size() > 0) {
+//                        aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+//                    }
+// 
+//                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
+////                    System.out.println("" + valor);
+//                    if (valor.size() > 0) {
+//                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+//                    }
+
+
+                    List valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9," + noDecimalesDisc + ")) "
+                            + " FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
+                    if (valor.size() > 0) {
+                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                    }
+
+                    disciplina = equivalencia(disciplina, equivalenciasDisc);
+                    //devolverNombreDisciplina(equivalenciasDisc, disciplina.doubleValue()).getNombre());
+
+
+                    String query2 = "round(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
+                    if (truncarNotas) {
+                        query2 = "truncate(cast(avg(" + nfinal.getNota() + ") as decimal(9,4))," + noDecimales + ")";
+                    }
+                    //CAST(AVG(" + nfinal.getNota() + ")as decimal (9,"+noDecimales+"))
+                    valor = adm.queryNativo("SELECT " + query2 + " FROM notas "
+                            + " WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE "
+                            + "AND disciplina = FALSE AND  promedia = TRUE "
+                            + "AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
+                    if (valor.size() > 0) {
+                        if (truncarNotas) {
+                            aprovecha = truncar(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), noDecimales);
+                        } else {
+                            aprovecha = redondear(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), noDecimales);
+                        }
+
+                    }
+
+//                    String s = "###0.00";
+//                    if (noDecimales > 2) {
+//                        s = "###0.000";
+//                    }
+//                    DecimalFormat decimalFormat = new DecimalFormat(s);
+
+
+                } else if (j == 2) {
+                    materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
+                } else if (j == 0) {
+                    mprofesor = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
+                    mprofesor1 = (MateriaProfesor) adm.buscarClave((Integer) dos, MateriaProfesor.class);
+                }
+                if (matriculaNo != null && j > 1) {
+                    if (!matriculaNo.toString().equals(matricula)) {
+                        cont++;
+                    }
+                }
+
+
+            }
+        }
+        nativo = null;
+        ArrayList<Matriculas> listaMatriculas = new ArrayList<Matriculas>();
+        List<Nota> lisNotasArreglado = new ArrayList();
+        if (soloSupletoriados) {
+            for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+                Nota nota = it.next();
+                if (nota.getSistema().getNombre().equals("OBS")) {
+                    if (nota.getNota().toString().contains("Pier") || nota.getNota().toString().contains("RM") || nota.getNota().toString().contains("SP") || nota.getNota().toString().contains("SN")) {
+                        System.out.println("" + nota.getMatricula() + " " + nota.getMateria() + " " + nota.getNota());
+                        listaMatriculas.add(nota.getMatricula());
+                    }
+                }
+            }
+            int contador = 1;
+            int matriculaActual = 0;
+
+            for (Iterator<Nota> it = lisNotas.iterator(); it.hasNext();) {
+                Nota nota = it.next();
+                if (listaMatriculas.contains(nota.getMatricula())) {
+                    nota.setContador(contador);
+                    int matriculaInt = nota.getMatricula().getCodigomat();
+                    if (matriculaActual == 0) {
+                        matriculaActual = matriculaInt;
+                    } else if (matriculaActual == matriculaInt) {
+                        nota.setContador(contador);
+                    } else {
+                        contador++;
+                        matriculaActual = matriculaInt;
+                        nota.setContador(contador);
+                    }
+                    lisNotasArreglado.add(nota);
+                }
+
+            }
+
+        }
+
+        ReporteNotasDataSource ds = null;
+        if (soloSupletoriados) {
+            ds = new ReporteNotasDataSource(lisNotasArreglado);
+        } else {
+            ds = new ReporteNotasDataSource(lisNotas);
+        }
+        return ds;
+
+    }
+
+    public JRDataSource cuadrofinalremediales(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta, Boolean soloSupletoriados) {
+//     int tamanio=0;
+        Administrador adm = new Administrador();
+        Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        List sistemas = adm.query("Select o from Sistemacalificacion as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + "and o.orden <= '" + sistema.getOrden() + "' "
+                + "and o.seimprime = true and  o.ensupletorio = true  order by o.orden ");
+
+        List<Notanotas> notas = adm.query("Select o from Notanotas as o "
+                + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
+                + "and o.sistema.ensupletorio = true order by o.sistema.orden ");
+        if (notas.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Impresiones para el Supletorio en Aportes (Impr.Supletorios)...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        List<Notanotas> notaFinal = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PF' ");
+        if (notaFinal.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio Final o General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        Notanotas nfinal = notaFinal.get(0);
+        if (notas.size() <= 0) {
+            try {
+                Messagebox.show("No han nada que imprimir Aportes en 0 ...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        List<Notanotas> notaGeneral = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
+        if (notaGeneral.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        String nGeneral = notaGeneral.get(0).getNota();
+
+        List<Notanotas> notaSupletorio = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'SU' ");
+        if (notaSupletorio.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        String nSup = notaSupletorio.get(0).getNota();
+
+
+        List<Notanotas> notaRemedial = adm.query("Select o from Notanotas as o "
+                + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'RE' ");
+        if (notaRemedial.size() <= 0) {
+            try {
+                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        String nRem = notaRemedial.get(0).getNota();
+
+
+
+// List<Notanotas> notasRequeridas = adm.query("Select o from Notanotas as o "
+//                    + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+//                    + " and o.sistema.requerida = true "
+//                    + " order by o.sistema.orden ");
+        List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasSuple = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'SU' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasDisc = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        if (equivalenciasSuple.size() <= 0) {
+            try {
+                Messagebox.show("No existen los rangos de Supletorio, ingrese a Equivalencias > Supletorios y verifique que esté lleno...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                return null;
+            } catch (InterruptedException ex) {
+                Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
+                + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        Double sumaPierde = regresaVariableParametrosDecimal("SUMATORIAPIERDE", parametrosGlobales);
+        Double sumaAprueba = regresaVariableParametrosDecimal("SUMATORIAAPRUEBA", parametrosGlobales);
+        Boolean validaConPromedioGeneral = regresaVariableParametrosLogico("PROMEDIOGENERAL", parametrosGlobales);
+        Double valorPromedioGeneral = regresaVariableParametrosDecimal("VALORPROMEDIOGENERAL", parametrosGlobales);
+
+
+        Integer remedial = 5;
+        try {
+            remedial = regresaVariableParametrosDecimal("REMEDIAL", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            remedial = 5;
+
+        }
+        Integer noDecimalesDisc = 2;
+        try {
+            noDecimalesDisc = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesDisc = 2;
+
+        }
+
+        Integer noDecimales = 3;
+        try {
+            noDecimales = regresaVariableParametrosDecimal("DECIPROMOCION", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimales = 3;
+
+        }
+        Integer noDecimalesPromediosParciales = 2;
+        try {
+            noDecimalesPromediosParciales = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            noDecimalesPromediosParciales = 2;
+
+        }
+
+        if (valorPromedioGeneral <= 0) {
+            valorPromedioGeneral = sumaAprueba;
+        }
+//Sistemacalificacion sd;
+//sd.getTrimestre().getCodigotrim();
+
+
+        String query = "";
+        for (Notanotas notass : notas) {
+            query += notass.getNota() + ",";
+
+        }
+        query = query.substring(0, query.length() - 1).replace("'", "").replace("(", "").replace(")", "");
+        String[] values = new String[sistemas.size()];
+
+        for (int i = 0; i < sistemas.size(); i++) {
+            values[i] = ((Sistemacalificacion) sistemas.get(i)).getAbreviatura();
+        }
+
+        String q = "Select codigomap, mat.codigomat,notas.materia, " + query + ", 'obs'  from notas, materia_profesor , matriculas mat, estudiantes est "
+                + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
+                + "and materia_profesor.curso = '" + curso.getCodigocur() + "' "
+                + " and notas.disciplina = false and materia_profesor.seimprime = true  "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
+                + " and notas.materia >0 order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
+
+        System.out.println("cuadro final: " + q);
+        List nativo = adm.queryNativo(q);
+        List<Nota> lisNotas = new ArrayList();
+        int cont = 0;
+        String matricula = "";
+        for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            //row = new Row();
+            Matriculas matriculaNo = null;
+            Global materiaNo = null;
+            MateriaProfesor mprofesor = null;
+            MateriaProfesor mprofesor1 = null;
+            Double aprovecha = 0.0;
+            Object disciplina = 0.0;
+            Double sumatoria = 0.0;
+            String obs = "";
+            Boolean sn = false;
+            int ksis = 0;
+            for (int j = 0; j < vec.size(); j++) {
+                Object dos = vec.get(j);
+                Double val = 0.0;
+                Nota nota = new Nota();
+                try {
+                    if (dos.equals(null)) {
+                        dos = new Double(0.0);
+                    }
+                } catch (Exception e) {
+                    dos = new Double(0.0);
+                }
+                if (j == (vec.size() - 1)) {
+//                    val = redondear((Double) dos, 2);
+                    nota.setMatricula(matriculaNo);
+                    nota.setMateria(materiaNo);
+                    nota.setContador(cont);
+                    matricula = matriculaNo.toString();
+                    Sistemacalificacion sistemp1 = new Sistemacalificacion();
+                    sistemp1.setNombre("OBS");
+                    sistemp1.setAbreviatura("OBS");
+                    sistemp1.setTrimestre(((Sistemacalificacion) sistemas.get(ksis - 1)).getTrimestre());
+                    nota.setNota("APRO");
+                    nota.setNota("" + obs);
+                    if (sn == true) {
+                        nota.setNota("SN");
+                    }
+                    if (matriculaNo.getEstado().contains("Retir") || matriculaNo.getEstado().contains("Emitir")) {
+                        nota.setNota("Ret.");
+                    }
+
+                    nota.setSistema(sistemp1);
+                    nota.setAprovechamiento(aprovecha);
+                    nota.setDisciplina(disciplina);
+                    lisNotas.add(nota);
+                } else if (j >= 3) {
+                    if (truncarNotas) {
+                        val = truncar((Double) dos, 2);
+                    } else {
+                        val = redondear((Double) dos, 2);
+                    }
+                    nota.setMatricula(matriculaNo);
+                    nota.setMateria(materiaNo);
+                    nota.setContador(cont);
+                    matricula = matriculaNo.toString();
+                    //nota.setNota(val);
+
+                    if (mprofesor.getCuantitativa() == false) {
+
+                        //if(mprofesor.getMateria().getCodigo().equals(new Integer(0))){
+                        if (materiaNo.getCodigo().intValue() == 0) {
+                            nota.setNota(equivalencia(dos, equivalenciasDisc));
+                        } else {
+                            nota.setNota(equivalencia(dos, equivalencias));
+                        }
+                    } else {
+                        nota.setNota(val.toString());
+
+                        if (val == 0.0) {
+                            nota.setNota("");
+                        }
+                    }
+
+                    nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
+                    if (nota.getSistema().getPromediofinal().equals("PG")) {
+                        if (validaConPromedioGeneral) {
+                            List notasListRem = adm.queryNativo("Select  CAST(AVG(o." + nRem + ")as decimal (9,3)) from Notas as o"
+                                    + " where o.materia =  " + materiaNo.getCodigo() + " and  "
+                                    + " o.matricula = '" + matriculaNo.getCodigomat() + "' ");
+                            BigDecimal nRemNota = (BigDecimal) ((Vector) notasListRem.get(0)).get(0);
+                            List notasListSup = adm.queryNativo("Select  CAST(AVG(o." + nSup + ")as decimal (9,3)) from Notas as o"
+                                    + " where o.materia =  " + materiaNo.getCodigo() + " and  "
+                                    + " o.matricula = '" + matriculaNo.getCodigomat() + "' ");
+                            BigDecimal nSupNota = (BigDecimal) ((Vector) notasListSup.get(0)).get(0);
+
+                            if (val >= 7) {
+                                obs = "";
+                            } else if (val < 7 && val >= 5) {
+                                obs = "SP";
+                                if (nSupNota.doubleValue() >= 7) {
+                                    obs = "";
+                                } else if (nSupNota.doubleValue() == 0) {
+                                    obs = "RM";
+                                } else if (nSupNota.doubleValue() > 0) {
+                                    obs = "RM";
+                                    if (nRemNota.doubleValue() >= 7) {
+                                        obs = "";
+                                    } else if (nRemNota.doubleValue() > 0 && nRemNota.doubleValue() < 7) {
+                                        obs = "GR";//falta validar si hay examen de gracia
+                                    } else {
+                                        obs = "RM";//falta validar si hay examen de gracia
+                                    }
+                                }
+
+                            } else if (val < 5 && val > 0) {
+                                obs = "RM";
+
+                                if (nRemNota.doubleValue() >= 7) {
+                                    obs = "";
+                                } else {
+                                    obs = "RM";
+                                }
+
+                            } else if (val == 0) {
+                                sn = true;
+
+                            } else {
+                                obs = "";
+
+                            }
+
+                        }
+                        if(obs.equals("RM")){
+                            nota.setObservacion("Remedial");
+                        }else if(obs.equals("SN")){
+                            nota.setObservacion("Pendiente");
+                        }
+                    }
+
 //                    else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
 //                        if (validaConPromedioGeneral == false) {
 //                            if (sumatoria < sumaAprueba) {

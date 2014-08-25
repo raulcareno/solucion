@@ -3,6 +3,7 @@ package sources;
 import bean.NotaCollection;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import jcinform.persistencia.Cursos;
 import jcinform.persistencia.Estudiantes;
 import jcinform.persistencia.Global;
@@ -428,13 +429,17 @@ private BigDecimal disciplina2;
     @Override
     public int compareTo(Object o) {
         Nota persona = (Nota) o;
+//        HashMap map;
+//        map.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.toString(), true);
+//        
+//    map.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);        
+//    map.put(net.sf.jasperreports.export.jxl.cell.complex.format.toString(), Boolean.TRUE);
+    
         if (this.cargo1.compareToIgnoreCase(persona.cargo1) == 0) {
             return 0;
         } else {
              return this.cargo1.compareToIgnoreCase(persona.cargo1);
         }
-        
-
     }     
 
 
