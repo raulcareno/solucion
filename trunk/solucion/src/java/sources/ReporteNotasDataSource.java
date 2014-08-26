@@ -196,6 +196,10 @@ public class ReporteNotasDataSource implements JRDataSource {
                 } catch (Exception e) {
                 }
 
+            }  else if ("norm".equals(fieldName)) {
+                    valor = nodo.getNorm();
+            }  else if ("nogr".equals(fieldName)) {
+                    valor = nodo.getNogr();
             } else if ("aprovechamiento".equals(fieldName)) {
                 valor = nodo.getAprovechamiento();
             } else if ("disciplina".equals(fieldName)) {

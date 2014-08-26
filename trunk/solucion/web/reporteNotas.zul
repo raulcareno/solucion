@@ -724,6 +724,12 @@ void recalcular2(){
                     datasource = noti.cuadrofinalremediales(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),false);
                     report.setSrc(directorioReportes+"cuadrofinalremedial.jasper");
                            
+            }else if(tipo.equals("CSUP4")){
+ 
+                    parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
+                    datasource = noti.cuadrofinalgracia(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),false);
+                    report.setSrc(directorioReportes+"cuadrofinalgracia.jasper");
+                           
             }else if(tipo.equals("CRES")){
                     parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     datasource = noti.cuadroresumen(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
@@ -901,7 +907,7 @@ void recalcular2(){
                     exportParams.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);
                     parametros.put("exportParameter", exportParams);
                     report.setType("xls");
-                }else if(tipo.equals("CSUP3")){
+                }else if(tipo.equals("CSUP3") || tipo.equals("CSUP4")){
                         Map exportParams = new HashMap();
                         exportParams.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);
                         exportParams.put(net.sf.jasperreports.engine.JRExporterParameter.IGNORE_PAGE_MARGINS.toString(), Boolean.TRUE);
@@ -1135,7 +1141,7 @@ void campos(String valor){
              filaaportes.visible = true;
              fila.visible = true;
             
-        }else if(valor.equals("CSUP") || valor.equals("CSUP2") || valor.equals("CSUP3") ){
+        }else if(valor.equals("CSUP") || valor.equals("CSUP2") || valor.equals("CSUP3") || valor.equals("CSUP4")  ){
             curs.disabled = false;
             sistemasCombo.disabled = false;
              titulo.value= "Cuadro de Estudiantes a Supletorios";
@@ -1348,6 +1354,7 @@ void campos(String valor){
                                     <listitem id="CSUP"  label="Cuadro de Supletorios" value="CSUP" />
                                     <listitem id="CSUP2"  label="Cuadro de Supletorios(Todos)" value="CSUP2" />
                                     <listitem id="CSUP3"  label="Cuadro de Remediales" value="CSUP3" />
+                                    <listitem id="CSUP4"  label="Cuadro de Gracia" value="CSUP4" />
                                     <listitem id="CRES"  label="Cuadro Resumido" value="CRES" />
                                     <listitem  id="CNF3" label="Cuadro Final" value="CNF3" />
                                     <listitem  id="CNF4" label="Cuadro Final(10)" value="CNF4" />
