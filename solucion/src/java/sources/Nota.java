@@ -34,6 +34,7 @@ private Object disciplinaFinal;
 private Double aprovechamiento;
 private Double sumatoria;
 private Integer diasAsistidos;
+private int nogr=0,norm=0;
 //private Double disciplina;
 private Object disciplina;
 private String disciplinaS;
@@ -41,7 +42,7 @@ private String disciplinaS;
 //para examenes de grado
 private Cursos curso;
 private String profesor;
-private String observacion;
+private String observacion="";
 
 private String firma1,firma2,firma3;
 private String cargo1,cargo2,cargo3;
@@ -422,6 +423,22 @@ private BigDecimal disciplina2;
 
     public void setDisciplinaS(String disciplinaS) {
         this.disciplinaS = disciplinaS;
+    }
+
+    public int getNogr() {
+        return nogr;
+    }
+
+    public void setNogr(int nogr) {
+        this.nogr = nogr;
+    }
+
+    public int getNorm() {
+        return norm;
+    }
+
+    public void setNorm(int norm) {
+        this.norm = norm;
     }
  
     
