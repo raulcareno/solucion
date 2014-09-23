@@ -317,6 +317,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 //                inputStream = null;
                 return;
             }
+             
             //BUSCAR TARJETA 
             princip.tarjetatxt.setText("");
             princip.tarjetatxt.setText(tarjeta);
@@ -389,23 +390,23 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 }
 
             }
-            Long valor = null;
+            //Long valor = null;
             try {
-                valor = new Long(tarjeta);
+                //valor = new Long(tarjeta);
             } catch (Exception e) {
                 limpiarMemoria();
-                return;
+                //return; //quite por que ya no es solo numerico
 
             }
             if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
                 System.out.println("COMPLETO 10 DIGITOS POR QUE ES LECTORA DE BARRAS");
-                tarjeta = valor + "";
-                for (int i = tarjeta.length(); i < 10; i++) {
-                    tarjeta = "0" + tarjeta;
-                }
-                if (tarjeta.length() > 10) {
-                    tarjeta = tarjeta.substring(0, 10);
-                }
+                //tarjeta = valor + "";
+//                for (int i = tarjeta.length(); i < 10; i++) {
+//                    tarjeta = "0" + tarjeta;
+//                } //quite por que ya no es solo numerico
+//                if (tarjeta.length() > 10) {
+//                    tarjeta = tarjeta.substring(0, 10);
+//                }
                 princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
                 System.out.println("ABRIO BARRAS: " + tarjeta);
                 tarjeta = "";
@@ -546,6 +547,7 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
+            String nombreCaja = princip.empresaObj.getNombreCaja();
 //            Empresa emp = princip.empresaObj;
             JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
@@ -562,12 +564,10 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
                 List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
                 if (sihay.size() <= 0) {
                     pasar = false;
-
-                    fac.setTicket("" + numero);
+                    fac.setTicket("" +nombreCaja+ numero);
                     emp.setDocumentoticket((numero) + "");
                     adm.actualizar(emp);//GUARDO EMPRESA
                     adm.guardar(fac); // GUARDO FACTURA
-
                 } else {
                     numero++;
                 }

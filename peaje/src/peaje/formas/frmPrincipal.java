@@ -2430,6 +2430,9 @@ correcto.setVisible(false);
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     claveKeyPressed(evt);
                 }
+                public void keyReleased(java.awt.event.KeyEvent evt) {
+                    claveKeyReleased(evt);
+                }
             });
             jPanel2.add(clave);
             clave.setBounds(140, 50, 130, 19);
@@ -2472,6 +2475,11 @@ correcto.setVisible(false);
             jPanel2.add(btnIngresar);
             btnIngresar.setBounds(70, 90, 120, 40);
 
+            usuariot.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                    usuariotItemStateChanged(evt);
+                }
+            });
             jPanel2.add(usuariot);
             usuariot.setBounds(140, 20, 130, 20);
 
@@ -3111,6 +3119,10 @@ correcto.setVisible(false);
                 actual--;
                 time.setText("" + (actual));
                 System.out.println((new Date()) + "" + (tiempo));
+                if(!poseeAutologin){
+                    tiempo = 0;
+                    break;
+                }
 
             }
             if (tiempo == 10) {
@@ -3573,8 +3585,14 @@ correcto.setVisible(false);
         empresaObj.setRetardoSalida(emp.getRetardoSalida());
         empresaObj.setDesde(emp.getDesde());
         empresaObj.setHasta(emp.getHasta());
+        empresaObj.setDesdeFin(emp.getDesdeFin());
+        empresaObj.setHastaFin(emp.getHastaFin());
+        empresaObj.setHoraDesdeCobro(emp.getHoraDesdeCobro());
+        empresaObj.setValidaCedula(emp.getValidaCedula()); 
         empresaObj.setValorMaximo(emp.getValorMaximo());
-
+        empresaObj.setNombreCaja(emp.getNombreCaja());
+        empresaObj.setSerie(emp.getSerie());
+        empresaObj.setSucursal(emp.getSucursal());
     }
 
     void iniciarCamar() {
@@ -4377,7 +4395,7 @@ correcto.setVisible(false);
                 errores.setText("");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                 //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + new Integer(noticket) + "' "
+                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + (noticket) + "' "
                         + "  ");
                 if (facturas.size() > 0) {
 
@@ -4452,7 +4470,7 @@ correcto.setVisible(false);
                 errores.setText("");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                 //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + new Integer(noticket) + "' "
+                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + (noticket) + "' "
                         + "  ");
                 if (facturas.size() > 0) {
 
@@ -5754,7 +5772,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         formaTarjetas1.setVisible(false);
 }//GEN-LAST:event_btnSalirTarjetasActionPerformed
-
+            Thread cargarAutologin = null;
     private void codigoBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBuscarKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
@@ -7304,8 +7322,8 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     ServidorChat();
                     System.out.println("EMPEZO.. SERVIDOR//");
                 } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                    lger.logger(frmPrincipal.class.getName(), ex + "");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex+"..");
+                    lger.logger(frmPrincipal.class.getName(), ex + "..");
                 }
 
             }
@@ -7604,6 +7622,18 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 incorrecto.setVisible(false);
         }
     }//GEN-LAST:event_codigoKeyReleased
+
+    private void usuariotItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_usuariotItemStateChanged
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_usuariotItemStateChanged
+
+    private void claveKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_claveKeyReleased
+        // TODO add your handling code here:
+        poseeAutologin = false;
+        time.setText("0");
+              
+    }//GEN-LAST:event_claveKeyReleased
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {

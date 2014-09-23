@@ -34,9 +34,17 @@ public class EmpresaPuertos {
      */
     public EmpresaPuertos() {
     }
+    
+    Date desdeFin;
+    Date hastaFin;
+    Date horaDesdeCobro;
+    Boolean validaCedula;
     public Boolean trabajanotaventa;
     public Boolean imprime2facturas;
     public String url;
+    public String nombreCaja;
+    public String serie;
+    public String sucursal;
     public String entra1;
     public String entra2;
     public String impticket;
@@ -761,6 +769,65 @@ public class EmpresaPuertos {
     public void setBloquearhorariosalida(Boolean bloquearhorariosalida) {
         this.bloquearhorariosalida = bloquearhorariosalida;
     }
+
+    public Date getDesdeFin() {
+        return desdeFin;
+    }
+
+    public void setDesdeFin(Date desdeFin) {
+        this.desdeFin = desdeFin;
+    }
+
+    public Date getHastaFin() {
+        return hastaFin;
+    }
+
+    public void setHastaFin(Date hastaFin) {
+        this.hastaFin = hastaFin;
+    }
+
+    public Date getHoraDesdeCobro() {
+        return horaDesdeCobro;
+    }
+
+    public void setHoraDesdeCobro(Date horaDesdeCobro) {
+        this.horaDesdeCobro = horaDesdeCobro;
+    }
+
+    public Boolean getValidaCedula() {
+        return validaCedula;
+    }
+
+    public void setValidaCedula(Boolean validaCedula) {
+        this.validaCedula = validaCedula;
+    }
+
+    public String getNombreCaja() {
+        return nombreCaja;
+    }
+
+    public void setNombreCaja(String nombreCaja) {
+        this.nombreCaja = nombreCaja;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    
+    
     
              
      

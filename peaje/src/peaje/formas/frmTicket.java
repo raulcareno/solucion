@@ -262,7 +262,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(noTicket);
-        noTicket.setBounds(90, 10, 40, 20);
+        noTicket.setBounds(90, 10, 130, 20);
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel3.setText("Digite y luego Enter");
@@ -363,27 +363,21 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     fac.setTarifa0(false);
                     fac.setSellado(false); 
                       Boolean pasar = true;
+                      String nombreCaja = empresaObj.nombreCaja;
                         Integer numero = new Integer(emp.getDocumentoticket())+1;
                         while(pasar){
-                            List sihay = adm.query("Select o from Factura as o where o.ticket = '"+numero+"'"); 
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '"+nombreCaja+numero+"'"); 
                             if(sihay.size()<=0){
                                 pasar = false;
-
-                                fac.setTicket("" + numero);
+                                fac.setTicket("" +nombreCaja+ numero);
                                 emp.setDocumentoticket((numero) + "");
-                                adm.actualizar(emp);//GUARDO EMPRESA
                                 adm.guardar(fac); // GUARDO FACTURA
-                                noTicket.setText(numero+"");
-                                 codigo.setText(fac.getCodigo() + "");
-
+                                noTicket.setText(nombreCaja+numero+"");
+                                codigo.setText(fac.getCodigo() + "");
                             }else{
                                 numero++;
                             }
-
                         }
-                    
-                    
-                    
                     imprimir(fac.getCodigo(), emp);
                     emp = null;
                 if(empresaObj.getSeabretic()){

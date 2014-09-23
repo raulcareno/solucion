@@ -98,6 +98,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             fecFin.setSeconds(59);
             
         }
+        
+        
+        
+        
    SpinnerDateModel sm = new SpinnerDateModel(fecIni, null, null, Calendar.HOUR_OF_DAY);
             JSpinner spinner = new JSpinner(sm);
             JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm:ss");
@@ -109,6 +113,60 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm:ss");
             horaHasta2.setModel(sm2);
             horaHasta2.setEditor(de2);
+            
+        
+        Date fecIniFin = null;
+        if(empresaObj.getDesdeFin()!= null){
+                fecIniFin = empresaObj.getDesdeFin();    
+        }else{
+            fecIniFin = new Date();
+            fecIniFin.setHours(0);
+            fecIniFin.setMinutes(1);
+            fecIniFin.setSeconds(1);
+        }
+        
+        Date fecFinFin = null;
+        if(empresaObj.getHastaFin()!= null){
+                fecFinFin = empresaObj.getHastaFin();    
+        }else{
+            fecFinFin = new Date();
+            fecFinFin.setHours(23);
+            fecFinFin.setMinutes(59);
+            fecFinFin.setSeconds(59);
+            
+        }
+            
+            
+            SpinnerDateModel sm3 = new SpinnerDateModel(fecIniFin, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner3 = new JSpinner(sm3);
+            JSpinner.DateEditor de3 = new JSpinner.DateEditor(spinner3, "HH:mm:ss");
+            horaDesde3.setModel(sm3);
+            horaDesde3.setEditor(de3);
+            
+            SpinnerDateModel sm4 = new SpinnerDateModel(fecFinFin, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner4 = new JSpinner(sm4);
+            JSpinner.DateEditor de4 = new JSpinner.DateEditor(spinner4, "HH:mm:ss");
+            horaHasta3.setModel(sm4);
+            horaHasta3.setEditor(de4);
+            
+        Date fecCobrar = null;
+        if(empresaObj.getHoraDesdeCobro()!= null){
+                fecCobrar = empresaObj.getHoraDesdeCobro();    
+        }else{
+            fecCobrar = new Date();
+            fecCobrar.setHours(23);
+            fecCobrar.setMinutes(59);
+            fecCobrar.setSeconds(59);
+            
+        }
+            
+            
+            SpinnerDateModel sm5 = new SpinnerDateModel(fecCobrar, null, null, Calendar.HOUR_OF_DAY);
+            JSpinner spinner5 = new JSpinner(sm5);
+            JSpinner.DateEditor de5 = new JSpinner.DateEditor(spinner5, "HH:mm:ss");
+            horaDesdeCobrar.setModel(sm5);
+            horaDesdeCobrar.setEditor(de5);
+            
         val = new validaciones();
         principal = lo;
         cmbTicket.removeAllItems();
@@ -405,19 +463,34 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jLabel18 = new javax.swing.JLabel();
         cmbMulta = new javax.swing.JComboBox();
         cmbImpresora = new javax.swing.JComboBox();
-        jLabel20 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
         cmbImpresora1 = new javax.swing.JComboBox();
         jLabel59 = new javax.swing.JLabel();
         cmbImpresoraNota = new javax.swing.JComboBox();
-        jPanel11 = new javax.swing.JPanel();
+        jLabel60 = new javax.swing.JLabel();
+        variosPanel = new javax.swing.JPanel();
+        panelHoraIngresoNormal = new javax.swing.JPanel();
         jLabel61 = new javax.swing.JLabel();
-        jLabel62 = new javax.swing.JLabel();
         horaDesde2 = new javax.swing.JSpinner();
         horaHasta2 = new javax.swing.JSpinner();
-        valorMaximo = new javax.swing.JFormattedTextField();
-        jLabel60 = new javax.swing.JLabel();
+        jLabel63 = new javax.swing.JLabel();
+        chkvalidacedula = new javax.swing.JCheckBox();
         chkPunto = new javax.swing.JCheckBox();
+        jLabel20 = new javax.swing.JLabel();
+        valorMaximo = new javax.swing.JFormattedTextField();
+        horaDesdeCobrar = new javax.swing.JSpinner();
+        panelHoraIngresoFinDeSemana = new javax.swing.JPanel();
+        jLabel64 = new javax.swing.JLabel();
+        horaDesde3 = new javax.swing.JSpinner();
+        horaHasta3 = new javax.swing.JSpinner();
+        jLabel65 = new javax.swing.JLabel();
+        cmbnombreCaja = new javax.swing.JComboBox();
+        jLabel66 = new javax.swing.JLabel();
+        jLabel67 = new javax.swing.JLabel();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
+        serie = new javax.swing.JFormattedTextField();
+        sucursal = new javax.swing.JFormattedTextField();
         jPanel5 = new javax.swing.JPanel();
         cmbEntrada1 = new javax.swing.JComboBox();
         cmbPuerta1 = new javax.swing.JComboBox();
@@ -590,9 +663,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel10.setText("Configuración de la Empresa ..::..");
+        jLabel10.setText("Modifique los datos si está completamente seguro ..::..");
         jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 250, 13);
+        jLabel10.setBounds(10, 20, 340, 13);
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 440, 40);
@@ -1076,7 +1149,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         bindingGroup.addBinding(binding);
 
         jPanel6.add(chkReimprime);
-        chkReimprime.setBounds(230, 190, 160, 20);
+        chkReimprime.setBounds(210, 190, 180, 20);
 
         chkBloquearEntrada.setText("Bloquear Entrada si no ha Salido");
         chkBloquearEntrada.setToolTipText("El usuario de tarjeta no puede ingresar mientras no marque la salida");
@@ -1180,12 +1253,6 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel1.add(cmbImpresora);
         cmbImpresora.setBounds(140, 70, 240, 18);
 
-        jLabel20.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel20.setText("Valor Máximo para Cobro diario:");
-        jPanel1.add(jLabel20);
-        jLabel20.setBounds(10, 190, 170, 18);
-
         jLabel37.setForeground(new java.awt.Color(0, 0, 153));
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel37.setText("Impresora Botón(2):");
@@ -1224,35 +1291,61 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel1.add(cmbImpresoraNota);
         cmbImpresoraNota.setBounds(140, 110, 240, 20);
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de Ingreso, Botón"));
-        jPanel11.setLayout(null);
+        jLabel60.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel60.setText("Impresora de Not.Vent.");
+        jPanel1.add(jLabel60);
+        jLabel60.setBounds(10, 110, 120, 18);
+
+        jTabbedPane2.addTab("Impresoras y Otros", new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif")), jPanel1); // NOI18N
+
+        variosPanel.setLayout(null);
+
+        panelHoraIngresoNormal.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de Ingreso, Botón"));
+        panelHoraIngresoNormal.setLayout(null);
 
         jLabel61.setText("Hasta: ");
-        jPanel11.add(jLabel61);
-        jLabel61.setBounds(140, 20, 40, 14);
-
-        jLabel62.setText("Desde:");
-        jPanel11.add(jLabel62);
-        jLabel62.setBounds(10, 20, 50, 14);
+        panelHoraIngresoNormal.add(jLabel61);
+        jLabel61.setBounds(180, 20, 40, 14);
 
         horaDesde2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 horaDesde2KeyPressed(evt);
             }
         });
-        jPanel11.add(horaDesde2);
-        horaDesde2.setBounds(50, 20, 80, 20);
+        panelHoraIngresoNormal.add(horaDesde2);
+        horaDesde2.setBounds(70, 20, 80, 20);
 
         horaHasta2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 horaHasta2KeyPressed(evt);
             }
         });
-        jPanel11.add(horaHasta2);
-        horaHasta2.setBounds(180, 20, 80, 20);
+        panelHoraIngresoNormal.add(horaHasta2);
+        horaHasta2.setBounds(230, 20, 80, 20);
 
-        jPanel1.add(jPanel11);
-        jPanel11.setBounds(20, 140, 310, 48);
+        jLabel63.setText("Desde:");
+        panelHoraIngresoNormal.add(jLabel63);
+        jLabel63.setBounds(30, 20, 50, 14);
+
+        variosPanel.add(panelHoraIngresoNormal);
+        panelHoraIngresoNormal.setBounds(10, 140, 380, 50);
+
+        chkvalidacedula.setText("Se Valida cédula antes de guardar");
+        variosPanel.add(chkvalidacedula);
+        chkvalidacedula.setBounds(20, 60, 190, 20);
+
+        chkPunto.setText("¿Aquí es un Punto de Cobro?");
+        chkPunto.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        chkPunto.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        variosPanel.add(chkPunto);
+        chkPunto.setBounds(20, 10, 180, 20);
+
+        jLabel20.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("Valor Máximo para Cobro diario:");
+        variosPanel.add(jLabel20);
+        jLabel20.setBounds(10, 90, 170, 20);
 
         valorMaximo.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         valorMaximo.setText("0");
@@ -1261,22 +1354,84 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.valorMaximo}"), valorMaximo, org.jdesktop.beansbinding.BeanProperty.create("value"));
         bindingGroup.addBinding(binding);
 
-        jPanel1.add(valorMaximo);
-        valorMaximo.setBounds(190, 190, 90, 20);
+        variosPanel.add(valorMaximo);
+        valorMaximo.setBounds(190, 90, 50, 20);
 
-        jLabel60.setForeground(new java.awt.Color(0, 0, 153));
-        jLabel60.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel60.setText("Impresora de Not.Vent.");
-        jPanel1.add(jLabel60);
-        jLabel60.setBounds(10, 110, 120, 18);
+        horaDesdeCobrar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesdeCobrarKeyPressed(evt);
+            }
+        });
+        variosPanel.add(horaDesdeCobrar);
+        horaDesdeCobrar.setBounds(140, 120, 80, 20);
 
-        chkPunto.setText("Punto de Cobro?");
-        chkPunto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        chkPunto.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        jPanel1.add(chkPunto);
-        chkPunto.setBounds(0, 210, 140, 23);
+        panelHoraIngresoFinDeSemana.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de Ingreso, Botón en Fines de Semana"));
+        panelHoraIngresoFinDeSemana.setLayout(null);
 
-        jTabbedPane2.addTab("Impresoras y Otros", new javax.swing.ImageIcon(getClass().getResource("/images/fileprint.gif")), jPanel1); // NOI18N
+        jLabel64.setText("Hasta: ");
+        panelHoraIngresoFinDeSemana.add(jLabel64);
+        jLabel64.setBounds(180, 20, 40, 14);
+
+        horaDesde3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesde3KeyPressed(evt);
+            }
+        });
+        panelHoraIngresoFinDeSemana.add(horaDesde3);
+        horaDesde3.setBounds(70, 20, 80, 20);
+
+        horaHasta3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaHasta3KeyPressed(evt);
+            }
+        });
+        panelHoraIngresoFinDeSemana.add(horaHasta3);
+        horaHasta3.setBounds(230, 20, 80, 20);
+
+        jLabel65.setText("Desde:");
+        panelHoraIngresoFinDeSemana.add(jLabel65);
+        jLabel65.setBounds(30, 20, 50, 14);
+
+        variosPanel.add(panelHoraIngresoFinDeSemana);
+        panelHoraIngresoFinDeSemana.setBounds(10, 190, 380, 50);
+
+        cmbnombreCaja.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "A", "B", "C" }));
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.nombreCaja}"), cmbnombreCaja, org.jdesktop.beansbinding.BeanProperty.create("selectedItem"));
+        bindingGroup.addBinding(binding);
+
+        variosPanel.add(cmbnombreCaja);
+        cmbnombreCaja.setBounds(270, 10, 50, 20);
+
+        jLabel66.setText("Inicar cobro Desde:");
+        variosPanel.add(jLabel66);
+        jLabel66.setBounds(20, 120, 110, 14);
+
+        jLabel67.setText("Nombre:");
+        variosPanel.add(jLabel67);
+        jLabel67.setBounds(210, 10, 60, 20);
+
+        jLabel68.setText("Sucursal:");
+        variosPanel.add(jLabel68);
+        jLabel68.setBounds(130, 30, 60, 20);
+
+        jLabel69.setText("Serie:");
+        variosPanel.add(jLabel69);
+        jLabel69.setBounds(30, 30, 40, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.serie}"), serie, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        variosPanel.add(serie);
+        serie.setBounds(70, 30, 50, 20);
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.sucursal}"), sucursal, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        variosPanel.add(sucursal);
+        sucursal.setBounds(190, 30, 50, 20);
+
+        jTabbedPane2.addTab("Varios", new javax.swing.ImageIcon(getClass().getResource("/images/admin1.gif")), variosPanel); // NOI18N
 
         jPanel2.add(jTabbedPane2);
         jTabbedPane2.setBounds(10, 110, 410, 280);
@@ -1921,12 +2076,23 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                     empresaObj.setDesde((Date)horaDesde2.getValue()); 
                     empresaObj.setHasta((Date)horaHasta2.getValue());
                     empresaObj.setValorMaximo(new Double(valorMaximo.getText()));
+                    
+                    empresaObj.setDesdeFin((Date)horaDesde3.getValue()); 
+                    empresaObj.setHastaFin((Date)horaHasta3.getValue());
+                    empresaObj.setHoraDesdeCobro((Date)horaDesdeCobrar.getValue());
+                    empresaObj.setValidaCedula(chkvalidacedula.isSelected());
+                    empresaObj.setSerie(serie.getText());
+                    empresaObj.setSucursal(sucursal.getText());
+                    
                     try {
                         empresaObj.setMulta(new Double(multa.getText()));
                     } catch (Exception e) {
                         empresaObj.setMulta(0.0);
                         multa.setText("0");
                     }
+                    
+                    
+                    
                     
 
                     XMLEmpresa xm = new XMLEmpresa();
@@ -2495,6 +2661,18 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         // TODO add your handling code here:
     }//GEN-LAST:event_chkBloquearHorarioSalidaActionPerformed
 
+    private void horaDesdeCobrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesdeCobrarKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaDesdeCobrarKeyPressed
+
+    private void horaDesde3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesde3KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaDesde3KeyPressed
+
+    private void horaHasta3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaHasta3KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_horaHasta3KeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField barreras;
     private javax.swing.JButton btnAgregar;
@@ -2517,6 +2695,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JCheckBox chkReimprime;
     private javax.swing.JCheckBox chkWebcam;
     private javax.swing.JCheckBox chktrabajanotaventa;
+    private javax.swing.JCheckBox chkvalidacedula;
     private javax.swing.JComboBox cmbEntrada1;
     private javax.swing.JComboBox cmbEntrada2;
     private javax.swing.JComboBox cmbEntrada3;
@@ -2546,6 +2725,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JComboBox cmbSalida3;
     private javax.swing.JComboBox cmbSalida4;
     private javax.swing.JComboBox cmbTicket;
+    private javax.swing.JComboBox cmbnombreCaja;
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField direccion;
@@ -2553,7 +2733,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JFormattedTextField graciaentrada;
     private javax.swing.JFormattedTextField graciasalida;
     private javax.swing.JSpinner horaDesde2;
+    private javax.swing.JSpinner horaDesde3;
+    private javax.swing.JSpinner horaDesdeCobrar;
     private javax.swing.JSpinner horaHasta2;
+    private javax.swing.JSpinner horaHasta3;
     private javax.swing.JFormattedTextField ipBarras1;
     private javax.swing.JFormattedTextField ipBarras2;
     private javax.swing.JTextField iva;
@@ -2616,12 +2799,17 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel60;
     private javax.swing.JLabel jLabel61;
-    private javax.swing.JLabel jLabel62;
+    private javax.swing.JLabel jLabel63;
+    private javax.swing.JLabel jLabel64;
+    private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel66;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2634,6 +2822,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JFormattedTextField multa;
     private javax.swing.JFormattedTextField nombres;
+    private javax.swing.JPanel panelHoraIngresoFinDeSemana;
+    private javax.swing.JPanel panelHoraIngresoNormal;
     private javax.swing.JFormattedTextField parqueaderos;
     private javax.swing.JFormattedTextField puertoBarras1;
     private javax.swing.JFormattedTextField puertoBarras2;
@@ -2642,9 +2832,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JFormattedTextField retardoSalida;
     private javax.swing.JCheckBox seabrefactura;
     private javax.swing.JCheckBox seabreticket;
+    private javax.swing.JFormattedTextField serie;
+    private javax.swing.JFormattedTextField sucursal;
     private javax.swing.JFormattedTextField telefono;
     private javax.swing.JFormattedTextField url;
     private javax.swing.JFormattedTextField valorMaximo;
+    private javax.swing.JPanel variosPanel;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 }

@@ -33,11 +33,13 @@ public class EmpresaPuertosStatic {
      */
     public   EmpresaPuertosStatic() {
     }
+    public Boolean validaCedula;
         public Boolean webcam; public Boolean ipcam;
         public Double valorMaximo; 
         public Boolean seabretic;
         public Boolean seabrefac;
         public String impticket;
+        public String nombreCaja;
         public String impfactura;
         public String impresora;
         public String impresora2;
@@ -62,6 +64,8 @@ public class EmpresaPuertosStatic {
         public String salida5;
         public String salida6;
         public String salida7;
+        public String serie;
+        public String sucursal;
         
         public Boolean trabajanotaventa;
         public Boolean imprime2facturas;
@@ -104,6 +108,10 @@ public class EmpresaPuertosStatic {
         public String barreras;
         public Date desde;
         public Date hasta;
+        public Date desdeFin;
+        public Date hastaFin;
+        public Date horaDesdeCobro;
+        
    public String url;
    public String entra1;
    public String entra2;
@@ -755,6 +763,64 @@ public class EmpresaPuertosStatic {
     public void setBloquearhorariosalida(Boolean bloquearhorariosalida) {
         this.bloquearhorariosalida = bloquearhorariosalida;
     }
+
+    public Date getDesdeFin() {
+        return desdeFin;
+    }
+
+    public void setDesdeFin(Date desdeFin) {
+        this.desdeFin = desdeFin;
+    }
+
+    public Date getHastaFin() {
+        return hastaFin;
+    }
+
+    public void setHastaFin(Date hastaFin) {
+        this.hastaFin = hastaFin;
+    }
+
+    public Date getHoraDesdeCobro() {
+        return horaDesdeCobro;
+    }
+
+    public void setHoraDesdeCobro(Date horaDesdeCobro) {
+        this.horaDesdeCobro = horaDesdeCobro;
+    }
+
+    public Boolean getValidaCedula() {
+        return validaCedula;
+    }
+
+    public void setValidaCedula(Boolean validaCedula) {
+        this.validaCedula = validaCedula;
+    }
+
+    public String getNombreCaja() {
+        return nombreCaja;
+    }
+
+    public void setNombreCaja(String nombreCaja) {
+        this.nombreCaja = nombreCaja;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
+    }
+    
+    
         
     
  }
