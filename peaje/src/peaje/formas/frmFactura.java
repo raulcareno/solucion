@@ -2646,7 +2646,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 observacion = fac.getObservacion();
                 Clientes cli1 = (Clientes) fac.getClientes();
                 cli1 = (Clientes) adm.querySimple("Select o from Clientes as o where o.codigo = " + cli1.getCodigo() + " ");
-                System.out.println("" + cli1.getCodigo());
                 fac.setClientes(cli1);
                 detalle.add(fac);
                 cli = cli1;
@@ -2700,8 +2699,23 @@ public class frmFactura extends javax.swing.JInternalFrame {
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
+            
             emp = null;
-
+            
+            
+            ds = null;
+            detalle = null;
+            parametros = null;
+            observacion = "";
+            impresora =null;
+            detalle = null;
+            cli = null;
+             masterReport = null;
+            exporter = null;
+            job = null;
+            services = null;
+            masterPrint =null;
+            parametros = null;
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
 //            viewer.show();
 //            try {
@@ -2798,6 +2812,22 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //            } catch (JRException ex) {
 //                ex.printStackTrace();
 //            }
+            emp = null;
+            
+            
+            ds = null;
+            detalle = null;
+            parametros = null;
+            observacion = "";
+            impresora =null;
+            detalle = null;
+            cli = null;
+             masterReport = null;
+            exporter = null;
+            job = null;
+            services = null;
+            masterPrint =null;
+            parametros = null;
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3136,6 +3166,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     try {
                         Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
                         imprimir(fac.getCodigo(), emp, 0, false, new Clientes());
+                        emp = null;
                     } catch (Exception ex) {
                         Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -3149,6 +3180,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 noTicket.requestFocusInWindow();
                 return;
             }
+            
+            
 
         }
         ingreso.setDate(fac.getFechaini());
@@ -3228,6 +3261,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             int noDias = 0;
             noDias = (horas / 24);
             dias1.setText((noDias + noDias0) + "");
+            noDias = 0;
         } catch (Exception e) {
             dias1.setText("0");
         }
@@ -3249,6 +3283,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //        }
         total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
         codigo.setText(fac.getCodigo() + "");
+        fac = null;
+        minutos0 = null;
+        minutos=null;
+        horas=null;
+        aCobrar = null;
+        min=null;
+        act=null;
+        valorMinutos = 0;
+        valorf=null;
+        
+        limpiarMemoria();
     }
 
     public BigDecimal buscar(Integer minutos) {
@@ -3332,6 +3377,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 salida.setDate(null);
                 placa.setText(null);
                 tiempo.setDate(null);
+                System.out.println("memoria 000: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.ticket = '" + (noTicket.getText().trim()) + "' ");
                 if (fac != null) {
                     btnAplicarDscto.setEnabled(true);
@@ -3384,14 +3430,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_noTicketKeyPressed
     public void limpiarMemoria() {
-        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024f / 1024f);
         System.gc();
         System.gc();
         System.gc();
         System.gc();
         Runtime.getRuntime().runFinalization();
         Runtime.getRuntime().gc();
-        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024f / 1024f);
     }
 
     public void llenarCliente4(Clientes nCliente) {

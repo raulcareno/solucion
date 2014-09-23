@@ -11,23 +11,15 @@ package peaje.formas;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * ventana.java
- *
- * Created on 18/05/2010, 12:53:18 PM
- */
-
 /**
  *
  * @author Noe
  */
 
-public class CamaraEjecutar extends javax.swing.JFrame {
+//<editor-fold defaultstate="collapsed" desc="comment">
+ 
+        //</editor-fold>
+ class CamaraEjecutar extends javax.swing.JFrame {
 
     /** Creates new form ventana */
 public CamaraWeb Ver = new CamaraWeb();
