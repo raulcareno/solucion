@@ -424,7 +424,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         System.runFinalization();
         System.gc();
         System.gc();
-//        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        Runtime.getRuntime().runFinalization();
+        Runtime.getRuntime().gc();
+        //System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024f / 1024f);
     }
 
     public String manejarDatos() {
@@ -648,6 +650,20 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             job = null;
             masterPrint = null;
             job = null;
+            
+            emp = null;
+            
+            
+            ds = null;
+            detalle = null;
+            detalle = null;
+             masterReport = null;
+            exporter = null;
+            job = null;
+            services = null;
+            masterPrint =null;
+            parametros = null;
+            
             limpiarMemoria();
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
