@@ -691,6 +691,13 @@ public class Empresa implements Serializable {
     @Transient
     public Boolean imprime2facturas = false;
     
+       @Transient
+    public String nombreCaja = "";
+              @Transient
+    public String serie = "";
+                     @Transient
+    public String sucursal = "";
+    
     @Transient
     public Boolean trabajanotaventa = false;
 
@@ -817,6 +824,14 @@ public class Empresa implements Serializable {
     public Date desde;
    @Transient
     public Date hasta;
+   @Transient
+    public Date desdeFin;
+   @Transient
+    public Date hastaFin;
+   @Transient
+    public Date horaDesdeCobro;
+       @Transient
+    public Boolean validaCedula = false;
     
     public Boolean getBloquearsalida() {
         return bloquearsalida;
@@ -996,6 +1011,63 @@ public class Empresa implements Serializable {
     public void setBloquearhorariosalida(Boolean bloquearhorariosalida) {
         this.bloquearhorariosalida = bloquearhorariosalida;
     }
+
+    public Date getDesdeFin() {
+        return desdeFin;
+    }
+
+    public void setDesdeFin(Date desdeFin) {
+        this.desdeFin = desdeFin;
+    }
+
+    public Date getHastaFin() {
+        return hastaFin;
+    }
+
+    public void setHastaFin(Date hastaFin) {
+        this.hastaFin = hastaFin;
+    }
+
+    public Date getHoraDesdeCobro() {
+        return horaDesdeCobro;
+    }
+
+    public void setHoraDesdeCobro(Date horaDesdeCobro) {
+        this.horaDesdeCobro = horaDesdeCobro;
+    }
+
+    public Boolean getValidaCedula() {
+        return validaCedula;
+    }
+
+    public void setValidaCedula(Boolean validaCedula) {
+        this.validaCedula = validaCedula;
+    }
+
+    public String getNombreCaja() {
+        return nombreCaja;
+    }
+
+    public void setNombreCaja(String nombreCaja) {
+        this.nombreCaja = nombreCaja;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(String sucursal) {
+        this.sucursal = sucursal;
+    }
+    
     
 
     @Override
@@ -1015,4 +1087,6 @@ public class Empresa implements Serializable {
     public String toString() {
         return "hibernate.Empresa[ruc=" + ruc + "]";
     }
+    
+    
 }
