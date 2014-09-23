@@ -191,7 +191,81 @@ private boolean digito(String intcedula){
            return null;
     }
 
-
+   /** funcion para validar la cedula,nombres etc.*/
+    public boolean validaCedula(java.lang.String cedula) {
+        int d1= 0;
+        int d2= 0;
+        
+        if(cedula == null || !(cedula.length() == 10) ) 
+            return false;
+        try {
+            int auxpd = 0;
+            for(int i=0; i< cedula.length(); i++){
+                int codigo= cedula.charAt(i);
+                
+                if(!(codigo >= 48 && codigo <= 57))// si los numeros no estan en este rango (codigo ASCII)
+                    return false;
+                switch(i) {
+                    case 0 : if(codigo > 50)
+                                return false;
+                             else
+                                 auxpd = codigo;
+                             break;
+                    case 1 : switch(auxpd) {
+                                case 48 : if(codigo < 49)
+                                            return false;
+                                          break;
+                                case 50 : if(codigo > 50)
+                                            return false;
+                                          break;                   
+                             }
+                }
+            }//fin for
+        }catch(StringIndexOutOfBoundsException e) {
+            
+        }
+        return true;
+    }
+    
+    public int digitoVerificadorCedula(java.lang.String cedula) {
+        int snp = 0;//almacena la suma de los numero parese
+        int sni = 0;//almacena la suma de los numeros impares
+        int dv = 0; //almacena el digito verificador
+        
+        for(int i=0; i<9; i++) {
+            int dig = 0; //gigito =0;
+            
+            try {
+                dig = Integer.parseInt(cedula.substring(i,i+1));
+            }catch(NumberFormatException e) {}
+            switch (i) {
+                case 0:
+                case 2:
+                case 4:
+                case 6:
+                case 8: if(dig * 2 > 9) 
+                            sni = sni+(dig*2)-9;
+                        else
+                            sni= sni+(dig*2);
+                        break;
+                case 1:
+                case 3:
+                case 5:
+                case 7: snp = snp+dig;
+            }
+        }
+        dv = sni+snp;
+        if(dv % 10>0) {
+            dv= 10-(dv % 10);
+            System.out.println("Clave:" +dv);//imprime el digito verificador
+        }else{
+            dv= 0;
+            System.out.println("Clave:" +dv);//imprime el digito verificador
+        }
+        return dv;
+        
+    }    
+ 
 
 
     
