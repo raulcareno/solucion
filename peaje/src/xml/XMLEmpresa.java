@@ -71,6 +71,8 @@ public class XMLEmpresa {
     private static final String LED = "LED";
     private static final String BARRA1 = "BARRA1";
     private static final String BARRA2 = "BARRA2";
+    private static final String SERIE = "SERIE";
+    private static final String SUCURSAL = "SUCURSAL";
     private static final String SALE1 = "SALE1";
     private static final String SALE2 = "SALE2";
     private static final String ENTRADA1 = "ENTRADA1";
@@ -126,8 +128,16 @@ public class XMLEmpresa {
     private static final String IMPRIME2FACTURAS = "IMPRIME2FACTURAS";
     private static final String DESDE = "DESDE";
     private static final String HASTA = "HASTA";
+    private static final String DESDEFIN = "DESDEFIN";
+    private static final String HASTAFIN = "HASTAFIN";
+    private static final String HORADESDECOBRO = "HORADESDECOBRO";
+    private static final String  VALIDACEDULA ="VALIDACEDULA";
+    
+    
     private static final String PUNTO = "PUNTO";
     private static final String VALORMAXIMO = "VALORMAXIMO";
+    private static final String NOMBRECAJA = "NOMBRECAJA";
+    
     // Variables
     private Document xmlDoc = null;
     private Element personal = null;
@@ -367,10 +377,39 @@ public class XMLEmpresa {
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getValorMaximo() + ""));
         personal.appendChild(item);
         
+        item = xmlDoc.createElement(DESDEFIN);
+        item.appendChild(xmlDoc.createTextNode("1900-01-01 "+beanEmpresa.getDesdeFin().getHours()+":"+beanEmpresa.getDesdeFin().getMinutes()+":"+beanEmpresa.getDesdeFin().getSeconds()));
+        personal.appendChild(item);
+        item = xmlDoc.createElement(HASTAFIN);
+        item.appendChild(xmlDoc.createTextNode("1900-01-01 "+beanEmpresa.getHastaFin().getHours()+":"+beanEmpresa.getHastaFin().getMinutes()+":"+beanEmpresa.getHastaFin().getSeconds()));
+        personal.appendChild(item);
+        
+        item = xmlDoc.createElement(HORADESDECOBRO);
+        item.appendChild(xmlDoc.createTextNode("1900-01-01 "+beanEmpresa.getHoraDesdeCobro().getHours()+":"+beanEmpresa.getHoraDesdeCobro().getMinutes()+":"+beanEmpresa.getHoraDesdeCobro().getSeconds()));
+        personal.appendChild(item);
+        
+        item = xmlDoc.createElement(VALIDACEDULA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getValidaCedula() + ""));
+        personal.appendChild(item);
+             
+        
+        
         item = xmlDoc.createElement(PUNTO);
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getPunto()+ ""));
         personal.appendChild(item);
-
+        
+        item = xmlDoc.createElement(NOMBRECAJA);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getNombreCaja()));
+        personal.appendChild(item);
+        
+        item = xmlDoc.createElement(SERIE);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getSerie()));
+        personal.appendChild(item);
+        
+        item = xmlDoc.createElement(SUCURSAL);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getSucursal()));
+        personal.appendChild(item);
+        
         //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
 
     }
@@ -531,6 +570,22 @@ public class XMLEmpresa {
         beanEmpleado.setPunto(emp.getPunto());
         beanEmpleado.setTrabajanotaventa(emp.getTrabajanotaventa());
         beanEmpleado.setImprime2facturas(emp.getImprime2facturas());
+        
+        beanEmpleado.setDesdeFin(emp.getDesdeFin());
+        beanEmpleado.setHastaFin(emp.getHastaFin());
+        beanEmpleado.setHoraDesdeCobro(emp.getHoraDesdeCobro());
+        beanEmpleado.setValidaCedula(emp.getValidaCedula());
+        beanEmpleado.setNombreCaja(emp.getNombreCaja());
+        beanEmpleado.setSerie(emp.getSerie());
+        beanEmpleado.setSucursal(emp.getSucursal());
+        
+//        empresaObj.setDesdeFin((Date)horaDesde3.getValue()); 
+//                    empresaObj.setHastaFin((Date)horaHasta3.getValue());
+//                    empresaObj.setHoraDesdeCobro((Date)horaDesdeCobrar.getValue());
+//                    empresaObj.setValidaCedula(chkvalidacedula.isSelected());
+        
+        
+        
 
         //Generamos documento XML para los valores anteriores
         pXml.llenarEstructuraDocumentoXMLEmpleado(beanEmpleado);
@@ -1217,6 +1272,136 @@ public class XMLEmpresa {
                         user.setPunto(false);
                     }
                     
+                    
+                   try {
+                        NodeList DESDEFINoutList = firstPersonElement.getElementsByTagName("DESDEFIN");
+                        Element DESDEFINoutElement = (Element) DESDEFINoutList.item(0);
+                        NodeList DESDEFINoutAgeList = DESDEFINoutElement.getChildNodes();
+                        Date de = new Date();
+                        String tiempo  = (((Node) DESDEFINoutAgeList.item(0)).getNodeValue().trim().substring(10));
+                         StringTokenizer t = new StringTokenizer(tiempo, ":");
+                         int a = 0;
+                            de.setHours(0);
+                            de.setMinutes(0);
+                            de.setSeconds(0);
+                         for (StringTokenizer stringTokenizer = new StringTokenizer(tiempo,":"); stringTokenizer.hasMoreTokens();) {
+                            String token = stringTokenizer.nextToken();
+                            if(a == 0){
+                                de.setHours(new Integer(token.trim()));
+                            }else if(a == 1){
+                                de.setMinutes(new Integer(token.trim()));
+                            }else if(a == 2){
+                                    de.setSeconds(new Integer(token.trim()));
+                            }
+                            a++;
+                             System.out.println(""+token);
+                             
+                        }
+                        user.setDesdeFin(de);
+                    } catch (Exception parserConfigurationException) {
+                        System.out.println(""+parserConfigurationException);
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+
+                    try {
+                        NodeList HastaFinoutList = firstPersonElement.getElementsByTagName("HASTAFIN");
+                        Element HastaFinoutElement = (Element) HastaFinoutList.item(0);
+                        NodeList HastaFinoutAgeList = HastaFinoutElement.getChildNodes();
+                        Date de = new Date();
+                        String tiempo  = (((Node) HastaFinoutAgeList.item(0)).getNodeValue().trim().substring(10));
+                         int a = 0;
+                            de.setHours(23);
+                            de.setMinutes(59);
+                            de.setSeconds(59);
+                         for (StringTokenizer stringTokenizer = new StringTokenizer(tiempo,":"); stringTokenizer.hasMoreTokens();) {
+                            String token = stringTokenizer.nextToken();
+                            if(a == 0){
+                                de.setHours(new Integer(token.trim()));
+                            }else if(a == 1){
+                                de.setMinutes(new Integer(token.trim()));
+                            }else if(a == 2){
+                                    de.setSeconds(new Integer(token.trim()));
+                            }
+                            a++;
+                             System.out.println(""+token);
+                             
+                        }
+                        user.setHastaFin(de);
+                        
+                    } catch (Exception parserConfigurationException) {
+                        System.out.println(""+parserConfigurationException);
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    try {
+                        NodeList HORADESDECOBROoutList = firstPersonElement.getElementsByTagName("HORADESDECOBRO");
+                        Element HORADESDECOBROoutElement = (Element) HORADESDECOBROoutList.item(0);
+                        NodeList HORADESDECOBROoutAgeList = HORADESDECOBROoutElement.getChildNodes();
+                        Date de = new Date();
+                        String tiempo  = (((Node) HORADESDECOBROoutAgeList.item(0)).getNodeValue().trim().substring(10));
+                         StringTokenizer t = new StringTokenizer(tiempo, ":");
+                         int a = 0;
+                            de.setHours(0);
+                            de.setMinutes(0);
+                            de.setSeconds(0);
+                         for (StringTokenizer stringTokenizer = new StringTokenizer(tiempo,":"); stringTokenizer.hasMoreTokens();) {
+                            String token = stringTokenizer.nextToken();
+                            if(a == 0){
+                                de.setHours(new Integer(token.trim()));
+                            }else if(a == 1){
+                                de.setMinutes(new Integer(token.trim()));
+                            }else if(a == 2){
+                                    de.setSeconds(new Integer(token.trim()));
+                            }
+                            a++;
+                             System.out.println(""+token);
+                             
+                        }
+                        user.setHoraDesdeCobro(de);
+                    } catch (Exception parserConfigurationException) {
+                        System.out.println(""+parserConfigurationException);
+                        //                        System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
+                    try {
+                        NodeList VALIDACEDULAoutList = firstPersonElement.getElementsByTagName("VALIDACEDULA");
+                        Element VALIDACEDULAoutElement = (Element) VALIDACEDULAoutList.item(0);
+                        NodeList VALIDACEDULAoutAgeList = VALIDACEDULAoutElement.getChildNodes();
+                        //user.setTrabajanotaventa(((Node) VALIDACEDULAoutAgeList.item(0)).getNodeValue().trim());
+                        user.setValidaCedula(new Boolean(((Node) VALIDACEDULAoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        // System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                     
+                    try {
+                        NodeList NOMBRECAJAoutList = firstPersonElement.getElementsByTagName("NOMBRECAJA");
+                        Element NOMBRECAJAoutElement = (Element) NOMBRECAJAoutList.item(0);
+                        NodeList NOMBRECAJAoutAgeList = NOMBRECAJAoutElement.getChildNodes();
+                        user.setNombreCaja((((Node) NOMBRECAJAoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        // System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                    
+                    try {
+                        NodeList SERIEoutList = firstPersonElement.getElementsByTagName("SERIE");
+                        Element SERIEoutElement = (Element) SERIEoutList.item(0);
+                        NodeList SERIEoutAgeList = SERIEoutElement.getChildNodes();
+                        user.setSerie((((Node) SERIEoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        // System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                       try {
+                        NodeList SUCURSALoutList = firstPersonElement.getElementsByTagName("SUCURSAL");
+                        Element SUCURSALoutElement = (Element) SUCURSALoutList.item(0);
+                        NodeList SUCURSALoutAgeList = SUCURSALoutElement.getChildNodes();
+                        user.setSucursal((((Node) SUCURSALoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        // System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                            
+                            
                     //------
 
                 }//end of if clause

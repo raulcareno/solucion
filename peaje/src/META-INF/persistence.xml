@@ -19,6 +19,7 @@
     <class>hibernate.Control</class>
     <class>hibernate.Cxcobrar</class>
     <class>hibernate.Descuento</class>
+    <class>hibernate.Documentos</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value=""/>

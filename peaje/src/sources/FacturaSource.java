@@ -84,9 +84,12 @@ public class FacturaSource implements JRDataSource {
             } else if ("ticket".equals(fieldName)) {
                 try {
                 String codigo = nodo.getTicket();
-                while (codigo.length() < 8) {
-                    codigo = "0" + codigo;
-                }
+//                if(codigo.contains("A") || codigo.contains("B") || codigo.contains("C")){
+//                
+//                }
+//                while (codigo.length() < 8) {
+//                    codigo = "0" + codigo;
+//                }
                 valor = codigo;    
                 } catch (Exception e) {
                     valor ="   s/t";
