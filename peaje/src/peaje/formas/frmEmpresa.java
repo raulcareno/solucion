@@ -915,6 +915,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel2.add(multa);
         multa.setBounds(320, 70, 40, 18);
 
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(255, 0, 0));
         jLabel38.setText("Multa por pérdida: ");
         jPanel2.add(jLabel38);
         jLabel38.setBounds(230, 70, 100, 18);
@@ -1333,7 +1335,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 
         chkvalidacedula.setText("Se Valida cédula antes de guardar");
         variosPanel.add(chkvalidacedula);
-        chkvalidacedula.setBounds(20, 60, 190, 20);
+        chkvalidacedula.setBounds(20, 60, 200, 20);
 
         chkPunto.setText("¿Aquí es un Punto de Cobro?");
         chkPunto.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

@@ -4,7 +4,6 @@
  */
 package peaje.formas;
 
-import hibernate.Clientes;
 import hibernate.Empresa;
 import hibernate.Factura;
 import hibernate.cargar.WorkingDirectory;
@@ -34,7 +33,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.GeneraXMLPersonal;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import sources.FacturaSource;
