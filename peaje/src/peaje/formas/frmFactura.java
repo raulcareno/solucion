@@ -523,7 +523,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona GUARDAR..::..");
         jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 290, 13);
+        jLabel10.setBounds(10, 20, 420, 13);
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 780, 40);
@@ -907,11 +907,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         noTicket.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                noTicketKeyReleased(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 noTicketKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                noTicketKeyReleased(evt);
             }
         });
         jPanel1.add(noTicket);
