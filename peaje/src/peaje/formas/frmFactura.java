@@ -38,8 +38,7 @@ import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -286,6 +285,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel52 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
         btnGenerar = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         numeroFactura = new javax.swing.JFormattedTextField();
@@ -1041,6 +1041,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel1.add(btnGenerar);
         btnGenerar.setBounds(150, 30, 55, 20);
+
+        jButton8.setText("Placa");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton8);
+        jButton8.setBounds(300, 10, 57, 23);
 
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 5, 360, 160);
@@ -3414,6 +3423,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         cargarFoto(fac.getCodigo());
                     } catch (Exception es) {
                         System.out.println("NO SE CARGO FOTO");
+                    }
+                    try {
+                        cargarPlaca(fac.getCodigo());
+                    } catch (Exception es) {
+                        System.out.println("NO SE CARGO placa");
                     }
                 } else {
                     ingreso.setDate(null);
@@ -6514,7 +6528,37 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         // TODO add your handling code here:
         generarNumeroFactura2();
     }//GEN-LAST:event_btnGene2ActionPerformed
-private void generarNumeroFactura1() {
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        // DONE load snapshot args[2] and recognize it
+      
+    }//GEN-LAST:event_jButton8ActionPerformed
+public void cargarPlaca(Integer codigoFactura){
+        try {
+            //      try {
+                       if (ubicacionDirectorio.contains("build")) {
+                            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+                        }
+                        String foto = ubicacionDirectorio + separador + "fotos" + separador + codigoFactura + ".jpg";
+                        
+                            Runtime runtime = Runtime.getRuntime();
+                            Process proc = runtime.exec("java -jar javaanpr.jar -recognize -i "+foto);
+                            InputStream is = proc.getInputStream();
+                            InputStreamReader isr = new InputStreamReader(is);
+                            BufferedReader br = new BufferedReader(isr);
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                    System.out.println(line);
+                                    break;
+                            }
+                            placa.setText(line);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}
+    private void generarNumeroFactura1() {
         try {
             List documento = adm.query("Select o from Documentos as o where o.codigo = '" + empresaObj.getSerie() + empresaObj.getSucursal() + "' ");
             if (documento.size() <= 0) {
@@ -6659,6 +6703,7 @@ private void generarNumeroFactura2() {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
