@@ -241,81 +241,66 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 tarjeta = tarjeta.substring(0, 10);
             }
             tarjeta = tarjeta.toUpperCase();
-            //System.out.println("VAL: TARJETA: " + tarjeta);
-            //System.out.println("" + tarjeta);
-            if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.toUpperCase().contains("INGENIE")) {
-                if (habilitado) {
-                    //if (tarjeta.contains("AEIOUA")) {
-                    try {
-                        //                            tarjeta = tarjeta.replace("00", "");
-                        System.out.println("abrio AEIOUA: " + tarjeta + " " + new Date());
-                        tarjeta = "";
-                        imprimir("");
-                        System.out.println("IMPRIMIÓ");
-                        Thread.sleep(3000);
-                        //                    if (princip.empresaObj.getRetardoEntrada() != null) {
-                        //                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
-                        //                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
-                        //                                    Thread.sleep(retardo * 1000);
-                        //                                }
-                        //                      }
-                        abrirPuerta(princip.empresaObj.getEntra1());
-                        System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
-                        try {
-                            princip.noDisponibles();
-                        } catch (Exception e) {
-                            System.out.println("error en recontar");
-                        }
-                        limpiarMemoria();
-                        return;
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    princip.tarjetatxt.setText("");
+        }
+        //System.out.println("VAL: TARJETA: " + tarjeta);
+        //System.out.println("" + tarjeta);
+        if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("AEIOUAE2") || tarjeta.toUpperCase().contains("INGENIE")) {
+            if (habilitado) {
+                try {
+                    System.out.println("abrio AEIOUA: " + tarjeta + " " + new Date());
                     tarjeta = "";
-                    limpiarMemoria();
-                    return;
-                }
-
-            }
-            if (tarjeta.contains("AEIOUAE2")) {
-                if (habilitado) {
-                    try {
-                        tarjeta = tarjeta.replace("00", "");
-                        System.out.println("AEIOUAEIOU2" + new Date());
-                        tarjeta = "";
+                    if (tarjeta.contains("AEIOUAE2")) {
+                        imprimir("");
+                    } else {
                         imprimir("2");
-                        Thread.sleep(3000);
+                    }
+                    System.out.println("IMPRIMIÓ");
+                    Thread.sleep(3000);
 //                        if (princip.empresaObj.getRetardoEntrada() != null) {
 //                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
 //                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
 //                                    Thread.sleep(retardo * 1000);
 //                                }
-//                      }
+                    if (tarjeta.contains("AEIOUAE2")) {
                         abrirPuerta(princip.empresaObj.getEntra2());
                         System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
-                        tarjeta = "";
-                        limpiarMemoria();
-                        return;
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
+                    } else {
+                        abrirPuerta(princip.empresaObj.getEntra1());
+                        System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
                     }
-                } else {
-                    princip.tarjetatxt.setText("");
-                    tarjeta = "";
+                    try {
+                        princip.noDisponibles();
+                    } catch (Exception e) {
+                        System.out.println("error en recontar");
+                    }
                     limpiarMemoria();
                     return;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
-                princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
+            } else {
+                princip.tarjetatxt.setText("");
                 tarjeta = "";
                 limpiarMemoria();
-                //                inputStream = null;
                 return;
             }
-             
+
+        }
+
+        if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
+            princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
+            tarjeta = "";
+            limpiarMemoria();
+            return;
+        }
+        if (       puertoId.getName().equals(princip.empresaObj.getPuerto1()) 
+                || puertoId.getName().equals(princip.empresaObj.getPuerto2())
+                || puertoId.getName().equals(princip.empresaObj.getPuerto3())
+                || puertoId.getName().equals(princip.empresaObj.getPuerto4())
+                || puertoId.getName().equals(princip.empresaObj.getSalida1())
+                || puertoId.getName().equals(princip.empresaObj.getSalida2())
+                || puertoId.getName().equals(princip.empresaObj.getSalida3())
+                || puertoId.getName().equals(princip.empresaObj.getSalida4())) { //VALIDO ENTRADA O SALIDA CON TARJETA
             //BUSCAR TARJETA 
             princip.tarjetatxt.setText("");
             princip.tarjetatxt.setText(tarjeta);
@@ -325,94 +310,9 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             limpiarMemoria();
             //peaje.formas.SimpleWrite.llamar("COM3");
             return;
-
-        } else {
-
-            if (tarjeta.contains("AEIOUAE1") || tarjeta.toUpperCase().contains("INGENIER")) {//*******PULSA EL BOTÓN 1 E INTENTA ABRIR LA BARRERA
-                if (habilitado) {
-                    try {
-                        System.out.println("abrio 1:  " + tarjeta + " ** " + new Date());
-                        //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
-                        //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
-                        //             tarjeta = tarjeta.replace("00", "");
-                        tarjeta = "";
-                        imprimir("");
-                        System.out.println("IMPRIMIÓ");
-                        //Thread.sleep(3000);
-                        if (princip.empresaObj.getRetardoEntrada() != null) {
-                            if (princip.empresaObj.getRetardoEntrada().length() > 0) {
-                                Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
-                                Thread.sleep(retardo * 1000);
-                            }
-                        }
-                        abrirPuerta(princip.empresaObj.getEntra1());
-                        System.out.println("ABRIO PUERTA AEIOUAE1: " + princip.empresaObj.getEntra1());
-                        limpiarMemoria();
-                        return;
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    princip.tarjetatxt.setText("");
-                    tarjeta = "";
-                    limpiarMemoria();
-                    return;
-                }
-            } else if (tarjeta.contains("AEIOUAE2")) {
-                if (habilitado) {
-                    try {
-                        System.out.println("abrio 2:  " + tarjeta + " ** " + new Date());
-                        //if (tarjeta.contains("AEIOUAE")) {funciona con francisco
-                        //if (tarjeta.contains("AEI")) { //no funciona para francisco granja
-                        //             tarjeta = tarjeta.replace("00", "");
-                        tarjeta = "";
-                        imprimir("2");
-                        if (princip.empresaObj.getRetardoEntrada() != null) {
-                            if (princip.empresaObj.getRetardoEntrada().length() > 0) {
-                                Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
-                                Thread.sleep(retardo * 1000);
-                            }
-                        }
-                        abrirPuerta(princip.empresaObj.getEntra2());
-                        System.out.println("ABRIO PUERTA aeiou2: " + princip.empresaObj.getEntra2());
-                        limpiarMemoria();
-                        return;
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    princip.tarjetatxt.setText("");
-                    tarjeta = "";
-                    limpiarMemoria();
-                    return;
-                }
-
-            }
-            //Long valor = null;
-            try {
-                //valor = new Long(tarjeta);
-            } catch (Exception e) {
-                limpiarMemoria();
-                //return; //quite por que ya no es solo numerico
-
-            }
-            if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
-                System.out.println("COMPLETO 10 DIGITOS POR QUE ES LECTORA DE BARRAS");
-                //tarjeta = valor + "";
-//                for (int i = tarjeta.length(); i < 10; i++) {
-//                    tarjeta = "0" + tarjeta;
-//                } //quite por que ya no es solo numerico
-//                if (tarjeta.length() > 10) {
-//                    tarjeta = tarjeta.substring(0, 10);
-//                }
-                princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
-                System.out.println("ABRIO BARRAS: " + tarjeta);
-                tarjeta = "";
-                limpiarMemoria();
-                return;
-            }
-
         }
+
+
     }
 
     public void limpiarMemoria() {
@@ -454,7 +354,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public void abrirPuerta(String puerta) {
         System.out.println("ORDEN DE ABRIR PUERTA: " + puerta);
         try {
-System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+            System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
 //        System.gc();
 //        System.gc();
 //        System.gc();
@@ -486,7 +386,7 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             noDisponibles();
             ta = null;
             limpiarMemoria();
-            System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+            System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         } catch (InterruptedException ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -525,11 +425,11 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             } catch (Exception err) {
                 System.out.println("EN CONTAR: " + err);
             }
-            
+
 //            con = null;
 //            disponibles = 0;
 //            val2 = null;
-            
+
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             return regresa;
         } catch (Exception ex) {
@@ -561,10 +461,10 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             Boolean pasar = true;
             Integer numero = new Integer(emp.getDocumentoticket()) + 1;
             while (pasar) {
-                List sihay = adm.query("Select o from Factura as o where o.ticket = '" + numero + "'");
+                List sihay = adm.query("Select o from Factura as o where o.ticket = '" +nombreCaja+numero + "'");
                 if (sihay.size() <= 0) {
                     pasar = false;
-                    fac.setTicket("" +nombreCaja+ numero);
+                    fac.setTicket("" + nombreCaja + numero);
                     emp.setDocumentoticket((numero) + "");
                     adm.actualizar(emp);//GUARDO EMPRESA
                     adm.guardar(fac); // GUARDO FACTURA
@@ -584,10 +484,14 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             parametros.put("telefono", emp.getTelefonos());
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             PrinterJob job = PrinterJob.getPrinterJob();
-            /* Create an array of PrintServices */
+            /*
+             * Create an array of PrintServices
+             */
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;
-            /* Scan found services to see if anyone suits our needs */
+            /*
+             * Scan found services to see if anyone suits our needs
+             */
             String impre = emp.getImpresora();
             if (impresoraLlega.equals("2")) {
                 impre = emp.getImpresora2();
@@ -606,7 +510,9 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             JRPrintServiceExporter exporter;
             exporter = new JRPrintServiceExporter();
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, masterPrint);
-            /* We set the selected service and pass it as a paramenter */
+            /*
+             * We set the selected service and pass it as a paramenter
+             */
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, services[selectedService]);
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, services[selectedService].getAttributes());
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
@@ -629,7 +535,7 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
                     if (ubicacionDirectorio.contains("build")) {
                         ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                     }
-                    fotografiarIp( ubicacionDirectorio + "\\fotos"+separador +fac.getCodigo() + ".jpg" );
+                    fotografiarIp(ubicacionDirectorio + "\\fotos" + separador + fac.getCodigo() + ".jpg");
                 }
                 noDisponibles();
                 princip.cargarFoto(fac.getCodigo());
@@ -648,20 +554,20 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
             job = null;
             masterPrint = null;
             job = null;
-            
+
             emp = null;
-            
-            
+
+
             ds = null;
             detalle = null;
             detalle = null;
-             masterReport = null;
+            masterReport = null;
             exporter = null;
             job = null;
             services = null;
-            masterPrint =null;
+            masterPrint = null;
             parametros = null;
-            
+
             limpiarMemoria();
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
@@ -674,9 +580,10 @@ System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRu
 
     public void fotografiarIp(String nombre) {
 
-        Thread cargar = new Thread(""+nombre) {
+        Thread cargar = new Thread("" + nombre) {
+
             public void run() {
-                System.out.println("FOTO_: "+this.getName());
+                System.out.println("FOTO_: " + this.getName());
                 princip.verIp.tomarFotoIp(this.getName(), princip);
             }
         };

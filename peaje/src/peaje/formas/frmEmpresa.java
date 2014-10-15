@@ -1504,7 +1504,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
         });
         jPanel5.add(cmbEntrada2);
-        cmbEntrada2.setBounds(120, 250, 60, 19);
+        cmbEntrada2.setBounds(120, 249, 60, 20);
 
         cmbPuerta3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26" }));
         cmbPuerta3.setSelectedIndex(2);
