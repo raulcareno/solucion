@@ -536,6 +536,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                         ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                     }
                     fotografiarIp(ubicacionDirectorio + "\\fotos" + separador + fac.getCodigo() + ".jpg");
+                    //cargarPlaca(fac.getCodigo());
                 }
                 noDisponibles();
                 princip.cargarFoto(fac.getCodigo());
@@ -593,4 +594,32 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //            JOptionPane.showMessageDialog(null, "Error en la Fotografia");
 //        }
     }
+    WorkingDirectory w = new WorkingDirectory();
+    String ubicacionDirectorio = w.get() + separador;
+    public String cargarPlaca(Integer codigoFactura) {
+        try {
+            //      try {
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+            String foto = ubicacionDirectorio + separador + "fotos" + separador + codigoFactura + ".jpg";
+
+            Runtime runtime = Runtime.getRuntime();
+            Process proc = runtime.exec("java -jar javaanpr.jar -recognize -i " + foto);
+            InputStream is = proc.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(isr);
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+                break;
+            }
+            return line;
+
+        } catch (IOException ex) {
+            Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
+    
 }
