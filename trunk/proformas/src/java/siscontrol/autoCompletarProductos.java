@@ -1,11 +1,10 @@
 package siscontrol;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import java.util.List;
- 
+
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.InputEvent;
@@ -18,14 +17,14 @@ public class autoCompletarProductos extends Combobox {
 //		Arrays.sort(arreglo);
     }
     Administrador adm;
-    
+    Empresa empresa;
 
     public autoCompletarProductos() {
         //	refresh("");
         adm = new Administrador();
         Session a = Sessions.getCurrent();
-      
-        
+        empresa = (Empresa) a.getAttribute("empresa");
+
 
     }
 
@@ -38,14 +37,14 @@ public class autoCompletarProductos extends Combobox {
 //        }
 //
 //    }
-    
-     static {
+    static {
 //		Arrays.sort(arreglo);
     }
+
     public autoCompletarProductos(String value) {
-        
+
         super(value); //it invokes setValue
-        System.out.println("se ejecuto: "+value);
+        System.out.println("se ejecuto: " + value);
     }
 
     public void setValue(String value) {
@@ -55,16 +54,28 @@ public class autoCompletarProductos extends Combobox {
 
     public void onChanging(InputEvent evt) {
         if (!evt.isChangingBySelectBack()) {
+            try {
+                
+            
             String abuscar = evt.getValue();
-
+            String query = "";
             List<Productos> estu = new ArrayList<Productos>();
+
+
             if (abuscar.length() > 0) {
-                estu = adm.query("Select o from Productos as o "
+                query = "Select o from Productos as o "
                         + " where o.nombre like '%" + abuscar + "%' "
                         + "   "
-                        + "order by o.nombre");
+                        + "order by o.nombre";
 
             }
+            if (abuscar.toUpperCase().contains(empresa.getCode().toUpperCase())) {
+                query = "Select o from Productos as o "
+                        + " where o.code like '%" + abuscar + "%' "
+                        + "   "
+                        + "order by o.code";
+            }
+            estu = adm.query(query);
 
             for (int i = 0; i < getItems().size(); i++) {
                 getItems().remove(i);
@@ -76,40 +87,35 @@ public class autoCompletarProductos extends Combobox {
                 it.next();
                 it.remove();
             }
-            for (Iterator<Productos> itEst = estu.iterator(); itEst.hasNext();) {
-                Productos estudiantes = itEst.next();
-                it = null;
-                //new Comboitem(estudiantes.getApellidos() + " " + estudiantes.getNombres() + " [" + estudiantes.getCodigo() + "]").setParent(this);
-                Comboitem c = new Comboitem();
-                c.setValue(estudiantes);
-                c.setLabel((estudiantes.getNombre())+"");
-                if(estudiantes.getDescripcion().length()>100){
-                    c.setDescription(estudiantes.getDescripcion().substring(0, 100)+"...");    
-                }else{
-                    c.setDescription(estudiantes.getDescripcion());    
-                }
-                
-                c.setParent(this);
+            if (estu.size() > 0) {
+                for (Iterator<Productos> itEst = estu.iterator(); itEst.hasNext();) {
+                    Productos estudiantes = itEst.next();
+                    it = null;
+                    //new Comboitem(estudiantes.getApellidos() + " " + estudiantes.getNombres() + " [" + estudiantes.getCodigo() + "]").setParent(this);
+                    Comboitem c = new Comboitem();
+                    c.setValue(estudiantes);
+                    c.setLabel("["+estudiantes.getCode() + "] " + (estudiantes.getNombre()) + "");
 
+
+                    if (estudiantes.getDescripcion().length() > 100) {
+                        c.setDescription(estudiantes.getDescripcion().substring(0, 90) + "...");
+                    } else {
+                        c.setDescription(estudiantes.getDescripcion());
+                    }
+
+                    c.setParent(this);
+
+                }
             }
 
 
-
-        }else{
-         
+} catch (Exception e) {
+                //System.out.println("");
+            }
+        } else {
         }
     }
-    static String[] dictionary = {"contradiction", "contradictory", "contraposition", "contravene", "contribution", "contributor", "contrite", "contrivance",
-        "contrive", "control", "controller", "contumacious", "contumacy", "contumely", "contuse", "contusion", "conundrum", "convalesce", "convalescence", "convalescent", "convene",
-        "convenience", "conventional", "converge", "convergent", "conversant", "conversion", "convertible", "convex", "conveyance", "convivial", "convoluted", "convolution", "convolve", "convoy",
-        "convulse", "convulsion", "copious", "coquette", "cornice", "cornucopia", "corollary", "coronation", "coronet", "corporal", "corporate", "corporeal", "corps", "corpse", "corpulent",
-        "corpuscle", "correlate", "correlation", "correlative", "corrigible", "corroborate", "corroboration", "corrode", "corrosion", "corrosive", "corrugated", "corruptible", "corruption",
-        "cosmetic", "cosmic", "cosmogony", "cosmography", "cosmology", "cosmopolitan", "cosmopolitanism", "cosmos", "counseling", "counselor", "countenance", "counteract", "counterbalance",
-        "countercharge", "counter-claim", "counterfeit", "counterpart", "countervail", "counting-house", "countless", "countryman", "courageous", "course", "courser", "courtesy", "covenant",
-        "covert", "covey", "cower", "coxswain", "crag", "cranium", "crass", "craven", "craving", "creak", "creamery", "creamy", "creature", "credence", "credible", "credulous", "creed",
-        "crematory", "crevasse", "crevice", "criterion", "critique", "crockery", "crucible", "crusade", "crustacean", "crustaceous", "cryptic", "cryptogram", "crystallize", "cudgel", "culinary",
-        "cull", "culminate", "culpable", "culprit", "culvert", "cupidity", "curable", "curative", "curator", "curio", "curl", "cursive", "cursory", "curt", "curtail", "curtsy", "cycloid",
-        "zenith", "zephyr", "zero", "zk", "zodiac"};
+    static String[] dictionary = {"contradiction", "zodiac"};
 
     public static String[] getDirectory() {
         return dictionary;

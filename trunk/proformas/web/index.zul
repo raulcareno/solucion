@@ -128,9 +128,9 @@ void ingresar(Menuitem item,String pantalla ){
                 <separator orient="vertical"/>
                 <label  style="padding-left:10px;color:white;font-size:17px;font-weight:bold" value="...::::..."  />
                 <separator orient="vertical"/>
-                <label  style="padding-left:10px;color:white;font-size:9px;" value="USUARIO: ${sessionScope.sector.empleados.apellidos} ${sessionScope.sector.empleados.nombres}"  />
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="USUARIO: ${sessionScope.user.nombres}"  />
                 <separator height="5px" orient="vertical"/>
-                <label  style="padding-left:10px;color:white;font-size:9px;" value="SUCURSAL: ${sessionScope.sector.sucursal.descripcion}"  />
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="${sessionScope.sector}"  />
                 <separator height="5px"  orient="vertical"/>
                 <!--toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/-->
 

@@ -4,7 +4,8 @@
  
 <window id="controlventana">
     <zscript>
-            <![CDATA[
+            <![CDATA[ 
+            
  import siscontrol.*;
  import siscontrol.cnx.*;
   import java.util.ArrayList;
@@ -358,6 +359,7 @@ Boolean validarSeriesAju(){
  void nuevo(){
     if(verificar("Agregar")){
           try{ 
+          clientesBusqueda.value = "";
             idproveedores.value = 0; 
             cedula.value = ""; 
             direccion.value = ""; 
@@ -366,6 +368,7 @@ Boolean validarSeriesAju(){
             referencia.value = "";
             razonsocial.value = "";
             email.value = "";
+            factura.value = null;
          }catch(Exception ex){}
          clientesBusqueda.disabled=false; 
           guardar.disabled=false; 
@@ -477,8 +480,9 @@ llenarGrid(){
                             intb.setCols(3);
                             intb.setReadonly(true);
                             intb.setStyle("float:right;text-align:right");
-                             
-                            Label prod = new Label(productod.value);
+                            int fin = (productod.value).indexOf("]")+1; 
+                            Label prod = new Label((productod.value).substring(fin));
+                            
                             
                             row.appendChild(intb);
                             row.appendChild(prod);
@@ -644,7 +648,7 @@ void tipoDocumento(String tipo){
                             </span> 
                             <span>
                                  
-                                <combobox  cols="35" disabled="true"  id="clientesBusqueda" onOK='factura.focus();' 
+                                <combobox  cols="35" disabled="true"  id="clientesBusqueda" onOK='nombres.focus();' 
                                            onSelect="try{ idproveedores.value = (self.selectedItem.value).getCodigo(); 
                                                         cedula.value = (self.selectedItem.value).getCedula(); 
                                                         direccion.value = (self.selectedItem.value).getDireccion(); 
@@ -653,6 +657,7 @@ void tipoDocumento(String tipo){
                                                         referencia.value = (self.selectedItem.value).getReferencia();
                                                         razonsocial.value = (self.selectedItem.value).getRazonsocial(); 
                                                         email.value = (self.selectedItem.value).getEmail();
+                                                        nombres.focus();
                                                          }catch(Exception ex){}" 
                                            autodrop="true" buttonVisible="false"  
                                            use="siscontrol.autoCompletarClientes"/>
@@ -766,36 +771,36 @@ void tipoDocumento(String tipo){
                                         <span>
                                             <intbox cols="1" visible="false"  id="idproducto" readonly="true" />
                                             <!--textbox value="" onFocus="vu.focus()" readonly="true" id="productod" cols="50" /-->
-                                            <combobox  cols="35" id="productod" onOK='vu.focus();' 
+                                            <combobox  cols="60" id="productod" onOK='vu.focus();' 
                                                        onSelect=" if(self.selectedItem!=null){ llenarEquipo(self.selectedItem.value);} " 
                                                        autodrop="true" buttonVisible="false"  
                                                        use="siscontrol.autoCompletarProductos"/>
                                             <zscript>
                                                 llenarEquipo(Productos es){
-                                                idproducto.value = es.getCodigo(); 
-                                                vu.value  = es.getPvp1();  
-                                                int a=0;
-                                                for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
-                                                valores.getItems().remove(a);
-                                                }
-                                                Listitem li = new Listitem();
-                                                li.setValue(es.getPvp1());
-                                                li.appendChild(new Listcell(es.getPvp1()+""));
-                                                valores.appendChild(li);
+                                                        idproducto.value = es.getCodigo(); 
+                                                        vu.value  = es.getPvp1();  
+                                                        int a=0;
+                                                        for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
+                                                            valores.getItems().remove(a);
+                                                        }
+                                                        Listitem li = new Listitem();
+                                                        li.setValue(es.getPvp1());
+                                                        li.appendChild(new Listcell(es.getPvp1()+""));
+                                                        valores.appendChild(li);
 
-                                                Listitem li2 = new Listitem();
-                                                li2.setValue(es.getPvp2());
-                                                li2.appendChild(new Listcell(es.getPvp2()+""));
-                                                valores.appendChild(li2);
+                                                        Listitem li2 = new Listitem();
+                                                        li2.setValue(es.getPvp2());
+                                                        li2.appendChild(new Listcell(es.getPvp2()+""));
+                                                        valores.appendChild(li2);
 
 
-                                                Listitem li3 = new Listitem();
-                                                li3.setValue(es.getPvp3());
-                                                li3.appendChild(new Listcell(es.getPvp3()+""));
-                                                valores.appendChild(li3);
-                                                
-                                                valores.setSelectedIndex(0);
-                                                calcularTotal();
+                                                        Listitem li3 = new Listitem();
+                                                        li3.setValue(es.getPvp3());
+                                                        li3.appendChild(new Listcell(es.getPvp3()+""));
+                                                        valores.appendChild(li3);
+
+                                                        valores.setSelectedIndex(0);
+                                                        calcularTotal();
                                                 }
                                                 calcularTotal(){
                                                 try{
