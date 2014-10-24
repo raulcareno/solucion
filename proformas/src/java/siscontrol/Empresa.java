@@ -58,6 +58,8 @@ public class Empresa implements Serializable {
     @Basic(optional = false)
     @Column(name = "ruc")
     private String ruc;
+    @Column(name = "code")
+    private String code;
     @Column(name = "razonsocial")
     private String razonsocial;
     @Column(name = "representante")
@@ -116,6 +118,15 @@ public class Empresa implements Serializable {
 
     public Empresa() {
     }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+    
 
     public Empresa(String ruc) {
         this.ruc = ruc;

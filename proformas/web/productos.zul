@@ -16,7 +16,10 @@ import siscontrol.*;
     List allEvents = adm.query("Select o from Productos as o where o.codigo = 0");
     static Productos empa = new Productos();
     Permisos permiso = new Permisos();
-    
+Session a = Sessions.getCurrent();
+                Empresa empresa = a.getAttribute("empresa");
+ 
+      
     Object media = null;
 Boolean instanciadaContratos = false;
 //FUNCIONES
@@ -29,10 +32,17 @@ void cargarVacio(){
 
 //FUNCIONES
 void llenar(Productos empa){
+
     codigo.value = empa.getCodigo();
     nombre.value = empa.getNombre();
     descripcion.value = empa.getDescripcion();
-    code.value = empa.getCode();
+    try{
+        code.value = empa.getCode().replace(empresa.getCode()+"-","");
+}catch(Exception ab){
+        code.value = empa.getCode();
+}
+
+    
     pvp1.value = empa.getPvp1();
     pvp2.value = empa.getPvp2();
     pvp3.value = empa.getPvp3();
@@ -73,7 +83,7 @@ void estado(Boolean estado,Boolean modificar){
         empa.setCodigo(codigo.value);
         empa.setNombre(nombre.value);
         empa.setDescripcion(descripcion.value);
-        empa.setCode(code.value);
+        empa.setCode(empresa.getCode()+"-"+code.value);
         empa.setPvp1(pvp1.value);
         empa.setPvp2(pvp2.value);
         empa.setPvp3(pvp3.value);
@@ -177,7 +187,17 @@ void eliminar(){
                 }
     }
   void buscar(String p){
-        List empleadosEncontrados = adm.query("Select o from Productos as o where o.nombre like '%"+p+"%' order by o.nombre");
+        String q = "Select o from Productos as o where o.nombre like '%"+p+"%' order by o.nombre";
+        
+          if(p.toUpperCase().contains(""+empresa.getCode().toUpperCase()+"")){
+                    q = "Select o from Productos as o "
+                        + " where o.code like '%" + p + "%' "
+                        + "   "
+                        + "order by o.code";
+            }
+            System.out.println(""+q);
+        List empleadosEncontrados = adm.query(q);
+        
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
@@ -189,7 +209,7 @@ void eliminar(){
                       Productos acceIt = (Productos) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
-                      li.appendChild(new Listcell(acceIt.getCodigo()+""));
+                      li.appendChild(new Listcell(acceIt.getCode()+""));
                       li.appendChild(new Listcell(acceIt.getNombre()));
                       li.appendChild(new Listcell(acceIt.getDescripcion()+""));
                       datos.appendChild(li);
@@ -207,7 +227,12 @@ void eliminar(){
 
                 <row>
                     <span style="float:right"> Código(*):</span>
+                    <span>
+                        <textbox id="code0" cols="3" readonly="true" />
+                    <label value="-"/>
                     <textbox id="code"  maxlength="30" cols="20" readonly="true"   />
+                    </span>
+                    
                   </row>
                 <row>
                     <span style="float:right"> Nombre(*):</span>
@@ -263,17 +288,16 @@ void eliminar(){
 
             <caption label="Busquedas" />
             <vbox>
-                <hbox>  Nombre:
-                    <textbox id="buscarText"  maxlength="60" cols="40" />
+                <hbox>  Nombre o Código:
+                    <textbox id="buscarText" onChanging="buscar(event.value)"   maxlength="60" cols="40" />
                     <button id="buscar"  label="Buscar" onClick="buscar(buscarText.getValue());"/>
                 </hbox>
                 <hbox>
                     <listbox mold="paging" rows="10" pageSize="10"  onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
                         <listhead>
-                            <listheader label="Cod."/>
-                            <listheader label="Nombre"/>
+                            <listheader sort="true" label="Cod."/>
+                            <listheader sort="true" label="Nombre"/>
                             <listheader label="Descripcion"/>
-
                         </listhead>
                         <listitem forEach="${allEvents}" value="${each}">
                             <listcell label="${each.codigo}" />
@@ -281,8 +305,6 @@ void eliminar(){
                             <listcell label="${each.descripcion}" />
                         </listitem>
                     </listbox>
-
-
                 </hbox>
             </vbox>
         </groupbox>
@@ -292,7 +314,11 @@ void eliminar(){
         <zscript>
             void cargar(){
             try{
-            instanciadaContratos = crearProductos.getAttribute("nuevo");
+           
+             
+                code0.value = empresa.getCode();
+                System.out.println("code: "+empresa.getCode());
+             instanciadaContratos = crearProductos.getAttribute("nuevo");
             }catch(Exception e){
             instanciadaContratos = false;
             }
