@@ -2191,9 +2191,10 @@ Interpreter inter = new Interpreter();
 //                                combo.setStyle(SdeshabilitadoCombo);  
 //                            }
                         row.appendChild(combo);
+                        
 
                     }
-
+                          
                     //row.appendChild(label);
 //                                 System.out.print(","+dos);
                 }

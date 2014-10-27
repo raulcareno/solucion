@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?page id="main-page"?>
+
+<zk  xmlns="http://www.zkoss.org/2005/zul"
+     xmlns:h="http://www.w3.org/1999/xhtml" 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+    <zscript>
+        <![CDATA[
+import bean.reportesClase;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import sources.*;
+import bean.Permisos;
+import net.sf.jasperreports.engine.JRDataSource;
+
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+reportesClase noti = new reportesClase();
+Boolean guardando = false;
+Empleados user =  (Empleados)ses.getAttribute("user");
+List cursos = adm.query("Select o.curso from EmpleadoCurso as o " +
+      " where o.profesor.codigoemp = '"+ user.getCodigoemp() +"'  " + 
+      " and o.curso.periodo.codigoper =  '"+periodo.getCodigoper()+"' order by o.curso.secuencia, o.curso.paralelo.descripcion ");
+
+
+   if(cursos.size()<=0){
+             cursos = adm.query("Select o from Cursos as o "
+            + " where o.periodo.codigoper = '"+ periodo.getCodigoper() +"' order by o.secuencia, o.paralelo.descripcion  ");
+            System.out.println("ENTRO VACIO");
+   }
+
+
+
+ Permisos permiso = new Permisos();
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+reportesClase no = new reportesClase();
+
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper =  '"+periodo.getCodigoper()+"'  order by o.orden ");
+
+List sistemas = new ArrayList();
+            
+
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+String[][] cabes = new String[trimestres.size()][2];
+
+int k=0;
+
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+              int orden = 0;
+              int codigo=0;
+
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+                  cabes[k][0]= trime.getDescripcion();
+                   cabes[k][1]= sistemas0.size()+"";
+              }else{
+                   cabes[k][1]= 1+"";
+              }
+
+
+
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+k++;
+ }
+ 
+
+String[][] values = new String[sistemas.size()][2];
+
+
+Date fechaActual = new Date();
+  DateMidnight actual = new DateMidnight(fechaActual);
+
+          for (int i=0;i<sistemas.size();i++) {
+             values[i][0]= ((Sistemacalificacion)sistemas.get(i)).getAbreviatura();
+                DateMidnight inicial = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechainicial());
+                DateMidnight finale = new DateMidnight(((Sistemacalificacion)sistemas.get(i)).getFechafinal());
+            if(actual.compareTo(finale) <=0 && actual.compareTo(inicial) >=0){
+                values[i][1]= "number";
+
+            }else{
+               values[i][1]= "number";
+                //values[i][1]= "readonly";
+
+            }
+           System.out.println("** "+((Sistemacalificacion)sistemas.get(i)).getAbreviatura());
+           // values[i]="number";
+          }
+
+void recalculo(){
+notas nso = new notas();
+nso.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
+
+}
+ Boolean verificar(String accion){
+        return permiso.verificarPermiso("Registro de Notas",accion);
+
+    }
+    notas nso = new notas();
+guardar(){
+
+  int val = Messagebox.show("¿Seguro de eliminar los registros seleccionados, luego no se podrá recuperar las notas seleccionadas?", "Estimado: "+user,  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+  if(val != 16){
+    return;
+  }
+  
+  int val2 = Messagebox.show("¿Seguro que Desea continuar, recuerde que los SELECCIONADOS se BORRARÁN?", "Estimado: "+user,  Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+  if(val2 != 16){
+    return;
+  }
+
+if(guardando)
+    return;
+
+guardando = true;
+  guardar1.disabled=false;
+  guardar2.disabled=false;
+
+    notas r = (notas) datos.getRows();
+     Cursos curso = ((Cursos)curs.selectedItem.value);
+     MateriaProfesor materia = ((MateriaProfesor)mates.selectedItem.value);
+   
+
+        String resultado = "";
+             
+                resultado = nso.eliminarRepetidos(r.getChildren(),((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+   
+            doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value));
+            Messagebox.show("Proceso Terminado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+            permiso.auditar("Eliminar Notas Internas","Guardar",""+((Cursos)curs.selectedItem.value)+" "+((MateriaProfesor)mates.selectedItem.value).getMateria());
+ 
+   guardar1.disabled=false;
+   guardar2.disabled=false;
+   guardando = false;
+
+}
+
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
+        " where o.curso.codigocur = '"+cur.codigocur+"' " + 
+        " and (o.materia.descripcion not like '%disciplina%'  and o.materia.codigo not in (0,1))  order by o.orden");
+        //bd2.getItems().clear();
+mates.getChildren().clear();
+datos.getRows().getChildren().clear();
+bd2.value = "";
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+" ("+estudent.getEmpleado()+")"));
+                        mates.appendChild(item);
+             }
+    }
+    
+    
+
+void doAdd(Cursos curso, MateriaProfesor materia){
+            if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
+            
+            String separador = ""+ demo.getText();
+
+                filas.addRowEliminarRepetidos(curso,materia,separador);
+                   if(periodo.getCerrado()){
+                        guardar1.disabled = true;
+                        guardar2.disabled = true;
+                    }
+
+}
+
+        void showReport(String tipo) {
+            //Preparing parameters
+            reportes.visible = true;
+
+            Institucion insts = periodo.getInstitucion();
+
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+ String directorioReportes = insts.getReportes();
+               ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
+                    datasource = (ReporteNotasDataSource) arreglo.get(0);
+                     parametros = (HashMap) arreglo.get(1);
+                     parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
+
+                    MateriaProfesor mate = ((MateriaProfesor)mates.getSelectedItem().getValue());
+                    parametros.put("materia", mate.getMateria().getDescripcion());
+                    parametros.put("profesor", mate.getEmpleado().getNombres()+" "+ mate.getEmpleado().getApellidos());
+                    parametros.put("titulo", "Notas Registradas");
+                    report.setSrc(directorioReportes+"notaspor.jasper");
+
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                report.setType("pdf");
+
+
+        }
+
+        //PARA REPORTES
+public JRDataSource certificados(Matriculas matricula,String tipo){
+      
+      Session ses = Sessions.getCurrent();
+        Periodo periodo = (Periodo) ses.getAttribute("periodo");
+        ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado like '%Matriculado%' " +
+                "and mat.codigomat = '" + matricula.getCodigomat() + "' ";
+        List hoy = adm.query(query);
+        for (Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+        }
+        JRDataSource ds = null;
+        if(tipo.equals("CM")){
+             ds = new ReporteCertificadoDataSource(detalle);
+        }else{
+              ds = new ReporteActaDataSource(detalle);
+        }
+        return ds;
+
+}
+
+
+
+]]>
+    </zscript>
+    
+    <grid onClientInfo="onClientInfo(event)" visible="false">
+        <rows>
+            <row>
+                <intbox id="alto"/> ancho: 
+                <intbox id="ancho"/>
+            </row>
+        </rows>
+ 
+        <zscript>
+            void onClientInfo(ClientInfoEvent evt) {
+            alto.setValue(evt.getScreenHeight());
+            ancho.setValue(evt.getScreenWidth());
+            }
+        </zscript>
+    </grid>
+    <panel  id="notasingreso" >
+        <panelchildren>
+
+            <grid>
+                <rows>
+                    <row spans="4" style="background:red" visible="false" id="errorMensaje" >
+                        Error en FORMULAS de los APORTES, si Ud. no es el administrador, solicite ayuda...!
+                    </row>
+                    <row>
+                        <span style="float:right"> Curso(*):</span>
+                        <bandbox  width="200px"  readonly="true"  id="bd1">
+                            <bandpopup>
+                                <vbox>
+                                    <listbox id="curs" height="300px" width="420px"
+                                             onSelect="bd1.value=self.selectedItem.label;buscar2(((Cursos)self.selectedItem.value));bd1.closeDropdown();">
+
+                                        <listitem forEach="${cursos}" value="${each}">
+                                            <listcell label="${each.descripcion} ${each.especialidad}  ${each.paralelo}" />
+
+                                        </listitem>
+                                    </listbox>
+                                </vbox>
+                            </bandpopup>
+                        </bandbox>
+                        <span style="float:right"> Materias(*):</span>
+                        <span>
+                            <bandbox  width="200px" readonly="true"  id="bd2">
+                                <bandpopup>
+                                    <vbox>
+                                        <listbox id="mates" height="300px"  width="420px"
+                                                 onSelect='bd2.value=self.selectedItem.label;bd2.closeDropdown();doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)self.selectedItem.value)); datos.setHeight((alto.value-300)+"px");'>
+
+                                            <listitem forEach="${materias}" value="${each}">
+                                                <listcell label="${each.descripcion}" />
+
+                                            </listitem>
+                                            
+                                        </listbox>
+                                      
+                                    </vbox>
+                                </bandpopup>
+                            </bandbox>
+                            <decimalbox  id="demo" visible="false" format="#,###.00"/>
+                              <button visible="true" label="ELIMINAR SELECCIONADOS"   id="guardar2" image="/images/eliminar.gif" onClick="guardar();"/>
+                             
+
+                        </span>
+                    </row>
+
+                </rows>
+            </grid>
+            <grid height="100px"  id="datos" >
+
+                <auxhead >
+                    <auxheader colspan="1">
+                        <textbox cols="50" style="background: transparent;border:0px" readonly = "true"  />
+                    </auxheader>
+                    <auxheader forEach="${cabes}"  label="${each[0]}" colspan="${each[1]}"/>
+                </auxhead>
+                <columns>
+                    <column width="10px" visible="false"  label ="Mat."/>
+                    <column width="300px" label ="Estudiante"/>
+                    <column forEach="${values}"  width="25px" label="${each[0]}" align="right"  />
+                    <column width="200px" label="Elim."/>
+                </columns>
+                <rows id="filas" use="bean.notas">
+                </rows>
+            </grid>
+            <span >
+                <button visible="false" label="ELIMINAR SELECCIONADOS"   id="guardar3" image="/images/eliminar.gif" onClick="guardar();"/>
+                <!--button visible="false"  label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/-->
+            </span>
+            
+        </panelchildren>
+    </panel>
+
+     
+    <zscript>
+        <![CDATA[
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+        nso.verificarSistema();   
+        
+]]>
+    </zscript>
+    <!--button label="Recalcular"   onClick="recalculo();"/-->
+</zk>
