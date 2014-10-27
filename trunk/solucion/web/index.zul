@@ -320,6 +320,7 @@
                                             <menuitem onClick="ingresar(self)" id="Registro_de_Dias" image="/images/notas.png"  label="Días Laborados x Periodo" value="/dias.zul" />
                                             <menuitem onClick="ingresar(self)" id="Registro_de_Evaluaciones" label="Registro de Notas Evaluaciones"  image="/images/notas.png" value="/notasEvaluacion.zul" />
                                             <menuitem onClick="ingresar(self)" id="Eliminar_de_Evaluaciones" label="Eliminar de Notas Evaluaciones"  image="/images/notas.png" value="/notasEvaluacionEliminar.zul" />
+                                            <menuitem onClick="ingresar(self)" id="Eliminar_de_Notas" label="Eliminar de Notas Duplicadas"  image="/images/notas.png" value="/notasEliminar.zul" />
                                             <menuseparator ></menuseparator>
                                             <menuitem onClick="ingresar(self)" id="Reportes_Notas" label="Reportes Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
                                             <menuseparator></menuseparator>

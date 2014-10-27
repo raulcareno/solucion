@@ -155,7 +155,7 @@ public class generaClaves {
         int f = 1;
         if(f==0){
             
-            List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = 4  "
+            List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = 19  "
                     + " order by o.secuencia,o.paralelo.descripcion, o.descripcion ");
             int contar = 1;
                  int noMatricula = 1;
