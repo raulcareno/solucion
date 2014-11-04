@@ -4538,7 +4538,7 @@ public class reportesClase {
                     + "where notas.materia =  materia_profesor.materia and materia_profesor.curso = '" + curso.getCodigocur() + "'  "
                     + "  AND notas.materia > 0 AND  notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                     + "and matricula in (select codigomat from matriculas where   estado in ('Matriculado','Recibir Pase')  and    curso  =  '" + curso.getCodigocur() + "'  )"
-                    + "and notas.disciplina = false and notas.promedia = true  GROUP BY notas.matricula "
+                    + "and notas.disciplina = false and notas.seimprime = true and notas.cuantitativa = true and notas.promedia = true  GROUP BY notas.matricula "
                     + "order by 1 desc limit  " + numeroEstudiantes + " ";
 
             System.out.println("" + q);
