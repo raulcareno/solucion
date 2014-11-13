@@ -62,6 +62,8 @@ public class Clientes implements Serializable {
     private BigDecimal valor;
     @Column(name = "descuento")
     private BigDecimal descuento;
+    @Column(name = "sellado")
+    private BigDecimal sellado;
     @JoinColumn(name = "producto", referencedColumnName = "codigo")
     @ManyToOne
     private Productos productos;
@@ -190,6 +192,14 @@ public class Clientes implements Serializable {
 
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
+    }
+
+    public BigDecimal getSellado() {
+        return sellado;
+    }
+
+    public void setSellado(BigDecimal sellado) {
+        this.sellado = sellado;
     }
     
 
