@@ -401,6 +401,8 @@ correcto.setVisible(false);
         jLabel55 = new javax.swing.JLabel();
         incorrecto = new javax.swing.JLabel();
         correcto = new javax.swing.JLabel();
+        sellado = new javax.swing.JFormattedTextField();
+        jLabel3 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -1044,7 +1046,7 @@ correcto.setVisible(false);
             }
         });
         jPanel4.add(telefono);
-        telefono.setBounds(460, 50, 160, 20);
+        telefono.setBounds(570, 50, 90, 20);
 
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1084,7 +1086,7 @@ correcto.setVisible(false);
         jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel32.setText("Teléfono:");
         jPanel4.add(jLabel32);
-        jLabel32.setBounds(390, 50, 60, 14);
+        jLabel32.setBounds(480, 50, 80, 14);
 
         descuento.setText("0");
         descuento.setEnabled(false);
@@ -1093,12 +1095,12 @@ correcto.setVisible(false);
         bindingGroup.addBinding(binding);
 
         jPanel4.add(descuento);
-        descuento.setBounds(460, 70, 160, 20);
+        descuento.setBounds(570, 70, 90, 20);
 
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel34.setText("Dscto:");
         jPanel4.add(jLabel34);
-        jLabel34.setBounds(390, 70, 60, 14);
+        jLabel34.setBounds(490, 70, 70, 14);
 
         tarjetas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1175,6 +1177,20 @@ correcto.setVisible(false);
         correcto.setText("OK...!");
         jPanel4.add(correcto);
         correcto.setBounds(250, 10, 130, 20);
+
+        sellado.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.sellado}"), sellado, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jPanel4.add(sellado);
+        sellado.setBounds(570, 90, 90, 20);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Valor máximo de Ticket Sellado:");
+        jLabel3.setVerifyInputWhenFocusTarget(false);
+        jPanel4.add(jLabel3);
+        jLabel3.setBounds(380, 90, 180, 20);
 
         frmClientes1.getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 50, 750, 320);
@@ -5569,6 +5585,7 @@ correcto.setVisible(false);
                     clienteObj.setTelefono(telefono.getText());
                     clienteObj.setIdentificacion(codigo.getText());
                     clienteObj.setDescuento(new BigDecimal(descuento.getText()));
+                    clienteObj.setSellado(new BigDecimal(sellado.getText()));
                     if (modificar) {
                         try {
                             adm.actualizar(clienteObj);
@@ -7869,6 +7886,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -7976,6 +7994,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox salida;
     private javax.swing.JCheckBox salida1;
     private javax.swing.JCheckBox salida2;
+    private javax.swing.JFormattedTextField sellado;
     private javax.swing.JSpinner spConsumo;
     private javax.swing.JSpinner spIngreso;
     private javax.swing.JSpinner spSalida;

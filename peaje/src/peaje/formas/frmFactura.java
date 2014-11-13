@@ -285,7 +285,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel52 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
         btnGenerar = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         numeroFactura = new javax.swing.JFormattedTextField();
@@ -1041,15 +1040,6 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel1.add(btnGenerar);
         btnGenerar.setBounds(150, 30, 55, 20);
-
-        jButton8.setText("Placa");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton8);
-        jButton8.setBounds(300, 10, 57, 23);
 
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 5, 360, 160);
@@ -3624,6 +3614,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                 }
                 encontrados.setModel(dtm);
                 this.panelencontrados.setVisible(true);
+                encon = null;
             } else {
                 DefaultListModel dtm = new DefaultListModel();
                 dtm.removeAllElements();
@@ -4998,7 +4989,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             codigo.setText("");
             principal.auditar("Cobros", "No" + facActual.getNumero(), "GUARDAR");
             principal.contenedor.requestFocus();
-            this.setVisible(false);
+//            this.setVisible(false);
             //principal = null;
             //empresaObj = null;
             System.gc();
@@ -6537,11 +6528,6 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         // TODO add your handling code here:
         generarNumeroFactura2();
     }//GEN-LAST:event_btnGene2ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-        // DONE load snapshot args[2] and recognize it
-    }//GEN-LAST:event_jButton8ActionPerformed
     public void cargarPlaca(Integer codigoFactura) {
         try {
             //      try {
@@ -6712,7 +6698,6 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

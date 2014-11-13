@@ -14,7 +14,7 @@ public class ConvertHexaToDecimal {
       
     public static String convertir(String hexadecimal){
         //String  hexadecimal = scanner.next();
-          int decimal = Integer.parseInt(hexadecimal.substring(2), 16);
+          int decimal = Integer.parseInt(hexadecimal.substring(4), 16);
       
 //        System.out.println("Converted Decimal number is : " + decimal);
             return ""+decimal;
@@ -27,9 +27,15 @@ public class ConvertHexaToDecimal {
         Scanner scanner = new Scanner(System.in);
       
         String  hexadecimal = scanner.next();
-          int decimal = Integer.parseInt(hexadecimal, 16);
+        System.out.println(""+hexadecimal.substring(4));
+        System.out.println(""+hexadecimal.substring(2));
+        
+          int decimal = Integer.parseInt(hexadecimal.substring(2), 16);
       
-//        System.out.println("Converted Decimal number is : " + decimal);
+    System.out.println("Converted Decimal number is : " + decimal);
+    decimal = Integer.parseInt(hexadecimal.substring(4), 16);
+      
+    System.out.println("Converted Decimal number is : " + decimal);
     
 //        //Converting hexa decimal number to binary in Java       
 //        String binary = Integer.toBinaryString(decimal);

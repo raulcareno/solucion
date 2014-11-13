@@ -5,9 +5,9 @@
 package peaje.formas;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -36,19 +36,32 @@ public class pruebasMemoria {
     }
 
     public static void main(String... args) {
-        startGC();
-        System.out.printf("Memory used before insert %,d MB%n", mbUsed());
-        insert();
-        System.out.printf("Memory used after insert %,d MB%n", mbUsed());
-        startGC();
-        startGC();
-        startGC();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(pruebasMemoria.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.printf("Memory used after GC %,d MB%n", mbUsed());
+        Date f1 = new Date();
+        Date f2 = new Date();
+        f1.setHours(14); 
+        DateTime desde = new DateTime(f1);
+        DateTime hasta = new DateTime(f2);
+        DateTime fechaAct = new DateTime(new Date());
+        Boolean continua = false;                                              
+        
+            if ((fechaAct.compareTo(desde) > 0 || fechaAct.compareTo(desde) == 0) 
+                    && (fechaAct.compareTo(hasta) < 0 || fechaAct.compareTo(hasta) == 0)) {
+                System.out.println("EN EL RANGO DE FECHAS");
+            }
+         
+//        startGC();
+//        System.out.printf("Memory used before insert %,d MB%n", mbUsed());
+//        insert();
+//        System.out.printf("Memory used after insert %,d MB%n", mbUsed());
+//        startGC();
+//        startGC();
+//        startGC();
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException ex) {
+//            Logger.getLogger(pruebasMemoria.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        System.out.printf("Memory used after GC %,d MB%n", mbUsed());
 
 
 //        startGC();
