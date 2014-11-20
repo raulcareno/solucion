@@ -175,7 +175,7 @@ public class notas extends Rows {
         Administrador adm = new Administrador();
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.orden");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
@@ -259,9 +259,9 @@ public class notas extends Rows {
                             notaTexto.setValue(null);
                         } else {
                             if (truncarNotas) {
-                                notaTexto.setValue(new BigDecimal(truncar((Double) dos, 2)));
+                                notaTexto.setValue(new BigDecimal(metodos.truncar((Double) dos, 2)));
                             } else {
-                                notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                                notaTexto.setValue(new BigDecimal(metodos.redondear((Double) dos, 2)));
                             }
 
                         }
@@ -478,7 +478,7 @@ public class notas extends Rows {
 //                        if (valor.equals(0.0)) {
 //                            notaTexto.setValue(new BigDecimal(0));
 //                        } else {
-//                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+//                            notaTexto.setValue(new BigDecimal(metodos.redondear((Double) dos, 2)));
 //                        }
 
                     } else {
@@ -622,7 +622,7 @@ public class notas extends Rows {
         Administrador adm = new Administrador();
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.orden");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
@@ -696,9 +696,9 @@ public class notas extends Rows {
                             notaTexto.setValue(null);
                         } else {
                             if (truncarNotas) {
-                                notaTexto.setValue(new BigDecimal(truncar((Double) dos, 2)));
+                                notaTexto.setValue(new BigDecimal(metodos.truncar((Double) dos, 2)));
                             } else {
-                                notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                                notaTexto.setValue(new BigDecimal(metodos.redondear((Double) dos, 2)));
                             }
 
                         }
@@ -908,7 +908,7 @@ public class notas extends Rows {
 //                        if (valor.equals(0.0)) {
 //                            notaTexto.setValue(new BigDecimal(0));
 //                        } else {
-//                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+//                            notaTexto.setValue(new BigDecimal(metodos.redondear((Double) dos, 2)));
 //                        }
 
                     } else {
@@ -1062,8 +1062,8 @@ public class notas extends Rows {
 
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean noformulasencualitativas = regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean noformulasencualitativas = metodos.regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         try {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
@@ -1145,9 +1145,9 @@ public class notas extends Rows {
                             aCargar = new Double(vaNota);
                         }
                         if (truncarNotas) {
-                            inter.eval("nota.set" + (uno + toda) + "(" + truncar(aCargar, 2) + ");");
+                            inter.eval("nota.set" + (uno + toda) + "(" + metodos.truncar(aCargar, 2) + ");");
                         } else {
-                            inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
+                            inter.eval("nota.set" + (uno + toda) + "(" + metodos.redondear(aCargar, 2) + ");");
                         }
 
                         if (!formula.isEmpty()) {
@@ -1192,8 +1192,8 @@ public class notas extends Rows {
         Administrador adm = new Administrador();
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
-        boolean noformulasencualitativas = regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean noformulasencualitativas = metodos.regresaVariableParametrosLogico("NOAPLICAFORMULAS", parametrosGlobales);
         try {
             System.out.println("INICIO EN: " + new Date());
             Interpreter inter = new Interpreter();
@@ -1252,9 +1252,9 @@ public class notas extends Rows {
                             aCargar = new Double(vaNota);
                         }
                         if (truncarNotas) {
-                            inter.eval("nota.set" + (uno + toda) + "(" + truncar(aCargar, 2) + ");");
+                            inter.eval("nota.set" + (uno + toda) + "(" + metodos.truncar(aCargar, 2) + ");");
                         } else {
-                            inter.eval("nota.set" + (uno + toda) + "(" + redondear(aCargar, 2) + ");");
+                            inter.eval("nota.set" + (uno + toda) + "(" + metodos.redondear(aCargar, 2) + ");");
                         }
                         if (!formula.isEmpty() && noformulasencualitativas == false) {
                             inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
@@ -1289,7 +1289,7 @@ public class notas extends Rows {
 
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         String query = "";
         for (Notanotas notass : notas) {
             query += notass.getNota() + ",";
@@ -1396,9 +1396,9 @@ public class notas extends Rows {
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
                                 if (truncarNotas) {
-                                    inter.eval("nota.set" + (uno + toda) + "(" + truncar(new Double(object1), 2) + ");");
+                                    inter.eval("nota.set" + (uno + toda) + "(" + metodos.truncar(new Double(object1), 2) + ");");
                                 } else {
-                                    inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), 2) + ");");
+                                    inter.eval("nota.set" + (uno + toda) + "(" + metodos.redondear(new Double(object1), 2) + ");");
                                 }
                             }
                             nota = (Notas) inter.get("nota");
@@ -1427,119 +1427,7 @@ public class notas extends Rows {
             }
         }
     }
-
-    public Double redondear(Double numero, int decimales) {
-        try {
-
-            BigDecimal d = new BigDecimal(numero + "");
-            d = d.setScale(decimales, RoundingMode.HALF_UP);
-            return d.doubleValue();
-        } catch (Exception e) {
-            return 0.0;
-        }
-    }
-
-    public Double truncar(Double numero, int decimales) {
-        try {
-            BigDecimal d = new BigDecimal(numero + "");
-            d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
-            return d.doubleValue();
-        } catch (Exception e) {
-            return 0.0;
-        }
-    }
-
-    public static Object equivalencia(Object no, List<Equivalencias> equivalencias) {
-        Double nota = (Double) no;
-        ArrayList listado = new ArrayList();
-        for (Equivalencias acaEquivalencias : equivalencias) {
-            Object obj[] = new Object[3];
-            obj[0] = acaEquivalencias.getValorminimo();
-            obj[1] = acaEquivalencias.getValormaximo();
-            obj[2] = acaEquivalencias.getAbreviatura();
-            listado.add(obj);
-        }
-
-        for (Iterator it = listado.iterator(); it.hasNext();) {
-            Object object[] = (Object[]) it.next();
-            Double mini = (Double) object[0];
-            Double maxi = (Double) object[1];
-            if (nota >= mini && nota <= maxi) {
-                //System.out.println(""+);
-                return object[2];
-            }
-        }
-
-        return "";
-    }
-
-    public static Object equivalencia2(Object no, List<Equivalencias> equivalencias) {
-        Double nota = (Double) no;
-        ArrayList listado = new ArrayList();
-        for (Equivalencias acaEquivalencias : equivalencias) {
-            Object obj[] = new Object[3];
-            obj[0] = acaEquivalencias.getValorminimo();
-            obj[1] = acaEquivalencias.getValormaximo();
-            obj[2] = acaEquivalencias.getNombre();
-            listado.add(obj);
-        }
-
-        for (Iterator it = listado.iterator(); it.hasNext();) {
-            Object object[] = (Object[]) it.next();
-            Double mini = (Double) object[0];
-            Double maxi = (Double) object[1];
-            if (nota >= mini && nota <= maxi) {
-                //System.out.println(""+);
-                return object[2];
-            }
-        }
-
-        return "";
-    }
-
-    public String regresaVariable(String variable, List<Textos> textos) {
-        String dato = "";
-        for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
-            Textos textos1 = it.next();
-            if (textos1.getVariable().equals(variable)) {
-                return textos1.getMensaje();
-            }
-        }
-        return dato;
-    }
-
-    public String regresaVariableParametros(String variable, List<ParametrosGlobales> textos) {
-        String dato = "";
-        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
-            ParametrosGlobales textos1 = it.next();
-            if (textos1.getVariable().equals(variable)) {
-                return textos1.getCvalor();
-            }
-        }
-        return dato;
-    }
-
-    public Double regresaVariableParametrosDecimal(String variable, List<ParametrosGlobales> textos) {
-        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
-            ParametrosGlobales textos1 = it.next();
-            if (textos1.getVariable().equals(variable)) {
-                return textos1.getNvalor();
-            }
-        }
-
-        return 0.0;
-    }
-
-    public Boolean regresaVariableParametrosLogico(String variable, List<ParametrosGlobales> textos) {
-        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
-            ParametrosGlobales textos1 = it.next();
-            if (textos1.getVariable().equals(variable)) {
-                return textos1.getBvalor();
-            }
-        }
-        return false;
-    }
-
+  
     public void generarNumeros(String tipo, Date fecha, Boolean empezar) {
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
@@ -1654,9 +1542,9 @@ public class notas extends Rows {
                 + "and o.periodo.codigoper = '" + curso0.getPeriodo().getCodigoper() + "'");
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        Double decimales = regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
+        Double decimales = metodos.regresaVariableParametrosDecimal("DECIMALESDIS", parametrosGlobales);
 
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
 
         if (para.size() > 0) {
             ParametrosGlobales param = para.get(0);
@@ -1860,18 +1748,18 @@ public class notas extends Rows {
                                 String uno = toda.substring(0, 1).toUpperCase();
                                 toda = toda.substring(1, toda.length());
                                 if (truncarNotas) {
-                                    inter.eval("nota.set" + (uno + toda) + "(" + truncar(new Double(object1), decimales.intValue()) + ");");
+                                    inter.eval("nota.set" + (uno + toda) + "(" + metodos.truncar(new Double(object1), decimales.intValue()) + ");");
                                 } else {
-                                    inter.eval("nota.set" + (uno + toda) + "(" + redondear(new Double(object1), decimales.intValue()) + ");");
+                                    inter.eval("nota.set" + (uno + toda) + "(" + metodos.redondear(new Double(object1), decimales.intValue()) + ");");
                                 }
                                 if (existeModificaciones.size() > 0) {
                                     DisciplinaModificada disBuscada = buscarModificada(existeModificaciones, sisPregunta, new Integer(((Integer) vecDato.get(0))));
                                     if (disBuscada != null) {
                                         Double valor = disBuscada.getNota();
                                         if (truncarNotas) {
-                                            inter.eval("nota.set" + (uno + toda) + "(" + truncar(valor, decimales.intValue()) + ");");
+                                            inter.eval("nota.set" + (uno + toda) + "(" + metodos.truncar(valor, decimales.intValue()) + ");");
                                         } else {
-                                            inter.eval("nota.set" + (uno + toda) + "(" + redondear(valor, decimales.intValue()) + ");");
+                                            inter.eval("nota.set" + (uno + toda) + "(" + metodos.redondear(valor, decimales.intValue()) + ");");
                                         }
                                     }
 
@@ -1948,7 +1836,7 @@ public class notas extends Rows {
 
     }
 
-       public void addRowEliminarRepetidos(Cursos curso, MateriaProfesor materia, String separador) {
+    public void addRowEliminarRepetidos(Cursos curso, MateriaProfesor materia, String separador) {
 
 //        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
 //        simbolo.getCurrencySymbol();
@@ -1977,7 +1865,7 @@ public class notas extends Rows {
         Administrador adm = new Administrador();
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
+        boolean truncarNotas = metodos.regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.orden");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' order by o.sistema.orden ");
@@ -2053,9 +1941,9 @@ public class notas extends Rows {
                             notaTexto.setValue(null);
                         } else {
                             if (truncarNotas) {
-                                notaTexto.setValue(new BigDecimal(truncar((Double) dos, 2)));
+                                notaTexto.setValue(new BigDecimal(metodos.truncar((Double) dos, 2)));
                             } else {
-                                notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+                                notaTexto.setValue(new BigDecimal(metodos.redondear((Double) dos, 2)));
                             }
 
                         }
@@ -2246,7 +2134,7 @@ public class notas extends Rows {
 //                        if (valor.equals(0.0)) {
 //                            notaTexto.setValue(new BigDecimal(0));
 //                        } else {
-//                            notaTexto.setValue(new BigDecimal(redondear((Double) dos, 2)));
+//                            notaTexto.setValue(new BigDecimal(metodos.redondear((Double) dos, 2)));
 //                        }
 
                     } else {
@@ -2347,9 +2235,7 @@ public class notas extends Rows {
         System.out.println("TOP FIN; " + new Date());
     }
 
-    
-    
-          public void seleccionar(List lis,Boolean seleccionar){
+     public void seleccionar(List lis,Boolean seleccionar){
     //List lis = getChildren();
            for (int i = 0; i < lis.size(); i++) {
                 try {
@@ -2365,7 +2251,7 @@ public class notas extends Rows {
             }
     }
       
-  public boolean verificarDuplicidad(List lis,String nombreLlega){
+      public boolean verificarDuplicidad(List lis,String nombreLlega){
     //List lis = getChildren();
       int numeroRepeticiones = 0;
            for (int i = 0; i < lis.size(); i++) {

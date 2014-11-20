@@ -2,10 +2,10 @@
 
 
 <zk  xmlns="http://www.zkoss.org/2005/zul">
-      <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"/>
     <script type="text/javascript" src="/js/jquery.maskedinput-1.2.2.min.js"/>
     <script type="text/javascript" src="/js/masks.js"/>
-  <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
+    <script type="text/javascript" src="/js/jquery-ui-1.8.9.custom.min.js" />
  
     <window>
 
@@ -67,6 +67,12 @@ void llenar(Empleados empa){
     magisterio.value = empa.getMagisterio();
     plantel.value = empa.getPlantel();
     sector.value = empa.getSector();
+    
+    nocuenta.value = empa.getNocuenta();
+    beneficiario.value = empa.getBeneficiario();
+    tipocuenta.value = empa.getTipocuenta();
+    banco.value = empa.getBanco();
+
 
        if(empa.getFoto() != null){
                     cargarFoto(empa.getFoto());
@@ -103,6 +109,10 @@ void estado(Boolean estado,Boolean modificar){
         if(modificar){
             empa = (Empleados)datos.selectedItem.value;
         }
+nocuenta.readonly = estado;
+beneficiario.readonly = estado;
+tipocuenta.disabled = estado;
+banco.readonly = estado;
 
     identificacion.readonly = estado;
     nombres.readonly = estado;
@@ -180,6 +190,11 @@ void estado(Boolean estado,Boolean modificar){
     empa.setMagisterio(magisterio.value);
     empa.setPlantel(plantel.value);
     empa.setSector(sector.value);
+    empa.setNocuenta(nocuenta.value);
+    empa.setBeneficiario(beneficiario.value);
+    empa.setTipocuenta(tipocuenta.value);
+    empa.setBanco(banco.value);
+
 
 
             org.zkoss.image.Image nueva = foto0.getContent();
@@ -321,8 +336,35 @@ empa.setPerfil(g);
                             <row>
                                 <span style="float:right"> Identificación(*):</span>
                                 <textbox maxlength="10" cols="13" onChange="verificarCedula(self.value)" readonly="true" id="identificacion"  />
-                                <span><intbox id="codigoemp" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" /></span>
-                                <span></span>
+                                <span>
+                                    <intbox id="codigoemp" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
+                                </span>
+                                <span>
+                                    <grid style="position:absolute;top:40px; right:15px" width="150px">
+                                    <rows>
+                                        <row>
+                                            <button label="Cargar Foto" id="ima">
+                                                <attribute name="onClick">{
+                                                    Object media = Fileupload.get();
+
+                                                    if (media instanceof org.zkoss.image.Image) {
+
+                                                    foto0.setContent(media);
+                                                    //byte[] archivo=((AMedia) media).getByteData();
+                                                    } else if (media != null){
+                                                    Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                    }
+                                                    }
+                                                </attribute>
+                                            </button>
+                                        </row>
+                                        <row>
+                                            <image border="1" height="100px" id="foto0"/>
+                                        </row>
+                                    </rows>
+                                            
+                                </grid>
+                                </span>
                             </row>
                             <row>
                                 <span style="float:right"> Tratamiento:</span>
@@ -344,7 +386,7 @@ empa.setPerfil(g);
                                     <comboitem  label="Phd."/>
                                 </combobox>
 
-                                <span style="float:right"> Docente:</span>
+                                <span style="float:right"> Es Docente?:</span>
                                 <checkbox id="docente" disabled="true"  />
                             </row>
                             <row>
@@ -362,9 +404,10 @@ empa.setPerfil(g);
                             <row>
                                 <span style="float:right"> Dirección(*):</span>
                                 
-                                <span><textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
-                                Sector:
-                                <textbox id="sector" maxlength="100" cols="15"  readonly="true"    />
+                                <span>
+                                    <textbox id="direccion" maxlength="100" cols="40"  readonly="true"    />
+                                    Sector:
+                                    <textbox id="sector" maxlength="100" cols="15"  readonly="true"    />
                                 </span>
                                 <span style="float:right"> Estado:</span>
                                 <checkbox id="estadoe" disabled="true"  />
@@ -380,9 +423,9 @@ empa.setPerfil(g);
                             <row>
                                 <span style="float:right"> e-mail:</span>
                                 <span>
-                                <textbox id="email" maxlength="100" cols="40" readonly="true"  />
-                                clave:
-                                <textbox id="clavem"  type="password"  maxlength="50" cols="10" readonly="true"  />
+                                    <textbox id="email" maxlength="100" cols="40" readonly="true"  />
+                                    clave:
+                                    <textbox id="clavem"  type="password"  maxlength="50" cols="10" readonly="true"  />
                                 </span>
                                 <span style="float:right"> Perfil(*):</span>
                                 <bandbox  readonly="true"  id="bd">
@@ -416,43 +459,44 @@ empa.setPerfil(g);
                             <row>
 
                                 <span style="float:right"> Fecha Ingreso:</span>
-                                <span > <datebox id="ingreso"  disabled="true"  />
-                                 Fecha Nacimiento:
-                                <datebox id="fechanacimiento"  disabled="true"  />
+                                <span > 
+                                    <datebox id="ingreso"  disabled="true"  />
+                                    Fecha Nacimiento:
+                                    <datebox id="fechanacimiento"  disabled="true"  />
                                 </span>
                                 <span style="float:right"> Años de Servicio:</span>
                                 <intbox id="servicio" cols="5" readonly="true"  />
 
                             </row>
 
-                             <row>
+                            <row>
                                 <span style="float:right"> Título Profesional: </span>
                                 <textbox id="titulo" cols="50"  maxlength="200" readonly="true"  />
                                 <span style="float:right"> Especialización: </span>
-                               <textbox id="especializacion" cols="50"  maxlength="100" readonly="true"  />
+                                <textbox id="especializacion" cols="50"  maxlength="100" readonly="true"  />
                             </row>
                             <row>
                                 <span style="float:right"> Lugar Nacimiento: </span>
                                 <textbox id="lugarnacimiento" cols="50"  maxlength="100" readonly="true"  />
                                 <span style="float:right"> Provincia: </span>
-                               <textbox id="provincia" cols="50"  maxlength="100" readonly="true"  />
+                                <textbox id="provincia" cols="50"  maxlength="100" readonly="true"  />
                             </row>
 
                             <row>
                                 <span style="float:right"> Cantón: </span>
                                 <textbox id="canton" cols="50"  maxlength="100" readonly="true"  />
                                 <span style="float:right"> Parroquia: </span>
-                               <textbox id="parroquia" cols="50"  maxlength="100" readonly="true"  />
-                             </row>
-                             <row>
+                                <textbox id="parroquia" cols="50"  maxlength="100" readonly="true"  />
+                            </row>
+                            <row>
                                 <span style="float:right"> Años en el Magisterio: </span>
                                 <intbox id="magisterio" cols="10"  maxlength="3" readonly="true"  />
                                 <span style="float:right"> Años en el Plantel: </span>
-                               <intbox id="plantel" cols="10"  maxlength="3" readonly="true"  />
-                             </row>
-                             <row>
+                                <intbox id="plantel" cols="10"  maxlength="3" readonly="true"  />
+                            </row>
+                            <row>
                                 <span style="float:right"> Estado Civil: </span>
-                                  <combobox disabled="true"  readonly="true"  id="estadocivil"  width="60px">
+                                <combobox disabled="true"  readonly="true"  id="estadocivil"  width="60px">
                                     <comboitem   value="Soltero" label="Soltero"/>
                                     <comboitem value="Casado" label="Casado"/>
                                     <comboitem value="Viudo"  label="Viudo"/>
@@ -462,24 +506,26 @@ empa.setPerfil(g);
                                 </combobox>
                                 <span style="float:right"> No. Hijos: </span>
                                 <intbox value="0" id="hijos" maxlength="3" readonly="true"/>
-                             </row>
+                            </row>
                             <row>
-                                <button label="Subir Imagen" id="ima">
-                                    <attribute name="onClick">{
-                                        Object media = Fileupload.get();
-
-                                        if (media instanceof org.zkoss.image.Image) {
-
-                                        foto0.setContent(media);
-                                        //byte[] archivo=((AMedia) media).getByteData();
-                                        } else if (media != null){
-                                        Messagebox.show("Seleccione un Imagen: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
-                                        }
-                                        }
-                                    </attribute>
-                                </button>
-                                <image border="1" height="125px" id="foto0"/>
-                                </row>
+                                
+                                <span style="float:right"> Deposito a Nombre de: </span>
+                                <textbox id="beneficiario"  readonly="true"/>
+                             <span style="float:right"> 
+                                Banco: </span>
+                                <textbox id="banco"  readonly="true"/>
+                            </row>
+                            <row>
+                                <span style="float:right"> Tipo Cuenta: </span>
+                                <combobox disabled="true"  readonly="true"  id="tipocuenta"  width="60px">
+                                    <comboitem   value="AHO" label="AHO"/>
+                                    <comboitem value="COR" label="COR"/>
+                                </combobox>
+                             
+                                <span style="float:right"> No. Cuenta</span>
+                                <textbox id="nocuenta"  readonly="true"/>
+                            </row>
+                                                  
                         </rows>
                     </grid>
 

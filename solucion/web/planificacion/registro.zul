@@ -404,7 +404,7 @@
         
               inobjeto.setTipo(tipo.selectedItem.value);
               inobjeto.setMateriaProfesor(mates.selectedItem.value);
-              inobjeto.setPlanificacion(planificacion.selectedItem.value);
+             // inobjeto.setPlanificacion(planificacion.selectedItem.value);
                secuencial sec = new secuencial();
 inobjeto.setFecha(adm.Date());
                 if((!inobjeto.getCodigo().equals("0")) ){

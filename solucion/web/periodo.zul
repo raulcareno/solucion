@@ -463,6 +463,20 @@ li = new Listitem();
 adm.ejecutaSql("Delete from Notanotas where sistema.periodo.codigoper = '"+has.getCodigoper()+"'  ");
 adm.ejecutaSql("Delete from Sistemacalificacion where periodo.codigoper = '"+has.getCodigoper()+"'  ");
 adm.ejecutaSql("Delete from Trimestres where periodo = '"+has.getCodigoper()+"'  ");
+adm.ejecutaSql("Delete from Sistemaevaluacion where sistemacalificacion.periodo.codigoper = '"+has.getCodigoper()+"'  ");
+adm.ejecutaSql("Delete from Evaluacion where periodo.codigoper = '"+has.getCodigoper()+"'  ");
+
+        List evaluaciones = adm.query("Select o from Evaluacion as o " +
+                  " where o.periodo.codigoper = '"+per.getCodigoper()+"'  order by o.codigoeva  ");
+                  List nuevosEva = new ArrayList();
+                  for (Iterator it = evaluaciones.iterator(); it.hasNext();) {
+                            Evaluacion evalua = (Evaluacion)it.next();
+                            evalua.setCodigoeva(adm.getNuevaClave("Evaluacion","codigoeva"));
+                            evalua.setPeriodo(has);
+                            adm.guardar(evalua);
+                            nuevosEva.add(evalua);
+                  }
+
      List trimestres = adm.query("Select o from Trimestres as o where o.periodo = '"+per.getCodigoper()+"' order by o.codigotrim  ");
      int i=1;
         for (Iterator it = trimestres.iterator(); it.hasNext();) {
@@ -478,21 +492,47 @@ adm.ejecutaSql("Delete from Trimestres where periodo = '"+has.getCodigoper()+"' 
                   " where o.periodo.codigoper = '"+per.getCodigoper()+"' and o.trimestre.codigotrim =  '"+ codAnt +"' order by o.orden  ");
                     for (Iterator ita = sistemas.iterator(); ita.hasNext();) {
                         Sistemacalificacion siste = (Sistemacalificacion)ita.next();
+                        int codSisAnt = siste.getCodigosis();
                         siste.setTrimestre(trimes);
                         siste.setPeriodo(has);
                         siste.setCodigosis(adm.getNuevaClave("Sistemacalificacion","codigosis"));
                         adm.guardar(siste);
+                        //CONTINUACION
+                        List sistemaseva = adm.query("Select o from Sistemaevaluacion as o " +
+                                " where o.sistemacalificacion.codigosis =  '"+ codSisAnt +"' order by o.orden  ");
+                                int eva = 0;
+                            for (Iterator ita4 = sistemaseva.iterator(); ita4.hasNext();) {
+                                    Sistemaevaluacion notan1 = (Sistemaevaluacion)ita4.next();
+                                    notan1.setSistemacalificacion(siste);
+                                    notan1.setCodigosis(adm.getNuevaClave("Sistemaevaluacion","codigosis"));
+                                    try{
+                                        notan1.setEvaluacion(nuevosEva.get(eva));
+                                    }catch(Exception em){
+                                        notan1.setEvaluacion(null);
+                                    }
+                                    adm.guardar(notan1);
+                                    eva++;
+                            }
+                        //CONTINUACION
+                        
                         li = new Listitem();
                         li.appendChild(new Listcell( " - "+siste.getTrimestre().getDescripcion() +" - "+siste.getNombre()));
                         resultados.appendChild(li);
+                            
                             Notanotas notan = new Notanotas(adm.getNuevaClave("Notanotas","codigo"));
                             notan.setSistema(siste);
                             notan.setNota("nota"+i);
                             adm.guardar(notan);
+                            
                             i++;
                             
                     }
         }
+        
+         
+        
+        
+        
         
   }
 Messagebox.show("Copia realizada con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);

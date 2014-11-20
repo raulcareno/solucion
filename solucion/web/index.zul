@@ -290,6 +290,7 @@
                                             <menuitem onClick="ingresar(self)" id="Actualizacion" label="Actualizar(Cedulals,Suspensos,Perdidos)" image="/images/actualizar.png"  value="/actualizacion.zul" />
                                             <menuitem onClick="ingresar(self)" id="MatriculaAutomatica" label="Matricula Automatica" image="/images/automatica.png"  value="/aprobadosReprobados.zul" />
                                             <menuitem onClick="ingresar(self)" id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
+                                            <menuitem onClick="ingresar(self)" id="Cobros" label="Cobrar" image="/images/dinero.gif"   value="/cobros.zul" />
                                             <menuitem onClick="ingresar(self)" id="ListaPendientes" label="Estudiantes con Pendientes" image="/images/dinero.gif"   value="/pendientesEstudiantesDobe.zul" />
                                             <menuitem onClick="ingresar(self)" id="Inscripciones" label="Inscripciones Internet(Inscribir-Modificar)"     image="/images/inscripciones.gif"   value="/inscripcionesModificar.zul" />
                                             <menuitem onClick="ingresar(self)" id="Preaprobados" label="Pre-Aprobados Internet"    image="/images/preaprobados.png"  value="/seleccionPreaprobados.zul" />
@@ -536,6 +537,7 @@
             MatriculaAutomatica.visible = per.verificarPermisoReporte("MatriculaAutomatica","MatriculaAutomatica", "Ingresar",true,"MATRICULAS");
             Parametros_Autoevaluacion.visible = per.verificarPermisoReporte("Parametros_Autoevaluacion","MatriculaAutomatica", "Ingresar",true,"MATRICULAS");
             Registro_de_Faltas_Materia.visible = per.verificarPermisoReporte("Registro_de_Faltas_Materia","Registro_de_Faltas_Materia", "Ingresar",true,"NOTAS");
+            Cobros.visible = per.verificarPermisoReporte("Cobros","Cobros", "Ingresar",true,"MATRICULAS");
            
             Cursos_dobe.visible = per.verificarPermisoReporte("Cursos_dobe","Cursos_dobe", "Ingresar",true,"VARIOS");
             Parametros_dobe.visible = per.verificarPermisoReporte("Parametros_dobe","Parametros_dobe", "Ingresar",true,"VARIOS");
