@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libreta" pageWidth="651" pageHeight="907" columnWidth="584" leftMargin="42" rightMargin="25" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libreta" pageWidth="907" pageHeight="651" orientation="Landscape" columnWidth="840" leftMargin="42" rightMargin="25" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -39,7 +39,7 @@
 	<parameter name="ranf5" class="java.lang.Double" isForPrompting="false"/>
 	<parameter name="faltas" class="java.lang.Boolean"/>
 	<field name="tipo" class="java.lang.String"/>
-	<field name="nota" class="java.lang.Integer"/>
+	<field name="nota" class="java.math.BigDecimal"/>
 	<field name="sistema" class="java.lang.String"/>
 	<field name="materia" class="java.lang.String"/>
 	<field name="sello" class="java.io.InputStream"/>
@@ -191,51 +191,51 @@
 	<summary>
 		<band height="149" splitType="Stretch">
 			<crosstab>
-				<reportElement x="0" y="0" width="584" height="149"/>
-				<rowGroup name="estudiante" width="241" totalPosition="End">
+				<reportElement x="0" y="0" width="840" height="149"/>
+				<rowGroup name="estudiante" width="205" totalPosition="End">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{estudiante}]]></bucketExpression>
 					</bucket>
 					<crosstabRowHeader>
-						<cellContents backcolor="#F0F8FF" mode="Transparent">
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="241" height="16"/>
-								<box leftPadding="2" rightPadding="2"/>
-								<textElement textAlignment="Left" verticalAlignment="Top"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="205" height="13"/>
+								<textElement textAlignment="Left">
+									<font size="9"/>
+								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{estudiante}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabRowHeader>
 					<crosstabTotalRowHeader>
-						<cellContents backcolor="#BFE1FF" mode="Transparent">
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="241" height="16"/>
-								<box leftPadding="2" rightPadding="2"/>
-								<textElement textAlignment="Right" verticalAlignment="Top"/>
-								<text><![CDATA[TOTALES: ]]></text>
+								<reportElement x="0" y="0" width="205" height="19"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<text><![CDATA[Totales]]></text>
 							</staticText>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="sistema" height="30" totalPosition="End" headerPosition="Stretch">
+				<columnGroup name="sistema" height="30" totalPosition="End">
 					<bucket>
 						<bucketExpression class="java.lang.String"><![CDATA[$F{sistema}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents backcolor="#F0F8FF" mode="Transparent">
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textField isStretchWithOverflow="true">
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="22" height="30" isPrintWhenDetailOverflows="true"/>
-								<textElement verticalAlignment="Middle">
-									<font isBold="true" pdfFontName="Helvetica-Bold"/>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="31" height="30"/>
+								<textElement>
+									<font size="8"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{sistema}]]></textFieldExpression>
 							</textField>
@@ -254,14 +254,14 @@
 						<bucketExpression class="java.lang.String"><![CDATA[$F{materia}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
-						<cellContents backcolor="#F0F8FF" mode="Transparent">
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="22" height="30"/>
-								<textElement verticalAlignment="Middle">
-									<font isBold="true" pdfFontName="Helvetica-Bold"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="15" height="30"/>
+								<textElement rotation="Left">
+									<font size="8"/>
 								</textElement>
 								<textFieldExpression class="java.lang.String"><![CDATA[$V{materia}]]></textFieldExpression>
 							</textField>
@@ -272,62 +272,87 @@
 							<box>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="16" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Tot.]]></text>
+							</staticText>
 						</cellContents>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
-				<measure name="notaMeasure" class="java.lang.Integer" calculation="Sum">
+				<measure name="notaMeasure" class="java.math.BigDecimal" calculation="Sum">
 					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
 				</measure>
-				<crosstabCell width="22" height="16">
+				<crosstabCell width="15" height="13">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="22" height="16"/>
-							<textElement verticalAlignment="Middle"/>
-							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="15" height="13"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="22" height="16" rowTotalGroup="estudiante">
-					<cellContents backcolor="#BFE1FF" mode="Transparent">
+				<crosstabCell width="15" height="19" rowTotalGroup="estudiante">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="22" height="16"/>
-							<textElement verticalAlignment="Middle"/>
-							<textFieldExpression class="java.lang.Integer"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="15" height="19"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="16" columnTotalGroup="sistema">
+				<crosstabCell width="0" height="13" columnTotalGroup="sistema">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="16" rowTotalGroup="estudiante" columnTotalGroup="sistema">
+				<crosstabCell width="0" height="19" rowTotalGroup="estudiante" columnTotalGroup="sistema">
 					<cellContents backcolor="#005FB3" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="16" columnTotalGroup="materia">
+				<crosstabCell width="16" height="13" columnTotalGroup="materia">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="16" height="13"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="0" height="16" rowTotalGroup="estudiante" columnTotalGroup="materia">
+				<crosstabCell width="16" height="19" rowTotalGroup="estudiante" columnTotalGroup="materia">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="16" height="19"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{notaMeasure}]]></textFieldExpression>
+						</textField>
 					</cellContents>
 				</crosstabCell>
 			</crosstab>

@@ -1,0 +1,551 @@
+<?page id="cobrospage"?>
+<window id="cobrosventana"  border="normal" >
+    
+    <zk  xmlns="http://www.zkoss.org/2005/zul"
+         xmlns:h="http://www.w3.org/1999/xhtml" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+        <zscript>
+<![CDATA[
+import bean.reportesClase;
+import java.math.BigDecimal;
+import bean.cobros;
+import bean.secuencial;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import bean.Permisos;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import org.zkoss.zul.*;
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+Empleados user =  (Empleados)ses.getAttribute("user");
+Matriculas matriculaActual = new Matriculas();
+List cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
+   Permisos permiso = new Permisos();
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+cobros no = new cobros();
+reportesClase noti = new reportesClase();
+  cobros nso = new cobros();
+boolean guardando = false;
+guardar(){
+    try{
+
+    if(noFactura.getText()==""){
+           Messagebox.show("Ingrese un número de factura...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+           noFactura.focus();
+           return;
+    }
+    if(guardando)
+            return;
+    guardando = true;
+
+        cobros nso = new cobros();
+        cobros r = (cobros) datos.getRows();
+        
+       Cabecerafactura cab = new Cabecerafactura();
+                secuencial sec = new secuencial();
+                List docu = adm.query("Select o from Documentos as o");
+                
+            if (totalfinal.value  > 0) {
+            
+            Documentos documento = (Documentos) docu.get(0);
+                
+                Matriculas mat = matriculaActual;
+                Estudiantes alumno = mat.getEstudiante();
+                Representante repre = alumno.getRepresentante();
+                cab.setRuc(repre.getIdentificacionfactura());
+                cab.setNombres(repre.getNombrefactura());
+                cab.setTelefono(repre.getTelfactura());
+                cab.setDireccion(repre.getDirfactura());
+                        Date fechita = adm.Date();
+                        cab.setFacFecha(adm.Date());
+                        cab.setMatriCod(matriculaActual);
+                        cab.setFacTotal((totalfinal.getValue()));
+                        cab.setFacEstado(true);
+                        String sucursal = (String) serie2.value;
+                        cab.setFacNumero(sucursal + noFactura.getValue());
+                        //cab.setFacObservacion(this.observacion.getText());
+                        if (efectivo.value == 0.0 && deposito.value == 0.0 && cheque.value == 0.0) {
+                            cab.setFacEfectivo(cab.getFacTotal());
+                            cab.setFacCheque(0.0);
+                            cab.setFacDeposito(0.0);
+                            cab.setFacNocheque("");
+                            cab.setFacBanco("");
+                        } else {
+                            cab.setFacEfectivo(efectivo.value);
+                            cab.setFacCheque(cheque.value);
+                            cab.setFacDeposito(deposito.value);
+                            cab.setFacNocheque(nocheque.getText());
+                            cab.setFacBanco(banco.value);
+                        }
+                        adm.guardar(cab);
+
+                        //ACTUALIZAR DOCUMENTO FACTURA
+                        if( (serie2.value+"").equals("001")) {
+                            documento.setFactura(noFactura.value.trim());
+                        } else if( (serie2.value+"").equals("002")) {
+                            documento.setFactura1(noFactura.value.trim());
+                        } else if( (serie2.value+"").equals("003")) {
+                            documento.setFactura2(noFactura.value.trim());
+                        }
+                        adm.actualizar(documento);
+
+
+                        for (int i = 0; i < r.getChildren().size(); i++) {
+                                Row object = (Row) r.getChildren().get(i);
+                                List labels = object.getChildren();
+                                String mess = (String) ((Textbox) labels.get(2)).getValue();
+                                Detallefactura det = new Detallefactura();
+                                Integer anio = new Integer(((Textbox) labels.get(3)).getValue());
+                                det.setDetCodigo(sec.generarClave());
+                                det.setFacNumero(cab);
+                                det.setDetCantidad(1);
+                                det.setDetMes(mesint(mess.trim()));
+                                det.setDetAnio(anio);
+                                det.setDetDescripcion(((Textbox) labels.get(1)).getValue());
+                                det.setProducto(object.getValue().getProducto());
+                                det.setDetPrecio(((Doublebox) labels.get(5)).getValue());
+                                det.setBeca(((Doublebox) labels.get(6)).getValue());
+                                det.setDescuento(((Doublebox) labels.get(7)).getValue());
+                                det.setDetTotal(((Doublebox) labels.get(8)).getValue());
+                                det.setAsignado(object.getValue().getCodigorub());
+
+                                adm.guardar(det);
+                                
+                                Asignados rubroA = object.getValue();
+                                rubroA.setEstado(false);
+                                adm.actualizar(rubroA);
+                                asignado = false;
+
+                        }
+                        
+              }
+             
+                Messagebox.show("Registro Almacenado con éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+                permiso.auditar("Cobros","Guardar",""+matriculaActual.getEstudiante());
+             
+            guardando = false;
+    }catch(Exception abc){
+    
+            guardando = false;
+            System.out.println(abc.getMessage());
+            abc.printStackTrace();
+    }
+}
+public int mesint(String mes) {
+
+        if (mes.equals("ENERO")) {
+            return 1;
+        }
+        if (mes.equals("FEBRERO")) {
+            return 2;
+        }
+        if (mes.equals("MARZO")) {
+            return 3;
+        }
+        if (mes.equals("ABRIL")) {
+            return 4;
+        }
+        if (mes.equals("MAYO")) {
+            return 5;
+        }
+        if (mes.equals("JUNIO")) {
+            return 6;
+        }
+        if (mes.equals("JULIO")) {
+            return 7;
+        }
+        if (mes.equals("AGOSTO")) {
+            return 8;
+        }
+        if (mes.equals("SEPTIEMBRE")) {
+            return 9;
+        }
+        if (mes.equals("OCTUBRE")) {
+            return 10;
+        }
+        if (mes.equals("NOVIEMBRE")) {
+            return 11;
+        }
+        if (mes.equals("DICIEMBRE")) {
+            return 12;
+        }
+        return 0;
+    }
+    
+    
+void buscar2(Cursos cur){
+        List empleadosEncontrados = adm.query("Select o from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"' and o.curso.codigocur = '"+cur.codigocur+"' " + 
+            " and (o.materia.descripcion not like '%disciplina%' and  o.materia.codigo not in (0,1)) order by o.orden");
+        //bd2.getItems().clear();
+    mates.getChildren().clear();
+    datos.getRows().getChildren().clear();
+    bd2.value = ""; 
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      MateriaProfesor estudent = (MateriaProfesor) it.next();
+                        Listitem item = new Listitem();
+                        item.setValue(estudent);
+                        item.appendChild(new Listcell(estudent.getMateria()+""));
+                        mates.appendChild(item);
+             }
+}
+
+void doAdd(String valor){
+        //doAdd(fecha.value,demo.value, self.selectedItem.label)
+         
+        int ini = valor.indexOf("[");
+        int fin = valor.indexOf("]");
+        valor = valor.substring(ini+1, fin);
+
+        if(!verificar("Agregar")){
+                guardar1.disabled=true;
+                guardar2.disabled=true;
+            }
+            Estudiantes est = new Estudiantes(new Integer(valor));
+            List matriculas = adm.query("Select o from Matriculas as o where o.estudiante.codigoest = '"+valor+"' "
+                    + " and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  ");
+    if(matriculas.size()>0){
+                        est = matriculas.get(0).getEstudiante();
+                        estudiante.value = est.getApellido()+" "+est.getNombre();
+                        representante.value = est.getRepresentante().getApellidos()+" "+est.getRepresentante().getNombres();
+                        nivel.value = ""+matriculas.get(0).getCurso()+"";
+                        matriculaActual = matriculas.get(0);
+                        
+                filas.addRow(fecha.value,demo.getText(),est);
+
+                funciones();
+                
+                
+                 if(periodo.getCerrado()){
+                        guardar1.disabled = true;
+                        guardar2.disabled = true;
+                    }
+      }else{
+            Messagebox.show("Estudiante no pertenece a éste periodo...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+      }
+
+}
+String eliminar(){
+alert("hola");
+}
+Boolean verificar(String accion){
+        //Registro de Disciplina
+        return permiso.verificarPermiso("Registro de Notas",accion);
+
+    }
+
+ void showReport(String tipo) {
+			//Preparing parameters
+            reportes.visible = true;
+            Institucion insts = periodo.getInstitucion();
+			Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            JRDataSource datasource = null;
+             String directorioReportes = insts.getReportes();
+            
+            ArrayList detalle = new ArrayList();
+             String recibo = noFactura.getValue().trim();
+             String sucursal = serie2.getValue();
+                Cabecerafactura obj = (Cabecerafactura) adm.buscarClave(sucursal + recibo, Cabecerafactura.class);
+                String selecc = "SELECT d FROM Detallefactura d WHERE d.facNumero.facNumero = '" + obj.getFacNumero() + "' ";
+                System.out.println(selecc);
+                List det = adm.query(selecc);
+                Detallefactura mdes;
+                Double descuentos = 0.0;
+                for (Iterator it = det.iterator(); it.hasNext();) {
+                    Detallefactura elem = (Detallefactura) it.next();
+                    mdes = new Detallefactura();
+                    try {
+                        descuentos +=elem.getDescuento();
+                    } catch (Exception e) {
+                    }
+                    detalle.add(elem);
+                }
+            parametros.put("fecha", obj.getFacFecha());
+            parametros.put("nombre", obj.getMatriCod().getEstudiante().getRepresentante().getNombrefactura());
+            parametros.put("total", obj.getFacTotal());
+            parametros.put("descuento", descuentos);
+            parametros.put("alumno", obj.getMatriCod().getEstudiante().getApellido() + " " + obj.getMatriCod().getEstudiante().getNombre());
+            parametros.put("ruc", obj.getMatriCod().getEstudiante().getRepresentante().getIdentificacionfactura());
+            parametros.put("direccion", obj.getMatriCod().getEstudiante().getRepresentante().getDirfactura());
+            parametros.put("telefono", obj.getMatriCod().getEstudiante().getRepresentante().getTelfactura());
+            parametros.put("curso", obj.getMatriCod().getCurso() + "");
+            parametros.put("paralelo", obj.getMatriCod().getCurso().getParalelo().getDescripcion() + "");
+            parametros.put("paralelo", obj.getMatriCod().getCurso().getParalelo().getDescripcion() + "");
+            //parametros.put("observacion", observacion.getText() + "");
+            parametros.put("banco", banco.value + "");
+            parametros.put("cheque", nocheque.getText() + "");
+            parametros.put("usuario", user.getApellidos() + " " + user.getNombres());
+            
+            ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalle);
+            
+            
+            report.setSrc(directorioReportes+"factura.jasper");
+
+
+
+                report.setParameters(parametros);
+                report.setDatasource(ds);
+                report.setType("pdf");
+
+
+		}
+
+]]>
+        </zscript>
+    
+        <grid onClientInfo="onClientInfo(event)" visible="false">
+            <rows>
+                <row>
+                    <intbox id="alto"/> ancho: 
+                    <intbox id="ancho"/>
+                </row>
+            </rows>
+ 
+            <zscript>
+            <![CDATA[
+            
+            void onClientInfo(ClientInfoEvent evt) {
+            alto.setValue(evt.getScreenHeight());
+            ancho.setValue(evt.getScreenWidth());
+            }
+            public void funciones(){
+                cobros r = (cobros) datos.getRows();
+                total.value = r.total();
+                iva.value = r.iva();
+                subtotal.value = r.subtotal();
+                total1.value = r.total1();
+                totalfinal.value = total1.value+(total.value);
+                efectivo.value = totalfinal.value;
+            }
+            
+  public void sumarcobros(String tipo) {
+        Double totalFinal = totalfinal.value;
+        Double total = efectivo.value+(cheque.value)+(deposito.value);
+        if (total > totalFinal) {
+            if (tipo.equals("efe")) {
+                Double cobros = totalfinal.value;
+                efectivo.setValue((totalFinal-cobros) < 0 ? 0 : (totalFinal-cobros));
+            } else if (tipo.equals("dep")) {
+                Double cobros = totalfinal.value;
+                deposito.setValue((totalFinal-cobros) < 0 ? 0 : (totalFinal-cobros));
+            } else if (tipo.equals("che")) {
+                Double cobros = totalfinal.value;
+                cheque.setValue((totalFinal-cobros) < 0 ? 0 : (totalFinal-cobros));
+            }
+        }
+        total = (efectivo.value + cheque.value + deposito.value);
+         
+        if(total <=0){
+            total = total1.value +(total.value);
+        }
+        //totalfinal.setValue(total);
+    }
+    
+    void validar(){
+      String codigo = noFactura.getText() + "";
+            codigo = codigo.replace("FC00", "");
+            codigo = codigo.replace("FC", "");
+            codigo = codigo.replace("F", "");
+            codigo = codigo.replace("C", "");
+            codigo = codigo.replace("FC000", "");
+            codigo = codigo.replace("F00", "");
+            codigo = codigo.replace("C00", "");
+            while (codigo.length() < 7) {
+                codigo = "0" + codigo;
+            }
+            noFactura.setText("FC" + codigo);
+
+            String abuscar = "" + serie2.value + "" + noFactura.getText();
+            Cabecerafactura cabe = (Cabecerafactura) adm.buscarClave(abuscar, Cabecerafactura.class);
+            if (cabe != null) {
+                Messagebox.show("Numero de Factura ya existente, cambie de numero ...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.ERROR);
+                noFactura.setText("");
+                noFactura.focus();
+            }
+   }
+    ]]>
+            </zscript>
+        </grid>
+        <tabbox visible="false">
+            <tabs>
+                <tab onSelect="funciones()" label="." id="facturas"/>
+                <tab onSelect="funciones()" label="." id="facturas2"/>
+                
+            </tabs>
+            <tabpanels>
+                <tabpanel>..</tabpanel>
+                <tabpanel>...</tabpanel>
+            </tabpanels>
+                
+        </tabbox>
+        <panel  id="notasingreso" >
+            <panelchildren>
+                <grid>
+                    <rows>   
+                   
+                        <row  style="background-color:#FCFE94;" >
+                            <span style="float:right"> BÚSQUEDA: </span>
+                            <span>
+                                <combobox cols="35" id="combo"
+                                          onSelect='doAdd(self.selectedItem.label); 
+                                 ' 
+                                          autodrop="true" 
+                                          buttonVisible="false"  
+                                          use="bean.AutoCompleteMatriculados"/>
+                                INGRESE UN APELLIDO: 
+                                <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
+                                <button label="Imprimir"  image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right"> Fecha: </span>
+                            <span>
+                                <datebox id ="fecha" onCreate="self.value = new Date()"/>
+                                <label style="font-size:14px;">Factura: </label> 
+                                <combobox width="25px" id="serie1" readonly="true" value="001">
+                                    <comboitem label="001" />
+                                    <comboitem label="002" />
+                                    <comboitem label="003" />
+                                </combobox> -
+                                <combobox width="25px"  id="serie2" readonly="true" value="001">
+                                    <comboitem label="001" />
+                                    <comboitem label="002" />
+                                    <comboitem label="003" />
+                                </combobox>
+                                <textbox id="noFactura" onBlur="validar()" />
+                            </span>
+                        </row>
+                        <row>
+                            <span style="float:right"> Estudiante: </span>
+                            <textbox cols="50" id="estudiante" />
+                        </row>
+                        <row>
+                            <span style="float:right"> Representante: </span>
+                            <textbox  cols="50"  id="representante" />
+                        </row>
+                        <row>
+                            <span style="float:right"> Grado/Curso:</span>
+                            <textbox id="nivel"  cols="50"  />
+                        </row>
+                    
+
+                    </rows>
+                </grid>
+                <grid  onClientInfo="funciones()" id="datos" >
+                    <columns>
+                        <column width="10px" visible="false"  label ="Mat."/>
+                        <column label ="Rubro"/>
+                        <column label ="Mes"/>  
+                        <column label ="Año"/>  
+                        <column label ="Facturado"/>  
+                        <column label ="Valor"/>  
+                        <column label ="Beca"/>  
+                        <column label ="Dsctos"/>  
+                        <column label ="Total"/>  
+                        <column label ="."/>  
+                    </columns>
+                    <rows id="filas" use="bean.cobros">
+                    </rows>
+                
+                </grid>
+                <grid>
+                    <rows>
+                        <row style="background-color:#FCFE94" spans="10">
+                            <span>TOTALES: </span>
+                        </row>
+                        <row>
+                            <label style="float:right; font-size:14px;">Subtotal: </label> 
+                            <doublebox id="subtotal" value="0" readonly="true"  style="font-weight:bold;text-align:right; font-size:14px;color:blue;font-align:right;"  />
+                            <label style="float:right; font-size:14px;">Total 1: </label> 
+                            <doublebox id="total1" value="0" readonly="true"  style="font-weight:bold;text-align:right; font-size:14px;color:blue;font-align:right;"  /> 
+                        </row>
+                        <row>
+                            <label style="float:right; font-size:14px;">IVA:</label> 
+                            <doublebox id="iva" value="0" readonly="true"  style="font-weight:bold;text-align:right; font-size:14px;color:blue;font-align:right;"   />
+                        </row>
+                        <row>
+                            <label style="float:right; font-size:14px;">Total: </label> 
+                            <doublebox id="total" value="0" readonly="true"  style="font-weight:bold;text-align:right; font-size:14px;color:blue;font-align:right;"   />
+                        
+                        </row>
+                        <row>
+                        
+                        </row>
+                    </rows>
+                </grid>
+            
+                <grid>
+                    <rows>
+                        <row>
+                            <label style="float:right; font-size:24px; color:green;">A PAGAR:</label> 
+                            <doublebox readonly="true" id="totalfinal" value="0" style="font-weight:bold;text-align:right; font-size:24px;color:red;font-align:right;" />
+                        </row>
+                     
+                    </rows>
+                </grid>
+                <grid>
+                    <rows>
+                        <row style="background-color:#FCFE94" spans="10">
+                            <span>Forma de Pago</span>
+                        </row>
+                     
+                        <row >
+                         
+                            Efectivo: 
+                            <doublebox id="efectivo" cols="7" onBlur='sumarcobros("efe")' value="0"/>
+                            Depósito: 
+                            <doublebox id="deposito" cols="7" onBlur='sumarcobros("dep")' value="0"/>
+                            Cheque: 
+                            <doublebox id="cheque"  cols="7" onBlur='sumarcobros("che")' value="0"/>
+                            No.Cheque: 
+                            <doublebox id="nocheque" cols="7" value="0"/>
+                            Banco: 
+                            <textbox id="banco" cols="7" value="0"/>
+                        
+                        </row>
+                     
+                    </rows>
+                </grid>
+                <span>
+                    <button label="Guardar" visible="false"   id="guardar2" image="/images/guardar.gif" onClick="guardar();"/>
+                    <button label="Imprimir" visible="false"   image="/images/imprimir.gif" onClick='showReport("AM")'/>
+                    <decimalbox  id="demo" visible="false" format="#,###.00"/>
+                </span>
+
+            </panelchildren>
+        </panel>
+
+        <panel id="reportes" width="98%" height="98%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
+
+
+
+            <panelchildren>
+                <toolbar  align="end">
+                    <toolbarbutton style="align:right" label="CERRAR"  image ="/images/eliminar.gif" onClick='reportes.setVisible(false)' />
+                </toolbar>
+                
+
+
+                <jasperreport id="report" />
+
+            </panelchildren> 
+        </panel>
+        <zscript> <![CDATA[
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+           
+           
+]]>
+        </zscript>
+    </zk>
+
+</window>

@@ -6,6 +6,12 @@ package bean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import jcinform.persistencia.Equivalencias;
+import jcinform.persistencia.ParametrosGlobales;
+import jcinform.persistencia.Textos;
 
 /**
  *
@@ -30,6 +36,54 @@ public class metodos {
         return total.doubleValue();
     }
 
+    public static Object equivalencia(Object no, List<Equivalencias> equivalencias) {
+        Double nota = (Double) no;
+        ArrayList listado = new ArrayList();
+        for (Equivalencias acaEquivalencias : equivalencias) {
+            Object obj[] = new Object[3];
+            obj[0] = acaEquivalencias.getValorminimo();
+            obj[1] = acaEquivalencias.getValormaximo();
+            obj[2] = acaEquivalencias.getAbreviatura();
+            listado.add(obj);
+        }
+
+        for (Iterator it = listado.iterator(); it.hasNext();) {
+            Object object[] = (Object[]) it.next();
+            Double mini = (Double) object[0];
+            Double maxi = (Double) object[1];
+            if (nota >= mini && nota <= maxi) {
+                //System.out.println(""+);
+                return object[2];
+            }
+        }
+
+        return "";
+    }
+
+    public static Object equivalencia2(Object no, List<Equivalencias> equivalencias) {
+        Double nota = (Double) no;
+        ArrayList listado = new ArrayList();
+        for (Equivalencias acaEquivalencias : equivalencias) {
+            Object obj[] = new Object[3];
+            obj[0] = acaEquivalencias.getValorminimo();
+            obj[1] = acaEquivalencias.getValormaximo();
+            obj[2] = acaEquivalencias.getNombre();
+            listado.add(obj);
+        }
+
+        for (Iterator it = listado.iterator(); it.hasNext();) {
+            Object object[] = (Object[]) it.next();
+            Double mini = (Double) object[0];
+            Double maxi = (Double) object[1];
+            if (nota >= mini && nota <= maxi) {
+                //System.out.println(""+);
+                return object[2];
+            }
+        }
+
+        return "";
+    }
+
     public double promedioSimple(double... bar) {
         int cont = 0;
         BigDecimal total = new BigDecimal("0");
@@ -42,7 +96,50 @@ public class metodos {
         total = total.divide(new BigDecimal(cont), 5, RoundingMode.HALF_UP);
         return total.doubleValue();
     }
-    public Double redondear(Double numero, int decimales) {
+      public static String regresaVariable(String variable, List<Textos> textos) {
+        String dato = "";
+        for (Iterator<Textos> it = textos.iterator(); it.hasNext();) {
+            Textos textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getMensaje();
+            }
+        }
+        return dato;
+    }
+
+    public static String regresaVariableParametros(String variable, List<ParametrosGlobales> textos) {
+        String dato = "";
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getCvalor();
+            }
+        }
+        return dato;
+    }
+
+    public static Double regresaVariableParametrosDecimal(String variable, List<ParametrosGlobales> textos) {
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getNvalor();
+            }
+        }
+
+        return 0.0;
+    }
+
+    public static Boolean regresaVariableParametrosLogico(String variable, List<ParametrosGlobales> textos) {
+        for (Iterator<ParametrosGlobales> it = textos.iterator(); it.hasNext();) {
+            ParametrosGlobales textos1 = it.next();
+            if (textos1.getVariable().equals(variable)) {
+                return textos1.getBvalor();
+            }
+        }
+        return false;
+    }
+
+    public static Double redondear(Double numero, int decimales) {
 
         try {
             java.math.BigDecimal d = new java.math.BigDecimal(numero + "");
@@ -53,7 +150,7 @@ public class metodos {
         }
     }
 
-    public Double truncar(Double numero, int decimales) {
+    public static Double truncar(Double numero, int decimales) {
         try {
             java.math.BigDecimal d = new java.math.BigDecimal(numero + "");
             d = d.setScale(decimales, java.math.BigDecimal.ROUND_DOWN);
