@@ -368,12 +368,19 @@ public class frmTicket extends javax.swing.JInternalFrame {
                         while(pasar){
                             List sihay = adm.query("Select o from Factura as o where o.ticket = '"+nombreCaja+numero+"'"); 
                             if(sihay.size()<=0){
-                                pasar = false;
-                                fac.setTicket("" +nombreCaja+ numero);
-                                emp.setDocumentoticket((numero) + "");
-                                adm.guardar(fac); // GUARDO FACTURA
-                                noTicket.setText(nombreCaja+numero+"");
-                                codigo.setText(fac.getCodigo() + "");
+                                try {
+                                    pasar = false;
+                                    fac.setTicket("" +nombreCaja+ numero);
+                                    emp.setDocumentoticket((numero) + "");
+                                    adm.guardar(fac); // GUARDO FACTURA
+                                    noTicket.setText(nombreCaja+numero+"");
+                                    codigo.setText(fac.getCodigo() + "");     
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    numero++;
+                                    pasar = true;
+                                }
+                               
                             }else{
                                 numero++;
                             }

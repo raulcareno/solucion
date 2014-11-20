@@ -463,11 +463,17 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             while (pasar) {
                 List sihay = adm.query("Select o from Factura as o where o.ticket = '" +nombreCaja+numero + "'");
                 if (sihay.size() <= 0) {
+                    try{
                     pasar = false;
                     fac.setTicket("" + nombreCaja + numero);
                     emp.setDocumentoticket((numero) + "");
                     adm.actualizar(emp);//GUARDO EMPRESA
                     adm.guardar(fac); // GUARDO FACTURA
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        numero++;
+                        pasar = true;
+                    }
                 } else {
                     numero++;
                 }

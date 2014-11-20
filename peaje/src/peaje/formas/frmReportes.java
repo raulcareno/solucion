@@ -565,8 +565,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
     }
 
-    
-    public void totalDiario(String dirreporte, String query, String titulo,String totalIngresos) {
+    public void totalDiario(String dirreporte, String query, String titulo, String totalIngresos) {
         try {
 
             System.out.println("QUERY: " + query);
@@ -577,33 +576,33 @@ public class frmReportes extends javax.swing.JInternalFrame {
             ArrayList detalle = new ArrayList();
             Map parametros = new HashMap();
             for (Iterator it = fac.iterator(); it.hasNext();) {
-                Object[] object = (Object[])it.next();
-                if(object[0].toString().contains("COBRA")) {
-                    parametros.put("cobrados", new Long(object[1].toString()).intValue());        
-                    parametros.put("cobrados_1", new BigDecimal(object[2].toString()).doubleValue());       
-                }else if(object[0].toString().contains("TARIFA")) {
-                    parametros.put("tarifa0", new Long(object[1].toString()).intValue());        
-                    parametros.put("tarifa0_1", new BigDecimal(object[2].toString()).doubleValue());       
-                }else if(object[0].toString().contains("SELLADO")) {
-                    parametros.put("sellados", new Long(object[1].toString()).intValue());        
-                    parametros.put("sellados_1", new BigDecimal(object[2].toString()).doubleValue());       
-                }else if(object[0].toString().contains("TCK")) {
-                    parametros.put("anulados", new Long(object[1].toString()).intValue());        
-                    parametros.put("anulados_1", new BigDecimal(object[2].toString()).doubleValue());       
-                }else if(object[0].toString().contains("FAC")) {
-                    parametros.put("facturasAnuladas", new Long(object[1].toString()).intValue());        
-                 } 
+                Object[] object = (Object[]) it.next();
+                if (object[0].toString().contains("COBRA")) {
+                    parametros.put("cobrados", new Long(object[1].toString()).intValue());
+                    parametros.put("cobrados_1", new BigDecimal(object[2].toString()).doubleValue());
+                } else if (object[0].toString().contains("TARIFA")) {
+                    parametros.put("tarifa0", new Long(object[1].toString()).intValue());
+                    parametros.put("tarifa0_1", new BigDecimal(object[2].toString()).doubleValue());
+                } else if (object[0].toString().contains("SELLADO")) {
+                    parametros.put("sellados", new Long(object[1].toString()).intValue());
+                    parametros.put("sellados_1", new BigDecimal(object[2].toString()).doubleValue());
+                } else if (object[0].toString().contains("TCK")) {
+                    parametros.put("anulados", new Long(object[1].toString()).intValue());
+                    parametros.put("anulados_1", new BigDecimal(object[2].toString()).doubleValue());
+                } else if (object[0].toString().contains("FAC")) {
+                    parametros.put("facturasAnuladas", new Long(object[1].toString()).intValue());
+                }
             }
-            
+
             parametros.put("empresa", emp.getRazon());
             parametros.put("total", new Integer(totalIngresos));
             parametros.put("direccion", emp.getDireccion());
             parametros.put("telefono", emp.getTelefonos());
             parametros.put("titulo", titulo);
             parametros.put("parqueaderos", emp.getParqueaderos());
-            
-            
-            
+
+
+
             WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
@@ -624,7 +623,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
             has.setSeconds(hastahora2.getDate().getSeconds());
             parametros.put("desde", des);
             parametros.put("hasta", has);
- 
+
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros);
             JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
             panelReportes.removeAll();
@@ -699,6 +698,70 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 parametros.put("ocupados", val2.intValue());
             }
 
+
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+            panelReportes.removeAll();
+            reporte.repaint();
+            reporte.setLocation(0, 0);
+            reporte.setSize(723, 557);
+            reporte.setVisible(true);
+            panelReportes.add(reporte);
+            panelReportes.repaint();
+            this.repaint();
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void cierrecaja(String dirreporte, String query, String titulo) {
+        try {
+
+            System.out.println("QUERY: " + query);
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(dirreporte);
+            Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
+           ArrayList detalle = new ArrayList();
+            List fac = adm.queryNativo(query);
+            for (int i = 0; i < fac.size(); i++) {
+                Object[] object = (Object[]) fac.get(i);
+                Factura factura = new Factura();
+                factura.setPlaca(""+object[0]);
+                factura.setNumero((""+object[1]));
+                factura.setDescuento(new BigDecimal((""+object[2]).equals("null")?"0":""+object[2]));
+                factura.setTotal(new BigDecimal((""+object[3]).equals("null")?"0":""+object[3]));
+              
+                detalle.add(factura);
+            }
+            
+ 
+             FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("titulo", titulo);
+            parametros.put("parqueaderos", emp.getParqueaderos());
+            WorkingDirectory w = new WorkingDirectory();
+            String ubicacionDirectorio = w.get() + separador;
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+
+            dirreporte = ubicacionDirectorio + separador + "fotos" + separador;
+            parametros.put("ubicacion", dirreporte);
+            parametros.put("usuario", cmbUsuarios.getSelectedItem().toString());
+
+            Date des = desde.getDate();
+            Date has = desde.getDate();
+            des.setHours(desdehora2.getDate().getHours());
+            des.setMinutes(desdehora2.getDate().getMinutes());
+            des.setSeconds(desdehora2.getDate().getSeconds());
+            has.setHours(hastahora2.getDate().getHours());
+            has.setMinutes(hastahora2.getDate().getMinutes());
+            has.setSeconds(hastahora2.getDate().getSeconds());
+            parametros.put("desde", des);
+            parametros.put("hasta", has);
 
             JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
             JRViewer reporte = new JRViewer(masterPrint); //PARA VER EL REPORTE ANTES DE IMPRIMIR
@@ -941,14 +1004,21 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
 //JasperPrint print = JasperFillManager.fillReport( this.class.getResource("/classpath/yourReport.jasper").getPath(), new HashMap(), new yourReportDataSource());
             PrinterJob job = PrinterJob.getPrinterJob();
-            /* Create an array of PrintServices */
+            /*
+             * Create an array of PrintServices
+             */
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             int selectedService = 0;
-            /* Scan found services to see if anyone suits our needs */
+            /*
+             * Scan found services to see if anyone suits our needs
+             */
             for (int i = 0; i < services.length; i++) {
                 String nombre = services[i].getName().toUpperCase();
                 if (nombre.contains("Office".toUpperCase())) {
-                    /*If the service is named as what we are querying we select it */
+                    /*
+                     * If the service is named as what we are querying we select
+                     * it
+                     */
                     selectedService = i;
                 }
             }
@@ -960,7 +1030,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
             JRPrintServiceExporter exporter;
             exporter = new JRPrintServiceExporter();
             exporter.setParameter(JRExporterParameter.JASPER_PRINT, masterPrint);
-            /* We set the selected service and pass it as a paramenter */
+            /*
+             * We set the selected service and pass it as a paramenter
+             */
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, services[selectedService]);
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, services[selectedService].getAttributes());
             exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
@@ -1077,28 +1149,61 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         } else if (cmbTipoReporte.getSelectedItem().toString().contains("(106)")) { //CIERRE DE CAJA
             //} else if (cmbTipoReporte.getSelectedIndex() == 12) {//FACTURADO
-            query = "Select o from Factura as o"
-                    + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                    + "and o.fechafin is not null and o.numero is not null  "
-                    + "AND (o.anulado IS NULL  OR o.anulado = FALSE) "
-                    + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
-                    + "and (o.tarifa0 = false OR o.tarifa0 IS NULL) "
-                    + "and (o.sellado = false OR o.sellado IS NULL)  ";
+            query = " SELECT 'Cobros General',COUNT(*),IF(SUM(o.descuento) IS NULL,0,SUM(o.descuento)), SUM(o.total)  FROM factura AS o "
+                    + "WHERE  o.fechafin BETWEEN '" + desde2 + "' and '" + hasta2 + "' "
+                    + " AND o.fechafin IS NOT NULL  AND  o.numero IS NOT NULL   AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "                          AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + "                         AND (o.tarifa0 = FALSE OR o.tarifa0 IS NULL)  "
+                    + "                         AND (o.sellado = FALSE OR o.sellado IS NULL) "
+                    + " AND (o.placa NOT LIKE '%PAGO MULTA%' OR o.placa IS NULL)"
+                     
+                    + "                         UNION "
+                    + " SELECT 'Multas',COUNT(*),IF(SUM(o.descuento) IS NULL,0,SUM(o.descuento)), SUM(o.total) FROM factura AS o "
+                    + "WHERE  o.fechafin BETWEEN '" + desde2 + "' and '" + hasta2 + "' "
+                    + " AND o.fechafin IS NOT NULL  AND  o.numero IS NOT NULL   AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "                          AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + "                         AND (o.tarifa0 = FALSE OR o.tarifa0 IS NULL)  "
+                    + "                         AND (o.sellado = FALSE OR o.sellado IS NULL) "
+                    + "                         AND placa LIKE '%PAGO MULTA%'"
+                     
+                    + "                                                 UNION "
+                    + " SELECT 'Total',COUNT(*),IF(SUM(o.descuento) IS NULL,0,SUM(o.descuento)), SUM(o.total) FROM factura AS o "
+                    + "WHERE  o.fechafin BETWEEN '" + desde2 + "' and '" + hasta2 + "' "
+                    + " AND o.fechafin IS NOT NULL  AND  o.numero IS NOT NULL   AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + " AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + " AND (o.tarifa0 = FALSE OR o.tarifa0 IS NULL)  "
+                    + " AND (o.sellado = FALSE OR o.sellado IS NULL) " ;
             if (cmbUsuarios.getSelectedIndex() > 0) {
-                query = "Select o from Factura as o"
-                        + " where o.fechafin between '" + desde2 + "' and '" + hasta2 + "' "
-                        + " and o.fechafin is not null and o.numero is not null  "
-                        + " and o.usuarioc.codigo  = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
-                        + " AND (o.anulado IS NULL  OR o.anulado = FALSE) "
-                        + "  AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
-                        + "and (o.tarifa0 = false OR o.tarifa0 IS NULL)  "
-                        + "and (o.sellado = false OR o.sellado IS NULL)  ";
+                query = " SELECT 'Cobros General',COUNT(*),IF(SUM(o.descuento) IS NULL,0,SUM(o.descuento)), SUM(o.total)  FROM factura AS o "
+                        + "WHERE  o.fechafin BETWEEN '" + desde2 + "' and '" + hasta2 + "' "
+                    + " AND o.fechafin IS NOT NULL  AND  o.numero IS NOT NULL   AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "                          AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + "                         AND (o.tarifa0 = FALSE OR o.tarifa0 IS NULL)  "
+                    + "                         AND (o.sellado = FALSE OR o.sellado IS NULL) "
+                    + " AND (o.placa NOT LIKE '%PAGO MULTA%' OR o.placa IS NULL)"
+                    + " and o.usuarioc = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
+                    + "                         UNION "
+                    + " SELECT 'Multas',COUNT(*),IF(SUM(o.descuento) IS NULL,0,SUM(o.descuento)), SUM(o.total) FROM factura AS o "
+                        + "WHERE  o.fechafin BETWEEN '" + desde2 + "' and '" + hasta2 + "' "
+                    + " AND o.fechafin IS NOT NULL  AND  o.numero IS NOT NULL   AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + "                          AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + "                         AND (o.tarifa0 = FALSE OR o.tarifa0 IS NULL)  "
+                    + "                         AND (o.sellado = FALSE OR o.sellado IS NULL) "
+                    + "                         AND placa LIKE '%PAGO MULTA%'"
+                    + " and o.usuarioc = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  "
+                    + "                                                 UNION "
+                    + " SELECT 'Total',COUNT(*),IF(SUM(o.descuento) IS NULL,0,SUM(o.descuento)), SUM(o.total) FROM factura AS o WHERE  o.fechafin BETWEEN '" + desde2 + "' and '" + hasta2 + "' "
+                    + " AND o.fechafin IS NOT NULL  AND  o.numero IS NOT NULL   AND (o.anulado IS NULL  OR o.anulado = FALSE) "
+                    + " AND (o.anuladofac IS NULL  OR o.anuladofac = FALSE)  "
+                    + " AND (o.tarifa0 = FALSE OR o.tarifa0 IS NULL)  "
+                    + " AND (o.sellado = FALSE OR o.sellado IS NULL) "
+                    + " and o.usuarioc = '" + ((Usuarios) cmbUsuarios.getSelectedItem()).getCodigo() + "'  ";
             }
 
-
+            System.out.println(""+query);
             dirreporte = ubicacionDirectorio + "reportes" + separador + "cierrecaja.jasper";
             titulo = "Facturas ";
-            tickets(dirreporte, query, titulo);
+            cierrecaja(dirreporte, query, titulo);
 
             //} else if (cmbTipoReporte.getSelectedIndex() == 2) {//PUESTO OCUPADOS
         } else if (cmbTipoReporte.getSelectedItem().toString().contains("(107)")) { //TICKEST COBRADOS CON VALOR CERO
@@ -1136,7 +1241,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
                 List totalIngresos = adm.queryNativo("SELECT COUNT(*) FROM Factura AS o  WHERE o.fechaini  BETWEEN  '" + desde2 + "' and '" + hasta2 + "'    "
                         + "AND (o.ticket IS NOT NULL OR o.placa LIKE '%NO CLIENTE%') ");
-                    String total = totalIngresos.toString().replace("[", "").replace("]", "");
+                String total = totalIngresos.toString().replace("[", "").replace("]", "");
                 if (cmbUsuarios.getSelectedIndex() > 0) {
                     query = " SELECT "
                             + " IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'COBRADO',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 1),'SELLADO',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = TRUE) AND (sellado = 0 OR sellado IS NULL),'TARIFA 0',IF((anulado = 0 OR anulado IS NULL) AND (anuladofac = TRUE) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'FAC.ANULADA',IF((anulado = TRUE) AND (anuladofac = 0 OR anuladofac IS NULL) AND (tarifa0 = 0 OR tarifa0 IS NULL) AND (sellado = 0 OR sellado IS NULL),'TCK.ANULADO','' ) ) ) ) ), "
@@ -1149,7 +1254,7 @@ public class frmReportes extends javax.swing.JInternalFrame {
                 }
                 dirreporte = ubicacionDirectorio + "reportes" + separador + "totalDiario.jasper";
                 titulo = "Tickest Cobrados";
-                totalDiario(dirreporte, query, titulo,total);
+                totalDiario(dirreporte, query, titulo, total);
             } catch (Exception ex) {
                 Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
             }
