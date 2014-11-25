@@ -2,28 +2,30 @@
 <zk>
     
    
-    <window id="win" title="Sala de chat" width="300px" border="normal" use="chat.ChatWindow" onCreate="cargar()" >
+    <window id="win"    title="Sala de chat" width="300px" border="normal" use="chat.ChatWindow" onCreate="cargar()" >
         <zscript>
         <![CDATA[ 
         
  import jcinform.persistencia.*;
     import jcinform.procesos.Administrador;
     Session ses = Sessions.getCurrent();
-  Empleados user =  (Empleados)ses.getAttribute("user");
+
   
 
 ]]>
         </zscript>
  
-        <div id="dv" visible="false" style="height: 300px; overflow:scroll">
+        <div id="dv"  visible="false" style="height: 300px; overflow:scroll; smartupdate(scrollTop, 10000);">
             <vbox id="msgBoard"/>
         </div>
         <vbox id="input" visible="false">
 	 
             <hbox>
-                <textbox id="msg" style="width:240px"/>
-                <button id="exit" label="Salir" forward="onExit"/>
+                <textbox id="msg" style="width:260px"/>
+                <button visible="false" id="exit" label="Salir" forward="onExit"/>
             </hbox>
+            <textbox visible="false" id="codigo" />
+            <textbox visible="false" id="nombre"/>
         </vbox>
         <div id="login" style="width: 200px">
             <vbox>
@@ -39,7 +41,17 @@
         <![CDATA[ 
         
   cargar(){
-  nickname.value = ""+user;
+    Empleados user =  (Empleados)ses.getAttribute("user");
+    nickname.value = ""+user;
+    Contactos contacto = win.getAttribute("contacto");
+    Integer valor = new Integer(contacto.id);
+    Integer valor2 = user.getCodigoemp();
+    codigo.value = (valor * valor2)+"";
+    nombre.value = contacto.nombre;
+    
+    win.setTitle(""+nombre.value);
+    win.setId("win"+codigo.value);
+  
      //   onLogin();    
   }
   
