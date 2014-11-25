@@ -19,6 +19,7 @@
 
 package chat;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.DesktopUnavailableException;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.UiException;
+import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 
 /**
@@ -128,7 +130,25 @@ public class Chatter extends Thread {
 			synchronized (_msgs) {
 				msg = _msgs.remove(0);
 			}
-			_msgBoard.appendChild(new Label(msg));
+            Label lbl = new Label(msg);
+            //lbl.setStyle("color:red;");
+            String stiloYo = " background-color: #dbedfe;background-image: url(./images/fondoChat1.png);";
+            lbl.setStyle(stiloYo);
+            
+            Label fecha = new Label(((new Date()).toLocaleString()));
+            String stiloFecha = "color:gray; font-size:8px;";
+            fecha.setStyle(stiloFecha);
+            
+           _msgBoard.appendChild(fecha);
+		   _msgBoard.appendChild(lbl);
+            try {
+              ((Div) _desktop.getWebApp().getAttribute("dv")).smartUpdate("scrollTop", "10000");  
+            } catch (Exception e) {
+                
+            }
+              
+              
+           //((Div)getFellow("dv")).smartUpdate("scrollTop", "10000");
 		}
 	}
 

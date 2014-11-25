@@ -93,7 +93,9 @@
         </init-param>
         <init-param>
             <param-name>AllowedExtensionsFile</param-name>
-            <param-value/>
+            <param-value>
+doc|docx|xls|xlsx|pdf|ppt|pptx|pps|ppsx
+          </param-value>
         </init-param>
         <init-param>
             <param-name>DeniedExtensionsFile</param-name>

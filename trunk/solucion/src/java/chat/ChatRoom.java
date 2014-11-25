@@ -28,14 +28,16 @@ public class ChatRoom {
 	 * @param message
 	 */
 	public void broadcast(String sender, String message) {
-		say(sender, sender + ":" + message);
+		//say(sender, sender + ":" + message);
+        say(sender, "" + message);
 	}
 
 	private void say(String sender, String message) {
 		synchronized (_chatters) {
 			for (Chatter _chatter : _chatters)
-				if (!_chatter.getSender().equals(sender))
-					_chatter.addMessage(message);
+				if (!_chatter.getSender().equals(sender)){
+                    _chatter.addMessage(message);
+                }
 		}
 	}
 
@@ -46,12 +48,12 @@ public class ChatRoom {
 	 */
 
 	public void subscribe(Chatter chatter) {
-		chatter.addMessage(SIGNAL + "Bienvenido " + chatter.getSender() + SIGNAL);
+		//chatter.addMessage(SIGNAL + "Bienvenido " + chatter.getSender() + SIGNAL);
 		synchronized (_chatters) {
 			_chatters.add(chatter);
 		}
-		say(chatter.getSender(), SIGNAL + chatter.getSender()
-				+ " se unio a la Sala" + SIGNAL);
+		//say(chatter.getSender(), SIGNAL + chatter.getSender()
+			//	+ " se unio a la Sala" + SIGNAL);
 	}
 
 	/**
