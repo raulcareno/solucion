@@ -215,7 +215,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
-                System.out.println("MANEJAR DATOS: " + manejarDatos());
+                System.out.println("DATOS RECPTADOS: " + manejarDatos());
                 byte[] readBuffer = new byte[10];
                 try {
 //                                tarjeta = "";
@@ -232,7 +232,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 break;
         }
         Date f = new Date();
-        System.out.println("_______" + tarjeta + " ******* TIME: " + f.getTime());
+        System.out.println("\t\t" + tarjeta + " ******* TIME: " + f.getTime());
 
 
         if (tarjeta.length() >= 10) {
@@ -244,17 +244,20 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
         //System.out.println("VAL: TARJETA: " + tarjeta);
         //System.out.println("" + tarjeta);
-        if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("AEIOUAE2") || tarjeta.toUpperCase().contains("INGENIE")) {
+          
+        if (tarjeta.toUpperCase().contains("A") || tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("AEIOUAE2") || tarjeta.toUpperCase().contains("INGENIE")) {
             if (habilitado) {
                 try {
                     System.out.println("abrio AEIOUA: " + tarjeta + " " + new Date());
-                    tarjeta = "";
+                   // tarjeta = "";
                     if (tarjeta.contains("AEIOUAE2")) {
+                        imprimir("");
+                    } else if (tarjeta.equals("A")) {
                         imprimir("");
                     } else {
                         imprimir("2");
                     }
-                    System.out.println("IMPRIMIÓ");
+                    //System.out.println("IMPRIMIÓ");
                     Thread.sleep(3000);
 //                        if (princip.empresaObj.getRetardoEntrada() != null) {
 //                                if (princip.empresaObj.getRetardoEntrada().length() > 0) {
@@ -263,10 +266,10 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                                }
                     if (tarjeta.contains("AEIOUAE2")) {
                         abrirPuerta(princip.empresaObj.getEntra2());
-                        System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra2());
+                        System.out.println("ABRIO PUERTA A2: " + princip.empresaObj.getEntra2());
                     } else {
                         abrirPuerta(princip.empresaObj.getEntra1());
-                        System.out.println("ABRIO PUERTA: " + princip.empresaObj.getEntra1());
+                        System.out.println("ABRIO PUERTA A1: " + princip.empresaObj.getEntra1());
                     }
                     try {
                         princip.noDisponibles();
@@ -312,11 +315,12 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             return;
         }
 
-
+tarjeta = "";
     }
 
     public void limpiarMemoria() {
 //        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
         System.gc();
         System.gc();
         System.runFinalization();
@@ -354,7 +358,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
     public void abrirPuerta(String puerta) {
         System.out.println("ORDEN DE ABRIR PUERTA: " + puerta);
         try {
-            System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+            //System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
 //        System.gc();
 //        System.gc();
 //        System.gc();
@@ -386,7 +390,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             noDisponibles();
             ta = null;
             limpiarMemoria();
-            System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+            //System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         } catch (InterruptedException ex) {
             Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -464,16 +468,17 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 List sihay = adm.query("Select o from Factura as o where o.ticket = '" +nombreCaja+numero + "'");
                 if (sihay.size() <= 0) {
                     try{
-                    pasar = false;
-                    fac.setTicket("" + nombreCaja + numero);
-                    emp.setDocumentoticket((numero) + "");
-                    adm.actualizar(emp);//GUARDO EMPRESA
-                    adm.guardar(fac); // GUARDO FACTURA
+                        pasar = false;
+                        fac.setTicket("" + nombreCaja + numero);
+                        emp.setDocumentoticket((numero) + "");
+                        adm.actualizar(emp);//GUARDO EMPRESA
+                        adm.guardar(fac); // GUARDO FACTURA
                     }catch(Exception e){
                         e.printStackTrace();
                         numero++;
                         pasar = true;
                     }
+                    sihay=null;
                 } else {
                     numero++;
                 }

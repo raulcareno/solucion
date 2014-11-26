@@ -300,6 +300,34 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 correcto.setVisible(false);
                 incorrecto.setVisible(false);
         clave.requestFocusInWindow();
+        
+        //CAMBIO DESDE LOGIN
+        try {
+            
+        
+        List<Empresa> emp = adm.listar("Select o from Empresa as o ");
+                this.empresaObj = emp.get(0);
+                    iniciarPuertos();
+                    leerTcpIp c = new leerTcpIp();
+                    //s = new Socket("192.168.0.7", 1024);
+                    if (empresaObj.getIpBarras1() != null) {
+                        if (empresaObj.getIpBarras1().length() > 0) {
+                            //c.leerDatos(this,"192.168.0.7", 1024);    
+                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
+                        }
+                    }
+                    if (empresaObj.getIpBarras2() != null) {
+                        if (empresaObj.getIpBarras2().length() > 0) {
+                            //c.leerDatos(this,"192.168.0.7", 1024);    
+                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
+                        }
+                    }
+                    } catch (Exception e) {
+                        System.out.println("ERROR AL INICIAR PUERTOS....");
+        }
+        //A LOGIN
+        
+        
         Thread cargar = new Thread() {
             public void run() {
                 try {
@@ -376,6 +404,7 @@ correcto.setVisible(false);
         barrera5 = new javax.swing.JButton();
         barrera6 = new javax.swing.JButton();
         barrera7 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         contenedor = new javax.swing.JDesktopPane();
         frmClientes1 = new javax.swing.JInternalFrame();
@@ -938,6 +967,17 @@ correcto.setVisible(false);
             }
         });
         barraHerramients.add(barrera7);
+
+        jButton13.setText("jButton13");
+        jButton13.setFocusable(false);
+        jButton13.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton13.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+        barraHerramients.add(jButton13);
 
         getContentPane().add(barraHerramients, java.awt.BorderLayout.PAGE_START);
 
@@ -3134,7 +3174,7 @@ correcto.setVisible(false);
                 tiempo++;
                 actual--;
                 time.setText("" + (actual));
-                System.out.println((new Date()) + "" + (tiempo));
+                System.out.println((new Date()).toLocaleString() + "" + (tiempo));
                 if(!poseeAutologin){
                     tiempo = 0;
                     break;
@@ -3731,8 +3771,7 @@ correcto.setVisible(false);
                 frmIngresarSistema.setVisible(false);
                 usuarioActual = usu;
                 usuarioLogeado.setText("" + usuarioActual.getNombres());
-                List<Empresa> emp = adm.listar("Select o from Empresa as o ");
-                this.empresaObj = emp.get(0);
+                
                 if (ubicacionDirectorio.contains("build")) {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                 }
@@ -3830,21 +3869,21 @@ correcto.setVisible(false);
                     }
                 }
                 if (cerroSesion == false) {
-                    iniciarPuertos();
-                    leerTcpIp c = new leerTcpIp();
-                    //s = new Socket("192.168.0.7", 1024);
-                    if (empresaObj.getIpBarras1() != null) {
-                        if (empresaObj.getIpBarras1().length() > 0) {
-                            //c.leerDatos(this,"192.168.0.7", 1024);    
-                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
-                        }
-                    }
-                    if (empresaObj.getIpBarras2() != null) {
-                        if (empresaObj.getIpBarras2().length() > 0) {
-                            //c.leerDatos(this,"192.168.0.7", 1024);    
-                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
-                        }
-                    }
+//                    iniciarPuertos();
+//                    leerTcpIp c = new leerTcpIp();
+//                    //s = new Socket("192.168.0.7", 1024);
+//                    if (empresaObj.getIpBarras1() != null) {
+//                        if (empresaObj.getIpBarras1().length() > 0) {
+//                            //c.leerDatos(this,"192.168.0.7", 1024);    
+//                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
+//                        }
+//                    }
+//                    if (empresaObj.getIpBarras2() != null) {
+//                        if (empresaObj.getIpBarras2().length() > 0) {
+//                            //c.leerDatos(this,"192.168.0.7", 1024);    
+//                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
+//                        }
+//                    }
                 }
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
@@ -4291,12 +4330,16 @@ correcto.setVisible(false);
     }
 
     public void limpiarMemoria() {
-        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+      //  System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    System.gc();
         System.gc();
         System.gc();
+        System.runFinalization();
         System.gc();
         System.gc();
-        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        Runtime.getRuntime().runFinalization();
+        Runtime.getRuntime().gc();
+    //    System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
 
     public void buscarTarjeta(String puertoViene) {
@@ -7651,6 +7694,19 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         time.setText("0");
               
     }//GEN-LAST:event_claveKeyReleased
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+        try {
+            LeerTarjeta ta = buscarPuerto("principal");
+                    ta.outputSream.write("AEIOUAEIO1".getBytes());
+                    //TEMPORAL
+        } catch (Exception e) {
+            System.out.println(""+e);
+        }
+         
+                     
+    }//GEN-LAST:event_jButton13ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -7855,6 +7911,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
