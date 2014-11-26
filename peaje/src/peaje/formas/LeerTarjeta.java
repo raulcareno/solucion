@@ -252,8 +252,6 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                    // tarjeta = "";
                     if (tarjeta.contains("AEIOUAE2")) {
                         imprimir("");
-                    } else if (tarjeta.equals("A")) {
-                        imprimir("");
                     } else {
                         imprimir("2");
                     }
