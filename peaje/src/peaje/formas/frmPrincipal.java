@@ -7526,10 +7526,16 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         if (!socket.isConnected()) {
                             socket = new Socket(UsuarioActivo.getIp(), 5557);
                         } else {
-                            dataInput = new DataInputStream(socket.getInputStream());
-                            trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
-                                    " " + dataInput.readUTF(), TrayIcon.MessageType.INFO);
-                            Toolkit.getDefaultToolkit().beep();
+                            if((""+dataInput.readUTF()).contains("BARRERA1")){
+                                System.out.println("LEYENDO MENSAJE : "+ dataInput.readUTF());   
+                                barrera1.doClick();
+                            }else{
+                                dataInput = new DataInputStream(socket.getInputStream());
+                                trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
+                                        " " + dataInput.readUTF(), TrayIcon.MessageType.INFO);
+                                Toolkit.getDefaultToolkit().beep();
+                                
+                            }
 
                         }
 

@@ -3190,11 +3190,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
         }
 
-        Long minutosEntreInicioCobroyActual = diferenciaFechas(empresaObj.getHoraDesdeCobro(), empresaObj.getDesde());
-        System.out.println(".... ... .. ." + minutosEntreInicioCobroyActual);
-        if (minutosEntreInicioCobroyActual < 0) {
-            System.out.println("se puede restar");
-        }
+//        Long minutosEntreInicioCobroyActual = diferenciaFechas(empresaObj.getHoraDesdeCobro(), empresaObj.getDesde());
+//        System.out.println(".... ... .. ." + minutosEntreInicioCobroyActual);
+//        if (minutosEntreInicioCobroyActual < 0) {
+//            System.out.println("se puede restar");
+//        }
         ingreso.setDate(fac.getFechaini());
         salida.setDate(new Date());
         btnAgregar.requestFocusInWindow();
@@ -3206,20 +3206,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
         dias2.setVisible(true);
 
         Long minutos0 = diferenciaFechas(fac.getFechaini(), new Date());
-        if (minutosEntreInicioCobroyActual < 0) {
-            Date horacobro = empresaObj.getHoraDesdeCobro();
-            Date desde = empresaObj.getDesde();
-            horacobro.setDate(fac.getFechaini().getDate());
-            horacobro.setMonth(fac.getFechaini().getMonth());
-            horacobro.setYear(fac.getFechaini().getYear());
-            desde.setDate(fac.getFechaini().getDate());
-            desde.setMonth(fac.getFechaini().getMonth());
-            desde.setYear(fac.getFechaini().getYear());
-            if (fac.getFechaini().before(horacobro) && fac.getFechaini().after(desde)) {
-                minutos0 = minutos0 + minutosEntreInicioCobroyActual;
-            }
-
-        }
+//        if (minutosEntreInicioCobroyActual < 0) {
+//            Date horacobro = empresaObj.getHoraDesdeCobro();
+//            Date desde = empresaObj.getDesde();
+//            horacobro.setDate(fac.getFechaini().getDate());
+//            horacobro.setMonth(fac.getFechaini().getMonth());
+//            horacobro.setYear(fac.getFechaini().getYear());
+//            desde.setDate(fac.getFechaini().getDate());
+//            desde.setMonth(fac.getFechaini().getMonth());
+//            desde.setYear(fac.getFechaini().getYear());
+//            if (fac.getFechaini().before(horacobro) && fac.getFechaini().after(desde)) {
+//                minutos0 = minutos0 + minutosEntreInicioCobroyActual;
+//            }
+//
+//        }
         Integer minutos = minutos0.intValue();
         //empresaObj.getGracia()
 
