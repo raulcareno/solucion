@@ -167,8 +167,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        this.addKeyListener(this);
 //        this.setVisible(true);
 //        this.setVisible(true);
-        
+
         this.addWindowListener(new WindowAdapter() {
+
             public void windowClosing(WindowEvent we) {
                 //JOptionPane.showMessageDialog(puertoBase, "mensaje");
                 auditar("", "", "Salir del Sistema");
@@ -203,6 +204,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             PopupMenu men = new PopupMenu("JCINFORMAMENU");
             MenuItem acerca = new MenuItem("Acerca de..");
             acerca.addActionListener(new ActionListener() {
+
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("In here");
                     //JOptionPane.showMessageDialog(getContentPane(), "JCINFORM ");
@@ -217,6 +219,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             men.add(acerca);
             acerca = new MenuItem("Salir ");
             acerca.addActionListener(new ActionListener() {
+
                 public void actionPerformed(ActionEvent e) {
                     //System.out.println("In here");
                     //JOptionPane.showMessageDialog(getContentPane(), "JCINFORM ");
@@ -231,6 +234,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 SystemTray tray = SystemTray.getSystemTray();
                 trayIcon.setImageAutoSize(true);
                 trayIcon.addActionListener(new ActionListener() {
+
                     public void actionPerformed(ActionEvent e) {
                         //System.out.println("In here");
                         trayIcon.displayMessage("SISCONTROL - Soluciones Integradas de Seguridad y Control \n Sistema de Parking \n ", "www.siscontrol.com.ec", TrayIcon.MessageType.INFO);
@@ -297,38 +301,31 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
         }
-correcto.setVisible(false);
-                incorrecto.setVisible(false);
+        correcto.setVisible(false);
+        incorrecto.setVisible(false);
         clave.requestFocusInWindow();
-        
+
         //CAMBIO DESDE LOGIN
         try {
+
+
+            List<Empresa> emp = adm.listar("Select o from Empresa as o ");
+            this.empresaObj = emp.get(0);
+            try {
+                iniciarPuertos();
+            } catch (Exception e) {
+                System.out.println("INCIAR PUERTOS:"+e);
+            }
+
             
-        
-        List<Empresa> emp = adm.listar("Select o from Empresa as o ");
-                this.empresaObj = emp.get(0);
-                    iniciarPuertos();
-                    leerTcpIp c = new leerTcpIp();
-                    //s = new Socket("192.168.0.7", 1024);
-                    if (empresaObj.getIpBarras1() != null) {
-                        if (empresaObj.getIpBarras1().length() > 0) {
-                            //c.leerDatos(this,"192.168.0.7", 1024);    
-                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
-                        }
-                    }
-                    if (empresaObj.getIpBarras2() != null) {
-                        if (empresaObj.getIpBarras2().length() > 0) {
-                            //c.leerDatos(this,"192.168.0.7", 1024);    
-                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
-                        }
-                    }
-                    } catch (Exception e) {
-                        System.out.println("ERROR AL INICIAR PUERTOS....");
+        } catch (Exception e) {
+            System.out.println("ERROR AL INICIAR PUERTOS....");
         }
         //A LOGIN
-        
-        
+
+
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     if (poseeAutologin) {
@@ -3175,7 +3172,7 @@ correcto.setVisible(false);
                 actual--;
                 time.setText("" + (actual));
                 System.out.println((new Date()).toLocaleString() + "" + (tiempo));
-                if(!poseeAutologin){
+                if (!poseeAutologin) {
                     tiempo = 0;
                     break;
                 }
@@ -3185,6 +3182,7 @@ correcto.setVisible(false);
                 if (poseeAutologin) {
                     clave.setText(cl.desencriptar(userAutologin.getClave()));
                     Thread cargar = new Thread() {
+
                         public void run() {
                             procesando.setVisible(true);
                             btnIngresar.setEnabled(false);
@@ -3515,6 +3513,7 @@ correcto.setVisible(false);
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
             if (empresaObj.getLed() != null && !empresaObj.getLed().equals("") && !empresaObj.getLed().equals("null")) {
                 Thread cargar = new Thread() {
+
                     public void run() {
                         try {
                             String valor = "";
@@ -3644,7 +3643,7 @@ correcto.setVisible(false);
         empresaObj.setDesdeFin(emp.getDesdeFin());
         empresaObj.setHastaFin(emp.getHastaFin());
         empresaObj.setHoraDesdeCobro(emp.getHoraDesdeCobro());
-        empresaObj.setValidaCedula(emp.getValidaCedula()); 
+        empresaObj.setValidaCedula(emp.getValidaCedula());
         empresaObj.setValorMaximo(emp.getValorMaximo());
         empresaObj.setNombreCaja(emp.getNombreCaja());
         empresaObj.setSerie(emp.getSerie());
@@ -3771,7 +3770,7 @@ correcto.setVisible(false);
                 frmIngresarSistema.setVisible(false);
                 usuarioActual = usu;
                 usuarioLogeado.setText("" + usuarioActual.getNombres());
-                
+
                 if (ubicacionDirectorio.contains("build")) {
                     ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
                 }
@@ -3868,22 +3867,25 @@ correcto.setVisible(false);
                         barrera7.setEnabled(false);
                     }
                 }
+                System.out.println("________________________________________ 1");
                 if (cerroSesion == false) {
 //                    iniciarPuertos();
-//                    leerTcpIp c = new leerTcpIp();
-//                    //s = new Socket("192.168.0.7", 1024);
-//                    if (empresaObj.getIpBarras1() != null) {
-//                        if (empresaObj.getIpBarras1().length() > 0) {
-//                            //c.leerDatos(this,"192.168.0.7", 1024);    
-//                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
-//                        }
-//                    }
-//                    if (empresaObj.getIpBarras2() != null) {
-//                        if (empresaObj.getIpBarras2().length() > 0) {
-//                            //c.leerDatos(this,"192.168.0.7", 1024);    
-//                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
-//                        }
-//                    }
+                    
+                    leerTcpIp c = new leerTcpIp();
+                    //s = new Socket("192.168.0.7", 1024);
+                    if (empresaObj.getIpBarras1() != null) {
+                        if (empresaObj.getIpBarras1().length() > 0) {
+                            System.out.println("________________________________________ 2");
+                            //c.leerDatos(this,"192.168.0.7", 1024);    
+                            c.leerDatos(this, empresaObj.getIpBarras1(), new Integer(empresaObj.getPuertoBarras1()));
+                        }
+                    }
+                    if (empresaObj.getIpBarras2() != null) {
+                        if (empresaObj.getIpBarras2().length() > 0) {
+                            //c.leerDatos(this,"192.168.0.7", 1024);    
+                            c.leerDatos(this, empresaObj.getIpBarras2(), new Integer(empresaObj.getPuertoBarras2()));
+                        }
+                    }
                 }
                 contenedor.requestFocus();
                 auditar("", "", "Ingreso al Sistema");
@@ -3904,10 +3906,10 @@ correcto.setVisible(false);
 
 
         }
-        try {
-            iniciarServidor();
-        } catch (Exception e) {
-        }
+//        try {
+//            iniciarServidor();
+//        } catch (Exception e) {
+//        }
 
 
     }
@@ -4330,8 +4332,8 @@ correcto.setVisible(false);
     }
 
     public void limpiarMemoria() {
-      //  System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
-    System.gc();
+        //  System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.gc();
         System.gc();
         System.gc();
         System.runFinalization();
@@ -4339,7 +4341,7 @@ correcto.setVisible(false);
         System.gc();
         Runtime.getRuntime().runFinalization();
         Runtime.getRuntime().gc();
-    //    System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        //    System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
 
     public void buscarTarjeta(String puertoViene) {
@@ -5832,12 +5834,13 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         formaTarjetas1.setVisible(false);
 }//GEN-LAST:event_btnSalirTarjetasActionPerformed
-            Thread cargarAutologin = null;
+    Thread cargarAutologin = null;
     private void codigoBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBuscarKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
 
             Thread cargar = new Thread() {
+
                 public void run() {
                     procesando.setVisible(true);
 
@@ -5892,25 +5895,24 @@ correcto.setVisible(false);
                 ListModel datos = tarifas.getModel();
                 for (int i = 0; i < datos.getSize(); i++) {
                     Productos object = (Productos) datos.getElementAt(i);
-                    try{
+                    try {
                         if (g.getCodigo().equals(object.getCodigo())) {
                             tarifas.setSelectedIndex(i);
                             break;
                         }
-                    }catch(Exception ex){
-                        
+                    } catch (Exception ex) {
                     }
                 }
                 try {
-                    codigo.setText(clienteObj.getCodigo()+""); 
+                    codigo.setText(clienteObj.getCodigo() + "");
                 } catch (Exception e) {
                 }
                 try {
                     txtValor.setText(clienteObj.getValor().setScale(2) + "");
-                    descuento.setText(clienteObj.getDescuento().setScale(2) + "");    
+                    descuento.setText(clienteObj.getDescuento().setScale(2) + "");
                 } catch (Exception e) {
                 }
-                
+
                 seleccionarEncontrada((String) busquedaTabla.getValueAt(fila, 2));
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -5971,25 +5973,25 @@ correcto.setVisible(false);
                 ListModel datos = tarifas.getModel();
                 for (int i = 0; i < datos.getSize(); i++) {
                     Productos object = (Productos) datos.getElementAt(i);
-                    try{
-                       if (g.getCodigo().equals(object.getCodigo())) {
-                        tarifas.setSelectedIndex(i);
-                        break;
-                    }  
-                    }catch(Exception er){
-                        System.out.println("error en busquedaTabla, no tiene producto el cliente para tarjeta mensual: "+er);
+                    try {
+                        if (g.getCodigo().equals(object.getCodigo())) {
+                            tarifas.setSelectedIndex(i);
+                            break;
+                        }
+                    } catch (Exception er) {
+                        System.out.println("error en busquedaTabla, no tiene producto el cliente para tarjeta mensual: " + er);
                         //er.printStackTrace();
                     }
-                   
+
 
                 }
                 try {
-                    codigo.setText(clienteObj.getCodigo()+""); 
+                    codigo.setText(clienteObj.getCodigo() + "");
                 } catch (Exception e) {
                 }
                 try {
                     txtValor.setText(clienteObj.getValor().setScale(2) + "");
-                    descuento.setText(clienteObj.getDescuento().setScale(2) + "");    
+                    descuento.setText(clienteObj.getDescuento().setScale(2) + "");
                 } catch (Exception e) {
                 }
                 seleccionarEncontrada((String) busquedaTabla.getValueAt(fila, 2));
@@ -6113,6 +6115,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera7.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     LeerTarjeta ta = buscarPuerto("principal");
@@ -6134,6 +6137,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera6.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     LeerTarjeta ta = buscarPuerto("principal");
@@ -6155,6 +6159,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera5.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     LeerTarjeta ta = buscarPuerto("principal");
@@ -6177,6 +6182,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera4.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 //AbrirPuerta.abrir(empresaObj.getPuerto(), "4");
                 try {
@@ -6199,6 +6205,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera3.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     LeerTarjeta ta = buscarPuerto("principal");
@@ -6239,6 +6246,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera2.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     LeerTarjeta ta = buscarPuerto("principal");
@@ -6311,6 +6319,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         barrera1.setEnabled(false);
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     LeerTarjeta ta = buscarPuerto("principal");
@@ -6406,8 +6415,9 @@ correcto.setVisible(false);
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
-
+cerroSesion = false;
         Thread cargar = new Thread() {
+
             public void run() {
                 procesando.setVisible(true);
                 btnIngresar.setEnabled(false);
@@ -6418,7 +6428,7 @@ correcto.setVisible(false);
                 procesando.setVisible(false);
                 btnIngresar.setEnabled(true);
                 limpiarMemoria();
-                iniciarServidor();
+               // iniciarServidor();
 
             }
         };
@@ -6446,6 +6456,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             Thread cargar = new Thread() {
+
                 public void run() {
                     btnIngresar.doClick();
                 }
@@ -6822,6 +6833,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
             Thread cargar = new Thread() {
+
                 public void run() {
                     procesando.setVisible(true);
 
@@ -7032,6 +7044,7 @@ correcto.setVisible(false);
         // TODO add your handling code here:
 
         Thread cargar = new Thread() {
+
             public void run() {
                 verIp.mostrarFotop(camaraVista1, empresaObj.getUrl());
 
@@ -7101,12 +7114,12 @@ private void horaHasta2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:even
 
 private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambios1ActionPerformed
 // TODO add your handling code here:
-    if (clienteCod.getText() == null || clienteCod.getText().isEmpty() ) {
-        if(!crear.isSelected()){
+    if (clienteCod.getText() == null || clienteCod.getText().isEmpty()) {
+        if (!crear.isSelected()) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente, \n si es para ingreso en vez de Tickets, seleccione el CONSUMIDOR FINAL...! ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
             return;
-        } 
-        
+        }
+
     }
     int filas = tablaTarjetas.getRowCount();
     if (filas <= 0) {
@@ -7138,17 +7151,17 @@ private void btnGuardarCambios1ActionPerformed(java.awt.event.ActionEvent evt) {
             tarActu.setHorainicio((Date) horaDesde2.getValue());
             tarActu.setHorafin((Date) horaHasta2.getValue());
             tarActu.setHabilitada(activa2.isSelected());
-            if(crear.isSelected()){
+            if (crear.isSelected()) {
                 Clientes nuevoCliente = new Clientes((adm.getNuevaClave("Clientes", "codigo")));
-                nuevoCliente.setNombres(tarjetaNo); 
+                nuevoCliente.setNombres(tarjetaNo);
                 nuevoCliente.setValor(BigDecimal.ZERO);
-                nuevoCliente.setDescuento(BigDecimal.ZERO); 
-                adm.guardar(nuevoCliente); 
+                nuevoCliente.setDescuento(BigDecimal.ZERO);
+                adm.guardar(nuevoCliente);
                 tarActu.setClientes(nuevoCliente);
-            }else{
+            } else {
                 tarActu.setClientes(new Clientes(new Integer(clienteCod.getText())));
             }
-            
+
             tarActu.setFacturar(facturar2.isSelected());
             tarActu.setNocontar(nocontar2.isSelected());
             tarActu.setSalida(salida2.isSelected());
@@ -7376,13 +7389,14 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_txtGracia1ActionPerformed
     void socketServidor() {
         Thread cargar = new Thread() {
+
             public void run() {
                 try {
                     System.out.println("EMPEZO.. SERVIDOR DE MENSAJES");
                     ServidorChat();
                     System.out.println("EMPEZO.. SERVIDOR//");
                 } catch (Exception ex) {
-                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex+"..");
+                    Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex + "..");
                     lger.logger(frmPrincipal.class.getName(), ex + "..");
                 }
 
@@ -7485,6 +7499,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     public void socketEnviarMensaje(String mensaje) {
         Thread cargar = new Thread(mensaje) {
+
             public void run() {
                 try {
                     // TODO add your handling code here:
@@ -7514,6 +7529,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     public void socketRecibirMensaje() {
 
         Thread cargar = new Thread() {
+
             public void run() {
                 while (true) {
 
@@ -7526,15 +7542,15 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         if (!socket.isConnected()) {
                             socket = new Socket(UsuarioActivo.getIp(), 5557);
                         } else {
-                            if((""+dataInput.readUTF()).contains("BARRERA1")){
-                                System.out.println("LEYENDO MENSAJE : "+ dataInput.readUTF());   
+                            if (("" + dataInput.readUTF()).contains("BARRERA1")) {
+                                System.out.println("LEYENDO MENSAJE : " + dataInput.readUTF());
                                 barrera1.doClick();
-                            }else{
+                            } else {
                                 dataInput = new DataInputStream(socket.getInputStream());
                                 trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
                                         " " + dataInput.readUTF(), TrayIcon.MessageType.INFO);
                                 Toolkit.getDefaultToolkit().beep();
-                                
+
                             }
 
                         }
@@ -7633,6 +7649,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         if (evt.getKeyCode() == evt.VK_ENTER) {
 
             Thread cargar = new Thread() {
+
                 public void run() {
                     procesando.setVisible(true);
 
@@ -7672,46 +7689,45 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void codigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyReleased
         // TODO add your handling code here:
-         String strCedula = codigo.getText();
-        if(strCedula.length() >9){
-             ValidarCampos val = new ValidarCampos();
-            int valor= val.validaRucCedula(strCedula);
-            if(valor<0){
+        String strCedula = codigo.getText();
+        if (strCedula.length() > 9) {
+            ValidarCampos val = new ValidarCampos();
+            int valor = val.validaRucCedula(strCedula);
+            if (valor < 0) {
                 incorrecto.setVisible(true);
                 correcto.setVisible(false);
-            }else{
+            } else {
                 correcto.setVisible(true);
                 incorrecto.setVisible(false);
             }
-        }else{
-                correcto.setVisible(false);
-                incorrecto.setVisible(false);
+        } else {
+            correcto.setVisible(false);
+            incorrecto.setVisible(false);
         }
     }//GEN-LAST:event_codigoKeyReleased
 
     private void usuariotItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_usuariotItemStateChanged
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_usuariotItemStateChanged
 
     private void claveKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_claveKeyReleased
         // TODO add your handling code here:
         poseeAutologin = false;
         time.setText("0");
-              
+
     }//GEN-LAST:event_claveKeyReleased
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
         try {
             LeerTarjeta ta = buscarPuerto("principal");
-                    ta.outputSream.write("AEIOUAEIO1".getBytes());
-                    //TEMPORAL
+            ta.outputSream.write("AEIOUAEIO1".getBytes());
+            //TEMPORAL
         } catch (Exception e) {
-            System.out.println(""+e);
+            System.out.println("" + e);
         }
-         
-                     
+
+
     }//GEN-LAST:event_jButton13ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
@@ -7797,6 +7813,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 frmPrincipal pr = new frmPrincipal();
                 if (mostrar == true) {
@@ -8462,20 +8479,20 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             e.printStackTrace();
         }
     }
-    
-    void validarNumerodeCedula(String strCedula){
-    if((strCedula+"").equals("")){
-        return;
-    }
-            ValidarCampos val = new ValidarCampos();
-            int valor= val.validaRucCedula(strCedula);
 
-             if(valor<0){
-                incorrecto.setVisible(true);
-                correcto.setVisible(false);
-            }else{
-                correcto.setVisible(true);
-                incorrecto.setVisible(false);
-            }
+    void validarNumerodeCedula(String strCedula) {
+        if ((strCedula + "").equals("")) {
+            return;
+        }
+        ValidarCampos val = new ValidarCampos();
+        int valor = val.validaRucCedula(strCedula);
+
+        if (valor < 0) {
+            incorrecto.setVisible(true);
+            correcto.setVisible(false);
+        } else {
+            correcto.setVisible(true);
+            incorrecto.setVisible(false);
+        }
     }
 }
