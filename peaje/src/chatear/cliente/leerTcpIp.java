@@ -29,6 +29,7 @@ public class leerTcpIp {
 //        } catch (Exception e) {
 //        }
         try {
+            System.out.println("ingreso a leertcpip");
             int c;
             Date fechaInicial = new Date();
             Socket s = null;
@@ -42,6 +43,7 @@ public class leerTcpIp {
             }
             // Obtenemos un controlador de fichero de entrada del socket y
             // leemos esa entrada
+            System.out.println("EMPEZO SERVIDOR IP ");
             sIn = s.getInputStream();
             String datos = "";
             while ((c = sIn.read()) != -1) {
@@ -51,7 +53,8 @@ public class leerTcpIp {
                     Thread.sleep(2);
                     datos = datos.replace(" ", "");
                     datos = datos.trim();
-                    if (datos.length() == 8) {
+                    System.out.println(".."+datos);
+                    if (datos.length() >5 ) {
                         abrirbarrera(datos, ip);
                         datos = "";
                         System.gc();
@@ -122,12 +125,7 @@ public class leerTcpIp {
     }
 
     void abrirbarrera(String tarjeta, String ip) {
-        for (int i = tarjeta.length(); i < 10; i++) {
-            tarjeta = "0" + tarjeta;
-        }
-        if (tarjeta.length() > 10) {
-            tarjeta = tarjeta.substring(0, 10);
-        }
+      
         principal.buscarTarjetaValidarSalida2(ip, tarjeta);//ENVIO EL NUMERO DE TICKET
 
         tarjeta = "";
