@@ -116,6 +116,17 @@ private BigDecimal disciplina2;
     public void setNotas(ArrayList<NotaCollection> notas) {
         this.notas = notas;
     }
+    public ArrayList<NotaCollection> notasComplementarias;
+
+    public ArrayList<NotaCollection> getNotasComplementarias() {
+        return notasComplementarias;
+    }
+
+    public void setNotasComplementarias(ArrayList<NotaCollection> notasComplementarias) {
+        this.notasComplementarias = notasComplementarias;
+    }
+
+      
 
      public ArrayList<NotaCollection> faltas;
 

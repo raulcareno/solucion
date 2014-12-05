@@ -3,7 +3,9 @@ package chat;
 //import org.zkforge.chat.ChatRoom;
 //import org.zkforge.chat.Chatter;
 import java.util.Date;
+import jcinform.persistencia.Chat;
 import jcinform.persistencia.Empleados;
+import jcinform.procesos.Administrador;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
@@ -20,7 +22,7 @@ public class ChatWindow extends Window {
     private Chatter chatter;
     private Desktop desktop;
     private boolean isLogin;
-
+    Administrador adm = new Administrador();
     /**
      * setup initilization
      *
@@ -82,7 +84,14 @@ public class ChatWindow extends Window {
 
         //disable server push
         desktop.enableServerPush(false);
-
+        Session ses = Sessions.getCurrent();
+        Empleados user =  (Empleados)ses.getAttribute("user");
+        try {
+            ((ContactosChat) desktop.getWebApp().getAttribute("contactoschat")).unsubscribe(new Contactos(user.getCodigoemp()+"",user.getApellidos()+" "+user.getNombres(),true));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       
         setLogin(false);
 
         // refresh the UI
@@ -113,14 +122,29 @@ public class ChatWindow extends Window {
                 + "text-shadow: rgba(255, 255, 255, .5) 0 1px 0; "
                 + "white-space: pre-wrap; "
                 + " ";
-        
+         
         String stiloFecha = "color:gray; font-size:8px;float:right";
         message.setStyle(stiloYo);
         fecha.setStyle(stiloFecha);
-         
+        Integer codigo = new Integer(((Textbox) getFellow("codigo")).getValue());
+       
             fecha.setValue("Yo." + (new Date()).toLocaleString());
             message.setValue("\t" + ((Textbox) getFellow("msg")).getValue());
-        
+        try {
+            Chat c = new Chat();
+            Session ses = Sessions.getCurrent();
+            Empleados user =  (Empleados)ses.getAttribute("user");
+            c.setFecha(adm.Date());
+            c.setUsuarioe(user.getCodigoemp());
+            c.setCodigo(codigo);
+            c.setMensaje(message.getValue());
+            c.setVisto(false); 
+            c.setUsuarior(codigo/user.getCodigoemp());
+            adm.guardar(c); 
+            c = null;
+            user = null;
+        } catch (Exception e) {
+        }
 
         getFellow("msgBoard").appendChild(fecha);
         getFellow("msgBoard").appendChild(message);

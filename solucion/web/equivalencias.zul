@@ -59,6 +59,8 @@ void llenar(Equivalencias equi2){
             p = 3;
         }else if(equi.getGrupo().equals("DR")){
             p = 4;
+        }else if(equi.getGrupo().equals("CL")){
+            p = 5;
         }
     }catch(Exception ea){
             try{
@@ -73,6 +75,8 @@ void llenar(Equivalencias equi2){
                             p = 3;
                         }else if(equi.getGrupo().equals("DR")){
                             p = 4;
+                        }else if(equi.getGrupo().equals("CL")){
+                            p = 5;
                         }
             }
             }catch(Exception ea){
@@ -194,6 +198,9 @@ void eliminar(){
         }else if(p.equals("DR")){
             p = "DR";
             indice = 4;
+        }else if(p.equals("CL")){
+            p = "CL";
+            indice = 5;
         }
 List equivaEncontrados = adm.query("Select o from Equivalencias as o where o.grupo = '"+p+"' and o.periodo.codigoper = '"+periodo.getCodigoper()+"' ");
 datos = new Listbox();
@@ -229,7 +236,7 @@ void grupo(String tipo){
             rnota.visible = false;
             esfj.visible = false;
             esfi.visible = false;
-        if(tipo.equals("AP") || tipo.equals("DR")){
+        if(tipo.equals("AP") || tipo.equals("DR") || tipo.equals("CL")){
             rnombre.visible = true;
             rabreviatura.visible = true;
             rdesde.visible = true;
@@ -273,6 +280,7 @@ void grupo(String tipo){
                         <listitem  value="DI" label="Disciplina"/>
                         <listitem  value="SU" label="Supletorio"/>
                         <listitem  value="DR" label="Rangos Disciplina"/>
+                        <listitem  value="CL" label="Rangos Clubes"/>
 						
 					</listbox>
                 </row>
@@ -331,6 +339,7 @@ void grupo(String tipo){
                         <listitem  value="DI" label="Disciplina"/>
                         <listitem  value="SU" label="Supletorio"/>
                         <listitem  value="DR" label="Rangos Disciplina"/>
+                        <listitem  value="CL" label="Rangos Clubes"/>
 						
 					</listbox>
                 <button id="buscar"  image="/images/actualizar.png" label="Buscar" onClick="buscar(buscarText.selectedItem.getValue());"/> 

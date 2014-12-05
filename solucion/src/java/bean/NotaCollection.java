@@ -23,6 +23,7 @@ private String noActa,titulo;
 private String recomendacion,plan;
 private Matriculas matriculas;
 private Integer orden;
+private Boolean ministerio;
 
     public String getEstudiante() {
         return estudiante;
@@ -311,6 +312,14 @@ private String nom1,nom2,nom3,nom4,nom5,nom6,nom7,nom8;
 
     public void setEquivalencia(Object equivalencia) {
         this.equivalencia = equivalencia;
+    }
+
+    public Boolean getMinisterio() {
+        return ministerio;
+    }
+
+    public void setMinisterio(Boolean ministerio) {
+        this.ministerio = ministerio;
     }
 
 

@@ -2,7 +2,8 @@
 <zk>
     
    
-    <window id="win"    title="Sala de chat" width="300px" border="normal" use="chat.ChatWindow" onCreate="cargar()" >
+    <window id="win"    title="Sala de chat" width="300px" border="normal" use="chat.ChatWindow" 
+     onCreate="cargar()" >
         <zscript>
         <![CDATA[ 
         
@@ -21,8 +22,8 @@
         <vbox id="input" visible="false">
 	 
             <hbox>
-                <textbox id="msg" style="width:260px"/>
-                <button visible="false" id="exit" label="Salir" forward="onExit"/>
+                <textbox id="msg" style="width:240px"/>
+                <button visible="true" id="exit" label="Salir" forward="onExit"/>
             </hbox>
             <textbox visible="false" id="codigo" />
             <textbox visible="false" id="nombre"/>

@@ -75,6 +75,8 @@ public class ReporteNoasLibretaDataSource implements JRDataSource{
         }
         else if ("listaNotas".equals(fieldName)){
             valor = new JRBeanCollectionDataSource(nodo.getNotas());
+        }else if ("listaNotasComple".equals(fieldName)){
+            valor = new JRBeanCollectionDataSource(nodo.getNotasComplementarias());
         }else if ("listaFaltas".equals(fieldName)){
             valor = new JRBeanCollectionDataSource(nodo.getFaltas());
         }else if ("listaAutoevaluacion".equals(fieldName)){
