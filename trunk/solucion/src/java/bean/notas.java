@@ -213,12 +213,20 @@ public class notas extends Rows {
         }
 
         List<Equivalencias> equ = null;
+        List<Equivalencias> equDR = null;
+        List<Equivalencias> equCL = null;
 //        System.out.println("" + q);
         if (materia.getCuantitativa() == false) {
 
             equ = adm.query("Select o from Equivalencias as o"
                     + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
                     + "and o.grupo = 'AP' ");
+            equDR = adm.query("Select o from Equivalencias as o"
+                    + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
+                    + "and o.grupo = 'DR' ");
+            equCL = adm.query("Select o from Equivalencias as o"
+                    + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
+                    + "and o.grupo = 'CL' ");
         }
         List nativo = adm.queryNativo(q);
         Row row = new Row();
@@ -451,16 +459,17 @@ public class notas extends Rows {
                         dos = new Double(0.0);
                     }
                     if (j >= 2) {
-
+                    
+                        
                         if (dos == null) {
-                            dos = equ.get(0);
+                            dos = (materia.getEscala().equals("AP")?equ:materia.getEscala().equals("DR")?equDR:materia.getEscala().equals("CL")?equCL:equ).get(0);
                         }
                         combo = new Listbox();
                         combo.setMold("select");
                         combo.setWidth("50px");
                         combo.setRows(1);
                         combo.setStyle("font-size:9px;width:30px");
-                        for (Iterator<Equivalencias> it2 = equ.iterator(); it2.hasNext();) {
+                        for (Iterator<Equivalencias> it2 = (materia.getEscala().equals("AP")?equ:materia.getEscala().equals("DR")?equDR:materia.getEscala().equals("CL")?equCL:equ).iterator(); it2.hasNext();) {
                             Equivalencias equivalencias = it2.next();
                             item = new Listitem("" + equivalencias.getAbreviatura());
                             item.setValue(equivalencias);
@@ -468,7 +477,7 @@ public class notas extends Rows {
 
                         }
                         if (dos instanceof Double) {
-                            dos = devolverNombre(equ, (((Double) dos).intValue()));
+                            dos = devolverNombre((materia.getEscala().equals("AP")?equ:materia.getEscala().equals("DR")?equDR:materia.getEscala().equals("CL")?equCL:equ), (((Double) dos).intValue()));
                         }
                         item = new Listitem(((Equivalencias) dos).getAbreviatura() + "");
                         item.setValue(dos);

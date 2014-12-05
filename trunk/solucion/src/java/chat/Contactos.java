@@ -4,6 +4,8 @@
  */
 package chat;
 
+import jcinform.persistencia.Descuentos;
+
 /**
  *
  * @author GEOVANNY
@@ -43,5 +45,23 @@ public class Contactos {
         this.isLogin = isLogin;
     }
 
+    
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Contactos)) {
+            return false;
+        }
+        Contactos other = (Contactos) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+     
+    public String toString() {
+        return nombre;
+    }
+    
     
 }

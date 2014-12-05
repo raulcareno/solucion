@@ -87,20 +87,24 @@ public class CometServerPush {
                         for (Iterator it = _lista.getItems().iterator(); it.hasNext();) {
                             _lista.getItems().remove(a);
                         }
+                        int cuantos = 0;
                         Contactos nuevo = new Contactos(_empleado.getCodigoemp() + "", _empleado.getApellidos() + " " + _empleado.getNombres(),true);
                         synchronized ((ContactosChat) _desktop.getWebApp().getAttribute("contactoschat")) {
                             boolean existe = false;
+                            
                             for (Iterator it = ((ContactosChat) _desktop.getWebApp().getAttribute("contactoschat")).getChatters().iterator(); it.hasNext();) {
                                 Contactos object = (Contactos) it.next();
+                                cuantos++;
                                 if(!object.getIsLogin()){
                                     ((ContactosChat) _desktop.getWebApp().getAttribute("contactoschat")).unsubscribe(nuevo);
                                 }
                                 if (object.id.equals(nuevo.getId())) {
                                     existe = true;
+                                    cuantos--;
                                 }
+                                
                             }
                             if (existe == false) {
-                                
                                 ((ContactosChat) _desktop.getWebApp().getAttribute("contactoschat")).subscribe(nuevo);
                             }
 
@@ -126,7 +130,7 @@ public class CometServerPush {
 //                            li.appendChild(new Listcell(soporte.getFecha().toLocaleString() + ""));
 //                            _lista.appendChild(li);
 //                        }
-                        if (false) {
+                        if (cuantos>1) {
                             ((Panel) _mensajes).setVisible(false);
                             _este.setSize("0%");
                             _este.setVisible(false);

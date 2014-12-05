@@ -47,7 +47,7 @@ public class ChatRoom {
 	 * @param chatter
 	 */
 
-	public void subscribe(Chatter chatter) {
+	public void subscribe(Chatter chatter) {    
 		//chatter.addMessage(SIGNAL + "Bienvenido " + chatter.getSender() + SIGNAL);
 		synchronized (_chatters) {
 			_chatters.add(chatter);
