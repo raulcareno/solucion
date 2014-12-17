@@ -185,7 +185,8 @@
             Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             usuario.focus();
             }
-                chat.CometServerPush.start(mensajes,pendientes,emp,este);
+               // chat.CometServerPush.start(mensajes,pendientes,emp,este,mensajesSin);
+               // chat.VerificarMensajesSinLeer.start(mensajes,pendientes,emp,este);
 
             }
             cargando(){
@@ -396,8 +397,9 @@
                                     </menu>
                                     <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
                                     <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
+                                    <menu image="/images/chat.png" visible="false" id="mensajesSin"  label="Conversación"/>
                                     
-                                    <menu  image="/images/chat.png" label="chat">
+                                    <!--menu  image="/images/chat.png" label="chat">
                                         <attribute name="onClick">{
                                             final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
                                             win.setClosable(true);
@@ -406,7 +408,7 @@
                                             win.doOverlapped();
                                             }                            
                                         </attribute>
-                                    </menu>
+                                    </menu-->
                         
                                 </menubar>
                             </panelchildren>
@@ -431,7 +433,7 @@
                     </tabbox>
                 </div>
             </center>
-         <east size="20%"  title="CONTACTOS"  flex="true" maxsize="450" splittable="true" 
+         <east size="0%" visible="false"  title="CONTACTOS"  flex="true" maxsize="450" splittable="true" 
                  collapsible="true" id="este"  >
             <div  style="background:#B8D335" >
                 <panel id="mensajes"   border="normal" width="430px" height="100%" >
@@ -448,6 +450,12 @@
                     </panelchildren>
                    
                     <zscript>
+                        void soporte2(String id, String nombre){
+                        System.out.println("......");
+                        Contactos sop = new Contactos(id,nombre);
+                        
+                            soporteSeleccionado(sop);
+                        }
                         void soporteSeleccionado(Contactos sop){
                         try{
                                             final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
@@ -456,8 +464,6 @@
                                             win.setTitle("Conversación");
                                             win.setPosition("bottom,right");
                                             win.doOverlapped();
-                                //pendientes.clearSelection();
-                                //ingresarSoporte(sop);
                             }catch(Exception e) {
                             System.out.println("YA SE HA CREADO UNA SESION");
                             }   

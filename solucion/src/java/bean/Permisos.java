@@ -23,6 +23,7 @@ import jcinform.procesos.Administrador;
 import org.zkoss.image.Image;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Tab;
 //import org.zkoss.image.Image;
 //import org.zkoss.image.AImage;
 
