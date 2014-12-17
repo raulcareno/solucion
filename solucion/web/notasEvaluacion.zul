@@ -172,11 +172,11 @@ void buscar2(Cursos cur){
         " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
           if(user.getTipo().equals("Interna")){
                 empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
-                        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.descripcion not like '%disciplina%'  order by o.orden");
+                        " where o.curso.codigocur = '"+cur.codigocur+"' and o.materia.codigo > 1   order by o.orden");
             }else{
                 empleadosEncontrados = adm.query("Select o from MateriaProfesor as o " + 
                         " where o.curso.codigocur = '"+cur.codigocur+"'  " + 
-                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'   and o.materia.descripcion not like '%disciplina%' and o.formula = ''  order by o.orden");
+                        "and  o.empleado.codigoemp = '"+ user.getCodigoemp() +"'    and o.materia.codigo > 1 and o.formula = ''  order by o.orden");
             }
         mates.getChildren().clear();
         try{ 

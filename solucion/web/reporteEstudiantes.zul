@@ -979,6 +979,7 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
             parametros.put("rectora", insts.getRector());
             parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("regimen", periodo.getRegimen());
+            parametros.put("usuario", user.getApellidos()+" "+user.getNombres());            
              parametros.put("direccion", insts.getDireccion());
             parametros.put("telefono",insts.getTelefono());
 

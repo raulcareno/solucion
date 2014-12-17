@@ -448,6 +448,7 @@ void recalcular2(){
             parametros.put("rectora", insts.getRector());
             parametros.put("jornada", periodo.getSeccion().getDescripcion() );
             parametros.put("regimen", periodo.getRegimen());
+            parametros.put("usuario", user.getApellidos()+" "+user.getNombres());
             parametros.put("minima",(peligro.value).doubleValue());
             parametros.put("curso", curs.selectedItem.value+"");
             try{
