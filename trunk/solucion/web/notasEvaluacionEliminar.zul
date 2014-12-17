@@ -161,7 +161,7 @@ guardando = true;
        Boolean seguir=true;
        int mm = 1;
         String resultado = "";
-                resultado = nso.eliminarRepetidos(r.getChildren(),curso,materia);
+                resultado = nso.eliminarRepetidos(r.getChildren(),curso,materia,sistemaCalificacion);
              
         //if(resultado.equals("ok")){
             doAdd(((Cursos)curs.selectedItem.value),((MateriaProfesor)mates.selectedItem.value),sisevalCombo.getSelectedItem().getValue());

@@ -169,6 +169,16 @@ void llenar(MateriaProfesor estudent){
                             }
                    }
         }
+        if(estudent.getCantidad() != null){
+                     for (int i = 0; i <= cantidad.getItems().size(); i++) {
+                            String primero = (((Listitem)cantidad.getItems().get(i)).getValue());
+                            String segundo = estudent.getCantidad()+"";
+                            if(primero.equals(segundo)){
+                                cantidad.setSelectedItem((Listitem)cantidad.getItems().get(i));
+                                break;
+                            }
+                   }
+        }
 
         
 }
@@ -191,6 +201,7 @@ void estado(Boolean estado,Boolean modificar){
     matesg.disabled = estado;
     profes.disabled = estado;
     escalas.disabled = estado;
+    cantidad.disabled = estado;
     formula.readonly = estado;
 
 }
@@ -216,6 +227,7 @@ void estado(Boolean estado,Boolean modificar){
         matricula.setIngcualitativo(ingcualitativo.checked);
         matricula.setHoras(horas.value);
         matricula.setEscala(escalas.selectedItem.value);
+        matricula.setCantidad(new Integer(cantidad.selectedItem.value));
         try{
             if(matesg.selectedIndex > 0){
                 matricula.setGrupo(matesg.selectedItem.value);
@@ -243,6 +255,7 @@ void estado(Boolean estado,Boolean modificar){
                           " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + matricula.getCurso().getCodigocur() +" ) " +
                           " and materia = "+(matesAnterior.selectedItem.value).getCodigo()+" ";
                         adm.ejecutaSqlNativo(quera);
+                  
                   
                   }
                         //System.out.println("ACTUALIZANDO DISTRIBUTIVO NOTAS "+quera);
@@ -590,6 +603,7 @@ Listbox llenarComboMateriasG(Global mat){
              lista.setStyle("font-size:11px");
         return lista;
 }
+
 Listbox llenarComboEquivalencias(String mat){
         Listbox lista = new Listbox();
                         Listitem li = new Listitem();
@@ -624,6 +638,64 @@ Listbox llenarComboEquivalencias(String mat){
                           
                           if(mat !=null){
                             if(mat.equals("DR"))
+                                li.setSelected(true);
+                           }
+                          lista.appendChild(li);
+
+             
+            lista.setMold("select");
+             lista.setStyle("font-size:11px");
+        return lista;
+}
+
+Listbox llenarComboCantidad(String mat){
+        Listbox lista = new Listbox();
+                        Listitem li = new Listitem();
+                          li.setValue("0");
+                          
+                          Listcell celda = new Listcell("0");
+                          li.appendChild(celda);
+                          
+                          if(mat !=null){
+                            if(mat.equals("0"))
+                                li.setSelected(true);
+                           }
+                          lista.appendChild(li);
+                          
+                          
+                          
+                          li = new Listitem();
+                          li.setValue("5");
+                          celda = new Listcell("5");
+                          li.appendChild(celda);
+                          if(mat !=null){
+                            if(mat.equals("5"))
+                                li.setSelected(true);
+                           }
+                          lista.appendChild(li);
+                          
+                          
+                          
+                          li = new Listitem();
+                          li.setValue("3");
+                          celda = new Listcell("3");
+                          li.appendChild(celda);
+                          if(mat !=null){
+                            if(mat.equals("3"))
+                                li.setSelected(true);
+                           }
+                          lista.appendChild(li);
+                          
+                          
+                          
+                           li = new Listitem();
+                          li.setValue("2");
+                          
+                          celda = new Listcell("2" );
+                          li.appendChild(celda);
+                          
+                          if(mat !=null){
+                            if(mat.equals("2"))
                                 li.setSelected(true);
                            }
                           lista.appendChild(li);
@@ -700,8 +772,9 @@ llenarGrid(Empleados emp){
                                         Intbox tx = new Intbox(acceIt.getOrden());
                                         row.appendChild(tx);
                                         
-                                        Intbox txh = new Intbox(acceIt.getHoras());
+                                        Intbox txh = new Intbox(acceIt.getHoras()==null?0:acceIt.getHoras());
                                         row.appendChild(txh);
+                                         
                                         
                                         Textbox formu = new Textbox(acceIt.getFormula());
                                         row.appendChild(formu);
@@ -725,6 +798,8 @@ llenarGrid(Empleados emp){
                                             });
                                             row.appendChild(aButton);
                                             row.appendChild(llenarComboEquivalencias(acceIt.getEscala()));    
+                                            row.appendChild(llenarComboCantidad(acceIt.getCantidad()+""));    
+                                            
 
 
                                     filas.appendChild(row);
@@ -806,7 +881,8 @@ llenarGrid2(Integer n){
 
                                          Toolbarbutton aButton = new Toolbarbutton("_");
                                          row.appendChild(aButton);
-
+                                        row.appendChild(llenarComboEquivalencias("AP")); 
+                                        row.appendChild(llenarComboCantidad("0")); 
                                     filas.appendChild(row);
                        }
 
@@ -839,6 +915,7 @@ void guardarp(){
                                   mateProfe.setHoras((((Intbox)labels.get(9)).value));
                                   mateProfe.setFormula((((Textbox)labels.get(10)).value));
                                   mateProfe.setEscala((((Listbox)labels.get(12)).selectedItem.value));
+                                  mateProfe.setCantidad(new Integer(((Listbox)labels.get(13)).selectedItem.value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1))
                                             adm.actualizar(mateProfe);
@@ -961,7 +1038,7 @@ llenarGrid3(Cursos cur){
                                         ch.setChecked(acceIt.getIngcualitativo());
                                         row.appendChild(ch);   
 
-                                        Intbox txh = new Intbox(acceIt.getHoras());
+                                        Intbox txh = new Intbox(acceIt.getHoras()==null?0:acceIt.getHoras());
                                         row.appendChild(txh);
                                         
                                         Textbox formu = new Textbox(acceIt.getFormula());
@@ -987,7 +1064,8 @@ llenarGrid3(Cursos cur){
                                             row.appendChild(aButton);
                                             
                                             row.appendChild(llenarComboEquivalencias(acceIt.getEscala()));    
-
+                                            row.appendChild(llenarComboCantidad(acceIt.getCantidad()+""));    
+                                            
 
                                     filas3.appendChild(row);
                        }
@@ -1036,7 +1114,7 @@ llenarGrid3P(Cursos cur){
                                         ch.setChecked(acceIt.getIngcualitativo());
                                         row.appendChild(ch);   
                                         
-                                        Intbox txh = new Intbox(acceIt.getHoras());
+                                        Intbox txh = new Intbox(acceIt.getHoras()==null?0:acceIt.getHoras());
                                         row.appendChild(txh);
                                         
                                         Textbox formu = new Textbox(acceIt.getFormula());
@@ -1219,7 +1297,13 @@ llenarGrid23(Integer n){
                                         
                                     Toolbarbutton aButton = new Toolbarbutton("_");
                                          row.appendChild(aButton);
+                                         
+                                       row.appendChild(llenarComboEquivalencias("AP"));
+                                       row.appendChild(llenarComboCantidad("0"));
+                                         
                                     filas3.appendChild(row);
+                                    
+                                    
                        }
 
 
@@ -1344,12 +1428,19 @@ void guardarc(){
                                   mateProfe.setHoras(((Intbox)labels.get(9)).value);
                                   mateProfe.setFormula((((Textbox)labels.get(10)).value));
                                   mateProfe.setEscala((((Listbox)labels.get(12)).selectedItem.value));
+                                  mateProfe.setCantidad(new Integer(((Listbox)labels.get(13)).selectedItem.value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !empSelec.getCodigoemp().equals(-1)){
                                             adm.actualizar(mateProfe);
                                              String quera = "update notas set materia = '"+ mateProfe.getMateria().getCodigo() +"', " +
                                                 " orden = '"+mateProfe.getOrden()+"', seimprime = "+ mateProfe.getSeimprime() +",  " +
                                                 " promedia = "+ mateProfe.getMinisterio()  +", cuantitativa = "+ mateProfe.getCuantitativa() +"  "+
+                                                " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
+                                                " and materia = "+mateProfe.getMateria().getCodigo()+" ";
+                                                adm.ejecutaSqlNativo(quera);
+                                                quera = "Update notasevaluacion set materia = '"+ mateProfe.getMateria().getCodigo() +"', " +
+                                                " orden = '"+mateProfe.getOrden()+"', seimprime = "+ mateProfe.getSeimprime() +",  " +
+                                                " cuantitativa = "+ mateProfe.getCuantitativa() +"  "+
                                                 " where matricula in (SELECT codigomat FROM matriculas WHERE curso =  " + mateProfe.getCurso().getCodigocur() +" ) " +
                                                 " and materia = "+mateProfe.getMateria().getCodigo()+" ";
                                                 adm.ejecutaSqlNativo(quera);
@@ -1491,7 +1582,7 @@ void guardarcP(){
                             <grid height="350px"  sclass="MyGridRowHeight"  fixedLayout="true"  id="datos3" >
                                 <columns>
                                     <column  width="1px" label="Cod"/>
-                                    <column  width="15px" label="Orden"/>
+                                    <column  width="10px" label="Orden"/>
                                     <column  width="120px" label="Materia"/>
                                     <column  width="120px" label="Empleado"/>
                                     <column  width="15px"  tooltip="tcuan" label="Cuant"/>
@@ -1503,6 +1594,7 @@ void guardarcP(){
                                     <column  width="30px"  tooltip="tform"  label="Formula"/>
                                     <column  width="30px" label="Opción"/>
                                     <column  width="30px" label="Escala"/>
+                                    <column  width="15px" label="Reque."/>
                                 </columns>
                                 <rows id="filas3">
                                 </rows>
@@ -1561,6 +1653,7 @@ void guardarcP(){
                                     <column  width="30px" label="Formula"/>
                                     <column  width="30px" label="Opción"/>
                                      <column  width="30px" label="Escala"/>
+                                     <column  width="15px" label="Reque."/>
                                 </columns>
                                 <rows id="filas">
                                 </rows>
@@ -1665,6 +1758,21 @@ void guardarcP(){
                                     <listcell label="Disciplina" />
                                 </listitem>
                             </listbox>
+                            Requeridas:
+                             <listbox mold="select"   disabled="true"  id="cantidad" width="40px">
+                                 <listitem  value="0">
+                                    <listcell label="0" />
+                                </listitem>
+                                <listitem  value="5">
+                                    <listcell label="5" />
+                                </listitem>
+                                <listitem  value="3">
+                                    <listcell label="3" />
+                                </listitem>
+                                <listitem  value="2">
+                                    <listcell label="2" />
+                                </listitem>
+                            </listbox>
                             </span>
                         </row>
 
@@ -1702,7 +1810,16 @@ void guardarcP(){
                         </row>
                     </rows>
                 </grid>
-
+              <vbox>
+                    <hbox>
+                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  
+                                onClick="guardar();"/>
+                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    </hbox>
+                </vbox>
+                
                 <groupbox  width="100%"  mold="3d" >
 
                     <vbox width="100%">
@@ -1731,16 +1848,7 @@ void guardarcP(){
                         </hbox>
                     </vbox>
                 </groupbox>
-                <vbox>
-                    <hbox>
-                        <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  
-                                onClick="guardar();"/>
-                        <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                        <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                        <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
-                    </hbox>
-                </vbox>
-                
+  
             </tabpanel>
             
             <tabpanel> <!-- INICIAL -->

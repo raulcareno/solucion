@@ -4,7 +4,7 @@
         <session-timeout>25</session-timeout>
     </session-config>
     <description>Administrador Educativo</description>
-    <display-name>JCINFORM  www.jcinform.com</display-name>
+    <display-name>SISCONTROL  www.siscontrol.com.ec</display-name>
     <!-- /// -->
     <!-- DSP -->
     <servlet>
