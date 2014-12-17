@@ -2,7 +2,13 @@
 <?page title="Administrador Educativo"?>
 <?link rel="shortcut icon" type="image/icono" href="images/icono.png"?>
 <zk xmlns="http://www.zkoss.org/2005/zul">
-
+    <style>
+        .z-list-item {
+        font: 7px;
+        font-weight: bold;
+        //overflow: hidden;
+        }
+    </style>
     <borderlayout  onCreate="verificar();cargando();cargando2();"   height="100%">
         <zscript>
 
@@ -17,21 +23,22 @@
             if(emp==null){
             Executions.sendRedirect("login.zul");
             }
-            void ingresar(Listitem item ){
+            void ingresar(String enlace,String label,String id,String image){
             try{
-               if(((String)item.getId()).contains("Chat")){
-                    return;
-               } 
-            if(buscar("c" + (String)item.getId())){
-            Tab newtb= new Tab(""+item.label);
+            if((id).contains("Chat")){
+            return;
+            } 
+            if(buscar("c" + id)){
+            Tab newtb= new Tab("");
             newtb.setSelected(true);
             newtb.setClosable(true);
-            newtb.setId("c"+item.id);
-            newtb.setImage(""+item.image);
+            newtb.setId("c"+id);
+            newtb.setLabel(label);
+//            newtb.setImage(""+image);
             newtb.setParent(tbs);
 
             Tabpanel newtpl = new Tabpanel();
-            Iframe f = new Iframe(item.value);
+            Iframe f = new Iframe(enlace);
             f.setWidth("100%");
             f.setHeight("100%");
             newtpl.appendChild(f);
@@ -166,7 +173,7 @@
 
 
         </zscript>
-        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="56px" >
+        <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="54px" >
 
             <tablelayout width="100%" columns="3">
                 <tablechildren>
@@ -174,7 +181,7 @@
                         <panelchildren  style="background-color:transparent;border:0px;position:absolute; left:96%">
                             <vbox>
                                 <!--image height="60px" id="foto0" src="images/acerca.gif"/-->
-                                <image height="45px" id="foto0" />
+                                <image height="42px" id="foto0" />
                             </vbox>
                         </panelchildren>
                     </panel>
@@ -213,10 +220,10 @@
                                     <label  style="color:white;font-size:9px;" value="${sessionScope.periodo.descripcion}"  />
                                     <separator orient="vertical" /> | 
                                     <separator orient="vertical" />
-                                    <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:9px;font-family: Arial, Helvetica, sans-serif"  label=" [Cerrar Sesión]" onClick="salir()"/>
+                                    <toolbarbutton  image="/images/exit.gif" style="background:transparent;color:white;font-weight:bold;font-size:10px;font-family: Arial, Helvetica, sans-serif"  label=" [CERRAR SESIÓN]" onClick="salir()"/>
                                     <separator orient="vertical" /> | 
                                     <separator orient="vertical" />
-                                    <toolbarbutton style="background:transparent;font-size:9px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
+                                    <toolbarbutton style="background:transparent;font-size:10px;color:white;font-weight:bold;font-family: Arial, Helvetica, sans-serif" image="/images/candado.gif" label="CAMBIAR CLAVE" onClick='cambioC("/cambioClaveProfesor.zul")'/>
 
                                     <separator orient="vertical" /> |
                                     <separator orient="vertical" />
@@ -235,61 +242,34 @@
 
         </north>
 
-        <west title="Menú" size="18%" flex="true" splittable="true" collapsible="true">
+        <west title="Menú" size="20%" flex="true" splittable="true" autoscroll="true" collapsible="true">
             <div>
-                <panel width="100%" border="normal"   height="290px" collapsible="true" >
-                    <panelchildren style="padding:0px;" >
-                        <tabbox onSelect="a1.clearSelection(); a2.clearSelection(); a3.clearSelection(); a4.clearSelection(); a5.clearSelection();"  id="tb" width="100%" height="460px" mold="accordion-lite">
-                            <tabs>
-                                <tab image="/images/matricular.gif" label="Opciones" />
-                            </tabs>
-                            <tabpanels>
-                                <tabpanel  height="290px">
-                                    <listbox height="250px" id="a1" onSelect ="ingresar(self.selectedItem)" >
-                                        
-                                        <listitem id="Registro_de_Notas"  image="/images/notas.png"  label="Registro Notas" value="/notasFuera.zul" />
-                                        <listitem id="Registro_de_Disciplina" image="/images/notas.png"  label="Registro Disciplinas" value="/disciplinaFuera.zul" />
-                                        <listitem id="Registro_de_Faltas" image="/images/notas.png"  label="Faltas" value="/faltasFuera.zul" />
-                                        <listitem id="Registro_de_Faltas_Materia" image="/images/notas.png"  label="Faltas por Materia" value="/faltasNew.zul" />
-                                        <listitem  id="Registro_de_Evaluaciones"  image="/images/notas.png"  label="Registro Notas Evaluaciones" value="/notasEvaluacion.zul"/>
-                                        <listitem id="Notas_de_Grado"  image="/images/notas.png"  label="Registro Ex.Grado" value="/cursosIngresonotasGradoFuera.zul" />
-                                        <listitem  id="ListaPendientes" image="/images/dinero.gif" label="Estudiantes con Pendientes"   value="/pendientesEstudiantesDobe.zul" />
-                                        <listitem  id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/dinero.gif"   value="/pendientes.zul" />
-                                        <listitem id="Calendario" image="/images/calendar.gif"  label="Calendario" value="/calendar.zul" />
-                                        <listitem id="Correos" image="/images/bandeja.png"  label="Correo Electronico" value="/correo.zul"/>
-                                        <listitem  id="Correo_Interno" image="/images/bandeja2.png" label="Correo Interno" value="/correosp/comunicadoProfesorIndex.zul"/>
-                                        <listitem id="Chat" image="/images/chat.png"   label="Chat" >
-                                            <attribute name="onClick">{
-                                                final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
-                                                win.setClosable(true);
-                                                win.setTitle("Conversación");
-                                                win.setPosition("bottom,right");
-                                                win.doOverlapped();
-                                                }                            
-                                            </attribute>
-                                            
-                                        </listitem>
-                                        <listitem id="Reportes_Estudiantes" label="Rep.Estudiantes"  image="/images/resultados.png" value="/reporteEstudiantes.zul" />
-                                        <listitem id="Reportes_Notas" label="Rep.Notas"  image="/images/resultados.png" value="/reporteNotas.zul" />
-                                        <listitem id="Registrar_Recomendacion"  label="Registro de Recomendaciones" image="/images/notas.png" value="/registrarRecomendacion.zul" />
-                                        <listitem id="Comentarios" label="Comentarios"  image="/images/comentarios.png" value="/comentarios.zul" />
-                                        <listitem id="Tareas" image="/images/tarea.png"  label="Tareas" value="/tareas.zul" />
-                                        <listitem/>
-                                        <listitem id="Dobe" image="/images/pensum.png"  label="Dobe" value="/dobe.zul" />
-                                        <listitem/>
-                                    </listbox>
-                                </tabpanel>
-                            </tabpanels>
-
-                        </tabbox>
-
-                      
-
-
-
-                    </panelchildren>
-                </panel>
-
+                   
+                                        <fisheyebar  orient="vertical" id="fsb"   attachEdge="left"   itemWidth="195" itemHeight="45"  itemMaxWidth="270" itemMaxHeight="56">
+                                            <fisheye id="Registro_de_Notas"  image="/images/registronotas.png"  label="REGISTRO DE NOTAS" onClick='ingresar("/notasFuera.zul","REGISTRO DE NOTAS",self.id,self.image)' />
+                                            <fisheye id="Registro_de_Disciplina" image="/images/registrodisciplina.png"  label="COMPORTAMIENTO" onClick='ingresar("/disciplinaFuera.zul","REGISTRO DE DISCIPLINA",self.id,self.image)' />
+                                            <fisheye id="Registro_de_Faltas" image="/images/registrofaltas.png"  label="FALTAS" onClick='ingresar("/faltasFuera.zul","REGISTRO DE FALTAS",self.id,self.image)' />
+                                            <fisheye id="Registro_de_Faltas_Materia" image="/images/registrofaltasmateria.png"  label="FALTAS POR MATERIA" onClick='ingresar("/faltasNew.zul","REGISTRO DE FALTAS POR MATERIA",self.id,self.image)' />
+                                            <fisheye  id="Registro_de_Evaluaciones" image="/images/registroevaluacion.png"  label="REGISTRO DE NOTAS EVALUACIÓN" onClick='ingresar("/notasEvaluacion.zul","REGISTRO DE NOTAS EVALUACIONES",self.id,self.image)' />
+                                            <fisheye id="Registrar_Recomendacion"  label="REGISTRO RECOMENDACIONES" image="/images/registrorecomendacion.png" onClick='ingresar("/registrarRecomendacion.zul","REGISTRO DE RECOMENDACIONES",self.id,self.image)' />
+                                            <fisheye id="Calendario" image="/images/registroecalendario.png"  label="Calendario" onClick='ingresar("/calendar.zul","CALENDARIO",self.id,self.image)' />
+                                            <fisheye id="Notas_de_Grado"  image="/images/registronotasgrado.png"  label="Registro Ex.Grado" onClick='ingresar("/cursosIngresonotasGradoFuera.zul","REGISTRO DE NOTAS DE GRADO",self.id,self.image)' />
+                                            <fisheye  id="ListaPendientes" image="/images/registropendientes2.png" label="Estudiantes con Pendientes"   onClick='ingresar("/pendientesEstudiantesDobe.zul","ESTUDIANTES CON PENDIENTES",self.id,self.image)' />
+                                            <fisheye  id="Pendientes" label="Pendientes(Bloquear Notas)" image="/images/registropendientes.png"   onClick='ingresar("/pendientes.zul","PENDIENTES",self.id,self.image)' />
+                                            </fisheyebar>
+                                            <fisheyebar  orient="vertical" id="fsb2"   attachEdge="left"   itemWidth="195" itemHeight="45"  itemMaxWidth="270" itemMaxHeight="56">
+                                            <fisheye id="Correos" visible="false" image="/images/registrocorreo.png"  label="Correo Electronico" onClick='ingresar("/correo.zul","CORREO E.",self.id,self.image)' />
+                                            <fisheye  id="Correo_Interno" image="/images/registrocorreo.png" label="Correo Interno" onClick='ingresar("/correosp/comunicadoProfesorIndex.zul","CORREO INTERNO",self.id,self.image)' />
+                                            <fisheye   id="Reportes_Estudiantes" label="REPORTES ESTUDIANTES"  image="/images/reporteestudiantes.png" onClick='ingresar("/reporteEstudiantes.zul","REPORTE ESTUDIANTES",self.id,self.image)' />
+                                            <fisheye   id="Reportes_Notas" label="REPORTES NOTAS"  image="/images/reportenotas.png" onClick='ingresar("/reporteNotas.zul","REPORTE NOTAS",self.id,self.image)' />
+                                            <fisheye   id="Comentarios" label="Comentarios"  image="/images/registrocomentarios.png" onClick='ingresar("/comentarios.zul","COMENTARIOS",self.id,self.image)' />
+                                            <fisheye   id="Tareas" image="/images/registrodobe.png"  label="Tareas" onClick='ingresar("/tareas.zul","TAREAS",self.id,self.image)' />
+                                            <fisheye   id="Dobe" image="/images/registrotareas.png"  label="Dobe" onClick='ingresar("/dobe.zul","DOBE",self.id,self.image)' />
+                         
+                                        </fisheyebar>
+                     
+               
+  
                 
             </div>
         </west>
