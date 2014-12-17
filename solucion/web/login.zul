@@ -46,12 +46,20 @@
    
  Session a = Sessions.getCurrent();
  
-        a.removeAttribute("accesos");
-        a.removeAttribute("user");
-        a.removeAttribute("periodo");
-//a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
-        //a.invalidate();
-
+        Empleados emp = a.getAttribute("user");
+            if(emp!=null){
+               if(emp.getTipo().equals("Interna")){
+                    Executions.sendRedirect("index.zul");
+               }else{
+                    Executions.sendRedirect("indexProfesores.zul");
+               }
+            }else{
+                a.removeAttribute("accesos");
+                a.removeAttribute("user");
+                a.removeAttribute("periodo");
+                //a.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.US);
+                //a.invalidate();
+            }
 
  Administrador adm = new Administrador();
  Permisos permisos = new Permisos();
