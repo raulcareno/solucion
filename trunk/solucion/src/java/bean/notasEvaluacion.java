@@ -915,35 +915,18 @@ public class notasEvaluacion extends Rows {
                     + "order by estudiantes.apellido";
         }
 
-        List<Equivalencias> equ = null;
-//        System.out.println("" + q);
-        if (materia.getCuantitativa() == false) {
-
-            equ = adm.query("Select o from Equivalencias as o"
-                    + " where o.periodo.codigoper  = '" + materia.getCurso().getPeriodo().getCodigoper() + "' "
-                    + "and o.grupo = 'AP' ");
-        }
 
         List nativo = adm.queryNativo(q);
         Row row = new Row();
-        String Shabilitado = "color:black;font-weight:bold;width:37px;font:arial;font-size:12px;text-align:right;";
-        String Sdeshabilitado = "color: black !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:37px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
-        String Sdeshabilitadorojo = "color: red !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold";
         String codigomat = "";
         for (Iterator itna = nativo.iterator(); itna.hasNext();) {
             Vector vec = (Vector) itna.next();
             row = new Row();
-            Boolean deshabilitado = false;
-            String color = "black";
-
             //if (materia.getCuantitativa()) {
             for (int j = 0; j < vec.size(); j++) {
                 Object dos = vec.get(j);
                 notaTexto = new Decimalbox();
-//                notaTexto.setConstraint("no negative: No se permiten datos en NEGATIVO");
-//                    notaTexto.setTabindex(j);
                 label3 = new Label();
-//                 label.setAttribute("onBlur", "alert(this)");
                 try {
                     if (dos.equals(null)) {
                         dos = new Double(0.0);
@@ -967,7 +950,6 @@ public class notasEvaluacion extends Rows {
                     valor = valor.replace("[Matriculado]", "");
                     label3.setValue("" + valor);
                 }
-//                                 label.setAttribute(q, dos);
 
                 if (j == 0) {
                     label3.setStyle(" ");
@@ -984,9 +966,6 @@ public class notasEvaluacion extends Rows {
                     row.appendChild(notaTexto);
 
                 }
-
-                //row.appendChild(label);
-//                                 System.out.print(","+dos);
             }
 
 

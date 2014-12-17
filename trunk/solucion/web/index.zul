@@ -38,7 +38,12 @@
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-            Executions.sendRedirect("login.zul");
+                    Executions.sendRedirect("login.zul");
+            }
+            if(emp!=null){
+                if(!emp.getTipo().equals("Interna")){
+                        Executions.sendRedirect("indexProfesores.zul");
+                }
             }
             void salir(){
             
