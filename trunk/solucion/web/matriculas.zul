@@ -1394,20 +1394,20 @@ List matriculas = adm.query("Select o from Matriculas as o where o.estudiante.co
                             anioh1.value ="";  anioh2.value =""; anioh3.value =""; 
                              
              }
-            modificar.disabled=false;
-            acta.disabled = false;
-            acta8.disabled = false;
-        acta9.disabled = false;
-            certificado.disabled = false;
-            certificado2.disabled = false;
-            claveprint.disabled = false;
-            eliminar.disabled=false;
-             modificar3.disabled=false;
-            acta3.disabled = false;
-            certificado3.disabled = false;
-            certificado23.disabled = false;
-            claveprint3.disabled = false;
-            eliminar3.disabled=false;
+                modificar.disabled=false;
+                acta.disabled = false;
+                acta8.disabled = false;
+                acta9.disabled = false;
+                certificado.disabled = false;
+                certificado2.disabled = false;
+                claveprint.disabled = false;
+                eliminar.disabled=false;
+                modificar3.disabled=false;
+                acta3.disabled = false;
+                certificado3.disabled = false;
+                certificado23.disabled = false;
+                claveprint3.disabled = false;
+                eliminar3.disabled=false;
             }else{
                 estudent = new Estudiantes(0);
             }

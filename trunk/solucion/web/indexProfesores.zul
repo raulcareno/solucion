@@ -25,28 +25,28 @@
             }
             void ingresar(String enlace,String label,String id,String image){
             try{
-            if((id).contains("Chat")){
-            return;
-            } 
-            if(buscar("c" + id)){
-            Tab newtb= new Tab("");
-            newtb.setSelected(true);
-            newtb.setClosable(true);
-            newtb.setId("c"+id);
-            newtb.setLabel(label);
-//            newtb.setImage(""+image);
-            newtb.setParent(tbs);
+                if((id).contains("Chat")){
+                    return;
+                } 
+                if(buscar("c" + id)){
+                    Tab newtb= new Tab("");
+                    newtb.setSelected(true);
+                    newtb.setClosable(true);
+                    newtb.setId("c"+id);
+                    newtb.setLabel(label);
+        //            newtb.setImage(""+image);
+                    newtb.setParent(tbs);
 
-            Tabpanel newtpl = new Tabpanel();
-            Iframe f = new Iframe(enlace);
-            f.setWidth("100%");
-            f.setHeight("100%");
-            newtpl.appendChild(f);
-            newtpl.setParent(tps);
-            }
+                    Tabpanel newtpl = new Tabpanel();
+                    Iframe f = new Iframe(enlace);
+                    f.setWidth("100%");
+                    f.setHeight("100%");
+                    newtpl.appendChild(f);
+                    newtpl.setParent(tps);
+                }
             }catch(Exception e){
-            alert(""+e);
-            Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
+                alert(""+e);
+                Messagebox.show("VENTANA YA ABIERTA", "Administrador Educativo", Messagebox.OK, Messagebox.EXCLAMATION);
 
             }
             }

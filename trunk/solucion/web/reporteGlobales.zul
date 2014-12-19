@@ -1,0 +1,1773 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window    onCreate="cargando();"    height="100%" border="normal">
+    <zk xmlns="http://www.zkoss.org/2005/zul" >
+
+        <zscript>
+            <![CDATA[
+import sources.CustomDataSource;
+import net.sf.jasperreports.engine.JRDataSource;
+import sources.*;
+import bean.reportesClase;
+import java.math.BigDecimal;
+import bean.notas;
+import jcinform.persistencia.*;
+import jcinform.procesos.Administrador;
+
+import java.util.Date;
+import org.joda.time.DateMidnight;
+import org.zkoss.zul.Listbox;
+import bean.Permisos;
+
+Permisos per = new Permisos();
+Administrador adm = new Administrador();
+Session ses = Sessions.getCurrent();
+Periodo periodo = (Periodo) ses.getAttribute("periodo");
+reportesClase  noti = new reportesClase();
+
+Empleados user = (Empleados)ses.getAttribute("user");
+    List cursos = null;
+    List elecciones = adm.query("Select o from Elecciones as o where o.estado = true  ");
+    Elecciones seleccioneEleccion = new Elecciones();
+    seleccioneEleccion.setNombre("[SELECCIONE]");
+    elecciones.add(seleccioneEleccion);
+    if(user.getTipo().equals("Interna")){
+        cursos = adm.query("Select o from Cursos as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.secuencia,o.especialidad.descripcion,o.paralelo.descripcion ");
+    }else{
+        cursos = adm.query("Select distinct o.curso from MateriaProfesor as o where o.empleado.codigoemp = '"+user.getCodigoemp()+"'  and o.curso.periodo.codigoper = '"+periodo.getCodigoper()+"'  order by o.curso.secuencia,o.curso.especialidad.descripcion,o.curso.paralelo.descripcion  ");
+        System.out.println("CURSO: +cursos");
+    }
+
+Cursos selec = new Cursos(-1);
+ 
+List trimestres = adm.query("Select o from Trimestres as o where  o.periodo = '"+periodo.getCodigoper()+"' order by o.codigotrim  ");
+List sistemas = new ArrayList();
+ for (Iterator it = trimestres.iterator(); it.hasNext();) {
+              Trimestres trime = (Trimestres) it.next();
+              List sistemas0 = adm.query("Select o from Sistemacalificacion as o " +
+              " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+
+              Sistemacalificacion stodos = new Sistemacalificacion();
+              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              int orden = 0;
+              int codigo=0;
+              if(sistemas0.size() >0 ){
+                  orden = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getOrden();
+                  codigo = ((Sistemacalificacion) sistemas0.get(sistemas0.size()-1)).getCodigosis();
+
+              }
+              stodos.setOrden(orden);
+              stodos.setCodigosis(codigo);
+              stodos.setTrimestre(trime);
+              sistemas.add(stodos);
+              for (Iterator it2 = sistemas0.iterator(); it2.hasNext();){
+                    Sistemacalificacion siste = (Sistemacalificacion) it2.next();
+                    sistemas.add(siste);
+               }
+
+ }
+
+//List sistemas = adm.query("Select o from Sistemacalificacion as o where o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
+Sistemacalificacion stodos0 = new Sistemacalificacion(-1);
+stodos0.setNombre("[Seleccione]");
+sistemas.add(0,stodos0);
+
+
+List materias = adm.query("Select o from Global as o where o.grupo = 'MAT' ");
+void buscar2(Cursos cur){
+    String tipo = reporte.getSelectedItem().getValue();
+   if(tipo.equals("LMAT3") || tipo.equals("LPAS") || tipo.equals("LMIN") || tipo.equals("INS") || tipo.equals("INS2") || tipo.equals("LCLA33") || tipo.equals("LMAT") || tipo.equals("LMATF") || tipo.equals("LMATYR") || tipo.equals("LINSF")   || tipo.equals("RET") || tipo.equals("LREP7") || tipo.equals("CEREP") || tipo.equals("LREP2") || tipo.equals("LREP3") ){
+            filaestudiantes.visible = false;
+            estudiantesCombo.disabled = true;
+           return;
+    }
+          ArrayList listadoCursos = new ArrayList();
+                	Set items = curs.getSelectedItems();
+                    if(items.size()>1){
+                            filaestudiantes.visible = false;
+                            estudiantesCombo.disabled = true;
+                                return;
+                    }
+                   
+						if (items.isEmpty()) {
+							alert("SELECCIONE POR LO MENOS UN CURSO...!");
+                            return;
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								Cursos curso = li.value;
+                                listadoCursos.add(curso);
+							}
+						}
+                        
+
+            filaestudiantes.visible = true;
+            estudiantesCombo.disabled = false;
+         if(estudiantesCombo.disabled==false){
+                    List empleadosEncontrados = adm.query("Select o from Matriculas as o where o.curso.codigocur = '"+cur.codigocur+"'  order by o.estudiante.apellido");
+                        int a=0;
+            for (Iterator it = estudiantesCombo.getItems().iterator(); it.hasNext();) {
+                    estudiantesCombo.getItems().remove(a);
+                }
+                    
+                    Matriculas matri = new Matriculas(-1);
+                    Estudiantes es = new Estudiantes(-1);
+                    es.setApellido("[Seleccione]");
+                    es.setNombre("");
+                    matri.setEstudiante(es);
+                    //empleadosEncontrados.add(0,matri);
+                        
+                           for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                                  Matriculas estudent = (Matriculas) it.next();
+                                    Listitem item = new Listitem();
+                                    item.setValue(estudent);
+                                    item.appendChild(new Listcell(estudent.estudiante.apellido+" "+estudent.estudiante.nombre+ (!estudent.getEstado().equals("Matriculado")? " ["+estudent.getEstado()+"]":"")));
+                                    item.setSelected(true);
+                                    estudiantesCombo.appendChild(item);
+                         }
+                        
+            }
+
+ 
+      
+    }
+ public JRDataSource inscritos(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Matriculas AS mat " +
+                "WHERE  mat.estado =  '"+tipo+"' " +
+                "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and mat.curso.codigocur in ("+curso+") " +
+                " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+      List hoy = adm.query(query);
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Matriculas elem = (Matriculas) it.next();
+            detalle.add(elem);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+
+ public JRDataSource calificacioninscritos(){
+ 
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+      String query = "SELECT calificacion, COUNT(calificacion) FROM inscripciones WHERE periodo = ("+periodo.getCodigoper() +") GROUP BY calificacion  order by calificacion";
+      List hoy = adm.queryNativo(query);
+
+   Integer excelente = 0;  Integer muybueno = 0;
+               Integer bueno = 0;  Integer regular = 0;
+               Integer malo = 0; 
+               ArrayList detalle = new ArrayList();
+               
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+               Vector vec = (Vector) it.next();
+                 Object val1 = vec.get(0);
+                 Object val2 = vec.get(1);
+               General gen = new General();         
+                    if(val1 instanceof Integer){
+                                 Integer dato = val1;
+                                 if(dato.equals(1)){
+                                    malo = 1;
+                                    gen.setOrden(5);
+                                    gen.setValor1("Malo");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(2)){
+                                    regular = 1;
+                                    gen.setOrden(4);
+                                    gen.setValor1("Regular");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(3)){
+                                    bueno = 1;
+                                    gen.setOrden(3);
+                                    gen.setValor1("Bueno");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(4)){
+                                    muybueno = 1;
+                                    gen.setOrden(2);
+                                    gen.setValor1("Muy Bueno");
+                                    gen.setValor2(new Long(val2));
+                                 }else if(dato.equals(5)){
+                                    excelente = 1;
+                                    gen.setOrden(1);
+                                    gen.setValor1("Excelente");
+                                    gen.setValor2(new Long(val2));
+                                 }
+                       }
+                         detalle.add(gen);
+                        System.out.println(gen.getValor1()+ " =  "+gen.getValor2());
+                 
+                
+      }
+      
+    General gen = new General(); 
+      if(excelente.equals(0)){
+        gen.setOrden(1);
+          gen.setValor1("Excelente");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+    System.out.println(gen.getValor1()+ " =  "+gen.getValor2());
+      if(muybueno.equals(0)){
+      gen.setOrden(2);
+          gen.setValor1("Muy Bueno");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+    System.out.println(gen.getValor1()+ " =  "+gen.getValor2());      
+      if(bueno.equals(0)){
+      gen.setOrden(3);
+          gen.setValor1("Bueno");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+         System.out.println(gen.getValor1()+ " =  "+gen.getValor2()); 
+      if(regular.equals(0)){
+      gen.setOrden(4);
+          gen.setValor1("Regular");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      } 
+         System.out.println(gen.getValor1()+ " =  "+gen.getValor2()); 
+      if(malo.equals(0)){
+      gen.setOrden(5);
+          gen.setValor1("Malo");
+          gen.setValor2(new Long(0));
+          detalle.add(gen);
+      }
+      
+    System.out.println(gen.getValor1()+ " =  "+gen.getValor2());           
+     Collections.sort(detalle);
+     
+     ReporteGeneralDataSource ds = new ReporteGeneralDataSource(detalle);
+      return ds;
+}
+
+public JRDataSource resultadosVotacion(){
+ 
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+      String query = " SELECT candidato, COUNT(*) FROM resultados, candidatos, listas, elecciones "+ 
+       " WHERE  candidatos.codigo = resultados.candidato " + 
+       " AND  listas.codigo = candidatos.lista " +
+       " AND  listas.eleccion = elecciones.codigo " + 
+       " AND elecciones.codigo = "+((Elecciones)eleccionesL.selectedItem.value).getCodigo()+"  GROUP BY candidato ORDER BY candidatos.tipocandidato ";
+      List hoy = adm.queryNativo(query);
+
+   Integer excelente = 0;  Integer muybueno = 0;
+               Integer bueno = 0;  Integer regular = 0;
+               Integer malo = 0; 
+               ArrayList detalle = new ArrayList();
+               
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+               Vector vec = (Vector) it.next();
+                 Object val1 = vec.get(0);
+                 Object val2 = vec.get(1);
+                General gen = new General();         
+                    if(val1 instanceof Integer){
+                                 Integer dato = val1;
+                                    malo = 1;
+                                    gen.setOrden(1);
+                                    Candidatos can = adm.buscarClave(new Integer(val1),Candidatos.class);
+                                    gen.setValor1(""+can.getNombre());
+                                    gen.setValor2(new Long(val2));
+                                    gen.setValor3(""+can.getTipocandidato().getNombre());
+                    }
+                         detalle.add(gen);
+                        System.out.println(gen.getValor1()+ " =  "+gen.getValor2());
+                 
+                
+      }
+       
+    //System.out.println(gen.getValor1()+ " =  "+gen.getValor2());           
+ //    Collections.sort(detalle);
+     
+     ReporteGeneralDataSource ds = new ReporteGeneralDataSource(detalle);
+      return ds;
+}
+
+ public JRDataSource inscritos2(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' order by mat.apellido, mat.nombre ";
+                System.out.println(query);
+      List hoy = adm.query(query);
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+
+public JRDataSource inscritos8(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.preaprobado = false ORDER BY mat.apellido ";
+                System.out.println(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+      int i=1;
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            est.setDiscapacidad(elem.getDiscapacidad());
+            est.setTipodiscapacidad(elem.getTdiscapacidad());
+            est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+            est.setEconomia(elem.getAbanderado()); //si es abanderado 
+            est.setDireccion(elem.getParroquia()); //si es sector 
+            est.setIngpadre(elem.getAprovechamiento());
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+public JRDataSource inscritos4(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' and mat.preaprobado = true ORDER BY mat.abanderado DESC,mat.discapacidad DESC, mat.aprovechamiento DESC";
+                System.out.println(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+      int i=1;
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            est.setDiscapacidad(elem.getDiscapacidad());
+            est.setTipodiscapacidad(elem.getTdiscapacidad());
+            est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+            est.setEconomia(elem.getAbanderado()); //si es abanderado 
+            est.setDireccion(elem.getParroquia()); //si es sector 
+            est.setIngpadre(elem.getAprovechamiento());
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+public JRDataSource inscritos6(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.apellido,mat.nombre, mat.usuario, mat.clave FROM Inscripciones AS mat  "  + 
+        " WHERE mat.periodo = '"+periodo.getCodigoper()+"' AND mat.preaprobado = true " +
+        "AND mat.validada = "+ verificada.checked +" UNION SELECT   est.apellido, est.nombre, est.usuario,est.clave  FROM matriculas AS mati, estudiantes est WHERE   mati.estado = 'Inscrito'  AND mati.estudiante = est.codigoest AND mati.curso IN (SELECT  codigocur FROM cursos WHERE periodo =  '"+periodo.getCodigoper()+"' )  ORDER BY  1" ;
+               
+                System.out.println(query);
+      List hoy = adm.queryNativo(query);
+      int i=1;
+       for (Iterator itna = hoy.iterator(); itna.hasNext();) {
+            Vector vec = (Vector) itna.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(vec.get(0)+"");
+            est.setNombre(vec.get(1)+"");
+            est.setUsuario(vec.get(2)+"");
+            est.setClave(per.decriptar(vec.get(3)+""));
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+public JRDataSource inscritos5(ArrayList listadodeCursos, String tipo){
+  String curso =  "";
+
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+      ArrayList detalle = new ArrayList();
+        String query = "SELECT mat.* FROM Inscripciones AS mat " +
+                "WHERE mat.periodo = '"+periodo.getCodigoper()+"' ORDER BY mat.apellido ";
+                System.out.println(query);
+      List hoy = adm.queryNativo(query,Inscripciones.class);
+      int i=1;
+      for(Iterator it = hoy.iterator(); it.hasNext();) {
+            Inscripciones elem = (Inscripciones) it.next();
+            Matriculas matri = new Matriculas();
+            Estudiantes est = new Estudiantes();
+            Cursos cur = new Cursos();
+            Global gl = new Global();
+            gl.setDescripcion("");
+            cur.setEspecialidad(gl);
+            cur.setParalelo(gl);
+            matri.setCurso(cur);
+            est.setApellido(elem.getApellido());
+            est.setNombre(elem.getNombre());
+            est.setFechanacimiento(elem.getFechanacimiento());
+            est.setDiscapacidad(elem.getDiscapacidad());
+            est.setTipodiscapacidad(elem.getTdiscapacidad());
+            est.setHermanos((elem.getHermano().toString().equals("true")?1:0));  //si tiene heramos es entero
+            est.setEconomia(elem.getAbanderado()); //si es abanderado 
+            est.setDireccion(elem.getParroquia()); //si es sector 
+            est.setIngpadre(elem.getAprovechamiento());
+            est.setCodigoest(i);
+            i++;
+            matri.setEstudiante(est);
+            matri.setFechamat(elem.getFechamatricula());
+            
+          
+            detalle.add(matri);
+      }
+      ReporteInscritosDataSource ds = new ReporteInscritosDataSource(detalle);
+      return ds;
+}
+public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
+    String curso =  "";
+    String matricula = "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+        if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      for(Iterator itE = listadoEstudiantes.iterator(); itE.hasNext();) {
+            Matriculas elem2 = (Matriculas) itE.next();
+            matricula  +=""+elem2.getCodigomat()+",";
+      }
+      
+      if(matricula.length()>0){
+         matricula = matricula.substring(0,matricula.length()-1);
+      }
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                    String comple2 = "";
+                 if(matricula.length() <= 0){
+                    comple2 = " AND c.codigocur IN ("+curso+") ";
+                 }else{
+                    comple2 = " AND o.codigomat IN ("+matricula+") ";
+                 }
+                 
+                             query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                        + comple2
+                                         + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
+                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                         System.out.println("querylistados: "+query);
+                                 if(tipo.equals("LMAT")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Matriculado') "
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
+                                 if(tipo.equals("LMATYR")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Matriculado','Retirado') "
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
+                                 if(tipo.equals("LMATF")){
+                                         String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
+                                         String hasta2 = (hasta.getValue().getYear()+1900) +"-"+ (hasta.getValue().getMonth()+1)+"-"+ (hasta.getValue().getDate());
+                                                query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                        + " AND c.codigocur IN ("+curso+") "
+                                                         + " AND o.estado IN ('Matriculado') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
+                                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                         System.out.println("FECHAS"+query);
+                                 }
+                                 if(tipo.equals("LINSF")){
+                                         String desde2 = (desde.getValue().getYear()+1900) +"-"+ (desde.getValue().getMonth()+1)+"-"+ (desde.getValue().getDate());
+                                         String hasta2 = (hasta.getValue().getYear()+1900) +"-"+ (hasta.getValue().getMonth()+1)+"-"+ (hasta.getValue().getDate());
+                                                query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                        + " AND c.codigocur IN ("+curso+") "
+                                                         + " AND o.estado IN ('Inscrito') AND o.fechamat between '"+desde2+"' and '"+hasta2+"'  "
+                                                         + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                                         System.out.println("FECHAS"+query);
+                                 }
+                                 if(tipo.equals("LCLA5")){
+                                    query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                 + " AND o.estado IN ('Inscrito') "
+                                                 + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
+                
+            List hoy = adm.queryNativo(query,Matriculas.class);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+                if(tipo.equals("CM")){
+                     ds = new ReporteCertificadoDataSource(detalle);
+                }else if(tipo.equals("LREL2")){
+                     reportesClase noti = new reportesClase();
+                     ds = noti.conteoReligion();
+
+                }else{
+                      ds = new ReporteActaDataSource(detalle);
+                }
+
+            return ds;
+
+}
+
+public JRDataSource listadoMatriculas(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
+    String curso =  "";
+    String matricula = "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+        if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      for(Iterator itE = listadoEstudiantes.iterator(); itE.hasNext();) {
+            Matriculas elem2 = (Matriculas) itE.next();
+            matricula  +=""+elem2.getEstudiante().getCodigoest()+",";
+      }
+      
+      if(matricula.length()>0){
+         matricula = matricula.substring(0,matricula.length()-1);
+      }
+
+              Administrador adm = new Administrador();
+              Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                    String comple2 = "";
+                    comple2 = " AND e.codigoest IN ("+matricula+") ";
+                             query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                        + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                        + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                        + comple2
+                                         + " AND o.estado IN ('Matriculado','Recibir Pase','Retirado','Emitir Pase') "
+                                         + " ORDER BY  c.secuencia,c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre, e.codigoest ";
+            List hoy = adm.queryNativo(query,Matriculas.class);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+                 
+                      ds = new ReporteActaDataSource(detalle);
+            return ds;
+
+}
+
+public JRDataSource listadoComentarios(ArrayList listadodeCursos,String tipo,ArrayList listadoEstudiantes){
+    String curso =  "";
+    String matricula = "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+        if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      for(Iterator itE = listadoEstudiantes.iterator(); itE.hasNext();) {
+            Matriculas elem2 = (Matriculas) itE.next();
+            matricula  +=""+elem2.getCodigomat()+",";
+      }
+      
+      if(matricula.length()>0){
+         matricula = matricula.substring(0,matricula.length()-1);
+      }
+
+              Administrador adm = new Administrador();
+              Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                    query  = "SELECT o FROM Comentarios as o " + 
+                     " where o.matricula.codigomat in ("+matricula+")  " + 
+                     "  ORDER BY  o.matricula.estudiante.apellido,o.matricula.estudiante.nombre,o.fecha ";
+                     System.out.println(query);
+            List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Comentarios elem = (Comentarios) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteComentariosDataSource(detalle);
+            return ds;
+
+}
+
+public JRDataSource certificadosInsc(ArrayList listadodeCursos,String tipo){
+    String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+    String query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                    + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                    + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                    + " AND c.codigocur IN ("+curso+") "
+                     + " AND o.estado IN ('Inscrito') "
+                     + " ORDER BY  c.secuencia,c.codigocur, es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+            List hoy = adm.queryNativo(query,Matriculas.class);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = null;
+               
+                      ds = new ReporteActaDataSource(detalle);
+               
+
+            return ds;
+
+}
+
+public JRDataSource pases(ArrayList listadodeCursos,String tipo){
+
+  String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+            //detalle.add(elem);
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+      
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "";
+                
+                        query = "Select o from Matriculas as o " +
+                                "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                "and o.curso.codigocur in (" + curso + ") " +
+                                " and o.estado in ('Recibir Pase') "+ 
+                                "order by o.curso.secuencia,o.codigocur, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+
+
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+                
+
+            return ds;
+
+}
+
+public JRDataSource transporte(ArrayList listadodeCursos,String tipo){
+        String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    if(tipo.equals("LTRAN")){
+                        String query =   "Select o from Matriculas as o " +
+                                    "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                    "and o.curso.codigocur in (" + curso + ") and  " +
+                                    "o.estudiante.transporte = true  " +
+                                    "order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+                    
+
+                        List hoy = adm.query(query);
+                        for (Iterator it = hoy.iterator(); it.hasNext();) {
+                            Matriculas elem = (Matriculas) it.next();
+                            detalle.add(elem);
+                        }
+                    }else if(tipo.equals("LSEG")){
+                        String query =   "Select o from Matriculas as o " +
+                                    "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                    "and o.curso.codigocur in (" + curso + ") and  " +
+                                    "o.estudiante.asegurado = true  " +
+                                    "order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+                    
+
+                        List hoy = adm.query(query);
+                        for (Iterator it = hoy.iterator(); it.hasNext();) {
+                            Matriculas elem = (Matriculas) it.next();
+                            detalle.add(elem);
+                        }
+                    }else if(tipo.equals("LCART")){
+                        String   query = "Select o from Matriculas as o " +
+                                        "where o.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                                        "and o.curso.codigocur in (" + curso + ")  " +
+                                        " order by o.curso.secuencia, o.curso.descripcion, o.curso.paralelo.descripcion, o.estudiante.apellido,o.estudiante.nombre ";
+                         
+
+                            List hoy = adm.query(query);
+                            for (Iterator it = hoy.iterator(); it.hasNext();) {
+                                Matriculas elem = (Matriculas) it.next();
+                                detalle.add(elem);
+                            }
+
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+
+public JRDataSource nuevos(ArrayList listadodeCursos, String tipo){
+       String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+
+     Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " and mat.curso.codigocur in ("+curso+") and  mat.nuevo = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+public JRDataSource migrantes(ArrayList listadodeCursos, String tipo){
+       String curso =  "";
+        for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+          }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+     Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " and mat.curso.codigocur in ("+curso+") and  mat.migrantes = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+
+public JRDataSource ministerio(ArrayList listadodeCursos, String tipo){
+       String curso =  "";
+        for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+          }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+     Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' " +
+                            " and mat.curso.codigocur in ("+curso+") and  mat.ministerio = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+
+public JRDataSource internos(ArrayList listadodeCursos,String tipo){
+       String curso =  "";
+    for(Iterator it = listadodeCursos.iterator(); it.hasNext();) {
+            Cursos elem = (Cursos) it.next();
+            curso +=""+elem.getCodigocur()+",";
+      }
+      if(curso.length()>0){
+         curso = curso.substring(0,curso.length()-1);
+      }
+
+      Administrador adm = new Administrador();
+      Session ses = Sessions.getCurrent();
+                    ArrayList detalle = new ArrayList();
+                    String query = "SELECT mat FROM Matriculas AS mat " +
+                            "WHERE  mat.estado  in ('Matriculado','Recibir Pase','Retirado','Emitir Pase') " +
+                            "and mat.curso.periodo.codigoper = '" + periodo.getCodigoper() + "' and mat.curso.codigocur in ("+ curso +") and  mat.estudiante.adventista = true  " +
+                            " order by mat.curso.secuencia, mat.curso.codigocur, mat.estudiante.apellido, mat.estudiante.nombre";
+                  
+                    List hoy = adm.query(query);
+                    for (Iterator it = hoy.iterator(); it.hasNext();) {
+                        Matriculas elem = (Matriculas) it.next();
+                        detalle.add(elem);
+                    }
+                JRDataSource ds = new ReporteActaDataSource(detalle);
+
+
+            return ds;
+
+}
+
+
+ void showReport() {
+    String tipo = reporte.getSelectedItem().getValue();
+     ArrayList listadoCursos = new ArrayList();
+                	Set items = curs.getSelectedItems();
+						if (items.isEmpty() &&  !tipo.equals("LMAT2") && !tipo.equals("INS2") && !tipo.equals("RVOT") && !tipo.equals("INS3")  && !tipo.equals("INS3")  && !tipo.equals("INS4")  && !tipo.equals("INS5")  && !tipo.equals("INS6")  && !tipo.equals("INS99") && !tipo.equals("INS7")  && !tipo.equals("INS8")) {
+                            Messagebox.show("SELECCIONE POR LO MENOS UN CURSO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            return;
+						} else {
+							List al = new ArrayList(items);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								Cursos curso = li.value;
+                                listadoCursos.add(curso);
+							}
+						}
+        
+           ArrayList listadoEstudiantes = new ArrayList();
+           if(items.size()== 1){
+                    
+                	Set items2 = estudiantesCombo.getSelectedItems();
+
+                    if (items2.isEmpty() && !tipo.equals("LPAS") && !tipo.equals("LMIN") && !tipo.equals("INS") && !tipo.equals("INS2") && !tipo.equals("LCLA33")  && !tipo.equals("LMAT") && !tipo.equals("LMATF") && !tipo.equals("LMATYR") && !tipo.equals("LINSF") && !tipo.equals("RET")  && !tipo.equals("CEREP")   && !tipo.equals("LREP7")  && !tipo.equals("LREP2")  && !tipo.equals("LMAT3") && !tipo.equals("LREP3") ) {
+                            Messagebox.show("NO HA SELECCIONADO NINGÚN ESTUDIANTE...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                            return;
+						} else {
+							List al = new ArrayList(items2);
+							for (Iterator it = al.iterator(); it.hasNext();) {
+								Listitem li = (Listitem)it.next();
+								Matriculas matri = li.value;
+                                listadoEstudiantes.add(matri);
+							}
+						}                        
+       }    
+        //Preparing parameters
+             ver.visible = false;
+            reportese.visible = true;
+             //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
+            //conanioscumplidos
+
+            cerrar.setVisible(true);
+            //rep.setOpen(true);parametros.setOpen(false);
+            Institucion insts = periodo.getInstitucion();
+            Map parametros = new HashMap();
+            parametros.put("denominacion", insts.getDenominacion());
+            parametros.put("nombre", insts.getNombre());
+            parametros.put("periodo", periodo.getDescripcion());
+            parametros.put("slogan", insts.getSlogan());
+            parametros.put("secretaria", insts.getSecretaria());
+            parametros.put("rectora", insts.getRector());
+            parametros.put("jornada", periodo.getSeccion().getDescripcion() );
+            parametros.put("regimen", periodo.getRegimen());
+            parametros.put("usuario", user.getApellidos()+" "+user.getNombres());            
+             parametros.put("direccion", insts.getDireccion());
+            parametros.put("telefono",insts.getTelefono());
+
+            JRDataSource datasource = null;
+            String directorioReportes = insts.getReportes();
+            //report.setSrc("web-inf/reportes/"certificadoMatricula.jasper");
+            if(tipo.equals("CM")){
+                    datasource = certificados(listadoCursos,"CM",listadoEstudiantes);
+                    report.setSrc(directorioReportes+"certificadoMatricula.jasper");
+                    parametros.put("titulo", "Certificado de Matricula");
+                    try{
+                    parametros.put("tutor", ""+(curs.getSelectedItem().getValue()).getTutor());
+                    }catch(Exception exs){}
+                    
+            }else if(tipo.equals("CAT")){
+                    datasource = certificados(listadoCursos,"CAT",listadoEstudiantes);
+                    report.setSrc(directorioReportes+"certificadoAsistencia.jasper");
+                    parametros.put("titulo", "Certificado de Asistencia");
+                    try{
+                        parametros.put("tutor", ""+(curs.getSelectedItem().getValue()).getTutor());
+                    }catch(Exception exs){}
+            }else if(tipo.equals("CD")){
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"certificadoconducta.jasper");
+            }else if(tipo.equals("CA")){
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"certificadoaprovechamiento.jasper");
+            }else if(tipo.equals("CAD")){
+                    datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
+                    report.setSrc(directorioReportes+"certificadoaprovydisc.jasper");
+            }else if(tipo.equals("CM2")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadoMatricula2.jasper");
+            }else if(tipo.equals("CC")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadoConstancia.jasper");
+            }else if(tipo.equals("CEREP")){
+                    datasource = certificados(listadoCursos,"CEREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"celulares.jasper");
+            }else if(tipo.equals("CP")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadoPension.jasper");
+            }else if(tipo.equals("CH")){
+                    datasource = listadoMatriculas(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadohistoriaactual.jasper");
+            }else if(tipo.equals("COMEN")){
+                    datasource = listadoComentarios(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"comentarios.jasper");
+            }else if(tipo.equals("CAP")){
+                    datasource = listadoMatriculas(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"certificadohistoriayaprobacion.jasper");
+            }else if(tipo.equals("LFEC")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"conanioscumplidos.jasper");
+            }else if(tipo.equals("LCAS")){
+                    datasource = certificados(listadoCursos,"LCAS",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"concasilleros.jasper");
+            }else if(tipo.equals("LMIN")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"conmatricula.jasper");
+            }else if(tipo.equals("LCED")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"concedula.jasper");
+            }else if(tipo.equals("LDAT")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"condatos.jasper");
+            }else if(tipo.equals("LREP2")){
+                    datasource = certificados(listadoCursos,"LREP2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"actaMatricula3.jasper");
+            }else if(tipo.equals("LREP7")){
+                    datasource = certificados(listadoCursos,"LREP2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"libromatriculas.jasper");
+            }else if(tipo.equals("LREP3")){
+                    datasource = certificados(listadoCursos,"LREP3",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"representantes2.jasper");
+            }else if(tipo.equals("LINT2")){
+                    datasource = certificados(listadoCursos,"LINT2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"fechadiscapacidad.jasper");
+            }else if(tipo.equals("LMIG")){
+                    datasource = migrantes(listadoCursos,"LMIG");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"con1casilleros.jasper");
+            }else if(tipo.equals("LMIS")){
+                    datasource = ministerio(listadoCursos,"LMIS");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"con1casilleros.jasper");
+            }else if(tipo.equals("LREL")){
+                    datasource = certificados(listadoCursos,"LREL",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"conreligion.jasper");
+            }else if(tipo.equals("LPAS")){
+                    datasource = pases(listadoCursos,"LPAS");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"conpase.jasper");
+            }else if(tipo.equals("LTRAN")){
+                    datasource = transporte(listadoCursos,"LTRAN");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"transporte.jasper");
+            }else if(tipo.equals("LSEG")){
+                    datasource = transporte(listadoCursos,"LSEG");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"asegurado.jasper");
+            }else if(tipo.equals("LCART")){
+                    datasource = transporte(listadoCursos,"LCART");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"paracarnet.jasper");
+            }
+            else if(tipo.equals("LNUEV")){
+                    datasource = nuevos(listadoCursos,"LNUEV");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"nuevos.jasper");
+            }else if(tipo.equals("LINT")){
+                    datasource = internos(listadoCursos,"LINT");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"internos.jasper");
+            }else if(tipo.equals("LCA")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"con1casilleros.jasper");
+            }else if(tipo.equals("LASI")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"conasistencia.jasper");
+            }else if(tipo.equals("LASI2")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"conasistencia2.jasper");
+            }else if(tipo.equals("LGEN")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"congenero.jasper");
+            }else if(tipo.equals("AM")){
+                    datasource = certificados(listadoCursos,"AM",listadoEstudiantes);
+                    parametros.put("titulo", "Acta de Matricula");
+                    report.setSrc(directorioReportes+"actaMatricula.jasper");
+
+            }else if(tipo.equals("INS")){
+                    datasource = inscritos(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("INS2")){
+                    datasource = inscritos2(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("INS4")){
+                    datasource = inscritos4(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes2.jasper");
+            }else if(tipo.equals("INS8")){
+                    datasource = inscritos8(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes2.jasper");
+            }else if(tipo.equals("INS6")){
+                    datasource = inscritos6(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantesVerificados.jasper");
+            }else if(tipo.equals("INS7")){
+                    datasource = inscritos6(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"fichaMatriculados.jasper");
+            }else if(tipo.equals("INS99")){
+                    datasource = inscritos6(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"fichaMatriculados2.jasper");
+            }else if(tipo.equals("INS5")){
+                    datasource = inscritos5(listadoCursos,"Inscrito");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes2.jasper");
+            }else if(tipo.equals("INS3")){
+                    datasource = calificacioninscritos();
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"calificacion.jasper");
+            }else if(tipo.equals("RVOT")){
+                    datasource = resultadosVotacion();
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"votacion.jasper");
+            }else if(tipo.equals("MAT")){
+                    datasource = inscritos(listadoCursos,"Matriculado");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("RET")){
+                    datasource = inscritos(listadoCursos,"Retirado");
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LMAT") ){
+                    datasource = certificados(listadoCursos,"LMAT",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LMATYR") ){
+                    datasource = certificados(listadoCursos,"LMATYR",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LMATF")){
+                    datasource = certificados(listadoCursos,"LMATF",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LINSF")){
+                    datasource = certificados(listadoCursos,"LINSF",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"estudiantes.jasper");
+            }else if(tipo.equals("LMAT2")){
+                    reportesClase noti = new reportesClase();
+                    datasource = noti.conteoMatriculas();;
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"totalizados.jasper");
+            }else if(tipo.equals("LMAT3")){
+                    reportesClase noti = new reportesClase();
+                    datasource = noti.matriculadosxgenero();
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"alumnosmatriculadosxgenero.jasper");
+            }else if(tipo.equals("CONT")){
+                    datasource = certificados(listadoCursos,"LREL2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    parametros.put("pathSubRel",directorioReportes );
+                    report.setSrc(directorioReportes+"contratoMatricula.jasper");
+            }else if(tipo.equals("LREL2")){
+                    datasource = certificados(listadoCursos,"LREL2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"totalizadosReligion.jasper");
+            }else if(tipo.equals("LCLA")){
+                    datasource = certificados(listadoCursos,"LCLA",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"claves.jasper");
+            }else if(tipo.equals("LCLA2")){
+                    datasource = certificados(listadoCursos,"LCLA2",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavePersonalCompleto.jasper");
+            }else if(tipo.equals("LCLA3")){
+                    datasource = certificados(listadoCursos,"LCLA2",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavesRepre.jasper");
+            }else if(tipo.equals("LCLA33")){
+                    datasource = certificadosInsc(listadoCursos,"LCLA3");
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavesRepre.jasper");
+            }else if(tipo.equals("LCLA4")){
+                    datasource = certificados(listadoCursos,"LCLA2",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
+            }else if(tipo.equals("LCLA5")){
+                    datasource = certificados(listadoCursos,"LCLA5",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"clavePersonalCompletoRepre.jasper");
+            }else if(tipo.equals("LCOR")){
+                    datasource = certificados(listadoCursos,"LCOR",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"concorreos.jasper");
+            }else if(tipo.equals("LREP")){
+                    datasource = certificados(listadoCursos,"LREP",listadoEstudiantes);
+                    parametros.put("titulo",titulo.getValue());
+                    report.setSrc(directorioReportes+"representantes.jasper");
+            }else if(tipo.equals("LCAR")){
+                    datasource = certificados(listadoCursos,"LCAR",listadoEstudiantes);
+                    parametros.put("titulo", "Carné Estudiantil");
+                    report.setSrc(directorioReportes+"carnet.jasper");
+            }else if(tipo.equals("LCAR1")){
+                    datasource = certificados(listadoCursos,"LCAR",listadoEstudiantes);
+                    parametros.put("titulo", "Carné Estudiantil");
+                    report.setSrc(directorioReportes+"carnetMinisterio.jasper");
+            }else if(tipo.equals("LMAT2")){
+                    datasource = certificados(listadoCursos,"LMAT2",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"totalizados.jasper");
+            }else if(tipo.equals("-1")){
+                alert("No ha seleccionado ningún reporte...!");
+                    return;
+            }
+              if(!tipo.equals("-1")){
+                report.setParameters(parametros);
+                report.setDatasource(datasource);
+                if(format.getSelectedItem().getValue().equals("xlsm")){
+                    Map exportParams = new HashMap();
+                    exportParams.put(net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter.PROPERTY_ONE_PAGE_PER_SHEET.toString(), false);
+                    parametros.put("exportParameter", exportParams);
+                    report.setType("xls");
+                }else{
+                    report.setType((String) format.getSelectedItem().getValue());
+                }
+              }
+              datasource = null;
+                parametros = null;
+ }
+
+void campos(String valor){
+    //curs.setSelectedIndex(0);
+    estudiantesCombo.disabled = true;
+    filaestudiantes.visible = false;
+    curs.disabled = false;
+    filacurso.visible=true;
+     filatitulo.visible=true;
+     filafechas.visible = false;
+     filaaportes.visible = false;
+                filaverificada.visible = false;   
+                filaelecciones.visible = false;   
+        if(valor.equals("INS2")){
+            titulo.value = "Listado de Inscritos por Internet";
+           filacurso.visible = false;
+        }
+        if(valor.equals("INS3")){
+            titulo.value = "Califiación de Inscritos por Internet";
+           filacurso.visible = false;
+        }
+        if(valor.equals("RVOT")){
+            filaelecciones.visible = true;   
+            titulo.value = "Calificación de Inscritos por Internet";
+           filacurso.visible = false;
+        }
+        if(valor.equals("INS4") || valor.equals("INS5")  || valor.equals("INS99")  || valor.equals("INS7")  || valor.equals("INS8") || valor.equals("LMAT2") ){
+           titulo.value = "Listado";
+           filacurso.visible = false;
+        }
+        
+     
+        if(valor.equals("INS6")){
+           titulo.value = "Listado de Estudiantes Pre-aprobados";
+           filacurso.visible = false;
+           filaverificada.visible = true;
+        }
+        if(valor.equals("LREP2")  || valor.equals("LINSF") || valor.equals("RET") ){
+            filaestudiantes.visible = false;
+        }
+        if(valor.equals("CEREP")){
+            filaestudiantes.visible = false;
+        }
+        
+        
+      if(valor.equals("LREL2") ||valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
+            curs.disabled = true;
+            estudiantesCombo.disabled = true;
+            titulo.value = "Listado de Estudiantes";
+         // filacurso.visible = false;
+        }
+          if(valor.equals("LMATF") ){
+            curs.disabled = true;
+            filaestudiantes.visible = false;
+            estudiantesCombo.disabled = true;
+            titulo.value = "Listado de Estudiantes";
+          filafechas.visible = true;
+          desde.value = new Date();
+          hasta.value = new Date();
+        }
+        if(valor.equals("LINSF") ){
+            curs.disabled = true;
+              filaestudiantes.visible = false;
+            estudiantesCombo.disabled = true;
+            titulo.value = "Listado de Estudiantes";
+          filafechas.visible = true;
+          desde.value = new Date();
+          hasta.value = new Date();
+        }
+        if(valor.equals("CM") ||  valor.equals("CM2") )
+            titulo.value = "Certificado de Matricula";
+        if(valor.equals("CAT"))
+            titulo.value = "Certificado de Asistencia";
+        if(valor.equals("CC") ||  valor.equals("CP") )
+            titulo.value = "Certificado";
+        if(valor.equals("AM"))
+            titulo.value = "Actas de Matricula";
+        if(valor.equals("INS"))
+            titulo.value = "Estudiantes Inscritos";
+        if(valor.equals("MAT"))
+            titulo.value = "Listado de Matriculados";
+        if(valor.equals("RET"))
+            titulo.value = "Listado de Retirados";
+        if(valor.equals("LMAT") || valor.equals("LMAT2") || valor.equals("LMATYR"))
+            titulo.value = "Listado de Matriculados por Curso";
+    
+
+        if(valor.equals("LCAR"))
+            titulo.value = "Carné Estudiantil";
+        if(valor.equals("LCLA"))
+            titulo.value = "Claves de Estudiantes";
+       if(valor.equals("LCLA2"))
+            titulo.value = "Claves de Estudiantes";
+      if(valor.equals("LCOR"))
+            titulo.value = "Correos";
+        if(valor.equals("LREP"))
+            titulo.value = "Lista de Representantes";
+       if(valor.equals("CEREP"))
+            titulo.value = "Lista de Representantes";
+         if(valor.equals("LCAS"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LCA"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LASI"))
+            titulo.value = "Listado de Estudiantes";
+            if(valor.equals("LASI2"))
+            titulo.value = "Registro del Profesor";
+       if(valor.equals("LGEN"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LFEC"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LMIN"))
+            titulo.value = "Listado de Estudiantes";
+       if(valor.equals("LREP2"))
+            titulo.value = "Libro de Matriculas";
+            if(valor.equals("LREP7"))
+            titulo.value = "Libro de Matriculas";
+       if(valor.equals("LCED"))
+            titulo.value = "Listado de Estudiantes";
+            if(valor.equals("LDAT"))
+            titulo.value = "Listado de Estudiantes";
+
+       if(valor.equals("LPAS")){
+            titulo.value = "NOMINA DE ESTUDIANTES CON PASES DE OTROS COLEGIOS";
+            filaestudiantes.visible = false;
+       }
+      if(valor.equals("LINT"))
+            titulo.value = "Listado de Estudiantes";
+      if(valor.equals("LINT2"))
+            titulo.value = "Listado de Estudiantes";
+      if(valor.equals("LMIG") || valor.equals("LMIS")  )
+            titulo.value = "Listado de Estudiantes";
+
+        if(valor.equals("LMAT3")){
+           titulo.value = "CUADRO DE ESTUDIANTES MATRICULADOS";
+           filacurso.visible = true;
+           //filaestudiantes.visible = false;
+        }
+         if(valor.equals("CONT")){
+           titulo.value = "CONTRATOS";
+           filacurso.visible = true;
+           //filaestudiantes.visible = false;
+        }
+           if(valor.equals("CA") || valor.equals("CD") || valor.equals("CAD") ){
+                filaaportes.visible = true;
+        }
+        
+
+
+}
+
+void buscarPeriodos(String p){
+        List empleadosEncontrados = adm.query("Select o from Periodo as o where o.descripcion like '%"+p+"%' order by o.descripcion");
+        periodosList = new Listbox();
+        int a=0;
+            for (Iterator it = periodosList.getItems().iterator(); it.hasNext();) {
+                    periodosList.getItems().remove(a);
+                }
+               for (Iterator it = empleadosEncontrados.iterator(); it.hasNext();) {
+                      Periodo acceIt = (Periodo) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getCodigoper()+""));
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+ acceIt.getInstitucion() + " "+acceIt.getInstitucion().getTipo() +" "+ acceIt.getSeccion().getDescripcion() ));
+               
+                      li.appendChild(new Listcell((acceIt.getEstado()?"ACTIVO":"INACTIVO")+" "));
+                      periodosList.appendChild(li);
+             }
+
+    }
+]]>
+        </zscript>
+        <panel width="100%" id="parametros"  height="100%" border="normal" collapsible="true" >
+            <panelchildren>
+                <grid id="ver"  width="100%"   height="100%" >
+                    <rows>
+                        <row  style="background:transparent;border:0px" >
+                            <span style="float:right"> Reporte:</span>
+                            <listbox id="reporte" onSelect="campos(self.selectedItem.value); curs.clearSelection()"  width="400px"  mold="select" >
+                                <listitem  label="[Seleccione]" value="-1" selected="true" />
+                                <listitem  id="AM" label="Actas de Matricula" value="AM" />
+                                <listitem id="CM"  label="Certificado de Matricula" value="CM" />
+                                <listitem  id="CM2" label="Certificado de Matricula(2)" value="CM2" />
+                                <listitem  id="CC" label="Certificado de Constancia(Entrega documentos)" value="CC" />
+                                <listitem  id="CP" label="Certificado de Pensión" value="CP" />
+                                <listitem  id="CD" label="Certificado de Disciplina" value="CD" />
+                                <listitem  id="CA" label="Certificado de Aprovechamiento" value="CA" />
+                                <listitem  id="CAD" label="Certificado de Aprov. Y Disciplina" value="CAD" />
+                                <listitem  id="CH" label="Certificado de Historial de Matriculas con Actual" value="CH" />
+                                <listitem  id="CAP" label="Certificado de Años Aprobados" value="CAP" />
+                                <listitem  id="CAT" label="Certificado de Asistencia" value="CAT" />
+                                <listitem  id="LMIN" label="Folio y No. Matricula" value="LMIN"/>
+                                <listitem  id="INS" label="Inscritos" value="INS" />
+                                <!--listitem  id="MAT" label="Matriculados General" value="MAT" /-->
+                                <listitem  id="LMAT" label="Matriculados" value="LMAT" />
+                                <listitem  id="LMATYR" label="Matriculados con Retirados" value="LMATYR" />
+                                <listitem  id="LMATF" label="Matriculados por Fechas" value="LMATF" />
+                                <listitem  id="LINSF" label="Inscritos por Fechas" value="LINSF" />
+                                <listitem id="RET"  label="Retirados" value="RET" />
+                                <listitem  id="LREP2" label="Libro de Matriculas" value="LREP2"/>
+                                <listitem  id="LREP7" label="Libro de Matriculas Resumido" value="LREP7"/>
+                                <listitem  id="LPAS" label="Pases Recibidos" value="LPAS"/>
+                                <listitem  id="LMAT2" label="Totalizado de Matriculados" value="LMAT2" />
+                                <listitem  id="LMAT3" label="Totalizado de Matriculados(x Genero)" value="LMAT3" />
+                                <listitem  id="CONT" label="Contrato de Matricula" value="CONT" />
+                                
+                             
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                   
+                                <listitem  id="LCLA" label="Estudiantes con Claves (Todos)" value="LCLA"/>
+                                <listitem  id="LCLA2" label="Estudiantes con Claves (Individual-Recortar)" value="LCLA2"/>
+                                <listitem  id="LCLA3" label="Representantes con Claves (Todos)" value="LCLA3"/>
+                                <listitem  id="LCLA4" label="Representante con Claves (Individual-Recortar)" value="LCLA4"/>
+                                <listitem  id="LCLA5" label="Representante con Claves (Individual-Recortar) INNSCRITOS" value="LCLA5"/>
+                                <listitem  id="LCOR" label="Estudiantes con Correos electrónicos" value="LCOR"/>
+                                <listitem  id="LREP" label="Estudiantes con Representantes" value="LREP"/>
+                                <listitem  id="LREP3" label="Estudiantes con Representantes(Financiero)" value="LREP3"/>
+                                <listitem  id="LCAS" label="Estudiantes con Casilleros vacios" value="LCAS"/>
+                                <listitem  id="LCA" label="Estudiantes 1 Casillero" value="LCA"/>
+                                <listitem  id="LASI" label="Listado para Asistencia" value="LASI"/>
+                                <listitem  id="LASI2" label="Listado para Notas(Registro del Profesor)" value="LASI2"/>
+                                
+                                <listitem  id="LGEN" label="Estudiantes por Genero (Masculino:Femenino)" value="LGEN"/>
+                                <listitem  id="LFEC" label="Estudiantes por Fecha y Edad (Años Cumplidos)" value="LFEC"/>
+                                <listitem  id="LCED" label="Estudiantes con Cédula de Identidad" value="LCED"/>
+                                <listitem  id="LDAT" label="Estudiantes con Datos" value="LDAT"/>
+                                <listitem  id="CEREP" label="Celulares Representantes" value="CEREP"/>
+                                
+                                <listitem value="LINEA" disabled="true" label="- - - - - - - - - - - - - - - - - - - - - - - " > </listitem>
+                                <listitem  id="LNUEV" label="Estudiantes Nuevos" value="LNUEV"/>
+                                <listitem  id="LTRAN" label="Estudiantes que Toman transporte" value="LTRAN"/>
+                                <listitem  id="LSEG" label="Estudiantes Asegurados" value="LSEG"/>
+                                <listitem  id="LINT"  label="Estudiantes Internos" value="LINT"/>
+                                <listitem  id="LREL"  label="Estudiantes por Religión" value="LREL"/>
+                                <listitem  id="LREL2" label="Totalizado por Religión" value="LREL2" />
+                                <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
+                                <listitem  id="LMIG" label="Estudiantes con Padres Migrantes" value="LMIG"/>
+                                <listitem  id="LMIS" label="Estudiantes con Cupo del Ministerio" value="LMIS"/>
+       
+    
+   
+  
+ 
+                                
+                            </listbox>
+                        </row>
+                        <row  id="filaverificada" visible="false" style="background:transparent;border:0px" >
+                            <span style="float:right"> Con Información Verificada: </span>
+                            <checkbox id="verificada" />
+                        </row>
+                        <row id="filaelecciones" visible="false">
+                        <span style="float:right"> Elecciones:</span>
+                        <listbox disabled="false" id="eleccionesL" width="300px" mold="select" >
+                            <listhead>
+                                <listheader label="Elección Activa"/>
+                            </listhead>
+                            <listitem selected="true"  forEach="${elecciones}" value="${each}">
+                                <listcell label="${each.nombre}" />
+
+                            </listitem>
+                        </listbox>
+                    </row>
+                        <row  id="filafechas" visible="false" style="background:transparent;border:0px" >
+                            <span style="float:right"> Desde:</span>
+                            <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
+                            <span>
+                                <datebox format="dd/MM/yyyy" id="desde"/> Hasta:
+                                <datebox  format="dd/MM/yyyy" id="hasta"/>
+                            </span>
+                        </row>
+                      
+                        <row   id="filaaportes" visible="false"   style="background:transparent;border:0px" >
+                            <span style="float:right"> Aporte: </span>
+
+                            <listbox id="sistemasCombo" width="450px"  mold="select" >
+                                <listitem  forEach="${sistemas}" value="${each}">
+                                    <listcell label="${each.nombre}" />
+                                </listitem>
+                            </listbox>
+                        </row>
+                        <row>
+                             <listbox multiple="true" checkmark="true"  id="periodosList" width="100%">
+                                <listhead>
+                                    <listheader label="Cod."/>
+                                    <listheader label="Nombres"/>
+                                    <listheader label="Estado"/>
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.codigoper}" />
+                                    <listcell label="${each.descripcion}" />
+                                    <listcell label="${each.institucion}" />
+                                    <listcell label="${each.estado}" />
+                                </listitem>
+                            </listbox>
+                            </row>
+                              <row spans="2">
+                            <hbox>
+                                <vbox id="filacurso" visible="false">
+                                    <span style="font-weight:bold"> Curso:</span>
+                            <!-- onSelect="buscar2(((Cursos)self.selectedItem.value));" -->
+                                    <listbox id="curs" onSelect="try{buscar2(((Cursos)self.selectedItem.value));}catch(Exception ex){filaestudiantes.visible = false;}" width="450px" height="200px"  multiple="true" checkmark="true">
+                                        <listhead>
+                                            <listheader label="Seleccionar Todos"/> </listhead>
+                                        <listitem forEach="${cursos}" value="${each}" label="${each.descripcion} ${each.especialidad}  ${each.paralelo}"/>
+                                    </listbox>
+                                        
+                                </vbox>
+                                <vbox id="filaestudiantes"  visible="false">
+                                    <span style="font-weight:bold"> Estudiantes: </span>
+
+                                    <listbox id="estudiantesCombo"  width="450px" height="200px"  multiple="true" checkmark="true" >
+                                        <listhead>
+                                            <listheader label="Todos los Estudiantes"/> </listhead>
+                                        <listitem forEach="${estudiantes}" value="${each}">
+                                            <listcell label="${each.apellidos}" />
+                                        </listitem>
+                                    </listbox>
+
+                                </vbox>
+                            </hbox>
+                        </row>
+                        <row  id="filatitulo" style="background:transparent;border:0px" >
+                            <span style="float:right"> Titulo: </span>
+                            <div>
+                                <textbox id="titulo" width="280px" />
+                                <span>
+                                    <bandbox readonly="true"  width="70px" value="PDF" id="bd" >
+                                        <bandpopup>
+                                            <vbox>
+                                                <listbox width="137px" id="format"  onSelect="bd.value=self.selectedItem.label; ejecutar.image = self.selectedItem.image;  bd.close();showReport();">
+                                                    <listitem  value="pdf" selected="true">
+                                                        <listcell  image="/images/pdf.png" label="PDF" />
+                                                    </listitem>
+                                                    <listitem value="rtf">
+                                                        <listcell  image="/images/word.gif" label="Word" />
+                                                    </listitem>
+                                                    <listitem value="xls">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Múlt.Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="xlsm">
+                                                        <listcell  image="/images/excel.gif"  label="Excel(Una.Hoja)" />
+                                                    </listitem>
+                                                    <listitem value="jxl">
+                                                        <listcell  image="/images/excel.gif" label="JXL" />
+                                                    </listitem>
+                                                    <listitem value="csv">
+                                                        <listcell  image="/images/csv.gif" label="CSV" />
+                                                    </listitem>
+                                                    <listitem value="odt">
+                                                        <listcell  image="/images/open.png" label="OpenOfic" />
+                                                    </listitem>
+                                                    <listitem value="xml">
+                                                        <listcell  image="/images/xml.gif" label="XML" />
+                                                    </listitem>
+                                                    <listitem value="html">
+                                                        <listcell  image="/images/html.gif" label="HTML" />
+                                                    </listitem>
+                                                </listbox>
+                                            </vbox>
+                                        </bandpopup>
+                                    </bandbox>
+                                    <button label="MOSTRAR REPORTE"  image="/images/pdf.png" id="ejecutar" onClick='showReport();'/>
+                                </span>
+                            </div>
+                        </row>
+                       
+                    </rows>
+                </grid>
+                <zscript>
+                    public void aumentar(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                    Integer t = new Integer(tamanio);
+                    report.height = (t+100)+"px";
+                    }
+                    public void reducir(){
+                    String tamanio = report.height.replace("px","").replace("%","");
+                    Integer t = new Integer(tamanio);
+                    report.height = (t-100)+"px";
+                    }
+
+                </zscript>
+                
+                <grid id="reportese" visible="false" width="100%" height="100%">
+                    <rows>
+                        <row   spans="2">
+                            <span>
+                                <button  image="/images/eliminar.gif" id="cerrar" label="Cerrar y Seleccionar otro reporte" onClick='ver.setVisible(true);cerrar.setVisible(false);'/>
+                                <button  id="reducir" label="Disminuir(-)" onClick="reducir()"/>
+                                <button  id="aumentar" label="Aumentar (+)" onClick="aumentar()"/>
+                                <button label="Refrescar Ejecutar...!" image="/images/run.gif" onClick='showReport();'/>
+                            </span>
+                        </row>
+
+                        <row   spans="2">
+                            
+                            <jasperreport width="100%" height="500px" id="report" />
+                            
+
+                        </row>
+
+                    </rows>
+                </grid>
+
+            </panelchildren>
+
+        </panel>
+        
+
+
+
+        <zscript>
+            import bean.Permisos;
+            Permisos per = new Permisos();
+            void cargando(){
+
+            for(Iterator it = reporte.getItems().iterator(); it.hasNext();) {
+            Listitem object = (Listitem)it.next();
+            String valor = object.getValue();
+            String labe = object.getLabel();
+            object.visible = per.verificarPermisoReporte(valor,labe, "Ingresar",false,"REPORTES");
+            }
+            buscarPeriodos("");
+            /*
+            CM.visible = per.verificarPermisoReporte("CM", "Ingresar");
+            CM2.visible = per.verificarPermisoReporte("CM2", "Ingresar");
+            AM.visible = per.verificarPermisoReporte("AM", "Ingresar");
+            INS.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS2.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS3.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS4.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS5.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS8.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS7.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            INS6.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            LINSF.visible = per.verificarPermisoReporte("INS", "Ingresar");
+            MAT.visible = per.verificarPermisoReporte("MAT", "Ingresar");
+            RET.visible = per.verificarPermisoReporte("RET", "Ingresar");
+            LMAT.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+            LMATYR.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+            LMAT2.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+            LMATF.visible = per.verificarPermisoReporte("LMAT", "Ingresar");
+            LCAR.visible = per.verificarPermisoReporte("LCAR", "Ingresar");
+            LCAR1.visible = per.verificarPermisoReporte("LCAR1", "Ingresar");
+            LCART.visible = per.verificarPermisoReporte("LCART", "Ingresar");
+            LCLA.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCLA2.visible = per.verificarPermisoReporte("LCLA2", "Ingresar");
+            LCLA3.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCLA4.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCLA5.visible = per.verificarPermisoReporte("LCLA", "Ingresar");
+            LCOR.visible = per.verificarPermisoReporte("LCOR", "Ingresar");
+
+            LREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            LREP2.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            LREP3.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            CEREP.visible = per.verificarPermisoReporte("LREP", "Ingresar");
+            LCAS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+            CAS.visible = per.verificarPermisoReporte("CAT", "Ingresar");
+            LCA.visible = per.verificarPermisoReporte("LCA", "Ingresar");
+            LASI.visible = per.verificarPermisoReporte("LASI", "Ingresar");
+            LASI2.visible = per.verificarPermisoReporte("LASI", "Ingresar");
+            LGEN.visible = per.verificarPermisoReporte("LGEN", "Ingresar");
+            LFEC.visible = per.verificarPermisoReporte("LFEC", "Ingresar");
+            LMIN.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+            LCED.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+            LDAT.visible = per.verificarPermisoReporte("LMIN", "Ingresar");
+            LPAS.visible = per.verificarPermisoReporte("LPAS", "Ingresar");
+            LNUEV.visible = per.verificarPermisoReporte("LNUEV", "Ingresar");
+            LTRAN.visible = per.verificarPermisoReporte("LTRAN", "Ingresar");
+            LSEG.visible = per.verificarPermisoReporte("LSEG", "Ingresar");
+            LINT.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LINT2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LMIG.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+            LMIS.visible = per.verificarPermisoReporte("LCAS", "Ingresar");
+            LREL.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LREL2.visible = per.verificarPermisoReporte("LINT", "Ingresar");
+            LCLA33.visible = per.verificarPermisoReporte("LCLA33", "Ingresar");
+            
+            */
+            }
+        </zscript>
+
+
+
+
+    </zk>
+
+
+</window>
+
+
+
+
+
+
