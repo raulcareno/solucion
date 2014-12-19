@@ -288,6 +288,10 @@
                                             <menuitem onClick="ingresar(self)" id="Parametros" label="Parametros" image="/images/textos.png" value="/parametros.zul" />
                                             <menuitem onClick="ingresar(self)" id="Periodos" label="Año Lectivo"  image="/images/periodos.png" value="/periodo.zul" />
                                             <menuitem onClick="ingresar(self)" id="Textos" label="Textos Reportes"  image="/images/textos.png" value="/textos.zul" />
+                                            <menuseparator></menuseparator>
+                                            <menuitem onClick="ingresar(self)" id="Reportes_Globales" label="Reportes Globales"  image="/images/resultados.png" value="/reporteGlobales.zul" />
+                                            <menuitem onClick="ingresar(self)" id="Ejecutar_sql" label="Reportes Excel"  image="/images/resultados.png" value="/sql.zul" />
+                                            <menuseparator></menuseparator>
                                         </menupopup>
                                     </menu>
                                     <menu image="/images/matricular.gif"  label="Matriculación" >
@@ -593,6 +597,9 @@
             Estudiantes_dobe.visible = per.verificarPermisoReporte("Estudiantes_dobe","Estudiantes_dobe", "Ingresar",true,"VARIOS");
             Tipos_detalle.visible = per.verificarPermisoReporte("Tipos_detalle","Tipos_detalle", "Ingresar",true,"VARIOS");
             Tipos_dobe.visible = per.verificarPermisoReporte("Tipos_dobe","Tipos_dobe", "Ingresar",true,"VARIOS");
+            Reportes_Globales.visible = per.verificarPermisoReporte("Reportes_Globales","Reportes_Globales", "Ingresar",true,"ADMINISTRACION");
+            Ejecutar_sql.visible = per.verificarPermisoReporte("Ejecutar_sql","Ejecutar_sql", "Ingresar",true,"ADMINISTRACION");
+            
             }
         </zscript>
     </div>

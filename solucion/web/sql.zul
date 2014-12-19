@@ -1,0 +1,240 @@
+
+<window onCreate="buscar()"  title="Control de Parámetros Sqltablaes"  border="normal"
+>
+
+    <zscript>
+        import jcinform.persistencia.Sqltabla;
+        import bean.EventDAO; 
+        import java.util.ArrayList; 
+        import jcinform.persistencia.Sqltabla;
+        import jcinform.persistencia.Periodo;
+        import jcinform.procesos.Administrador;
+        import bean.Permisos;
+        import sources.ExcelFile;
+        import java.math.BigDecimal;
+  
+
+        Session ses = Sessions.getCurrent();
+        Administrador adm = new Administrador();
+        List allEvents = adm.query("Select o from Sqltabla as o ");
+        static Sqltabla equi = new Sqltabla();
+        Permisos permiso = new Permisos();
+        ExcelFile ef = new ExcelFile();
+        //SimpleTreeModel stm = new SimpleTreeModel(root);
+        //FUNCIONES
+        void llenar(Sqltabla equi2){
+        equi = equi2;
+        nombre.value = equi.getNombre();
+        descripcion.value = equi.getDescripcion();
+        sql.value = equi.getCadena();
+
+    
+        }
+        void estado(Boolean estado,Boolean modificar){
+        if(modificar){
+        equi = (Sqltabla)datos.selectedItem.value;
+        }
+        nombre.readonly = estado;
+        descripcion.readonly = estado;
+        sql.readonly = estado;
+
+        }
+
+
+        void guardar(){
+        if(nombre.value.equals("")){
+        Messagebox.show("Ingrese todos los campos con (*) ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        return;
+        }
+        equi.setNombre(nombre.value);
+        equi.setDescripcion(descripcion.value);
+        equi.setCadena(sql.value);
+        if((!equi.getCodigo().equals(0)) ){
+        adm.actualizar(equi);
+        List children = datos.selectedItem.children;
+        ((Listcell)children.get(0)).label = equi.getCodigo()+"";
+        ((Listcell)children.get(1)).label = nombre.value+ "" ;
+        ((Listcell)children.get(2)).label = descripcion.value+ "" ;
+        ((Listcell)children.get(3)).label = sql.value+ "" ;
+        permiso.auditar("Sqltabla","Actualizar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+        }else{
+        equi.setCodigo(adm.getNuevaClave("Sqltabla","codigo"));
+        adm.guardar(equi);
+        permiso.auditar("Sqltabla","Guardar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+        }
+        Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        guardar.disabled=true;
+        agregar.disabled=false;
+        estado(true,false);
+        llenar(new Sqltabla(0));
+        buscar();
+        }
+
+        Boolean verificar(String accion){
+        return permiso.verificarPermiso("Ejecutar_sql",accion);
+        }
+        void nuevo(){
+        if(verificar("Agregar")){
+        guardar.disabled=false;
+        llenar(new Sqltabla(0));
+        estado(false,false);
+        
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void move(){
+        llenar((Sqltabla)datos.selectedItem.value);
+        modificar.disabled = false;
+        }
+        void modificar(){
+        if(verificar("Modificar")){
+        guardar.disabled=false; estado(false,true);
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void eliminar(){
+        if(verificar("Eliminar")){
+        try{
+        equi = (Sqltabla)datos.selectedItem.value;
+        adm.eliminarObjeto(Sqltabla.class, equi.getCodigo());
+        permiso.auditar("Sqltabla","Eliminar",""+equi.getCodigo()+" - "+equi.getDescripcion());
+        datos.removeItemAt(datos.getSelectedIndex());
+        llenar(new Sqltabla(0));
+        Messagebox.show("Registro Eliminado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }catch(Exception e){
+        Messagebox.show("No se pudo eliminar el Registro...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }else{
+        Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+        }
+        }
+        void buscar(){
+      
+        List equivaEncontrados = adm.query("Select o from Sqltabla as o ");
+        datos = new Listbox();
+        int a=0;
+        for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
+        datos.getItems().remove(a);
+        }
+   
+       
+        for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
+        Sqltabla acceIt = (Sqltabla) it.next();
+        Listitem li = new Listitem();
+        li.setValue(acceIt);
+        li.appendChild(new Listcell(acceIt.getCodigo()+""));
+        li.appendChild(new Listcell(acceIt.getNombre()+" "));
+        li.appendChild(new Listcell(acceIt.getDescripcion()+" "));
+        li.appendChild(new Listcell(acceIt.getCadena()+" "));
+        datos.appendChild(li);
+        }
+
+        }
+        void cargar(Sqltabla g){
+        equi.setPerfil(g);
+        }
+        void generar(){
+        String val = (sql.value).toUpperCase();
+        if(val.contains("UPDATE") || val.contains("DELETE")  || val.contains("DROP")  || val.contains("SET")  || val.contains("FOREIGN")  || val.contains("ALTER") )  {
+        alert("ERROR NO USE PALABRAS COMO: \n UPDATE, DELETE, DROP u otras palabras reservadas");
+        return;
+        }
+        ef.EjecutarSql(sql.value);
+        }
+        void generarV(){
+
+        String val = (sql.value).toUpperCase();
+        if(val.contains("UPDATE") || val.contains("DELETE")  || val.contains("DROP")  || val.contains("SET")  || val.contains("FOREIGN")  || val.contains("ALTER") )  {
+        alert("ERROR NO USE PALABRAS COMO: \n UPDATE, DELETE, DROP u otras palabras reservadas");
+        return;
+        }
+        datos2 = ef.EjecutarSqlVista(sql.value);
+        datos2.visible = true;
+        }
+    </zscript>
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
+	
+        <grid width="100%">
+            <rows> 
+                <row>
+                    <span style="float:right"> Nombre descriptivo(*):</span>
+                    <textbox id="nombre"  maxlength="100" cols="40" readonly="true"   />   
+                </row>
+                <row> 
+                    <span style="float:right"> Descripción de lo que hace:</span>
+                    <textbox id="descripcion"  maxlength="100" cols="40" readonly="true"   />   
+                </row>
+                <row> 
+                    <span style="float:right"> Sentencia Sql:</span>
+                    <div>
+                        <textbox id="sql"  rows="5" cols="100" readonly="false"   />   
+    
+                    </div>
+                </row>
+                <row>
+                    <span></span>
+                    <span>
+                        <button image="/images/ok.gif" id="probar" label="Generar"  disabled="false"  onClick="generar();"/>
+                        <button image="/images/ok.gif" id="previo" label="Previo"  disabled="false"  onClick="generarV();"/>
+                        Únicamente sentencias de selección (SELECT)
+                    </span>
+    
+                </row>
+                <row spans="2">
+                    <grid height="200px" id="datos2" visible="false">
+                        <rows>
+                            <row></row>
+                        </rows>
+  
+                    </grid>
+                </row>
+
+            </rows>
+        </grid>
+        <vbox>
+            <vbox>
+                <hbox>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                </hbox>
+            </vbox>
+
+        </vbox>
+
+    </groupbox>
+    <groupbox width="100%" mold="3d" >
+
+        <caption label="Busquedas" />
+ 
+ 
+ 
+ 
+        <hbox width="100%">
+            <listbox onSelect="move();estado(true,false);eliminar.disabled=false;guardar.disabled=true" id="datos" width="100%">
+                <listhead>
+                    <listheader label="Código" width="30px"/>
+                    <listheader label="Nombre" width="300px"/>
+                    <listheader label="Descripción" width="350px"/>
+                    <listheader label="Cadena" width="350px"/>
+
+                </listhead>
+                <listitem forEach="${allEvents}" value="${each}">
+                    <listcell label="${each.codigo}" />
+                    <listcell label="${each.nombre}" />
+                    <listcell label="${each.descripcion}" />
+                    <listcell label="${each.cadena}" />
+                </listitem>
+            </listbox>
+
+
+        </hbox>
+ 
+    </groupbox>
+	
+
+</window>
