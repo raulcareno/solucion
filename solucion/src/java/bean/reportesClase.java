@@ -5752,6 +5752,9 @@ public class reportesClase {
 
 
 //DECIMALESDIS
+        List<MateriaProfesor> materiaProfesores = adm.query("Select o from MateriaProfesor as o "
+                + "where o.curso.codigocur = '" + curso.getCodigocur() + "'  ");
+        
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
@@ -5764,6 +5767,8 @@ public class reportesClase {
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasDisc = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasCl = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'CL' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' order by o.orden ");
@@ -5876,7 +5881,8 @@ public class reportesClase {
 
 
                         if (cuantitativa == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
-                            coll.setNota(equivalencia(dos, equivalencias));
+                            String scala = buscarEscala(materiaProfesores, mate);
+                            coll.setNota(equivalencia(dos, (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
                         } else {
                             if (val == 0.0) {
                                 coll.setNota("");
@@ -5947,8 +5953,10 @@ public class reportesClase {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
                             if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
-
-                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                String scala = buscarEscala(materiaProfesores, mate);
+                                  coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                                //coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                
                                 if (((Sistemacalificacion) sistemas.get(ksis)).getConsulta()) {
                                     coll.setNota("");
                                 }
@@ -6305,6 +6313,8 @@ public class reportesClase {
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasCl = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'CL' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Equivalencias> equivalenciasDisc = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
@@ -6497,13 +6507,17 @@ public class reportesClase {
 
 
                         if (cuantitativa == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
-                            coll.setNota(equivalencia(dos, equivalencias));
+                            String scala = buscarEscala(materiaProfesores, mate);
+                            coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                            //coll.setNota(equivalencia(dos, equivalencias));
                         } else {
                             if (val == 0.0) {
                                 coll.setNota("");
                             }
                         }
-                        coll.setEquivalencia(equivalencia2(dos, equivalencias));
+                        String scala = buscarEscala(materiaProfesores, mate);
+                        coll.setEquivalencia(equivalencia2(dos, (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                        //coll.setEquivalencia(equivalencia2(dos, equivalencias));
                         coll.setOrden((buscarOrden(materiaProfesores, mate)));
                         coll.setMateria(mate.getDescripcion());
                         coll.setMatricula("" + matriculaNo.getCodigomat());
@@ -6588,7 +6602,10 @@ public class reportesClase {
                             val = ((BigDecimal) dos).doubleValue();
                             coll.setNota(dos);
                             if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
-                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                //coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                               String scala = buscarEscala(materiaProfesores, mate);
+                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                                
                             } else {
                                 if (val == 0.0) {
                                     coll.setNota("");
