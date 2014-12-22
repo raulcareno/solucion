@@ -24,7 +24,7 @@ try {
             ResultSet rs = st.executeQuery(sql);
 
             HSSFWorkbook wb = new HSSFWorkbook();
-            HSSFSheet sheet = wb.createSheet("Excel Sheet");
+            HSSFSheet sheet = wb.createSheet("siscontrol.com.ec");
             HSSFRow rowhead = sheet.createRow((short) 0);
 
 

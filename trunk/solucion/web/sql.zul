@@ -150,7 +150,7 @@
         alert("ERROR NO USE PALABRAS COMO: \n UPDATE, DELETE, DROP u otras palabras reservadas");
         return;
         }
-        datos2 = ef.EjecutarSqlVista(sql.value);
+        datos2.appendChild(ef.EjecutarSqlVista(sql.value));
         datos2.visible = true;
         }
     </zscript>
