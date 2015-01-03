@@ -40,20 +40,23 @@ Boolean instanciadaContratos = false;
  
   void buscar(String p){
         List ProveedoresEncontrados = adm.query("Select o from Proveedores as o " + 
-        " where o.razonsocial like '"+p+"%' " + 
-        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.razonsocial");
+        " where o.razonsocial like '"+p+"%' order by o.razonsocial ");
+        // + 
+        // " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'
+        // order by o.razonsocial";
+        
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
                     datos.getItems().remove(a);
-                }
-               for (Iterator it = ProveedoresEncontrados.iterator(); it.hasNext();) {
+            }
+            for (Iterator it = ProveedoresEncontrados.iterator(); it.hasNext();) {
                       Proveedores acceIt = (Proveedores) it.next();
                       Listitem li = new Listitem();
                       li.setValue(acceIt);
                       li.appendChild(new Listcell(acceIt.getRazonsocial()));
                       datos.appendChild(li);
-             }
+            }
 
     }
  

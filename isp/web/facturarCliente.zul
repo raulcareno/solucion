@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul">
     <window  onClose="cerrar()" onCreate="cargar()" width="650px" id="facturarCliente">
-           <style>
+        <style>
             .MyGridRowHeight
             tr.z-row td.z-row-inner
             {
@@ -9,7 +9,7 @@
             border-right:1px solid transparent;
             padding:0px;
             } 
-    </style>
+        </style>
         <zscript>
             <![CDATA[
   import jcinform.persistencia.*;
@@ -50,16 +50,47 @@ String llenarCeros(String numero){
         return permiso.verificarPermiso("RealizarCobros",accion);
  } 
         void cerrar(){
-        if(facturaPanel.isVisible()){
-                nofactura.getValue();
-                return;
-        }
+        /* if(facturaPanel.isVisible()){
+            
+        } */
                Path.getComponent("//contratospage/contratosventana/facturas").setSelected(true);
            //  facturarCliente.detach();
         }
   void guardar(){
   
   if(verificar("Agregar")){
+      System.out.println("datos 1");
+            if(valor.value.compareTo(totalCobros.value) == 0 ){
+                            nofactura.focus();
+                            nofactura.getValue();
+                            if(nofactura.getValue() == null){
+                                return;
+                            }
+                            if(nofactura.getValue().isEmpty()){
+                                return;
+                            }
+                            if(serie1.getValue() == null){
+                                return;
+                            }
+                            if(serie1.getValue().isEmpty()){
+                                return;
+                            }
+                            if(serie2.getValue() == null){
+                                return;
+                            }
+                            if(serie2.getValue().isEmpty()){
+                                return;
+                            }
+            
+                if(actualFactura() ==false){
+                        //Messagebox.show("Cambie el No. de Factura, ya se ha registrado ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);            
+                        return;
+                }   
+             
+            }
+        
+            
+                
             if(deposito.value.doubleValue()>0){
                     if(nocuenta.value.isEmpty()){
                        Messagebox.show("Ingrese el No. de Depósito...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
@@ -292,15 +323,22 @@ String llenarCeros(String numero){
                 des.setFechaaplicado(adm.Date());
                 adm.actualizar(des);
             }
+            /*
                 if(valor.value.compareTo(totalCobros.value) == 0 ){
-                    facturaPanel.visible = true;
-                    nofactura.focus();
-                    
+                       facturaPanel.visible = true;
+                        nofactura.focus();
                 }else{
-                       registrofactura.visible= false;
+                */
+                     
+                               
+                if(valor.value.compareTo(totalCobros.value) == 0 ){
+                                imprimir();
+                }else{
                     imprimirRecibo(cobrar.getCodigo());
-                    impresion.setSelected(true);
                 }
+              registrofactura.visible= false;                   
+              impresion.setSelected(true);
+              //  }
 
             efectivo.readonly = true;
             deposito.readonly = true;
@@ -316,18 +354,18 @@ String llenarCeros(String numero){
     }  
             
  }
-        void actualFactura(){
+        boolean actualFactura(){
         String nn = "";
-                if(esRecibo.checked ){
-                       nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"REC"+llenarCeros(""+nofactura.value.replace("REC",""));        
-                }else{
-                      nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"FAC"+llenarCeros(""+nofactura.value.replace("FAC",""));        
-              }
+               // if(esRecibo.checked ){
+               //        nn = sucursalEmp.getSucursal().getSerie1()+""+sucursalEmp.getSucursal().getSerie2()+"REC"+llenarCeros(""+nofactura.value.replace("REC",""));        
+               // }else{
+                      nn = serie1.value+""+serie2.value+"FAC"+llenarCeros(""+nofactura.value.replace("FAC",""));        
+             // }
                         List siExiste = adm.query("Select o from Factura as o where o.numero = '"+nn+"' and o.codigo not in ("+ codigofac.value +") ");
                         if(siExiste.size()>0){
                             Messagebox.show("Número de Factura/Recibo ya existe, rectifique y vuelva a intentarlo ...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             nofactura.focus();
-                            return;        
+                            return false;        
                         }
                         
                       
@@ -343,15 +381,13 @@ String llenarCeros(String numero){
                                 fac.setEmision(adm.Date());
                             }
                             adm.actualizar(fac);
-                            facturaPanel.visible=false;
-                           imprimir();
-                           impresion.setSelected(true); 
-                           registrofactura.visible= false;
+                    /*
                         if(esRecibo.checked){
                             System.out.println(nofactura.value.substring(3)+"");
                                 suc.setSecrecibos(new Integer(nofactura.value.substring(3)));
                                 adm.actualizar(suc);
-                        }
+                        } */
+                        return true;
         }
         
         public void imprimir(){
@@ -367,7 +403,7 @@ String llenarCeros(String numero){
                          detalles.add(det);
                    }
                    ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
-                   reportelocal.setSrc(directorioReportes+"factura.jasper");
+                   reportelocal.setSrc(directorioReportes+"facturaPeque.jasper");
                    reportelocal.setParameters(parameters);
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
@@ -537,6 +573,12 @@ void validarNoTransferencia(){
         return "";
 
     }
+                                            llenarCeros3(String numero){
+                                            while(numero.length()<3){
+                                                numero = "0"+numero;
+                                            }  
+                                            return numero;
+                                        }
 
 ]]>
         </zscript>
@@ -549,24 +591,21 @@ void validarNoTransferencia(){
             </tabs>
             <tabpanels>
                 <tabpanel>
-                    <panel framable="true" title="Ingrese el Número de Factura" visible="false" style="position:absolute; top:20%; left:15%" id="facturaPanel"  width="330px" >
-                        <panelchildren>
-                            <span >
-                                <label style="font-weight:bold;color:red" value="No.Factura" /> 
-                            </span>
-                            <span> 
-                                <textbox onOK="nofactura.getValue();actualFactura();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
-                                <checkbox id="esRecibo" label="Es Recibo??" style="font-weight:bold" onCheck="ultimoRecibo()" />
-                            </span>
-                            <button label="Continuar" onClick='nofactura.getValue();actualFactura();'/>
-                        </panelchildren>
-                    </panel>
-                        
-                                
-                        
                     <grid width="100%" >
                         <rows>
-                         
+                            <row>
+                                <span>
+                                    <label style="font-weight:bold;color:red" value="No.Factura" /> 
+                                </span>
+                                <span> 
+                                    <textbox id="serie1" readonly="true" onBlur="self.value = llenarCeros3(self.value)"  cols="3" onCreate="self.value = sucursalEmp.getSucursal().getSerie1();"  style="text-align:center; font-weight:bold; color:blue; font-size:14px"  />
+                                    <textbox id="serie2" readonly="true"  onBlur="self.value = llenarCeros3(self.value)"     cols="3" onCreate="self.value = sucursalEmp.getSucursal().getSerie2();"  style="text-align:center; font-weight:bold; color:blue; font-size:14px"  />
+                                    <textbox id="serie3" readonly="true"  cols="3" value="FAC" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  />
+                                     <textbox onOK="nofactura.getValue();" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  constraint="no empty: Ingrese el No. de Factura" id="nofactura" /> 
+                                    <checkbox id="esRecibo" visible="false" label="Es Recibo??" style="font-weight:bold" onCheck="ultimoRecibo()" />
+                                <!--button label="Continuar" onClick='nofactura.getValue();actualFactura();'/-->
+                                </span>
+                            </row>
                             <row> 
                                 <span  style="float:right">
                                     <label style="font-weight:bold" value="CLIENTE: " /> 
@@ -577,9 +616,9 @@ void validarNoTransferencia(){
                                     <intbox visible="false"  readonly="true" id="codigofac" /> 
                                     <intbox visible="false"  readonly="true" id="codigodes" /> 
                                     <span>
-                                    <label style="font-weight:bold" value="FECHA: " /> 
+                                        <label style="font-weight:bold" value="FECHA: " /> 
                                     </span>
-                                <label id="fecha" /> 
+                                    <label id="fecha" /> 
                                 </span>
                             </row>
                              
@@ -654,79 +693,83 @@ void validarNoTransferencia(){
                                             <label  style="font-weight:bold;"> </label>
                                             <span>   </span>
                                             <bandbox  readonly="true" value="Banco" width="50px"  id="bdDeposito">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox  id="bancodep" width="250px"
-                                                                    onSelect="bdDeposito.value=self.selectedItem.label;bdDeposito.closeDropdown();">
-                                                                <listhead>
-                                                                    <listheader label="Seleccione un Banco"/>
-                                                                </listhead>
-                                                                <listitem forEach="${bancos}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox  id="bancodep" width="250px"
+                                                                      onSelect="bdDeposito.value=self.selectedItem.label;bdDeposito.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Seleccione un Banco"/>
+                                                            </listhead>
+                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
                                              
                                             <bandbox   readonly="true"   value="Banco" width="50px"  id="bd22">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox  id="bancocheque" width="250px"
-                                                                    onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
-                                                                <listhead>
-                                                                    <listheader label="Seleccione un Banco"/>
-                                                                </listhead>
-                                                                <listitem forEach="${bancos}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox  id="bancocheque" width="250px"
+                                                                      onSelect="bd22.value=self.selectedItem.label;bd22.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Seleccione un Banco"/>
+                                                            </listhead>
+                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
                                             <span>   </span>
                                              
                                             <bandbox  readonly="true" value="Banco" width="50px"  id="bd223">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox  id="bancotransferencia" width="250px"
-                                                                    onSelect="bd223.value=self.selectedItem.label;bd223.closeDropdown();">
-                                                                <listhead>
-                                                                    <listheader label="Seleccione un Banco"/>
-                                                                </listhead>
-                                                                <listitem forEach="${bancos}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox  id="bancotransferencia" width="250px"
+                                                                      onSelect="bd223.value=self.selectedItem.label;bd223.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Seleccione un Banco"/>
+                                                            </listhead>
+                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
                                                   
                                             <bandbox  readonly="true" value="Banco" width="50px"  id="bd224">
-                                                    <bandpopup>
-                                                        <vbox>
-                                                            <listbox  id="bancoban" width="250px"
-                                                                    onSelect="bd224.value=self.selectedItem.label;bd224.closeDropdown();">
-                                                                <listhead>
-                                                                    <listheader label="Seleccione un Banco"/>
-                                                                </listhead>
-                                                                <listitem forEach="${bancos}" value="${each}">
-                                                                    <listcell label="${each.nombre}" />
+                                                <bandpopup>
+                                                    <vbox>
+                                                        <listbox  id="bancoban" width="250px"
+                                                                      onSelect="bd224.value=self.selectedItem.label;bd224.closeDropdown();">
+                                                            <listhead>
+                                                                <listheader label="Seleccione un Banco"/>
+                                                            </listhead>
+                                                            <listitem forEach="${bancos}" value="${each}">
+                                                                <listcell label="${each.nombre}" />
 
-                                                                </listitem>
-                                                            </listbox>
-                                                        </vbox>
-                                                    </bandpopup>
-                                                </bandbox>
+                                                            </listitem>
+                                                        </listbox>
+                                                    </vbox>
+                                                </bandpopup>
+                                            </bandbox>
                                         </row>
                                         <row>
                                             <span>   </span>
                                             <span>   </span>
-                                            <span><datebox  width="50px"  id="fechadeposito"  format="dd-MM-yyyy" />   </span>
-                                            <span><datebox  width="50px"  id="fechacheque"  format="dd-MM-yyyy" />   </span>
+                                            <span>
+                                                <datebox  width="50px"  id="fechadeposito"  format="dd-MM-yyyy" />   
+                                            </span>
+                                            <span>
+                                                <datebox  width="50px"  id="fechacheque"  format="dd-MM-yyyy" />   
+                                            </span>
                                             <span>   </span>
                                             <datebox  width="50px" id="fechatransferencia"  format="dd-MM-yyyy" />   
                                         </row>
@@ -788,55 +831,64 @@ void validarNoTransferencia(){
             void cargar(){
             
             try{
-                    String factura = facturarCliente.getAttribute("codigoFactura");
-                    java.math.BigDecimal valoraPagar = facturarCliente.getAttribute("valoraPagar");
-                    System.out.println("codigoFactura: "+factura+" " + valoraPagar);
-                    Factura facEnc = adm.buscarClave(new Integer(factura),Factura.class);
-                    cliente.value = facEnc.getClientes().getApellidos() +" "+facEnc.getClientes().getNombres();
-                    codigocli.value = facEnc.getClientes().getCodigo();
-                    codigofac.value = new Integer(facEnc.getCodigo());
-                    direccion.value = facEnc.getClientes().getDireccion();
-                    telefono.value  = facEnc.getClientes().getTelefono();
-                    fecha.value = (adm.Date()).toLocaleString();
-                    valor.value = valoraPagar;
-                    totalCobros.value = valoraPagar;
-                    efectivo.value = valoraPagar;
-                    cheque.value = BigDecimal.ZERO;
-                    tarjeta.value = BigDecimal.ZERO;
-                    deposito.value = BigDecimal.ZERO;
-                    transferencia.value = BigDecimal.ZERO;
-                    riva.value =  BigDecimal.ZERO;
-                    rtotal.value =  BigDecimal.ZERO;
-                    rfuente.value =  BigDecimal.ZERO;
-                    bancario.value =  BigDecimal.ZERO;
-                    noretencion.value =  "";
-                    if(facEnc.getNumero() != null){
-                        nofactura.value =  facEnc.getNumero().substring(6,facEnc.getNumero().length());
-                        nofactura.readonly = true;
+            String factura = facturarCliente.getAttribute("codigoFactura");
+            java.math.BigDecimal valoraPagar = facturarCliente.getAttribute("valoraPagar");
+            System.out.println("codigoFactura: "+factura+" " + valoraPagar);
+            
+            Factura facEnc = adm.buscarClave(new Integer(factura),Factura.class);
+            cliente.value = facEnc.getClientes().getApellidos() +" "+facEnc.getClientes().getNombres();
+            codigocli.value = facEnc.getClientes().getCodigo();
+            codigofac.value = new Integer(facEnc.getCodigo());
+            direccion.value = facEnc.getClientes().getDireccion();
+            telefono.value  = facEnc.getClientes().getTelefono();
+            fecha.value = (adm.Date()).toLocaleString();
+            valor.value = valoraPagar;
+            totalCobros.value = valoraPagar;
+            efectivo.value = valoraPagar;
+            cheque.value = BigDecimal.ZERO;
+            tarjeta.value = BigDecimal.ZERO;
+            deposito.value = BigDecimal.ZERO;
+            transferencia.value = BigDecimal.ZERO;
+            riva.value =  BigDecimal.ZERO;
+            rtotal.value =  BigDecimal.ZERO;
+            rfuente.value =  BigDecimal.ZERO;
+            bancario.value =  BigDecimal.ZERO;
+            noretencion.value =  "";
+            if(facEnc.getNumero() != null){
+                nofactura.value =  facEnc.getNumero().substring(9,facEnc.getNumero().length());
+                nofactura.readonly = true;
+                serie1.value =  facEnc.getNumero().substring(0,3);
+                serie2.value =  facEnc.getNumero().substring(3,6);
+                serie3.value =  facEnc.getNumero().substring(6,9);
+                serie1.readonly = true;
+                serie2.readonly = true;
                         
-                        try{
-                                if(nofactura.value.contains("REC")){
-                                    esRecibo.checked = true;
-                                    ultimoRecibo();
-                                }
-                         }catch(Exception abc){
-                         }
+                try{
+                    if(nofactura.value.contains("REC")){
+                        esRecibo.checked = true;
+                        ultimoRecibo();
                     }
+                }catch(Exception abc){
+                }
+            }else{
+                serie1.value = sucursalEmp.getSucursal().getSerie1();
+                serie2.value = sucursalEmp.getSucursal().getSerie2();
+            }
                     
-                    List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
-                    if(descuentos.size()>0){
-                            Descuentos descuentoIt = descuentos.get(0);
-                            codigodes.value = descuentoIt.getCodigo();
-                            descuento.value = descuentoIt.getValor();
-                            efectivo.value = valoraPagar.subtract(descuento.value);
-                    }else{
-                            codigodes.value = 0;
-                            descuento.value = new BigDecimal(0);
-                    }
+            List descuentos = adm.query("Select o from Descuentos as o where o.aplicado = false and o.factura.codigo = '"+ facEnc.getCodigo() +"' ");
+            if(descuentos.size()>0){
+            Descuentos descuentoIt = descuentos.get(0);
+            codigodes.value = descuentoIt.getCodigo();
+            descuento.value = descuentoIt.getValor();
+            efectivo.value = valoraPagar.subtract(descuento.value);
+            }else{
+            codigodes.value = 0;
+            descuento.value = new BigDecimal(0);
+            }
                     
-             }catch(Exception e){
-                     System.out.println("ERROR EN FACTURA "+e);
-             }
+            }catch(Exception e){
+            System.out.println("ERROR EN FACTURA "+e);
+            }
             
                     
             }

@@ -15,7 +15,7 @@
         Session ses = Sessions.getCurrent();
         Empleadossucursal sucursalEmp = ses.getAttribute("sector");
   
-        List allEvents = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+        List allEvents = adm.query("Select o from Plan as o "); //where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
         static Plan equi = new Plan();
         Permisos permiso = new Permisos();
         //SimpleTreeModel stm = new SimpleTreeModel(root);
@@ -132,7 +132,8 @@
         void buscar(String p){
 
       
-        List equivaEncontrados = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  order by o.nombre");
+        List equivaEncontrados = adm.query("Select o from Plan as o order by o.nombre");
+        //where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'  
         datos = new Listbox();
         int a=0;
         for (Iterator it = datos.getItems().iterator(); it.hasNext();) {

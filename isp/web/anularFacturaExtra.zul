@@ -30,7 +30,7 @@ anular(){
             try{
                Integer num = numerofactura.value;
                Sucursal suc = sucursalEmp.getSucursal();
-            String vali = suc.getSerie1() + "" + suc.getSerie2() + "FAC" + llenarCeros("" + num);
+            String vali = serie1.value + "" + serie2.value + "FAC" + llenarCeros("" + num);
             List siExiste = adm.query("Select o from Factura as o where o.numero = '"+vali+"' ");
             List siExistePagos = adm.query("Select o from Cxcobrar as o " + 
                 " where o.haber > 0 and o.factura.numero = '"+vali+"' ");
@@ -114,6 +114,10 @@ anular(){
                 <row>
                     <span style="float:right" >
                         No. de Factura
+                        <textbox id="serie1" readonly="false"  cols="3" onCreate="self.value = sucursalEmp.getSucursal().getSerie1();"  style="text-align:center; font-weight:bold; color:blue; font-size:14px"  />
+                        <textbox id="serie2" readonly="false"   cols="3" onCreate="self.value = sucursalEmp.getSucursal().getSerie2();"  style="text-align:center; font-weight:bold; color:blue; font-size:14px"  />
+                        <textbox id="serie3" readonly="true"   cols="3"  value="FAC" style="text-align:center; font-weight:bold; color:blue; font-size:14px"  />
+                         
                     </span>
                     <intbox constraint="no empty: Debe ingresar un número de factura" id="numerofactura" />
                 </row>

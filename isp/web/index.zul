@@ -150,6 +150,7 @@ void ingresarSoporte(Soporte sop){
                 <separator height="5px" orient="vertical"/>
                 <label  style="padding-left:10px;color:white;font-size:9px;" value="SUCURSAL: ${sessionScope.sector.sucursal.descripcion}"  />
                 <separator height="5px"  orient="vertical"/>
+                <label  style="padding-left:10px;color:white;font-size:9px;" value="${sessionScope.sector.sucursal.serie1}-${sessionScope.sector.sucursal.serie2}"  />
                 <!--toolbarbutton style="padding-left:10px;color:white;font-size:9px;"  onClick="salir()" label="Cerrar Sesión"/-->
 
  
