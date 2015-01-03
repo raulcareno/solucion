@@ -53,7 +53,8 @@ String estadoAnterior = "";
     
     
     
-      List planes = adm.query("Select o from Plan as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+      List planes = adm.query("Select o from Plan as o ");
+      //where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
       List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
       generarFacturas gen = new generarFacturas();
 List cantonesList = adm.query("Select o from Canton as o ");
@@ -1116,7 +1117,8 @@ void buscarCedula(String valor){
  
       if(valor.length()>6){
          List empleados = adm.query("Select o from Clientes as o  " + 
-            " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+            " where o.identificacion like '"+valor+"%'  ");
+            // "and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
             if(empleados.size()>0){
  
             
@@ -1139,7 +1141,8 @@ void buscarCedula(String valor){
 
         }else{
                 if(valor.contains("999")){
-                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%'   and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' "); 
+                    //"and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                      if(empleados.size()>0){
                         for(Iterator it = empleados.iterator(); it.hasNext();) {
                               Clientes object = (Clientes)it.next();
@@ -1158,7 +1161,8 @@ void buscarCedula(String valor){
 void verificarCedula(String valor){
       if(valor.length()>6){
                   List empleados = adm.query("Select o from Clientes as o  " + 
-            " where o.identificacion like '"+valor+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+            " where o.identificacion like '"+valor+"%' ");
+            //and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
       if(empleados.size()>0){
                 for(Iterator it = empleados.iterator(); it.hasNext();) {
                       Clientes object = (Clientes)it.next();
@@ -1240,7 +1244,8 @@ void verificarCedula(String valor){
 
         }else{
                 if(valor.contains("999")){
-                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%'   and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+                    List empleados = adm.query("Select o from Clientes as o where o.identificacion like '"+valor+"%' ");
+                    //and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
                      if(empleados.size()>0){
                         for(Iterator it = empleados.iterator(); it.hasNext();) {
                               Clientes object = (Clientes)it.next();
@@ -1262,8 +1267,8 @@ void verificarCedula(String valor){
                       nuevo2();
                    estado(true,false);
                    String q = "Select o from Contratos as o " + 
-                        " where o.contrato = '"+valor+"'  "  + 
-                        " and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
+                        " where o.contrato = '"+valor+"'  ";
+                        //" and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
                    List  ControlequiposEncontrados = adm.query(q);
                    if(ControlequiposEncontrados.size()>0){
                               contratosPanel.visible = false; 
@@ -2046,7 +2051,8 @@ void verificarCedula(String valor){
         //BUSQUEDA DE CLIENTES
   void buscarCli(String p){
         List ClientesEncontrados = adm.query("Select o from Clientes as o "+ 
-        " where o.apellidos like '"+p+"%'  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' " + 
+        " where o.apellidos like '"+p+"%' " +
+        // "  and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' " + 
         " order by o.apellidos",0,10);
         lcliente = new Listbox();
         int a=0;
@@ -2087,7 +2093,9 @@ void verificarCedula(String valor){
       void buscarCliCed(String p){
       if(p.length() > 3){
         List ClientesEncontrados = adm.query("Select o from Clientes as o " + 
-        " where o.identificacion like '"+p+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.identificacion");
+        " where o.identificacion like '"+p+"%' " + 
+        //" and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' 
+        " order by o.identificacion");
         lclienteced = new Listbox();
         int a=0;
             for (Iterator it = lclienteced.getItems().iterator(); it.hasNext();) {
