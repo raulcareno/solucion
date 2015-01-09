@@ -6,6 +6,7 @@ package sources;
 import java.io.*;
 import java.sql.*;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -38,21 +39,13 @@ try {
 
             int index = 1;
             while (rs.next()) {
-
                 HSSFRow row = sheet.createRow((short) index);
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
                     row.createCell((short) i).setCellValue(rs.getString(i + 1));
                 }
-
                 index++;
             }
-//            FileOutputStream fileOut = new FileOutputStream("f:\\"+(new java.util.Date()).getTime()+".xls");
-//            wb.write(fileOut);
-//            fileOut.close();
-//            System.out.println("Data is saved in excel file.");
-//            rs.close();
-//            
-            
+                         
               try {
                 File outFile = File.createTempFile((new java.util.Date()).getTime()+"", ".xls");
                 FileOutputStream elFichero = new FileOutputStream(outFile);
@@ -81,32 +74,35 @@ try {
 
             org.zkoss.zul.Grid lista = new org.zkoss.zul.Grid();
             ResultSetMetaData rsmd = rs.getMetaData();
-
+Rows r = new Rows();
+ lista.appendChild(r); 
          Columns cols = new Columns();
          lista.appendChild(cols);
-         
           
             for (int i = 0; i < rsmd.getColumnCount(); i++) {
                 String name = rsmd.getColumnName(i + 1);
                 Column matCol = new Column(name);
                     matCol.setAlign("right");
+                    matCol.setValue(name+""+i);
+                    matCol.setLabel(name);
+                    matCol.setVisible(true); 
+                    matCol.setStyle("width:30px");
+                    matCol.setId(name+""+i);
                     lista.getColumns().appendChild(matCol);
-                //rowhead.createCell((short) i).setCellValue("" + name);
-
             }
-
+        
             int index = 1;
             while (rs.next()) {
               Row row = new Row();
-                      
+                      row = new Row();
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                    row = new Row();
-                    row.setValue("1");
+                    
+                    row.setValue("1"+i);
                     //lista.getRows().appendChild(cols)
                     Label ce = new Label(rs.getString(i + 1)+"");
                     row.appendChild(ce);
                 }
-                lista.appendChild(row);
+                lista.getRows().appendChild(row);
 
                 index++;
                 if(index==10){

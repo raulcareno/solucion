@@ -1514,6 +1514,28 @@ void guardarcP(){
  
 
     }
+    
+    void asignarProfesores(){
+    String borrar = "DELETE FROM empleadoperiodo WHERE empleado " + 
+        " IN (SELECT codigoemp FROM empleados WHERE codigoemp " + 
+        " IN (SELECT empleado FROM materia_profesor WHERE curso " +
+        " IN (SELECT codigocur FROM cursos WHERE periodo = '"+ periodo.getCodigoper() +"' ) ) )";
+        adm.ejecutaSqlNativo(borrar);
+        
+    String sql = " SELECT * FROM empleados WHERE codigoemp IN (SELECT empleado FROM materia_profesor " +
+            " WHERE curso IN (SELECT codigocur FROM cursos WHERE periodo = '"+ periodo.getCodigoper() +"' ))";
+            List empleadosList =  adm.queryNativo(sql,Empleados.class);
+            for(Iterator it = empleadosList.iterator(); it.hasNext();) {
+                Empleados elem = (Empleados) it.next();
+                 Empleadoperiodo nuevo = new Empleadoperiodo();
+                 nuevo.setCodigo(adm.getNuevaClave("Empleadoperiodo","codigo"));
+                 nuevo.setEmpleado(elem);
+                 nuevo.setPeriodo(periodo);
+                 adm.guardar(nuevo);
+            }
+
+     
+    }
 
 
     
@@ -1558,6 +1580,11 @@ void guardarcP(){
     &lt;p&gt; Puede escribir una formula para calcular materias entre sí por ejemplo promedio(MA130,MA105) o (MA130+MA105)/2 &lt;/p&gt;
                     </html>
                 </popup>
+                <popup id="tasignar" width="300px">
+                    <html>
+                &lt;p&gt; Copia los empleados que tienen cursos asignados en el Distributivo  al Periodo Actual en Asignar Periodos &lt;/p&gt;
+                    </html>
+                </popup>
                 <grid> <!-- POR CURSO LINEAL -->
 
                     <rows>
@@ -1576,6 +1603,7 @@ void guardarcP(){
                                 <button image="/images/guardar.gif" id="guardarc" label="Guardar"    onClick="guardarc();"/>
                                 <button image="/images/actualizar.png" onClick="llenarGrid3(curs3.selectedItem.value);"/>
                                 <button image="/images/add.png" id="copiarDistributivo2" label="COPIAR EL DISTRIBUTIVO"     onClick="panel.visible = true;desdeCurso.selectedIndex =-1; hastaCurso.selectedIndex = -1;vaciarList();"/>
+                                <button image="/images/calculo.gif" id="asignarProfesores"   tooltip="tasignar"     onClick="asignarProfesores();"/>
                             </span>
                         </row>
                         <row spans="2">
