@@ -738,14 +738,14 @@ void recalcular2(){
                            
             }else if(tipo.equals("CNF")){
                     
-                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluye.checked);
                     report.setSrc(directorioReportes+"cuadrofinal.jasper");
             }else if(tipo.equals("CNF5")){
                     
-                    datasource = noti.cuadrojuntas(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrojuntas(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluye.checked);
                     report.setSrc(directorioReportes+"cuadrofinal.jasper");
             }else if(tipo.equals("CNF2")){
-                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluye.checked);
                     report.setSrc(directorioReportes+"cuadrofinal1.jasper");
             }else if(tipo.equals("CNF3")){
             
@@ -761,7 +761,7 @@ void recalcular2(){
                     datasource = noti.cuadrofinal3(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
                     report.setSrc(directorioReportes+"cuadrofinal2.jasper");
             }else if(tipo.equals("CNF4")){
-                 //   datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                 //   datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluye.checked);
                  //   report.setSrc(directorioReportes+"cuadrofinal1.jasper");
                                      List optativasList = adm.query("Select o from MateriaProfesor as o " + 
                                                    " where o.curso.codigocur = '"+curs.getSelectedItem().getValue().getCodigocur()+"' " + 
@@ -776,7 +776,7 @@ void recalcular2(){
                     report.setSrc(directorioReportes+"cuadrofinal5.jasper");
                  
             }else if(tipo.equals("EST")){
-                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue());
+                    datasource = noti.cuadrofinal(curs.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue(),desde.doubleValue(),hasta.doubleValue(),incluye.checked);
                     report.setSrc(directorioReportes+"estadistico.jasper");
             }else if(tipo.equals("AG")){
                     datasource = noti.actaGrado("original",estudiantesCombo.getSelectedItem().getValue(),especialidad.getSelectedItem().getValue(),false);
@@ -843,8 +843,13 @@ void recalcular2(){
                     report.setSrc(directorioReportes+"cuadroResumenActas.jasper");
             }else if(tipo.equals("LIB")){
                    //alert(Executions.getCurrent().getDesktop().getWebApp().getRealPath("/libreta_sub.jasper"));
-
+                   if(dividirLibreta.checked){
+                        datasource = noti.libretasDivida(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                   }else{
                     datasource = noti.libretas(curs.getSelectedItem().getValue(),estudiantesCombo.getSelectedItem().getValue(),sistemasCombo.getSelectedItem().getValue());
+                    }
+                   
+                    
                     report.setSrc(directorioReportes+"libreta.jasper");
                     parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
                     parametros.put("pathSubRel2",directorioReportes);//libreta_subFaltas.jasper
@@ -930,6 +935,7 @@ void recalcular2(){
 		}
 
 void campos(String valor){
+dividirLibreta.visible = false;
         estudiantesCombo.disabled = true;
         materiasCombo.disabled = true;
         curs.disabled = true;
@@ -1048,6 +1054,9 @@ void campos(String valor){
             filacursos.visible = true;
             filarecalculos.visible = true;
             filaaportes.visible = true;
+            if(valor.equals("LIB")){
+            dividirLibreta.visible = true;
+            }
              
         }else if(valor.equals("LIBQ1") || valor.equals("LIBQ")  ){
             curs.disabled = false;
@@ -1326,6 +1335,7 @@ void campos(String valor){
      
                             <span style="float:right"> Reporte:</span>
                             <span>
+                                
                                 <listbox id="reporte" onSelect="campos(self.selectedItem.value)" width="450px"  mold="select" >
                                     <listitem label="[Seleccione]" value="-1" selected="true" />
         
@@ -1441,7 +1451,7 @@ void campos(String valor){
         
                                 </listbox>
                               
-    
+                            <checkbox visible="false" checked="false" id="dividirLibreta" label="DIVIDIR LIBRETA DE OPTATIVAS" style="color:blue" />
                             </span>
                         </row>
                         <row  spans="2" style="background:transparent;border:0px" id="fila" visible="false">
@@ -1454,6 +1464,10 @@ void campos(String valor){
                                     <separator bar="true" orient="vertical" />
                                     Nota de Peligro:
                                     <decimalbox id="peligro" value="6.99" cols="5"/>
+                                    .
+                                    <checkbox visible="true" checked="false" id="incluye" label="Incluir NO Promediadas" style="color:blue" />
+                                    -
+                                    
                            
                                 </span>
                                 <span style="color:black">  

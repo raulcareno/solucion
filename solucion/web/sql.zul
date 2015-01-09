@@ -3,6 +3,7 @@
 >
 
     <zscript>
+        <![CDATA[ 
         import jcinform.persistencia.Sqltabla;
         import bean.EventDAO; 
         import java.util.ArrayList; 
@@ -150,9 +151,31 @@
         alert("ERROR NO USE PALABRAS COMO: \n UPDATE, DELETE, DROP u otras palabras reservadas");
         return;
         }
-        datos2.appendChild(ef.EjecutarSqlVista(sql.value));
+        Grid llega = (ef.EjecutarSqlVista(sql.value));
+         datos2.getRows().getChildren().clear();
+         datos2.getColumns().getChildren().clear();
+         
+        List abc = llega.getRows().getChildren();
+      
+       /* 
+       List c = llega.getColumns().getChildren();
+        Columns columnas = datos2.getColumns();
+        for (Iterator it = c.iterator(); it.hasNext();) {
+            Column object = it.next();
+            columnas.appendChild(object);
+        } 
+        */
+         
+         
+        
+        Rows filas = datos2.getRows();
+         for(int i = 0;i < abc.size();i++){
+            Row object = (Row) abc.get(i);
+            filas.appendChild(object);
+        }
         datos2.visible = true;
         }
+        ]]>
     </zscript>
     <groupbox mold="3d" >
         <caption label="Agregar" />
@@ -184,12 +207,13 @@
     
                 </row>
                 <row spans="2">
-                    <grid height="200px" id="datos2" visible="false">
-                        <rows>
-                            <row></row>
-                        </rows>
+                 <grid height="150px" width="97%" id="datos2" visible="false">
+                        <columns id="columnas">
+                         </columns>
+                        <rows id="filas">
+                         </rows>
   
-                    </grid>
+                 </grid>
                 </row>
 
             </rows>
@@ -197,10 +221,10 @@
         <vbox>
             <vbox>
                 <hbox>
-                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
-                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo();" />
-                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="eliminar();"/>
+                    <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="datos2.visible =false; guardar();"/>
+                    <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="datos2.visible =false; nuevo();" />
+                    <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="datos2.visible =false; modificar()"/>
+                    <button  image="/images/eliminar.gif" id="eliminar"  label="Eliminar" disabled="true"  onClick="datos2.visible =false; eliminar();"/>
                 </hbox>
             </vbox>
 
