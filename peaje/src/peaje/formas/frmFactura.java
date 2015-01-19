@@ -3574,6 +3574,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
             this.panelencontrados.setVisible(false);
             Clientes est = (Clientes) this.encontrados.getSelectedValue();
             llenarCliente(est);
+             DefaultListModel dtm = new DefaultListModel();
+                    dtm.removeAllElements();
+                    encontrados.setModel(dtm);
 
 
         }
@@ -3641,6 +3644,9 @@ public class frmFactura extends javax.swing.JInternalFrame {
             this.panelencontrados.setVisible(false);
             Clientes est = (Clientes) this.encontrados.getSelectedValue();
             llenarCliente(est);
+             DefaultListModel dtm = new DefaultListModel();
+                    dtm.removeAllElements();
+                    encontrados.setModel(dtm);
         }
     }//GEN-LAST:event_encontradosMouseClicked
 
@@ -5888,6 +5894,9 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         }
         if (evt.getKeyCode() == evt.VK_ESCAPE) {
             panelencontrados5.setVisible(false);
+               DefaultListModel dtm = new DefaultListModel();
+                                dtm.removeAllElements();
+                                encontrados5.setModel(dtm);
         }
     }//GEN-LAST:event_nombres4KeyPressed
 
@@ -5936,6 +5945,9 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             Clientes est = (Clientes) this.encontrados5.getSelectedValue();
             llenarCliente5(est);
             est = null;
+               DefaultListModel dtm = new DefaultListModel();
+                                dtm.removeAllElements();
+                                encontrados5.setModel(dtm);
             noFactura.requestFocusInWindow();
         }
     }//GEN-LAST:event_encontrados5MouseClicked
@@ -5948,6 +5960,9 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
             llenarCliente5(est);
             est = null;
             noFactura.requestFocusInWindow();
+             DefaultListModel dtm = new DefaultListModel();
+                    dtm.removeAllElements();
+                    encontrados5.setModel(dtm);
 
         }
         if (evt.getKeyCode() == evt.VK_UP && encontrados5.getSelectedIndex() == 0) {
