@@ -1,0 +1,88 @@
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.11.2014/19:00:28,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,13.11.2014/08:50:12,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,20.11.2014/10:11:27,OK
+INFO peaje.formas.frmPrincipal,line 41,20.11.2014/10:29:53,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,20.11.2014/10:30:12,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,20.11.2014/10:57:24,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,20.11.2014/11:10:42,OK
+INFO peaje.formas.frmPrincipal,line 41,20.11.2014/11:25:16,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,20.11.2014/11:25:33,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.11.2014/08:02:43,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.11.2014/08:18:26,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.11.2014/08:51:24,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/10:39:50,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/10:44:50,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/10:44:53,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/10:45:24,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/10:47:53,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/10:48:07,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/10:50:23,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/10:50:27,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/10:51:12,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM14,line 41,26.11.2014/10:51:16,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/10:51:16,OK
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM14,line 41,26.11.2014/10:56:38,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/10:56:38,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/10:58:16,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM14,line 41,26.11.2014/10:58:23,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/10:58:23,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:00:05,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM14,line 41,26.11.2014/11:00:13,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:00:13,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/11:12:23,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:13:20,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:13:28,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:13:28,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:15:15,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:15:23,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:15:23,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:16:45,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:16:53,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:16:53,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:17:58,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:18:05,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:18:05,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:28:01,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:28:09,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:28:09,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:31:12,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:31:38,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:31:45,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:31:45,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:33:40,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:33:50,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:33:50,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:37:03,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:37:10,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:37:10,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/11:40:44,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/11:40:51,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/11:40:51,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/14:26:16,OK
+INFO ABIERTO: COM3,line 41,26.11.2014/14:33:39,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/14:33:42,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,26.11.2014/15:45:35,OK
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/15:48:51,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/15:48:53,OK
+INFO peaje.formas.frmPrincipal,line 41,26.11.2014/15:49:25,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/15:49:31,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/15:49:33,OK
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/15:59:37,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/15:59:39,OK
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/18:30:52,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/18:30:54,OK
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM15,line 41,26.11.2014/18:37:33,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,26.11.2014/18:37:35,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,28.11.2014/17:18:00,OK
+INFO peaje.formas.frmPrincipal,line 41,28.11.2014/17:21:09,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO LETRERO-LEDS ABIERTO: COM6,line 41,28.11.2014/17:21:14,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,28.11.2014/17:21:16,OK
+INFO peaje.formas.frmPrincipal,line 41,28.11.2014/17:22:28,java.io.IOException: write error
+INFO PUERTO LETRERO-LEDS ABIERTO: COM6,line 41,28.11.2014/17:25:52,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,28.11.2014/17:25:54,OK
+INFO peaje.formas.frmPrincipal,line 41,28.11.2014/17:26:33,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO LETRERO-LEDS ABIERTO: COM6,line 41,28.11.2014/17:26:36,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,28.11.2014/17:26:36,OK
+INFO peaje.formas.frmPrincipal,line 41,28.11.2014/17:28:11,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO PUERTO LETRERO-LEDS ABIERTO: COM6,line 41,28.11.2014/17:28:14,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,28.11.2014/17:28:14,OK
