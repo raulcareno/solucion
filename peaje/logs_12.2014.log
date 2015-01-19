@@ -1,0 +1,49 @@
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/09:34:33,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/09:36:50,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/09:36:57,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/09:40:29,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/09:41:29,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/09:41:37,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/09:44:53,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/09:45:00,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/09:54:36,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/09:54:42,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/10:01:48,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/10:01:51,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/10:06:34,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/10:06:37,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/10:11:04,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,05.12.2014/10:11:07,OK
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:01:17,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:05:36,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:09:15,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:37:23,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:41:15,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:52:52,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:53:35,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/16:55:38,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/17:01:25,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/17:06:03,javax.media.NoPlayerException: Error instantiating class: com.sun.media.protocol.vfw.DataSource : java.io.IOException: Could not connect to capture device
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/17:38:05,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/17:42:19,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/18:07:47,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/18:08:42,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/18:21:57,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,05.12.2014/18:23:44,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,16.12.2014/18:42:31,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,16.12.2014/18:50:09,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,16.12.2014/18:50:14,OK
+INFO peaje.formas.frmPrincipal,line 41,16.12.2014/18:53:05,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,16.12.2014/18:53:10,OK
+INFO ABIERTO: COM4,line 41,16.12.2014/18:53:10,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,16.12.2014/18:53:10,OK
+INFO peaje.formas.frmPrincipal,line 41,16.12.2014/19:26:37,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO PUERTO INTERFAZ PC BARRERA0 - ABIERTO: COM3,line 41,16.12.2014/19:26:48,OK
+INFO ABIERTO: COM4,line 41,16.12.2014/19:26:48,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 1,line 41,16.12.2014/19:26:48,OK
+INFO peaje.formas.frmPrincipal,line 41,16.12.2014/19:30:27,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,16.12.2014/19:30:28,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,19.12.2014/11:38:17,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,19.12.2014/11:38:22,OK
+INFO peaje.formas.frmPrincipal,line 41,31.12.2014/11:14:50,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,31.12.2014/11:14:58,OK
