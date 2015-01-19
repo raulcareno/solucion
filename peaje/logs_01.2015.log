@@ -54,3 +54,6 @@ INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.01.2015/22:56:03,OK
 INFO peaje.formas.frmPrincipal,line 41,18.01.2015/23:17:27,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
 INFO ABIERTO: COM7,line 41,18.01.2015/23:17:53,OK
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,18.01.2015/23:17:53,OK
+INFO peaje.formas.frmPrincipal,line 41,19.01.2015/00:09:05,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM7,line 41,19.01.2015/00:09:30,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,19.01.2015/00:09:30,OK
