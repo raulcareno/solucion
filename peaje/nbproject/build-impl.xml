@@ -370,6 +370,11 @@ is divided into following sections:
             </and>
         </condition>
     </target>
+    <target name="-init-test-properties">
+        <property name="test.binaryincludes" value="&lt;nothing&gt;"/>
+        <property name="test.binarytestincludes" value=""/>
+        <property name="test.binaryexcludes" value=""/>
+    </target>
     <target if="${nb.junit.single}" name="-init-macrodef-junit-single" unless="${nb.junit.batch}">
         <macrodef name="junit" uri="http://www.netbeans.org/ns/j2se-project/3">
             <attribute default="${includes}" name="includes"/>
@@ -393,7 +398,7 @@ is divided into following sections:
             </sequential>
         </macrodef>
     </target>
-    <target if="${nb.junit.batch}" name="-init-macrodef-junit-batch" unless="${nb.junit.single}">
+    <target depends="-init-test-properties" if="${nb.junit.batch}" name="-init-macrodef-junit-batch" unless="${nb.junit.single}">
         <macrodef name="junit" uri="http://www.netbeans.org/ns/j2se-project/3">
             <attribute default="${includes}" name="includes"/>
             <attribute default="${excludes}" name="excludes"/>
@@ -406,6 +411,9 @@ is divided into following sections:
                     <batchtest todir="${build.test.results.dir}">
                         <fileset dir="${test.src.dir}" excludes="@{excludes},${excludes}" includes="@{includes}">
                             <filename name="@{testincludes}"/>
+                        </fileset>
+                        <fileset dir="${build.test.classes.dir}" excludes="@{excludes},${excludes},${test.binaryexcludes}" includes="${test.binaryincludes}">
+                            <filename name="${test.binarytestincludes}"/>
                         </fileset>
                     </batchtest>
                     <syspropertyset>
@@ -534,7 +542,7 @@ is divided into following sections:
             </sequential>
         </macrodef>
     </target>
-    <target if="${nb.junit.batch}" name="-init-macrodef-junit-debug-batch">
+    <target depends="-init-test-properties" if="${nb.junit.batch}" name="-init-macrodef-junit-debug-batch">
         <macrodef name="junit-debug" uri="http://www.netbeans.org/ns/j2se-project/3">
             <attribute default="${includes}" name="includes"/>
             <attribute default="${excludes}" name="excludes"/>
@@ -547,6 +555,9 @@ is divided into following sections:
                     <batchtest todir="${build.test.results.dir}">
                         <fileset dir="${test.src.dir}" excludes="@{excludes},${excludes}" includes="@{includes}">
                             <filename name="@{testincludes}"/>
+                        </fileset>
+                        <fileset dir="${build.test.classes.dir}" excludes="@{excludes},${excludes},${test.binaryexcludes}" includes="${test.binaryincludes}">
+                            <filename name="${test.binarytestincludes}"/>
                         </fileset>
                     </batchtest>
                     <syspropertyset>
@@ -920,7 +931,7 @@ is divided into following sections:
     <target if="has.persistence.xml" name="-copy-persistence-xml">
         <mkdir dir="${build.classes.dir}/META-INF"/>
         <copy todir="${build.classes.dir}/META-INF">
-            <fileset dir="${meta.inf.dir}" includes="persistence.xml"/>
+            <fileset dir="${meta.inf.dir}" includes="persistence.xml orm.xml"/>
         </copy>
     </target>
     <target name="-post-compile">
@@ -950,6 +961,20 @@ is divided into following sections:
     <target depends="init" name="-pre-pre-jar">
         <dirname file="${dist.jar}" property="dist.jar.dir"/>
         <mkdir dir="${dist.jar.dir}"/>
+        <!-- and also copy resources (alphabets, networks, syntax) into jar directory -->
+        <copy todir="${dist.dir}/resources">
+            <fileset dir="${resources.dir}"/>
+        </copy>
+        <!-- copy /resources/config.xml to /dist/config.xml -->
+        <copy file="${resources.dir}/configu.xml.recommended" tofile="${dist.dir}/configuration.xml"/>
+        <copy todir="${dist.dir}/reportes">
+            <fileset dir="${reportes.dir}"/>
+        </copy>
+        <copy file="./javaanpr.jar" tofile="${dist.dir}/javaanpr.jar"/>
+        <copy file="${librerias.dir}/javax.comm.properties" tofile="${dist.dir}/lib/javax.comm.properties"/>
+        <copy file="./KDJFASD5F4AS5D2.xml" tofile="${dist.dir}/KDJFASD5F4AS5D2.xml"/>
+        <copy file="./config.xml" tofile="${dist.dir}/config.xml"/>
+        
     </target>
     <target name="-pre-jar">
         <!-- Empty placeholder for easier customization. -->

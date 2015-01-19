@@ -43,22 +43,51 @@ public class leerTcpIp {
             }
             // Obtenemos un controlador de fichero de entrada del socket y
             // leemos esa entrada
-            System.out.println("EMPEZO SERVIDOR IP ");
+            System.out.println("EMPEZO CONEXIÓN CON LECTORA DE BARRAS IP ");
             sIn = s.getInputStream();
             String datos = "";
+            String tarjeta = "";
+            byte[] readBuffer = new byte[10];
             while ((c = sIn.read()) != -1) {
                 try {
+                    
                     //System.out.print((char) c);
-                    datos += (char) c + "";
-                    Thread.sleep(2);
-                    datos = datos.replace(" ", "");
-                    datos = datos.trim();
-                    System.out.println(".."+datos);
-                    if (datos.length() >5 ) {
-                        abrirbarrera(datos, ip);
-                        datos = "";
-                        System.gc();
+//                    Thread.sleep(2);
+//                    datos += (char) c + "";
+//                    datos = datos.replace(" ", "");
+//                    datos = datos.trim();
+//                    System.out.println(".."+datos);
+//                    System.out.println("__"+sIn);
+//                    int numBytes = s.getInputStream().read(readBuffer);
+//                    Thread.sleep(30);
+//                    tarjeta = tarjeta + new String(readBuffer).trim();
+//                    System.out.println("#bytes:"+numBytes+" :__:" + tarjeta);
+//                             
+//                    if (datos.length() >6 ) {
+//                        abrirbarrera(datos, ip);
+//                        datos = "";
+//                        System.gc();
+//                    }
+                    System.out.println("read");
+                     while (sIn.available() > 0) {
+                        System.out.println("Punto: "+datos);
+                        int numBytes = sIn.read(readBuffer);
+                        Thread.sleep(30);
+                        datos = (char) c + "";
+                        System.out.println("#bytes: " + numBytes);
+                        tarjeta = tarjeta + new String(readBuffer).trim();
+                        System.out.println("read: "+tarjeta);
                     }
+                     if(tarjeta.toUpperCase().contains("A") || tarjeta.toUpperCase().contains("B") ||tarjeta.toUpperCase().contains("C") ||  
+                             tarjeta.toUpperCase().contains("D") ){
+                     
+                     }else{
+                                tarjeta = datos+tarjeta;
+                     }
+                     System.out.println("ticket:"+tarjeta);
+                     abrirbarrera(tarjeta, ip);
+                     System.out.println("fin read");
+                     tarjeta = "";
                 } catch (InterruptedException ex) {
                     Logger.getLogger(leerTcpIp.class.getName()).log(Level.SEVERE, null, ex);
                 }

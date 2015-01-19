@@ -1,5 +1,6 @@
 package peaje.formas;
 
+import gnu.io.CommPortIdentifier;
 import hibernate.Empresa;
 import hibernate.Global;
 import java.awt.Container;
@@ -9,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.comm.CommPortIdentifier;
+ 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.swing.JOptionPane;
@@ -18,8 +19,6 @@ import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import xml.XMLEmpresa;

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.comm.*;
+//import javax.comm.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
@@ -79,6 +79,7 @@ import sources.FacturaDetalleSource;
 import sources.FacturaSource;
 import xml.XMLEmpresa;
 import chatear.cliente.leerTcpIp;
+import gnu.io.CommPortIdentifier;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.UnknownHostException;
@@ -109,6 +110,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     String ubicacionDirectorio = w.get() + separador;
     public CamaraWeb ver = new CamaraWeb();
     public tomarImage verIp = new tomarImage();
+    SystemTray tray = SystemTray.getSystemTray();
     logger lger = new logger();
 
     public void habilitarBotones(Boolean estado) {
@@ -229,9 +231,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             men.add(acerca);
 
-            trayIcon = new TrayIcon(image, "JCINFORM \n Soluciones Integradas de Seguridad y Control \n Sistema de Parking \n www.siscontrol.com.ec ", men);
+            trayIcon = new TrayIcon(image, "SISCONTROL.com.ec \n Soluciones Integradas de Seguridad y Control \n Sistema de Parking \n www.siscontrol.com.ec ", men);
             if (SystemTray.isSupported()) {
-                SystemTray tray = SystemTray.getSystemTray();
+                
                 trayIcon.setImageAutoSize(true);
                 trayIcon.addActionListener(new ActionListener() {
 
@@ -241,11 +243,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                        frmLogin.show(true);
                     }
                 });
-                trayIcon.displayMessage("Bienvenidos al Sistema", " City Park \n www.siscontrol.com.ec ", TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Bienvenidos al Sistema", " CityPark \n www.siscontrol.com.ec ", TrayIcon.MessageType.INFO);
                 try {
                     tray.add(trayIcon);
                 } catch (AWTException e) {
-                    System.err.println("TrayIcon could not be added.");
+                    System.err.println("TrayIcon no pudo ser añadido");
                 }
             }
             this.setIconImage(im);
@@ -429,6 +431,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         correcto = new javax.swing.JLabel();
         sellado = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
+        codigoCliente = new javax.swing.JFormattedTextField();
         jPanel5 = new javax.swing.JPanel();
         btnBuscar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
@@ -1057,11 +1060,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             }
         });
         codigo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                codigoKeyReleased(evt);
-            }
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 codigoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                codigoKeyReleased(evt);
             }
         });
         jPanel4.add(codigo);
@@ -1228,6 +1231,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel3.setVerifyInputWhenFocusTarget(false);
         jPanel4.add(jLabel3);
         jLabel3.setBounds(380, 90, 180, 20);
+
+        codigoCliente.setBorder(null);
+        codigoCliente.setEditable(false);
+        codigoCliente.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        codigoCliente.setText("0");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("${usuarioObj.codigo}"), codigoCliente, org.jdesktop.beansbinding.BeanProperty.create("value"));
+        bindingGroup.addBinding(binding);
+
+        jPanel4.add(codigoCliente);
+        codigoCliente.setBounds(630, 10, 109, 20);
 
         frmClientes1.getContentPane().add(jPanel4);
         jPanel4.setBounds(10, 50, 750, 320);
@@ -3210,15 +3224,16 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     void iniciarPuertos() {
         try {
-            WorkingDirectory w = new WorkingDirectory();
+//            WorkingDirectory w = new WorkingDirectory();
             String ubicacionDirectorio = w.get() + separador;
             if (ubicacionDirectorio.contains("build")) {
                 ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
             }
-            String temp_string = ubicacionDirectorio + "lib" + separador + "javax.comm.properties";
-            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
-            loadDriver_Method.setAccessible(true);
-            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+//            System.loadLibrary("rxtxSerial");
+//            String temp_string = ubicacionDirectorio + "lib" + separador + "javax.comm.properties";
+//            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
+//            loadDriver_Method.setAccessible(true);
+//            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
             LeerTarjeta reader;
@@ -3648,6 +3663,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setNombreCaja(emp.getNombreCaja());
         empresaObj.setSerie(emp.getSerie());
         empresaObj.setSucursal(emp.getSucursal());
+        empresaObj.setPuerto(emp.getPuerto());
+        
     }
 
     void iniciarCamar() {
@@ -3722,7 +3739,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         //  PASA A LOS SIGUIENTES PROCESOS Y NO TOMA EN CUENTA LAS FECHAS YA QUE SOY ADMINISTRADOR
                         File fichero = new File(ubicacionDirectorio + "config.xml");
                         if (fichero.exists()) {
-                            fichero.delete();
+                            //fichero.delete();
                             System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
                             XMLEmpresa pXml = new XMLEmpresa();
                             pXml.inicio();
@@ -3749,7 +3766,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
             if (fichero.exists()) {
-                fichero.delete();
+                //fichero.delete();
                 System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
             }
             this.dispose();
@@ -3925,10 +3942,14 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         ((frmFactura) component).setVisible(true);
                         ((frmFactura) component).noTarjeta.requestFocusInWindow();
                         ((frmFactura) component).noTarjeta.setText(tarjeta);
+                        limpiarMemoria();
                     }
+                    limpiarMemoria();
                     return;
                 }
             }
+            componentes = null;
+            limpiarMemoria();
         } catch (Exception e) {
             System.out.println("ERROR EN COMPONENTE" + e);
         }
@@ -3942,6 +3963,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         int diaActual = fechaActual.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
         DateTime desde = new DateTime(tarje.getDesde());
         DateTime hasta = new DateTime(tarje.getHasta());
+        //hasta.plusDays(1);
         DateTime fechaAct = new DateTime(fechaActual);
         Boolean continua = false;
         if (habilitada) {
@@ -3986,9 +4008,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 Date fecIn = tarje.getHorainicio();
                 Date fecIn3 = tarje.getHorafin();
-                LocalTime horaIni = new LocalTime(new DateTime(fecIn));
-                LocalTime horaFin = new LocalTime(new DateTime(fecIn3));
+                
+                DateTime fechaIngreso = new DateTime(fecIn);
+                DateTime fechaSalida = new DateTime(fecIn3).plusDays(1);
+                
+                
+                LocalTime horaIni = new LocalTime(fechaIngreso);
+                LocalTime horaFin = new LocalTime(fechaSalida);
+                
+                //horaFin.;
                 LocalTime ahora = new LocalTime(new DateTime(new Date()));
+                 
+                Date fechaNueva = fecIn;
+                fechaNueva.setHours((new Date()).getHours()); 
+                fechaNueva.setMinutes((new Date()).getMinutes()); 
+                fechaNueva.setSeconds((new Date()).getSeconds()); 
+                DateTime ahora2 = new DateTime(fechaNueva); 
+                
+                 
+                 
                 if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                     System.out.println("EN EL RANGO DE HORA");
                     try {
@@ -3999,7 +4037,25 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 } else {
                     //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-
+                    
+                    //*********************** 
+                    //VUELVO A COMPARAR HORAS YA QUE LA HORA DE INGRESO ES MAYOR A LA DE SALIDA
+                    // ************************
+                    if(horaFin.compareTo(horaIni) == -1){
+                        if ((ahora2.compareTo(fechaIngreso) > 0 || ahora2.compareTo(fechaIngreso) == 0) && (ahora2.compareTo(fechaSalida) < 0 || ahora2.compareTo(fechaSalida) == 0)) {
+                        System.out.println("EN EL RANGO DE HORA 2(fecha 1 mayor a fecha 2)");
+                        try {
+                            return true;
+                        } catch (Exception e) {
+                            System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                        }
+                    }  
+                    
+                    }
+                    
+                    
+                    
+                    
                     if (entraOsale.equals("s")) {
                         errores.setText("<html>NO puede Salir en éste horario</html>");
                         socketEnviarMensaje("NO puede Salir en éste horario");
@@ -4468,8 +4524,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             yasalio = false;
                         }
                         if (fechaFin == null) {
-                            errores.setText("<html>TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)</html>");
-                            socketEnviarMensaje("TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                            errores.setText("<html>TICKET No: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                            socketEnviarMensaje("TICKET No: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
 
                             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                         } else {
@@ -4544,8 +4600,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             yasalio = false;
                         }
                         if (fechaFin == null) {
-                            errores.setText("<html>TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR)</html>");
-                            socketEnviarMensaje("TICKET No: " + new Integer(noticket) + " QUIERE SALIR SIN PAGAR");
+                            errores.setText("<html>TICKET No: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                            socketEnviarMensaje("TICKET No: " + (noticket) + " QUIERE SALIR SIN PAGAR");
                             imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                         } else {
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
@@ -5440,24 +5496,28 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             tecla(evt.getKeyCode());
         }
 }//GEN-LAST:event_direccionKeyPressed
-
-    private void codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codigoFocusLost
-        // TODO add your handling code here:
-        validarNumerodeCedula(codigo.getText());
+private void pierdeFoco(){
+ validarNumerodeCedula(codigo.getText());
         try {
-            clienteObj = (Clientes) adm.querySimple("Select o from Clientes as o "
+            List<Clientes> clienteObj =  adm.query("Select o from Clientes as o "
                     + "where o.identificacion = '" + codigo.getText().trim() + "' ");
-            if (clienteObj != null) {
-                bindingGroup.unbind();
-                bindingGroup.bind();
-                llenarTabla(clienteObj.getCodigo());
+            if (clienteObj.size()>0) {
+//                bindingGroup.unbind();
+//                bindingGroup.bind();
+                llenarTabla(clienteObj.get(0).getCodigo());
                 modificar = true;
                 grabar = true;
+                tarjetas.repaint();
             }
         } catch (Exception e) {
+            tarjetas.repaint();
             System.out.println("BUSCAR CEDULA UNICA " + e);
             e.printStackTrace();
         }
+}
+    private void codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codigoFocusLost
+        // TODO add your handling code here:
+       
 }//GEN-LAST:event_codigoFocusLost
 
     private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
@@ -5613,6 +5673,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 btnAgregar.setMnemonic('G');
                 btnModificar.setMnemonic('C');
                 btnBuscar.setEnabled(false);
+                descuento.setText("0");
+                sellado.setText("0");
 
 
             } else if (grabar == true) {
@@ -5624,6 +5686,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     }
                     clienteObj.setProductos((Productos) tarifas.getSelectedValue());
                     Double valorv = Double.valueOf(txtValor.getText());
+                    
                     clienteObj.setValor(new BigDecimal(valorv));
                     clienteObj.setDireccion(direccion.getText());
                     clienteObj.setNombres(nombres.getText());
@@ -5632,6 +5695,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     clienteObj.setDescuento(new BigDecimal(descuento.getText()));
                     clienteObj.setSellado(new BigDecimal(sellado.getText()));
                     if (modificar) {
+                        clienteObj.setCodigo(new Integer(codigoCliente.getText())); 
                         try {
                             adm.actualizar(clienteObj);
 
@@ -5643,7 +5707,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         }
                     } else {
                         try {
-
+                        clienteObj.setCodigo(adm.getNuevaClave("Clientes", "codigo")); 
                             adm.guardar(clienteObj);
 //                            formaTarjetas.setModal(true);
 //                            formaTarjetas.setSize(400, 388);
@@ -5986,7 +6050,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
                 }
                 try {
-                    codigo.setText(clienteObj.getCodigo() + "");
+                    codigoCliente.setText(clienteObj.getCodigo() + "");
                 } catch (Exception e) {
                 }
                 try {
@@ -6212,16 +6276,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     ta.outputSream.write("3".getBytes());
                     //TEMPORAL
                     Thread.sleep(20);
-                    ta.outputSream.write("3".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("3".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("3".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("3".getBytes());
-                    Thread.sleep(20);
-                    ta.outputSream.write("3".getBytes());
+                    // ta.outputSream.write("3".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("3".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("3".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("3".getBytes());
+//                    Thread.sleep(20);
+//                    ta.outputSream.write("3".getBytes());
                     //TEMPORAL
+                    System.out.println("ABRIR PUERTA 3" + new Date());
                     try {
                         Thread.sleep(500);
                     } catch (Exception e) {
@@ -6288,13 +6353,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
         for (Iterator it = puertoListo.iterator(); it.hasNext();) {
             LeerTarjeta ta = (LeerTarjeta) it.next();
-            if (ta.serialPort.getName().equals(empresaObj.getBarras()) && tipo == ("barras")) {
+            if (ta.serialPort.getName().replace("//./", "").equals(empresaObj.getBarras()) && tipo == ("barras")) {
+                return ta; // 
+            } else if (ta.serialPort.getName().replace("//./", "").equals(empresaObj.getPuerto()) && tipo == ("principal")) {
                 return ta;
-            } else if (ta.serialPort.getName().equals(empresaObj.getPuerto()) && tipo == ("principal")) {
+            } else if (ta.serialPort.getName().replace("//./", "").equals(empresaObj.getBarras2()) && tipo == ("barras2")) {
                 return ta;
-            } else if (ta.serialPort.getName().equals(empresaObj.getBarras2()) && tipo == ("barras2")) {
-                return ta;
-            } else if (ta.serialPort.getName().equals(empresaObj.getLed()) && tipo == ("led")) {
+            } else if (ta.serialPort.getName().replace("//./", "").equals(empresaObj.getLed()) && tipo == ("led")) {
                 return ta;
             }
         }
@@ -6443,7 +6508,7 @@ cerroSesion = false;
             // TODO add your handling code here:
             this.finalize();
             this.hide();
-
+            tray.remove(trayIcon);
             System.exit(0);
 
         } catch (Throwable ex) {
@@ -7455,6 +7520,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
         auditar("", "", "Salio del Sistema");
+        tray.remove(trayIcon);         
         System.exit(0);
     }//GEN-LAST:event_btnSalir2ActionPerformed
 
@@ -7547,7 +7613,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                 barrera1.doClick();
                             } else {
                                 dataInput = new DataInputStream(socket.getInputStream());
-                                trayIcon.displayMessage("JC INFORM - Sistema de Turnos ",
+                                trayIcon.displayMessage("SIS CONTROL - Sistema de Parqueaderos ",
                                         " " + dataInput.readUTF(), TrayIcon.MessageType.INFO);
                                 Toolkit.getDefaultToolkit().beep();
 
@@ -7884,6 +7950,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JFormattedTextField codigo;
     private javax.swing.JFormattedTextField codigoBuscar;
     private javax.swing.JFormattedTextField codigoBuscar1;
+    private javax.swing.JFormattedTextField codigoCliente;
     private javax.swing.JLabel cons;
     public javax.swing.JDesktopPane contenedor;
     private org.jdesktop.swingx.JXTaskPane contenedor1;

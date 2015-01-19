@@ -4,6 +4,7 @@
  */
 package peaje.formas;
 
+import gnu.io.*;
 import hibernate.Empresa;
 import hibernate.Factura;
 import hibernate.cargar.WorkingDirectory;
@@ -14,7 +15,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.comm.*;
+//import javax.comm.*;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -114,15 +115,15 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 }
             }
         } catch (IllegalAccessException ex) {
-            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvocationTargetException ex) {
-            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalArgumentException ex) {
-            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchMethodException ex) {
-            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {
-            Logger.getLogger(AbrirPuerta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeerTarjeta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -155,12 +156,24 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             System.out.println("" + e);
         }
         serialPort.notifyOnDataAvailable(true);
+        
         try {
             serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
         } catch (UnsupportedCommOperationException e) {
+            e.printStackTrace();
         }
-        readThread = new Thread(this);
-        readThread.start();
+        try {
+            readThread = new Thread(this);
+            readThread.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        if ( !SetCommState( index->hComm, &dcb ) ){
+//            System.out.println("SetCommState error\n" );
+//        YACK();
+//        return -1;
+//        }
+        
     }
 
     public void run() {
@@ -203,6 +216,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
         System.gc();
         //        System.out.println("" + tarjeta);
+        byte[] readBuffer = new byte[10];
         switch (event.getEventType()) {
             case SerialPortEvent.BI:
             case SerialPortEvent.OE:
@@ -216,7 +230,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
                 System.out.println("DATOS RECPTADOS: " + manejarDatos());
-                byte[] readBuffer = new byte[10];
+                
                 try {
 //                                tarjeta = "";
                     while (inputStream.available() > 0) {
@@ -233,7 +247,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
         Date f = new Date();
         System.out.println("\t\t" + tarjeta + " ******* TIME: " + f.getTime());
-
+        
+        readBuffer = null;
 
         if (tarjeta.length() >= 10) {
             System.out.println("LECTURA>10: " + tarjeta);
@@ -288,25 +303,25 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
         }
 
-        if (puertoId.getName().equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
-            princip.buscarTarjetaValidarSalida(puertoId.getName(), tarjeta);//ENVIO EL NUMERO DE TICKET
+        if (puertoId.getName().replace("//./", "").equals(princip.empresaObj.getBarras())) { //VALIDO SALIDA DEL CARRO CON CODIGO DE BARRAS
+            princip.buscarTarjetaValidarSalida(puertoId.getName().replace("//./", ""), tarjeta);//ENVIO EL NUMERO DE TICKET
             tarjeta = "";
             limpiarMemoria();
             return;
         }
-        if (       puertoId.getName().equals(princip.empresaObj.getPuerto1()) 
-                || puertoId.getName().equals(princip.empresaObj.getPuerto2())
-                || puertoId.getName().equals(princip.empresaObj.getPuerto3())
-                || puertoId.getName().equals(princip.empresaObj.getPuerto4())
-                || puertoId.getName().equals(princip.empresaObj.getSalida1())
-                || puertoId.getName().equals(princip.empresaObj.getSalida2())
-                || puertoId.getName().equals(princip.empresaObj.getSalida3())
-                || puertoId.getName().equals(princip.empresaObj.getSalida4())) { //VALIDO ENTRADA O SALIDA CON TARJETA
+        if (       puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto1()) 
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto2())
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto3())
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto4())
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getSalida1())
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getSalida2())
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getSalida3())
+                || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getSalida4())) { //VALIDO ENTRADA O SALIDA CON TARJETA
             //BUSCAR TARJETA 
             princip.tarjetatxt.setText("");
             princip.tarjetatxt.setText(tarjeta);
             System.out.println("POR LECTORA: " + tarjeta);
-            princip.buscarTarjeta(puertoId.getName());
+            princip.buscarTarjeta(puertoId.getName().replace("//./", ""));
             tarjeta = "";
             limpiarMemoria();
             //peaje.formas.SimpleWrite.llamar("COM3");
