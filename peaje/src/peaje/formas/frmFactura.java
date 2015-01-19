@@ -3112,12 +3112,12 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         Boolean pasar = true;
                         Integer numero = new Integer(emp.getDocumentoticket()) + 1;
                         while (pasar) {
-                            List sihay = adm.query("Select o from Factura as o where o.ticket = '"+empresaObj.getNombreCaja() + numero + "'");
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '" + empresaObj.getNombreCaja() + numero + "'");
                             if (sihay.size() <= 0) {
                                 pasar = false;
 
-                                facNueva.setTicket(""+empresaObj.getNombreCaja() + numero);
-                                
+                                facNueva.setTicket("" + empresaObj.getNombreCaja() + numero);
+
                                 emp.setDocumentoticket((numero) + "");
                                 adm.actualizar(emp);//GUARDO EMPRESA
                                 adm.guardar(facNueva); // GUARDO FACTURA
@@ -3409,7 +3409,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     btnAplicarCupon.setEnabled(true);
                     btnAplicarDescuento2.setEnabled(true);
                     llenarFactura(fac);
-                    Thread cargarFotoPlaca = new Thread(fac.getCodigo()+"") {
+                    Thread cargarFotoPlaca = new Thread(fac.getCodigo() + "") {
 
                         public void run() {
                             try {
@@ -3601,27 +3601,32 @@ public class frmFactura extends javax.swing.JInternalFrame {
     private void nombresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombresKeyReleased
         // TODO add your handling code here:
         if (!nombres.getText().isEmpty()) {
+            if (nombres.getText().length() > 2) {
 
-            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres.getText().trim() + "%' order by o.nombres ", 0, 10);
-            if (encon.size() > 0) {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados.setModel(dtm);
-                int j = 0;
-                for (Clientes est : encon) {
-                    dtm.add(j, est);
-                    j++;
+                List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres.getText().trim() + "%' order by o.nombres ", 0, 5);
+                if (encon.size() > 0) {
+                    DefaultListModel dtm = new DefaultListModel();
+                    dtm.removeAllElements();
+                    encontrados.setModel(dtm);
+                    int j = 0;
+                    for (Clientes est : encon) {
+                        dtm.add(j, est);
+                        est = null;
+                        j++;
+                    }
+                    encontrados.setModel(dtm);
+                    this.panelencontrados.setVisible(true);
+                    encon = null;
+                    dtm = null;
+                    j = 0;
+                } else {
+                    DefaultListModel dtm = new DefaultListModel();
+                    dtm.removeAllElements();
+                    encontrados.setModel(dtm);
+                    this.panelencontrados.setVisible(false);
                 }
-                encontrados.setModel(dtm);
-                this.panelencontrados.setVisible(true);
-                encon = null;
-            } else {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados.setModel(dtm);
-                this.panelencontrados.setVisible(false);
+                limpiarMemoria();
             }
-
         } else {
             DefaultListModel dtm = new DefaultListModel();
             dtm.removeAllElements();
@@ -4292,10 +4297,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         String nombreCaja = empresaObj.getNombreCaja();
                         Integer numero0 = new Integer(emp.getDocumentoticket()) + 1;
                         while (pasar0) {
-                            List sihay = adm.query("Select o from Factura as o where o.ticket = '" +nombreCaja+ numero0 + "'");
+                            List sihay = adm.query("Select o from Factura as o where o.ticket = '" + nombreCaja + numero0 + "'");
                             if (sihay.size() <= 0) {
                                 pasar0 = false;
-                                facActual.setTicket(""+nombreCaja+ numero0);
+                                facActual.setTicket("" + nombreCaja + numero0);
                                 emp.setDocumentoticket((numero0) + "");
                                 adm.actualizar(emp);//GUARDO EMPRESA
                             } else {
@@ -5889,26 +5894,32 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private void nombres4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombres4KeyReleased
         // TODO add your handling code here:
         if (!nombres4.getText().isEmpty()) {
+                if(nombres4.getText().length()>2){
+                            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres4.getText().trim() + "%' order by o.nombres ", 0, 5);
+                            if (encon.size() > 0) {
+                                DefaultListModel dtm = new DefaultListModel();
+                                dtm.removeAllElements();
+                                encontrados5.setModel(dtm);
+                                int j = 0;
+                                for (Clientes est : encon) {
+                                    dtm.add(j, est);
+                                    est = null;
+                                    j++;
+                                }
+                                encontrados5.setModel(dtm);
+                                this.panelencontrados5.setVisible(true);
+                                dtm =null;
+                                encon = null;
+                                j=0;
 
-            List<Clientes> encon = adm.query("Select o from Clientes as o where o.nombres like  '%" + nombres4.getText().trim() + "%' order by o.nombres ", 0, 10);
-            if (encon.size() > 0) {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados5.setModel(dtm);
-                int j = 0;
-                for (Clientes est : encon) {
-                    dtm.add(j, est);
-                    j++;
+                            } else {
+                                DefaultListModel dtm = new DefaultListModel();
+                                dtm.removeAllElements();
+                                encontrados5.setModel(dtm);
+                                this.panelencontrados5.setVisible(false);
+                            }
                 }
-                encontrados5.setModel(dtm);
-                this.panelencontrados5.setVisible(true);
-            } else {
-                DefaultListModel dtm = new DefaultListModel();
-                dtm.removeAllElements();
-                encontrados5.setModel(dtm);
-                this.panelencontrados5.setVisible(false);
-            }
-
+                limpiarMemoria();
         } else {
             DefaultListModel dtm = new DefaultListModel();
             dtm.removeAllElements();
@@ -6163,11 +6174,11 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 boolean pasar = true;
                 Integer numero = new Integer(emp.getDocumentoticket()) + 1;
                 while (pasar) {
-                    List sihay = adm.query("Select o from Factura as o where o.ticket = '" +empresaObj.getNombreCaja()+ numero + "'");
+                    List sihay = adm.query("Select o from Factura as o where o.ticket = '" + empresaObj.getNombreCaja() + numero + "'");
                     if (sihay.size() <= 0) {
                         pasar = false;
                         //fac.setTicket("" + numero);
-                        fac.setTicket(""+empresaObj.getNombreCaja()+ numero);
+                        fac.setTicket("" + empresaObj.getNombreCaja() + numero);
                         emp.setDocumentoticket((numero) + "");
                         adm.actualizar(emp);//GUARDO EMPRESA
                         adm.guardar(fac); // GUARDO FACTURA
