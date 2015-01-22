@@ -36,9 +36,9 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="Arial" size="7" isBold="false"/>
 				</textElement>
-				<text><![CDATA[www.siscontrol.com.ec]]></text>
+				<text><![CDATA[software: www.siscontrol.com.ec]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-6" x="6" y="118" width="193" height="30" isPrintWhenDetailOverflows="true"/>
