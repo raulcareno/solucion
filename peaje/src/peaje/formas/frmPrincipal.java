@@ -403,7 +403,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         barrera5 = new javax.swing.JButton();
         barrera6 = new javax.swing.JButton();
         barrera7 = new javax.swing.JButton();
-        jButton13 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         contenedor = new javax.swing.JDesktopPane();
         frmClientes1 = new javax.swing.JInternalFrame();
@@ -968,17 +967,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         });
         barraHerramients.add(barrera7);
 
-        jButton13.setText("jButton13");
-        jButton13.setFocusable(false);
-        jButton13.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton13.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
-            }
-        });
-        barraHerramients.add(jButton13);
-
         getContentPane().add(barraHerramients, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane1.setBorder(null);
@@ -1403,7 +1391,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(jLabel14);
         jLabel14.setBounds(240, 10, 20, 14);
 
-        panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
+        panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", 0, 0, null, new java.awt.Color(0, 102, 204)));
         panelHoras.setForeground(new java.awt.Color(0, 51, 255));
         panelHoras.setLayout(null);
 
@@ -1426,7 +1414,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         formaTarjetas1.getContentPane().add(panelHoras);
         panelHoras.setBounds(30, 120, 160, 80);
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", 0, 0, null, new java.awt.Color(0, 102, 204)));
         jPanel7.setLayout(null);
 
         jLabel18.setText("Hasta: ");
@@ -2590,7 +2578,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             panelCambiar.setBackground(new java.awt.Color(227, 240, 254));
-            panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
+            panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(1), javax.swing.BorderFactory.createBevelBorder(0)));
             panelCambiar.setLayout(null);
 
             guardarCambioClave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/filesave.gif"))); // NOI18N
@@ -3685,7 +3673,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             Date fechaAc = new Date();
 //            String hora = fechaAc.getHours() + ":" + fechaAc.getMinutes() + ":" + fechaAc.getSeconds();
             usu = adm.ingresoSistema(usuariot.getSelectedItem().toString(), clave.getText());
-
+            try {
+                adm.ejecutaSql("Delete from Clientes where nombres is null");
+                System.out.println("(info)eliminó clientes null...!!");
+            } catch (Exception e) {
+            }
             if (usu != null) {
                 try {
                     Date feI = usu.getHoraini();
@@ -7782,19 +7774,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         time.setText("0");
 
     }//GEN-LAST:event_claveKeyReleased
-
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
-        try {
-            LeerTarjeta ta = buscarPuerto("principal");
-            ta.outputSream.write("AEIOUAEIO1".getBytes());
-            //TEMPORAL
-        } catch (Exception e) {
-            System.out.println("" + e);
-        }
-
-
-    }//GEN-LAST:event_jButton13ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -8001,7 +7980,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

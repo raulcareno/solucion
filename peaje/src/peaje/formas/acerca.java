@@ -73,7 +73,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
         jButton3.setText("www.siscontrol.com.ec");
         jButton3.setBorder(null);
         jButton3.setContentAreaFilled(false);
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton3.setFocusPainted(false);
         jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton3.setMargin(new java.awt.Insets(2, 2, 2, 2));
@@ -116,9 +116,9 @@ public class acerca  extends javax.swing.JInternalFrame  {
         jPanel1.add(versionLabel);
         versionLabel.setBounds(10, 20, 70, 14);
 
-        appVersionLabel.setText("1.0");
+        appVersionLabel.setText("1.7 01012015");
         jPanel1.add(appVersionLabel);
-        appVersionLabel.setBounds(80, 20, 70, 14);
+        appVersionLabel.setBounds(80, 20, 140, 14);
 
         appHomepageLabel.setText("Ing. Geovanny Jadán Ortega");
         jPanel1.add(appHomepageLabel);
@@ -141,7 +141,7 @@ public class acerca  extends javax.swing.JInternalFrame  {
         jButton2.setText("http://www.siscontrol.com.ec");
         jButton2.setBorder(null);
         jButton2.setContentAreaFilled(false);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.setFocusPainted(false);
         jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton2.setMargin(new java.awt.Insets(2, 2, 2, 2));
