@@ -3314,90 +3314,90 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                         }
                         if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto1());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto1(), "OK");
+                            System.out.println("LECTORA INGRESO 1: " + empresaObj.getPuerto1());
+                            lger.logger("LECTORA INGRESO 1: " + empresaObj.getPuerto1(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto2());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto2(), "OK");
+                            System.out.println("LECTORA INGRESO 2: " + empresaObj.getPuerto2());
+                            lger.logger("LECTORA INGRESO 2: " + empresaObj.getPuerto2(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto3());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto3(), "OK");
+                            System.out.println("LECTORA INGRESO 3: " + empresaObj.getPuerto3());
+                            lger.logger("LECTORA INGRESO 3: " + empresaObj.getPuerto3(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto4());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto4(), "OK");
+                            System.out.println("LECTORA INGRESO 4: " + empresaObj.getPuerto4());
+                            lger.logger("LECTORA INGRESO 4: " + empresaObj.getPuerto4(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto5());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto5(), "OK");
+                            System.out.println("LECTORA INGRESO 5: " + empresaObj.getPuerto5());
+                            lger.logger("LECTORA INGRESO 5: " + empresaObj.getPuerto5(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto6());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto6(), "OK");
+                            System.out.println("LECTORA INGRESO 6: " + empresaObj.getPuerto6());
+                            lger.logger("LECTORA INGRESO 6: " + empresaObj.getPuerto6(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getPuerto7());
-                            lger.logger("ABIERTO: " + empresaObj.getPuerto7(), "OK");
+                            System.out.println("LECTORA INGRESO 7: " + empresaObj.getPuerto7());
+                            lger.logger("LECTORA INGRESO 7: " + empresaObj.getPuerto7(), "OK");
 //                        read.add(reader);
                         }
 
                         if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida1());
+                            System.out.println("LECTORA SALIDA 1: " + empresaObj.getSalida1());
                             temppuertoText.addItem(empresaObj.getSalida1());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida1(), "OK");
+                            lger.logger("LECTORA SALIDA 1: " + empresaObj.getSalida1(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida2());
+                            System.out.println("LECTORA SALIDA 2: " + empresaObj.getSalida2());
                             temppuertoText.addItem(empresaObj.getSalida2());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida2(), "OK");
+                            lger.logger("LECTORA SALIDA 2: " + empresaObj.getSalida2(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida3());
+                            System.out.println("LECTORA SALIDA 3: " + empresaObj.getSalida3());
                             temppuertoText.addItem(empresaObj.getSalida3());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida3(), "OK");
+                            lger.logger("LECTORA SALIDA 3: " + empresaObj.getSalida3(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida4());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida4(), "OK");
+                            System.out.println("LECTORA SALIDA 4: " + empresaObj.getSalida4());
+                            lger.logger("LECTORA SALIDA 4: " + empresaObj.getSalida4(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida5());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida5(), "OK");
+                            System.out.println("LECTORA SALIDA 5: " + empresaObj.getSalida5());
+                            lger.logger("LECTORA SALIDA 5: " + empresaObj.getSalida5(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida6());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida6(), "OK");
+                            System.out.println("LECTORA SALIDA 6: " + empresaObj.getSalida6());
+                            lger.logger("LECTORA SALIDA 6: " + empresaObj.getSalida6(), "OK");
 //                        read.add(reader);
                         }
                         if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
-                            System.out.println("ABIERTO: " + empresaObj.getSalida7());
-                            lger.logger("ABIERTO: " + empresaObj.getSalida7(), "OK");
+                            System.out.println("LECTORA SALIDA 7: " + empresaObj.getSalida7());
+                            lger.logger("LECTORA SALIDA 7: " + empresaObj.getSalida7(), "OK");
 //                        read.add(reader);
                         }
 //                        else if (portId.getName().equals("COM10")) {

@@ -1088,5 +1088,9 @@ public class Empresa implements Serializable {
         return "hibernate.Empresa[ruc=" + ruc + "]";
     }
     
+    @Override
+    public void finalize(){
+        System.gc();
+    }
     
 }
