@@ -169,7 +169,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        this.addKeyListener(this);
 //        this.setVisible(true);
 //        this.setVisible(true);
-
+        ubicacionDirectorio = w.get() + separador;
+             if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
         this.addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent we) {
@@ -313,6 +316,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
             this.empresaObj = emp.get(0);
+            cargarEmpresaConfig();
             try {
                 iniciarPuertos();
             } catch (Exception e) {
@@ -3167,13 +3171,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     public void empezarConteo() {
         try {
+            System.out.println(""+(new Date()).toLocaleString());
             while (tiempo < 10) {
                 Thread.sleep(1000);
                 Integer actual = new Integer(time.getText().replace("<", "").replace(">", ""));
                 tiempo++;
                 actual--;
                 time.setText("" + (actual));
-                System.out.println((new Date()).toLocaleString() + "" + (tiempo));
+                
+                System.out.print((tiempo)+".");
                 if (!poseeAutologin) {
                     tiempo = 0;
                     break;
@@ -3213,10 +3219,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     void iniciarPuertos() {
         try {
 //            WorkingDirectory w = new WorkingDirectory();
-            String ubicacionDirectorio = w.get() + separador;
-            if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-            }
+           
+//            if (ubicacionDirectorio.contains("build")) {
+//                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+//            }
 //            System.loadLibrary("rxtxSerial");
 //            String temp_string = ubicacionDirectorio + "lib" + separador + "javax.comm.properties";
 //            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
@@ -3729,16 +3735,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     System.out.println("NO SE HAN CARGADO LAS FECHAS " + e);
                     if (usu.getUsuario().equals("geova") && claves.desencriptar(usu.getClave()).equals("root")) {
                         //  PASA A LOS SIGUIENTES PROCESOS Y NO TOMA EN CUENTA LAS FECHAS YA QUE SOY ADMINISTRADOR
-                        File fichero = new File(ubicacionDirectorio + "config.xml");
-                        if (fichero.exists()) {
-                            //fichero.delete();
-                            System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-                            XMLEmpresa pXml = new XMLEmpresa();
-                            pXml.inicio();
-                            pXml.leerXML();
-                        } else {
-                            JOptionPane.showMessageDialog(this, "CONFIGURE LOS PUERTOS DE LA EMPRESA Y VUELVA A REINICIAR LA APLICACIÓN");
-                        }
+//                        File fichero = new File(ubicacionDirectorio + "config.xml");
+//                        if (fichero.exists()) {
+//                            //fichero.delete();
+//                            System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+//                            XMLEmpresa pXml = new XMLEmpresa();
+//                            pXml.inicio();
+//                            pXml.leerXML();
+//                        } else {
+//                            JOptionPane.showMessageDialog(this, "CONFIGURE LOS PUERTOS DE LA EMPRESA Y VUELVA A REINICIAR LA APLICACIÓN");
+//                        }
+                        cargarEmpresaConfig();
 
                     } else {
                         return;
@@ -3752,9 +3759,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(this, "ERROR EN CONFIGURACION DEL SISTEMA"+e);
 
-            if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-            }
+           
 
             File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
             if (fichero.exists()) {
@@ -3780,20 +3785,11 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 usuarioActual = usu;
                 usuarioLogeado.setText("" + usuarioActual.getNombres());
 
-                if (ubicacionDirectorio.contains("build")) {
-                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-                }
+//                if (ubicacionDirectorio.contains("build")) {
+//                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+//                }
 
-                File fichero = new File(ubicacionDirectorio + "config.xml");
-                if (fichero.exists()) {
-                    //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-                    XMLEmpresa pXml = new XMLEmpresa();
-                    pXml.inicio();
-                    EmpresaPuertosStatic amp = pXml.leerXML();
-                    cargarEmpresa(amp);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
-                }
+               cargarEmpresaConfig();
 
                 noDisponibles();
                 disponibles.setEnabled(true);
@@ -3878,7 +3874,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
                 System.out.println("________________________________________ 1");
                 if (cerroSesion == false) {
-//                    iniciarPuertos();
+
                     
                     leerTcpIp c = new leerTcpIp();
                     //s = new Socket("192.168.0.7", 1024);
@@ -3922,7 +3918,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
     }
-
+void cargarEmpresaConfig(){
+ File fichero = new File(ubicacionDirectorio + "config.xml");
+                if (fichero.exists()) {
+                    //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+                    XMLEmpresa pXml = new XMLEmpresa();
+                    pXml.inicio();
+                    EmpresaPuertosStatic amp = pXml.leerXML();
+                    cargarEmpresa(amp);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
+                }
+}
     void buscarFacturaySetear(String tarjeta) {
         try {
             Component[] componentes = contenedor.getComponents();

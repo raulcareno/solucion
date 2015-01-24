@@ -72,3 +72,38 @@ INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,22.01.2015/11:15:15,OK
 INFO peaje.formas.frmPrincipal,line 41,22.01.2015/11:18:03,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
 INFO ABIERTO: COM7,line 41,22.01.2015/11:18:28,OK
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,22.01.2015/11:18:28,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/09:46:43,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/09:47:29,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/09:47:58,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/09:49:14,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/09:51:58,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/09:52:07,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/09:53:44,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/09:53:48,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:04:37,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:18:20,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:20:55,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:21:12,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:30:17,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:30:23,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:33:18,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:33:22,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:34:00,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM3,line 41,24.01.2015/10:34:07,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:34:07,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:37:32,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM3,line 41,24.01.2015/10:42:00,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:42:00,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:42:11,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:44:57,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM3,line 41,24.01.2015/10:45:38,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:45:38,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:48:04,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM3,line 41,24.01.2015/10:48:09,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:48:09,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:48:37,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM3,line 41,24.01.2015/10:48:43,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:48:43,OK
+INFO peaje.formas.frmPrincipal,line 41,24.01.2015/10:49:28,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO ABIERTO: COM3,line 41,24.01.2015/10:49:32,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,24.01.2015/10:49:32,OK

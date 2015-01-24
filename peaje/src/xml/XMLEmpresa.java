@@ -1212,7 +1212,7 @@ public class XMLEmpresa {
                                     de.setSeconds(new Integer(token.trim()));
                             }
                             a++;
-                             System.out.println(""+token);
+                             //System.out.println(""+token);
                              
                         }
                         user.setDesde(de);
@@ -1241,7 +1241,7 @@ public class XMLEmpresa {
                                     de.setSeconds(new Integer(token.trim()));
                             }
                             a++;
-                             System.out.println(""+token);
+                          //  System.out.println(""+token);
                              
                         }
                         user.setHasta(de);
@@ -1294,7 +1294,7 @@ public class XMLEmpresa {
                                     de.setSeconds(new Integer(token.trim()));
                             }
                             a++;
-                             System.out.println(""+token);
+                            // System.out.println(""+token);
                              
                         }
                         user.setDesdeFin(de);
@@ -1323,7 +1323,7 @@ public class XMLEmpresa {
                                     de.setSeconds(new Integer(token.trim()));
                             }
                             a++;
-                             System.out.println(""+token);
+                           //  System.out.println(""+token);
                              
                         }
                         user.setHastaFin(de);
@@ -1354,7 +1354,7 @@ public class XMLEmpresa {
                                     de.setSeconds(new Integer(token.trim()));
                             }
                             a++;
-                             System.out.println(""+token);
+                           //  System.out.println(""+token);
                              
                         }
                         user.setHoraDesdeCobro(de);

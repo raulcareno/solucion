@@ -472,7 +472,13 @@ tarjeta = "";
             fac.setPlaca("CLIENTE BOTON");
             fac.setFechaini(new Date());
             fac.setFecha(new Date());
-            fac.setUsuario(princip.getUsuario());
+            try{
+                fac.setUsuario(princip.getUsuario());
+            }catch(Exception eUsuario){
+                System.out.println("No hay usuario logeado...!");
+                eUsuario.printStackTrace();
+            }
+            
             fac.setAnulado(false);
             fac.setNocontar(false);
             Boolean pasar = true;
