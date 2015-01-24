@@ -166,9 +166,13 @@ public class reportesClase {
         }
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
-        if (materia.getMateria().getCodigo().equals(new Integer(0))) {
+        if (materia.getEscala().equals("DR")) {
             equivalencias = adm.query("Select o from Equivalencias as o "
                     + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        }
+        if (materia.getEscala().equals("CL")) {
+            equivalencias = adm.query("Select o from Equivalencias as o "
+                    + "where o.grupo = 'CL' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         }
         Map parametros = new HashMap();
         Institucion insts = curso.getPeriodo().getInstitucion();
@@ -492,9 +496,13 @@ public class reportesClase {
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
-        if (materia.getMateria().getCodigo().equals(new Integer(0))) {
+        if (materia.getEscala().equals("DR") ){
             equivalencias = adm.query("Select o from Equivalencias as o "
                     + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        }
+        if (materia.getEscala().equals("CL")) {
+            equivalencias = adm.query("Select o from Equivalencias as o "
+                    + "where o.grupo = 'CL' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         }
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
@@ -5354,8 +5362,6 @@ comple ="";
                         nota.setMprofesor(mprofesor1);
 
                     }
-
-
                     nota.setSistema((Sistemacalificacion) sistemas.get(ksis));
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
@@ -5964,8 +5970,8 @@ comple ="";
                             coll.setNota(dos);
                             if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 String scala = buscarEscala(materiaProfesores, mate);
-                                  coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
-                                //coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                //  coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                                 
                                 if (((Sistemacalificacion) sistemas.get(ksis)).getConsulta()) {
                                     coll.setNota("");
@@ -6495,8 +6501,8 @@ comple ="";
                             coll.setNota(dos);
                             if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 String scala = buscarEscala(materiaProfesores, mate);
-                                  coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
-                                //coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
+                                //  coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                                 
                                 if (((Sistemacalificacion) sistemas.get(ksis)).getConsulta()) {
                                     coll.setNota("");
@@ -7221,8 +7227,9 @@ lisAutoevaluacion = new ArrayList();
                             coll.setNota(dos);
                             if (!promCuantitativo || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                                 //coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
-                               String scala = buscarEscala(materiaProfesores, mate);
-                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                               //String scala = buscarEscala(materiaProfesores, mate);
+                                //coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                                coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), equivalencias));
                                 
                             } else {
                                 if (val == 0.0) {
