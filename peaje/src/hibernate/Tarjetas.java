@@ -36,6 +36,8 @@ public class Tarjetas implements Serializable {
     private String tarjeta;
     @Column(name = "tarjetaNo")
     private String tarjetaNo;
+    @Column(name = "tarjetaSerie")
+    private String tarjetaSerie;
     @Column(name = "Lunes")
     private Boolean lunes;
     @Column(name = "Martes")
@@ -286,6 +288,15 @@ public class Tarjetas implements Serializable {
         this.clientes = clientes;
     }
 
+    public String getTarjetaSerie() {
+        return tarjetaSerie;
+    }
+
+    public void setTarjetaSerie(String tarjetaSerie) {
+        this.tarjetaSerie = tarjetaSerie;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

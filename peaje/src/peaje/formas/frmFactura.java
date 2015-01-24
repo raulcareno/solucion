@@ -2588,7 +2588,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
                     noTicket.setText("");
                     placa.setText("");
                     noTicket.requestFocusInWindow();
-                    System.gc();
+                    
+                    emp = null;
+                    facActual= null;
+                    cli = null;
+                    limpiarMemoria();
                     //cordillera
                     //principal.contenedor.requestFocus();
                     //this.setVisible(false);

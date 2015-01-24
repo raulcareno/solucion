@@ -203,7 +203,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         LocalTime ahora = new LocalTime(new DateTime(new Date()));
         boolean habilitado = false;
         if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
-            System.out.println("EN EL RANGO DE HORA boton pulsador");
+//            System.out.println("EN EL RANGO DE HORA boton pulsador");
             try {
                 habilitado = true;
             } catch (Exception e) {
@@ -229,7 +229,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             case SerialPortEvent.OUTPUT_BUFFER_EMPTY:
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
-                System.out.println("DATOS RECPTADOS: " + manejarDatos());
+//                System.out.println("DATOS RECPTADOS: " + manejarDatos());
                 
                 try {
 //                                tarjeta = "";
