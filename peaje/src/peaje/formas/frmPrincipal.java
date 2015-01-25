@@ -691,6 +691,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnAcerca = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
 
         buscarClientes.setLocationByPlatform(true);
         buscarClientes.getContentPane().setLayout(null);
@@ -3146,6 +3147,17 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             jToolBar3.add(btnSalir2);
 
+            jButton15.setText("Añadir Tarjetas");
+            jButton15.setFocusable(false);
+            jButton15.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+            jButton15.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+            jButton15.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton15ActionPerformed(evt);
+                }
+            });
+            jToolBar3.add(jButton15);
+
             contenedor3.getContentPane().add(jToolBar3);
 
             javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
@@ -3168,7 +3180,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(158, Short.MAX_VALUE))
+                    .addContainerGap(137, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -7806,6 +7818,16 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void noTarjetaSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTarjetaSerieKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_noTarjetaSerieKeyPressed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+         frmAnadirTarjetas usu = new frmAnadirTarjetas(this,  adm);
+            usu.setSize(636, 463);
+            usu.setLocation(0, 0);
+            contenedor.add(usu);
+            usu.show();
+            contenedor.requestFocus();
+    }//GEN-LAST:event_jButton15ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -8014,6 +8036,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
