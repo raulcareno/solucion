@@ -252,7 +252,7 @@
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[www.tekatronic.com.ec]]></text>
+				<text><![CDATA[www.siscontrol.com.ec]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

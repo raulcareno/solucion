@@ -621,6 +621,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         jLabel26 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         frmIngresarSistema = new javax.swing.JInternalFrame();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        procesando = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         clave = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
@@ -629,10 +633,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnIngresar = new javax.swing.JButton();
         usuariot = new javax.swing.JComboBox();
         time = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        procesando = new javax.swing.JButton();
         panelCambiar = new javax.swing.JPanel();
         guardarCambioClave = new javax.swing.JButton();
         jLabel39 = new javax.swing.JLabel();
@@ -657,7 +657,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         placa = new javax.swing.JFormattedTextField();
         camaraVista = new javax.swing.JLabel();
         camaraVista1 = new javax.swing.JLabel();
-        logoTeka = new javax.swing.JLabel();
         miBotonImagen = new javax.swing.JLabel();
         ultimoIngreso = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
@@ -692,6 +691,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnCerrar = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
+        logoTeka = new javax.swing.JLabel();
 
         buscarClientes.setLocationByPlatform(true);
         buscarClientes.getContentPane().setLayout(null);
@@ -2487,7 +2487,36 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             frmIngresarSistema.setVisible(true);
             frmIngresarSistema.getContentPane().setLayout(null);
 
-            jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 153, 51), 1, true));
+            jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
+            jPanel3.setOpaque(false);
+            jPanel3.setLayout(null);
+
+            jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            jLabel8.setForeground(new java.awt.Color(0, 51, 51));
+            jLabel8.setText("Acceso al Sistema");
+            jPanel3.add(jLabel8);
+            jLabel8.setBounds(20, 0, 270, 15);
+
+            jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+            jLabel10.setForeground(new java.awt.Color(102, 102, 102));
+            jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
+            jPanel3.add(jLabel10);
+            jLabel10.setBounds(10, 20, 300, 13);
+
+            procesando.setBackground(new java.awt.Color(204, 204, 255));
+            procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+            procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
+            procesando.setBorderPainted(false);
+            procesando.setContentAreaFilled(false);
+            procesando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+            procesando.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
+            procesando.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+            jPanel3.add(procesando);
+            procesando.setBounds(280, 0, 110, 40);
+
+            frmIngresarSistema.getContentPane().add(jPanel3);
+            jPanel3.setBounds(0, 0, 740, 42);
+
             jPanel2.setLayout(null);
 
             clave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -2560,36 +2589,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             time.setBounds(336, 130, 30, 14);
 
             frmIngresarSistema.getContentPane().add(jPanel2);
-            jPanel2.setBounds(0, 40, 380, 150);
-
-            jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
-            jPanel3.setLayout(null);
-
-            jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-            jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-            jLabel8.setText("Acceso al Sistema");
-            jPanel3.add(jLabel8);
-            jLabel8.setBounds(10, 0, 270, 15);
-
-            jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-            jLabel10.setForeground(new java.awt.Color(102, 102, 102));
-            jLabel10.setText("Ingrese el usuario proporcionado por el Administrador");
-            jPanel3.add(jLabel10);
-            jLabel10.setBounds(10, 20, 300, 13);
-
-            procesando.setBackground(new java.awt.Color(204, 204, 255));
-            procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-            procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
-            procesando.setBorderPainted(false);
-            procesando.setContentAreaFilled(false);
-            procesando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-            procesando.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
-            procesando.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-            jPanel3.add(procesando);
-            procesando.setBounds(280, 0, 110, 40);
-
-            frmIngresarSistema.getContentPane().add(jPanel3);
-            jPanel3.setBounds(0, 0, 380, 40);
+            jPanel2.setBounds(0, 40, 370, 150);
 
             frmIngresarSistema.setBounds(100, 100, 390, 220);
             contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -2691,8 +2691,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(imAviso);
             imAviso.setBounds(540, 50, 210, 210);
 
-            tarjetatxt.setEditable(false);
             tarjetatxt.setBorder(null);
+            tarjetatxt.setEditable(false);
             tarjetatxt.setForeground(new java.awt.Color(255, 0, 0));
             tarjetatxt.setText(".");
             tarjetatxt.setValue(new String(""));
@@ -2792,10 +2792,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             });
             panelIngreso.add(camaraVista1);
             camaraVista1.setBounds(10, 300, 310, 240);
-
-            logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tekatronic.png"))); // NOI18N
-            panelIngreso.add(logoTeka);
-            logoTeka.setBounds(600, 450, 190, 90);
 
             miBotonImagen.setBackground(new java.awt.Color(204, 204, 255));
             miBotonImagen.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(153, 204, 255)));
@@ -3160,6 +3156,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             contenedor3.getContentPane().add(jToolBar3);
 
+            logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
+
             javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
             jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
             jXTaskPaneContainer1Layout.setHorizontalGroup(
@@ -3167,10 +3165,13 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                        .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
+                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap())
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTaskPaneContainer1Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(logoTeka, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
             );
             jXTaskPaneContainer1Layout.setVerticalGroup(
                 jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3180,7 +3181,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(137, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(logoTeka, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(36, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
