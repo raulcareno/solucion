@@ -230,3 +230,8 @@ INFO peaje.formas.frmPrincipal,line 41,27.01.2015/21:30:30,javax.media.NoPlayerE
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.01.2015/21:30:34,OK
 INFO peaje.formas.frmPrincipal,line 41,27.01.2015/21:43:39,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.01.2015/21:43:45,OK
+INFO peaje.formas.frmPrincipal,line 41,27.01.2015/21:50:14,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,27.01.2015/21:50:19,OK
+INFO peaje.formas.frmPrincipal,line 41,30.01.2015/11:53:34,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,30.01.2015/11:53:38,OK
+INFO peaje.formas.frmTicket,line 41,30.01.2015/12:03:26,net.sf.jasperreports.engine.JRException: java.awt.print.PrinterAbortException
