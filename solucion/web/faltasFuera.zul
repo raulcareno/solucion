@@ -71,6 +71,10 @@ guardar(){
    if(guardando)
             return;
         guardando = true;
+        Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+        try{
+        
+        
     disciplina nso = new disciplina();
     disciplina r = (disciplina) datos.getRows();
        Cursos curso = ((Cursos)curs.selectedItem.value);
@@ -92,17 +96,22 @@ guardar(){
                         mm++;
                     }while(seguir==true);  
 
-                    Cursoocupado cO = new Cursoocupado(adm.getNuevaClave("Cursoocupado", "codigo"));
+                    
                     cO.setCurso(curso.getCodigocur());
                     cO.setSistema(sistema.getCodigosis());
                     cO.setTipo(2);
                       cO.setFecha(adm.Date());
                     adm.guardar(cO);
-    nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
-    //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
-    adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
-    int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.INFORMATION);
- guardando = false;
+        nso.guardar(r.getChildren(),((Cursos)curs.selectedItem.value),(Sistemacalificacion)sisis.selectedItem.value);
+        //AL FINALIZAR EL PROCESO BORRO EL REGISTRO DE ÉSTE PROFESOR 
+        adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
+        int a = Messagebox.show("Registro Almacenado con éxito...! \n ", "Administrador ", Messagebox.OK, Messagebox.INFORMATION);
+        guardando = false;
+         }catch(Exception ax){
+         Messagebox.show("\n No deje espacios en blanco, ponga el CERO(0) si desea hacerlo..! \n "+ax, "Administrador ", Messagebox.OK, Messagebox.ERROR);
+         adm.eliminarObjeto(Cursoocupado.class, cO.getCodigo());
+           guardando = false;
+        }
 
 }
 

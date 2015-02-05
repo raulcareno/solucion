@@ -137,7 +137,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                 guardar1.disabled=true;
                 guardar2.disabled=true;
             }
-        filas.addRow(curso,materia);
+        filas.addRow(curso,materia,demo.getText());
 }
 
 	void showReport(String tipo) {
@@ -226,6 +226,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                         </bandpopup>
                     </bandbox>
                     <button label="Guardar" id="guardar1"  image="/images/guardar.gif" onClick="guardar();"/>
+                                                <decimalbox  id="demo" visible="false" format="#,###.00"/>
                     <button label="Impr."  image="/images/imprimir.gif" onClick='showReport("AM")'/>
                 </span>
             </row>
@@ -279,5 +280,10 @@ doAdd(Cursos curso, MateriaProfesor materia){
 
         </panelchildren>
     </panel>
+     <zscript>
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+        
+    </zscript>
     
 </zk>

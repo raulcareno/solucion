@@ -148,12 +148,7 @@ public class notas extends Rows {
 
     public void addRow(Cursos curso, MateriaProfesor materia, String separador) {
 
-//        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
-//        simbolo.getCurrencySymbol();
-//    simbolo.setDecimalSeparator('.');
-//    simbolo.setGroupingSeparator(',');
-//DecimalFormat formateador = new DecimalFormat("###,###.##",simbolo);
-        //21.000.65
+ 
         if (malFormulas) {
             try {
                 Messagebox.show("NO INGRESE NOTAS, existe un ERROR en el sistema de notas consulte con el Administrador del Sistema...!", "Alerta", Messagebox.OK, Messagebox.ERROR);

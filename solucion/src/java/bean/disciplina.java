@@ -38,7 +38,7 @@ public class disciplina extends Rows {
     public disciplina() {
     }
 
-    public void addRow(Cursos curso, MateriaProfesor materia) {
+    public void addRow(Cursos curso, MateriaProfesor materia, String separador) {
         int tamanio = 0;
 //     if(listad==null){
         Session ses = Sessions.getCurrent();
@@ -46,6 +46,7 @@ public class disciplina extends Rows {
         Periodo periodo = (Periodo) ses.getAttribute("periodo");
         Administrador adm = new Administrador();
         List<Equivalencias> equ = null;
+          separador = separador.substring(6, 7);
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.esdisciplina = true order by o.orden");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
@@ -197,6 +198,9 @@ public class disciplina extends Rows {
                             label.setStyle("color: " + color + " !important; cursor: default !important; opacity: .6; -moz-opacity: .6; filter: alpha(opacity=60); width:30px;font:arial;font-size:12px;text-align:right;background:transparent;font-weigth:bold");
                         }
 //                    label.setReadonly(true);
+                         //notaTexto.setAction("onkeyup:#{self}.value = #{self}.value.replace('.',',');");
+                            label.setAction("onkeyup:#{self}.value = #{self}.value.replace('.','" + separador + "');");
+
                         row.appendChild(label);
                     }
 

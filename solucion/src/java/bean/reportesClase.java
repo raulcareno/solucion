@@ -5016,7 +5016,7 @@ public class reportesClase {
 
     }
 
-    public JRDataSource cuadrojuntas(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta) {
+    public JRDataSource cuadrojuntas(Cursos curso, Sistemacalificacion sistema, Double desde, Double hasta,Boolean incluir) {
 //     int tamanio=0;
         Administrador adm = new Administrador();
         Session ses = Sessions.getCurrent();
