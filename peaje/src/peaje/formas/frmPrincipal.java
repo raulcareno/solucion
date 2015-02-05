@@ -691,7 +691,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         btnCerrar = new javax.swing.JButton();
         btnSalir2 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
-        logoTeka = new javax.swing.JLabel();
 
         buscarClientes.setLocationByPlatform(true);
         buscarClientes.getContentPane().setLayout(null);
@@ -3156,8 +3155,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             contenedor3.getContentPane().add(jToolBar3);
 
-            logoTeka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/ico.png"))); // NOI18N
-
             javax.swing.GroupLayout jXTaskPaneContainer1Layout = new javax.swing.GroupLayout(jXTaskPaneContainer1);
             jXTaskPaneContainer1.setLayout(jXTaskPaneContainer1Layout);
             jXTaskPaneContainer1Layout.setHorizontalGroup(
@@ -3165,13 +3162,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
                         .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap())
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jXTaskPaneContainer1Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(logoTeka, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
             );
             jXTaskPaneContainer1Layout.setVerticalGroup(
                 jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3181,9 +3175,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                     .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addComponent(contenedor3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(logoTeka, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(52, Short.MAX_VALUE))
+                    .addContainerGap(148, Short.MAX_VALUE))
             );
 
             jSplitPane1.setLeftComponent(jXTaskPaneContainer1);
@@ -8136,7 +8128,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox jueves;
     private javax.swing.JCheckBox jueves1;
     private javax.swing.JCheckBox jueves2;
-    private javax.swing.JLabel logoTeka;
     private javax.swing.JCheckBox lunes;
     private javax.swing.JCheckBox lunes1;
     private javax.swing.JCheckBox lunes2;

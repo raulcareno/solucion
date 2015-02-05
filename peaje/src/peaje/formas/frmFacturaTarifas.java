@@ -669,7 +669,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
                     Date fecTiempo = new Date();
                     facActual.setTiempo(fecTiempo);
                     facActual.setUsuarioc(principal.usuarioActual);
-                    adm.actualizar(facActual);
+                    adm.guardar(facActual);
                     try {
 
                         if (empresaObj.getWebcam()) {
@@ -707,7 +707,13 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
                             }
 
                         }
+                        try {
+                            
                         imprimir(facActual.getCodigo(), emp, 1, false, cli);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        
                     }
 
                     if (empresaObj.getSeabrefac()) {
