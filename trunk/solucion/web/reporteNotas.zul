@@ -75,7 +75,7 @@ List sistemas = new ArrayList();
               " where o.trimestre.codigotrim = '"+ trime.getCodigotrim() +"' and  o.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.orden");
 
               Sistemacalificacion stodos = new Sistemacalificacion();
-              stodos.setNombre("==========>>>>> "+trime.getDescripcion()+"");
+              stodos.setNombre(""+trime.getDescripcion()+"");
               int orden = 0;
               int codigo=0;
               if(sistemas0.size() >0 ){

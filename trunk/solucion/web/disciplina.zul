@@ -140,7 +140,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
                 guardar1.disabled=true;
                 guardar2.disabled=true;
             }
-        filas.addRow(curso,materia);
+        filas.addRow(curso,materia,demo.getText());
 }
 
  
@@ -251,7 +251,7 @@ doAdd(Cursos curso, MateriaProfesor materia){
         </rows>
     </grid>
     <button label="Guardar" visible="false"   id="guardar2"  image="/images/guardar.gif" onClick="guardar();"/>
-   
+                               <decimalbox  id="demo" visible="false" format="#,###.00"/>
     <panel id="reportes" width="98%" height="97%" framable="true" style="position:absolute; top:1%;left:1%" visible = "false" >
         <panelchildren>
             <toolbar  align="end">
@@ -283,5 +283,10 @@ doAdd(Cursos curso, MateriaProfesor materia){
 
         </panelchildren>
     </panel>
+      <zscript>
+        Double v = 99000 / 4.7d;
+        demo.setValue(new BigDecimal(v));
+        
+    </zscript>
 </zk>
 
