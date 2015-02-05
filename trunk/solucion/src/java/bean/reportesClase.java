@@ -195,7 +195,7 @@ public class reportesClase {
             for (Iterator<Equivalencias> it = equivalencias.iterator(); it.hasNext();) {
                 Equivalencias equivalencias1 = it.next();
                 parametros.put("eq" + (i + 1), equivalencias1.getNombre());
-                parametros.put("ran" + (i + 1), equivalencias1.getValorminimo() + " - " + equivalencias1.getValormaximo());
+                parametros.put("ran" + (i + 1), equivalencias1.getValorminimo());
 
                 String notaAseleccionar = notas.get(notas.size() - 1).getNota();
                 String q = "Select  count(" + notaAseleccionar + ")  from matriculas "
@@ -530,7 +530,7 @@ public class reportesClase {
             for (Iterator<Equivalencias> it = equivalencias.iterator(); it.hasNext();) {
                 Equivalencias equivalencias1 = it.next();
                 parametros.put("eq" + (i + 1), equivalencias1.getNombre());
-                parametros.put("ran" + (i + 1), equivalencias1.getValorminimo() + " - " + equivalencias1.getValormaximo());
+                parametros.put("ran" + (i + 1), equivalencias1.getValorminimo());
 
                 String notaAseleccionar = notas.get(notas.size() - 1).getNombre();
                 String q = "Select  count(" + notaAseleccionar + ") from matriculas "

@@ -592,7 +592,7 @@ void recalcular2(){
                     
                     ArrayList arreglo = noti.notasd(curs.getSelectedItem().getValue(),((MateriaProfesor)materiasCombo.getSelectedItem().getValue()),sistemasCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
-                     parametros = (HashMap) arreglo.get(1);
+                     //parametros = (HashMap) arreglo.get(1);
                      //parametros.put("perseleccionado",((Sistemacalificacion)sistemasCombo.getSelectedItem().getValue()).getNombre());
                      parametros.put("perseleccionado", sistemasCombo.getSelectedItem().getValue().getTrimestre().getDescripcion()+ " - "+sistemasCombo.getSelectedItem().getValue().getNombre()+"");
                     MateriaProfesor mate = ((MateriaProfesor)materiasCombo.getSelectedItem().getValue());
