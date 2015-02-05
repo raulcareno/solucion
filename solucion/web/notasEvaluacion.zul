@@ -217,7 +217,11 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
             parametros.put("slogan", insts.getSlogan());
             JRDataSource datasource = null;
             String directorioReportes = insts.getReportes();
-            
+             List equivalencias = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "'  " 
+                + "order by o.valorminimo desc ");
+                int m = 1;
+     
             if(tipo.equals("AM")){
                ArrayList arreglo = noti.notasdAportes(curs.getSelectedItem().getValue(),((MateriaProfesor)mates.getSelectedItem().getValue()),sisevalCombo.getSelectedItem().getValue());
                     datasource = (ReporteNotasDataSource) arreglo.get(0);
@@ -249,7 +253,14 @@ void doAdd(Cursos curso, MateriaProfesor materia,Sistemacalificacion sistCali){
                                         parametros.put("titulo", "Calificaciones por materia");
 
                     }
-
+   for (Iterator it = equivalencias.iterator(); it.hasNext();) {
+            Equivalencias equivalencias1 = (Equivalencias)it.next();
+            parametros.put("eq"+m,""+equivalencias1.getNombre()+"");
+            parametros.put("abre"+m,""+equivalencias1.getAbreviatura()+"");
+            parametros.put("ran"+m,equivalencias1.getValorminimo());
+            parametros.put("ranf"+m,equivalencias1.getValormaximo());
+            m++;
+        }
 
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
