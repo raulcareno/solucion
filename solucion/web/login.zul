@@ -204,14 +204,14 @@ void verificarSistema(){
                         <span style="float:center">
                             <hbox>
                                 <image src="/images/about.png" style="aling:center"/><separator/>
-                                <image border="1" height="80px" id="foto0"/>
+                                <image border="1" height="80px" width="80px" id="foto0"/>
                             </hbox>
                             
                                              
                         </span>
                     </row>
                     <row align="center" style="background:transparent;border:0px" spans="2">
-                        <label style="  align:center;color:#0D3584;font-size:15px;text-shadow: black 0.1em 0.1em 0.2em" value="${instituto.denominacion} ${instituto.nombre}"> </label>
+                        <label style="  align:center;color:#0D3584;font-size:15px;text-shadow: black 0.1em 0.1em 0.5em" value="${instituto.denominacion} ${instituto.nombre}"> </label>
                     </row>
                     <row align="center" style="background:transparent;border:0px" spans="2">
                         <separator bar="true"/>
@@ -280,7 +280,7 @@ void verificarSistema(){
                             <html>
                                 &lt;a href=&quot;http://www.siscontrol.com.ec&quot; target=&quot;_blank&quot;&gt;http://www.siscontrol.com.ec&lt;/a&gt;
                             </html>
-                            <label style="font-size:10px;color:blue" value ="ver.1.5 act.20/02/2014"/>
+                            <label style="font-size:10px;color:blue" value ="ver.1.5.1 act.05/02/2015"/>
                              
                         </span>
                     </row>
