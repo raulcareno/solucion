@@ -426,6 +426,7 @@ void guardars(){
                                                     parameters.put("observacion", observacion.value);
                                                     parameters.put("observacion2", solucion.value);
                                                     parameters.put("telefono", empresa.getTelefono());
+                                                    parameters.put("fecha", sop.getFecha());
                                                     parameters.put("cliente", combo.value);
                                                     parameters.put("empleado", usuarioActual.getApellidos()+" "+usuarioActual.getNombres());
                                                     parameters.put("noorden", sop.getNoorden());

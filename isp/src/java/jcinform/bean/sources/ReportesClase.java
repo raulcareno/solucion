@@ -1071,7 +1071,8 @@ public class ReportesClase {
                     + "AND fa.emision between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";
             //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
-            //System.out.println("ESTE ES EL QUE NECESITO: "+sql);
+            System.out.println("facturasCobradasContador () : "+sql);
+             
             List facEncontradas = adm.queryNativo(sql);
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
@@ -1100,7 +1101,7 @@ public class ReportesClase {
                     detalleLocal = null;
 
                     pendi.setCliente(clientes1);
-                    pendi.setFactura("" + vec.get(1).toString().substring(9));
+                    pendi.setFactura("" + vec.get(1).toString());
                     Date d = (Date) vec.get(2);
                     pendi.setFecha(d);
                     pendi.setEmision(d);
@@ -1136,7 +1137,7 @@ public class ReportesClase {
             clientes1.setApellidos("-");
             clientes1.setNombres("");
             pendi.setCliente(clientes1);
-            pendi.setFactura(facturaanulada.getNumero().substring(9));
+            pendi.setFactura(facturaanulada.getNumero());
             pendi.setFecha(facturaanulada.getFecha());
             pendi.setEmision(facturaanulada.getFecha());
             pendi.setTotal(new BigDecimal(0));
@@ -1434,7 +1435,7 @@ public class ReportesClase {
         Pendientes pendi = null;
         List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
-                + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+              //  + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' order by o.factura.numero");
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
@@ -1515,7 +1516,7 @@ public class ReportesClase {
         }
         String query = "Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
-                + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                //+ "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' "
                 + compleEmpleado
                 + " order by   o.empleados.apellidos,o.factura.numero, o.fecha ";
@@ -1669,6 +1670,7 @@ public class ReportesClase {
                     + estadoComp
                     + "order by o.clientes.apellidos";
         }
+        System.out.println("clientesxsector(sec,estado): "+que);
         List<Contratos> contra = adm.query(que);;
 
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {

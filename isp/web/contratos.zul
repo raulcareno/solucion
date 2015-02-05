@@ -1397,6 +1397,7 @@ void verificarCedula(String valor){
                                                     parameters.put("observacion2", observacion2.value);
                                                     parameters.put("telefono", empresa.getTelefono());
                                                     parameters.put("cliente", combo.value);
+                                                    parameters.put("fecha",sop.getFecha());
                                                     parameters.put("noorden", sop.getNoorden());
                                                     System.out.println("00002");
                                                     parameters.put("telefono1", telefonoi.value);
