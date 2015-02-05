@@ -454,6 +454,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         chkReimprime = new javax.swing.JCheckBox();
         chkBloquearEntrada = new javax.swing.JCheckBox();
         chkBloquearHorarioSalida = new javax.swing.JCheckBox();
+        jLabel62 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         cmbTicket = new javax.swing.JComboBox();
@@ -1106,9 +1107,9 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         jPanel6.add(jLabel16);
         jLabel16.setBounds(20, 150, 120, 18);
 
-        jLabel28.setText("Tiempo Gracia Salida: ");
+        jLabel28.setText("desde que paga hasta salir");
         jPanel6.add(jLabel28);
-        jLabel28.setBounds(20, 170, 110, 18);
+        jLabel28.setBounds(200, 170, 180, 18);
 
         graciasalida.setEditable(false);
         graciasalida.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -1179,6 +1180,10 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
         });
         jPanel6.add(chkBloquearHorarioSalida);
         chkBloquearHorarioSalida.setBounds(210, 110, 200, 18);
+
+        jLabel62.setText("Tiempo Gracia Salida: ");
+        jPanel6.add(jLabel62);
+        jLabel62.setBounds(20, 170, 110, 18);
 
         jTabbedPane2.addTab("Configuraciones", new javax.swing.ImageIcon(getClass().getResource("/images/admin1.gif")), jPanel6); // NOI18N
 
@@ -2800,6 +2805,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel60;
     private javax.swing.JLabel jLabel61;
+    private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
     private javax.swing.JLabel jLabel64;
     private javax.swing.JLabel jLabel65;

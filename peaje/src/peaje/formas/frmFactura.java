@@ -285,6 +285,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel52 = new javax.swing.JLabel();
         jLabel54 = new javax.swing.JLabel();
         btnGenerar = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        descontado = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         numeroFactura = new javax.swing.JFormattedTextField();
@@ -877,10 +879,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(encontrados1);
 
         panelencontrados1.add(jScrollPane3);
-        jScrollPane3.setBounds(10, 10, 180, 90);
+        jScrollPane3.setBounds(10, 10, 180, 70);
 
         jPanel1.add(panelencontrados1);
-        panelencontrados1.setBounds(70, 70, 210, 110);
+        panelencontrados1.setBounds(70, 70, 200, 90);
 
         ingreso.setBackground(new java.awt.Color(255, 255, 255));
         ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
@@ -1040,6 +1042,15 @@ public class frmFactura extends javax.swing.JInternalFrame {
         });
         jPanel1.add(btnGenerar);
         btnGenerar.setBounds(150, 30, 55, 20);
+
+        jLabel14.setText("Descontado: ");
+        jPanel1.add(jLabel14);
+        jLabel14.setBounds(190, 110, 70, 20);
+
+        descontado.setForeground(new java.awt.Color(204, 0, 0));
+        descontado.setText("0 min.");
+        jPanel1.add(descontado);
+        descontado.setBounds(270, 110, 40, 20);
 
         jPanel5.add(jPanel1);
         jPanel1.setBounds(10, 5, 360, 160);
@@ -1344,7 +1355,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         frmTarifa0.setBounds(10, 0, 270, 140);
 
         botonesVer.setBackground(new java.awt.Color(204, 204, 204));
-        botonesVer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonesVer.setBorder(new javax.swing.border.SoftBevelBorder(0));
         botonesVer.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 botonesVerFocusLost(evt);
@@ -3224,6 +3235,14 @@ public class frmFactura extends javax.swing.JInternalFrame {
 //            }
 //
 //        }
+         if (minutos0 > empresaObj.getGracia().intValue() && minutos0 > 60) {
+             if(empresaObj.getGracia().intValue() >0 ){
+             minutos0 = minutos0 -empresaObj.getGracia().intValue();
+             descontado.setText(empresaObj.getGracia().intValue()+" min.");
+             }
+             
+        }
+        
         Integer minutos = minutos0.intValue();
         //empresaObj.getGracia()
 
@@ -6684,6 +6703,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel correcto;
     private javax.swing.JLabel correcto1;
     private javax.swing.JLabel correcto2;
+    private javax.swing.JLabel descontado;
     public javax.swing.JFormattedTextField descuento;
     private javax.swing.JLabel descuentoClienteTexto1;
     private javax.swing.JLabel descuentoClienteTexto2;
@@ -6734,6 +6754,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
