@@ -413,7 +413,11 @@ tarjeta = "";
 
     public int noDisponibles() {
         try {
-            Object con = adm.querySimple("Select count(o) from Factura as o" + " where  o.fechafin is null  "
+            Date fechaActual = new Date();
+            String ini = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 00:00:01";
+            String fin = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 23:59:59";
+            Object con = adm.querySimple("Select count(o) from Factura as o" 
+                    + " where  o.fechafin is null and o.fecha between '"+ini+"' and '"+fin+"'  "
                     + "and o.nocontar = false  ");
             Long val2 = (Long) con;
             int disponibles = (princip.empresaObj.getParqueaderos() - val2.intValue());

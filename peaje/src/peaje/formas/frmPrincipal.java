@@ -170,9 +170,9 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        this.setVisible(true);
 //        this.setVisible(true);
         ubicacionDirectorio = w.get() + separador;
-             if (ubicacionDirectorio.contains("build")) {
-                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
-            }
+        if (ubicacionDirectorio.contains("build")) {
+            ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+        }
         this.addWindowListener(new WindowAdapter() {
 
             public void windowClosing(WindowEvent we) {
@@ -236,7 +236,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
             trayIcon = new TrayIcon(image, "SISCONTROL.com.ec \n Soluciones Integradas de Seguridad y Control \n Sistema de Parking \n www.siscontrol.com.ec ", men);
             if (SystemTray.isSupported()) {
-                
+
                 trayIcon.setImageAutoSize(true);
                 trayIcon.addActionListener(new ActionListener() {
 
@@ -291,7 +291,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 //logear();
 
             }
-
+habilite.setVisible(false);
+deshabilite.setVisible(false);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -320,10 +321,10 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             try {
                 iniciarPuertos();
             } catch (Exception e) {
-                System.out.println("INCIAR PUERTOS:"+e);
+                System.out.println("INCIAR PUERTOS:" + e);
             }
 
-            
+
         } catch (Exception e) {
             System.out.println("ERROR AL INICIAR PUERTOS....");
         }
@@ -661,6 +662,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         ultimoIngreso = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
+        habilite = new javax.swing.JLabel();
+        deshabilite = new javax.swing.JLabel();
         usuarioLogeado = new javax.swing.JButton();
         jLabel37 = new javax.swing.JLabel();
         botoninst = new javax.swing.JButton();
@@ -2820,6 +2823,18 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             panelIngreso.add(jButton14);
             jButton14.setBounds(700, 310, 30, 23);
 
+            habilite.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+            habilite.setForeground(new java.awt.Color(0, 153, 0));
+            habilite.setText("PLAZAS DISPONIBLES HABILITE EL SEMÁFORO");
+            panelIngreso.add(habilite);
+            habilite.setBounds(320, 550, 450, 22);
+
+            deshabilite.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+            deshabilite.setForeground(new java.awt.Color(255, 0, 0));
+            deshabilite.setText("PARQUEADERO LLENO HABILITE EL SEMÁFORO");
+            panelIngreso.add(deshabilite);
+            deshabilite.setBounds(320, 550, 450, 22);
+
             panelIngreso.setBounds(0, 30, 790, 590);
             contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -3190,15 +3205,15 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     public void empezarConteo() {
         try {
-            System.out.println(""+(new Date()).toLocaleString());
+            System.out.println("" + (new Date()).toLocaleString());
             while (tiempo < 10) {
                 Thread.sleep(1000);
                 Integer actual = new Integer(time.getText().replace("<", "").replace(">", ""));
                 tiempo++;
                 actual--;
                 time.setText("" + (actual));
-                
-                System.out.print((tiempo)+".");
+
+                System.out.print((tiempo) + ".");
                 if (!poseeAutologin) {
                     tiempo = 0;
                     break;
@@ -3238,7 +3253,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     void iniciarPuertos() {
         try {
 //            WorkingDirectory w = new WorkingDirectory();
-           
+
 //            if (ubicacionDirectorio.contains("build")) {
 //                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
 //            }
@@ -3530,14 +3545,30 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
     public void noDisponibles() {
         try {
+            Date fechaActual = new Date();
             totales.setText("Total: " + empresaObj.getParqueaderos());
+            String ini = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 00:00:01";
+            String fin = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 23:59:59";
             Object con = adm.querySimple("Select count(o) from Factura as o"
-                    + " where  o.fechafin is null and o.nocontar = false ");
+                    + " where  o.fechafin is null and o.fecha between '" + ini + "' and '" + fin + "'  "
+                    + "and o.nocontar = false  ");
+//            Object con = adm.querySimple("Select count(o) from Factura as o"
+//                    + " where  o.fechafin is null and o.nocontar = false ");
             Long val2 = (Long) con;
             disponibles.setText("Disponibles: " + (empresaObj.getParqueaderos() - val2.intValue()));
             ocupados.setText("Ocupados: " + val2.intValue());
             final int dispo = (empresaObj.getParqueaderos() - val2.intValue());
-            final String empOb = "   " + empresaObj.getNombre() + "   ";
+            //final String empOb = "   " + empresaObj.getNombre() + "   ";
+
+            if (dispo <= 0) {
+                habilite.setVisible(false);
+                deshabilite.setVisible(true);
+                
+            }else{
+                    habilite.setVisible(true);
+                deshabilite.setVisible(false);
+            
+            }
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
             if (empresaObj.getLed() != null && !empresaObj.getLed().equals("") && !empresaObj.getLed().equals("null")) {
                 Thread cargar = new Thread() {
@@ -3677,7 +3708,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         empresaObj.setSerie(emp.getSerie());
         empresaObj.setSucursal(emp.getSucursal());
         empresaObj.setPuerto(emp.getPuerto());
-        
+
     }
 
     void iniciarCamar() {
@@ -3778,7 +3809,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(this, "ERROR EN CONFIGURACION DEL SISTEMA"+e);
 
-           
+
 
             File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
             if (fichero.exists()) {
@@ -3808,7 +3839,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
 //                }
 
-               cargarEmpresaConfig();
+                cargarEmpresaConfig();
 
                 noDisponibles();
                 disponibles.setEnabled(true);
@@ -3894,7 +3925,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 System.out.println("________________________________________ 1");
                 if (cerroSesion == false) {
 
-                    
+
                     leerTcpIp c = new leerTcpIp();
                     //s = new Socket("192.168.0.7", 1024);
                     if (empresaObj.getIpBarras1() != null) {
@@ -3937,18 +3968,20 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 
 
     }
-void cargarEmpresaConfig(){
- File fichero = new File(ubicacionDirectorio + "config.xml");
-                if (fichero.exists()) {
-                    //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-                    XMLEmpresa pXml = new XMLEmpresa();
-                    pXml.inicio();
-                    EmpresaPuertosStatic amp = pXml.leerXML();
-                    cargarEmpresa(amp);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
-                }
-}
+
+    void cargarEmpresaConfig() {
+        File fichero = new File(ubicacionDirectorio + "config.xml");
+        if (fichero.exists()) {
+            //System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+            XMLEmpresa pXml = new XMLEmpresa();
+            pXml.inicio();
+            EmpresaPuertosStatic amp = pXml.leerXML();
+            cargarEmpresa(amp);
+        } else {
+            JOptionPane.showMessageDialog(this, "Configurar PUERTOS en modulo EMPRESA y reinicie la aplicación");
+        }
+    }
+
     void buscarFacturaySetear(String tarjeta) {
         try {
             Component[] componentes = contenedor.getComponents();
@@ -4026,25 +4059,25 @@ void cargarEmpresaConfig(){
 
                 Date fecIn = tarje.getHorainicio();
                 Date fecIn3 = tarje.getHorafin();
-                
+
                 DateTime fechaIngreso = new DateTime(fecIn);
                 DateTime fechaSalida = new DateTime(fecIn3).plusDays(1);
-                
-                
+
+
                 LocalTime horaIni = new LocalTime(fechaIngreso);
                 LocalTime horaFin = new LocalTime(fechaSalida);
-                
+
                 //horaFin.;
                 LocalTime ahora = new LocalTime(new DateTime(new Date()));
-                 
+
                 Date fechaNueva = fecIn;
-                fechaNueva.setHours((new Date()).getHours()); 
-                fechaNueva.setMinutes((new Date()).getMinutes()); 
-                fechaNueva.setSeconds((new Date()).getSeconds()); 
-                DateTime ahora2 = new DateTime(fechaNueva); 
-                
-                 
-                 
+                fechaNueva.setHours((new Date()).getHours());
+                fechaNueva.setMinutes((new Date()).getMinutes());
+                fechaNueva.setSeconds((new Date()).getSeconds());
+                DateTime ahora2 = new DateTime(fechaNueva);
+
+
+
                 if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                     System.out.println("EN EL RANGO DE HORA");
                     try {
@@ -4055,25 +4088,25 @@ void cargarEmpresaConfig(){
 
                 } else {
                     //JOptionPane.showMessageDialog(getContentPane(), "No puede ingresar en este Horario...! \n Cliente: " + tarje.getCliente().getNombres(), "JCINFORM ", JOptionPane.ERROR_MESSAGE);
-                    
+
                     //*********************** 
                     //VUELVO A COMPARAR HORAS YA QUE LA HORA DE INGRESO ES MAYOR A LA DE SALIDA
                     // ************************
-                    if(horaFin.compareTo(horaIni) == -1){
+                    if (horaFin.compareTo(horaIni) == -1) {
                         if ((ahora2.compareTo(fechaIngreso) > 0 || ahora2.compareTo(fechaIngreso) == 0) && (ahora2.compareTo(fechaSalida) < 0 || ahora2.compareTo(fechaSalida) == 0)) {
-                        System.out.println("EN EL RANGO DE HORA 2(fecha 1 mayor a fecha 2)");
-                        try {
-                            return true;
-                        } catch (Exception e) {
-                            System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                            System.out.println("EN EL RANGO DE HORA 2(fecha 1 mayor a fecha 2)");
+                            try {
+                                return true;
+                            } catch (Exception e) {
+                                System.out.println("ERROR AL ABRIR PUERTA: " + e);
+                            }
                         }
-                    }  
-                    
+
                     }
-                    
-                    
-                    
-                    
+
+
+
+
                     if (entraOsale.equals("s")) {
                         errores.setText("<html>NO puede Salir en éste horario</html>");
                         socketEnviarMensaje("NO puede Salir en éste horario");
@@ -4441,9 +4474,9 @@ void cargarEmpresaConfig(){
                 if (tarje == null) {//SI LA TARJETA NO ESTÁ REGISTRADA, LE CARGO AL CLIENTE
                     noTarjeta.setText(tarjetatxt.getText());
                     noTarjeta2.setText(tarjetatxt.getText());
-                     
+
                     try {
-                         
+
                         noTarjeta1.setText(ConvertHexaToDecimal.convertir(tarjetatxt.getText()));
                         noTarjetaSerie.setText(ConvertHexaToDecimal.convertirComplemento(tarjetatxt.getText()));
                     } catch (Exception ex) {
@@ -5515,12 +5548,12 @@ void cargarEmpresaConfig(){
             tecla(evt.getKeyCode());
         }
 }//GEN-LAST:event_direccionKeyPressed
-private void pierdeFoco(){
- validarNumerodeCedula(codigo.getText());
+    private void pierdeFoco() {
+        validarNumerodeCedula(codigo.getText());
         try {
-            List<Clientes> clienteObj =  adm.query("Select o from Clientes as o "
+            List<Clientes> clienteObj = adm.query("Select o from Clientes as o "
                     + "where o.identificacion = '" + codigo.getText().trim() + "' ");
-            if (clienteObj.size()>0) {
+            if (clienteObj.size() > 0) {
 //                bindingGroup.unbind();
 //                bindingGroup.bind();
                 llenarTabla(clienteObj.get(0).getCodigo());
@@ -5533,10 +5566,9 @@ private void pierdeFoco(){
             System.out.println("BUSCAR CEDULA UNICA " + e);
             e.printStackTrace();
         }
-}
+    }
     private void codigoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codigoFocusLost
         // TODO add your handling code here:
-       
 }//GEN-LAST:event_codigoFocusLost
 
     private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
@@ -5664,7 +5696,7 @@ private void pierdeFoco(){
 
     public void limpiar() {
         clienteObj = new Clientes();
-         
+
         bindingGroup.unbind();
         bindingGroup.bind();
         DefaultTableModel dtm = (DefaultTableModel) tarjetas.getModel();
@@ -5707,7 +5739,7 @@ private void pierdeFoco(){
                     }
                     clienteObj.setProductos((Productos) tarifas.getSelectedValue());
                     Double valorv = Double.valueOf(txtValor.getText());
-                    
+
                     clienteObj.setValor(new BigDecimal(valorv));
                     clienteObj.setDireccion(direccion.getText());
                     clienteObj.setNombres(nombres.getText());
@@ -5716,7 +5748,7 @@ private void pierdeFoco(){
                     clienteObj.setDescuento(new BigDecimal(descuento.getText()));
                     clienteObj.setSellado(new BigDecimal(sellado.getText()));
                     if (modificar) {
-                        clienteObj.setCodigo(new Integer(codigoCliente.getText())); 
+                        clienteObj.setCodigo(new Integer(codigoCliente.getText()));
                         try {
                             adm.actualizar(clienteObj);
 
@@ -5728,7 +5760,7 @@ private void pierdeFoco(){
                         }
                     } else {
                         try {
-                        clienteObj.setCodigo(adm.getNuevaClave("Clientes", "codigo")); 
+                            clienteObj.setCodigo(adm.getNuevaClave("Clientes", "codigo"));
                             adm.guardar(clienteObj);
 //                            formaTarjetas.setModal(true);
 //                            formaTarjetas.setSize(400, 388);
@@ -6501,7 +6533,7 @@ private void pierdeFoco(){
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
-cerroSesion = false;
+        cerroSesion = false;
         Thread cargar = new Thread() {
 
             public void run() {
@@ -6514,7 +6546,7 @@ cerroSesion = false;
                 procesando.setVisible(false);
                 btnIngresar.setEnabled(true);
                 limpiarMemoria();
-               // iniciarServidor();
+                // iniciarServidor();
 
             }
         };
@@ -7544,7 +7576,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
         auditar("", "", "Salio del Sistema");
-        tray.remove(trayIcon);         
+        tray.remove(trayIcon);
         System.exit(0);
     }//GEN-LAST:event_btnSalir2ActionPerformed
 
@@ -7816,12 +7848,12 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         // TODO add your handling code here:
-         frmAnadirTarjetas usu = new frmAnadirTarjetas(this,  adm);
-            usu.setSize(636, 463);
-            usu.setLocation(0, 0);
-            contenedor.add(usu);
-            usu.show();
-            contenedor.requestFocus();
+        frmAnadirTarjetas usu = new frmAnadirTarjetas(this, adm);
+        usu.setSize(636, 463);
+        usu.setLocation(0, 0);
+        contenedor.add(usu);
+        usu.show();
+        contenedor.requestFocus();
     }//GEN-LAST:event_jButton15ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
@@ -7988,6 +8020,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox crear;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JFormattedTextField descuento;
+    private javax.swing.JLabel deshabilite;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JPanel diasHabiles1;
     private javax.swing.JPanel diasHabiles2;
@@ -8014,6 +8047,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JInternalFrame frmLoteTarjetas;
     private javax.swing.JInternalFrame frmRespaldarBase;
     private javax.swing.JButton guardarCambioClave;
+    private javax.swing.JLabel habilite;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaDesde1;
     private javax.swing.JSpinner horaDesde2;
