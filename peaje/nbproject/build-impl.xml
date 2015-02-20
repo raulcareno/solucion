@@ -970,6 +970,12 @@ is divided into following sections:
         <copy todir="${dist.dir}/reportes">
             <fileset dir="${reportes.dir}"/>
         </copy>
+         <copy todir="${dist.dir}/lib/32">
+            <fileset dir="${librerias.dir.32}"/>
+        </copy>
+        <copy todir="${dist.dir}/lib/64">
+            <fileset dir="${librerias.dir.64}"/>
+        </copy>
         <copy file="./javaanpr.jar" tofile="${dist.dir}/javaanpr.jar"/>
         <copy file="${librerias.dir}/javax.comm.properties" tofile="${dist.dir}/lib/javax.comm.properties"/>
         <copy file="./KDJFASD5F4AS5D2.xml" tofile="${dist.dir}/KDJFASD5F4AS5D2.xml"/>
