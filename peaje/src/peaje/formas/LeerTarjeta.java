@@ -446,6 +446,19 @@ tarjeta = "";
             } catch (Exception err) {
                 System.out.println("EN CONTAR: " + err);
             }
+            try {
+             
+            if (disponibles <= 5) {
+                princip.habilite.setVisible(false);
+                princip.deshabilite.setVisible(true);
+                
+            }else{
+                    princip.habilite.setVisible(true);
+                    princip.deshabilite.setVisible(false);
+            
+            }
+            } catch (Exception e) {
+            }
 
 //            con = null;
 //            disponibles = 0;

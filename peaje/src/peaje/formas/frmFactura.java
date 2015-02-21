@@ -3136,7 +3136,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                                 emp.setDocumentoticket((numero) + "");
                                 adm.actualizar(emp);//GUARDO EMPRESA
                                 adm.guardar(facNueva); // GUARDO FACTURA
-                                noTicket.setText(numero + "");
+                                noTicket.setText(empresaObj.getNombreCaja() + numero + "");
                                 codigo.setText(facNueva.getCodigo() + "");
                             } else {
                                 numero++;
@@ -4256,7 +4256,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
             if (principal.permisos.getAgregar()) {
                 int seleccion = JOptionPane.showOptionDialog(this, " ¿Seguro que Desea Aplicar MULTA?",
-                        "JCINFORM",
+                        "SISCONTROL",
                         JOptionPane.YES_NO_CANCEL_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
                         null, // null para icono por defecto.
@@ -4318,6 +4318,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         Double ivav1 = subtotalv * (empresaObj.getIva() / 100);
                         facActual.setTotal(new BigDecimal(totalv));
                         facActual.setSubtotal(new BigDecimal(subtotalv));
+                        facActual.setDescuento(new BigDecimal(0)); 
                         facActual.setIva(new BigDecimal(ivav1));
                         facActual.setPlaca("PAGO MULTA");
                         facActual.setTiempo(new Date());
@@ -4344,27 +4345,52 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         facActual.setYasalio(false);
                         facActual.setEsnota(chkEsNotaVenta.isSelected());
                         facActual.setAnulado(false);
+                        
+                                                
+                        
+                        Long numero = null;
+                    List documentosList = adm.query("Select o from Documentos as o where o.codigo = '" + empresaObj.getSerie() + empresaObj.getSucursal() + "' ");
+                    Documentos doc = new Documentos();
+                    if (documentosList.size() <= 0) {
+
+                        doc.setCodigo(empresaObj.getSerie() + empresaObj.getSucursal());
+                        doc.setFactura("FC" + empresaObj.getSerie() + empresaObj.getSucursal() + "000000001");
+                        doc.setRecibo("RC" + empresaObj.getSerie() + empresaObj.getSucursal() + "000000001");
+                        adm.guardar(doc);
+                        this.numeroFactura.setText(doc.getFactura());
+                        numero = 1L;
+                    } else {
+                        doc = (Documentos) documentosList.get(0);
+                        numero = Long.parseLong(doc.getFactura().substring(8)) + 1;
+
+                    }
+                    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    Boolean pasar = true;
+                    if (facActual.getTotal().doubleValue() > 0) {
+                        //numero = new Integer(emp.getDocumentofac()) + 1;
+                        while (pasar) {
+                            List sihay = adm.query("Select o from Factura as o where o.numero = '" + "FC" + empresaObj.getSerie() + empresaObj.getSucursal() + String.format("%09d", numero) + "'");
+                            if (sihay.size() <= 0) {
+                                pasar = false;
+                                String asFac = String.format("%09d", numero);
+                                facActual.setNumero("FC" + empresaObj.getSerie() + empresaObj.getSucursal() + asFac);
+                                doc.setFactura("FC" + empresaObj.getSerie() + empresaObj.getSucursal() + asFac);
+                                adm.guardar(facActual); // GUARDO FACTURA
+                                adm.actualizar(doc);//GUARDO EMPRESA
+                            } else {
+                                numero++;
+                            }
+
+                        }
+                    }
+                        
+
 
                         //adm.guardar(facActual);
 
 
 //                    Integer numero = new Integer(emp.getDocumentofac());
 //                    emp.setDocumentofac((numero + 1) + "");
-                        Boolean pasar = true;
-                        Integer numero = new Integer(emp.getDocumentofac()) + 1;
-                        while (pasar) {
-                            List sihay = adm.query("Select o from Factura as o where o.numero = '" + numero + "'");
-                            if (sihay.size() <= 0) {
-                                pasar = false;
-                                facActual.setNumero("" + numero);
-                                emp.setDocumentofac((numero) + "");
-                                adm.actualizar(emp);//GUARDO EMPRESA
-                                adm.guardar(facActual); // GUARDO FACTURA
-                            } else {
-                                numero++;
-                            }
-
-                        }
 
                         int dia = 0;
                         try {
@@ -5396,8 +5422,16 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 Date fechaActual = new Date();
                 String desde = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 00:01:01";
                 String hasta = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 23:59:59";
+                 String numero = ("FC" + empresaObj.getSerie() + empresaObj.getSucursal() + "");
+                 
+                 String numeroEntero = numeroIngresado.getText();
+                         while (numeroEntero.length() < 9) {
+                            numeroEntero = "0" + numeroEntero;
+                        }
+                    numero = numero+numeroEntero;
                 Factura fac = (Factura) adm.querySimple("Select o from Factura as o "
-                        + "  where o.numero = " + numeroIngresado.getText() + " "
+                         
+                        + "  where o.numero = '" + numero + "' "
                         + " and (o.anuladofac = false or o.anuladofac is null ) "
                         + " and (o.anulado = false or o.anulado is null)  "
                         + " and o.fechafin between '" + desde + "' and  '" + hasta + "' ");

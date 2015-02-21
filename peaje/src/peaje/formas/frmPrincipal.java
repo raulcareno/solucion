@@ -2578,6 +2578,7 @@ deshabilite.setVisible(false);
             jPanel2.add(btnIngresar);
             btnIngresar.setBounds(70, 90, 120, 40);
 
+            usuariot.setMaximumRowCount(50);
             usuariot.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent evt) {
                     usuariotItemStateChanged(evt);
@@ -2825,13 +2826,13 @@ deshabilite.setVisible(false);
 
             habilite.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
             habilite.setForeground(new java.awt.Color(0, 153, 0));
-            habilite.setText("PLAZAS DISPONIBLES HABILITE EL SEMÁFORO");
+            habilite.setText("EXISTEN PLAZAS DISPONIBLES");
             panelIngreso.add(habilite);
-            habilite.setBounds(320, 550, 450, 22);
+            habilite.setBounds(320, 550, 370, 22);
 
             deshabilite.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
             deshabilite.setForeground(new java.awt.Color(255, 0, 0));
-            deshabilite.setText("PARQUEADERO LLENO HABILITE EL SEMÁFORO");
+            deshabilite.setText("PARQUEADERO CASI LLENO, HABILITE EL SEMÁFORO");
             panelIngreso.add(deshabilite);
             deshabilite.setBounds(320, 550, 450, 22);
 
@@ -3560,7 +3561,7 @@ deshabilite.setVisible(false);
             final int dispo = (empresaObj.getParqueaderos() - val2.intValue());
             //final String empOb = "   " + empresaObj.getNombre() + "   ";
 
-            if (dispo <= 0) {
+            if (dispo <= 5) {
                 habilite.setVisible(false);
                 deshabilite.setVisible(true);
                 
@@ -8020,7 +8021,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JCheckBox crear;
     private javax.swing.JTextArea descripcionTarjeta;
     private javax.swing.JFormattedTextField descuento;
-    private javax.swing.JLabel deshabilite;
+    public javax.swing.JLabel deshabilite;
     private javax.swing.JPanel diasHabiles;
     private javax.swing.JPanel diasHabiles1;
     private javax.swing.JPanel diasHabiles2;
@@ -8047,7 +8048,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JInternalFrame frmLoteTarjetas;
     private javax.swing.JInternalFrame frmRespaldarBase;
     private javax.swing.JButton guardarCambioClave;
-    private javax.swing.JLabel habilite;
+    public javax.swing.JLabel habilite;
     private javax.swing.JSpinner horaDesde;
     private javax.swing.JSpinner horaDesde1;
     private javax.swing.JSpinner horaDesde2;
