@@ -261,7 +261,8 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         //System.out.println("" + tarjeta);
           
         if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("AEIOUAE2") || tarjeta.toUpperCase().contains("INGENIE")) {
-            if (habilitado) {
+            if (habilitado && disponibles()>0) {
+                
                 try {
                     System.out.println("abrio AEIOUA: " + tarjeta + " " + new Date());
                    // tarjeta = "";
@@ -400,7 +401,11 @@ tarjeta = "";
             Thread.sleep(20);
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
-            noDisponibles();
+            try {
+                    princip.noDisponibles();    
+            } catch (Exception e) {
+            }
+            
             ta = null;
             limpiarMemoria();
             //System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
@@ -411,7 +416,7 @@ tarjeta = "";
         }
     }
 
-    public int noDisponibles() {
+    public int disponibles() {
         try {
             Date fechaActual = new Date();
             String ini = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 00:00:01";
@@ -421,51 +426,50 @@ tarjeta = "";
                     + "and o.nocontar = false  ");
             Long val2 = (Long) con;
             int disponibles = (princip.empresaObj.getParqueaderos() - val2.intValue());
-            int regresa = disponibles;
-            if (disponibles < 0) {
-                regresa = 0;
-            }
-            String valor = "";
-            if (regresa < 10) {
-                valor = "0" + regresa;
-            } else {
-                valor = "" + regresa;
-            }
+            con = null;
+            limpiarMemoria();
+           return disponibles;
+//            String valor = "";
+//            if (regresa < 10) {
+//                valor = "0" + regresa;
+//            } else {
+//                valor = "" + regresa;
+//            }
 
-            try {
-                LeerTarjeta ta = princip.buscarPuerto("led");
-                ta.outputSream.write((("XYinforma" + valor).getBytes()));
-                ta = null;
-            } catch (Exception e) {
-                System.out.println("NO HAY PANTALLA DE LEDS: " + e);
-            }
-
-            try {
-                princip.disponibles.setText("Disponibles: " + disponibles);
-                princip.ocupados.setText("Ocupados: " + val2.intValue());
-            } catch (Exception err) {
-                System.out.println("EN CONTAR: " + err);
-            }
-            try {
-             
-            if (disponibles <= 5) {
-                princip.habilite.setVisible(false);
-                princip.deshabilite.setVisible(true);
-                
-            }else{
-                    princip.habilite.setVisible(true);
-                    princip.deshabilite.setVisible(false);
-            
-            }
-            } catch (Exception e) {
-            }
+//            try {
+//                LeerTarjeta ta = princip.buscarPuerto("led");
+//                ta.outputSream.write((("XYinforma" + valor).getBytes()));
+//                ta = null;
+//            } catch (Exception e) {
+//                System.out.println("NO HAY PANTALLA DE LEDS: " + e);
+//            }
+//
+//            try {
+//                princip.disponibles.setText("Disponibles: " + disponibles);
+//                princip.ocupados.setText("Ocupados: " + val2.intValue());
+//            } catch (Exception err) {
+//                System.out.println("EN CONTAR: " + err);
+//            }
+//            try {
+//             
+//            if (disponibles <= 5) {
+//                princip.habilite.setVisible(false);
+//                princip.deshabilite.setVisible(true);
+//                
+//            }else{
+//                    princip.habilite.setVisible(true);
+//                    princip.deshabilite.setVisible(false);
+//            
+//            }
+//            } catch (Exception e) {
+//            }
 
 //            con = null;
 //            disponibles = 0;
 //            val2 = null;
 
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
-            return regresa;
+            //return regresa;
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -585,7 +589,12 @@ tarjeta = "";
                     fotografiarIp(ubicacionDirectorio + "\\fotos" + separador + fac.getCodigo() + ".jpg");
                     //cargarPlaca(fac.getCodigo());
                 }
-                noDisponibles();
+                try {
+                    princip.noDisponibles();
+                } catch (Exception e) {
+                }
+                //noDisponibles();
+                
                 princip.cargarFoto(fac.getCodigo());
             } catch (Exception e) {
                 System.out.println("NO SE FOTOGRAFÍO " + e);
