@@ -297,6 +297,7 @@ void llenar(Sistemacalificacion empa){
     sacapromedio.checked = empa.getConsulta();  //saca promedio en la libreta
     formula.value = empa.getFormula();
     formuladisciplina.value = empa.getFormuladisciplina();
+    formulaCualitativas.value = empa.getFormulaCualitativas();
     validacion.value = empa.getValidacion();
     //formulafaltas.value = empa.getFormulafaltas();
     try{
@@ -370,6 +371,7 @@ void estado(Boolean estado,Boolean modificar){
     tipo.disabled= estado;
     formula.readonly= estado;
     formuladisciplina.readonly = estado;
+    formulaCualitativas.readonly= estado;
     validacion.readonly = estado;
     //formulafaltas.disabled = estado;
 conducta.readonly =estado;
@@ -423,6 +425,7 @@ sacapromedio.disabled = estado;
 
         empa.setFormula(formula.value);
         empa.setFormuladisciplina(formuladisciplina.value);
+        empa.setFormulaCualitativas(formulaCualitativas.value);
         empa.setValidacion(validacion.value);
         //empa.setFormulafaltas(formulafaltas.value);
         Periodo per = (Periodo) ses.getAttribute("periodo");
@@ -599,6 +602,49 @@ public Boolean verificar2(){ //VERIFICO SI EL APROVEHCAMIENTO ESTA BIEN INGRESAD
       } 
         return false;
 }
+public Boolean verificar5(){ //VERIFICO SI EL APROVEHCAMIENTO ESTA BIEN INGRESADO
+    String formula1 = formulaCualitativas.value;
+     Periodo periodo = per;
+  
+    if(formula1.equals("")){
+        return false;
+    }
+        List notas = adm.query("Select o from Notanotas as o where o.sistema.periodo.codigoper = '"+periodo.getCodigoper()+"' order by o.sistema.orden ");
+        Interpreter inter = new Interpreter();
+         try {
+             inter.eval(redon);
+             inter.eval(truncar);
+             inter.eval(bean.metodos.prom1); inter.eval(bean.metodos.prom2);
+             inter.eval(equival);
+              Notas nota = new Notas();
+              inter.set("nota", nota);
+              for(int x =1;x<91;x++){ //LLENO LOS DATOS DE LAS NOTANOTAS CON 1.0
+                    String llena = "nota.setNota"+x+"(1.0);";
+                    inter.eval(llena);
+              }
+            String formuPrevia = formula1.replace("nota","nota.getNota");
+            try{
+            inter.eval(formuPrevia);
+            }catch(Exception e1){
+                    Messagebox.show("ERROR EN FORMULA DE MATERIAS CUALITATIVAS...! \n Revise los '()' o que sea una nota valida ", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                    e1.printStackTrace();
+                    return true;
+            }
+
+           formula1 = formula1.replace("()","");
+        for (Iterator it = notas.iterator(); it.hasNext();) {
+                     Notanotas notanotas = (Notanotas)it.next();
+                    inter.eval(""+notanotas.getNota()+"=1;");
+        }
+         inter.eval(formula1+"*1");
+       
+      } catch (EvalError ex) {
+      System.out.println(".........."+ex);
+          Messagebox.show("ERROR EN FORMULA DE APROVECHAMIENTO...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+          return true;
+      } 
+        return false;
+}
 public Boolean verificar3(){
     String formula1 = formuladisciplina.value;
      Periodo periodo = per;
@@ -703,12 +749,11 @@ if(formula1.equals("")){
                             <span>
                                 <intbox id="codigo"  maxlength="60" cols="3" readonly="true"   />
                                 <textbox id="nombre"  maxlength="60" cols="30" readonly="true"   />  
+                                <span> Abreviatura(*):</span>
+                                <textbox id="abreviatura"  maxlength="10" cols="10" readonly="true"  /> 
                             </span>  
                         </row>
-                        <row> 
-                            <span style="float:right"> Abreviatura(*):</span>
-                            <textbox id="abreviatura"  maxlength="10" cols="20" readonly="true"  /> 
-                        </row>
+                         
                         <row> 
                             <span style="float:right"> Pase de Notas Prof.(*):</span> 
                             <span>Desde: 
@@ -817,6 +862,15 @@ if(formula1.equals("")){
 
                                     </html>
                                 </popup>
+                            </span>
+                        </row>
+                         <row>
+                            <span style="float:right"> Form. Cuali.:</span>
+                            <span>
+                                <textbox id="formulaCualitativas" rows="2" cols="30" />
+                                <button id="verificarCualitativas"  image="/images/ok.gif"   onClick="verificar5();"/>
+                                <image src="/images/information.png" height="22px" width="22px" tooltip="mailt" popup="mailt" style="cursor: pointer" />
+                                 
                             </span>
                         </row>
                         <row>
