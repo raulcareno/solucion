@@ -1243,7 +1243,7 @@ public class notas extends Rows {
                     inter.set("nota", nota);
                     for (int j = 2; j < labels.size(); j++) {
                         Listbox object1 = (Listbox) labels.get(j);
-                        String formula = notas.get(j - 2).getSistema().getFormula(); // EN CASO DE FORMULA
+                        String formula = notas.get(j - 2).getSistema().getFormulaCualitativas(); // EN CASO DE FORMULA
                         formula = formula.replace("no", "nota.getNo"); //EN CASO DE QUE HAYA FORMULA
                         String toda = notas.get(j - 2).getNota() + "";
                         String uno = toda.substring(0, 1).toUpperCase();

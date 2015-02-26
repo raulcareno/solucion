@@ -120,8 +120,20 @@ error.visible = false;
                                        for (Iterator it = equivaEncontrados.iterator(); it.hasNext();) {
                                               Empleadoperiodo acceIt = (Empleadoperiodo) it.next();
                                               Listitem li = new Listitem();
-                                              li.setValue(acceIt.getPeriodo());
-                                              li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" . " +acceIt.getPeriodo().getInstitucion().getTipo() + " ["+acceIt.getPeriodo().getSeccion()+"] " +  acceIt.getPeriodo().getInstitucion() + "" ));
+                                             try{
+                                                if(acceIt.getPeriodo().getSeccion().getDescripcion().contains("COSTA") || acceIt.getPeriodo().getSeccion().getDescripcion().contains("MATUTINA")){
+                                                    li.setStyle("color:blue;");
+                                                    li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" . " +acceIt.getPeriodo().getInstitucion().getTipo() + " [ "+acceIt.getPeriodo().getSeccion()+" ] " +  acceIt.getPeriodo().getInstitucion() + "" ));
+                                                }else{
+                                                    li.appendChild(new Listcell(acceIt.getPeriodo().getDescripcion()+" . " +acceIt.getPeriodo().getInstitucion().getTipo() + " [ "+acceIt.getPeriodo().getSeccion()+" ] " +  acceIt.getPeriodo().getInstitucion() + "" ));
+                                                
+                                                }
+                                                li.setValue(acceIt.getPeriodo());
+                                                
+                                             }catch(Exception e){
+                                             
+                                             }
+
                                               periodo.appendChild(li);
                                      }
                                      periodo.setSelectedIndex(0);
@@ -231,9 +243,9 @@ void verificarSistema(){
                         <label style="float:center;font-size:16px;color:red" value="SELECCIONE UN PERIODO:"></label>
                     </row>
                     <row  style="background:transparent;border:0px" id="rperiodo" visible="false" spans="2">
-                        <listbox  onOK="btnIngresar.focus()"  style="font-size:11px"   width="435px"  id="periodo" mold="select">
+                        <listbox  onOK="btnIngresar.focus()"  style="font-weight:bold; font-size:11px"   width="435px"  id="periodo" mold="select">
                             <listitem forEach="${perfiles}" value="${each}">
-                                <listcell  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
+                                <listcell  style="font-weight:bold; font-size:11px"  label="${each.descripcion} ${each.institucion} ${each.institucion.tipo}"  />
                             </listitem>
                         </listbox>
 
@@ -280,7 +292,7 @@ void verificarSistema(){
                             <html>
                                 &lt;a href=&quot;http://www.siscontrol.com.ec&quot; target=&quot;_blank&quot;&gt;http://www.siscontrol.com.ec&lt;/a&gt;
                             </html>
-                            <label style="font-size:10px;color:blue" value ="ver.1.5.1 act.05/02/2015"/>
+                            <label style="font-size:10px;color:blue" value ="ver.1.5.2 act.26/02/2015"/>
                              
                         </span>
                     </row>
