@@ -26,14 +26,16 @@ public class VerificarMensajesSinLeer {
     public static void start(Panel mensajes, Listbox lista, Empleados emp, East este)
             throws InterruptedException {
         final Desktop desktop = Executions.getCurrent().getDesktop();
-
+desktop.enableServerPush(false);
         contactos = (ContactosChat) desktop.getWebApp().getAttribute("contactoschat");
         if (contactos == null) {
             contactos = new ContactosChat();
             desktop.getWebApp().setAttribute("contactoschat", contactos);
         }
         if (desktop.isServerPushEnabled()) {
-            Messagebox.show("Already started");
+            Messagebox.show("Already started..-");
+            este.setSize("15%");
+            este.setVisible(true);
         } else {
             adm = new Administrador();
             desktop.enableServerPush(true);

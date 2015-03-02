@@ -130,17 +130,31 @@ public class Chatter extends Thread {
 			synchronized (_msgs) {
 				msg = _msgs.remove(0);
 			}
-            Label lbl = new Label(msg);
+            
+         Label message = new Label(msg);
+//        Label fecha = new Label();
+        Div abc = new Div();
+        abc.setStyle("border: 1px solid #999999; background-color:#B0ECEC; height:100%; "
+                + "-moz-border-radius: 15px 15px 15px 15px; "
+                + "/*para Safari y Chrome*/ "
+                + "-webkit-border-radius: 5px 5px 5px 5px; "
+                + "/* para Opera */ "
+                + " border-radius: 5px 5px 5px 5px;  padding: 7px;  ");
+  
+        abc.appendChild(message);
+        
+//            Label lbl = new Label(msg);
             //lbl.setStyle("color:red;");
-            String stiloYo = " background-color: #dbedfe;background-image: url(./images/fondoChat1.png);";
-            lbl.setStyle(stiloYo);
+//            String stiloYo = " background-color: #dbedfe;background-image: url(./images/fondoChat1.png);";
+//            lbl.setStyle(stiloYo);
             
             Label fecha = new Label(((new Date()).toLocaleString()));
             String stiloFecha = "color:gray; font-size:8px;";
+            
             fecha.setStyle(stiloFecha);
             
            _msgBoard.appendChild(fecha);
-		   _msgBoard.appendChild(lbl);
+		   _msgBoard.appendChild(abc);
             try {
               ((Div) _desktop.getWebApp().getAttribute("dv")).smartUpdate("scrollTop", "10000");  
             } catch (Exception e) {

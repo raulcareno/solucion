@@ -40,24 +40,21 @@
         </div>
         <zscript>
         <![CDATA[ 
-        
-  cargar(){
-    Empleados user =  (Empleados)ses.getAttribute("user");
-    nickname.value = ""+user;
-    Contactos contacto = win.getAttribute("contacto");
-    Integer valor = new Integer(contacto.id);
-    Integer valor2 = user.getCodigoemp();
-    codigo.value = (valor * valor2)+"";
-    nombre.value = contacto.nombre;
-    
-    win.setTitle(""+nombre.value);
-    win.setId("win"+codigo.value);
-  
-     //   onLogin();    
-  }
-  
+            cargar(){
+                Empleados user =  (Empleados)ses.getAttribute("user");
+                nickname.value = ""+user;
+                Contactos contacto = win.getAttribute("contacto");
+                Integer valor = new Integer(contacto.id);
+                Integer valor2 = user.getCodigoemp();
+                codigo.value = (valor * valor2)+"";
+                nombre.value = contacto.nombre;
+                win.setTitle(""+nombre.value);
+                win.setId("win"+codigo.value);
+                //   onLogin();    
+            }
 
-]]>
+
+            ]]>
         </zscript>
  
     </window>

@@ -31,31 +31,31 @@ public class NumerosaLetras {
                 valor = "Cero";
                 break;
             case 1:
-                valor = "Cero Uno";
+                valor = "Uno";
                 break;
             case 2:
-                valor = ("Cero Dos");
+                valor = ("Dos");
                 break;
             case 3:
-                valor = ("Cero Tres");
+                valor = ("Tres");
                 break;
             case 4:
-                valor = ("Cero Cuatro");
+                valor = ("Cuatro");
                 break;
             case 5:
-                valor = ("Cero Cinco");
+                valor = ("Cinco");
                 break;
             case 6:
-                valor = ("Cero Seis");
+                valor = ("Seis");
                 break;
             case 7:
-                valor = ("Cero Siete");
+                valor = ("Siete");
                 break;
             case 8:
-                valor = ("Cero Ocho");
+                valor = ("Ocho");
                 break;
             case 9:
-                valor = ("Cero Nueve");
+                valor = ("Nueve");
                 break;
             case 10:
                 valor = ("Diez");
