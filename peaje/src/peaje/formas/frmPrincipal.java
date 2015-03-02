@@ -3812,13 +3812,13 @@ deshabilite.setVisible(false);
 
 
 
-            File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
-            if (fichero.exists()) {
-                //fichero.delete();
-                System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
-            }
-            this.dispose();
-            new frmConfiguracion().show();
+//            File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
+//            if (fichero.exists()) {
+//                //fichero.delete();
+//                System.out.println("ELIMINADO: " + fichero.getAbsolutePath());
+//            }
+//            this.dispose();
+//            new frmConfiguracion().show();
 
 
 
@@ -5377,6 +5377,7 @@ deshabilite.setVisible(false);
                         ((frmTicket) component).noTicket.setText("");
                         ((frmTicket) component).fecha.setDate(new Date());
                         ((frmTicket) component).placa.requestFocusInWindow();
+                        limpiarMemoria();
                         return;
                     }
                 }
@@ -5458,6 +5459,7 @@ deshabilite.setVisible(false);
                         ((frmFactura) component).nombres.setText("CONSUMIDOR FINAL");
                         ((frmFactura) component).telefono.setText("9999999999");
                         ((frmFactura) component).chkEsNotaVenta.setSelected(empresaObj.getTrabajanotaventa());
+                        limpiarMemoria();
                         return;
                     }
                 }

@@ -96,6 +96,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         botonesVer.setVisible(false);
         correcto.setVisible(false);
         incorrecto.setVisible(false);
+        procesando.setVisible(false);
     }
 
     public frmFactura(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
@@ -137,6 +138,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             botonesVer.setVisible(false);
             correcto.setVisible(false);
             incorrecto.setVisible(false);
+            procesando.setVisible(false);
 
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
@@ -345,6 +347,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         btnAplicarDscto = new javax.swing.JButton();
         chkEsNotaVenta = new javax.swing.JCheckBox();
         verBot = new javax.swing.JToggleButton();
+        procesando = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
@@ -1566,6 +1569,17 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel4.add(verBot);
         verBot.setBounds(130, 130, 58, 50);
 
+        procesando.setBackground(new java.awt.Color(204, 204, 255));
+        procesando.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        procesando.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
+        procesando.setBorderPainted(false);
+        procesando.setContentAreaFilled(false);
+        procesando.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        procesando.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/images/procesando.gif"))); // NOI18N
+        procesando.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel4.add(procesando);
+        procesando.setBounds(10, 10, 90, 20);
+
         jPanel5.add(jPanel4);
         jPanel4.setBounds(370, 170, 380, 190);
 
@@ -2364,10 +2378,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     Clientes clienteCupon = new Clientes();
     Clientes clienteDscto = new Clientes();
-
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
-        if (empresaObj.getValidaCedula() && !identificacion.getText().contains("999999")) {
+private void guardarFactura(){
+ if (empresaObj.getValidaCedula() && !identificacion.getText().contains("999999")) {
 
             if (incorrecto.isVisible()) {
                 String tip = tipoIdentificacion.getSelectedItem().toString().contains("Ced") ? "Cédula" : tipoIdentificacion.getSelectedItem().toString().contains("Ruc") ? "RUC" : "";
@@ -2523,9 +2535,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
                         System.out.println("LLEGO A IMPRIMIR");
                         imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         System.out.println("........");
-                        Thread.sleep(5000);
+                        
                         //CORDILLERA 
                         if (empresaObj.getImprime2facturas()) {
+                            Thread.sleep(5000);
                             System.out.println("mando a imprimir otra vez");
                             imprimir(facActual.getCodigo(), emp, dia, false, cli);
                         }
@@ -2625,6 +2638,30 @@ public class frmFactura extends javax.swing.JInternalFrame {
             guardando = false;
         }
         limpiarMemoria();
+}
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+          Thread cargar = new Thread() {
+
+            public void run() {
+                btnAgregar.setEnabled(false);
+                verBot.setEnabled(false);
+                btnSalir.setEnabled(false);
+                noTicket.setEnabled(false);
+                procesando.setVisible(true);
+                try {
+                      guardarFactura();      
+                } catch (Exception e) {
+                    System.out.println("error en guardar, motivo: "+e);
+                }
+                    btnAgregar.setEnabled(true);
+                    verBot.setEnabled(true);
+                btnSalir.setEnabled(true);
+                noTicket.setEnabled(true);
+                procesando.setVisible(false);
+            }
+        };
+        cargar.start();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     public void imprimir(int cod, Empresa emp, int dias, Boolean mensual, Clientes cli) {
@@ -3490,14 +3527,13 @@ public class frmFactura extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_noTicketKeyPressed
     public void limpiarMemoria() {
-        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024f / 1024f);
         System.gc();
         System.gc();
         System.gc();
         System.gc();
         Runtime.getRuntime().runFinalization();
         Runtime.getRuntime().gc();
-        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024f / 1024f);
+        System.out.println("mb: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024f / 1024f);
     }
 
     public void llenarCliente4(Clientes nCliente) {
@@ -6892,6 +6928,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JPanel panelencontrados4;
     private javax.swing.JPanel panelencontrados5;
     public javax.swing.JFormattedTextField placa;
+    public javax.swing.JButton procesando;
     private javax.swing.JTable productos;
     public com.toedter.calendar.JDateChooser salida;
     private javax.swing.JTable tarjetasCliente;
