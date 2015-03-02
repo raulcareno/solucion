@@ -38,12 +38,12 @@
             Session a = Sessions.getCurrent();
             Empleados emp = a.getAttribute("user");
             if(emp==null){
-                    Executions.sendRedirect("login.zul");
+            Executions.sendRedirect("login.zul");
             }
             if(emp!=null){
-                if(!emp.getTipo().equals("Interna")){
-                        Executions.sendRedirect("indexProfesores.zul");
-                }
+            if(!emp.getTipo().equals("Interna")){
+            Executions.sendRedirect("indexProfesores.zul");
+            }
             }
             void salir(){
             
@@ -136,19 +136,19 @@
             //cargo los periodos que tienen
             List equivaEncontrados = adm.query("Select o from Empleadoperiodo as o " + 
             " where o.empleado.codigoemp = '"+user.getCodigoemp()+"' " + 
-             "  order by o.periodo.descripcion desc, o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion  ");
+            "  order by o.periodo.descripcion desc, o.periodo.descripcion, o.periodo.institucion.tipo, o.periodo.seccion.descripcion  ");
             if(user.getCodigoemp().equals(-1)){
-                equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
+            equivaEncontrados = adm.query("Select o from Empleadoperiodo as o ");
             }
             if(equivaEncontrados.size()>0){
-                Empleadoperiodo p = new Empleadoperiodo();
-                Periodo per = new Periodo(-1);
-                Institucion ins = new Institucion(-1);
-                ins.setTipo("");
-                per.setDescripcion("[Seleccione]");
-                p.setPeriodo(per);
-                Global g = new Global();
-                g.setDescripcion("");
+            Empleadoperiodo p = new Empleadoperiodo();
+            Periodo per = new Periodo(-1);
+            Institucion ins = new Institucion(-1);
+            ins.setTipo("");
+            per.setDescripcion("[Seleccione]");
+            p.setPeriodo(per);
+            Global g = new Global();
+            g.setDescripcion("");
 
             ins.setDenominacion("");
             ins.setNombre("");
@@ -185,8 +185,8 @@
             Messagebox.show("Usuario o Contrasena Incorrectos...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
             usuario.focus();
             }
-               // chat.CometServerPush.start(mensajes,pendientes,emp,este,mensajesSin);
-               // chat.VerificarMensajesSinLeer.start(mensajes,pendientes,emp,este);
+            // chat.CometServerPush.start(mensajes,pendientes,emp,este,mensajesSin);
+            chat.VerificarMensajesSinLeer.start(mensajes,pendientes,emp,este);
 
             }
             cargando(){
@@ -437,46 +437,48 @@
                     </tabbox>
                 </div>
             </center>
-         <east size="0%" visible="false"  title="CONTACTOS"  flex="true" maxsize="450" splittable="true" 
-                 collapsible="true" id="este"  >
-            <div  style="background:#B8D335" >
-                <panel id="mensajes"   border="normal" width="430px" height="100%" >
-                    <panelchildren >
+            <east size="0%" visible="false"  title="CONTACTOS"  flex="true" maxsize="450" splittable="true" 
+                  collapsible="true" id="este"  >
+                <div  style="background:#B8D335" >
+                    <panel id="mensajes"   border="normal" width="430px" height="100%" >
+                        <panelchildren >
                        
-                        <listbox id="pendientes" width="93%"  onSelect="soporteSeleccionado(self.selectedItem.value);">
+                            <listbox id="pendientes" width="93%"  onSelect="soporteSeleccionado(self.selectedItem.value);">
                                     
-                                                <listhead>
-                                                    <listheader label="." visible="false"/>
-                                                    <listheader label="-"/>
-                                                </listhead>
-                            <listitem value="21" label="__" />
-                        </listbox>
-                    </panelchildren>
-                   
-                    <zscript>
-                        void soporte2(String id, String nombre){
-                        System.out.println("......");
-                        Contactos sop = new Contactos(id,nombre);
-                        
-                            soporteSeleccionado(sop);
-                        }
-                        void soporteSeleccionado(Contactos sop){
-                        try{
-                                            final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
-                                            win.setClosable(true);
-                                            win.setAttribute("contacto",sop);
-                                            win.setTitle("Conversación");
-                                            win.setPosition("bottom,right");
-                                            win.doOverlapped();
-                            }catch(Exception e) {
-                            System.out.println("YA SE HA CREADO UNA SESION");
-                            }   
+                                <listhead>
+                                    <listheader label="." visible="false"/>
+                                    <listheader label="-"/>
+                                </listhead>
+                                <listitem value="21" label="__" />
+                            </listbox>
+        
+                        </panelchildren>
+
+                        <zscript>
+                            void soporte2(String id, String nombre){
+                                    System.out.println("......");
+                                    Contactos sop = new Contactos(id,nombre);
+                                    soporteSeleccionado(sop);
+                            }
+                            
+                            void soporteSeleccionado(Contactos sop){
+                                try{
+                                        final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                                        win.setClosable(true);
+                                        win.setAttribute("contacto",sop);
+                                        win.setTitle("Conversación Local");
+                                        win.setPosition("bottom,right");
+                                        win.doOverlapped();
+                                        
+                                }catch(Exception e) {
+                                        System.out.println("YA SE HA CREADO UNA SESION");
+                                }   
                     
-                        }
-                    </zscript>
-                </panel>      
-            </div>
-        </east>
+                            }
+                        </zscript>
+                    </panel>      
+                </div>
+            </east>
         </borderlayout>
  
         <menupopup id="derecho">

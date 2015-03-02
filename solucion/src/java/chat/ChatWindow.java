@@ -6,6 +6,7 @@ import java.util.Date;
 import jcinform.persistencia.Chat;
 import jcinform.persistencia.Empleados;
 import jcinform.procesos.Administrador;
+import org.zkoss.zhtml.Html;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
@@ -110,21 +111,19 @@ public class ChatWindow extends Window {
          
         Label message = new Label();
         Label fecha = new Label();
-        
-     
-        String stiloYo = "float: right; height:100% background-size: 100% 100%;  "
-                + " "
-                + " color: #3e454c; "
-                + " "
-                + "padding-bottom: 3px; "
-                + "padding-top: 4px; "
-                + "  "
-                + "text-shadow: rgba(255, 255, 255, .5) 0 1px 0; "
-                + "white-space: pre-wrap; "
-                + " ";
+        Div abc = new Div();
          
+        abc.setStyle("border: 1px solid #999999; background-color:#F2F2F2; height:100%; "
+                + "-moz-border-radius: 15px 15px 15px 15px; "
+                + "/*para Safari y Chrome*/ "
+                + "-webkit-border-radius: 5px 5px 5px 5px; "
+                + "/* para Opera */ "
+                + " border-radius: 5px 5px 5px 5px; float:right; padding: 7px; width: 210px;  "
+                + " ");
+  
+        abc.appendChild(message);
         String stiloFecha = "color:gray; font-size:8px;float:right";
-        message.setStyle(stiloYo);
+        //message.setStyle(stiloYo);
         fecha.setStyle(stiloFecha);
         Integer codigo = new Integer(((Textbox) getFellow("codigo")).getValue());
        
@@ -147,7 +146,8 @@ public class ChatWindow extends Window {
         }
 
         getFellow("msgBoard").appendChild(fecha);
-        getFellow("msgBoard").appendChild(message);
+        //getFellow("msgBoard").appendChild(message);
+        getFellow("msgBoard").appendChild(abc);
         
         //con esto envio el mensaje al cliente
         chatter.sendMessage(((Textbox) getFellow("msg")).getValue());
