@@ -31,7 +31,7 @@ public class CometServerPush {
     public static void start(Panel mensajes, Listbox lista, Empleados emp, East este,Menu mensajesSin)
             throws InterruptedException {
         final Desktop desktop = Executions.getCurrent().getDesktop();
-
+desktop.enableServerPush(false);
         contactos = (ContactosChat) desktop.getWebApp().getAttribute("contactoschat");
         if (contactos == null) {
             contactos = new ContactosChat();

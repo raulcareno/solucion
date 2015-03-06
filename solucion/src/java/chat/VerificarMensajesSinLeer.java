@@ -5,6 +5,8 @@
 package chat;
 
 import java.util.Iterator;
+import java.util.List;
+import jcinform.persistencia.Chat;
 import jcinform.persistencia.Empleados;
 import jcinform.procesos.Administrador;
 import org.zkoss.lang.Threads;
@@ -115,7 +117,21 @@ desktop.enableServerPush(false);
                             Listitem li = new Listitem();
                             li.setValue(object);
                             li.appendChild(new Listcell(object.getId() + ""));
-                            li.appendChild(new Listcell(object.getNombre() + ""));
+//                            try {
+//                                List<Chat>  c = adm.queryNativo("Select o.* from Chat as o where o.usuarior = '"+object.getId()+"' "
+//                                + " and o.visto = 0 group by o.usuarior ",Chat.class);
+//                                if(c.size()>0){
+//                                    li.appendChild(new Listcell(object.getNombre() + "("+c.size()+")"));       
+//                                }else{
+//                                    li.appendChild(new Listcell(object.getNombre() + ""));    
+//                                }
+//                            } catch (Exception e) {
+                                li.appendChild(new Listcell(object.getNombre() + ""));    
+//                            }
+                            
+                              
+                                
+                            
                             _lista.appendChild(li);
                         }
 
