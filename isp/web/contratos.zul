@@ -2512,7 +2512,9 @@ void llamar(){
    void buscarSectores(Integer codigo){
           bdSector.value = "";
         List NodosEncontrados = adm.query("Select o from Sector as o  " + 
-        " where o.canton.codigo = '"+codigo+"' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.nombre");
+        " where o.canton.codigo = '"+codigo+"' " 
+        //" and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' 
+        + " order by o.nombre");
         sectores = new Listbox();
         int a=0;
             for (Iterator it = sectores.getItems().iterator(); it.hasNext();) {
@@ -2533,7 +2535,9 @@ void llamar(){
       void buscarNodos(Integer codigo){
           bdNodo.value = "";
         List NodosEncontrados = adm.query("Select o from Nodos as o " + 
-        " where o.sector.canton.codigo = '"+codigo+"' and o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'  order by o.nombre");
+        " where o.sector.canton.codigo = '"+codigo+"' " + 
+        //and o.sector.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo() +"'   
+        " order by o.nombre");
         nodos = new Listbox();
         int a=0;
             for (Iterator it = nodos.getItems().iterator(); it.hasNext();) {
@@ -2610,7 +2614,7 @@ void llamar(){
             <tabs  width="150px">
                 <tab id="registro" label="Contratos"/>
                 <tab onSelect="facturasPendientes()" label="Pendientes" id="facturas"/>
-                <tab onSelect="buscarSoportes()" label="Hist. Técnica" />
+                <tab onSelect="buscarSoportes()" label="Hist. Admin" />
                 <tab onSelect="facturasPagadas()" label="Hist. Pagos" id="historial" />
                 <tab onSelect="facturasCortes()" label="Hist. Cortes" id="historiaCortes" />
                

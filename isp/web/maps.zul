@@ -27,20 +27,27 @@
     
     Empleados usuarioActual = ses.getAttribute("user");
     Empresa empresa = ses.getAttribute("empresa");
+hola(){
 
+//String bsession = Executions.getCurrent().getNativeRequest().toString();
+//String bsession =f.getPage().getRequestPath();
+String bsession = f.getDesktop().getCurrentDirectory();
+alert(bsession+"");
+}
 ]]>
         </zscript>
-
+<button label="sss" onClick="hola()"/>
       <tabbox context="derecho" id="mytab" width="100%" height="600px">
                             <tabs id="tbs">
                             </tabs>
-                            <tabpanels id="tps" >
+                            <tabpanels id="tps">
                               
                             </tabpanels>
                         </tabbox>
  
           
         <zscript>
+            Iframe f;
             void cargar(){
             
             try{
@@ -50,14 +57,15 @@
                     latitud = empresa.getLatitud();
                     longitud = empresa.getLongitud();
                }
-            String enviar = empresa.getUrl().replace("latitud",latitud).replace("longitud",longitud);
+                     String enviar = empresa.getUrl().replace("latitud",latitud).replace("longitud",longitud);
+                     System.out.println(""+enviar);
                                    Tab newtb= new Tab("Mapa");
                                     newtb.setSelected(true);
                                     newtb.setClosable(false);
                                     newtb.setParent(tbs);
 
                                     Tabpanel newtpl = new Tabpanel();
-                                    Iframe f = new Iframe(enviar);
+                                    f = new Iframe(enviar);
                                     System.out.println(""+enviar);
                                     f.setWidth("100%");
                                     f.setHeight("100%");
@@ -65,7 +73,8 @@
                                     newtpl.setParent(tps);
                                  
              }catch(Exception e){
-                     System.out.println("ERROR EN FACTURA "+e);
+             e.printStackTrace();
+                     System.out.println("ERROR EN MAPS "+e);
              }
             
                     

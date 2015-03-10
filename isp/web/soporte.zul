@@ -28,12 +28,16 @@
   import jcinform.bean.*;
   import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import jcinform.bean.*;
+
+
+email e = new email();
   Session ses = Sessions.getCurrent();
   //ses.setAttribute(org.zkoss.web.Attributes.PREFERRED_LOCALE, Locale.ENGLISH);
     Administrador adm = new Administrador();
     List planes = adm.query("Select o from Plan as o");
     List nodos = adm.query("Select o from Radios as o");
-    static Contratos equi = new Contratos();
+    Contratos equi = new Contratos();
     Permisos permiso = new Permisos();
     //SimpleTreeModel stm = new SimpleTreeModel(root);
             
@@ -93,14 +97,27 @@ llenarCliente(Clientes clienteEn){
      combo.value = clienteEn.getApellidos()+" "+clienteEn.getNombres() ;
 
 }
+
+void llenar(Contratos  equi2){
+    this.equi = equi2;
+     
+    contratosPanel.visible = false;
+    contrato.value = equi2.getCodigo();
+    estado.value = equi2.getEstado();
+
+}
 void buscarContratos(Clientes empa){
         contratosCliente = new Listbox();
+        contratosCliente2 = new Listbox();
         int a=0;
             for (Iterator it = contratosCliente.getItems().iterator(); it.hasNext();) {
                    contratosCliente.getItems().remove(a);
                 }
+                for (Iterator it = contratosCliente2.getItems().iterator(); it.hasNext();) {
+                   contratosCliente2.getItems().remove(a);
+                }
                 List  ControlequiposEncontrados = adm.query("Select o from Contratos as o " +
-                "where o.clientes.codigo = '"+empa.getCodigo()+"' and o.estado not in('Terminado') ");
+                "where o.clientes.codigo = '"+empa.getCodigo()+"'  ");
                                 for (Iterator it = ControlequiposEncontrados.iterator(); it.hasNext();) {
                                       Contratos  acceIt = (Contratos) it.next();
                                       Listitem li = new Listitem();
@@ -111,23 +128,25 @@ void buscarContratos(Clientes empa){
                                       Listcell estadoCelda = new Listcell(acceIt.getEstado()+"");
                                       String estilo = "background:#00E673";
                                       if(acceIt.getEstado().contains("Activo")){
-                                       // estilo = "background:#00E673";
+                                        estilo = "background:#00E673";
                                       }
                                       if(acceIt.getEstado().contains("Suspendido")){
-                                       // estilo  = "background:#FFFF6F";
+                                        estilo  = "background:#FFFF6F";
                                       }
                                       if(acceIt.getEstado().contains("Terminado")){
-                                      //  estilo = "background:#FF7575";   
+                                       estilo = "background:#FF7575";   
                                       }
-                                      contratoCelda.setStyle(estilo);
-                                 /*     planCelda.setStyle(estilo);
-                                      fechaCelda.setStyle(estilo);
-                                      estadoCelda.setStyle(estilo);*/
-                                      //li.appendChild(contratoCelda);
+                                      //contratoCelda.setStyle(estilo);
+                                        planCelda.setStyle(estilo);
+                                        fechaCelda.setStyle(estilo);
+                                        estadoCelda.setStyle(estilo);
+                                     // li.appendChild(contratoCelda);
                                       li.appendChild(planCelda);
                                       li.appendChild(fechaCelda);
                                       li.appendChild(estadoCelda);
                                         contratosCliente.appendChild(li);
+                                       // contratosCliente2.appendChild(li);
+                                        contratosPanel.visible = true;
                              }
 }
 
@@ -161,7 +180,7 @@ void buscarContratos(Clientes empa){
 
                          }
                         llenarCliente(empa);
-                         numerocontrato.focus();
+                         //numerocontrato.focus();
                     }
                 }
         
@@ -343,6 +362,7 @@ void buscarContratos(Clientes empa){
  }
                         
 void guardars(){
+ 
                     Integer valorEstado = new Integer(estadoSoporte.selectedItem.value);
 
                     if( empleadosList.selectedItem == null && (valorEstado.equals(3) || valorEstado.equals(4)) ){
@@ -351,7 +371,7 @@ void guardars(){
                     }
                                 Soporte sop = new Soporte();
                                 sop.setCodigo(codigos.value);
-                                sop.setEmpleados(new Empleados(atendida.value));
+                                sop.setEmpleados(adm.buscarClave(new Integer(atendida.value),Empleados.class));
                                 sop.setFecha(fechasoporte.value);
                                 sop.setObservacion(observacion.value);
                                 sop.setObservacion2(solucion.value);
@@ -360,6 +380,8 @@ void guardars(){
                                 sop.setGenerada(escalar.checked);
                                 sop.setDireccion(direccioni.value);
                                 sop.setTelefono(telefonoi.value);
+                                sop.setContrato(adm.buscarClave(new Integer(contrato.value),Contratos.class));
+                                
                                 if(valorEstado.equals(new Integer("1"))){
                                    sop.setRevisoescalar(true);
                                 }else{
@@ -371,7 +393,7 @@ void guardars(){
                                 if(valorEstado.equals(1)){
                                     sop.setFechafin(adm.Date());
                                 }
-                                sop.setClientes(new Clientes(new Integer(codigocli.value)));
+                                sop.setClientes(adm.buscarClave(new Integer(codigocli.value),Clientes.class));
                                 sop.setNoorden(noorden.value);
                                 if(valorEstado.equals(3) || valorEstado.equals(4)){
                                     sop.setGenerada(true);
@@ -397,6 +419,7 @@ void guardars(){
                                 //    orden.value = valor+"";
                                     sop.setGenerada(true);
                                     noorden.value = valor;
+                                  
                                 }
                                 if((!sop.getCodigo().equals(0)) ){
                                      sop.setFechamodifica(adm.Date());
@@ -448,6 +471,12 @@ void guardars(){
                                                     reportelocal.setDatasource(null);
                                                     reportelocal.setType("pdf");
                                                      System.out.println("000041");
+                                                     
+                                                       System.out.println("ENVIAR EMAIL");
+                                                            e.soporteTecnico(sop.getTecnico().getIdentificacion(),sop);
+                                                        System.out.println("ENVIADO EMAIL..");
+                                    
+                                    
                                                     final Window win = (Window) Executions.createComponents("reporteVisualizar.zul", null, null);
                                                     win.setMaximizable(true);
                                                     win.setClosable(true);
@@ -614,17 +643,32 @@ void guardars(){
   ]]>
     </zscript>
     <div style="align:center">
-        <tabbox width="100%"  height="600px" orient="vertical"  >
+        <tabbox width="100%"  height="600px"    >
             <tabs  width="150px">
                 <tab id="registro" label="Soporte e Historial"/>
                 <tab  label="Pendientes" id="facturas"/>
-                <tab label="Contratos" />
+                <tab label="Contratos" visible="false" />
                
             </tabs>
             <tabpanels>
                 <tabpanel>
+                        <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
+                        <panelchildren>
+                            <listbox mold="paging"  onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;  eliminar.disabled = false;"  rows="3" pageSize="3" id="contratosCliente" height="100%" width="100%">
+                                <listhead>
+                                    <listheader label="Plan"/>
+                                    <listheader label="Fecha"/>
+                                    <listheader label="Estado"/>
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.fecha}" />
+                                </listitem>
+                            </listbox>
+                            <button label="CERRAR" onClick="contratosPanel.visible = false"/>
+                        </panelchildren>
+                    </panel>
                     <groupbox id="gb" mold="3d" width="802px">
-                        <caption label="Registro" />
+                        
                         <grid>
                             <rows>
                                 <row style="background:#FFFF66">
@@ -635,76 +679,79 @@ void guardars(){
                                         <image  src="/images/enter.png"  height="14px"/>
                                     </span>
                                 </row>
-                                <row>
-                                    <span style="float:right"> Identificación: </span> 
+                                <row spans="2" style="background-color:#FFFFCC">
+                                     <span> <label value=" DATOS DE CLIENTE Y CONTRATO" style="font-weight:bold" />   </span>
+                                  </row>
+                                <row style="background-color:#F0F6FF">
+                                    <span style="float:right">   <label value="Identificación: " style="font-weight:bold" />   </span> 
                                     <span> 
+                                        
                                         <textbox id="identificacion" cols="13" readonly="false" onBlur="verificarCedula(self.value)" onOK="verificarCedula(self.value)"  />
                                         <image  src="/images/enter.png"  height="14px"/>
                                         <textbox visible="true" id="codigocli" style="background:white;border:0px;font-size:8px" cols="1" disabled="true" />
-                                        <span> Nombres:</span> 
+                                        <span> <label value="Nombres: " style="font-weight:bold" /></span> 
                                         <span>  
                                             <combobox  cols="35" id="combo" 
                                                        onSelect="verificarCedula(((Clientes)self.selectedItem.value).getIdentificacion())" 
                                                        autodrop="true" 
                                                        buttonVisible="false"  
                                                        use="jcinform.bean.autoCompletarClientes"/>
-                                    
-                                        <!--textbox readonly="true" cols="42"   id="combo2" />
-                           
-                              
-                                        <button label="" id="buscarC" disabled="false"  image="/images/auditoria.gif">
-                                            <attribute name="onClick">{
-                                                limpiarTodo();
-                                            final Window win = (Window) Executions.createComponents("buscarClientes.zul", null, null);
-                                            win.setMaximizable(true);
-                                            win.setClosable(true);
-                                            win.setAttribute("nuevo", true);
-                                            win.setTitle("Buscar Clientes");
-                                            win.doModal();
-                                            }                            
-                                            </attribute>
-                                        </button--> 
+                                    <image  src="/images/enter.png"  height="14px"/>
+                                        
                       
                                         </span>
                                     </span>
                                 </row>
-                                <row>
+                                <row style="background-color:#F0F6FF">
+                                     <span style="float:right"> <label value="Núm. Contrato: " style="font-weight:bold" />     </span>
+                                    
+                                    <span>
+                                        <intbox id="contrato" cols="40" readonly="true"  visible="true" />
+                                        <label value="Estado: " style="font-weight:bold" />    
+                                        <textbox id="estado" readonly="true" visible="true" />
+                                        <button label="+"  image="/images/contratos.png"  id="vercontratos" onClick="contratosPanel.visible = true; "/>
+                                    </span>
+                                </row> 
+                                   <row style="background-color:#F0F6FF">
+                                   <span style="float:right"> <label value="Dirección: " style="font-weight:bold" />      </span>
                                    
-                                    <label value="Dirección: " style="font-weight:bold" />    
                                     <span>
                                         <textbox id="direccioni" cols="40" readonly="true"  visible="true" />
                                         <label value="Teléfono: " style="font-weight:bold" />    
                                         <textbox id="telefonoi" readonly="true" visible="true" />
                                     </span>
                                 </row> 
-                                <row visible="false">
+                               <row style="background-color:#F0F6FF"  visible="false">
                                     <span style="float:right">Dirección:  </span>
                                     <textbox id="direccion" cols="32"  readonly="true"  />
                                 </row>
                     
-                                <row visible = "false">
+                                <row style="background-color:#F0F6FF"  visible = "false">
                                     <intbox id="codigos" readonly="true" />    
                                     <intbox id="atendida" readonly="true" />    
                                 </row>
                                 
-                                <row visible ="false"> 
-                                    <span style="float:right"> </span>
+                                <row style="background-color:#FFF" visible ="true"> 
+                                    <span style="float:right"> Fechas: </span>
                                     <span>
-                                        <datebox readonly="true" visible="false" disabled="true"  style="background:white; font-weight:bold" width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
-                                        <datebox readonly="true" visible = "false" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
-                                        <datebox readonly="true" visible = "false"  disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
+                                        Creado:
+                                        <datebox readonly="true" visible="true" disabled="true"  style="background:white; font-weight:bold" width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechasoporte"/> 
+                                        Modificado:
+                                        <datebox readonly="true" visible = "true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
+                                        Terminado:
+                                        <datebox readonly="true" visible = "true"  disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
                                     </span>
                                     
                                 </row>
 
-                                <row>
-                                    <span style="float:right"> Estado: </span>
+                                <row style="background-color:#D5FFD5">
+                                    <span style="float:right"> <label value="Estado: " style="font-weight:bold" /> </span>
                                     <span>
-                                        <bandbox style="background-color:transparent" value="Ingresado" disabled="true" readonly="true" width="90px"  id="bdEstado">
+                                        <bandbox style="background-color:transparent" value="Ingresado" disabled="true" readonly="true" width="110px"  id="bdEstado">
                                             <bandpopup>
                                                 <vbox>
                                                        
-                                                    <listbox  onSelect="bdEstado.value=self.selectedItem.label;bdEstado.closeDropdown(); habil(self.selectedItem.value);"   id="estadoSoporte"  >
+                                                    <listbox  onSelect="bdEstado.value=self.selectedItem.label;bdEstado.closeDropdown(); habil(self.selectedItem.value);"  width="110px"  id="estadoSoporte"  >
                                                         <listitem image="/images/registrado.png" label="Ingresado" selected="true" value="0" />
                                                         <listitem image="/images/agendado.png"   label="Agendado" value="3" />
                                                         <listitem image="/images/reagendado.png"  label="RE-Agendado" value="4" />
@@ -717,8 +764,8 @@ void guardars(){
                                             </bandpopup>
                                         </bandbox>  
                                     
-                                        Actividad:
-                                        <bandbox style="background-color:transparent" value="Asistencia" disabled="true" readonly="true" width="90px"  id="bdActividad">
+                                        <label value="Actividad: " style="font-weight:bold" />
+                                        <bandbox style="background-color:transparent" value="Asistencia" disabled="true" readonly="true" width="120px"  id="bdActividad">
                                             <bandpopup>
                                                 <vbox>
 
@@ -735,16 +782,24 @@ void guardars(){
                                     
                                     </span>
                                 </row>
-                                <row>
-                                    <span style="float:right"> No. Orden: </span>
+                                 <row spans="2" style="background-color:#FFFFCC;">
+                                     <span style="float:center">  <label value=" DATOS DE AGENDACIÓN" style="font-weight:bold" />   </span>
+                                  </row>
+                               <row style="background-color:#F0F6FF">
+                                    <span style="float:right"> <label value="No.Orden.: " style="font-weight:bold" /> </span>
                                     <span>   
                                         <checkbox visible ="false" id="generar" onCheck="bd.disabled = (!self.checked) " disabled="true"   />
                                         <intbox id="noorden" readonly="true"   /> 
-                                        Fecha:
+                                       <label value="Fecha Agendado: " style="font-weight:bold" />
                                         <datebox readonly="true" disabled="true"  style="background:white;"  
                                                  width="140px"  format="dd-MM-yyyy HH:mm"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
-                                        <span>Téc.Asignado:</span>
-                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="240px"  id="bd">
+                                       
+                                        
+                                    </span>
+                                </row>
+                               <row style="background-color:#F0F6FF">
+                                     <span style="float:right"><label value="Técnico Asignado: " style="font-weight:bold" /></span>
+                                        <bandbox style="background-color:transparent" disabled="true" readonly="true" width="290px"  id="bd">
                                             <bandpopup>
                                                 <vbox>
                                                        
@@ -758,14 +813,12 @@ void guardars(){
                                                 </vbox>
                                             </bandpopup>
                                         </bandbox>
-                                        
-                                    </span>
                                 </row>
-                                <row>
-                                    <span style="float:right"> Escalar: </span>
+                                <row style="background-color:#FFF">
+                                    <span style="float:right"> <label value="Escalar:  " style="font-weight:bold" /> </span>
                                     <span>   
                                         <checkbox visible ="true" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
-                                        <span>Empleado:</span>
+                                        <span> <label value="Empleado: " style="font-weight:bold" /> </span>
                                         <bandbox style="background-color:transparent" readonly="true" width="240px"  id="bdEs">
                                             <bandpopup>
                                                 <vbox>
@@ -782,12 +835,12 @@ void guardars(){
                                     </span>
                                 </row>
                                 
-                                <row>
-                                    <span style="float:right"> Comentario: </span>
+                                <row style="background-color:#FFF">
+                                    <span style="float:right"> <label value="Comentario: " style="font-weight:bold" /> </span>
                                     <textbox readonly="true" cols="82"  rows="3" id="observacion"/> 
                                 </row>
-                                <row>
-                                    <span style="float:right"> Solución: </span>
+                                <row style="background-color:#FFF">
+                                    <span style="float:right"> <label value="Solución: " style="font-weight:bold" /> </span>
                                     <textbox readonly="true" cols="82"  rows="3" id="solucion"/> 
                                 </row>
                                 
@@ -802,8 +855,8 @@ void guardars(){
                            
                         <span>
                             <button image="/images/guardar.gif" id="guardars" label="Guardar"  disabled="true"  onClick="guardars();modificars.disabled = true;"/>
-                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); identificacion.focus();guardars.disabled = false;modificars.disabled = true" />
-                            <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false); observacion.focus();guardars.disabled = false;"/>                           
+                            <button  image="/images/nuevo.gif" id="agregars" label="Agregar" onClick="nuevos(new Soporte(0)); habilitar(false); observacion.focus();guardars.disabled = false;modificars.disabled = true" />
+                            <button  image="/images/editar.gif" id="modificars"  label="Modificar" disabled="true"  onClick="habilitar(false);  observacion.focus();guardars.disabled = false;"/>                           
                         </span>		
                         <panel framable="true" visible="true"  title="HISTORIAL DE ATENCIONES"   height="250px" width="795px">
                             <panelchildren>
@@ -852,17 +905,18 @@ void guardars(){
                        
                 </tabpanel>
                 <tabpanel>
-                   
-                    <listbox mold="paging" rows="3" pageSize="3" id="contratosCliente" height="100%" width="100%">
-                        <listhead>
-                            <listheader label="Plan"/>
-                            <listheader label="Fecha"/>
-                            <listheader label="Estado"/>
-                        </listhead>
-                        <listitem forEach="${allEvents}" value="${each}">
-                            <listcell label="${each.fecha}" />
-                        </listitem>
-                    </listbox>
+                    
+                            <listbox mold="paging" rows="3" pageSize="3" id="contratosCliente2" height="100%" width="100%">
+                                <listhead>
+                                    <listheader label="Plan"/>
+                                    <listheader label="Fecha"/>
+                                    <listheader label="Estado"/>
+                                </listhead>
+                                <listitem forEach="${allEvents}" value="${each}">
+                                    <listcell label="${each.fecha}" />
+                                </listitem>
+                            </listbox>
+                            
                        
                 </tabpanel>
             </tabpanels>
@@ -903,6 +957,7 @@ void guardars(){
         }catch(Exception e){
         System.out.println("ERROR EN CARGAR SOPOrTE: "+e);
         }
+        System.out.println(".");
         }
     </zscript>
 </window>

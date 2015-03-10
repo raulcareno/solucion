@@ -13,9 +13,9 @@ import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.zkoss.zhtml.Iframe;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
-import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Listitem;
 
 /**
@@ -27,6 +27,7 @@ public class ReportesClase {
     Sucursal sucursal = null;
 
     public ReportesClase() {
+        
         Session ses = Sessions.getCurrent();
         Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
         sucursal = sucursalEmp.getSucursal();
@@ -1066,7 +1067,7 @@ public class ReportesClase {
                     + "(SUM(cx.debe) - SUM(cx.haber)) saldo,SUM(cx.haber) abonos, fa.subtotal, fa.valoriva ,fa.contratos "
                     + " FROM cxcobrar cx, factura  fa "
                     + " WHERE fa.clientes  =  " + clientes1.getCodigo() + "  "
-                    + " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
+                    //+ " AND fa.sucursal = '" + sucursal.getCodigo() + "' "
                     + " AND cx.factura = fa.codigo "
                     + "AND fa.emision between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";

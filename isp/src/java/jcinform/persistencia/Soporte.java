@@ -106,6 +106,10 @@ public class Soporte implements Serializable {
     @JoinColumn(name = "tecnico", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados tecnico;
+    
+     @JoinColumn(name = "contrato", referencedColumnName = "codigo")
+    @ManyToOne
+    private Contratos contrato;
 
     public Soporte() {
     }
@@ -314,6 +318,14 @@ public class Soporte implements Serializable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public Contratos getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(Contratos contrato) {
+        this.contrato = contrato;
     }
     
     

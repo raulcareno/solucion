@@ -83,21 +83,12 @@ public class generarFacturas {
 //                if(existe.size()>0){
 //                        return " "+ "EL NÚMERO DE FACTURA INICIAL YA EXISTE EN SUCURSAL: "+suc.getDescripcion();
 //                }
-
-        /*
-         *
-         * List facEncontradas = adm.queryNativo("SELECT fa.codigo, fa.fecha,
-         * fa.total, ((SUM(cx.debe) + SUM(cx.rtotal)) - SUM(cx.haber))
-         * saldo,fa.contratos, fa.numero,fa.emision FROM cxcobrar cx, factura fa
-         * " + " WHERE fa.clientes = "+codigocli.value+" " + " AND cx.factura =
-         * fa.codigo GROUP BY fa.codigo HAVING (SUM(cx.debe) - SUM(cx.haber)) >
-         * 0 order by fa.contratos, fa.fecha "); *
-         */
-
         String query = "Select o.* from Contratos  as o "
                 + "where o.codigo not in (Select f.contratos from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
+        //        + "and  o.estado in ('Activo')   order by o.codigo ";
+        + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
+        
         //+ "and  o.estado in ('Activo','Terminado')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ";
         System.out.println("" + query);
         List facturasHechas = adm.queryNativo(query, Contratos.class);
@@ -218,7 +209,8 @@ public class generarFacturas {
         List facturasHechas = adm.queryNativo("Select o.* from Contratos  as o "
                 + "where o.codigo not in (Select f.contratos from Factura as f "
                 + "where f.fecha between '" + mesActualIni + "' and '" + mesActualFin + "') "
-                + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
+        //        + "and  o.estado in ('Activo')  and o.sucursal = '" + suc.getCodigo() + "' order by o.codigo ", Contratos.class);
+        + "and  o.estado in ('Activo')   order by o.codigo ", Contratos.class);
         try {
             for (Iterator it = facturasHechas.iterator(); it.hasNext();) {
                 Contratos object = (Contratos) it.next();
@@ -1053,7 +1045,8 @@ public class generarFacturas {
                 + "  AND cx.factura = fa.codigo AND fa.fecha "
                 + " AND c.automatico = TRUE  "
                 + " AND CURDATE() > CONCAT(YEAR(fa.fecha),'-',MONTH(fa.fecha),'-',p.fechavencimiento) "
-                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
+                //+ "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "'  GROUP BY fa.codigo  "
+                + "   AND cli.codigo = fa.clientes   GROUP BY fa.codigo  "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);
         String contratosList = "";
@@ -1062,7 +1055,7 @@ public class generarFacturas {
 
         }
         //TENGO QUE ACTUALIZAR A TODOS LOS CONTRATOS QUE SE ENCUENTREN CORTADOS
-        adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and automatico = true ");
+        adm.ejecutaSqlNativo("UPDATE contratos SET estado = 'Activo' WHERE estado = 'Cortado' and automatico = true  ");
         if (contratosList.length() > 0) {
             contratosList = contratosList.substring(0, contratosList.length() - 1);
             contratosList = contratosList.replace("[", "").replace("]", "");
@@ -1162,7 +1155,8 @@ public class generarFacturas {
                 + "  AND cx.factura = fa.codigo "
                 + " AND c.automatico = TRUE  "
                 + " AND CURDATE() > CONCAT(YEAR(fa.fecha),'-',MONTH(fa.fecha),'-',p.fechavencimiento) "
-                + "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "' "
+                + "   AND cli.codigo = fa.clientes   "
+                //+ "   AND cli.codigo = fa.clientes AND fa.sucursal = '" + suc.getCodigo() + "' "
                 + " and fa.contratos = '" + contrato.getCodigo() + "'  GROUP BY fa.codigo  "
                 + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         List deudas = adm.queryNativo(quer);

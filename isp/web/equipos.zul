@@ -21,7 +21,8 @@
   Session ses = Sessions.getCurrent();
   Empleadossucursal sucursalEmp = ses.getAttribute("sector");
   Administrador adm = new Administrador();
-  List allEvents = adm.query("Select o from Equipos as o where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
+  List allEvents = adm.query("Select o from Equipos as o  ");
+  //where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"'
   static Equipos empa = new Equipos();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Marcas as o  ");
@@ -189,7 +190,9 @@ void eliminar(){
  
   void buscar(String p){
         List EquiposEncontrados = adm.query("Select o from Equipos as o " + 
-        " where o.nombre like '%"+p+"%' and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' order by o.nombre");
+        " where o.nombre like '%"+p+"%'  " 
+        //and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' 
+        + " order by o.nombre");
         datos = new Listbox();
         int a=0;
             for (Iterator it = datos.getItems().iterator(); it.hasNext();) {
