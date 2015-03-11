@@ -397,6 +397,7 @@ void guardars(){
                                 sop.setNoorden(noorden.value);
                                 if(valorEstado.equals(3) || valorEstado.equals(4)){
                                     sop.setGenerada(true);
+                                    
                                 }
                                 try{
                                     sop.setTecnico(empleadosList.selectedItem.value);
@@ -415,11 +416,11 @@ void guardars(){
                                 if(valorEstado.equals(3) && sop.getNoorden() == null){ 
                                     Integer valor = adm.getNuevaClave("Soporte","noorden");
                                     sop.setNoorden(valor);
-                                    sop.setFechaorden(adm.Date());
+                                  
                                 //    orden.value = valor+"";
                                     sop.setGenerada(true);
                                     noorden.value = valor;
-                                  
+                                    sop.setFechaorden(adm.Date());
                                 }
                                 if((!sop.getCodigo().equals(0)) ){
                                      sop.setFechamodifica(adm.Date());
@@ -643,7 +644,7 @@ void guardars(){
   ]]>
     </zscript>
     <div style="align:center">
-        <tabbox width="100%"  height="600px"    >
+        <tabbox width="100%"  height="100%"    >
             <tabs  width="150px">
                 <tab id="registro" label="Soporte e Historial"/>
                 <tab  label="Pendientes" id="facturas"/>
@@ -730,8 +731,10 @@ void guardars(){
                                     <intbox id="codigos" readonly="true" />    
                                     <intbox id="atendida" readonly="true" />    
                                 </row>
-                                
-                                <row style="background-color:#FFF" visible ="true"> 
+                                 <row spans="2" style="background-color:#FFFFCC;">
+                                     <span style="float:center">  <label value=" DATOS DE LLAMADA" style="font-weight:bold" />   </span>
+                                  </row>
+                              <row style="background-color:#D5FFD5">
                                     <span style="float:right"> Fechas: </span>
                                     <span>
                                         Creado:
@@ -739,7 +742,7 @@ void guardars(){
                                         Modificado:
                                         <datebox readonly="true" visible = "true" disabled="true"  style="background:white; font-weight:bold"  width="75px"  format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechamodificada"/> 
                                         Terminado:
-                                        <datebox readonly="true" visible = "true"  disabled="true"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
+                                        <datebox readonly="true" visible = "true"  disabled="false"  style="background:white; font-weight:bold"  width="75px" format="dd-MM-yyyy"  onCreate="self.value = adm.Date()" id="fechafin"/> 
                                     </span>
                                     
                                 </row>
@@ -782,6 +785,26 @@ void guardars(){
                                     
                                     </span>
                                 </row>
+                                 <row style="background-color:#D5FFD5">
+                                    <span style="float:right"> <label value="Escalar:  " style="font-weight:bold" /> </span>
+                                    <span>   
+                                        <checkbox visible ="true" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
+                                        <span> <label value="Empleado: " style="font-weight:bold" /> </span>
+                                        <bandbox style="background-color:transparent" readonly="true" width="240px"  id="bdEs">
+                                            <bandpopup>
+                                                <vbox>
+                                                    <listbox   onSelect="bdEs.value=(self.selectedItem.value).getApellidos() +' '+(self.selectedItem.value).getNombres() ;bdEs.closeDropdown();"   id="empleadosListEs"  >
+                                                        <listitem forEach="${empleadosEncontrados}"    value="${each}">
+                                                            <listcell label="${each.apellidos}" />
+                                                            <listcell label="${each.nombres}" />
+                                                        </listitem>
+                                                    </listbox> 
+                                                </vbox>
+                                            </bandpopup>
+                                        </bandbox>
+                                        <checkbox visible ="true" id="revisoescalar"  disabled="true"   />
+                                    </span>
+                                </row>
                                  <row spans="2" style="background-color:#FFFFCC;">
                                      <span style="float:center">  <label value=" DATOS DE AGENDACIÓN" style="font-weight:bold" />   </span>
                                   </row>
@@ -814,26 +837,7 @@ void guardars(){
                                             </bandpopup>
                                         </bandbox>
                                 </row>
-                                <row style="background-color:#FFF">
-                                    <span style="float:right"> <label value="Escalar:  " style="font-weight:bold" /> </span>
-                                    <span>   
-                                        <checkbox visible ="true" id="escalar" onCheck="bdEs.disabled = (!self.checked) " disabled="true"   />
-                                        <span> <label value="Empleado: " style="font-weight:bold" /> </span>
-                                        <bandbox style="background-color:transparent" readonly="true" width="240px"  id="bdEs">
-                                            <bandpopup>
-                                                <vbox>
-                                                    <listbox   onSelect="bdEs.value=(self.selectedItem.value).getApellidos() +' '+(self.selectedItem.value).getNombres() ;bdEs.closeDropdown();"   id="empleadosListEs"  >
-                                                        <listitem forEach="${empleadosEncontrados}"    value="${each}">
-                                                            <listcell label="${each.apellidos}" />
-                                                            <listcell label="${each.nombres}" />
-                                                        </listitem>
-                                                    </listbox> 
-                                                </vbox>
-                                            </bandpopup>
-                                        </bandbox>
-                                        <checkbox visible ="true" id="revisoescalar"  disabled="true"   />
-                                    </span>
-                                </row>
+                              
                                 
                                 <row style="background-color:#FFF">
                                     <span style="float:right"> <label value="Comentario: " style="font-weight:bold" /> </span>
@@ -863,7 +867,7 @@ void guardars(){
                             
                         
 	   
-                                <listbox mold="paging"  height="150px"  
+                                <listbox mold="paging"  height="200px"  rows="7" pageSize="7"   
                                          onSelect="nuevos(soporte.selectedItem.value);modificars.disabled = false" id="soporte" width="100%">
                                     <listhead>
                                         <listheader label="Ticket"/>
@@ -889,7 +893,7 @@ void guardars(){
                 </tabpanel>
                 <tabpanel>
          
-                    <listbox mold="paging" rows="3" pageSize="3"   id="facturasDatos" width="100%">
+                    <listbox mold="paging" rows="7" pageSize="7"  height="150px"  id="facturasDatos" width="100%">
                         <listhead>
                                    
                             <listheader label="Fecha Pago"/>
@@ -906,7 +910,7 @@ void guardars(){
                 </tabpanel>
                 <tabpanel>
                     
-                            <listbox mold="paging" rows="3" pageSize="3" id="contratosCliente2" height="100%" width="100%">
+                            <listbox mold="paging" rows="30" pageSize="3" id="contratosCliente2" height="100%" width="100%">
                                 <listhead>
                                     <listheader label="Plan"/>
                                     <listheader label="Fecha"/>
@@ -922,20 +926,7 @@ void guardars(){
             </tabpanels>
         </tabbox>
         
-        <grid  width="802px">
-            <rows>
-                <row>
-                                        
-                                 
-              
-                    <span>
-                    
-                        
-                    </span>
-                </row>
-               
-            </rows>
-        </grid>
+       
 
      
         <panel height="1px" visible="false" style="margin-bottom:10px"

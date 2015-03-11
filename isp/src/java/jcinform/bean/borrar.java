@@ -20,7 +20,7 @@ public class borrar {
 
         System.out.println("" + val.substring(val.indexOf("-") + 1, val.length()));
         email e = new email();
-        e.soporteTecnico("1714846043",new Soporte(4));
+        e.soporteTecnico("1309700548",new Soporte(4));
         //GregorianCalendar now = new GregorianCalendar();
 //        Date desde = new Date();
 //        desde.setYear(desde.getYear()-1);

@@ -37,7 +37,7 @@ public class email {
                     + "<p>"
                     + "<p>."
                     + "<hr>."
-                    + "Desarrollado por JCINFORM fono: 080162 211 "
+                    + "Desarrollado por SISCONTROL fono: 510 38 43 / 0980162 211 "
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
@@ -58,8 +58,8 @@ public class email {
     public String soporteTecnico(String cedula,Soporte sop) {
 //        claves val = new claves();
         
-                Administrador adm = new Administrador();
-//                sop = (Soporte)adm.buscarClave(new Integer(4), Soporte.class);
+        Administrador adm = new Administrador();
+        sop = (Soporte)adm.buscarClave(sop.getCodigo(), Soporte.class);
         Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.identificacion = '" + cedula + "' ");
         if (emp != null) {
 
@@ -290,7 +290,7 @@ public class email {
                     + " </table>"
                     + " </body> "
                     + " </html> ";
-            Boolean estado = EnviarAutenticacion.RecuperarClave(emp.getEmail().trim(), mensaje,
+            Boolean estado = EnviarAutenticacion.RecuperarClave(sop.getTecnico().getEmail(), mensaje,
                     "ASISTENCIA CLIENTE: " + sop.getClientes().getApellidos() + " "+sop.getClientes().getNombres(), empre.getUsuariomail(), empre.getClavemail(), empre.getSmtp(), empre.getPuerto(), empre.getAutorizacion(), empre.getStar());
             if (estado) {
                 return "[OK] " + emp.getEmail();
