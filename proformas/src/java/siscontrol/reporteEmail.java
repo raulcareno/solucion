@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 import net.sf.jasperreports.engine.JRExporter;
@@ -27,15 +28,23 @@ import siscontrol.mail.email;
  * @author Geovanny
  */
 public class reporteEmail {
-
+String separador = File.separator;
     public reporteEmail() {
+        
     }
 
-    public void abc(ArrayList detalles, Map map, String nombre, String destinatarios, String directorio,String mensaje, String tema) {
+    public void abc(ArrayList detalles, Map map, String numeroProformas, String destinatarios, String directorioReportes,String mensaje, String tema) {
         try {
+            ArrayList archivos = new ArrayList();
+            for (Iterator iterator = detalles.iterator(); iterator.hasNext();) {
+                Detalle next = (Detalle) iterator.next();
+                if(next.getProducto().getBrochure()!=""){
+                    archivos.add(directorioReportes+separador+next.getProducto().getBrochure());
+                }
+            }
             ReporteFacturaDataSource ds = new ReporteFacturaDataSource(detalles);
-            String archivoName = directorio+"/proforma" + nombre + ".pdf";
-            InputStream input = new FileInputStream(new File(directorio+"/proforma.jasper"));
+            String archivoName = directorioReportes+separador+"proforma" + numeroProformas + ".pdf";
+            InputStream input = new FileInputStream(new File(directorioReportes+separador+"proforma.jasper"));
             JasperPrint print = JasperFillManager.fillReport(input, map, ds);
         //JasperPrint print = JasperFillManager.fillReport(input, map, jasperReports);
             //fillReport(input, map, jasperReports); 
@@ -72,7 +81,8 @@ public class reporteEmail {
                 }
                 i++;
             }
-            e.soporteTecnico("geova", archivoName, correosAenviar,mensaje,tema);
+            archivos.add(archivoName);
+            e.soporteTecnico("geova", archivos, correosAenviar,mensaje,tema);
         } catch (Exception e) {
             System.out.println("" + e);
         }

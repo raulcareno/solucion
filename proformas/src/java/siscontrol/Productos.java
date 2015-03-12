@@ -59,7 +59,7 @@ public class Productos implements Serializable {
     @Column(name = "costo")
     private BigDecimal costo;
     @Column(name = "brochure")
-    private String brochure;
+    private String brochure ="";
     @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY)
     private List<Detalle> detalleList;
 

@@ -1,5 +1,6 @@
 package siscontrol.mail;
 
+import java.io.File;
 import java.util.*;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -61,11 +62,21 @@ public class email {
 //        }
 //    }
 
-    public String soporteTecnico(String cedula,String proforma,ArrayList para,String mensaj,String tema) {
-        this.mensaje = mensaj;
-        this.tema = tema;
+    public String soporteTecnico(String cedula,ArrayList proforma,ArrayList para,String mensaj,String tema) {
         Administrador adm = new Administrador();
         Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.usuario = 'geova' ");
+        String firma = "\n" +
+                    "\n" +
+                    "____________________________\n" +
+                   emp.getNombres()+ "  \n" +
+                    "  www.siscontrol.com.ec\n" +
+                    "  Dios te Bendiga\n" +
+                    "\n" +
+                    "";
+        this.mensaje = ""+mensaj+""+firma+"";
+        this.tema = tema;
+        
+        
         if (emp != null) {
             List<Empresa> empresas = adm.query("Select o from Empresa as o");
             Empresa empre = empresas.get(0);
@@ -173,7 +184,7 @@ public class email {
 
 class EnviarAutenticacion {
 
-    public static Boolean RecuperarClave(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, Boolean autorizacion, Boolean star,String archivo) {
+    public static Boolean RecuperarClave(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, Boolean autorizacion, Boolean star,ArrayList archivo) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -212,7 +223,7 @@ class EnviarAutenticacion {
 
     }
 
-    public static void EnviarCorreo(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, String respuestaA, Boolean autorizacion, Boolean star,String archivo) {
+    public static void EnviarCorreo(ArrayList email, String mensaje, String tema, String emailInstitucion, String clave, String host, String puerto, String respuestaA, Boolean autorizacion, Boolean star,ArrayList archivo) {
 //        String host ="smtp.gmail.com";//Suponiendo que el servidor SMTPsea la propia máquina
         //String from ="setecompu.ec@gmail.com";
         String from = emailInstitucion;
@@ -245,21 +256,29 @@ class EnviarAutenticacion {
 
     }
 
-    private static MimeMessage getTraerMensaje(Session session, String from, InternetAddress[] to, String mensaje, String emailInstitucion, String respuestaA,String archivo) {
+    private static MimeMessage getTraerMensaje(Session session, String from, InternetAddress[] to, String mensaje, String emailInstitucion, String respuestaA,ArrayList archivo) {
         try {
 
             //esto es para adjuntar;
             BodyPart texto = new MimeBodyPart();
             texto.setText(mensaje);
-
-            BodyPart adjunto = new MimeBodyPart();
-            adjunto.setDataHandler(new DataHandler(new FileDataSource(archivo)));
-            adjunto.setFileName("proforma.pdf");
-            MimeMultipart multiParte = new MimeMultipart();
-
-            multiParte.addBodyPart(texto);
-            multiParte.addBodyPart(adjunto);
+            MimeBodyPart adjunto = new MimeBodyPart();
             
+            
+ //adjnto varios archivos y no de 1 en 1            
+            MimeMultipart multiParte = new MimeMultipart();
+            multiParte.addBodyPart(texto);
+            if(archivo.size()>0){
+                for (Iterator iterator = archivo.iterator(); iterator.hasNext();) {
+                    String  next = (String)iterator.next();
+                    adjunto = new MimeBodyPart();
+                    adjunto.setDataHandler(new DataHandler(new FileDataSource(next)));
+                    adjunto.setFileName(next.substring(next.lastIndexOf(File.separator)));
+                    multiParte.addBodyPart(adjunto);
+                }
+                    
+            }
+             
             //esto es para adjuntar;
             
             MimeMessage msg = new MimeMessage(session);
