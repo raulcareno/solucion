@@ -22,7 +22,7 @@ public class ReporteFacturaDataSource implements JRDataSource {
     private Iterator itrNodos;
     private Object valorAtual;
     private boolean irParaProximoAlumno = true;
-
+ 
     public ReporteFacturaDataSource(List lista) {
         super();
         this.itrNodos = lista.iterator();
@@ -35,6 +35,7 @@ public class ReporteFacturaDataSource implements JRDataSource {
         return irParaProximoAlumno;
     }
 
+      
     public Object getFieldValue(JRField campo) throws JRException {
         Object valor = null;
 
