@@ -389,7 +389,7 @@ Boolean validarSeriesAju(){
           fecha.setDisabled(false);
           filas.getChildren().clear();
           CodigoFactura.value = 0;
-          
+          enviarCorreoBoton.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -399,6 +399,7 @@ Boolean validarSeriesAju(){
         modificar.disabled = false;
         registro.setSelected(true);
         sumarTotal("");
+        enviarCorreoBoton.disabled = true;
   }
 void modificar(){
   if(verificar("Modificar")){
@@ -890,8 +891,8 @@ void tipoDocumento(String tipo){
                                                 <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo(); clientesBusqueda.focus();" />
                                                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                                                 <button  image="/images/copiar.png" id="copiar"  label="Modificar" disabled="true"  onClick="copiar()"/>
-                                                <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();reporteVer.setSelected(true);"/>
-                                                <button  image="/images/bandeja.png" id="emailBoton"  label="Enviar Email" disabled="false"  onClick="imprimir(); email2.value = email.value; emailTab.setSelected(true);"/>
+                                                <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();reporteVer.setSelected(true); enviarCorreoBoton.disabled = false;"/>
+                                                <button  image="/images/bandeja.png" id="emailBoton"  label="Enviar Email" disabled="false"  onClick="imprimir(); email2.value = email.value; emailTab.setSelected(true); enviarCorreoBoton.disabled = false;"/>
                                             </hbox>
                                         </vbox>
                                     </row>
@@ -1061,7 +1062,7 @@ void tipoDocumento(String tipo){
                     </rows>
                 </grid>
                        
-                <button    image="/images/bandeja.png"  label="ENVIAR CORREO" onClick="tema.getValue();email2.getValue(); mensaje.getValue(); enviar();"/>
+                <button  disabled="true"  image="/images/bandeja.png" id="enviarCorreoBoton"  label="ENVIAR CORREO" onClick="tema.getValue();email2.getValue(); mensaje.getValue(); enviar();"/>
                  
             </tabpanel>
         </tabpanels>

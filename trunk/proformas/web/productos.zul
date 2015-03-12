@@ -7,19 +7,28 @@
     <window onCreate="cargar()" id="crearProductos">
         <zscript>
             <![CDATA[
-import siscontrol.*;
- import siscontrol.cnx.*;
-  import java.util.ArrayList;
-  import org.zkoss.image.AImage;
-  import org.zkoss.image.Image;
+    import siscontrol.*;
+    import siscontrol.cnx.*;
+    import java.util.ArrayList;
+    import org.zkoss.image.AImage;
+    import org.zkoss.image.Image;
+    import org.zkoss.util.media.Media;
+    import org.zkoss.util.media.AMedia;
+    import java.io.FileOutputStream;
+    import java.io.FileInputStream;
+    import java.io.File;
+import org.apache.commons.io.IOUtils;
+
+
     Administrador adm = new Administrador();
     List allEvents = adm.query("Select o from Productos as o where o.codigo = 0");
     static Productos empa = new Productos();
     Permisos permiso = new Permisos();
 Session a = Sessions.getCurrent();
                 Empresa empresa = a.getAttribute("empresa");
- 
-      
+byte[] data = null; 
+String directorioReportes = empresa.getReportes();
+                  
     Object media = null;
 Boolean instanciadaContratos = false;
 //FUNCIONES
@@ -48,7 +57,26 @@ void llenar(Productos empa){
     pvp3.value = empa.getPvp3();
     costo.value = empa.getCosto();
     brochure.value = empa.getBrochure();
- 
+        if(empa.getBrochure() != ""){
+             descargarb.visible = true;
+             quitar.visible = true;
+             FileInputStream input;
+                //byte[] data=null;
+                data=null;
+                try {
+                        input = new FileInputStream(directorioReportes+"/"+brochure.value);
+                        data = new byte[input.available()];
+                        input.read(data);
+                        input.close();
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+             
+             
+       }else{
+            descargarb.visible = false;
+            quitar.visible = false;
+       }
         
 
 }
@@ -66,7 +94,7 @@ void estado(Boolean estado,Boolean modificar){
     pvp2.readonly = estado;
     pvp3.readonly = estado;
     costo.readonly = estado;
-    brochure.readonly = estado;
+   // brochure.readonly = estado;
     
    
 
@@ -101,6 +129,13 @@ void estado(Boolean estado,Boolean modificar){
              adm.guardar(empa);
              buscar("");
          }
+         if(brochure.value != ""){
+                FileOutputStream out = new FileOutputStream(directorioReportes+"/"+brochure.value);
+                 out.write(data);
+                 out.flush();
+                 out.close();
+        }
+ 
       
          
               Boolean a = true;
@@ -260,16 +295,90 @@ void eliminar(){
                 </row>
                  <row>
                     <span style="float:right"> Brochure</span>
+                    <span>
                     <textbox id="brochure" maxlength="200" cols="25" readonly="true"  />
-                </row>
-                
-                             
-                        
-                          
-                           
-                         
+                    <button image="/images/adjunto.gif" id="ima">
+                            <attribute name="onClick">{
 
-                      
+            Media media0 = Fileupload.get();
+
+
+                            if (media0 instanceof AMedia) {
+                                    AMedia media = (AMedia) media0;
+                                    String nombre= media0.getName();
+                                    try{
+                                        data = media.getByteData();
+                                    }catch(Exception e){
+                                            //Messagebox.show("No puede adjuntar este tipo de archivos...!\n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                        try{
+                                                data = media.getStringData().getBytes();
+                                        }catch(Exception ax){
+                                                try{
+                                                        data = IOUtils.toByteArray(media.getStreamData());
+                                                }catch(Exception aa){
+                                                    Messagebox.show("No puede adjuntar este tipo de archivos...!\n"+ax, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
+                                                        return;
+                                                }
+                                                
+                                
+                                                
+                                                      
+                                        }
+                                    }
+                                    brochure.value = media0.getName();
+                            }else{
+                                           data =  media0.getByteData();
+                                           brochure.value = media0.getName();
+                           }
+		}
+
+                            </attribute>
+                        </button>
+                        
+                         
+                          <button image="/images/descargar.png" id="descargarb" visible="false" label="Descargar">
+                            <attribute name="onClick">
+                                Filedownload.save(data, "file", brochure.value);
+                            </attribute>
+                        </button>
+                        
+                          <button image="/images/quitar2.gif" id="quitar" visible="false" label="Quitar">
+                            <attribute name="onClick">{
+                                 
+                                int valor0 = Messagebox.show("Seguro que desea quitar este archivo,\n Se eliminará del directorio, Desea Continuar?", "SISCONTROL", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
+                                     seriespanel.visible = false;
+                                     if(valor0 == 16){
+                                                
+                                                            try{
+                                                                    empa.setCodigo(codigo.value);
+                                                                    empa.setNombre(nombre.value);
+                                                                    empa.setDescripcion(descripcion.value);
+                                                                    empa.setCode(empresa.getCode()+"-"+code.value);
+                                                                    empa.setPvp1(pvp1.value);
+                                                                    empa.setPvp2(pvp2.value);
+                                                                    empa.setPvp3(pvp3.value);
+                                                                    empa.setCosto(costo.value);
+                                                                    empa.setBrochure("");
+                                                                    adm.actualizar(empa);
+                                                               }catch(Exception e){
+                                                System.println.out(e+"..");
+                                                        }
+                                               
+                                                    data = null;
+                                                    brochure.value = "";
+                                                    quitar.visible = false;        
+                                                File fichero = new File(directorioReportes+"/"+brochure.value);
+                                                if (fichero.exists()) {
+                                                    fichero.delete();
+                                                 }
+                                            }
+                                        
+                                     }                               
+                            </attribute>
+                        </button>
+                        </span>
+                </row>
+                     
             </rows>
         </grid>
         <intbox id="codigo" style="background:transparent;border:0px;color:grey;font-size:5px"   cols="2" readonly="true" />
