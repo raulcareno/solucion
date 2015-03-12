@@ -49,13 +49,13 @@ public class email {
         public void SendMail() {
             String host = "faster.myhostingdomain.net";//Suponiendo que el servidor SMTPsea la propia mÃƒÂ¡quina
             Properties prop = new Properties();
+            
             prop.put("mail.smtp.host", host);
-            prop.setProperty("mail.smtp.port", "993");
-            prop.setProperty("mail.smtp.starttls.enable", "true");
-            prop.put("mail.smtp.auth", "true");
-            
-            
-            try {
+            prop.setProperty("mail.smtp.port", "465");
+//            prop.put("mail.smtp.auth", "false");
+//            prop.setProperty("mail.smtp.starttls.enable", "false");
+
+try {
                 //SMTPAuthentication auth = new SMTPAuthentication("jcinform@gmail.com","ismael20");
                 email.SMTPAuthentication auth = new email.SMTPAuthentication();
                 Session session = Session.getInstance(prop, auth);

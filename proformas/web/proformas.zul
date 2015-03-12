@@ -14,9 +14,13 @@
   import java.math.BigDecimal;
   import java.math.RoundingMode;
   import siscontrol.cnx.*;
+  import siscontrol.mail.*;
+ 
+
     Administrador adm = new Administrador();
- Session ses = Sessions.getCurrent();
-  
+    Session ses = Sessions.getCurrent();
+    reporteEmail rp = new reporteEmail();
+     ArrayList detalles = new ArrayList();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Productos as o where o.codigo = 0 order by o.nombre ");
     //List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
@@ -342,6 +346,7 @@ Boolean validarSeriesAju(){
                     guardar.disabled=true;
                     agregar.disabled=false;
                     imprimir.disabled = false;
+                    emailBoton.disabled = false;
                     estado(true,false);
                     add.disabled = false;
                    // llenar(new Factura(0));
@@ -399,6 +404,7 @@ void modificar(){
   if(verificar("Modificar")){
        guardar.disabled=false; estado(false,true);
        imprimir.disabled = true;
+       emailBoton.disabled = true;
           cantidad.setReadonly(false);
           nombres.setReadonly(false);
           direccion.setReadonly(false);
@@ -527,7 +533,7 @@ llenarGrid(){
                    parameters.put("cargo",usuario.getCargo());
                    parameters.put("reportes",directorioReportes);
                    List detalleFac = adm.query("Select o from Detalle as o where o.factura.codigo = '" + CodigoFactura.value + "'");
-                   ArrayList detalles = new ArrayList();
+                    detalles = new ArrayList();
                    for (Iterator itAbono =detalleFac.iterator(); itAbono.hasNext();) {
                         Detalle det = itAbono.next();
                          detalles.add(det);
@@ -538,11 +544,13 @@ llenarGrid(){
                    reportelocal.setDatasource(ds);
                    reportelocal.setType("pdf");
                    reportelocal.setName("proforma No. "+factura.value);
-                   reporteVer.setSelected(true);
             }catch(Exception  ex){
                 System.out.println("EXXX: "+ex);
             }
   }
+  public void enviar(){
+        rp.abc(detalles,reportelocal.getParameters(),factura.value+"",email2.value, directorioReportes, mensaje.value,tema.value);
+}
 llenarGridActualizar(){
                
                     Row row = new Row();
@@ -635,6 +643,7 @@ void tipoDocumento(String tipo){
             <tab id="registro" label="Registro" />
             <tab id="busqueda" label="Busquedas" />
             <tab id="reporteVer" label="Reporte" />
+            <tab id="emailTab" label="Email" />
         </tabs>
         <tabpanels>
             <tabpanel>
@@ -777,30 +786,30 @@ void tipoDocumento(String tipo){
                                                        use="siscontrol.autoCompletarProductos"/>
                                             <zscript>
                                                 llenarEquipo(Productos es){
-                                                        idproducto.value = es.getCodigo(); 
-                                                        vu.value  = es.getPvp1();  
-                                                        int a=0;
-                                                        for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
-                                                            valores.getItems().remove(a);
-                                                        }
-                                                        Listitem li = new Listitem();
-                                                        li.setValue(es.getPvp1());
-                                                        li.appendChild(new Listcell(es.getPvp1()+""));
-                                                        valores.appendChild(li);
+                                                idproducto.value = es.getCodigo(); 
+                                                vu.value  = es.getPvp1();  
+                                                int a=0;
+                                                for (Iterator it = valores.getItems().iterator(); it.hasNext();) {
+                                                valores.getItems().remove(a);
+                                                }
+                                                Listitem li = new Listitem();
+                                                li.setValue(es.getPvp1());
+                                                li.appendChild(new Listcell(es.getPvp1()+""));
+                                                valores.appendChild(li);
 
-                                                        Listitem li2 = new Listitem();
-                                                        li2.setValue(es.getPvp2());
-                                                        li2.appendChild(new Listcell(es.getPvp2()+""));
-                                                        valores.appendChild(li2);
+                                                Listitem li2 = new Listitem();
+                                                li2.setValue(es.getPvp2());
+                                                li2.appendChild(new Listcell(es.getPvp2()+""));
+                                                valores.appendChild(li2);
 
 
-                                                        Listitem li3 = new Listitem();
-                                                        li3.setValue(es.getPvp3());
-                                                        li3.appendChild(new Listcell(es.getPvp3()+""));
-                                                        valores.appendChild(li3);
+                                                Listitem li3 = new Listitem();
+                                                li3.setValue(es.getPvp3());
+                                                li3.appendChild(new Listcell(es.getPvp3()+""));
+                                                valores.appendChild(li3);
 
-                                                        valores.setSelectedIndex(0);
-                                                        calcularTotal();
+                                                valores.setSelectedIndex(0);
+                                                calcularTotal();
                                                 }
                                                 calcularTotal(){
                                                 try{
@@ -881,7 +890,8 @@ void tipoDocumento(String tipo){
                                                 <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo(); clientesBusqueda.focus();" />
                                                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
                                                 <button  image="/images/copiar.png" id="copiar"  label="Modificar" disabled="true"  onClick="copiar()"/>
-                                                <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();"/>
+                                                <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();reporteVer.setSelected(true);"/>
+                                                <button  image="/images/bandeja.png" id="emailBoton"  label="Enviar Email" disabled="false"  onClick="imprimir(); email2.value = email.value; emailTab.setSelected(true);"/>
                                             </hbox>
                                         </vbox>
                                     </row>
@@ -1022,6 +1032,37 @@ void tipoDocumento(String tipo){
             </tabpanel>
             <tabpanel>
                 <jasperreport height="530px" id="reportelocal" />
+            </tabpanel>
+            <tabpanel>
+                <grid>
+                    <rows>
+                          
+                        <row>
+                            <span style="float:right">    Asunto:  </span> 
+                            <textbox id="tema" value="PROFORMA "  constraint="no empty: Asunto es requerido"    cols="100" />
+                        </row>
+                        <row>
+                            <span style="float:right">    Para: </span>  
+                            <span>
+                                <textbox id="email2"  constraint="no empty:Correo(s) obligatorio(s)"       cols="100"/>
+                                Ejemplo: info@hotmail.com; info@siscontrol.com.ec;
+                            </span>
+                         
+                            
+                        </row>
+                        
+                        <row>
+                             
+                            <span style="float:right"> Mensaje: </span> 
+                            <textbox id="mensaje" rows="5"   constraint="no empty:Mensaje vacio"  cols="100"/>
+                            
+                            
+                        </row>
+                    </rows>
+                </grid>
+                       
+                <button    image="/images/bandeja.png"  label="ENVIAR CORREO" onClick="tema.getValue();email2.getValue(); mensaje.getValue(); enviar();"/>
+                 
             </tabpanel>
         </tabpanels>
 
