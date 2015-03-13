@@ -11,7 +11,7 @@ import javax.mail.internet.*;
 import siscontrol.Empleados;
 import siscontrol.Empresa;
 import siscontrol.cnx.Administrador;
-import siscontrol.cnx.claves;
+ 
 
 public class email {
 
@@ -61,17 +61,22 @@ public class email {
 //            return "no";
 //        }
 //    }
-
+public void llamarNuevo(){
+    NuevosCertificadosSMTP m = new NuevosCertificadosSMTP();
+    m.llamar();
+}
     public String soporteTecnico(String cedula,ArrayList proforma,ArrayList para,String mensaj,String tema) {
         Administrador adm = new Administrador();
         Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.usuario = 'geova' ");
         String firma = "\n" +
                     "\n" +
-                    "____________________________\n" +
-                   emp.getNombres()+ "  \n" +
+                    "  ___________________________________________________\n" +
+                    "  "+emp.getNombres()+ "  \n" +
                     "  www.siscontrol.com.ec\n" +
+                    "  099 60 38-706 / 098 016 22 11 / (02) 510 38 43 \n" +
                     "  Dios te Bendiga\n" +
                     "\n" +
+                     "\n" +
                     "";
         this.mensaje = ""+mensaj+""+firma+"";
         this.tema = tema;

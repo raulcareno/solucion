@@ -15,7 +15,7 @@
   import java.math.RoundingMode;
   import siscontrol.cnx.*;
   import siscontrol.mail.*;
- 
+
 
     Administrador adm = new Administrador();
     Session ses = Sessions.getCurrent();
@@ -552,6 +552,30 @@ llenarGrid(){
   public void enviar(){
         rp.abc(detalles,reportelocal.getParameters(),factura.value+"",email2.value, directorioReportes, mensaje.value,tema.value);
 }
+public void enviar2(){
+  /* 
+  String FROM = "gjadan@siscontrol.com.ec";
+  String TO = "geovanny.jadan@outlook.com"; 
+  Mail mail = new Mail();
+  mail.setTo(TO);
+  mail.setHtml(true);
+  mail.setSubject("Prueba");
+  mail.setBody("HOLA BUBUSA");
+  mail.setFrom(FROM);
+  
+ MailConfiguration mc = new MailConfiguration();
+   mc.setAuth("true");
+  mc.setEnableStartTLS("true");
+  mc.setHost(host.value);
+  mc.setPassword(pass.value);
+  mc.setPort(port.value);
+  mc.setUser(user.value);
+ */
+ email rp = new email();
+ rp.llamarNuevo();
+  //NuevosCertificadosSMTP.llamar();
+//.send(mail, mc);
+}
 llenarGridActualizar(){
                
                     Row row = new Row();
@@ -1063,6 +1087,18 @@ void tipoDocumento(String tipo){
                 </grid>
                        
                 <button  disabled="true"  image="/images/bandeja.png" id="enviarCorreoBoton"  label="ENVIAR CORREO" onClick="tema.getValue();email2.getValue(); mensaje.getValue(); enviar();"/>
+                <!--grid>
+                    <rows>
+                        <row>
+                            Usuario:<textbox id="user" value="gjadan@siscontrol.com.ec" />
+                            Pass;<textbox id="pass" value="ismael2020" />
+                            Host:<textbox id="host" value="faster.myhostingdomain.net" />
+                            port<textbox id="port" value="587" />
+                            
+                        </row>
+                    </rows>
+                </grid>
+                <button   image="/images/bandeja.png" id="enviarCorreoBoton2"  label="ENVIAR CORREO PRUEBA" onClick="enviar2();"/-->
                  
             </tabpanel>
         </tabpanels>
