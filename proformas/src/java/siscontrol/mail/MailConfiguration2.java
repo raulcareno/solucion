@@ -8,39 +8,14 @@ package siscontrol.mail;
  *
  * @author Geovanny
  */
-public class MailConfiguration {
+public class MailConfiguration2 {
 
-    public MailConfiguration() {
+    public MailConfiguration2() {
     }
-    String host;
+String host;
 String enableStartTLS;
 String port;
 String auth, user, password;
-
-//
-//    String getHost() {
-//        return "mail.siscontrol.com.ec";
-//    }
-//
-//    String getEnableStartTLS() {
-//        return "true";
-//    }
-//
-//    String getPort() {
-//        return "587";
-//    }
-//
-//    String getUser() {
-//     return "gjadan@siscontrol.com.ec";
-//    }
-//
-//    String getPassword() {
-//        return "ismael2020";
-//    }
-//
-//    String getAuth() {
-//        return "true";
-//    }
 
     public String getHost() {
         return host;
@@ -89,5 +64,7 @@ String auth, user, password;
     public void setPassword(String password) {
         this.password = password;
     }
+
+
     
 }
