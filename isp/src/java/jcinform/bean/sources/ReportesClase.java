@@ -151,7 +151,7 @@ public class ReportesClase {
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
-         String desdestr = convertiraString(desde) + " 00:00:01";
+         String desdestr = convertiraString(desde) + " 00:00:00";
         String hastastr = convertiraString(hasta) + " 23:59:59";
         String complementoFechas = " and o.fechafinal between '"+desdestr+"' and '"+hastastr+"'  ";
             if(todasFechas){
@@ -1025,7 +1025,7 @@ public class ReportesClase {
     public JRDataSource facturasCobradasContador2(Date desde, Date hasta) {
         Administrador adm = new Administrador();
         List detalles = new ArrayList();
-        String desdestr = convertiraString(desde)+" 00:00:01";
+        String desdestr = convertiraString(desde)+" 00:00:00";
         String hastastr = convertiraString(hasta)+" 23:59:59";
             String sql = "SELECT o FROM Depositos as o "
                     + " WHERE o.fechacxc between '" + desdestr + "' and '" + hastastr + "'  "
@@ -1126,9 +1126,11 @@ public class ReportesClase {
 
         }
         Collections.sort(detalles);
-        List<Facturaanulada> anuladas = adm.queryNativo("Select o.* from Facturaanulada as o "
-                + "where o.fecha between '" + desdestr + " 00:01:01' and  '" + hastastr + " 23:59:59' "
-                + " and o.numero LIKE '" + sucursal.getSerie1() + sucursal.getSerie2() + "FAC%'", Facturaanulada.class);
+        String qq = "Select o.* from Facturaanulada as o "
+                + "where o.fecha between '" + desdestr + " 00:00:00' and  '" + hastastr + " 23:59:59' "
+                + " and o.numero LIKE '%FAC%'";
+        List<Facturaanulada> anuladas = adm.queryNativo(qq, Facturaanulada.class);
+        System.out.println(""+qq);
         for (Iterator<Facturaanulada> it = anuladas.iterator(); it.hasNext();) {
             Facturaanulada facturaanulada = it.next();
             Pendientes pendi = null;
@@ -2054,7 +2056,7 @@ public class ReportesClase {
 
     public JRDataSource facturasComisiones1(List emp, Date desde, Date hasta) {
         Administrador adm = new Administrador();
-        String desdestr = convertiraString(desde) + " 00:00:01";
+        String desdestr = convertiraString(desde) + " 00:00:00";
         String hastastr = convertiraString(hasta) + " 23:59:59";
         List<Contratos> contratos = new ArrayList<Contratos>();
 
@@ -2238,7 +2240,7 @@ public class ReportesClase {
     public JRDataSource hojaRutaEmpleado(List emp, Date desde, Date hasta) {
 
         Administrador adm = new Administrador();
-        String desdestr = convertiraString(desde) + " 00:00:01";
+        String desdestr = convertiraString(desde) + " 00:00:00";
         String hastastr = convertiraString(hasta) + " 23:59:59";
         List detalles = new ArrayList();
         String compleEmpleado = "";
@@ -2279,7 +2281,7 @@ public class ReportesClase {
     public JRDataSource soporteEstado(String actividad, String estado, Date desde, Date hasta) {
 
         Administrador adm = new Administrador();
-        String desdestr = convertiraString(desde) + " 00:00:01";
+        String desdestr = convertiraString(desde) + " 00:00:00";
         String hastastr = convertiraString(hasta) + " 23:59:59";
         List detalles = new ArrayList();
         String comple1 = " and o.actividad =  '" + actividad + "' ";

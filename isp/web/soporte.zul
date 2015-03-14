@@ -412,16 +412,23 @@ void guardars(){
                                 }
                                 
                                 
-
+                                    //alert(valorEstado+" : estado");
+                                    
                                 if(valorEstado.equals(3) && sop.getNoorden() == null){ 
                                     Integer valor = adm.getNuevaClave("Soporte","noorden");
                                     sop.setNoorden(valor);
-                                  
-                                //    orden.value = valor+"";
+                                   
                                     sop.setGenerada(true);
                                     noorden.value = valor;
                                     sop.setFechaorden(adm.Date());
                                 }
+                                
+                                    if(fechaorden.value == null){
+                                            fechaorden.value = adm.Date();
+                                        }
+                                        if(sop.getFechaorden() == null){
+                                            sop.setFechaorden(adm.Date());
+                                        }
                                 if((!sop.getCodigo().equals(0)) ){
                                      sop.setFechamodifica(adm.Date());
                                      sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
@@ -433,7 +440,7 @@ void guardars(){
                                         adm.guardar(sop);
                                         permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
                                  }
-                                 
+                                 //sop.setFechaorden(fechaorden.value);
                                         Messagebox.show("Registro Almacenado con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
                            
                                        noorden.value = sop.getNoorden();
@@ -946,7 +953,7 @@ void guardars(){
         buscarPrimaria(llegaSop.getCodigo());
         System.out.println("SOPORTE Q LLEGA: "+llegaSop);
         }catch(Exception e){
-        System.out.println("ERROR EN CARGAR SOPOrTE: "+e);
+            System.out.println("EN ONCREATE LLEGA VACIO ERROR EN CARGAR SOPOrTE: "+e);
         }
         System.out.println(".");
         }

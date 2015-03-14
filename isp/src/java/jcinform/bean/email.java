@@ -5,7 +5,9 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import jcinform.conexion.Administrador;
+import jcinform.conexion.NuevosCertificadosSMTP;
 import jcinform.conexion.claves;
+import jcinform.conexion.probar;
 import jcinform.persistencia.*;
 
 public class email {
@@ -56,8 +58,7 @@ public class email {
     }
 
     public String soporteTecnico(String cedula,Soporte sop) {
-//        claves val = new claves();
-        
+         
         Administrador adm = new Administrador();
         sop = (Soporte)adm.buscarClave(sop.getCodigo(), Soporte.class);
         Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.identificacion = '" + cedula + "' ");
@@ -85,7 +86,7 @@ public class email {
                     + " <td colspan='2'><p><strong>Orden / Ticket N&deg; </strong></p></td>"
                     + "     <td colspan='6'>"+sop.getNoorden()+"<br></td>"
                     + "     <td colspan='3'><p><strong>Fecha de Orden / Ticket </strong></p></td>"
-                    + "     <td colspan='2'><p><strong>"+sop.getFechaorden()+"</strong></p></td>"
+                    + "     <td colspan='2'><p><strong>"+sop.getFechaorden().toLocaleString()+"</strong></p></td>"
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='13'><p><strong>INFORMACION DEL CLIENTE </strong></p></td>"
@@ -157,19 +158,19 @@ public class email {
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='2'><p><strong>Fecha de Asistencia </strong></p></td>"
-                    + "     <td colspan='4'>$HORAASISTENCIA<br></td>"
+                    + "     <td colspan='4'> <br></td>"
                     + "     <td colspan='3'><p ><strong>Hora Inicio </strong></p></td>"
-                    + "     <td width='171'><p><strong>$HORAINICIO</strong></p></td>"
+                    + "     <td width='171'><p><strong> </strong></p></td>"
                     + "     <td colspan='2'><blockquote>"
                     + "       <p ><strong>Hora Fin </strong></p>"
                     + "     </blockquote></td>"
-                    + "     <td width='196'>$HORAFIN</td>"
+                    + "     <td width='196'> </td>"
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='13'><strong>VENDEDOR</strong></td>"
                     + "   </tr>"
                     + "   <tr>"
-                    + "     <td colspan='13'>"+sop.getContrato().getEmpleados1()+"</td>"
+                    + "     <td colspan='13'>"+sop.getContrato().getEmpleados2()+"</td>"
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='13'><p><strong>PROBLEMA / REQUERIMIENTO </strong></p></td>"
@@ -188,9 +189,9 @@ public class email {
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='2'><p><strong>Valor </strong></p></td>"
-                    + "     <td colspan='5'>$VALOR<br></td>"
+                    + "     <td colspan='5'>0.00<br></td>"
                     + "     <td colspan='3'><p>Factura N&deg; </p></td>"
-                    + "     <td colspan='3' class='style1'>$FACTURA</td>"
+                    + "     <td colspan='3' class='style1'> </td>"
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='2' class='style1'><p>Comentarios </p></td>"
@@ -227,7 +228,7 @@ public class email {
                     + "   <tr>"
                     + "     <td colspan='13' valign='bottom' class='style1'><table cellspacing='0'cellpadding='0'>"
                     + "         <tr>"
-                    + "           <td width='751'><p>$OBSERVACIONES<br>"
+                    + "           <td width='751'><p> <br>"
                     + "           </p></td>"
                     + "         </tr>"
                     + "     </table></td>"
@@ -260,8 +261,8 @@ public class email {
                     + "     <td colspan='3' class='style1'><p><a href='mailto:ffiallo@csed.net.ec'>ffiallo@csed.net.ec </a></p></td>"
                     + "   </tr>"
                     + "   <tr>"
-                    + "     <td colspan='3' class='style1'><p>Juan Mateus, Ext 112 - 0983615050 </p></td>"
-                    + " 	    <td  colspan='7' class='style1'><p></p></td>"
+                    + "     <td colspan='3' class='style1'><p> </p></td>"
+                    + " 	    <td  colspan='7' class='style1'><p>Juan Mateus, Ext 112 - 0983615050 </p></td>"
                     + "     <td colspan='3' class='style1'><p><a href='mailto:amateus@csed.net.ec'>amateus@csed.net.ec </a></p></td>"
                     + "   </tr>"
                     + "   <tr>"
@@ -276,7 +277,7 @@ public class email {
                     + "   </tr>"
                     + "   <tr>"
                     + "     <td colspan='3' class='style1'><p>Administraci&oacute;n CSEDNET </p></td>"
-                    + "     <td colspan='7' class='style1'><p>Sr. Juan Gualotu&ntilde;a, Ext 110 - 0994-216-186 </p></td>"
+                    + "     <td colspan='7' class='style1'><p>Ing. Juan Gualotu&ntilde;a, Ext 110 - 0994-216-186 </p></td>"
                     + "     <td colspan='3' class='style1'><p><a href='mailto:jcgualotuna@csed.com.ec'>jcgualotuna@csed.com.ec </a></p></td>"
                     + "   </tr>"
                     + "   <tr>"
@@ -290,7 +291,8 @@ public class email {
                     + " </table>"
                     + " </body> "
                     + " </html> ";
-            Boolean estado = EnviarAutenticacion.RecuperarClave(sop.getTecnico().getEmail(), mensaje,
+            String correos2 = sop.getTecnico().getEmail()+"; "+emp.getEmail()+"; "+sop.getClientes().getEmail()+";";
+            Boolean estado = EnviarAutenticacion.RecuperarClave(correos2, mensaje,
                     "ASISTENCIA CLIENTE: " + sop.getClientes().getApellidos() + " "+sop.getClientes().getNombres(), empre.getUsuariomail(), empre.getClavemail(), empre.getSmtp(), empre.getPuerto(), empre.getAutorizacion(), empre.getStar());
             if (estado) {
                 return "[OK] " + emp.getEmail();
@@ -403,12 +405,40 @@ class EnviarAutenticacion {
         prop.setProperty("mail.smtp.starttls.enable", "" + star);
         prop.put("mail.smtp.auth", "" + autorizacion);
         try {
+            
+            StringTokenizer tokens = new StringTokenizer(email, ";");
+            ArrayList matriculados2 = new ArrayList();
+            
+            int i = 0;
+            while (tokens.hasMoreTokens()) {
+                String str = tokens.nextToken();
+                str = str.replace(" ", "");
+                if (!str.equals("") && str.contains("@")) {
+                    if (!matriculados2.contains(str)) {
+                        //if (validaEmail(str.replace(" ", ""))) {
+                            matriculados2.add(str.replace(" ", ""));
+                            System.out.println(str);
+                        //}
+                    }
+
+
+                }
+                i++;
+            }
+            
+            
             SMTPAutenticacion auth = new SMTPAutenticacion(emailInstitucion, clave);
             Session session = Session.getInstance(prop, auth);
-            InternetAddress[] emailsA = new InternetAddress[1];
-            int i = 0;
-            emailsA[i] = new InternetAddress(email + "");
-            System.out.println("***********************" + emailInstitucion);
+            InternetAddress[] emailsA = new InternetAddress[matriculados2.size()];
+            int k = 0;
+            for (Iterator it = matriculados2.iterator(); it.hasNext();) {
+                String object = (String)it.next();
+                emailsA[k] = new InternetAddress(object + "");    
+                k++;
+            }
+            
+            
+             
             Message msg = getTraerMensaje(session, tema, emailsA, mensaje, emailInstitucion, emailInstitucion);
             Transport.send(msg);
             return true;
