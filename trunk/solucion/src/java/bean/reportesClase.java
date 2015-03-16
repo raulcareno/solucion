@@ -6943,11 +6943,11 @@ lisAutoevaluacion = new ArrayList();
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
-                + " and o.seimprime = true and o.orden = '" + sistema.getOrden() + "' "
+                + " and o.seimprime = true and o.orden <= '" + sistema.getOrden() + "' "
                 + " and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' order by o.orden ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
-                + "and o.sistema.orden =  '" + sistema.getOrden() + "'"
+                + "and o.sistema.orden <=  '" + sistema.getOrden() + "'"
                 + " and o.sistema.seimprime = true  "
                 + " and o.sistema.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "'   order by o.sistema.orden ");
         if (notas.size() <= 0) {
@@ -7025,86 +7025,6 @@ lisAutoevaluacion = new ArrayList();
             List nativo = adm.queryNativo(q);
             String recomendacion = "";
             String plan = "";
-
-            /*
-             * aumentadio
-             */
-
-//            String que = "Select o.matricula,g.codigo,o.cuantitativa, " + notaQuery + " from Notasevaluacion as o, Global as g "
-//                    + "where o.materia = g.codigo and o.sistemacalificacion = '" + sistema.getCodigosis() + "'  "
-//                    + "and o.matricula = '" + matriculas1.getCodigomat() + "' "
-//                    + " and o.materia in (Select x.materia from materia_profesor as x "
-//                    + " where x.curso = '" + curso.getCodigocur() + "' and x.seimprime = true ) "
-//                    + " order by g.descripcion ";
-//            System.out.println("" + que);
-
-//            List noEncontradas = adm.queryNativo(que);
-            //sisEvaluaciones
-            /*
-             * if (noEncontradas.size() > 0) {
-             *
-             * for (Iterator it1 = noEncontradas.iterator(); it1.hasNext();) {
-             * Vector vecti = (Vector) it1.next();
-             *
-             * Matriculas matriculaNo = null; Boolean cuantitativa = false;
-             * Global mate = new Global(); int ksis = 0; int numerar = -20;
-             *
-             * for (int j = 0; j < vecti.size(); j++) { Object dos =
-             * vecti.get(j); Double val = 0.0; NotaCollection coll2 = new
-             * NotaCollection(); //val = (Double) dos; coll2.setNota(dos); try {
-             * if (dos.equals(null)) { dos = new Double(0.0); } } catch
-             * (Exception e) { dos = new Double(0.0); //
-             * System.out.println(""+e); } if (j >= 3) { val = (Double) dos;
-             * coll2.setNota(dos);
-             *
-             *
-             * if (cuantitativa == false || ((Sistemaevaluacion)
-             * sisEvaluaciones.get(ksis)).getEsequivalencia()) {
-             * coll2.setNota(equivalencia(dos, equivalencias)); } else { // if
-             * (val == 0.0) { // coll2.setNota(""); // } }
-             * coll2.setOrden((buscarOrden(materiaProfesores, mate)));
-             * coll2.setMateria(mate.getDescripcion()); coll2.setMatricula("" +
-             * matriculaNo.getCodigomat()); //
-             * coll2.setRecomendacion(recomendacion); // coll2.setPlan(plan); //
-             * coll2.setEquivalencia(equivalencia2(dos, equivalencias));
-             * coll2.setEstudiante(matriculaNo.getEstudiante().getApellido() + "
-             * " + matriculaNo.getEstudiante().getNombre());
-             * coll2.setSistema("-" + (ksis) + "" + ((Sistemaevaluacion)
-             * sisEvaluaciones.get(ksis)).getEvaluacion().getAbreviatura());
-             * coll2.setTipo(((Sistemaevaluacion)
-             * sisEvaluaciones.get(ksis)).getSistemacalificacion().getTrimestre().getDescripcion()
-             * + " - " + sistema.getNombre()); System.out.println("" +
-             * coll2.getNota() + " s:" + coll2.getSistema());
-             * lisNotasC.add(coll2);
-             *
-             * ksis++; numerar++; } else if (j >= 2) {
-             * //System.out.println(""+dos); cuantitativa = (Boolean) dos; }
-             * else if (j >= 1) { mate = (Global) adm.buscarClave((Integer) dos,
-             * Global.class); // try { // List<Recomendaciones> rec =
-             * adm.query(" Select o from Recomendaciones as o" // + " where
-             * o.matricula.codigomat = '" + matriculaNo.getCodigomat() + "' " //
-             * + " and o.sistema.codigosis = '" + sistema.getCodigosis() + "' "
-             * // + " and o.materia.codigo = '" + mate.getCodigo() + "' "); //
-             * if (rec.size() > 0) { // recomendacion =
-             * rec.get(0).getRecomendacion(); // plan = rec.get(0).getPlan(); //
-             * } else { // recomendacion = ""; // plan = ""; // } // } catch
-             * (Exception e) { // System.out.println("recomendaciones error: " +
-             * e); // }
-             *
-             * } else { matriculaNo = (Matriculas) adm.buscarClave((Integer)
-             * dos, Matriculas.class);
-             *
-             * }
-             * }
-             *
-             * }
-             * }
-             */
-            /*
-             * aumentadio
-             */
-
-
             Nota nota = new Nota();
             Object promedioFinal = null, disciplinaFinal = null;
             for (Iterator itna = nativo.iterator(); itna.hasNext();) {
@@ -7132,7 +7052,7 @@ lisAutoevaluacion = new ArrayList();
 
                         if (cuantitativa == false || ((Sistemacalificacion) sistemas.get(ksis)).getEsequivalencia()) {
                             String scala = buscarEscala(materiaProfesores, mate);
-                            coll.setNota(equivalencia(((BigDecimal) dos).doubleValue(), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
+                            coll.setNota(equivalencia(((Double) dos), (scala.equals("AP")?equivalencias:scala.equals("DR")?equivalenciasDisc:scala.equals("CL")?equivalenciasCl:equivalencias)));
                             //coll.setNota(equivalencia(dos, equivalencias));
                         } else {
                             if (val == 0.0) {
@@ -7149,7 +7069,7 @@ lisAutoevaluacion = new ArrayList();
                         coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
                         coll.setRecomendacion(recomendacion);
                         coll.setPlan(plan);
-                        coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion() + " - " + ((Sistemacalificacion) sistemas.get(ksis)).getNombre());
+                        coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
                         lisNotasC.add(coll);
 
                         ksis++;
@@ -7242,7 +7162,7 @@ lisAutoevaluacion = new ArrayList();
                             coll.setMatricula("" + matriculas1.getCodigomat());
                             coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                             coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-                            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion() + " - " + ((Sistemacalificacion) sistemas.get(ksis)).getNombre());
+                            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
                             coll.setPlan("");
                             coll.setRecomendacion("");
                             coll.setEquivalencia(equivalencia2(val, equivalencias));
@@ -7305,7 +7225,7 @@ lisAutoevaluacion = new ArrayList();
                             coll.setEquivalencia(equivalencia2(val, equivalenciasDisc));
                             coll.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                             coll.setSistema(((Sistemacalificacion) sistemas.get(ksis)).getAbreviatura());
-                            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion() + " - " + ((Sistemacalificacion) sistemas.get(ksis)).getNombre());
+                            coll.setTipo(((Sistemacalificacion) sistemas.get(ksis)).getTrimestre().getDescripcion());
                             lisNotasC.add(coll);
                             ksis++;
                         }
