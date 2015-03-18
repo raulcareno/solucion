@@ -67,17 +67,8 @@ public void llamarNuevo(){
 }
     public String soporteTecnico(String cedula,ArrayList proforma,ArrayList para,String mensaj,String tema) {
         Administrador adm = new Administrador();
-        Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.usuario = 'geova' ");
-        String firma = "\n" +
-                    "\n" +
-                    "  ___________________________________________________\n" +
-                    "  "+emp.getNombres()+ "  \n" +
-                    "  www.siscontrol.com.ec\n" +
-                    "  099 60 38-706 / 098 016 22 11 / (02) 510 38 43 \n" +
-                    "  Dios te Bendiga\n" +
-                    "\n" +
-                     "\n" +
-                    "";
+        Empleados emp = (Empleados) adm.querySimple("Select o from Empleados as o where o.usuario = '"+cedula+"' ");
+        String firma = ".";
         this.mensaje = ""+mensaj+""+firma+"";
         this.tema = tema;
         

@@ -23,6 +23,9 @@
      ArrayList detalles = new ArrayList();
     Permisos permiso = new Permisos();
     List perfiles = adm.query("Select o from Productos as o where o.codigo = 0 order by o.nombre ");
+    int ultimaFac = 0;
+    int indiceActual=0;
+     
     //List proveedoresList = adm.query("Select o from Proveedores as o order by o.razonsocial ");
     Object media = null;
 Empleados usuario = ses.getAttribute("user");
@@ -126,9 +129,9 @@ filas.getChildren().clear();
 }
  
 void estado(Boolean estado,Boolean modificar){
-        if(modificar){
-            empa = (Factura)datos.selectedItem.value;
-        }
+        //if(modificar){
+         //   empa = (Factura)datos.selectedItem.value;
+       // }
 
     cantidad.readonly = estado;
     precio.readonly = estado;
@@ -395,12 +398,76 @@ Boolean validarSeriesAju(){
     }
 }
  void move(){
+        
         llenar((Factura)datos.selectedItem.value);
+        empa = (Factura)datos.selectedItem.value;
         modificar.disabled = false;
+        copiar.disabled = false;
         registro.setSelected(true);
         sumarTotal("");
         enviarCorreoBoton.disabled = true;
   }
+    void siguiente(){
+    try{
+
+        Factura FacturaEncontradas = adm.buscarClave((indiceActual+1),Factura.class);
+        llenar(FacturaEncontradas);
+        modificar.disabled = false;
+        copiar.disabled = false;
+        registro.setSelected(true);
+        sumarTotal("");
+        enviarCorreoBoton.disabled = true;
+        indiceActual = indiceActual +1;
+        empa = FacturaEncontradas;
+        }catch(Exception ex){}
+    }
+    void anterior(){
+    try{
+        Factura FacturaEncontradas = adm.buscarClave((indiceActual-1),Factura.class );
+        llenar(FacturaEncontradas);
+        modificar.disabled = false;
+        copiar.disabled = false;
+        registro.setSelected(true);
+        sumarTotal("");
+        enviarCorreoBoton.disabled = true;
+        indiceActual = indiceActual -1;
+        empa = FacturaEncontradas;
+        }catch(Exception ex){}
+
+    }
+    void ultimo(){
+        ultimaFac = adm.getNuevaClave("Factura","codigo")-1;
+        Factura FacturaEncontradas = adm.buscarClave(ultimaFac,Factura.class);
+        try{
+            llenar(FacturaEncontradas);
+            modificar.disabled = false;
+            copiar.disabled = false;
+            registro.setSelected(true);
+            sumarTotal("");
+            enviarCorreoBoton.disabled = true;
+            indiceActual = ultimaFac;
+            empa = FacturaEncontradas;
+        }catch(Exception abc){
+
+        }        
+ 
+    }
+     void primero(){
+        ultimaFac = adm.getPrimeraClave("Factura","codigo");
+        Factura FacturaEncontradas = adm.buscarClave(ultimaFac,Factura.class);
+        try{
+            llenar(FacturaEncontradas);
+            modificar.disabled = false;
+            copiar.disabled = false;
+            registro.setSelected(true);
+            sumarTotal("");
+            enviarCorreoBoton.disabled = true;
+            indiceActual = ultimaFac;
+            empa = FacturaEncontradas;
+        }catch(Exception abc){
+
+        }        
+     }
 void modificar(){
   if(verificar("Modificar")){
        guardar.disabled=false; estado(false,true);
@@ -550,7 +617,12 @@ llenarGrid(){
             }
   }
   public void enviar(){
-        rp.abc(detalles,reportelocal.getParameters(),factura.value+"",email2.value, directorioReportes, mensaje.value,tema.value);
+        String respuesta = rp.abc(usuario.getUsuario(),detalles,reportelocal.getParameters(),factura.value+"",email2.value, directorioReportes, mensaje.value,tema.value);
+        if(respuesta.contains("OK")){
+             Messagebox.show("Correo(s) enviado(s) con Éxito...!", "Administrador Educativo", Messagebox.OK, Messagebox.INFORMATION);
+        }else{
+            Messagebox.show("NO se ha enviado el mensaje, existe algún problema en la comunicación, vuelvalo a intentar...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);   
+        }
 }
 public void enviar2(){
   /* 
@@ -571,8 +643,7 @@ public void enviar2(){
   mc.setPort(port.value);
   mc.setUser(user.value);
  */
- email rp = new email();
- rp.llamarNuevo();
+
   //NuevosCertificadosSMTP.llamar();
 //.send(mail, mc);
 }
@@ -797,6 +868,18 @@ void tipoDocumento(String tipo){
                                                                                     t.focus();
                                                                 }
                                                     }
+                                                    
+                                                    enviarEmailB(){
+            mensaje.value = " \n \n \n \n \n \n \n \n \n \n" +
+                    "  ___________________________________________________\n" +
+                    "  "+usuario.getNombres()+ "  \n" +
+                    "  www.siscontrol.com.ec\n" +
+                    "  (02-5103-843) (0996038-706) (098016-211) \n" +
+                    "  Dios te Bendiga\n" +
+                    "\n" +
+                    "\n" +
+                    "";
+}
                                                    
                                        ]]>
                                         </zscript>
@@ -901,12 +984,20 @@ void tipoDocumento(String tipo){
                             </grid>
                                  
                         </row>
-                        <row visible="true" id="observacionrow">
-                            <span style="float:right"> Observación: </span>
+                         </rows>
+                </grid>
+                <grid>
+                     <rows>
+                         
+                        <row  visible="true" id="observacionrow">
+                            <span style="float:right"> . </span>
                             <grid>
                                 <rows>
                                     <row>
-                                        <textbox  readonly="true" rows="4"  cols="60" id="observacion"/>
+                                        <span>
+                                        Observaciones: <textbox  readonly="true" rows="1"  cols="80" id="observacion"/>    
+                                        </span>
+                                        
                                     </row>
                                     <row>
                                         <vbox>
@@ -914,12 +1005,32 @@ void tipoDocumento(String tipo){
                                                 <button image="/images/guardar.gif" id="guardar" label="Guardar"  disabled="true"  onClick="guardar();"/>
                                                 <button  image="/images/nuevo.gif" id="agregar" label="Agregar" onClick="nuevo(); clientesBusqueda.focus();" />
                                                 <button  image="/images/editar.gif" id="modificar"  label="Modificar" disabled="true"  onClick="modificar()"/>
-                                                <button  image="/images/copiar.png" id="copiar"  label="Modificar" disabled="true"  onClick="copiar()"/>
+                                                
                                                 <button  image="/images/imprimir.gif" id="imprimir"  label="Imprimir" disabled="false"  onClick="imprimir();reporteVer.setSelected(true); enviarCorreoBoton.disabled = false;"/>
-                                                <button  image="/images/bandeja.png" id="emailBoton"  label="Enviar Email" disabled="false"  onClick="imprimir(); email2.value = email.value; emailTab.setSelected(true); enviarCorreoBoton.disabled = false;"/>
+                                                <button  image="/images/bandeja.png" id="emailBoton"  label="Enviar Proforma" disabled="false"  onClick='imprimir(); enviarEmailB();  emailTab.setSelected(true); enviarCorreoBoton.disabled = false; try{email2.value = email.value;}catch(Exception ad){alert("EL CLIENTE NO TIENE CORREO");}'/>
+                                                
+                                               
+                                                
                                             </hbox>
                                         </vbox>
                                     </row>
+                                     <row>  _                                       
+                                     </row>
+                                     <row>
+                                         <vbox>
+                                             <hbox>
+                                                 <button image="/images/primero.png"  label=" Prim. "     onClick="siguiente.disabled = false; primero();"/>
+                                                <button  image="/images/anterior.png" label=" Ant. " disabled="true"  id="anterior"  onClick="siguiente.disabled = false; anterior();"/>
+                                                <button  image="/images/siguiente.png" label=" Sig. "  disabled="true"   id="siguiente"   onClick="anterior.disabled = false; siguiente();"/>
+                                                <button  image="/images/ultimo.png" label=" Ultm. "     onClick="anterior.disabled = false; ultimo();"/>
+                                                <button  image="/images/copiar.png" id="copiar"  label="Copiar Proforma Actual"  disabled="true"  onClick="CodigoFactura.value = 0; factura.value = null;"/>
+                                             </hbox>
+                                                
+                                         </vbox>
+                                     </row>
+                                    
+                                     <row>   _                                      
+                                     </row>
                                 </rows>
                             </grid>
 
@@ -1079,7 +1190,7 @@ void tipoDocumento(String tipo){
                         <row>
                              
                             <span style="float:right"> Mensaje: </span> 
-                            <textbox id="mensaje" rows="5"   constraint="no empty:Mensaje vacio"  cols="100"/>
+                            <textbox id="mensaje" rows="15"   constraint="no empty:Mensaje vacio"  cols="100"/>
                             
                             
                         </row>

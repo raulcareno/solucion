@@ -33,7 +33,7 @@ String separador = File.separator;
         
     }
 
-    public void abc(ArrayList detalles, Map map, String numeroProformas, String destinatarios, String directorioReportes,String mensaje, String tema) {
+    public String abc(String usuario,ArrayList detalles, Map map, String numeroProformas, String destinatarios, String directorioReportes,String mensaje, String tema) {
         try {
             ArrayList archivos = new ArrayList();
             for (Iterator iterator = detalles.iterator(); iterator.hasNext();) {
@@ -82,10 +82,11 @@ String separador = File.separator;
                 i++;
             }
             archivos.add(archivoName);
-            e.soporteTecnico("geova", archivos, correosAenviar,mensaje,tema);
+            return e.soporteTecnico(usuario, archivos, correosAenviar,mensaje,tema);
         } catch (Exception e) {
             System.out.println("" + e);
         }
+        return "ok";
     }
 
     private boolean validaEmail(String strText) {

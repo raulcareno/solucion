@@ -62,7 +62,23 @@ static String baseActual = "isp";
         }
         return 1;
     }
+  public Integer getPrimeraClave(String clase, String campo) {
+        EntityManager em = getEMF().createEntityManager();
+        try {
+            Integer pk = (Integer) em.createQuery("SELECT MIN(o." + campo + ") FROM " + clase + " as o").getSingleResult();
+            if (pk == null) {
+                return new Integer(1);
+            }
 
+            int a = pk.intValue() + 1;
+            return new Integer(a);
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+        return 1;
+    }
     public Empleados ingresoSistema(String usuario, String clave) {
         EntityManager em = getEMF().createEntityManager();
         em.getTransaction().begin();
