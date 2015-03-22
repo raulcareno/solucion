@@ -201,7 +201,7 @@ public class generaOptativaManuela {
                 nota.setFecha(fecha);
                 //busco la nota
 
-                String valorAnadir2  = " round(cast(avg(CAST( nota15 AS DECIMAL(8," + 2 + "))) as decimal(8," + 2 + "))," + 2 + ") ";
+                String valorAnadir2  = " round(cast(avg(CAST( nota5 AS DECIMAL(8," + 2 + "))) as decimal(8," + 2 + "))," + 2 + ") ";
 
                 String quNota = "Select " + valorAnadir2 + " from matriculas "
                         + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
@@ -233,23 +233,87 @@ public class generaOptativaManuela {
                         aprovechamiento = b.doubleValue();
                     }
                 }
+                valorAnadir2  = " round(cast(avg(CAST( nota10 AS DECIMAL(8," + 2 + "))) as decimal(8," + 2 + "))," + 2 + ") ";
+                quNota = "Select " + valorAnadir2 + " from matriculas "
+                        + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
+                        + "left join notas on matriculas.codigomat = notas.matricula "
+                        + "where matriculas.curso = '" + matric.getCurso().getCodigocur() + "'  "
+                        + "and matriculas.codigomat = '" + matric.getCodigomat() + "' "
+                        + "and notas.seimprime = true "
+                        + "and notas.promedia = true "
+                        + "and notas.cuantitativa = true "
+                        + "and notas.disciplina = false and notas.materia <> 194   and notas.materia != 0  "
+                        + "group by notas.matricula  ";
+                System.out.println("" + quNota);
+                
+                
+                  nativo = adm.queryNativo(quNota);
+                  Double aprovechamiento2 = 0.0;
+                for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    for (int j = 0; j < vec.size(); j++) {
+                        Object dos = vec.get(j);
+                        try {
+                            if (dos.equals(null)) {
+                                dos = new BigDecimal(0.0);
+                            }
+                        } catch (Exception e) {
+                            dos = new BigDecimal(0.0);
+                        }
+
+                        BigDecimal b = (BigDecimal) dos;
+                        aprovechamiento2 = b.doubleValue();
+                    }
+                }
+                
+                valorAnadir2  = " round(cast(avg(CAST( nota15 AS DECIMAL(8," + 2 + "))) as decimal(8," + 2 + "))," + 2 + ") ";
+                quNota = "Select " + valorAnadir2 + " from matriculas "
+                        + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
+                        + "left join notas on matriculas.codigomat = notas.matricula "
+                        + "where matriculas.curso = '" + matric.getCurso().getCodigocur() + "'  "
+                        + "and matriculas.codigomat = '" + matric.getCodigomat() + "' "
+                        + "and notas.seimprime = true "
+                        + "and notas.promedia = true "
+                        + "and notas.cuantitativa = true "
+                        + "and notas.disciplina = false and notas.materia <> 194   and notas.materia != 0  "
+                        + "group by notas.matricula  ";
+                System.out.println("" + quNota);
+                  nativo = adm.queryNativo(quNota);
+                 Double aprovechamiento3 = 0.0;
+                for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                    Vector vec = (Vector) itna.next();
+                    for (int j = 0; j < vec.size(); j++) {
+                        Object dos = vec.get(j);
+                        try {
+                            if (dos.equals(null)) {
+                                dos = new BigDecimal(0.0);
+                            }
+                        } catch (Exception e) {
+                            dos = new BigDecimal(0.0);
+                        }
+
+                        BigDecimal b = (BigDecimal) dos;
+                        aprovechamiento3 = b.doubleValue();
+                    }
+                }
                 nota.setNota1(aprovechamiento);
                 nota.setNota2(aprovechamiento);
                 nota.setNota3(aprovechamiento);
                 nota.setNota4(aprovechamiento);
                 nota.setNota5(aprovechamiento);
                 nota.setNota16(aprovechamiento);
-                nota.setNota6(aprovechamiento);
-                nota.setNota7(aprovechamiento);
-                nota.setNota8(aprovechamiento);
-                nota.setNota9(aprovechamiento);
-                nota.setNota10(aprovechamiento);
-                nota.setNota17(aprovechamiento);
-                nota.setNota11(aprovechamiento);
+                nota.setNota6(aprovechamiento2);
+                nota.setNota7(aprovechamiento2);
+                nota.setNota8(aprovechamiento2);
+                nota.setNota9(aprovechamiento2);
+                nota.setNota10(aprovechamiento2);
+                nota.setNota17(aprovechamiento2);
+                
+                nota.setNota11(aprovechamiento3);
                 nota.setNota12(0d);
                 nota.setNota13(0d);
                 nota.setNota14(0d);
-                nota.setNota15(aprovechamiento);
+                nota.setNota15(aprovechamiento3);
                 nota.setObservacion("SISCONTROL");
                 nota.setOrden(11);
                 nota.setPromedia(true);

@@ -8994,6 +8994,10 @@ lisAutoevaluacion = new ArrayList();
         boolean truncarNotas = regresaVariableParametrosLogico("TRUNCARNOTAS", parametrosGlobales);
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+         List<Equivalencias> equivalenciasCl = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'CL' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+          List<Equivalencias> equivalenciasDis = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promediofinal = 'PF' ");
@@ -9003,6 +9007,9 @@ lisAutoevaluacion = new ArrayList();
         List<Notanotas> notash = adm.query("Select o from Notanotas as o "
                 + " where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "'  "
                 + "and o.sistema.promedioparcial = true and o.sistema.promediofinal = 'NI' ");
+           List<MateriaProfesor> materiaProfesores = adm.query("Select o from MateriaProfesor as o "
+                + "where o.curso.codigocur = '" + curso.getCodigocur() + "'  ");
+
         List<Matriculas> listaMatriculasPerdidos = cuadroverificar(curso, notas.get(0).getSistema(), matri);
         String codigosPerdidos = "";
         for (Iterator<Matriculas> it = listaMatriculasPerdidos.iterator(); it.hasNext();) {
@@ -9245,7 +9252,9 @@ lisAutoevaluacion = new ArrayList();
                         ksis++;
                         NotasClaseTemp not = new NotasClaseTemp();
                         not.setNota(dos);
-                        not.setNotaCuali(equivalencia(dos, equivalencias) + "");
+                      
+                        
+                        
                         not.setMateria(mate.getDescripcion());
 
                         not.setCabeceraTexto(cabe1);
@@ -9255,6 +9264,32 @@ lisAutoevaluacion = new ArrayList();
                         MateriaProfesor matep = new MateriaProfesor();
                         matep.setCuantitativa(cuantitativa);
                         matep.setMateria(mate);
+                        matep.setEscala(buscarEscala(materiaProfesores, mate));
+                        
+                          try {
+                             if(matep.getEscala().equals("AP")){
+                                not.setNotaCuali(equivalencia(dos, equivalencias) + "");
+                            }else if(matep.getEscala().equals("CL")){
+                                
+                                if(equivalenciasCl.size()>0){
+                                    not.setNotaCuali(equivalencia(dos, equivalencias) + "");
+                                }else{
+                                    not.setNotaCuali(equivalencia(dos, equivalenciasCl)+"");
+                                }
+                                
+                            }else if(matep.getEscala().equals("DR")){
+                                if(equivalenciasCl.size()>0){
+                                    not.setNotaCuali(equivalencia(dos, equivalenciasDis) + "");
+                                }else{
+                                    not.setNotaCuali(equivalencia(dos, equivalencias)+"");
+                                }
+                                
+                            }else{
+                                    not.setNotaCuali(equivalencia(dos, equivalencias) + "");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         not.setMateriaProfesor(matep);
                         not.setEstudiante(matriculas1.getEstudiante().getApellido() + " " + matriculas1.getEstudiante().getNombre());
                         if (truncarNotas) {
@@ -9271,7 +9306,15 @@ lisAutoevaluacion = new ArrayList();
                         }
                         not.setEstado(estadoEstudiante);
                         if (cuantitativa == false) {
-                            not.setNota(equivalencia(dos, equivalencias));
+                            if(matep.getEscala().equals("AP")){
+                                not.setNota(equivalencia(dos, equivalencias));
+                            }else if(matep.getEscala().equals("CL")){
+                                not.setNota(equivalencia(dos, equivalenciasCl));
+                            }else if(matep.getEscala().equals("DR")){
+                                not.setNota(equivalencia(dos, equivalenciasDis));
+                            }else{
+                                    not.setNota(equivalencia(dos, equivalencias));
+                            }
                         }
                         not.setMatricula(matriculas1);
                         not.setNoDecimalesProme(noDecimales);
