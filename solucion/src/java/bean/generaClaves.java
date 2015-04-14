@@ -153,9 +153,9 @@ public class generaClaves {
 //         TODO code application logic here
         Administrador adm = new Administrador();
         int f = 1;
-        if(f==0){
+        if(f==1){
             
-            List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper = 19  "
+            List<Cursos> cursosList = adm.query("Select o from Cursos as o where o.periodo.codigoper =5  "
                     + " order by o.secuencia,o.paralelo.descripcion, o.descripcion ");
             int contar = 1;
                  int noMatricula = 1;

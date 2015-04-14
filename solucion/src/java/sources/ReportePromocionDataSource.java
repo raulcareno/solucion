@@ -194,6 +194,12 @@ public class ReportePromocionDataSource implements JRDataSource {
                             cientos = " " + num.GetTens(valor2).toUpperCase();
                             milesimas = false;
                             
+                        }else if (cortado.equals("0")) {
+                            cortado = cortado + "0";
+//                            Integer valor2 = new Integer(cortado);
+                            cientos = " CERO";
+                            milesimas = false;
+                            
                         } else {
                             Integer valor2 = new Integer(cortado);
                             cientos = " " + num.GetTens(valor2).toUpperCase();
@@ -308,6 +314,8 @@ public class ReportePromocionDataSource implements JRDataSource {
                 
             } else if ("aprovechamiento".equals(fieldName)) {
                 valor = nodo.getAprovechamiento();
+            }  else if ("club".equals(fieldName)) {
+                valor = nodo.getClub();
             }  else if ("aprovechamientos".equals(fieldName)) {
                 valor = nodo.getAprovechamientos();
             } else if ("disciplina".equals(fieldName)) {

@@ -905,6 +905,7 @@ void recalcular2(){
                    alert("No ha seleccionado ningún reporte...!");
                     return;
             }
+            parametros.put("pathSubRel",directorioReportes );//libreta_sub.jasper
             if(!tipo.equals("-1")){
                 report.setParameters(parametros);
                 report.setDatasource(datasource);
