@@ -88,7 +88,16 @@ public class NotasClaseTemp {
     public Double dq1,dq2,da;
     public Object aprovechamientos;
     public Double disciplina;
+    public Object club;
     public String disciplinaAbreviatura;
+
+    public Object getClub() {
+        return club;
+    }
+
+    public void setClub(Object club) {
+        this.club = club;
+    }
 
     public Double getAprovechamiento() {
         return aprovechamiento;
@@ -105,6 +114,7 @@ public class NotasClaseTemp {
     public void setDisciplina(Double disciplina) {
         this.disciplina = disciplina;
     }
+    
 
     public String getDisciplinaAbreviatura() {
         return disciplinaAbreviatura;

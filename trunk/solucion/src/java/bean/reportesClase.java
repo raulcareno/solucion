@@ -9031,6 +9031,13 @@ lisAutoevaluacion = new ArrayList();
             noDecimales = 3;
 
         }
+         Integer codigoClub = 10000;
+        try {
+            codigoClub = regresaVariableParametrosDecimal("MATERIACLUB", parametrosGlobales).intValue();
+        } catch (Exception a) {
+            codigoClub = 3;
+
+        }
         Integer noDecimalesProme = 3;
         try {
             noDecimalesProme = regresaVariableParametrosDecimal("DECIMALESPRO", parametrosGlobales).intValue();
@@ -9212,6 +9219,51 @@ lisAutoevaluacion = new ArrayList();
                     disciplina = b.doubleValue();
                 }
             }
+            
+            
+            //PARA CARGAR NOTA DE CLUB
+            String valorAnadirClub = " round(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            if (truncarNotas) {
+                valorAnadirClub = " truncate(cast(avg(CAST(" + notas.get(0).getNota() + "  AS DECIMAL(8,3))) as decimal(8,3))," + 3 + ") ";
+            }
+            String qClub = "Select " + valorAnadirClub + " from matriculas "
+                    + "left join estudiantes on matriculas.estudiante = estudiantes.codigoest   "
+                    + "left join notas on matriculas.codigomat = notas.matricula "
+                    + "where matriculas.curso = '" + matriculas1.getCurso().getCodigocur() + "'  "
+                    + "and matriculas.codigomat = '" + matriculas1.getCodigomat() + "' "
+                    + " and notas.materia = "+codigoClub+" "
+                    + "group by notas.matricula    ";
+//        System.out.println(""+q);
+            nativo = adm.queryNativo(qClub);
+            Object club = 0.0;
+            for (Iterator itna = nativo.iterator(); itna.hasNext();) {
+                //Global materiaClub = (Global) adm.buscarClave(codigoClub,Global.class);
+                List<MateriaProfesor> mClubes =  adm.query("Select o from MateriaProfesor as o where o.materia.codigo = '"+codigoClub+"' "
+                        + "and o.curso.codigocur = '"+matriculas1.getCurso().getCodigocur()+"'");
+                MateriaProfesor mClub = new MateriaProfesor(10000);
+                String escala = "AP";
+                if(mClubes.size()>0){
+                    mClub = mClubes.get(0);
+                    escala = mClub.getEscala();
+                }
+                Vector vec = (Vector) itna.next();
+                for (int j = 0; j < vec.size(); j++) {
+                    Object dos = vec.get(j);
+                    try {
+                        if (dos.equals(null)) {
+                            dos = new BigDecimal(0.0);
+                        }
+                    } catch (Exception e) {
+                        dos = new BigDecimal(0.0);
+                    }
+
+                    BigDecimal b = (BigDecimal) dos;
+                    if(mClubes.size()>0){
+                        club = devolverNombre(escala.equals("AP")?equivalencias:escala.equals("CL")?equivalenciasCl:equivalenciasDis, b.doubleValue()).getAbreviatura();
+                    }
+                     
+                }
+            }
 
             q = "Select matriculas.codigomat,notas.materia,notas.cuantitativa, " + notas.get(0).getNota() + "  "
                     + "from matriculas  "
@@ -9319,6 +9371,7 @@ lisAutoevaluacion = new ArrayList();
                         not.setMatricula(matriculas1);
                         not.setNoDecimalesProme(noDecimales);
                         not.setNoDecimalesPromeParciales(noDecimalesProme);
+                        not.setClub(club); 
                         listaMatriculados.add(not);
 
 
