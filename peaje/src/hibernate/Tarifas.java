@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -39,6 +41,10 @@ public class Tarifas implements Serializable {
     private Integer hasta;
     @Column(name = "valor")
     private BigDecimal valor;
+    
+     @JoinColumn(name = "tipotarifa", referencedColumnName = "codigo")
+    @ManyToOne
+    private Tipotarifa tipotarifa;
 
     public Tarifas() {
     }
@@ -85,6 +91,14 @@ public class Tarifas implements Serializable {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public Tipotarifa getTipotarifa() {
+        return tipotarifa;
+    }
+
+    public void setTipotarifa(Tipotarifa tipotarifa) {
+        this.tipotarifa = tipotarifa;
     }
 
     @Override

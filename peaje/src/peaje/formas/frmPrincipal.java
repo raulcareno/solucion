@@ -5344,7 +5344,7 @@ deshabilite.setVisible(false);
                 return;
             }
             frmTarifas usu = new frmTarifas(this, true, this, adm);
-            usu.setSize(409, 460);
+            usu.setSize(409, 560);
             usu.setLocation(0, 0);
             contenedor.add(usu);
             usu.show();

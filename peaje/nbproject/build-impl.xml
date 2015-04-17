@@ -980,6 +980,7 @@ is divided into following sections:
         <copy file="${librerias.dir}/javax.comm.properties" tofile="${dist.dir}/lib/javax.comm.properties"/>
         <copy file="./KDJFASD5F4AS5D2.xml" tofile="${dist.dir}/KDJFASD5F4AS5D2.xml"/>
         <copy file="./config.xml" tofile="${dist.dir}/config.xml"/>
+        <copy file="./cambios.txt" tofile="${dist.dir}/cambios.txt"/>
         
     </target>
     <target name="-pre-jar">

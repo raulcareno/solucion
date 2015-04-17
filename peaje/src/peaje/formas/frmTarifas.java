@@ -8,7 +8,6 @@
  *
  * Created on 17/03/2011, 06:02:21 PM
  */
-
 package peaje.formas;
 
 import hibernate.*;
@@ -22,13 +21,20 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.validaciones;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import javax.swing.JSpinner;
+import javax.swing.ListModel;
+import javax.swing.SpinnerDateModel;
 
 /**
  *
  * @author Ismael Jadan
  */
-public class frmTarifas   extends javax.swing.JInternalFrame {
-   public boolean grabar = false;
+public class frmTarifas extends javax.swing.JInternalFrame {
+
+    public boolean grabar = false;
     public boolean modificar = false;
     public boolean grabar1 = false;
     public boolean modificar1 = false;
@@ -36,6 +42,8 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
     public boolean modificar2 = false;
     public boolean grabar3 = false;
     public boolean modificar3 = false;
+    public boolean grabar5 = false;
+    public boolean modificar5 = false;
     public List lista = null;
     public int posicion = 0;
     public int tamano = 0;
@@ -45,12 +53,16 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
     private String claveActual;
     private validaciones val;
     private frmPrincipal principal;
-    /** Creates new form frmTarifas1 */
+
+    /**
+     * Creates new form frmTarifas1
+     */
     public frmTarifas(java.awt.Frame parent, boolean modal) {
 //        super(parent, modal);
         initComponents();
     }
-  public frmTarifas(java.awt.Frame parent, boolean modal,Administrador adm1) {
+
+    public frmTarifas(java.awt.Frame parent, boolean modal, Administrador adm1) {
 //          super(parent,modal);
 
         initComponents();
@@ -58,10 +70,11 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
         empresaObj = new Empresa();
         adm = adm1;
         val = new validaciones();
+        cargarComboTipo();
 
     }
 
-    public frmTarifas(java.awt.Frame parent, boolean modal,frmPrincipal lo,Administrador adm1) {
+    public frmTarifas(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
 //          super(parent,modal);
         this.desktopContenedor = lo.contenedor;
 
@@ -71,44 +84,52 @@ public class frmTarifas   extends javax.swing.JInternalFrame {
         adm = adm1;
         val = new validaciones();
         principal = lo;
-        llenarCombo();
-
+        //llenarCombo();
+        cargarComboTipo();
 
     }
 
     public void llenarCombo() {
 
         try {
+            boolean codigonull = false;
+            List<Tarifas> tar = adm.query("Select o from Tarifas as o where o.tipotarifa.codigo = '" + ((Tipotarifa) cmbTipoTarifas.getSelectedItem()).getCodigo() + "' order by o.codigo ");
+            if (tar.size() <= 0) {
+                tar = adm.query("Select o from Tarifas as o where o.tipotarifa is null order by o.codigo ");
+                codigonull = true;
+            }
 
-            List<Tarifas> tar = adm.query("Select o from Tarifas as o order by o.codigo ");
             DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
             dtm.getDataVector().removeAllElements();
             for (Tarifas tarifas : tar) {
                 Object[] obj = new Object[5];
                 obj[0] = tarifas.getCodigo();
+                if (codigonull) {
+                    obj[0] = 0;
+                }
                 obj[1] = tarifas.getDesde();
                 obj[2] = tarifas.getHasta();
-                try{
+                try {
                     obj[3] = tarifas.getValor().doubleValue();
-                }catch(Exception e){
+                } catch (Exception e) {
                     obj[3] = 0.0;
                 }
                 dtm.addRow(obj);
             }
-           
+
             tarifario.setModel(dtm);
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
-       llenarProductos();
-              llenarProductos1();
-              llenarProductos2();
+        llenarProductos();
+        llenarProductos1();
+        llenarProductos2();
 
     }
-void llenarProductos(){
-      try {
+
+    void llenarProductos() {
+        try {
 
             List<Productos> tar = adm.query("Select o from Productos as o ");
             DefaultTableModel dtm = (DefaultTableModel) tbTarifas.getModel();
@@ -125,10 +146,10 @@ void llenarProductos(){
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
- 
-void llenarProductos1(){
-      try {
+    }
+
+    void llenarProductos1() {
+        try {
 
             List<Tarifasdiarias> tar = adm.query("Select o from Tarifasdiarias as o ");
             DefaultTableModel dtm = (DefaultTableModel) tbTarifas1.getModel();
@@ -145,10 +166,10 @@ void llenarProductos1(){
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
+    }
 
-void llenarProductos2(){
-      try {
+    void llenarProductos2() {
+        try {
 
             List<Descuento> tar = adm.query("Select o from Descuento as o ");
             DefaultTableModel dtm = (DefaultTableModel) tbTarifas2.getModel();
@@ -158,16 +179,14 @@ void llenarProductos2(){
                 obj[0] = tarifas.getCodigo();
                 obj[1] = tarifas.getNombre();
                 obj[2] = tarifas.getValor();
-                obj[3] = tarifas.getTipo().equals("1")?"%":"USD";
+                obj[3] = tarifas.getTipo().equals("1") ? "%" : "USD";
                 dtm.addRow(obj);
             }
             tbTarifas2.setModel(dtm);
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
- 
-
+    }
 
 // <editor-fold defaultstate="collapsed" desc="PROPIEDADES">
     public String getClaveActual() {
@@ -195,21 +214,20 @@ void llenarProductos2(){
         this.perfilesList = perfilesList;
     }
 
-
 // </editor-fold>
-
 // <editor-fold defaultstate="collapsed" desc="FUNCIONES ACCIONES">
     public void habilitar(Boolean estado) {
-     
 
     }
+
     public void habilitar1(Boolean estado) {
-     
 
     }
+
     public void habilitar3(Boolean estado) {
-        
+
     }
+
     public void habilitar2(Boolean estado) {
 ////        txtCodigo2.setEditable(estado);
 ////        txtNombre2.setEditable(estado);
@@ -223,13 +241,14 @@ void llenarProductos2(){
         txtNombre.setText("");
         txtValor.setText("");
     }
-    
+
     public void limpiar1() {
         String estado = "";
         txtCodigo1.setText("");
         txtNombre1.setText("");
         txtValor1.setText("");
     }
+
     public void limpiar3() {
         String estado = "";
         txtCodigo2.setText("");
@@ -239,16 +258,46 @@ void llenarProductos2(){
     }
 
     // </editor-fold >
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        formaUsuarios = new javax.swing.JDialog();
+        jPanel12 = new javax.swing.JPanel();
+        codigoBuscar = new javax.swing.JFormattedTextField();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jPanel14 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        busquedaTabla = new javax.swing.JTable();
+        frmTipoTarifas = new javax.swing.JInternalFrame();
+        jLabel17 = new javax.swing.JLabel();
+        btnModificar5 = new javax.swing.JButton();
+        btnSalir5 = new javax.swing.JButton();
+        btnAgregar5 = new javax.swing.JButton();
+        nombreTipo = new javax.swing.JFormattedTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        horaDesde = new javax.swing.JSpinner();
+        horaHasta = new javax.swing.JSpinner();
+        diasHabiles = new javax.swing.JPanel();
+        lunes = new javax.swing.JCheckBox();
+        martes = new javax.swing.JCheckBox();
+        miercoles = new javax.swing.JCheckBox();
+        jueves = new javax.swing.JCheckBox();
+        viernes = new javax.swing.JCheckBox();
+        sabado = new javax.swing.JCheckBox();
+        domingo = new javax.swing.JCheckBox();
+        todos = new javax.swing.JCheckBox();
+        txtCodigoTipo = new javax.swing.JFormattedTextField();
+        btnEliminar5 = new javax.swing.JButton();
+        btnBuscar5 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -265,10 +314,13 @@ void llenarProductos2(){
         minutos = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tarifario = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        cmbTipoTarifas = new javax.swing.JComboBox();
+        jLabel16 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbTarifas = new javax.swing.JTable();
@@ -313,21 +365,332 @@ void llenarProductos2(){
         btnSalir3 = new javax.swing.JButton();
         esPorcentaje = new javax.swing.JCheckBox();
 
+        formaUsuarios.setLocationByPlatform(true);
+        formaUsuarios.getContentPane().setLayout(null);
+
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel12.setLayout(null);
+
+        codigoBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoBuscarKeyPressed(evt);
+            }
+        });
+        jPanel12.add(codigoBuscar);
+        codigoBuscar.setBounds(100, 10, 220, 20);
+
+        jLabel18.setText("Nombre Tarifa: ");
+        jPanel12.add(jLabel18);
+        jLabel18.setBounds(10, 10, 90, 14);
+
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
+        jLabel19.setText("Presione Enter");
+        jPanel12.add(jLabel19);
+        jLabel19.setBounds(340, 10, 170, 22);
+
+        formaUsuarios.getContentPane().add(jPanel12);
+        jPanel12.setBounds(10, 10, 510, 40);
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel14.setLayout(null);
+
+        busquedaTabla.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Codigo", "Tarifa"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        busquedaTabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                busquedaTablaMouseClicked(evt);
+            }
+        });
+        busquedaTabla.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                busquedaTablaKeyPressed(evt);
+            }
+        });
+        jScrollPane5.setViewportView(busquedaTabla);
+        if (busquedaTabla.getColumnModel().getColumnCount() > 0) {
+            busquedaTabla.getColumnModel().getColumn(0).setMinWidth(0);
+            busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
+            busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
+
+        jPanel14.add(jScrollPane5);
+        jScrollPane5.setBounds(20, 20, 350, 150);
+
+        formaUsuarios.getContentPane().add(jPanel14);
+        jPanel14.setBounds(10, 60, 510, 180);
+
         setTitle("Tarifario");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dinero.gif"))); // NOI18N
         getContentPane().setLayout(null);
+
+        frmTipoTarifas.setTitle("Tipos de Tarifas");
+        frmTipoTarifas.setVisible(false);
+        frmTipoTarifas.getContentPane().setLayout(null);
+
+        jLabel17.setText("Nombre:");
+        frmTipoTarifas.getContentPane().add(jLabel17);
+        jLabel17.setBounds(10, 20, 60, 14);
+
+        btnModificar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
+        btnModificar5.setMnemonic('M');
+        btnModificar5.setText("Modificar");
+        btnModificar5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificar5.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        btnModificar5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnModificar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificar5ActionPerformed(evt);
+            }
+        });
+        btnModificar5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnModificar5KeyPressed(evt);
+            }
+        });
+        frmTipoTarifas.getContentPane().add(btnModificar5);
+        btnModificar5.setBounds(190, 190, 60, 50);
+
+        btnSalir5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
+        btnSalir5.setMnemonic('S');
+        btnSalir5.setText("Salir");
+        btnSalir5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSalir5.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnSalir5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSalir5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalir5ActionPerformed(evt);
+            }
+        });
+        btnSalir5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnSalir5KeyPressed(evt);
+            }
+        });
+        frmTipoTarifas.getContentPane().add(btnSalir5);
+        btnSalir5.setBounds(310, 190, 60, 50);
+
+        btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
+        btnAgregar5.setMnemonic('N');
+        btnAgregar5.setText("Nuevo");
+        btnAgregar5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregar5.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnAgregar5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnAgregar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregar5ActionPerformed(evt);
+            }
+        });
+        btnAgregar5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAgregar5KeyPressed(evt);
+            }
+        });
+        frmTipoTarifas.getContentPane().add(btnAgregar5);
+        btnAgregar5.setBounds(130, 190, 60, 50);
+
+        nombreTipo.setEditable(false);
+        frmTipoTarifas.getContentPane().add(nombreTipo);
+        nombreTipo.setBounds(70, 20, 290, 20);
+
+        jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
+        jPanel13.setLayout(null);
+
+        jLabel20.setText("Hasta: ");
+        jPanel13.add(jLabel20);
+        jLabel20.setBounds(190, 20, 40, 14);
+
+        jLabel21.setText("Desde:");
+        jPanel13.add(jLabel21);
+        jLabel21.setBounds(10, 20, 50, 14);
+
+        horaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaDesdeKeyPressed(evt);
+            }
+        });
+        jPanel13.add(horaDesde);
+        horaDesde.setBounds(50, 20, 80, 20);
+
+        horaHasta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                horaHastaKeyPressed(evt);
+            }
+        });
+        jPanel13.add(horaHasta);
+        horaHasta.setBounds(230, 20, 80, 20);
+
+        frmTipoTarifas.getContentPane().add(jPanel13);
+        jPanel13.setBounds(10, 50, 360, 50);
+
+        diasHabiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
+        diasHabiles.setLayout(null);
+
+        lunes.setText("Lunes");
+        lunes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lunesActionPerformed(evt);
+            }
+        });
+        lunes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lunesKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(lunes);
+        lunes.setBounds(30, 50, 80, 23);
+
+        martes.setText("Martes");
+        martes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                martesKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(martes);
+        martes.setBounds(120, 10, 80, 23);
+
+        miercoles.setText("Miércoles");
+        miercoles.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                miercolesKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(miercoles);
+        miercoles.setBounds(120, 30, 80, 23);
+
+        jueves.setText("Jueves");
+        jueves.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                juevesActionPerformed(evt);
+            }
+        });
+        jueves.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                juevesKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(jueves);
+        jueves.setBounds(120, 50, 80, 23);
+
+        viernes.setText("Viernes");
+        viernes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                viernesKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(viernes);
+        viernes.setBounds(230, 10, 80, 23);
+
+        sabado.setText("Sábado");
+        sabado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                sabadoKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(sabado);
+        sabado.setBounds(230, 30, 80, 23);
+
+        domingo.setText("Domingo");
+        domingo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                domingoKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(domingo);
+        domingo.setBounds(230, 50, 80, 23);
+
+        todos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        todos.setForeground(new java.awt.Color(204, 51, 0));
+        todos.setText("Todos");
+        todos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todosActionPerformed(evt);
+            }
+        });
+        todos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                todosKeyPressed(evt);
+            }
+        });
+        diasHabiles.add(todos);
+        todos.setBounds(30, 20, 70, 23);
+
+        txtCodigoTipo.setEditable(false);
+        txtCodigoTipo.setText("0");
+        diasHabiles.add(txtCodigoTipo);
+        txtCodigoTipo.setBounds(310, 20, 30, 20);
+
+        frmTipoTarifas.getContentPane().add(diasHabiles);
+        diasHabiles.setBounds(10, 100, 360, 80);
+
+        btnEliminar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
+        btnEliminar5.setMnemonic('E');
+        btnEliminar5.setText("Eliminar");
+        btnEliminar5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminar5.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnEliminar5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminar5ActionPerformed(evt);
+            }
+        });
+        btnEliminar5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnEliminar5KeyPressed(evt);
+            }
+        });
+        frmTipoTarifas.getContentPane().add(btnEliminar5);
+        btnEliminar5.setBounds(250, 190, 60, 50);
+
+        btnBuscar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
+        btnBuscar5.setMnemonic('B');
+        btnBuscar5.setText("Buscar");
+        btnBuscar5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBuscar5.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        btnBuscar5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBuscar5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscar5ActionPerformed(evt);
+            }
+        });
+        btnBuscar5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnBuscar5KeyPressed(evt);
+            }
+        });
+        frmTipoTarifas.getContentPane().add(btnBuscar5);
+        btnBuscar5.setBounds(70, 190, 60, 50);
+
+        getContentPane().add(frmTipoTarifas);
+        frmTipoTarifas.setBounds(10, 125, 390, 290);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 51, 51));
         jLabel8.setText("Catálogo de Tarifas ..::..");
         jPanel3.add(jLabel8);
         jLabel8.setBounds(10, 0, 270, 15);
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Tarifario en minutos de cobros ..::..");
         jPanel3.add(jLabel10);
@@ -420,7 +783,7 @@ void llenarProductos2(){
         btnSalir.setBounds(290, 10, 60, 50);
 
         jPanel5.add(jPanel4);
-        jPanel4.setBounds(10, 280, 370, 70);
+        jPanel4.setBounds(10, 390, 370, 70);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Convertidor"));
         jPanel2.setLayout(null);
@@ -456,10 +819,18 @@ void llenarProductos2(){
         jLabel3.setBounds(270, 20, 80, 14);
 
         jPanel5.add(jPanel2);
-        jPanel2.setBounds(10, 230, 370, 50);
+        jPanel2.setBounds(10, 330, 370, 50);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png"))); // NOI18N
+        jLabel2.setText("TIEMPO EN MINUTOS");
+        jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(10, 50, 220, 20);
 
         tarifario.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -523,20 +894,14 @@ void llenarProductos2(){
         });
         jScrollPane1.setViewportView(tarifario);
         tarifario.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        tarifario.getColumnModel().getColumn(0).setMinWidth(0);
-        tarifario.getColumnModel().getColumn(0).setPreferredWidth(10);
-        tarifario.getColumnModel().getColumn(0).setMaxWidth(25);
+        if (tarifario.getColumnModel().getColumnCount() > 0) {
+            tarifario.getColumnModel().getColumn(0).setMinWidth(0);
+            tarifario.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tarifario.getColumnModel().getColumn(0).setMaxWidth(25);
+        }
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 30, 330, 180);
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png"))); // NOI18N
-        jLabel2.setText("TIEMPO EN MINUTOS");
-        jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(10, 10, 220, 20);
+        jScrollPane1.setBounds(10, 70, 330, 240);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png"))); // NOI18N
@@ -544,10 +909,32 @@ void llenarProductos2(){
         jLabel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(230, 10, 110, 20);
+        jLabel5.setBounds(230, 50, 110, 20);
+
+        jButton1.setText("Crear");
+        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(313, 20, 50, 19);
+
+        cmbTipoTarifas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbTipoTarifasItemStateChanged(evt);
+            }
+        });
+        jPanel1.add(cmbTipoTarifas);
+        cmbTipoTarifas.setBounds(90, 20, 220, 20);
+
+        jLabel16.setText("Tipo Tarifa: ");
+        jPanel1.add(jLabel16);
+        jLabel16.setBounds(20, 20, 70, 20);
 
         jPanel5.add(jPanel1);
-        jPanel1.setBounds(10, 10, 370, 220);
+        jPanel1.setBounds(10, 10, 370, 310);
 
         jTabbedPane1.addTab("Tarifas x Horas", jPanel5);
 
@@ -583,8 +970,10 @@ void llenarProductos2(){
             }
         });
         jScrollPane2.setViewportView(tbTarifas);
-        tbTarifas.getColumnModel().getColumn(0).setPreferredWidth(5);
-        tbTarifas.getColumnModel().getColumn(0).setMaxWidth(10);
+        if (tbTarifas.getColumnModel().getColumnCount() > 0) {
+            tbTarifas.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tbTarifas.getColumnModel().getColumn(0).setMaxWidth(10);
+        }
 
         jPanel6.add(jScrollPane2);
         jScrollPane2.setBounds(20, 90, 330, 170);
@@ -767,8 +1156,10 @@ void llenarProductos2(){
             }
         });
         jScrollPane3.setViewportView(tbTarifas1);
-        tbTarifas1.getColumnModel().getColumn(0).setPreferredWidth(5);
-        tbTarifas1.getColumnModel().getColumn(0).setMaxWidth(10);
+        if (tbTarifas1.getColumnModel().getColumnCount() > 0) {
+            tbTarifas1.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tbTarifas1.getColumnModel().getColumn(0).setMaxWidth(10);
+        }
 
         jPanel8.add(jScrollPane3);
         jScrollPane3.setBounds(20, 90, 330, 170);
@@ -901,8 +1292,10 @@ void llenarProductos2(){
             }
         });
         jScrollPane4.setViewportView(tbTarifas2);
-        tbTarifas2.getColumnModel().getColumn(0).setPreferredWidth(5);
-        tbTarifas2.getColumnModel().getColumn(0).setMaxWidth(10);
+        if (tbTarifas2.getColumnModel().getColumnCount() > 0) {
+            tbTarifas2.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tbTarifas2.getColumnModel().getColumn(0).setMaxWidth(10);
+        }
 
         jPanel10.add(jScrollPane4);
         jScrollPane4.setBounds(20, 90, 330, 170);
@@ -1033,7 +1426,7 @@ void llenarProductos2(){
         jTabbedPane1.addTab("Descuentos", jPanel10);
 
         getContentPane().add(jTabbedPane1);
-        jTabbedPane1.setBounds(10, 50, 400, 400);
+        jTabbedPane1.setBounds(10, 50, 400, 500);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1053,17 +1446,18 @@ void llenarProductos2(){
             Object obje = tarifario.getValueAt(fila, columna);
             //tarifario.getCellEditor(fila, columna).isCellEditable(evt);
             if (obje != null) {
-                if (tarifario.isCellEditable(fila, columna) && evt.getKeyCode() != evt.VK_UP && evt.getKeyCode() != evt.VK_DOWN && evt.getKeyCode() != evt.VK_LEFT && evt.getKeyCode() != evt.VK_RIGHT && evt.getKeyCode() != evt.VK_ENTER && evt.getKeyCode() != evt.VK_TAB)
+                if (tarifario.isCellEditable(fila, columna) && evt.getKeyCode() != evt.VK_UP && evt.getKeyCode() != evt.VK_DOWN && evt.getKeyCode() != evt.VK_LEFT && evt.getKeyCode() != evt.VK_RIGHT && evt.getKeyCode() != evt.VK_ENTER && evt.getKeyCode() != evt.VK_TAB) {
                     tarifario.setValueAt(null, tarifario.getSelectedRow(), columna);
+                }
             }
         }
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
 }//GEN-LAST:event_tarifarioKeyPressed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
 
         // TODO add your handling code here:
-        if(principal.permisos.getAgregar()){
+        if (principal.permisos.getAgregar()) {
             if (grabar == false) {
                 this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar.setLabel("Guardar");
@@ -1071,7 +1465,7 @@ void llenarProductos2(){
                 this.btnModificar.setLabel("Cancelar");
                 grabar = true;
                 modificar = false;
-                 
+
                 limpiar();
                 btnAgregar.setMnemonic('G');
                 btnModificar.setMnemonic('C');
@@ -1082,29 +1476,36 @@ void llenarProductos2(){
                     //                    try {
                     int filas = contarFilas();
 //                    adm.ejecutaSql("Delete from Tarifas ");
-                    System.out.println("FILAS: ENCONTRADAS: "+filas);
+                    System.out.println("FILAS: ENCONTRADAS: " + filas);
                     for (int i = 0; i < filas; i++) {
                         Tarifas tar = new Tarifas(null);
                         tar.setCodigo((Integer) tarifario.getValueAt(i, 0));
                         int des = ((Integer) tarifario.getValueAt(i, 1));
                         int has = ((Integer) tarifario.getValueAt(i, 2));
-                        
+
                         BigDecimal val = null;
                         try {
-                           val = new BigDecimal((Double) tarifario.getValueAt(i, 3));
+                            val = new BigDecimal((Double) tarifario.getValueAt(i, 3));
                         } catch (Exception e) {
                             val = new BigDecimal(0);
-                            System.out.println("ERROR 002: "+e);
+                            System.out.println("ERROR 002: " + e);
                         }
-                        
+
                         tar.setDesde(des);
                         tar.setHasta(has);
                         tar.setValor(val);
+                        tar.setTipotarifa((Tipotarifa) cmbTipoTarifas.getSelectedItem());
                         try {
-                            adm.actualizar(tar);
+                            if (tar.getCodigo().equals(0)) {
+                                tar.setCodigo(adm.getNuevaClave("Tarifas", "codigo"));
+                                adm.guardar(tar);
+                            } else {
+                                adm.actualizar(tar);
+                            }
 
                         } catch (Exception e) {
-                            System.out.println(""+e);
+                            e.printStackTrace();
+                            System.out.println("" + e);
                         }
                     }
                     //                    } catch (Exception ex) {
@@ -1112,10 +1513,10 @@ void llenarProductos2(){
                     //                        Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
                     //                        return;
                     //                    }
-
+                    cmbTipoTarifas.setEnabled(true);
                 } catch (Exception ex) {
                     //Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println(""+ex);
+                    System.out.println("" + ex);
                 }
                 llenarCombo();
                 this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
@@ -1131,27 +1532,28 @@ void llenarProductos2(){
                 btnAgregar.setEnabled(false);
 
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    public int contarFilas(){
+    public int contarFilas() {
         int filas = tarifario.getRowCount();
         int m = 0;
-        
+
         for (int i = 0; i < filas; i++) {
             try {
-                System.out.println(i+" :"+tarifario.getValueAt(i, 0));
-              Object obj = (tarifario.getValueAt(i, 0) );
-              if(obj != null)
-                 m = m+1;
-                System.out.println(""+m);
+                System.out.println(i + " :" + tarifario.getValueAt(i, 0));
+                Object obj = (tarifario.getValueAt(i, 0));
+                if (obj != null) {
+                    m = m + 1;
+                }
+                System.out.println("" + m);
             } catch (Exception e) {
-                System.out.println("ERROR EN CONTAR FILAS: "+e);
+                System.out.println("ERROR EN CONTAR FILAS: " + e);
                 return m;
             }
-             
+
         }
         return m;
 
@@ -1159,8 +1561,8 @@ void llenarProductos2(){
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
 
-        if (grabar == false) {
-            if(principal.permisos.getModificar()){
+        if (grabar == false && cmbTipoTarifas.getSelectedIndex() > 0) {
+            if (principal.permisos.getModificar()) {
 
                 this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar.setLabel("Guardar");
@@ -1171,15 +1573,15 @@ void llenarProductos2(){
                 btnModificar.setMnemonic('C');
                 modificar = true;
                 grabar = true;
-
+                cmbTipoTarifas.setEnabled(false);
                 tarifario.setEnabled(true);
                 //            btnBuscar.setEnabled(false);
 
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
             }
         } else {
-
+            cmbTipoTarifas.setEnabled(true);
             grabar = false;
             modificar = false;
             this.btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
@@ -1196,7 +1598,7 @@ void llenarProductos2(){
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if(principal.permisos.getEliminar()){        // TODO add your handling code here:
+        if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
             try {
                 adm.eliminarObjeto(Empresa.class, empresaObj.getRuc());
                 this.limpiar();
@@ -1204,7 +1606,7 @@ void llenarProductos2(){
                 Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
 }//GEN-LAST:event_btnEliminarActionPerformed
@@ -1221,8 +1623,8 @@ void llenarProductos2(){
     private void horasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horasKeyReleased
         // TODO add your handling code here:
         Integer hor = Integer.parseInt(horas.getText());
-        Integer min = 60* hor;
-        minutos.setText(min+"");
+        Integer min = 60 * hor;
+        minutos.setText(min + "");
 }//GEN-LAST:event_horasKeyReleased
 
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
@@ -1231,10 +1633,10 @@ void llenarProductos2(){
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
         // TODO add your handling code here:
-          // TODO add your handling code here:
+        // TODO add your handling code here:
         if (principal.permisos.getAgregar()) {
             if (grabar1 == false) {
-                
+
                 this.btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar1.setLabel("Guardar");
                 this.btnModificar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
@@ -1243,24 +1645,23 @@ void llenarProductos2(){
                 modificar1 = false;
                 habilitar(true);
                 limpiar();
-                
+
                 txtNombre.requestFocusInWindow();
                 btnAgregar1.setMnemonic('G');
                 btnModificar1.setMnemonic('C');
-                
 
             } else if (grabar1 == true) {
                 if (txtNombre.getText().trim().isEmpty() || txtValor.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-                    Productos usuarioObj = new Productos();
+                    Productos tipotarifaObj = new Productos();
 
-                     usuarioObj.setDescripcion(txtNombre.getText());
-                     usuarioObj.setValor(Double.parseDouble(txtValor.getText()));
+                    tipotarifaObj.setDescripcion(txtNombre.getText());
+                    tipotarifaObj.setValor(Double.parseDouble(txtValor.getText()));
                     if (modificar1) {
                         try {
-                            usuarioObj.setCodigo(Integer.parseInt(txtCodigo.getText()));
-                            adm.actualizar(usuarioObj);
+                            tipotarifaObj.setCodigo(Integer.parseInt(txtCodigo.getText()));
+                            adm.actualizar(tipotarifaObj);
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -1269,8 +1670,8 @@ void llenarProductos2(){
                         }
                     } else {
                         try {
-                            usuarioObj.setCodigo(null);
-                            adm.guardar(usuarioObj);
+                            tipotarifaObj.setCodigo(null);
+                            adm.guardar(tipotarifaObj);
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                             Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
@@ -1287,7 +1688,6 @@ void llenarProductos2(){
                     modificar1 = false;
                     habilitar(false);
                     llenarProductos();
-                    
 
                 }
 
@@ -1300,8 +1700,8 @@ void llenarProductos2(){
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
         // TODO add your handling code here:
-         if (grabar1 == false) {
-            if(principal.permisos.getModificar()){
+        if (grabar1 == false) {
+            if (principal.permisos.getModificar()) {
 
                 this.btnAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar1.setLabel("Guardar");
@@ -1316,7 +1716,7 @@ void llenarProductos2(){
                 habilitar(true);
                 //            btnBuscar.setEnabled(false);
 
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
             }
         } else {
@@ -1339,7 +1739,7 @@ void llenarProductos2(){
 
     private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed
         // TODO add your handling code here:
-          if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+        if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
             try {
                 adm.eliminarObjeto(Productos.class, new Integer(txtCodigo.getText()));
                 this.limpiar();
@@ -1366,74 +1766,74 @@ void llenarProductos2(){
     private void tbTarifasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifasMouseClicked
         // TODO add your handling code here:
         int fila = tbTarifas.getSelectedRow();
-        txtCodigo.setText((Integer) tbTarifas.getValueAt(fila,0)+"");
-        txtNombre.setText((String) tbTarifas.getValueAt(fila,1));
-        txtValor.setText((Double) tbTarifas.getValueAt(fila,2)+"");
+        txtCodigo.setText((Integer) tbTarifas.getValueAt(fila, 0) + "");
+        txtNombre.setText((String) tbTarifas.getValueAt(fila, 1));
+        txtValor.setText((Double) tbTarifas.getValueAt(fila, 2) + "");
     }//GEN-LAST:event_tbTarifasMouseClicked
 
     private void horasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horasKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_horasKeyPressed
 
     private void minutosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_minutosKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_minutosKeyPressed
 
     private void btnAgregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregarKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnAgregarKeyPressed
 
     private void btnModificarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificarKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnModificarKeyPressed
 
     private void btnEliminarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminarKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnEliminarKeyPressed
 
     private void btnSalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalirKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalirKeyPressed
 
     private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_txtNombreKeyPressed
 
     private void txtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_txtValorKeyPressed
 
     private void tbTarifasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifasKeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_tbTarifasKeyPressed
 
     private void btnAgregar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar1KeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnAgregar1KeyPressed
 
     private void btnModificar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificar1KeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnModificar1KeyPressed
 
     private void btnEliminar1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar1KeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnEliminar1KeyPressed
 
     private void btnSalir1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir1KeyPressed
         // TODO add your handling code here:
-         principal.tecla(evt.getKeyCode());
+        principal.tecla(evt.getKeyCode());
     }//GEN-LAST:event_btnSalir1KeyPressed
 
     private void txtNombre1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombre1KeyPressed
@@ -1450,10 +1850,10 @@ void llenarProductos2(){
 
     private void tbTarifas1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifas1MouseClicked
         // TODO add your handling code here:
-           int fila = tbTarifas1.getSelectedRow();
-        txtCodigo1.setText((Integer) tbTarifas1.getValueAt(fila,0)+"");
-        txtNombre1.setText((String) tbTarifas1.getValueAt(fila,1));
-        txtValor1.setText((BigDecimal) tbTarifas1.getValueAt(fila,2)+"");
+        int fila = tbTarifas1.getSelectedRow();
+        txtCodigo1.setText((Integer) tbTarifas1.getValueAt(fila, 0) + "");
+        txtNombre1.setText((String) tbTarifas1.getValueAt(fila, 1));
+        txtValor1.setText((BigDecimal) tbTarifas1.getValueAt(fila, 2) + "");
     }//GEN-LAST:event_tbTarifas1MouseClicked
 
     private void tbTarifas1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifas1KeyPressed
@@ -1462,11 +1862,11 @@ void llenarProductos2(){
 
     private void btnAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar2ActionPerformed
         // TODO add your handling code here:
-           // TODO add your handling code here:
-          // TODO add your handling code here:
+        // TODO add your handling code here:
+        // TODO add your handling code here:
         if (principal.permisos.getAgregar()) {
             if (grabar2 == false) {
-                
+
                 this.btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar2.setLabel("Guardar");
                 this.btnModificar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
@@ -1475,24 +1875,23 @@ void llenarProductos2(){
                 modificar2 = false;
                 habilitar1(true);
                 limpiar1();
-                
+
                 txtNombre1.requestFocusInWindow();
                 btnAgregar2.setMnemonic('G');
                 btnModificar2.setMnemonic('C');
-                
 
             } else if (grabar2 == true) {
                 if (txtNombre1.getText().trim().isEmpty() || txtValor1.getText().trim().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
                 } else {
-                    Tarifasdiarias usuarioObj = new Tarifasdiarias();
+                    Tarifasdiarias tipotarifaObj = new Tarifasdiarias();
 
-                     usuarioObj.setNombre(txtNombre1.getText());
-                     usuarioObj.setValor(new BigDecimal(txtValor1.getText()));
+                    tipotarifaObj.setNombre(txtNombre1.getText());
+                    tipotarifaObj.setValor(new BigDecimal(txtValor1.getText()));
                     if (modificar2) {
                         try {
-                            usuarioObj.setCodigo(Integer.parseInt(txtCodigo1.getText()));
-                            adm.actualizar(usuarioObj);
+                            tipotarifaObj.setCodigo(Integer.parseInt(txtCodigo1.getText()));
+                            adm.actualizar(tipotarifaObj);
 
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -1501,8 +1900,8 @@ void llenarProductos2(){
                         }
                     } else {
                         try {
-                            usuarioObj.setCodigo(null);
-                            adm.guardar(usuarioObj);
+                            tipotarifaObj.setCodigo(null);
+                            adm.guardar(tipotarifaObj);
                         } catch (Exception ex) {
                             JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
                             Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
@@ -1519,7 +1918,6 @@ void llenarProductos2(){
                     modificar2 = false;
                     habilitar1(false);
                     llenarProductos1();
-                    
 
                 }
 
@@ -1535,8 +1933,8 @@ void llenarProductos2(){
 
     private void btnModificar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar2ActionPerformed
         // TODO add your handling code here:
-             if (grabar2 == false) {
-            if(principal.permisos.getModificar()){
+        if (grabar2 == false) {
+            if (principal.permisos.getModificar()) {
 
                 this.btnAgregar2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
                 this.btnAgregar2.setLabel("Guardar");
@@ -1551,7 +1949,7 @@ void llenarProductos2(){
                 habilitar1(true);
                 //            btnBuscar.setEnabled(false);
 
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
             }
         } else {
@@ -1578,7 +1976,7 @@ void llenarProductos2(){
 
     private void btnEliminar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar2ActionPerformed
         // TODO add your handling code here:
-          if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+        if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
             try {
                 adm.eliminarObjeto(Tarifasdiarias.class, new Integer(txtCodigo1.getText()));
                 this.limpiar1();
@@ -1599,7 +1997,7 @@ void llenarProductos2(){
 
     private void btnSalir2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir2ActionPerformed
         // TODO add your handling code here:
-          this.setVisible(false);
+        this.setVisible(false);
         this.dispose();
         principal = null;
         empresaObj = null;
@@ -1612,11 +2010,11 @@ void llenarProductos2(){
 
 private void tbTarifas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbTarifas2MouseClicked
 // TODO add your handling code here:
-      int fila = tbTarifas2.getSelectedRow();
-        txtCodigo2.setText((Integer) tbTarifas2.getValueAt(fila,0)+"");
-        txtNombre2.setText((String) tbTarifas2.getValueAt(fila,1));
-        txtValor2.setText((BigDecimal) tbTarifas2.getValueAt(fila,2)+"");
-        esPorcentaje.setSelected(((String)tbTarifas2.getValueAt(fila,2)).equals("%")?true:false);
+    int fila = tbTarifas2.getSelectedRow();
+    txtCodigo2.setText((Integer) tbTarifas2.getValueAt(fila, 0) + "");
+    txtNombre2.setText((String) tbTarifas2.getValueAt(fila, 1));
+    txtValor2.setText((BigDecimal) tbTarifas2.getValueAt(fila, 2) + "");
+    esPorcentaje.setSelected(((String) tbTarifas2.getValueAt(fila, 2)).equals("%") ? true : false);
 }//GEN-LAST:event_tbTarifas2MouseClicked
 
 private void tbTarifas2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifas2KeyPressed
@@ -1637,71 +2035,69 @@ private void txtValor2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
 private void btnAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar3ActionPerformed
 // TODO add your handling code here:
-            // TODO add your handling code here:
-          // TODO add your handling code here:
-        if (principal.permisos.getAgregar()) {
-            if (grabar3 == false) {
-                
-                this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
-                this.btnAgregar3.setLabel("Guardar");
-                this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
-                this.btnModificar3.setLabel("Cancelar");
-                grabar3 = true;
-                modificar3 = false;
-                limpiar3();
-                
-                txtNombre2.requestFocusInWindow();
-                btnAgregar3.setMnemonic('G');
-                btnModificar3.setMnemonic('C');
-                
+    // TODO add your handling code here:
+    // TODO add your handling code here:
+    if (principal.permisos.getAgregar()) {
+        if (grabar3 == false) {
 
-            } else if (grabar3 == true) {
-                if (txtNombre2.getText().trim().isEmpty() || txtValor2.getText().trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
-                } else {
-                    Descuento usuarioObj = new Descuento();
+            this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+            this.btnAgregar3.setLabel("Guardar");
+            this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+            this.btnModificar3.setLabel("Cancelar");
+            grabar3 = true;
+            modificar3 = false;
+            limpiar3();
 
-                     usuarioObj.setNombre(txtNombre2.getText());
-                     usuarioObj.setValor(new BigDecimal(txtValor2.getText()));
-                     usuarioObj.setTipo((esPorcentaje.isSelected()?"1":"0"));
-                    if (modificar3) {
-                        try {
-                            usuarioObj.setCodigo(Integer.parseInt(txtCodigo2.getText()));
-                            adm.actualizar(usuarioObj);
+            txtNombre2.requestFocusInWindow();
+            btnAgregar3.setMnemonic('G');
+            btnModificar3.setMnemonic('C');
 
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
-                            return;
-                        }
-                    } else {
-                        try {
-                            usuarioObj.setCodigo(null);
-                            adm.guardar(usuarioObj);
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
-                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
-                            return;
-                        }
+        } else if (grabar3 == true) {
+            if (txtNombre2.getText().trim().isEmpty() || txtValor2.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
+            } else {
+                Descuento tipotarifaObj = new Descuento();
+
+                tipotarifaObj.setNombre(txtNombre2.getText());
+                tipotarifaObj.setValor(new BigDecimal(txtValor2.getText()));
+                tipotarifaObj.setTipo((esPorcentaje.isSelected() ? "1" : "0"));
+                if (modificar3) {
+                    try {
+                        tipotarifaObj.setCodigo(Integer.parseInt(txtCodigo2.getText()));
+                        adm.actualizar(tipotarifaObj);
+
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                        return;
                     }
-                    this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
-                    this.btnAgregar3.setLabel("Nuevo");
-                    this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
-                    this.btnModificar3.setLabel("Modificar");
-                    btnAgregar3.setMnemonic('N');
-                    btnModificar3.setMnemonic('M');
-                    grabar3 = false;
-                    modificar3 = false;
-                    habilitar3(false);
-                    llenarProductos2();
-                    
-
+                } else {
+                    try {
+                        tipotarifaObj.setCodigo(null);
+                        adm.guardar(tipotarifaObj);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                        return;
+                    }
                 }
+                this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+                this.btnAgregar3.setLabel("Nuevo");
+                this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+                this.btnModificar3.setLabel("Modificar");
+                btnAgregar3.setMnemonic('N');
+                btnModificar3.setMnemonic('M');
+                grabar3 = false;
+                modificar3 = false;
+                habilitar3(false);
+                llenarProductos2();
 
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+    }
 }//GEN-LAST:event_btnAgregar3ActionPerformed
 
 private void btnAgregar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar3KeyPressed
@@ -1710,42 +2106,42 @@ private void btnAgregar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:eve
 
 private void btnModificar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar3ActionPerformed
 // TODO add your handling code here:
-    
-      if (grabar3 == false) {
-            if(principal.permisos.getModificar()){
 
-                this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
-                this.btnAgregar3.setLabel("Guardar");
-                btnAgregar3.setEnabled(true);
-                this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
-                this.btnModificar3.setLabel("Cancelar");
-                btnAgregar3.setMnemonic('G');
-                btnModificar3.setMnemonic('C');
-                modificar3 = true;
-                grabar3 = true;
+    if (grabar3 == false) {
+        if (principal.permisos.getModificar()) {
 
-                habilitar3(true);
-                //            btnBuscar.setEnabled(false);
+            this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+            this.btnAgregar3.setLabel("Guardar");
+            btnAgregar3.setEnabled(true);
+            this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+            this.btnModificar3.setLabel("Cancelar");
+            btnAgregar3.setMnemonic('G');
+            btnModificar3.setMnemonic('C');
+            modificar3 = true;
+            grabar3 = true;
 
-            }else{
-                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
-            }
+            habilitar3(true);
+            //            btnBuscar.setEnabled(false);
+
         } else {
-
-            grabar3 = false;
-            modificar3 = false;
-            this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
-            this.btnAgregar3.setLabel("Nuevo");
-            this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
-            this.btnModificar3.setLabel("Modificar");
-            btnAgregar3.setMnemonic('N');
-            btnModificar3.setMnemonic('M');
-            //btnAgregar3.setEnabled(false);
-
-            habilitar3(false);
-            //            btnBuscar.setEnabled(true);
-
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
         }
+    } else {
+
+        grabar3 = false;
+        modificar3 = false;
+        this.btnAgregar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+        this.btnAgregar3.setLabel("Nuevo");
+        this.btnModificar3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+        this.btnModificar3.setLabel("Modificar");
+        btnAgregar3.setMnemonic('N');
+        btnModificar3.setMnemonic('M');
+        //btnAgregar3.setEnabled(false);
+
+        habilitar3(false);
+        //            btnBuscar.setEnabled(true);
+
+    }
 }//GEN-LAST:event_btnModificar3ActionPerformed
 
 private void btnModificar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificar3KeyPressed
@@ -1754,20 +2150,20 @@ private void btnModificar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:e
 
 private void btnEliminar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar3ActionPerformed
 // TODO add your handling code here:
-      // TODO add your handling code here:
-          if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
-            try {
-                adm.eliminarObjeto(Descuento.class, new Integer(txtCodigo2.getText()));
-                this.limpiar3();
-                llenarProductos2();
+    // TODO add your handling code here:
+    if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+        try {
+            adm.eliminarObjeto(Descuento.class, new Integer(txtCodigo2.getText()));
+            this.limpiar3();
+            llenarProductos2();
 
-            } catch (Exception ex) {
-                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        } catch (Exception ex) {
+            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    } else {
+        JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+    }
 }//GEN-LAST:event_btnEliminar3ActionPerformed
 
 private void btnEliminar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar3KeyPressed
@@ -1776,16 +2172,490 @@ private void btnEliminar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:ev
 
 private void btnSalir3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir3ActionPerformed
 // TODO add your handling code here:
-     this.setVisible(false);
-        this.dispose();
-        principal = null;
-        empresaObj = null;
-        System.gc();
+    this.setVisible(false);
+    this.dispose();
+    principal = null;
+    empresaObj = null;
+    System.gc();
 }//GEN-LAST:event_btnSalir3ActionPerformed
 
 private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir3KeyPressed
 // TODO add your handling code here:
 }//GEN-LAST:event_btnSalir3KeyPressed
+
+    private void lunesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lunesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lunesActionPerformed
+
+    private void lunesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lunesKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_lunesKeyPressed
+
+    private void martesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_martesKeyPressed
+
+
+    }//GEN-LAST:event_martesKeyPressed
+
+    private void miercolesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_miercolesKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_miercolesKeyPressed
+
+    private void juevesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_juevesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_juevesActionPerformed
+
+    private void juevesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_juevesKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_juevesKeyPressed
+
+    private void viernesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_viernesKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_viernesKeyPressed
+
+    private void sabadoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sabadoKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_sabadoKeyPressed
+
+    private void domingoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_domingoKeyPressed
+
+
+    }//GEN-LAST:event_domingoKeyPressed
+
+    private void todosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todosActionPerformed
+        // TODO add your handling code here:
+        lunes.setSelected(todos.isSelected());
+        martes.setSelected(todos.isSelected());
+        miercoles.setSelected(todos.isSelected());
+        jueves.setSelected(todos.isSelected());
+        viernes.setSelected(todos.isSelected());
+        sabado.setSelected(todos.isSelected());
+        domingo.setSelected(todos.isSelected());
+    }//GEN-LAST:event_todosActionPerformed
+
+    private void todosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_todosKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_todosKeyPressed
+
+    public void llenar(Tipotarifa usuario001) {
+        txtCodigoTipo.setText(usuario001.getCodigo() + "");
+        nombreTipo.setText(usuario001.getNombre());
+        lunes.setSelected(usuario001.getLunes());
+        martes.setSelected(usuario001.getMartes());
+        miercoles.setSelected(usuario001.getMiercoles());
+        jueves.setSelected(usuario001.getJueves());
+        viernes.setSelected(usuario001.getViernes());
+        sabado.setSelected(usuario001.getSabado());
+        domingo.setSelected(usuario001.getDomingo());
+        SpinnerDateModel sm = new SpinnerDateModel(usuario001.getDesde(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner = new JSpinner(sm);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
+        horaDesde.setModel(sm);
+        horaDesde.setEditor(de);
+
+        SpinnerDateModel sm2 = new SpinnerDateModel(usuario001.getHasta(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner2 = new JSpinner(sm2);
+        JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+
+        horaHasta.setEditor(de2);
+        horaHasta.setModel(sm2);
+    }
+
+    public void limpiarTipo() {
+
+        txtCodigoTipo.setText("");
+        nombreTipo.setText("");
+
+        SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner = new JSpinner(sm);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
+
+        horaDesde.setModel(sm);
+        horaDesde.setEditor(de);
+
+        SpinnerDateModel sm2 = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner2 = new JSpinner(sm2);
+        JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+
+        horaHasta.setEditor(de2);
+        horaHasta.setModel(sm2);
+        lunes.setEnabled(true);
+        martes.setEnabled(true);
+        miercoles.setEnabled(true);
+        jueves.setEnabled(true);
+        viernes.setEnabled(true);
+        sabado.setEnabled(true);
+        domingo.setEnabled(true);
+
+        lunes.setSelected(false);
+        martes.setSelected(false);
+        miercoles.setSelected(false);
+        jueves.setSelected(false);
+        viernes.setSelected(false);
+        sabado.setSelected(false);
+        domingo.setSelected(false);
+    }
+
+    public void habilitarTipo(boolean estado) {
+        lunes.setEnabled(estado);
+        martes.setEnabled(estado);
+        miercoles.setEnabled(estado);
+        jueves.setEnabled(estado);
+        viernes.setEnabled(estado);
+        sabado.setEnabled(estado);
+        domingo.setEnabled(estado);
+        horaDesde.setEnabled(estado);
+        horaHasta.setEnabled(estado);
+        nombreTipo.setEditable(estado);
+    }
+    private void btnModificar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar5ActionPerformed
+        // TODO add your handling code here:
+
+        if (grabar5 == false) {
+            if (principal.permisos.getModificar()) {
+                if (txtCodigoTipo.getText().trim().isEmpty()) {
+                    return;
+                }
+                this.nombreTipo.requestFocusInWindow();
+                this.btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar5.setLabel("Guardar");
+                this.btnModificar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar5.setLabel("Cancelar");
+                btnAgregar5.setMnemonic('G');
+                btnModificar5.setMnemonic('C');
+                modificar5 = true;
+                grabar5 = true;
+                habilitarTipo(true);
+                btnBuscar5.setEnabled(false);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+            }
+        } else {
+
+            grabar5 = false;
+            modificar5 = false;
+            this.btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+            this.btnAgregar5.setLabel("Nuevo");
+            this.btnModificar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+            this.btnModificar5.setLabel("Modificar");
+            btnAgregar5.setMnemonic('N');
+            btnModificar5.setMnemonic('M');
+            habilitarTipo(false);
+            btnBuscar5.setEnabled(true);
+
+        }
+
+    }//GEN-LAST:event_btnModificar5ActionPerformed
+
+    private void btnModificar5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificar5KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificar5KeyPressed
+
+    public void cargarComboTipo() {
+
+        try {
+            cmbTipoTarifas.removeAllItems();
+            Tipotarifa user = new Tipotarifa(-1);
+            user.setNombre("[SELECCIONE UNA TARIFA]");
+            cmbTipoTarifas.addItem(user);
+            List<Tipotarifa> us = adm.query("Select o from Tipotarifa as o ");
+            for (Iterator<Tipotarifa> it = us.iterator(); it.hasNext();) {
+                Tipotarifa usuarios = it.next();
+                cmbTipoTarifas.addItem(usuarios);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void btnSalir5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir5ActionPerformed
+        // TODO add your handling code here:
+        cargarComboTipo();
+        frmTipoTarifas.setVisible(false);
+    }//GEN-LAST:event_btnSalir5ActionPerformed
+
+    private void btnSalir5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSalir5KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSalir5KeyPressed
+    private Tipotarifa tipotarifaObj;
+
+    public Tipotarifa getTipotarifaObj() {
+        return tipotarifaObj;
+    }
+
+    public void setTipotarifaObj(Tipotarifa tipotarifaObj) {
+        this.tipotarifaObj = tipotarifaObj;
+    }
+
+    private void btnAgregar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar5ActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        if (principal.permisos.getAgregar()) {
+            if (grabar5 == false) {
+                tipotarifaObj = new Tipotarifa(0);
+                this.btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png")));
+                this.btnAgregar5.setLabel("Guardar");
+                this.btnModificar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cancelar.png")));
+                this.btnModificar5.setLabel("Cancelar");
+                grabar5 = true;
+                modificar5 = false;
+                habilitarTipo(true);
+                limpiarTipo();
+                llenar(tipotarifaObj);
+                nombreTipo.requestFocusInWindow();
+                btnAgregar5.setMnemonic('G');
+                btnModificar5.setMnemonic('C');
+                btnBuscar5.setEnabled(false);
+
+            } else if (grabar5 == true) {
+                if (nombreTipo.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Registre los campos requeridos ...!");
+                } else {
+                    tipotarifaObj.setNombre(nombreTipo.getText());
+
+                    tipotarifaObj.setCodigo(Integer.parseInt(txtCodigoTipo.getText()));
+                    tipotarifaObj.setDesde((Date) horaDesde.getValue());
+                    tipotarifaObj.setHasta((Date) horaHasta.getValue());
+                    tipotarifaObj.setDomingo(domingo.isSelected());
+                    tipotarifaObj.setLunes(lunes.isSelected());
+                    tipotarifaObj.setMartes(martes.isSelected());
+                    tipotarifaObj.setMiercoles(miercoles.isSelected());
+                    tipotarifaObj.setJueves(jueves.isSelected());
+                    tipotarifaObj.setViernes(viernes.isSelected());
+                    tipotarifaObj.setSabado(sabado.isSelected());
+
+                    if (tipotarifaObj.getCodigo().equals(0)) {
+                        tipotarifaObj.setCodigo(null);
+                    }
+                    if (modificar5) {
+                        try {
+                            adm.actualizar(tipotarifaObj);
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en actualizar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    } else {
+                        try {
+                            adm.guardar(tipotarifaObj);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(this, "Error en guardar Registro ...! \n" + ex.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+                            Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                            return;
+                        }
+                    }
+                    this.btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png")));
+                    this.btnAgregar5.setLabel("Nuevo");
+                    this.btnModificar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png")));
+                    this.btnModificar5.setLabel("Modificar");
+                    btnAgregar5.setMnemonic('N');
+                    btnModificar5.setMnemonic('M');
+                    grabar5 = false;
+                    modificar5 = false;
+                    habilitarTipo(false);
+                    btnBuscar5.setEnabled(true);
+
+                }
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+
+    }//GEN-LAST:event_btnAgregar5ActionPerformed
+
+    private void btnAgregar5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAgregar5KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregar5KeyPressed
+
+    private void horaDesdeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaDesdeKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_horaDesdeKeyPressed
+
+    private void horaHastaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_horaHastaKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_horaHastaKeyPressed
+
+    private void btnEliminar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar5ActionPerformed
+        // TODO add your handling code here:
+
+        if (principal.permisos.getEliminar()) {        // TODO add your handling code here:
+            try {
+                adm.eliminarObjeto(Tipotarifa.class, tipotarifaObj.getCodigo());
+                this.limpiar();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "No se puede eliminar el registro este Tipo de Tarifa  "
+                        + "\n  contiene datos en  procesos "
+                        + "que haya realizado: \n" + ex.getCause().getMessage(), "JCINFORM", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "NO TIENE PERMISOS PARA REALIZAR ESTA ACCIÓN");
+        }
+    }//GEN-LAST:event_btnEliminar5ActionPerformed
+
+    private void btnEliminar5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnEliminar5KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminar5KeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner = new JSpinner(sm);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
+
+        horaDesde.setModel(sm);
+        horaDesde.setEditor(de);
+
+        SpinnerDateModel sm2 = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
+        JSpinner spinner2 = new JSpinner(sm2);
+        JSpinner.DateEditor de2 = new JSpinner.DateEditor(spinner2, "HH:mm");
+
+        horaHasta.setEditor(de2);
+        horaHasta.setModel(sm2);
+        frmTipoTarifas.setVisible(true);
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void codigoBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBuscarKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+
+            Thread cargar = new Thread() {
+
+                public void run() {
+                    principal.procesando.setVisible(true);
+
+                    try {
+                        List<Tipotarifa> usuarios = adm.query("Select o from Tipotarifa as o where o.nombre like '" + codigoBuscar.getText().trim() + "%' ");
+                        Object[] obj = new Object[4];
+                        DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
+                        dtm.getDataVector().removeAllElements();
+                        for (Iterator<Tipotarifa> it = usuarios.iterator(); it.hasNext();) {
+                            Tipotarifa glbusuario = it.next();
+                            obj[1] = glbusuario.getNombre();
+                            obj[0] = glbusuario.getCodigo();
+                            dtm.addRow(obj);
+                        }
+                        busquedaTabla.setModel(dtm);
+                        if (busquedaTabla.getRowCount() > 0) {
+                            busquedaTabla.requestFocusInWindow();
+                        } else {
+                            codigoBuscar.requestFocusInWindow();
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    principal.procesando.setVisible(false);
+                }
+            };
+            cargar.start();
+
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            formaUsuarios.dispose();
+        }
+    }//GEN-LAST:event_codigoBuscarKeyPressed
+
+    private void busquedaTablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_busquedaTablaMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            try {
+                int fila = busquedaTabla.getSelectedRow();
+                this.tipotarifaObj = (Tipotarifa) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Tipotarifa.class);
+
+                llenar(tipotarifaObj);
+
+                formaUsuarios.dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        //        JOptionPane.showMessageDialog(this, tipotarifaObj);
+    }//GEN-LAST:event_busquedaTablaMouseClicked
+
+    private void busquedaTablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busquedaTablaKeyPressed
+
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            try {
+
+                int fila = busquedaTabla.getSelectedRow();
+                this.tipotarifaObj = (Tipotarifa) adm.buscarClave((Integer) busquedaTabla.getValueAt(fila, 0), Tipotarifa.class);
+
+                llenar(tipotarifaObj);
+
+                //                perfil.setSelectedValue(g,true);
+                formaUsuarios.dispose();
+
+            } catch (Exception ex) {
+                Logger.getLogger(frmOperadores.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
+            formaUsuarios.dispose();
+        }
+
+    }//GEN-LAST:event_busquedaTablaKeyPressed
+
+    private void btnBuscar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar5ActionPerformed
+        // TODO add your handling code here:
+        formaUsuarios.setModal(true);
+        formaUsuarios.setSize(533, 300);
+        formaUsuarios.setLocation(250, 70);
+        formaUsuarios.show();
+
+        this.codigoBuscar.requestFocusInWindow();
+        DefaultTableModel dtm = (DefaultTableModel) busquedaTabla.getModel();
+        dtm.getDataVector().removeAllElements();
+        busquedaTabla.setModel(dtm);
+        codigoBuscar.setText("");
+        //                    nombresBuscar.setText("");
+
+    }//GEN-LAST:event_btnBuscar5ActionPerformed
+
+    private void btnBuscar5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscar5KeyPressed
+        // TODO add your handling code here:
+        principal.tecla(evt.getKeyCode());
+    }//GEN-LAST:event_btnBuscar5KeyPressed
+
+    private void cmbTipoTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoTarifasItemStateChanged
+        // TODO add your handling code here:
+        try {
+            List<Tipotarifa> abc = adm.query("Select o from Tipotarifa as o");
+            if (abc.size() <= 0) {
+                JOptionPane.showMessageDialog(this, "CREE PRIMERO UN TARIFARIO PARA PODER CREAR LA TARIFA");
+                frmTipoTarifas.setVisible(true);
+                return;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (cmbTipoTarifas.getSelectedIndex() > 0) {
+            System.out.println("" + evt.getStateChange());
+            System.out.println("" + evt.getItem());
+
+            llenarCombo();
+            tarifario.repaint();
+
+        } else {
+            DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
+            dtm.getDataVector().removeAllElements();
+            tarifario.setModel(dtm);
+            tarifario.repaint();
+        }
+        tarifario.repaint();
+    }//GEN-LAST:event_cmbTipoTarifasItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1793,20 +2663,35 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAgregar2;
     private javax.swing.JButton btnAgregar3;
+    private javax.swing.JButton btnAgregar5;
+    private javax.swing.JButton btnBuscar5;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminar1;
     private javax.swing.JButton btnEliminar2;
     private javax.swing.JButton btnEliminar3;
+    private javax.swing.JButton btnEliminar5;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnModificar1;
     private javax.swing.JButton btnModificar2;
     private javax.swing.JButton btnModificar3;
+    private javax.swing.JButton btnModificar5;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSalir1;
     private javax.swing.JButton btnSalir2;
     private javax.swing.JButton btnSalir3;
+    private javax.swing.JButton btnSalir5;
+    private javax.swing.JTable busquedaTabla;
+    private javax.swing.JComboBox cmbTipoTarifas;
+    private javax.swing.JFormattedTextField codigoBuscar;
+    private javax.swing.JPanel diasHabiles;
+    private javax.swing.JCheckBox domingo;
     private javax.swing.JCheckBox esPorcentaje;
+    private javax.swing.JDialog formaUsuarios;
+    private javax.swing.JInternalFrame frmTipoTarifas;
+    private javax.swing.JSpinner horaDesde;
+    private javax.swing.JSpinner horaHasta;
     private javax.swing.JTextField horas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1814,7 +2699,13 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1825,6 +2716,9 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1837,21 +2731,31 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JCheckBox jueves;
+    private javax.swing.JCheckBox lunes;
+    private javax.swing.JCheckBox martes;
+    private javax.swing.JCheckBox miercoles;
     private javax.swing.JTextField minutos;
+    private javax.swing.JFormattedTextField nombreTipo;
+    private javax.swing.JCheckBox sabado;
     private javax.swing.JTable tarifario;
     private javax.swing.JTable tbTarifas;
     private javax.swing.JTable tbTarifas1;
     private javax.swing.JTable tbTarifas2;
+    private javax.swing.JCheckBox todos;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtCodigo1;
     private javax.swing.JTextField txtCodigo2;
+    private javax.swing.JFormattedTextField txtCodigoTipo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombre1;
     private javax.swing.JTextField txtNombre2;
     private javax.swing.JTextField txtValor;
     private javax.swing.JTextField txtValor1;
     private javax.swing.JTextField txtValor2;
+    private javax.swing.JCheckBox viernes;
     // End of variables declaration//GEN-END:variables
 
 }

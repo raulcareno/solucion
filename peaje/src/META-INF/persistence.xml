@@ -20,6 +20,7 @@
     <class>hibernate.Cxcobrar</class>
     <class>hibernate.Descuento</class>
     <class>hibernate.Documentos</class>
+    <class>hibernate.Tipotarifa</class>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value=""/>

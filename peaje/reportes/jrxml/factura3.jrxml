@@ -236,13 +236,6 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["Dir.: "+$P{direccion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="229" width="169" height="13"/>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[www.jcinform.com]]></text>
-			</staticText>
-			<staticText>
 				<reportElement key="staticText-7" x="4" y="117" width="56" height="18"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
