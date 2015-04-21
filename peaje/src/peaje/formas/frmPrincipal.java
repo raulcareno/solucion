@@ -162,7 +162,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
     boolean poseeAutologin = false;
     boolean logeado = false;
     Usuarios userAutologin = new Usuarios();
-    TrayIcon trayIcon;
+    public TrayIcon trayIcon;
 
     public frmPrincipal() {
 //        super("frmPrincipal");
@@ -246,7 +246,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //                        frmLogin.show(true);
                     }
                 });
-                trayIcon.displayMessage("Bienvenidos al Sistema", " CityPark \n www.siscontrol.com.ec ", TrayIcon.MessageType.INFO);
+                trayIcon.displayMessage("Bienvenidos al Sistema", " SisPark \n www.siscontrol.com.ec ", TrayIcon.MessageType.INFO);
                 try {
                     tray.add(trayIcon);
                 } catch (AWTException e) {
@@ -776,9 +776,11 @@ deshabilite.setVisible(false);
             }
         });
         jScrollPane3.setViewportView(busquedaTabla);
-        busquedaTabla.getColumnModel().getColumn(0).setMinWidth(0);
-        busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
-        busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        if (busquedaTabla.getColumnModel().getColumnCount() > 0) {
+            busquedaTabla.getColumnModel().getColumn(0).setMinWidth(0);
+            busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
+            busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jPanel9.add(jScrollPane3);
         jScrollPane3.setBounds(10, 10, 550, 150);
@@ -1008,7 +1010,7 @@ deshabilite.setVisible(false);
         formaTarjetas1.getContentPane().add(jLabel14);
         jLabel14.setBounds(210, 10, 20, 14);
 
-        panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", 0, 0, null, new java.awt.Color(0, 102, 204)));
+        panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
         panelHoras.setForeground(new java.awt.Color(0, 51, 255));
         panelHoras.setLayout(null);
 
@@ -1031,7 +1033,7 @@ deshabilite.setVisible(false);
         formaTarjetas1.getContentPane().add(panelHoras);
         panelHoras.setBounds(30, 120, 160, 80);
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", 0, 0, null, new java.awt.Color(0, 102, 204)));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
         jPanel7.setLayout(null);
 
         jLabel18.setText("Hasta: ");
@@ -1322,8 +1324,9 @@ deshabilite.setVisible(false);
         formaTarjetas1.getContentPane().add(noTarjetaSerie);
         noTarjetaSerie.setBounds(220, 10, 80, 20);
 
+        contenedor.add(formaTarjetas1);
         formaTarjetas1.setBounds(20, 20, 430, 440);
-        contenedor.add(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
+        contenedor.setLayer(formaTarjetas1, javax.swing.JLayeredPane.MODAL_LAYER);
 
         frmLoteTarjetas.setMaximizable(true);
         frmLoteTarjetas.setTitle("Ingreso de Tarjetas por Lotes");
@@ -1405,9 +1408,11 @@ deshabilite.setVisible(false);
             }
         });
         jScrollPane6.setViewportView(tablaTarjetas);
-        tablaTarjetas.getColumnModel().getColumn(0).setResizable(false);
-        tablaTarjetas.getColumnModel().getColumn(1).setResizable(false);
-        tablaTarjetas.getColumnModel().getColumn(2).setResizable(false);
+        if (tablaTarjetas.getColumnModel().getColumnCount() > 0) {
+            tablaTarjetas.getColumnModel().getColumn(0).setResizable(false);
+            tablaTarjetas.getColumnModel().getColumn(1).setResizable(false);
+            tablaTarjetas.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         frmLoteTarjetas.getContentPane().add(jScrollPane6);
         jScrollPane6.setBounds(20, 110, 270, 300);
@@ -1677,8 +1682,8 @@ deshabilite.setVisible(false);
         frmLoteTarjetas.getContentPane().add(jButton13);
         jButton13.setBounds(90, 60, 79, 23);
 
+        contenedor.add(frmLoteTarjetas);
         frmLoteTarjetas.setBounds(5, 5, 710, 460);
-        contenedor.add(frmLoteTarjetas, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmClientes1.setTitle("Registro y Modifación de Clientes");
         frmClientes1.setAutoscrolls(true);
@@ -1850,21 +1855,23 @@ deshabilite.setVisible(false);
             }
         });
         jScrollPane8.setViewportView(tarjetas);
-        tarjetas.getColumnModel().getColumn(0).setMinWidth(0);
-        tarjetas.getColumnModel().getColumn(0).setPreferredWidth(0);
-        tarjetas.getColumnModel().getColumn(0).setMaxWidth(0);
-        tarjetas.getColumnModel().getColumn(1).setPreferredWidth(35);
-        tarjetas.getColumnModel().getColumn(2).setPreferredWidth(40);
-        tarjetas.getColumnModel().getColumn(3).setPreferredWidth(40);
-        tarjetas.getColumnModel().getColumn(4).setPreferredWidth(110);
-        tarjetas.getColumnModel().getColumn(5).setPreferredWidth(110);
-        tarjetas.getColumnModel().getColumn(6).setPreferredWidth(15);
-        tarjetas.getColumnModel().getColumn(7).setPreferredWidth(15);
-        tarjetas.getColumnModel().getColumn(8).setPreferredWidth(15);
-        tarjetas.getColumnModel().getColumn(9).setPreferredWidth(15);
-        tarjetas.getColumnModel().getColumn(10).setPreferredWidth(20);
-        tarjetas.getColumnModel().getColumn(11).setPreferredWidth(15);
-        tarjetas.getColumnModel().getColumn(12).setPreferredWidth(15);
+        if (tarjetas.getColumnModel().getColumnCount() > 0) {
+            tarjetas.getColumnModel().getColumn(0).setMinWidth(0);
+            tarjetas.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tarjetas.getColumnModel().getColumn(0).setMaxWidth(0);
+            tarjetas.getColumnModel().getColumn(1).setPreferredWidth(35);
+            tarjetas.getColumnModel().getColumn(2).setPreferredWidth(40);
+            tarjetas.getColumnModel().getColumn(3).setPreferredWidth(40);
+            tarjetas.getColumnModel().getColumn(4).setPreferredWidth(110);
+            tarjetas.getColumnModel().getColumn(5).setPreferredWidth(110);
+            tarjetas.getColumnModel().getColumn(6).setPreferredWidth(15);
+            tarjetas.getColumnModel().getColumn(7).setPreferredWidth(15);
+            tarjetas.getColumnModel().getColumn(8).setPreferredWidth(15);
+            tarjetas.getColumnModel().getColumn(9).setPreferredWidth(15);
+            tarjetas.getColumnModel().getColumn(10).setPreferredWidth(20);
+            tarjetas.getColumnModel().getColumn(11).setPreferredWidth(15);
+            tarjetas.getColumnModel().getColumn(12).setPreferredWidth(15);
+        }
 
         jPanel4.add(jScrollPane8);
         jScrollPane8.setBounds(20, 140, 710, 170);
@@ -2065,8 +2072,8 @@ deshabilite.setVisible(false);
         frmClientes1.getContentPane().add(jPanel6);
         jPanel6.setBounds(0, 0, 760, 40);
 
+        contenedor.add(frmClientes1);
         frmClientes1.setBounds(5, 5, 790, 490);
-        contenedor.add(frmClientes1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmLote.setMaximizable(true);
         frmLote.setTitle("Cambiar horarios por lote");
@@ -2099,13 +2106,15 @@ deshabilite.setVisible(false);
             }
         });
         jScrollPane5.setViewportView(tablaCambios);
-        tablaCambios.getColumnModel().getColumn(0).setResizable(false);
-        tablaCambios.getColumnModel().getColumn(0).setPreferredWidth(5);
-        tablaCambios.getColumnModel().getColumn(1).setResizable(false);
-        tablaCambios.getColumnModel().getColumn(1).setPreferredWidth(250);
-        tablaCambios.getColumnModel().getColumn(2).setResizable(false);
-        tablaCambios.getColumnModel().getColumn(3).setResizable(false);
-        tablaCambios.getColumnModel().getColumn(3).setPreferredWidth(10);
+        if (tablaCambios.getColumnModel().getColumnCount() > 0) {
+            tablaCambios.getColumnModel().getColumn(0).setResizable(false);
+            tablaCambios.getColumnModel().getColumn(0).setPreferredWidth(5);
+            tablaCambios.getColumnModel().getColumn(1).setResizable(false);
+            tablaCambios.getColumnModel().getColumn(1).setPreferredWidth(250);
+            tablaCambios.getColumnModel().getColumn(2).setResizable(false);
+            tablaCambios.getColumnModel().getColumn(3).setResizable(false);
+            tablaCambios.getColumnModel().getColumn(3).setPreferredWidth(10);
+        }
 
         diasHabiles1.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
         diasHabiles1.setLayout(null);
@@ -2402,8 +2411,8 @@ deshabilite.setVisible(false);
                 .addGap(47, 47, 47))
         );
 
+        contenedor.add(frmLote);
         frmLote.setBounds(5, 5, 650, 540);
-        contenedor.add(frmLote, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         frmRespaldarBase.setTitle("Respaldo de Información");
         frmRespaldarBase.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/edittrash.gif"))); // NOI18N
@@ -2475,8 +2484,8 @@ deshabilite.setVisible(false);
             frmRespaldarBase.getContentPane().add(jButton6);
             jButton6.setBounds(350, 120, 140, 40);
 
+            contenedor.add(frmRespaldarBase);
             frmRespaldarBase.setBounds(5, 5, 520, 210);
-            contenedor.add(frmRespaldarBase, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             frmIngresarSistema.setTitle("Seguridad");
             frmIngresarSistema.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/unlock.gif"))); // NOI18N
@@ -2594,11 +2603,11 @@ deshabilite.setVisible(false);
             frmIngresarSistema.getContentPane().add(jPanel2);
             jPanel2.setBounds(0, 40, 370, 150);
 
+            contenedor.add(frmIngresarSistema);
             frmIngresarSistema.setBounds(100, 100, 390, 220);
-            contenedor.add(frmIngresarSistema, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             panelCambiar.setBackground(new java.awt.Color(227, 240, 254));
-            panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(1), javax.swing.BorderFactory.createBevelBorder(0)));
+            panelCambiar.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED)));
             panelCambiar.setLayout(null);
 
             guardarCambioClave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/filesave.gif"))); // NOI18N
@@ -2647,8 +2656,8 @@ deshabilite.setVisible(false);
             panelCambiar.add(jButton7);
             jButton7.setBounds(140, 100, 90, 35);
 
+            contenedor.add(panelCambiar);
             panelCambiar.setBounds(10, 30, 270, 150);
-            contenedor.add(panelCambiar, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             panelIngreso.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
             panelIngreso.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2836,8 +2845,8 @@ deshabilite.setVisible(false);
             panelIngreso.add(deshabilite);
             deshabilite.setBounds(320, 550, 450, 22);
 
+            contenedor.add(panelIngreso);
             panelIngreso.setBounds(0, 30, 790, 590);
-            contenedor.add(panelIngreso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             usuarioLogeado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
             usuarioLogeado.setForeground(new java.awt.Color(0, 153, 204));
@@ -2856,14 +2865,14 @@ deshabilite.setVisible(false);
                     usuarioLogeadoKeyPressed(evt);
                 }
             });
+            contenedor.add(usuarioLogeado);
             usuarioLogeado.setBounds(10, 3, 270, 30);
-            contenedor.add(usuarioLogeado, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jLabel37.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel37.setForeground(new java.awt.Color(102, 102, 102));
             jLabel37.setText("PARTNERS");
+            contenedor.add(jLabel37);
             jLabel37.setBounds(500, 450, 160, 20);
-            contenedor.add(jLabel37, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             botoninst.setText("Ver Instantanea");
             botoninst.addActionListener(new java.awt.event.ActionListener() {
@@ -2871,8 +2880,8 @@ deshabilite.setVisible(false);
                     botoninstActionPerformed(evt);
                 }
             });
+            contenedor.add(botoninst);
             botoninst.setBounds(290, 0, 120, 23);
-            contenedor.add(botoninst, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             tempjButton13.setText("Tarjeta");
             tempjButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -2880,20 +2889,20 @@ deshabilite.setVisible(false);
                     tempjButton13ActionPerformed(evt);
                 }
             });
+            contenedor.add(tempjButton13);
             tempjButton13.setBounds(410, 0, 80, 23);
-            contenedor.add(tempjButton13, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             tempnotarjetaTemp.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     tempnotarjetaTempActionPerformed(evt);
                 }
             });
+            contenedor.add(tempnotarjetaTemp);
             tempnotarjetaTemp.setBounds(510, 0, 110, 22);
-            contenedor.add(tempnotarjetaTemp, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             temppuertoText.setEditable(true);
+            contenedor.add(temppuertoText);
             temppuertoText.setBounds(630, 0, 50, 20);
-            contenedor.add(temppuertoText, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -8057,7 +8066,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JSpinner horaHasta;
     private javax.swing.JSpinner horaHasta1;
     private javax.swing.JSpinner horaHasta2;
-    private javax.swing.JLabel imAviso;
+    public javax.swing.JLabel imAviso;
     private javax.swing.JLabel incorrecto;
     private javax.swing.JLabel ingre;
     private javax.swing.JSpinner ingresos;

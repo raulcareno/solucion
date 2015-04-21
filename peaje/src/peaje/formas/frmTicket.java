@@ -32,6 +32,8 @@ import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
 import java.io.File;
 import java.text.ParseException;
+import javax.print.attribute.Attribute;
+import javax.print.attribute.AttributeSet;
 import javax.swing.text.MaskFormatter;
 import sources.FacturaSource;
 
@@ -78,6 +80,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         val = new validaciones();
         placa.requestFocusInWindow();
         mascaras();
+        mensajeErrorImpresora.setVisible(false);
     }
 
     public frmTicket(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
@@ -104,6 +107,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
 //        placa.requestFocusInWindow();
 //        placa.requestFocusInWindow();
 //        placa.requestFocusInWindow();
+        mensajeErrorImpresora.setVisible(false);
 
     }
 
@@ -161,7 +165,6 @@ public class frmTicket extends javax.swing.JInternalFrame {
 
     public void limpiar() {
 
-         
         System.gc();
         System.gc();
         System.gc();
@@ -182,7 +185,6 @@ public class frmTicket extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         fecha = new com.toedter.calendar.JDateChooser();
@@ -195,9 +197,10 @@ public class frmTicket extends javax.swing.JInternalFrame {
         codigo = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        mensajeErrorImpresora = new javax.swing.JLabel();
 
         setIconifiable(true);
-        setTitle("Emisión de tickets");
+        setTitle("Generación manual de Tickets ..::..");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ticket.gif"))); // NOI18N
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -213,20 +216,14 @@ public class frmTicket extends javax.swing.JInternalFrame {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(null);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel8.setText("Generación manual de Tickets ..::..");
-        jPanel3.add(jLabel8);
-        jLabel8.setBounds(10, 0, 270, 15);
-
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Registro el Numero de placa y presiona ENTER..::..");
         jPanel3.add(jLabel10);
-        jLabel10.setBounds(10, 20, 300, 13);
+        jLabel10.setBounds(10, 0, 300, 13);
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 0, 320, 40);
+        jPanel3.setBounds(0, 0, 320, 20);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel1.setLayout(null);
@@ -291,7 +288,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
         codigo.setBounds(240, 10, 0, 0);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(10, 40, 300, 100);
+        jPanel1.setBounds(10, 20, 300, 100);
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnAgregar.setMnemonic('G');
@@ -331,11 +328,21 @@ public class frmTicket extends javax.swing.JInternalFrame {
         getContentPane().add(btnSalir);
         btnSalir.setBounds(250, 150, 60, 50);
 
+        mensajeErrorImpresora.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        mensajeErrorImpresora.setForeground(java.awt.Color.red);
+        mensajeErrorImpresora.setText("<html> EXISTE COLA DE IMPRESIÓN, revise que la conexión con su impresora se encuentra bien</html>");
+        mensajeErrorImpresora.setAlignmentX(3.0F);
+        mensajeErrorImpresora.setAlignmentY(3.0F);
+        mensajeErrorImpresora.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        mensajeErrorImpresora.setOpaque(true);
+        getContentPane().add(mensajeErrorImpresora);
+        mensajeErrorImpresora.setBounds(10, 130, 160, 70);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     void guardarTic() {
-        System.out.println("PISTA1 "+new Date());
+        System.out.println("PISTA1 " + new Date());
         if (guardando == false) {
             guardando = true;
 
@@ -365,7 +372,7 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     fac.setSellado(false);
                     Boolean pasar = true;
                     String nombreCaja = empresaObj.nombreCaja;
-                    System.out.println("PISTA2 "+new Date());
+                    System.out.println("PISTA2 " + new Date());
                     Integer numero = new Integer(emp.getDocumentoticket()) + 1;
                     while (pasar) {
                         List sihay = adm.query("Select o from Factura as o where o.ticket = '" + nombreCaja + numero + "'");
@@ -388,10 +395,10 @@ public class frmTicket extends javax.swing.JInternalFrame {
                             numero++;
                         }
                     }
-                    System.out.println("PISTA3 "+new Date());
-                    
+                    System.out.println("PISTA3 " + new Date());
+
                     imprimir(fac.getCodigo(), emp);
-                    System.out.println("PISTA4 "+new Date());
+                    System.out.println("PISTA4 " + new Date());
                     emp = null;
                     if (empresaObj.getSeabretic()) {
                         if (empresaObj.getRetardoEntrada() != null) {
@@ -423,14 +430,13 @@ public class frmTicket extends javax.swing.JInternalFrame {
                     } else {
                         System.out.println("NO ABRE BARRERA POR DESHABILITACION DEN FRMEMPRESA ");
                     }
-                    System.out.println("PISTA5 "+new Date());
+                    System.out.println("PISTA5 " + new Date());
                     principal.noDisponibles();
                     //                btnAgregar.setEnabled(true);
                     principal.auditar("Ticket", "No." + fac.getTicket(), "GUARDAR");
                     principal.contenedor.requestFocus();
                     guardando = false;
                     try {
-
 
                         if (empresaObj.getWebcam()) {
                             if (ubicacionDirectorio.contains("build")) {
@@ -450,14 +456,14 @@ public class frmTicket extends javax.swing.JInternalFrame {
                         System.out.println("fotografíar: " + e);
                         lger.logger(frmTicket.class.getName(), e.getMessage());
                     }
-                    Thread cargarFotoTomada = new Thread(""+fac.getCodigo()) {
+                    Thread cargarFotoTomada = new Thread("" + fac.getCodigo()) {
 
                         public void run() {
                             principal.cargarFoto(new Integer(this.getName()));
                         }
                     };
                     cargarFotoTomada.start();
-System.out.println("PISTA6 "+new Date());
+                    System.out.println("PISTA6 " + new Date());
 
                     System.gc();
                     limpiar();
@@ -483,12 +489,12 @@ System.out.println("PISTA6 "+new Date());
             guardando = false;
 
         }
-        
-         this.placa.setText("");
-         this.noTicket.setText("");
-         this.fecha.setDate(new Date());
-         this.placa.requestFocusInWindow();
-        System.out.println("PISTA7 "+new Date());
+
+        this.placa.setText("");
+        this.noTicket.setText("");
+        this.fecha.setDate(new Date());
+        this.placa.requestFocusInWindow();
+        System.out.println("PISTA7 " + new Date());
     }
 
     public void fotografiar(String nombre, String direccion) {
@@ -563,6 +569,35 @@ System.out.println("PISTA6 "+new Date());
                 }
             }
             job.setPrintService(services[selectedService]);
+
+            PrintService printer = services[selectedService];
+            AttributeSet att = printer.getAttributes();
+            for (Attribute a : att.toArray()) {
+                String attributeName;
+                String attributeValue;
+                attributeName = a.getName();
+                attributeValue = att.get(a.getClass()).toString();
+                System.out.println(attributeName + " : " + attributeValue);
+                if(attributeName.contains("queued-job-count")){
+                    if(Integer.parseInt(attributeValue)>0){
+                        System.out.println("EXISTE COLA DE IMPRESIÓN EN: "+emp.getImpticket());
+                        principal.errores.setText("<html> EXISTE COLA DE IMPRESIÓN, revise que la conexión con su impresora "+emp.getImpticket()+" se encuentra bien o que contenga PAPEL</html>");
+                         System.out.println("EXISTE COLA DE IMPRESIÓN EN: "+emp.getImpticket());
+                        principal.imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                        mensajeErrorImpresora.setText("<html> EXISTE COLA DE IMPRESIÓN, revise que la conexión con su impresora "+emp.getImpticket()+" se encuentra bien o que contenga PAPEL</html>");
+                        mensajeErrorImpresora.setVisible(true); 
+                    }else{
+                        mensajeErrorImpresora.setVisible(false);
+                    }
+                }
+                  attributeName = null;
+                  attributeValue = null;
+                
+             
+            }
+            printer = null;
+            att = null;
+
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
             MediaSizeName mediaSizeName = MediaSize.findMedia(3.08F, 3.70F, MediaPrintableArea.INCH);
             //MediaSizeName mediaSizeName = MediaSize.findMedia(3F,3F, MediaPrintableArea.INCH);
@@ -581,7 +616,8 @@ System.out.println("PISTA6 "+new Date());
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
 
-
+//            Boolean[] datos = exporter.getPrintStatus();
+//            System.out.println("" + datos);
 
 //            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
 //            viewer.show();
@@ -673,10 +709,10 @@ System.out.println("PISTA6 "+new Date());
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel mensajeErrorImpresora;
     public javax.swing.JFormattedTextField noTicket;
     public javax.swing.JFormattedTextField placa;
     // End of variables declaration//GEN-END:variables

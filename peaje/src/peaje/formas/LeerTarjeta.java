@@ -33,10 +33,15 @@ import net.sf.jasperreports.engine.export.JRPrintServiceExporterParameter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import hibernate.cargar.Administrador;
 import hibernate.cargar.GeneraXMLPersonal;
+import java.awt.TrayIcon;
+import javax.print.attribute.Attribute;
+import javax.print.attribute.AttributeSet;
 import javax.swing.JOptionPane;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import sources.FacturaSource;
+import javax.print.attribute.Attribute;
+import javax.print.attribute.AttributeSet;
 
 public class LeerTarjeta implements Runnable, SerialPortEventListener {
 
@@ -156,12 +161,11 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             System.out.println("" + e);
         }
         try {
-        serialPort.notifyOnDataAvailable(true);    
+            serialPort.notifyOnDataAvailable(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+
         try {
             serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
         } catch (UnsupportedCommOperationException e) {
@@ -178,7 +182,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //        YACK();
 //        return -1;
 //        }
-        
+
     }
 
     public void run() {
@@ -236,7 +240,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
                 break;
             case SerialPortEvent.DATA_AVAILABLE:
 //                System.out.println("DATOS RECPTADOS: " + manejarDatos());
-                
+
                 try {
 //                                tarjeta = "";
                     while (inputStream.available() > 0) {
@@ -253,7 +257,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
         Date f = new Date();
         System.out.println("\t\t" + tarjeta + " ******* TIME: " + f.getTime());
-        
+
         readBuffer = null;
 
         if (tarjeta.length() >= 10) {
@@ -265,17 +269,19 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
         }
         //System.out.println("VAL: TARJETA: " + tarjeta);
         //System.out.println("" + tarjeta);
-          
-        if (tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("AEIOUAE2") || tarjeta.toUpperCase().contains("INGENIE")) {
-            if (habilitado && disponibles()>0) {
-                
+
+        if (tarjeta.toUpperCase().equals("A") || tarjeta.toUpperCase().contains("AEIOUAE1") || tarjeta.contains("AEIOUAE2") || tarjeta.toUpperCase().contains("INGENIE")) {
+            if (habilitado && disponibles() > 0) {
+
                 try {
+                    boolean abrirPuertaPorqueImprimio = true;
                     System.out.println("abrio AEIOUA: " + tarjeta + " " + new Date());
-                   // tarjeta = "";
+                    // tarjeta = "";
                     if (tarjeta.contains("AEIOUAE2")) {
-                        imprimir("");
+                        abrirPuertaPorqueImprimio = imprimir("");
+
                     } else {
-                        imprimir("2");
+                        abrirPuertaPorqueImprimio = imprimir("2");
                     }
                     //System.out.println("IMPRIMIÓ");
                     Thread.sleep(3000);
@@ -284,18 +290,23 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
 //                                    Integer retardo = new Integer(princip.empresaObj.getRetardoEntrada());
 //                                    Thread.sleep(retardo * 1000);
 //                                }
-                    if (tarjeta.contains("AEIOUAE2")) {
-                        abrirPuerta(princip.empresaObj.getEntra2());
-                        System.out.println("ABRIO PUERTA A2: " + princip.empresaObj.getEntra2());
-                    } else {
-                        abrirPuerta(princip.empresaObj.getEntra1());
-                        System.out.println("ABRIO PUERTA A1: " + princip.empresaObj.getEntra1());
+                    if (abrirPuertaPorqueImprimio) {
+                        if (tarjeta.contains("AEIOUAE2")) {
+                            abrirPuerta(princip.empresaObj.getEntra2());
+                            System.out.println("ABRIO PUERTA A2: " + princip.empresaObj.getEntra2());
+                        } else {
+                            abrirPuerta(princip.empresaObj.getEntra1());
+                            System.out.println("ABRIO PUERTA A1: " + princip.empresaObj.getEntra1());
+                        }
+                        try {
+                            princip.noDisponibles();
+                        } catch (Exception e) {
+                            System.out.println("error en recontar");
+                        }
+                    }else{
+                        System.out.println("NO IMPRIMIO YA QUE LA IMPRESORA TIENE COLA Y SE GENERAN TICKETS SIN NECESIDAD");
                     }
-                    try {
-                        princip.noDisponibles();
-                    } catch (Exception e) {
-                        System.out.println("error en recontar");
-                    }
+
                     limpiarMemoria();
                     return;
                 } catch (InterruptedException ex) {
@@ -316,7 +327,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             limpiarMemoria();
             return;
         }
-        if (       puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto1()) 
+        if (puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto1())
                 || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto2())
                 || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto3())
                 || puertoId.getName().replace("//./", "").equals(princip.empresaObj.getPuerto4())
@@ -335,7 +346,7 @@ public class LeerTarjeta implements Runnable, SerialPortEventListener {
             return;
         }
 
-tarjeta = "";
+        tarjeta = "";
     }
 
     public void limpiarMemoria() {
@@ -408,10 +419,10 @@ tarjeta = "";
             ta.outputSream.write(puerta.trim().getBytes());
             //TEMPORAL
             try {
-                    princip.noDisponibles();    
+                princip.noDisponibles();
             } catch (Exception e) {
             }
-            
+
             ta = null;
             limpiarMemoria();
             //System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
@@ -425,16 +436,16 @@ tarjeta = "";
     public int disponibles() {
         try {
             Date fechaActual = new Date();
-            String ini = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 00:00:01";
-            String fin = (fechaActual.getYear()+1900)+"-"+(fechaActual.getMonth()+1)+"-"+(fechaActual.getDate())+" 23:59:59";
-            Object con = adm.querySimple("Select count(o) from Factura as o" 
-                    + " where  o.fechafin is null and o.fecha between '"+ini+"' and '"+fin+"'  "
+            String ini = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 00:00:01";
+            String fin = (fechaActual.getYear() + 1900) + "-" + (fechaActual.getMonth() + 1) + "-" + (fechaActual.getDate()) + " 23:59:59";
+            Object con = adm.querySimple("Select count(o) from Factura as o"
+                    + " where  o.fechafin is null and o.fecha between '" + ini + "' and '" + fin + "'  "
                     + "and o.nocontar = false  ");
             Long val2 = (Long) con;
             int disponibles = (princip.empresaObj.getParqueaderos() - val2.intValue());
             con = null;
             limpiarMemoria();
-           return disponibles;
+            return disponibles;
 //            String valor = "";
 //            if (regresa < 10) {
 //                valor = "0" + regresa;
@@ -469,11 +480,9 @@ tarjeta = "";
 //            }
 //            } catch (Exception e) {
 //            }
-
 //            con = null;
 //            disponibles = 0;
 //            val2 = null;
-
             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
             //return regresa;
         } catch (Exception ex) {
@@ -483,7 +492,7 @@ tarjeta = "";
 
     }
 
-    public void imprimir(String impresoraLlega) {
+    public boolean imprimir(String impresoraLlega) {
         try {
             tarjeta = "";
             WorkingDirectory w = new WorkingDirectory();
@@ -493,54 +502,9 @@ tarjeta = "";
             }
             String nombreCaja = princip.empresaObj.getNombreCaja();
 //            Empresa emp = princip.empresaObj;
-            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
+
             Empresa emp = (Empresa) adm.querySimple("Select o from Empresa as o");
-            Factura fac = new Factura();
-            fac.setPlaca("CLIENTE BOTON");
-            fac.setFechaini(new Date());
-            fac.setFecha(new Date());
-            try{
-                fac.setUsuario(princip.getUsuario());
-            }catch(Exception eUsuario){
-                System.out.println("No hay usuario logeado...!");
-                eUsuario.printStackTrace();
-            }
-            
-            fac.setAnulado(false);
-            fac.setNocontar(false);
-            Boolean pasar = true;
-            Integer numero = new Integer(emp.getDocumentoticket()) + 1;
-            while (pasar) {
-                List sihay = adm.query("Select o from Factura as o where o.ticket = '" +nombreCaja+numero + "'");
-                if (sihay.size() <= 0) {
-                    try{
-                        pasar = false;
-                        fac.setTicket("" + nombreCaja + numero);
-                        emp.setDocumentoticket((numero) + "");
-                        adm.actualizar(emp);//GUARDO EMPRESA
-                        adm.guardar(fac); // GUARDO FACTURA
-                    }catch(Exception e){
-                        e.printStackTrace();
-                        numero++;
-                        pasar = true;
-                    }
-                    sihay=null;
-                } else {
-                    numero++;
-                }
 
-            }
-
-            ArrayList detalle = new ArrayList();
-            detalle.add(fac);
-            FacturaSource ds = new FacturaSource(detalle);
-            Map parametros = new HashMap();
-
-            parametros.put("empresa", emp.getRazon());
-            parametros.put("direccion", emp.getDireccion());
-            parametros.put("telefono", emp.getTelefonos());
-            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
-            PrinterJob job = PrinterJob.getPrinterJob();
             /*
              * Create an array of PrintServices
              */
@@ -559,6 +523,82 @@ tarjeta = "";
                     selectedService = i;
                 }
             }
+
+            PrintService printer = services[selectedService];
+            AttributeSet att = printer.getAttributes();
+            for (Attribute a : att.toArray()) {
+                String attributeName;
+                String attributeValue;
+                attributeName = a.getName();
+                attributeValue = att.get(a.getClass()).toString();
+                System.out.println(attributeName + " : " + attributeValue);
+                if (attributeName.contains("queued-job-count")) {
+                    if (Integer.parseInt(attributeValue) > 0) {
+                        System.out.println("EXISTE COLA DE IMPRESIÓN EN: " + impre);
+                        princip.errores.setText("<html>REVISE LA IMPRESORA " + impre + " NO ESTÁ IMPRIMIENDO</html>");
+                        princip.imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                        princip.trayIcon.displayMessage("ERROR EN SISTEMA DE PARQUEADERO", "\n\n REVISE LA IMPRESORA \n  " + impre + " \n  NO ESTÁ IMPRIMIENDO \n\n POSIBLES CAUSAS: \n - No existe PAPEL en la impresora \n - No esta conectada la impresora \n - Configuración incorrecta \n - No existe la impresora \n\n\n\n\n__", TrayIcon.MessageType.ERROR);
+                        return false;
+                    } else {
+                        //princip.errores.setText("<html> EXISTE COLA DE IMPRESIÓN, revise que la conexión con su impresora "+emp.getImpticket()+" se encuentra bien o que contenga PAPEL</html>");
+                    }
+                }
+                attributeName = null;
+                attributeValue = null;
+
+            }
+            printer = null;
+            att = null;
+
+            Factura fac = new Factura();
+            fac.setPlaca("CLIENTE BOTON");
+            fac.setFechaini(new Date());
+            fac.setFecha(new Date());
+            try {
+                fac.setUsuario(princip.getUsuario());
+            } catch (Exception eUsuario) {
+                System.out.println("No hay usuario logeado...!");
+                eUsuario.printStackTrace();
+            }
+
+            fac.setAnulado(false);
+            fac.setNocontar(false);
+            Boolean pasar = true;
+            Integer numero = new Integer(emp.getDocumentoticket()) + 1;
+            while (pasar) {
+                List sihay = adm.query("Select o from Factura as o where o.ticket = '" + nombreCaja + numero + "'");
+                if (sihay.size() <= 0) {
+                    try {
+                        pasar = false;
+                        fac.setTicket("" + nombreCaja + numero);
+                        emp.setDocumentoticket((numero) + "");
+                        adm.actualizar(emp);//GUARDO EMPRESA
+                        adm.guardar(fac); // GUARDO FACTURA
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        numero++;
+                        pasar = true;
+                    }
+                    sihay = null;
+                } else {
+                    numero++;
+                }
+
+            }
+
+            ArrayList detalle = new ArrayList();
+            detalle.add(fac);
+            FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket2.jasper");
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            PrinterJob job = PrinterJob.getPrinterJob();
+
             job.setPrintService(services[selectedService]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
             MediaSizeName mediaSizeName = MediaSize.findMedia(4, 3.8f, MediaPrintableArea.INCH);
@@ -577,7 +617,6 @@ tarjeta = "";
             exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
             exporter.exportReport();
             try {
-
 
                 if (princip.empresaObj.getWebcam()) {
                     if (ubicacionDirectorio.contains("build")) {
@@ -600,7 +639,7 @@ tarjeta = "";
                 } catch (Exception e) {
                 }
                 //noDisponibles();
-                
+
                 princip.cargarFoto(fac.getCodigo());
             } catch (Exception e) {
                 System.out.println("NO SE FOTOGRAFÍO " + e);
@@ -620,7 +659,6 @@ tarjeta = "";
 
             emp = null;
 
-
             ds = null;
             detalle = null;
             detalle = null;
@@ -632,13 +670,12 @@ tarjeta = "";
             parametros = null;
 
             limpiarMemoria();
+            return true;
         } catch (Exception ex) {
             Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
 
-//        } catch (JRException ex) {
-//            ex.printStackTrace();
-//        }
     }
 
     public void fotografiarIp(String nombre) {
@@ -658,6 +695,7 @@ tarjeta = "";
     }
     WorkingDirectory w = new WorkingDirectory();
     String ubicacionDirectorio = w.get() + separador;
+
     public String cargarPlaca(Integer codigoFactura) {
         try {
             //      try {
@@ -683,5 +721,5 @@ tarjeta = "";
         }
         return "";
     }
-    
+
 }
