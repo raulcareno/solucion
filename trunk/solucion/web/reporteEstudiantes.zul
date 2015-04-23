@@ -579,6 +579,14 @@ public JRDataSource certificados(ArrayList listadodeCursos,String tipo,ArrayList
                                                  + " AND o.estado IN ('Inscrito') "
                                                  + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
                                  }
+                                 if(tipo.equals("LINT3")){
+                                     query  = "SELECT o.* FROM Matriculas AS o, Cursos  c, Estudiantes e, GLOBAL p, GLOBAL es "
+                                                + " WHERE  p.codigo = c.paralelo AND es.codigo = c.especialidad "
+                                                + " AND c.codigocur = o.curso AND e.codigoest = o.estudiante "
+                                                + " AND c.codigocur IN ("+curso+") "
+                                                + " AND o.estado IN ('Matriculado') and e.discapacidad = true "
+                                                + " ORDER BY  c.secuencia, c.codigocur,es.descripcion, p.descripcion,   e.apellido,e.nombre ";
+                                 }
                 
             List hoy = adm.queryNativo(query,Matriculas.class);
                     for (Iterator it = hoy.iterator(); it.hasNext();) {
@@ -1074,6 +1082,10 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     datasource = certificados(listadoCursos,"LINT2",listadoEstudiantes);
                     parametros.put("titulo", titulo.getValue());
                     report.setSrc(directorioReportes+"fechadiscapacidad.jasper");
+            }else if(tipo.equals("LINT3")){
+                    datasource = certificados(listadoCursos,"LINT3",listadoEstudiantes);
+                    parametros.put("titulo", titulo.getValue());
+                    report.setSrc(directorioReportes+"fechadiscapacidad.jasper");
             }else if(tipo.equals("LMIG")){
                     datasource = migrantes(listadoCursos,"LMIG");
                     parametros.put("titulo", titulo.getValue());
@@ -1497,6 +1509,7 @@ void campos(String valor){
                                 <listitem  id="LREL"  label="Estudiantes por Religión" value="LREL"/>
                                 <listitem  id="LREL2" label="Totalizado por Religión" value="LREL2" />
                                 <listitem  id="LINT2" label="Estudiantes con Fecha y Discapacidad(SI:NO)" value="LINT2"/>
+                                <listitem  id="LINT3" label="Estudiantes y Discapacidad" value="LINT3"/>
                                 <listitem  id="LMIG" label="Estudiantes con Padres Migrantes" value="LMIG"/>
                                 <listitem  id="LMIS" label="Estudiantes con Cupo del Ministerio" value="LMIS"/>
                                 <listitem  id="RVOT" label="Resultados de Votación" value="RVOT" />
