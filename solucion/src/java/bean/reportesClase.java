@@ -898,7 +898,7 @@ public class reportesClase {
                                         + "where notas.matricula = '" + matriculaNo.getCodigomat() + "' "
                                         + "and notas.seimprime = true "
                                         + "and notas.promedia = true "
-                                        + "and notas.disciplina = false "
+                                        + "and notas.disciplina = false and notas.cuantitativa = true "
                                         + " and notas.materia != 0 "
                                         + " and " + query + " >0 "
                                         //+ "and notas.cuantitativa = true and notas.materia != 0 "
@@ -1270,6 +1270,7 @@ public class reportesClase {
                                         + "and notas.seimprime = true "
                                         + "and notas.promedia = true "
                                         + "and notas.disciplina = false "
+                                        + " and notas.cuantitativa = true "
                                         + " and notas.materia != 0 "
                                         //+ "and notas.cuantitativa = true and notas.materia != 0 "
                                         + "group by matricula  ";
@@ -5472,6 +5473,9 @@ comple ="";
 
         List<Equivalencias> equivalencias = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'AP' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        List<Equivalencias> equivalenciasDis = adm.query("Select o from Equivalencias as o "
+                + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
+        
 
 //DIAS ASISTIDOS
 //                List<Equivalencias> equivalenciasFaltas = adm.query("Select o from Equivalencias as o "
@@ -5530,7 +5534,7 @@ comple ="";
             MateriaProfesor mprofesor = null;
             MateriaProfesor mprofesor1 = null;
             Double aprovecha = 0.0;
-            Double disciplina = 0.0;
+            Object disciplina = null;
             Double sumatoria = 0.0;
             Integer faltasFustificadas = 0;
             Integer faltasInjustificadas = 0;
@@ -5647,7 +5651,11 @@ comple ="";
                     }
                     valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
                     if (valor.size() > 0) {
-                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                        if(discCuantitativo){
+                            disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
+                        }else{
+                            disciplina = equivalencia(((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue(), equivalenciasDis);
+                        }
                     }
                     try {
 //                        System.out.println("SELECT CAST(SUM(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
@@ -5673,52 +5681,7 @@ comple ="";
                         }
                     }
 
-                    //aqui tengo que poner las faltas y los días laborados 
-                    /**
-                     * BUSCO LAS FLATA SI ASÍ LO REQUIEREN
-                     */
-//                       if (true) {
-//                        //if (incluyedias) {
-//                                /**
-//                                 * AGREGRO LAS FALTAS AL REPORTE
-//                                 */
-//                                String query3 = "";
-//                                int w = 1;
-//
-//                                for (int i = 0; i < equivalenciasFaltasSoloDias.size(); i++) {
-//                                    query3 += "sum(nota" + w + "),";
-//                                    w++;
-//                                }
-//                                query3 = query3.substring(0, query3.length() - 1);
-//                                //IMPRIMO LAS FALTAS
-//                                String qf = "Select " + query3 + "  from disciplina "
-//                                        + "where matricula = '" + matriculaNo.getCodigomat() + "'  "
-//                                        + "and sistema = '" + sistema.getCodigosis() + "' "
-//                                        + " group by matricula ";
-//                                //System.out.println(""+q);
-//                                List nativoF = adm.queryNativo(qf);
-//                                
-//                                for (Iterator itnaF = nativoF.iterator(); itnaF.hasNext();) {
-//                                    Vector vecF = (Vector) itnaF.next();
-//
-//                                    for (int jF = 0; jF < vecF.size(); jF++) {
-//                                        Object dosF = vecF.get(jF);
-//                                        Integer valF = new Integer(dosF.toString());
-// 
-//                                        if ((equivalenciasFaltasSoloDias.get(jF)).getEsfj()) {
-//                                            faltasFustificadas = valF;
-//                                        } else if ((equivalenciasFaltasSoloDias.get(jF)).getEsfi()) {
-//                                            faltasInjustificadas = valF;
-//                                        }
-// 
-//                                    }
-//
-//                                }
-// 
-//                                 //diasLaborados - faltasInjustificadas
-//
-//
-//                            }
+               
                 } else if (j == 2) {
                     materiaNo = (Global) adm.buscarClave((Integer) dos, Global.class);
                 } else if (j == 0) {
@@ -13166,9 +13129,9 @@ lisAutoevaluacion = new ArrayList();
             if (codigoMapProfesor.length() > 0) {
                 codigoMapProfesor = codigoMapProfesor.substring(0, codigoMapProfesor.length() - 1);
             }
-            List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o"
+            List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o "
                     + " where o." + nGeneral + " < 7 and o." + nGeneral + " >= " + remedial + "  and o.materia.codigo in (" + codigoMapProfesor + ") "
-                    + " and o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' ");
+                    + " and o.matricula.estado in ('Matriculado','Retirado') and o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' ");
             for (Object object : matriculasList) {
                 matriculasSupletoriadas += object + ",";
             }
@@ -13212,7 +13175,8 @@ lisAutoevaluacion = new ArrayList();
             }
             List matriculasList = adm.query("Select DISTINCT o.matricula.codigomat from Notas as o"
                     + " where (o." + nGeneral + " < " + remedial + " or  o." + nSup + " < " + 7 + " ) and o.materia.codigo in (" + codigoMapProfesor + ") "
-                    + " and o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' ");
+                    + " and o.matricula.curso.codigocur = '" + curso.getCodigocur() + "' "
+                    + "  and o.matricula.estado in ('Matriculado','Retirado') ");
             for (Object object : matriculasList) {
                 matriculasSupletoriadas += object + ",";
             }
@@ -13362,7 +13326,7 @@ lisAutoevaluacion = new ArrayList();
                 + "where notas.materia =  materia_profesor.materia  AND notas.matricula = mat.codigomat AND est.codigoest = mat.estudiante "
                 + "and materia_profesor.curso = '" + curso.getCodigocur() + "' and notas.materia > 0 "
                 + "and notas.promedia = true and notas.disciplina = false and materia_profesor.seimprime = true  "
-                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "'  ) "
+                + "and matricula in (select codigomat from matriculas where  curso  =  '" + curso.getCodigocur() + "' and estado in ('Matriculado','Retirado')  ) "
                 + "order by  CONCAT(est.apellido,' ',est.nombre), materia_profesor.orden";
 
 //        if (tipo.equals("SUP")) {
