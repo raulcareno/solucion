@@ -3390,7 +3390,7 @@ public class reportesClase {
                 + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'SU' ");
         if (notaSupletorio.size() <= 0) {
             try {
-                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                Messagebox.show("No ha parametrizado el Supletorio en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
 
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -3403,7 +3403,7 @@ public class reportesClase {
                 + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'RE' ");
         if (notaRemedial.size() <= 0) {
             try {
-                Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                Messagebox.show("No ha parametrizado el Remedial en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
 
             } catch (InterruptedException ex) {
                 Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
@@ -3631,28 +3631,7 @@ public class reportesClase {
                             nota.setObservacion("Pendiente");
                         }
                     }
-
-//                    else if (nota.getSistema().getPromediofinal().equals("SU") && !obs.equals("Pierde")) {
-//                        if (validaConPromedioGeneral == false) {
-//                            if (sumatoria < sumaAprueba) {
-//                                try {
-//                                    Double valor = new Double(equivalenciaSupletorio(sumatoria, equivalenciasSuple) + "");
-//                                    if (val < valor && val > 0.0) {
-//                                        obs = "Pierde";
-//                                    } else if (val == 0) {
-//                                        obs = "SP";
-//                                    } else {
-//                                        obs = "";
-//                                    }
-//                                } catch (Exception e) {
-//                                    //System.out.println("" + e);
-//                                }
-//                            } else {
-//                                obs = "";
-//                            }
-//                        }
-//                    }
-
+ 
                     nota.setAprovechamiento(aprovecha);
                     nota.setDisciplina(disciplina);
                     lisNotas.add(nota);
@@ -3660,18 +3639,6 @@ public class reportesClase {
                 } else if (j == 1) {
 
                     matriculaNo = (Matriculas) adm.buscarClave((Integer) dos, Matriculas.class);
-
-//                    List valor = adm.queryNativo("SELECT CAST(AVG(" + nfinal.getNota() + ")as decimal (9,3)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND cuantitativa = TRUE AND disciplina = FALSE AND  promedia = TRUE AND materia > 1 AND  seimprime = TRUE GROUP BY MATRICULA ");
-//                    if (valor.size() > 0) {
-//                        aprovecha = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
-//                    }
-// 
-//                    valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9,0)) FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
-////                    System.out.println("" + valor);
-//                    if (valor.size() > 0) {
-//                        disciplina = ((BigDecimal) (((Vector) valor.get(0)).get(0))).doubleValue();
-//                    }
-
 
                     List valor = adm.queryNativo("SELECT CAST(IF(" + nfinal.getNota() + " is null,0," + nfinal.getNota() + ")as decimal (9," + noDecimalesDisc + ")) "
                             + " FROM notas WHERE matricula = '" + matriculaNo.getCodigomat() + "' AND materia = 0 ");
