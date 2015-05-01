@@ -8,6 +8,7 @@
     <class>siscontrol.Empresa</class>
     <class>siscontrol.Productos</class>
     <class>siscontrol.Clientes</class>
+    <class>siscontrol.Seguimiento</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
