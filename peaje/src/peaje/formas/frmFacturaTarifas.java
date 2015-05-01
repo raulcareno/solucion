@@ -43,10 +43,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.print.attribute.Attribute;
+import javax.print.attribute.AttributeSet;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import sources.FacturaDetalleSource;
@@ -130,7 +133,7 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
         JButton btn = new JButton();
         btn.setSize(200, 20);
 //        btn.setName(title);
-        btn.setText(tarifa.getNombre());
+        btn.setText(tarifa.getNombre()+" \n"+tarifa.getHoras()+" hor.");
         btn.addMouseListener(new MouseAdapter() {
            
             @Override
@@ -655,6 +658,17 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 
                     Date fecSalida = new Date();
 
+                    
+                    //aqui tengo que verificar y sumar la hora final con el numero de horas del tarifario
+                    //tengo que verificar en empresa si es que se imprime
+                    boolean imprimeTicket = true;
+                    if(imprimeTicket) {
+                            Calendar calendar = Calendar.getInstance();
+                             calendar.setTime(fecSalida); // Configuramos la fecha que se recibe
+                             calendar.add(Calendar.HOUR, valor.getHoras());  // numero de horas a añadir, o restar en caso de horas<0
+                             
+                             fecSalida = calendar.getTime();
+                    }
                     facActual.setFechafin(fecSalida);
                     facActual.setFecha(fecSalida);
                     facActual.setFechaini(fecSalida);
@@ -713,6 +727,37 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                        String nombreCaja = empresaObj.nombreCaja;
+                        
+                        //si es que imprime ticket entonces tengo que aumentar la hora de salida.
+                        boolean imprimirTicket = true;
+                        if(imprimirTicket){
+                        
+                             Integer numeroTck = new Integer(emp.getDocumentoticket()) + 1;
+                                while (pasar) {
+                                    List sihay = adm.query("Select o from Factura as o where o.ticket = '" + nombreCaja + numeroTck + "'");
+                                    if (sihay.size() <= 0) {
+                                        try {
+                                            pasar = false;
+                                            facActual.setTicket("" + nombreCaja + numeroTck);
+                                            emp.setDocumentoticket((numeroTck) + "");
+                                            adm.guardar(facActual); // GUARDO FACTURA
+                                            adm.actualizar(emp);
+                                            codigo.setText(facActual.getCodigo() + "");
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            numeroTck++;
+                                            pasar = true;
+                                        }
+
+                                    } else {
+                                        numeroTck++;
+                                    }
+                                }
+                                imprimirTicket(facActual.getCodigo(), emp);
+                                
+                        }
+                        
                         
                     }
 
@@ -788,6 +833,113 @@ public class frmFacturaTarifas extends javax.swing.JInternalFrame {
 
     }
 
+    public void imprimirTicket(int cod, Empresa emp) {
+
+//                    viewer.show();
+        try {
+
+            if (ubicacionDirectorio.contains("build")) {
+                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
+            }
+
+            JasperReport masterReport = (JasperReport) JRLoader.loadObject(ubicacionDirectorio + "reportes" + separador + "ticket.jasper");
+
+            Factura fac = (Factura) adm.querySimple("Select o from Factura as o where o.codigo = " + cod + " ");
+            ArrayList detalle = new ArrayList();
+            detalle.add(fac);
+            FacturaSource ds = new FacturaSource(detalle);
+            Map parametros = new HashMap();
+
+            parametros.put("empresa", emp.getRazon());
+            parametros.put("direccion", emp.getDireccion());
+            parametros.put("telefono", emp.getTelefonos());
+            parametros.put("multa", emp.getMulta());
+            parametros.put("usuario", principal.usuarioActual.getNombres());
+            JasperPrint masterPrint = JasperFillManager.fillReport(masterReport, parametros, ds);
+            PrinterJob job = PrinterJob.getPrinterJob();
+            /*
+             * Create an array of PrintServices
+             */
+            PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+            int selectedService = 0;
+            /*
+             * Scan found services to see if anyone suits our needs
+             */
+            for (int i = 0; i < services.length; i++) {
+                String nombre = services[i].getName();
+                if (nombre.contains(emp.getImpticket())) {
+                    selectedService = i;
+                }
+            }
+            job.setPrintService(services[selectedService]);
+
+            PrintService printer = services[selectedService];
+            AttributeSet att = printer.getAttributes();
+            for (Attribute a : att.toArray()) {
+                String attributeName;
+                String attributeValue;
+                attributeName = a.getName();
+                attributeValue = att.get(a.getClass()).toString();
+                System.out.println(attributeName + " : " + attributeValue);
+                if(attributeName.contains("queued-job-count")){
+                    if(Integer.parseInt(attributeValue)>0){
+                        System.out.println("EXISTE COLA DE IMPRESIÓN EN: "+emp.getImpticket());
+                        principal.errores.setText("<html> EXISTE COLA DE IMPRESIÓN, revise que la conexión con su impresora "+emp.getImpticket()+" se encuentra bien o que contenga PAPEL</html>");
+                         System.out.println("EXISTE COLA DE IMPRESIÓN EN: "+emp.getImpticket());
+                        principal.imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alto.png"))); // NOI18N
+                        //mensajeErrorImpresora.setText("<html> EXISTE COLA DE IMPRESIÓN, revise que la conexión con su impresora "+emp.getImpticket()+" se encuentra bien o que contenga PAPEL</html>");
+                        //mensajeErrorImpresora.setVisible(true); 
+                    }else{
+                        //mensajeErrorImpresora.setVisible(false);
+                    }
+                }
+                  attributeName = null;
+                  attributeValue = null;
+                
+             
+            }
+            printer = null;
+            att = null;
+
+            PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
+            MediaSizeName mediaSizeName = MediaSize.findMedia(3.08F, 3.70F, MediaPrintableArea.INCH);
+            //MediaSizeName mediaSizeName = MediaSize.findMedia(3F,3F, MediaPrintableArea.INCH);
+            printRequestAttributeSet.add(mediaSizeName);
+            printRequestAttributeSet.add(new Copies(1));
+            JRPrintServiceExporter exporter;
+            exporter = new JRPrintServiceExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, masterPrint);
+            /*
+             * We set the selected service and pass it as a paramenter
+             */
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE, services[selectedService]);
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_SERVICE_ATTRIBUTE_SET, services[selectedService].getAttributes());
+            exporter.setParameter(JRPrintServiceExporterParameter.PRINT_REQUEST_ATTRIBUTE_SET, printRequestAttributeSet);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PAGE_DIALOG, Boolean.FALSE);
+            exporter.setParameter(JRPrintServiceExporterParameter.DISPLAY_PRINT_DIALOG, Boolean.FALSE);
+            exporter.exportReport();
+
+//            Boolean[] datos = exporter.getPrintStatus();
+//            System.out.println("" + datos);
+
+//            JasperViewer viewer = new JasperViewer(masterPrint, false); //PARA VER EL REPORTE ANTES DE IMPRIMIR
+//            viewer.show();
+//            try {
+//                JasperPrintManager.printPage(masterPrint, 0, false);//LE ENVIO A IMPRIMIR false NO MUESTRA EL CUADRO DE DIALOGO
+//            } catch (JRException ex) {
+//                ex.printStackTrace();
+//            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmTicket.class.getName()).log(Level.SEVERE, null, ex);
+            //lger.logger(frmTicket.class.getName(), ex + "");
+        }
+
+//        } catch (JRException ex) {
+//            ex.printStackTrace();
+//        }
+    }
+
+    
     public void fotografiar(String nombre, String direccion) {
         int resultado = principal.ver.Fotografiar(direccion, false, nombre);
         if (resultado == 0) {

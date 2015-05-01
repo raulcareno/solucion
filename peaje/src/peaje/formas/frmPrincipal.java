@@ -696,6 +696,7 @@ deshabilite.setVisible(false);
         jButton15 = new javax.swing.JButton();
 
         buscarClientes.setLocationByPlatform(true);
+        buscarClientes.setMinimumSize(new java.awt.Dimension(200, 200));
         buscarClientes.getContentPane().setLayout(null);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Digite el Nombre o Número de Tarjeta"));
@@ -1917,8 +1918,8 @@ deshabilite.setVisible(false);
         jPanel4.add(jLabel3);
         jLabel3.setBounds(380, 90, 180, 20);
 
-        codigoCliente.setBorder(null);
         codigoCliente.setEditable(false);
+        codigoCliente.setBorder(null);
         codigoCliente.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         codigoCliente.setText("0");
         jPanel4.add(codigoCliente);
@@ -2596,9 +2597,11 @@ deshabilite.setVisible(false);
             jPanel2.add(usuariot);
             usuariot.setBounds(140, 20, 130, 20);
 
+            time.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+            time.setForeground(new java.awt.Color(0, 102, 102));
             time.setText("<0>");
             jPanel2.add(time);
-            time.setBounds(336, 130, 30, 14);
+            time.setBounds(336, 130, 30, 15);
 
             frmIngresarSistema.getContentPane().add(jPanel2);
             jPanel2.setBounds(0, 40, 370, 150);
@@ -5694,6 +5697,7 @@ deshabilite.setVisible(false);
         dtm.getDataVector().removeAllElements();
         busquedaTabla.setModel(dtm);
         codigoBuscar.setText("");
+        codigoBuscar1.setText("");
         this.codigoBuscar.requestFocusInWindow();
     }//GEN-LAST:event_btnBuscarActionPerformed
     public void habilitar(Boolean estado) {
@@ -5848,7 +5852,7 @@ deshabilite.setVisible(false);
 
         if (grabar == false) {
             if (permisos.getModificar()) {
-                if (codigo.getText().trim().isEmpty()) {
+                if (codigoCliente.getText().trim().isEmpty()) {
                     return;
                 }
                 this.codigo.requestFocusInWindow();
@@ -6033,7 +6037,7 @@ deshabilite.setVisible(false);
                     }
                 }
                 try {
-                    codigo.setText(clienteObj.getCodigo() + "");
+                    codigoCliente.setText(clienteObj.getCodigo() + "");
                 } catch (Exception e) {
                 }
                 try {

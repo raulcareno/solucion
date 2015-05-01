@@ -86,6 +86,27 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         principal = lo;
         //llenarCombo();
         cargarComboTipo();
+        
+        try {
+            llenarProductos();    
+        } catch (Exception e) {
+            System.out.println(""+e);
+        }
+        
+        try {
+        llenarProductos1();
+        } catch (Exception e) {
+            System.out.println(""+e);
+        }
+        
+        try {
+        llenarProductos2();
+        } catch (Exception e) {
+            System.out.println(""+e);
+        }
+         
+        
+        
 
     }
 
@@ -121,10 +142,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        llenarProductos();
-        llenarProductos1();
-        llenarProductos2();
+        
 
     }
 
@@ -159,6 +177,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
                 obj[0] = tarifas.getCodigo();
                 obj[1] = tarifas.getNombre();
                 obj[2] = tarifas.getValor();
+                obj[3] = tarifas.getHoras();
                 dtm.addRow(obj);
             }
 
@@ -247,6 +266,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         txtCodigo1.setText("");
         txtNombre1.setText("");
         txtValor1.setText("");
+        txtHoras.setText("");
     }
 
     public void limpiar3() {
@@ -349,6 +369,8 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        txtHoras = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbTarifas2 = new javax.swing.JTable();
@@ -1128,17 +1150,14 @@ public class frmTarifas extends javax.swing.JInternalFrame {
 
         tbTarifas1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Cod", "Nombre", "Valor"
+                "Cod", "Nombre", "Valor", "Horas"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1159,6 +1178,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         if (tbTarifas1.getColumnModel().getColumnCount() > 0) {
             tbTarifas1.getColumnModel().getColumn(0).setPreferredWidth(5);
             tbTarifas1.getColumnModel().getColumn(0).setMaxWidth(10);
+            tbTarifas1.getColumnModel().getColumn(3).setMinWidth(20);
         }
 
         jPanel8.add(jScrollPane3);
@@ -1254,9 +1274,21 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         jPanel8.add(jLabel11);
         jLabel11.setBounds(30, 40, 50, 14);
 
-        jLabel12.setText("Valor:");
+        jLabel12.setText("Horas de Validez: ");
         jPanel8.add(jLabel12);
-        jLabel12.setBounds(30, 60, 40, 14);
+        jLabel12.setBounds(170, 60, 100, 14);
+
+        jLabel22.setText("Valor:");
+        jPanel8.add(jLabel22);
+        jLabel22.setBounds(30, 60, 40, 14);
+
+        txtHoras.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtHorasKeyPressed(evt);
+            }
+        });
+        jPanel8.add(txtHoras);
+        txtHoras.setBounds(260, 60, 60, 20);
 
         jTabbedPane1.addTab("Tarifa x Día", jPanel8);
 
@@ -1854,6 +1886,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         txtCodigo1.setText((Integer) tbTarifas1.getValueAt(fila, 0) + "");
         txtNombre1.setText((String) tbTarifas1.getValueAt(fila, 1));
         txtValor1.setText((BigDecimal) tbTarifas1.getValueAt(fila, 2) + "");
+        txtHoras.setText((Integer) tbTarifas1.getValueAt(fila, 3) + "");
     }//GEN-LAST:event_tbTarifas1MouseClicked
 
     private void tbTarifas1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbTarifas1KeyPressed
@@ -1888,6 +1921,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
 
                     tipotarifaObj.setNombre(txtNombre1.getText());
                     tipotarifaObj.setValor(new BigDecimal(txtValor1.getText()));
+                    tipotarifaObj.setHoras(new Integer(txtHoras.getText()));
                     if (modificar2) {
                         try {
                             tipotarifaObj.setCodigo(Integer.parseInt(txtCodigo1.getText()));
@@ -2657,6 +2691,10 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         tarifario.repaint();
     }//GEN-LAST:event_cmbTipoTarifasItemStateChanged
 
+    private void txtHorasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHorasKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHorasKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -2706,6 +2744,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2749,6 +2788,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JTextField txtCodigo1;
     private javax.swing.JTextField txtCodigo2;
     private javax.swing.JFormattedTextField txtCodigoTipo;
+    private javax.swing.JTextField txtHoras;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombre1;
     private javax.swing.JTextField txtNombre2;

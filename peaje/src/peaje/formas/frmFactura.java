@@ -100,6 +100,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         correcto.setVisible(false);
         incorrecto.setVisible(false);
         procesando.setVisible(false);
+        cargarComboTipo();
     }
 
     public frmFactura(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
@@ -155,7 +156,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
             correcto.setVisible(false);
             incorrecto.setVisible(false);
             procesando.setVisible(false);
-
+cargarComboTipo();
         } catch (Exception ex) {
             Logger.getLogger(frmFactura.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -467,6 +468,8 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
+        cmbTipoTarifas = new javax.swing.JComboBox();
+        jLabel57 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -608,8 +611,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane4.setViewportView(busquedaTabla);
-        busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
-        busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        if (busquedaTabla.getColumnModel().getColumnCount() > 0) {
+            busquedaTabla.getColumnModel().getColumn(0).setPreferredWidth(0);
+            busquedaTabla.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jPanel10.add(jScrollPane4);
         jScrollPane4.setBounds(20, 20, 480, 150);
@@ -1474,7 +1479,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         frmTarifa0.setBounds(10, 0, 270, 140);
 
         botonesVer.setBackground(new java.awt.Color(204, 204, 204));
-        botonesVer.setBorder(new javax.swing.border.SoftBevelBorder(0));
+        botonesVer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonesVer.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 botonesVerFocusLost(evt);
@@ -1713,6 +1718,20 @@ public class frmFactura extends javax.swing.JInternalFrame {
         jPanel5.add(jPanel12);
         jPanel12.setBounds(10, 170, 350, 190);
 
+        cmbTipoTarifas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbTipoTarifasItemStateChanged(evt);
+            }
+        });
+        jPanel5.add(cmbTipoTarifas);
+        cmbTipoTarifas.setBounds(380, 390, 330, 20);
+
+        jLabel57.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel57.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel57.setText("Tarifa a Aplicar: ");
+        jPanel5.add(jLabel57);
+        jLabel57.setBounds(260, 390, 120, 20);
+
         jTabbedPane1.addTab("TICKETS", jPanel5);
 
         jPanel6.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1907,9 +1926,11 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(productos);
-        productos.getColumnModel().getColumn(0).setPreferredWidth(0);
-        productos.getColumnModel().getColumn(0).setMaxWidth(5);
-        productos.getColumnModel().getColumn(0).setHeaderValue("...");
+        if (productos.getColumnModel().getColumnCount() > 0) {
+            productos.getColumnModel().getColumn(0).setPreferredWidth(0);
+            productos.getColumnModel().getColumn(0).setMaxWidth(5);
+            productos.getColumnModel().getColumn(0).setHeaderValue("...");
+        }
 
         jPanel6.add(jScrollPane1);
         jScrollPane1.setBounds(300, 70, 430, 110);
@@ -2052,14 +2073,16 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane14.setViewportView(tarjetasCliente);
-        tarjetasCliente.getColumnModel().getColumn(0).setMinWidth(0);
-        tarjetasCliente.getColumnModel().getColumn(0).setPreferredWidth(0);
-        tarjetasCliente.getColumnModel().getColumn(0).setMaxWidth(0);
-        tarjetasCliente.getColumnModel().getColumn(1).setResizable(false);
-        tarjetasCliente.getColumnModel().getColumn(1).setPreferredWidth(50);
-        tarjetasCliente.getColumnModel().getColumn(2).setResizable(false);
-        tarjetasCliente.getColumnModel().getColumn(2).setPreferredWidth(50);
-        tarjetasCliente.getColumnModel().getColumn(5).setPreferredWidth(30);
+        if (tarjetasCliente.getColumnModel().getColumnCount() > 0) {
+            tarjetasCliente.getColumnModel().getColumn(0).setMinWidth(0);
+            tarjetasCliente.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tarjetasCliente.getColumnModel().getColumn(0).setMaxWidth(0);
+            tarjetasCliente.getColumnModel().getColumn(1).setResizable(false);
+            tarjetasCliente.getColumnModel().getColumn(1).setPreferredWidth(50);
+            tarjetasCliente.getColumnModel().getColumn(2).setResizable(false);
+            tarjetasCliente.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tarjetasCliente.getColumnModel().getColumn(5).setPreferredWidth(30);
+        }
 
         jPanel8.add(jScrollPane14);
         jScrollPane14.setBounds(10, 100, 510, 100);
@@ -2438,8 +2461,10 @@ public class frmFactura extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane11.setViewportView(ticketsPendientes);
-        ticketsPendientes.getColumnModel().getColumn(0).setResizable(false);
-        ticketsPendientes.getColumnModel().getColumn(0).setPreferredWidth(1);
+        if (ticketsPendientes.getColumnModel().getColumnCount() > 0) {
+            ticketsPendientes.getColumnModel().getColumn(0).setResizable(false);
+            ticketsPendientes.getColumnModel().getColumn(0).setPreferredWidth(1);
+        }
 
         jPanel11.add(jScrollPane11);
         jScrollPane11.setBounds(310, 50, 350, 110);
@@ -3092,6 +3117,22 @@ public class frmFactura extends javax.swing.JInternalFrame {
         //        JOptionPane.showMessageDialog(this, usuarioObj);
 }//GEN-LAST:event_busquedaTablaMouseClicked
 
+    public void cargarComboTipo() {
+
+        try {
+            cmbTipoTarifas.removeAllItems();
+            Tipotarifa user = new Tipotarifa(-1);
+            user.setNombre("[TARIFA DIFERENTE]");
+            cmbTipoTarifas.addItem(user);
+            List<Tipotarifa> us = adm.query("Select o from Tipotarifa as o ");
+            for (Iterator<Tipotarifa> it = us.iterator(); it.hasNext();) {
+                Tipotarifa usuarios = it.next();
+                cmbTipoTarifas.addItem(usuarios);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmReportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void busquedaTablaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_busquedaTablaKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == evt.VK_ENTER) {
@@ -6681,6 +6722,31 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         // TODO add your handling code here:
         generarNumeroFactura2();
     }//GEN-LAST:event_btnGene2ActionPerformed
+
+    private void cmbTipoTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoTarifasItemStateChanged
+        // TODO add your handling code here:
+        try {
+//            List<Tipotarifa> abc = adm.query("Select o from Tipotarifa as o");
+//            if (abc.size() <= 0) {
+//                JOptionPane.showMessageDialog(this, "CREE PRIMERO UN TARIFARIO PARA PODER CREAR LA TARIFA");
+//                return;
+//            }
+        } catch (Exception ex) {
+            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        if (cmbTipoTarifas.getSelectedIndex() > 0) {
+//         
+//            llenarCombo();
+//            tarifario.repaint();
+//
+//        } else {
+//            DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
+//            dtm.getDataVector().removeAllElements();
+//            tarifario.setModel(dtm);
+//            tarifario.repaint();
+//        }
+//         
+    }//GEN-LAST:event_cmbTipoTarifasItemStateChanged
     public void cargarPlaca(Integer codigoFactura) {
         try {
             //      try {
@@ -6798,6 +6864,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     public javax.swing.JFormattedTextField cliente3;
     public javax.swing.JFormattedTextField cliente4;
     private javax.swing.JComboBox cmbProductos;
+    private javax.swing.JComboBox cmbTipoTarifas;
     private javax.swing.JComboBox cmbUsuarios;
     public javax.swing.JFormattedTextField codigo;
     private javax.swing.JPasswordField codigoAdministrador;
@@ -6903,6 +6970,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

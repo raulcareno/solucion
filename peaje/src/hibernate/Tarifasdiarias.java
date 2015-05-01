@@ -27,7 +27,8 @@ public class Tarifasdiarias implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
     private BigDecimal valor;
-
+    @Column(name = "horas")
+    private Integer horas;
     public Tarifasdiarias() {
     }
 
@@ -58,6 +59,16 @@ public class Tarifasdiarias implements Serializable {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
+
+    public Integer getHoras() {
+        return horas;
+    }
+
+    public void setHoras(Integer horas) {
+        this.horas = horas;
+    }
+    
+    
 
     @Override
     public int hashCode() {
