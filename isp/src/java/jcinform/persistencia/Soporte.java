@@ -53,6 +53,11 @@ public class Soporte implements Serializable {
     @Column(name = "fechamodifica")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechamodifica;
+    
+    @Column(name = "hora")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date hora;
+    
     @Lob
     @Column(name = "observacion")
     private String observacion;
@@ -326,6 +331,14 @@ public class Soporte implements Serializable {
 
     public void setContrato(Contratos contrato) {
         this.contrato = contrato;
+    }
+
+    public Date getHora() {
+        return hora;
+    }
+
+    public void setHora(Date hora) {
+        this.hora = hora;
     }
     
     

@@ -533,9 +533,9 @@ public class ReportesClase {
         }
         String formaPago = " and o.formapago = '" + formapago + "' ";
         String documentoComple = " ";
-        if (!documento.equals(new Integer(0))) {
-            documentoComple = " and fa.numero like '%" + (documento.equals(new Integer(1)) ? "FAC" : "REC") + "%'";
-        }
+//        if (!documento.equals(new Integer(0))) {
+//            documentoComple = " and fa.numero like '%" + (documento.equals(new Integer(1)) ? "FAC" : "REC") + "%'";
+//        }
 
         if (formapago.equals(0)) {
             formaPago = " and o.formapago in (0,1,2,3) ";
@@ -544,13 +544,13 @@ public class ReportesClase {
 
             if (canton.getCodigo().equals(-1)) {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' and o.supertel = true  "
+                        + "where    o.supertel = true  "
                         + " " + formaPago
                         + "order by o.clientes.apellidos");
 
             } else {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                        + "where o.sector.canton.codigo = '" + canton.getCodigo() + "'  and o.supertel = true  and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                        + "where o.sector.canton.codigo = '" + canton.getCodigo() + "'  and o.supertel = true    "
                         + " " + formaPago
                         + " order by o.clientes.apellidos");
 
@@ -558,7 +558,7 @@ public class ReportesClase {
         } else if (canton.getCodigo().equals(-1)) {
 
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
-                    + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  and o.supertel = true  "
+                    + "where  o.supertel = true  "
                     + " " + formaPago
                     + " order by o.clientes.apellidos");
 
@@ -566,7 +566,7 @@ public class ReportesClase {
         } else {
             clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                     + "where o.sector.codigo = '" + sec.getCodigo() + "'  and o.supertel = true  "
-                    + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                    + "   "
                     + " " + formaPago
                     + " order by o.clientes.apellidos");
 

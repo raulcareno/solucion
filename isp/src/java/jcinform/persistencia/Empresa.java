@@ -82,6 +82,9 @@ public class Empresa implements Serializable {
     private Boolean solofactura;
     @Column(name = "diasminima")
     private Integer diasminima;
+    @Column(name = "diasgraciafinal")
+    private Integer diasgraciafinal;
+    
      
     
     @OneToMany(mappedBy = "empresa")
@@ -345,6 +348,14 @@ public class Empresa implements Serializable {
 
     public void setLongitud(String longitud) {
         this.longitud = longitud;
+    }
+
+    public Integer getDiasgraciafinal() {
+        return diasgraciafinal;
+    }
+
+    public void setDiasgraciafinal(Integer diasgraciafinal) {
+        this.diasgraciafinal = diasgraciafinal;
     }
 
  

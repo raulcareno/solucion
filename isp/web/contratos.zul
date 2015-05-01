@@ -842,7 +842,8 @@ if(sihay==0){
  
  }
  
- if(genFactura.isChecked() && facturadostotal.value <= 0){
+ //if(genFactura.isChecked() && facturadostotal.value <= 0){
+ if(facturadostotal.value <= 0){
       gen.generarCobros(sucursalEmp.getSucursal(),equi,fechainstalacion.value);
  }
  Date fechaInstalacion = fechainstalacion.value;
@@ -1083,6 +1084,7 @@ void modificar(){
   if(verificar("Modificar")){
        guardar.disabled=false; 
        estado(false,true);
+       fechainstalacion.disabled = true;
     }else{
             Messagebox.show("No tiene permisos para realizar esta acción...!", "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
     }
@@ -1184,6 +1186,7 @@ void verificarCedula(String valor){
                                           llenarCliente(empa);
                                           numerocontrato.focus();
                                           anadir.disabled = true;
+                                          
                                  }else{
                                           contratosPanel.visible = false; 
                                           llenarCliente(empa);
@@ -1194,6 +1197,7 @@ void verificarCedula(String valor){
                                           numerocontrato.focus();
                                           modificar.disabled = false;
                                           anadir.disabled = false;
+                                           
                                  }
                                 
                                 
@@ -1266,6 +1270,7 @@ void verificarCedula(String valor){
     void verificarContrato(Integer valor){
                       nuevo2();
                    estado(true,false);
+                   fechainstalacion.disabled = true;
                    String q = "Select o from Contratos as o " + 
                         " where o.contrato = '"+valor+"'  ";
                         //" and o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ";
@@ -3107,7 +3112,7 @@ void llamar(){
                                     <separator orient="vertical"/>
                                     <separator orient="vertical"/>
                                     <span>
-                                        <checkbox style="font-weight:bold;size:14px" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
+                                        <checkbox style="font-weight:bold;size:14px" visible="false" id="genFactura" label="¿GENERAR COBRO PARA ÉSTE MES?" />
                                     </span>
                                 
                                    
@@ -3326,7 +3331,7 @@ void llamar(){
         </tabbox>
         <panel framable="true" visible="false" id="contratosPanel" title="CONTRATOS CON ÉSTE CLIENTE" style="position:absolute; top:5%; left:5%" width="600px">
             <panelchildren>
-                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;  eliminar.disabled = false;" id="contratosCliente" width="100%">
+                <listbox mold="paging" rows="10" pageSize="10" onSelect="llenar(self.selectedItem.value); contratosPanel.visible = false;modificar.disabled = false;anadir.disabled = false;  eliminar.disabled = false; fechainstalacion.disabled = true;" id="contratosCliente" width="100%">
                     <listhead>
                         <listheader label="Contra."/>
                         <listheader label="Plan"/>

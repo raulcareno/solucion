@@ -210,8 +210,8 @@ void buscarContratos(Clientes empa){
     }
 
    
- nuevos(Soporte sop){
- orden.value = null;
+            nuevos(Soporte sop){
+            orden.value = null;
                    if(verificar("Agregar")){
                          codigos.value = sop.getCodigo();
                             try{
@@ -233,6 +233,7 @@ void buscarContratos(Clientes empa){
                             fechamodifica.value = sop.getFechamodifica();
                             fechafin.value = sop.getFechafin();
                             fechaorden.value = sop.getFechaorden();
+                            hora.value = sop.getHora();
                             
                             try{
                              Integer valorEstado = sop.getEstado();
@@ -423,15 +424,21 @@ void guardars(){
                                     sop.setFechaorden(adm.Date());
                                 }
                                 
-                                    if(fechaorden.value == null){
+                                        if(fechaorden.value == null){
                                             fechaorden.value = adm.Date();
+                                        }
+                                        if(hora.value == null){
+                                            hora.value = adm.Date();
                                         }
                                         if(sop.getFechaorden() == null){
                                             sop.setFechaorden(adm.Date());
                                         }
+                                        if(sop.getHora() == null){
+                                            sop.setHora(adm.Date());
+                                        }
                                 if((!sop.getCodigo().equals(0)) ){
                                      sop.setFechamodifica(adm.Date());
-                                     sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR
+                                     //sop.setEmpleados(new Empleados(usuarioActual.getCodigo()));//REGISTRADOR actualizar
                                      adm.actualizar(sop);
                                         permiso.auditar("Soporte","Actualizar",""+sop.getCodigo()+" - "+sop.getClientes());
                                  }else{
@@ -640,9 +647,11 @@ void guardars(){
      if(val.equals("3") || val.equals("4")){
         fechaorden.disabled = false;
         bd.disabled = false;
+        hora.disabled = false;
         if(fechaorden.value == null){
             fechaorden.value = adm.Date();
         }
+        
     }else if(val.equals("1")){
     
     }
@@ -823,6 +832,8 @@ void guardars(){
                                        <label value="Fecha Agendado: " style="font-weight:bold" />
                                         <datebox readonly="true" disabled="true"  style="background:white;"  
                                                  width="140px"  format="dd-MM-yyyy HH:mm"  onCreate="self.value = adm.Date()" id="fechaorden"/> 
+                                       <datebox readonly="true" disabled="true"  style="background:white;"  
+                                                 width="140px"  format="HH:mm"  onCreate="self.value = adm.Date()" id="hora"/> 
                                        
                                         
                                     </span>
@@ -948,14 +959,14 @@ void guardars(){
     
     <zscript>
         void cargando(){
-        try{
-        Soporte llegaSop = crearSoporte.getAttribute("soporteActual");
-        buscarPrimaria(llegaSop.getCodigo());
-        System.out.println("SOPORTE Q LLEGA: "+llegaSop);
-        }catch(Exception e){
-            System.out.println("EN ONCREATE LLEGA VACIO ERROR EN CARGAR SOPOrTE: "+e);
-        }
-        System.out.println(".");
+            try{
+                    Soporte llegaSop = crearSoporte.getAttribute("soporteActual");
+                    buscarPrimaria(llegaSop.getCodigo());
+                    System.out.println("SOPORTE Q LLEGA: "+llegaSop);
+            }catch(Exception e){
+                System.out.println("EN ONCREATE LLEGA VACIO ERROR EN CARGAR SOPOrTE: "+e);
+            }
+                System.out.println(".");
         }
     </zscript>
 </window>
