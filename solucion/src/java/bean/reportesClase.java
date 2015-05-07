@@ -12893,17 +12893,37 @@ public class reportesClase {
         List<Equivalencias> equivalencias2 = adm.query("Select o from Equivalencias as o "
                 + "where o.grupo = 'DR' and o.periodo.codigoper = '" + periodo.getCodigoper() + "' ");
 
+        String tipoNota = "";
+        String tipoNota2 = "";
+        if(tipo.equals("SUP")){
+            tipoNota  = "and o.promediofinal in ('PG','SU','PF') ";
+            tipoNota2  = "and o.sistema.promediofinal in ('PG','SU','PF') ";
+        }else if(tipo.equals("REM")){
+            tipoNota  = "and o.promediofinal in ('PG','RE','PF') ";
+            tipoNota2  = "and o.sistema.promediofinal in ('PG','RE','PF') ";
+        }else if(tipo.equals("GRA")){
+            tipoNota  = "and o.promediofinal in ('PG','GR','PF') ";
+            tipoNota2  = "and o.sistema.promediofinal in ('PG','GR','PF') ";
+        }else{
+            tipoNota  = "and o.promediofinal in ('PG','SU','RM','GR','PF') ";
+            tipoNota2  = "and o.sistema.promediofinal in  ('PG','SU','RM','GR','PF') ";
+        
+        }
         List<Sistemacalificacion> sistemas = adm.query("Select o from Sistemacalificacion as o "
                 + "where o.periodo.codigoper = '" + periodo.getCodigoper() + "' "
                 + "and o.orden <= '" + sistema.getOrden() + "' "
+                + " and o.seimprime = true "
                 //+ "and o.trimestre.codigotrim = '" + sistema.getTrimestre().getCodigotrim() + "' "
-                + "and o.seimprime = true and o.espromedio =true order by o.orden ");
+                + tipoNota+ "  order by o.orden ");
+        //SUP REM GRA
 
         List<Notanotas> notas = adm.query("Select o from Notanotas as o "
                 + "where  o.sistema.orden  <= '" + sistema.getOrden() + "'  "
                 //+ "and o.sistema.trimestre.codigotrim =  '" + sistema.getTrimestre().getCodigotrim() + "' "
-                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.seimprime = true "
-                + "and o.sistema.espromedio = true "
+                + "and o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' "
+                + " and o.sistema.seimprime = true "
+                //+ "and o.sistema.espromedio = true "
+                + tipoNota2
                 + "order by o.sistema.orden ");
 
         List<ParametrosGlobales> parametrosGlobales = adm.query("Select o from ParametrosGlobales as o "
@@ -13121,7 +13141,7 @@ public class reportesClase {
                     + "where o.sistema.periodo.codigoper = '" + periodo.getCodigoper() + "' and o.sistema.promediofinal = 'PG' ");
             if (notaGeneral.size() <= 0) {
                 try {
-                    Messagebox.show("No ha parametrizado el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+                    Messagebox.show("No ha parametrizad o el Promedio General en Aportes...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
 
                 } catch (InterruptedException ex) {
                     Logger.getLogger(notas.class.getName()).log(Level.SEVERE, null, ex);
