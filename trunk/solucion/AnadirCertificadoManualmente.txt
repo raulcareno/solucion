@@ -1,0 +1,66 @@
+ESTO EJECUTE EN LINUX
+openssl s_client -connect faster.myhostingdomain.net:587 -starttls smtp> /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51-2.4.5.5.el7.x86_64/jre/lib/security/faster-myhostingdomain.cer 
+
+/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51-2.4.5.5.el7.x86_64/jre/lib/security
+
+keytool -import -alias faster.myhostingdomain.net -file myhostingdomain.cer -keystore /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.51-2.4.5.5.el7.x86_64/jre/lib/security/jssecacerts
+
+
+
+How you fix it
+
+Step 1. Decide whether you want to “fix” it at all
+
+Before you tell Java to trust the cert, make sure that that’s actually the right thing to do. I don’t have any guidance to offer on that particular point, but if you’re trying to connect to a well-known service (say Google) and your Java runtime gives you the PKIX issue, that’s a red flag.
+
+If for whatever reason you think Java ought to trust the certificate, then stop—you’re done. Don’t import the certificate into your truststore until you figure out why it (or one of the certs in the chain) isn’t already there.
+Step 2. Download the certificate from the remote SMTP server
+
+You can use openssl to get the cert, at least on Unix/Linux and MacOS. I think Cygwin provides openssl on Windows too.
+
+Here’s an example for mail.kattare.com, which is the SMTP server I happen to be using. Kattare uses STARTTLS so I’m using the -starttls smtp flag:
+
+openssl s_client -connect mail.kattare.com:2525 -starttls smtp > kattare-smtp.cer
+The call will look like it’s hung for a little while, but it hasn’t. You can either wait it out or else just hit Ctrl-C, as the part of the response that we’re actually interested in returns immediately.
+
+Now open the file with your favorite text editor and strip out everything other than the certificate itself. Here’s what the result looks like for the mail.kattare.com cert:
+
+-----BEGIN CERTIFICATE-----
+MIIDfjCCAuegAwIBAgIDFJoPMA0GCSqGSIb3DQEBBQUAME4xCzAJBgNVBAYTAlVT
+MRAwDgYDVQQKEwdFcXVpZmF4MS0wKwYDVQQLEyRFcXVpZmF4IFNlY3VyZSBDZXJ0
+aWZpY2F0ZSBBdXRob3JpdHkwHhcNMTAwOTE5MDEzMDUxWhcNMTIxMTIwMTQ0MjI4
+WjCB4TEpMCcGA1UEBRMgRFZxc0c5bkIxUGNleTNZVUFzY3otOFNWV0ZnL2Y1aU8x
+CzAJBgNVBAYTAlVTMRYwFAYDVQQKDA0qLmthdHRhcmUuY29tMRMwEQYDVQQLEwpH
+VDE3NDM3OTM5MTEwLwYDVQQLEyhTZWUgd3d3LnJhcGlkc3NsLmNvbS9yZXNvdXJj
+ZXMvY3BzIChjKTEwMS8wLQYDVQQLEyZEb21haW4gQ29udHJvbCBWYWxpZGF0ZWQg
+LSBSYXBpZFNTTChSKTEWMBQGA1UEAwwNKi5rYXR0YXJlLmNvbTCBnzANBgkqhkiG
+9w0BAQEFAAOBjQAwgYkCgYEA3E9EOUrXoPLgz/N1MFB4xtld2NyDJK5jzPk313VQ
+dldvYY8SOd6XqnO/WAmm/2FaFRjhEZ7HcNPAauVeMXW2YQVGSkimeWd8ZDbKU8o6
+vJuFJmnRpfxIIZxS1gzJanFrv7v+TtlIQRDP/YI5OnXkZ0sSLVBb2MK7wHLDbtej
+dhECAwEAAaOB1TCB0jAfBgNVHSMEGDAWgBRI5mj5K9KylddH2CMgEE8zmJCf1DAO
+BgNVHQ8BAf8EBAMCBPAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMCUG
+A1UdEQQeMByCDSoua2F0dGFyZS5jb22CC2thdHRhcmUuY29tMDoGA1UdHwQzMDEw
+L6AtoCuGKWh0dHA6Ly9jcmwuZ2VvdHJ1c3QuY29tL2NybHMvc2VjdXJlY2EuY3Js
+MB0GA1UdDgQWBBRCAb04OmdhLLLRIAtJGNgYnJKQcjANBgkqhkiG9w0BAQUFAAOB
+gQCZQVc8nNHGo5Sr1hh9ZMBK2bcivXqLeJkOVt2pQ0OoMWDsq7/ei4njcN5QJXf0
+mK3Qb4bUkdJUemS3QITRXVqNnBZaP0XUAKBxK5htwHJLuQ83q71Td6NkqSj4yS35
+jM3JXG7LRkr/G6M24RCxBKONckQy+3j1wdy/jZwfisilPg==
+-----END CERTIFICATE-----
+Step 3. Import the certificate into your local truststore
+
+You’ll want to import the cert into the truststore in your Java home directory. My Java home is at
+
+/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+but yours is probably somewhere else. Anyway, once you find it, the truststore is at /lib/security/jssecacerts, at least if you’re using JSSE.
+
+sudo keytool -import -alias [alias] -file [cert_file] -keystore [java_home]/lib/security/jssecacerts
+For example, for me it’s:
+
+sudo keytool -import -alias mail.kattare.com -file kattare-smtp.cer -keystore /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/security/jssecacerts
+Enter your sudo password and then your keystore password, and then answer yes when it asks you whether to trust the certificate. This will import the cert into the keystore (which doubles as a truststore).
+
+Step 4. Restart your app and try again
+
+Hopefully this time it works, or at least gets rid of the PKIX error.
+
+References
