@@ -111,6 +111,8 @@ public class EmpresaPuertosStatic {
         public Date desdeFin;
         public Date hastaFin;
         public Date horaDesdeCobro;
+        public Double tiempoSalirSinSellar;
+                
         
    public String url;
    public String entra1;
@@ -818,6 +820,14 @@ public class EmpresaPuertosStatic {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public Double getTiempoSalirSinSellar() {
+        return tiempoSalirSinSellar;
+    }
+
+    public void setTiempoSalirSinSellar(Double tiempoSalirSinSellar) {
+        this.tiempoSalirSinSellar = tiempoSalirSinSellar;
     }
     
     

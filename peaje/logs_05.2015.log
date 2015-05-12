@@ -229,3 +229,47 @@ INFO peaje.formas.frmPrincipal,line 41,11.05.2015/19:34:12,javax.media.NoPlayerE
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,11.05.2015/19:34:17,OK
 INFO peaje.formas.frmPrincipal,line 41,11.05.2015/19:42:49,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
 INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,11.05.2015/19:42:54,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:10:45,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:10:49,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:11:56,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA INGRESO 1: /dev/ttyUSB0,line 41,12.05.2015/16:12:01,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:12:01,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:12:46,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:12:51,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:12:51,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:15:26,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:15:31,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:15:31,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:16:48,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:16:52,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:16:52,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:17:38,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:17:43,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:17:43,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:21:39,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:21:44,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:21:44,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:23:29,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:23:34,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:23:34,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:25:19,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:25:24,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:25:24,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:26:32,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:26:37,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:26:37,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:34:44,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:34:49,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:34:49,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:36:12,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:36:17,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:36:17,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:37:40,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:37:45,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:37:45,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:40:10,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:40:15,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:40:15,OK
+INFO peaje.formas.frmPrincipal,line 41,12.05.2015/16:42:18,javax.media.NoPlayerException: Cannot find a Player for :vfw:Microsoft WDM Image Capture (Win32):0
+INFO LECTORA SALIDA 1: /dev/ttyUSB0,line 41,12.05.2015/16:42:23,OK
+INFO # PUERTOS PRINCIPALES INICIADOS: 0,line 41,12.05.2015/16:42:23,OK

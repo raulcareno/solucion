@@ -118,6 +118,7 @@ public class EmpresaPuertos {
     public Date desde;
     public Date hasta;
     public Double valorMaximo;
+    public Double tiempoSalirSinSellar;
              
 
     public String getEntra1() {
@@ -824,6 +825,14 @@ public class EmpresaPuertos {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
+    }
+
+    public Double getTiempoSalirSinSellar() {
+        return tiempoSalirSinSellar;
+    }
+
+    public void setTiempoSalirSinSellar(Double tiempoSalirSinSellar) {
+        this.tiempoSalirSinSellar = tiempoSalirSinSellar;
     }
 
     

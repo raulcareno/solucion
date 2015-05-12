@@ -132,6 +132,7 @@ public class XMLEmpresa {
     private static final String HASTAFIN = "HASTAFIN";
     private static final String HORADESDECOBRO = "HORADESDECOBRO";
     private static final String  VALIDACEDULA ="VALIDACEDULA";
+    private static final String  TIEMPOSALIRSINSELLAR ="TIEMPOSALIRSINSELLAR";
     
     
     private static final String PUNTO = "PUNTO";
@@ -410,6 +411,10 @@ public class XMLEmpresa {
         item.appendChild(xmlDoc.createTextNode(beanEmpresa.getSucursal()));
         personal.appendChild(item);
         
+        item = xmlDoc.createElement(TIEMPOSALIRSINSELLAR);
+        item.appendChild(xmlDoc.createTextNode(beanEmpresa.getTiempoSalirSinSellar() + ""));
+        personal.appendChild(item);
+        
         //public Boolean imprime2facturas; IMPRIME2FACTURAS TRABAJANOTAVENTA IMPRIME2FACTURAS
 
     }
@@ -578,6 +583,7 @@ public class XMLEmpresa {
         beanEmpleado.setNombreCaja(emp.getNombreCaja());
         beanEmpleado.setSerie(emp.getSerie());
         beanEmpleado.setSucursal(emp.getSucursal());
+        beanEmpleado.setTiempoSalirSinSellar(emp.getTiempoSalirSinSellar());
         
 //        empresaObj.setDesdeFin((Date)horaDesde3.getValue()); 
 //                    empresaObj.setHastaFin((Date)horaHasta3.getValue());
@@ -1397,6 +1403,15 @@ public class XMLEmpresa {
                         Element SUCURSALoutElement = (Element) SUCURSALoutList.item(0);
                         NodeList SUCURSALoutAgeList = SUCURSALoutElement.getChildNodes();
                         user.setSucursal((((Node) SUCURSALoutAgeList.item(0)).getNodeValue().trim()));
+                    } catch (Exception parserConfigurationException) {
+                        // System.out.println("ERROR LECTURA"+parserConfigurationException);
+                    }
+                       
+                       try {
+                        NodeList TiempoSalirSinSellaroutList = firstPersonElement.getElementsByTagName(TIEMPOSALIRSINSELLAR);
+                        Element TiempoSalirSinSellaroutElement = (Element) TiempoSalirSinSellaroutList.item(0);
+                        NodeList TiempoSalirSinSellaroutAgeList = TiempoSalirSinSellaroutElement.getChildNodes();
+                        user.setTiempoSalirSinSellar(new Double(((Node) TiempoSalirSinSellaroutAgeList.item(0)).getNodeValue().trim()));
                     } catch (Exception parserConfigurationException) {
                         // System.out.println("ERROR LECTURA"+parserConfigurationException);
                     }

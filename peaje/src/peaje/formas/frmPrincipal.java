@@ -200,7 +200,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
             procesando.setVisible(false);
 
 //            messenger.setVisible(false);
-
             btnAcerca.setVisible(false);
 
             /*
@@ -263,7 +262,6 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 logear();
                 try {
 
-
                     adm = new Administrador(datosConecta);
                     List<Usuarios> uss = adm.query("Select o from Usuarios as o");
                     for (Iterator<Usuarios> it = uss.iterator(); it.hasNext();) {
@@ -275,14 +273,12 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                             usuariot.setSelectedItem(usuarios.getUsuario());
                         }
 
-
                     }
                 } catch (Exception e) {
                     System.out.println("error en cargar usuarios: " + e);
                 }
 
             } else {
-
 
 //              this.hide();
 //              this.disable();
@@ -292,8 +288,8 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 //logear();
 
             }
-habilite.setVisible(false);
-deshabilite.setVisible(false);
+            habilite.setVisible(false);
+            deshabilite.setVisible(false);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -315,7 +311,6 @@ deshabilite.setVisible(false);
         //CAMBIO DESDE LOGIN
         try {
 
-
             List<Empresa> emp = adm.listar("Select o from Empresa as o ");
             this.empresaObj = emp.get(0);
             cargarEmpresaConfig();
@@ -325,12 +320,10 @@ deshabilite.setVisible(false);
                 System.out.println("INCIAR PUERTOS:" + e);
             }
 
-
         } catch (Exception e) {
             System.out.println("ERROR AL INICIAR PUERTOS....");
         }
         //A LOGIN
-
 
         Thread cargar = new Thread() {
 
@@ -349,7 +342,6 @@ deshabilite.setVisible(false);
             }
         };
         cargar.start();
-
 
     }
 
@@ -671,6 +663,7 @@ deshabilite.setVisible(false);
         tempjButton13 = new javax.swing.JButton();
         tempnotarjetaTemp = new javax.swing.JTextField();
         temppuertoText = new javax.swing.JComboBox();
+        jButton16 = new javax.swing.JButton();
         jXTaskPaneContainer1 = new org.jdesktop.swingx.JXTaskPaneContainer();
         contenedor1 = new org.jdesktop.swingx.JXTaskPane();
         jToolBar1 = new javax.swing.JToolBar();
@@ -709,15 +702,15 @@ deshabilite.setVisible(false);
             }
         });
         jPanel8.add(codigoBuscar);
-        codigoBuscar.setBounds(70, 30, 210, 20);
+        codigoBuscar.setBounds(70, 30, 210, 27);
 
         jLabel23.setText("No.Tarjeta");
         jPanel8.add(jLabel23);
-        jLabel23.setBounds(300, 30, 70, 14);
+        jLabel23.setBounds(300, 30, 70, 17);
 
         jLabel56.setText("Nombre:");
         jPanel8.add(jLabel56);
-        jLabel56.setBounds(10, 30, 70, 14);
+        jLabel56.setBounds(10, 30, 70, 17);
 
         codigoBuscar1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1010,7 +1003,7 @@ deshabilite.setVisible(false);
 
         jLabel14.setText("#");
         formaTarjetas1.getContentPane().add(jLabel14);
-        jLabel14.setBounds(210, 10, 20, 14);
+        jLabel14.setBounds(210, 10, 20, 17);
 
         panelHoras.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Fechas de Validez", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
         panelHoras.setForeground(new java.awt.Color(0, 51, 255));
@@ -1018,19 +1011,19 @@ deshabilite.setVisible(false);
 
         jLabel16.setText("Hasta: ");
         panelHoras.add(jLabel16);
-        jLabel16.setBounds(10, 50, 40, 14);
+        jLabel16.setBounds(10, 50, 40, 17);
 
         jLabel17.setText("Desde:");
         panelHoras.add(jLabel17);
-        jLabel17.setBounds(10, 20, 50, 14);
+        jLabel17.setBounds(10, 20, 50, 17);
 
         fechaDesde.setDateFormatString("dd/MMM/yyyy");
         panelHoras.add(fechaDesde);
-        fechaDesde.setBounds(60, 20, 95, 20);
+        fechaDesde.setBounds(60, 20, 117, 27);
 
         fechaHasta.setDateFormatString("dd/MMM/yyyy");
         panelHoras.add(fechaHasta);
-        fechaHasta.setBounds(60, 50, 95, 20);
+        fechaHasta.setBounds(60, 50, 117, 27);
 
         formaTarjetas1.getContentPane().add(panelHoras);
         panelHoras.setBounds(30, 120, 160, 80);
@@ -1040,11 +1033,11 @@ deshabilite.setVisible(false);
 
         jLabel18.setText("Hasta: ");
         jPanel7.add(jLabel18);
-        jLabel18.setBounds(10, 50, 40, 14);
+        jLabel18.setBounds(10, 50, 40, 17);
 
         jLabel19.setText("Desde:");
         jPanel7.add(jLabel19);
-        jLabel19.setBounds(10, 20, 50, 14);
+        jLabel19.setBounds(10, 20, 50, 17);
 
         horaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1052,7 +1045,7 @@ deshabilite.setVisible(false);
             }
         });
         jPanel7.add(horaDesde);
-        horaDesde.setBounds(50, 20, 80, 20);
+        horaDesde.setBounds(50, 20, 80, 28);
 
         horaHasta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1060,7 +1053,7 @@ deshabilite.setVisible(false);
             }
         });
         jPanel7.add(horaHasta);
-        horaHasta.setBounds(50, 50, 80, 20);
+        horaHasta.setBounds(50, 50, 80, 28);
 
         formaTarjetas1.getContentPane().add(jPanel7);
         jPanel7.setBounds(220, 120, 160, 80);
@@ -1080,7 +1073,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(lunes);
-        lunes.setBounds(30, 70, 80, 23);
+        lunes.setBounds(30, 70, 80, 22);
 
         martes.setText("Martes");
         martes.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1089,7 +1082,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(martes);
-        martes.setBounds(120, 10, 80, 23);
+        martes.setBounds(120, 10, 80, 22);
 
         miercoles.setText("Miércoles");
         miercoles.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1098,7 +1091,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(miercoles);
-        miercoles.setBounds(120, 40, 80, 23);
+        miercoles.setBounds(120, 40, 80, 22);
 
         jueves.setText("Jueves");
         jueves.addActionListener(new java.awt.event.ActionListener() {
@@ -1112,7 +1105,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(jueves);
-        jueves.setBounds(120, 70, 80, 23);
+        jueves.setBounds(120, 70, 80, 22);
 
         viernes.setText("Viernes");
         viernes.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1121,7 +1114,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(viernes);
-        viernes.setBounds(230, 10, 80, 23);
+        viernes.setBounds(230, 10, 80, 22);
 
         sabado.setText("Sábado");
         sabado.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1130,7 +1123,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(sabado);
-        sabado.setBounds(230, 40, 80, 23);
+        sabado.setBounds(230, 40, 80, 22);
 
         domingo.setText("Domingo");
         domingo.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1139,7 +1132,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(domingo);
-        domingo.setBounds(230, 70, 80, 23);
+        domingo.setBounds(230, 70, 80, 22);
 
         todos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         todos.setForeground(new java.awt.Color(204, 51, 0));
@@ -1155,7 +1148,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles.add(todos);
-        todos.setBounds(30, 20, 70, 23);
+        todos.setBounds(30, 20, 70, 22);
 
         formaTarjetas1.getContentPane().add(diasHabiles);
         diasHabiles.setBounds(30, 210, 360, 100);
@@ -1167,7 +1160,7 @@ deshabilite.setVisible(false);
             }
         });
         formaTarjetas1.getContentPane().add(noTarjeta);
-        noTarjeta.setBounds(90, 10, 110, 20);
+        noTarjeta.setBounds(90, 10, 110, 27);
 
         ingresos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1179,7 +1172,7 @@ deshabilite.setVisible(false);
 
         jLabel20.setText("No. Ingresos: ");
         formaTarjetas1.getContentPane().add(jLabel20);
-        jLabel20.setBounds(20, 60, 70, 14);
+        jLabel20.setBounds(20, 60, 70, 17);
 
         btnGuardarTarjeta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/guardar.png"))); // NOI18N
         btnGuardarTarjeta.setMnemonic('N');
@@ -1225,16 +1218,16 @@ deshabilite.setVisible(false);
             }
         });
         formaTarjetas1.getContentPane().add(placa1);
-        placa1.setBounds(90, 30, 80, 20);
+        placa1.setBounds(90, 30, 80, 27);
 
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel21.setText("Placa:");
         formaTarjetas1.getContentPane().add(jLabel21);
-        jLabel21.setBounds(20, 30, 60, 14);
+        jLabel21.setBounds(20, 30, 60, 17);
 
         jLabel22.setText("Descripción:");
         formaTarjetas1.getContentPane().add(jLabel22);
-        jLabel22.setBounds(30, 320, 70, 14);
+        jLabel22.setBounds(30, 320, 70, 17);
 
         descripcionTarjeta.setColumns(20);
         descripcionTarjeta.setRows(5);
@@ -1283,7 +1276,7 @@ deshabilite.setVisible(false);
 
         salida.setText("Ingresa por la Salida");
         formaTarjetas1.getContentPane().add(salida);
-        salida.setBounds(20, 90, 130, 23);
+        salida.setBounds(20, 90, 130, 22);
 
         txtGracia.setEditable(false);
         txtGracia.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -1294,7 +1287,7 @@ deshabilite.setVisible(false);
             }
         });
         formaTarjetas1.getContentPane().add(txtGracia);
-        txtGracia.setBounds(290, 60, 80, 20);
+        txtGracia.setBounds(290, 60, 80, 27);
 
         jLabel38.setText("Gracia min.");
         formaTarjetas1.getContentPane().add(jLabel38);
@@ -1302,7 +1295,7 @@ deshabilite.setVisible(false);
 
         nocontar.setText("No Contar");
         formaTarjetas1.getContentPane().add(nocontar);
-        nocontar.setBounds(300, 90, 75, 23);
+        nocontar.setBounds(300, 90, 81, 22);
 
         noTarjeta1.setEditable(false);
         noTarjeta1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1311,11 +1304,11 @@ deshabilite.setVisible(false);
             }
         });
         formaTarjetas1.getContentPane().add(noTarjeta1);
-        noTarjeta1.setBounds(300, 10, 100, 20);
+        noTarjeta1.setBounds(300, 10, 100, 27);
 
         jLabel51.setText("No. Tarjeta: ");
         formaTarjetas1.getContentPane().add(jLabel51);
-        jLabel51.setBounds(20, 10, 70, 14);
+        jLabel51.setBounds(20, 10, 70, 17);
 
         noTarjetaSerie.setEditable(false);
         noTarjetaSerie.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1324,7 +1317,7 @@ deshabilite.setVisible(false);
             }
         });
         formaTarjetas1.getContentPane().add(noTarjetaSerie);
-        noTarjetaSerie.setBounds(220, 10, 80, 20);
+        noTarjetaSerie.setBounds(220, 10, 80, 27);
 
         contenedor.add(formaTarjetas1);
         formaTarjetas1.setBounds(20, 20, 430, 440);
@@ -1379,7 +1372,7 @@ deshabilite.setVisible(false);
             }
         });
         frmLoteTarjetas.getContentPane().add(nombres1);
-        nombres1.setBounds(180, 10, 220, 20);
+        nombres1.setBounds(180, 10, 220, 27);
 
         tablaTarjetas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1434,7 +1427,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(lunes2);
-        lunes2.setBounds(70, 20, 55, 23);
+        lunes2.setBounds(70, 20, 55, 22);
 
         martes2.setText("Martes");
         martes2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1443,7 +1436,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(martes2);
-        martes2.setBounds(130, 20, 60, 23);
+        martes2.setBounds(130, 20, 60, 22);
 
         miercoles2.setText("Miércoles");
         miercoles2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1452,7 +1445,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(miercoles2);
-        miercoles2.setBounds(200, 20, 70, 23);
+        miercoles2.setBounds(200, 20, 70, 22);
 
         jueves2.setText("Jueves");
         jueves2.addActionListener(new java.awt.event.ActionListener() {
@@ -1466,7 +1459,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(jueves2);
-        jueves2.setBounds(10, 40, 60, 23);
+        jueves2.setBounds(10, 40, 60, 22);
 
         viernes2.setText("Viernes");
         viernes2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1475,7 +1468,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(viernes2);
-        viernes2.setBounds(70, 40, 62, 23);
+        viernes2.setBounds(70, 40, 62, 22);
 
         sabado2.setText("Sábado");
         sabado2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1484,7 +1477,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(sabado2);
-        sabado2.setBounds(130, 40, 63, 23);
+        sabado2.setBounds(130, 40, 63, 22);
 
         domingo2.setText("Domingo");
         domingo2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1493,7 +1486,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(domingo2);
-        domingo2.setBounds(200, 40, 70, 23);
+        domingo2.setBounds(200, 40, 70, 22);
 
         todos2.setText("Todos");
         todos2.addActionListener(new java.awt.event.ActionListener() {
@@ -1507,7 +1500,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles2.add(todos2);
-        todos2.setBounds(10, 20, 55, 23);
+        todos2.setBounds(10, 20, 58, 22);
 
         frmLoteTarjetas.getContentPane().add(diasHabiles2);
         diasHabiles2.setBounds(300, 250, 310, 80);
@@ -1517,11 +1510,11 @@ deshabilite.setVisible(false);
 
         jLabel43.setText("Hasta: ");
         jPanel11.add(jLabel43);
-        jLabel43.setBounds(140, 20, 40, 14);
+        jLabel43.setBounds(140, 20, 40, 17);
 
         jLabel44.setText("Desde:");
         jPanel11.add(jLabel44);
-        jLabel44.setBounds(10, 20, 50, 14);
+        jLabel44.setBounds(10, 20, 50, 17);
 
         horaDesde2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1529,7 +1522,7 @@ deshabilite.setVisible(false);
             }
         });
         jPanel11.add(horaDesde2);
-        horaDesde2.setBounds(50, 20, 80, 20);
+        horaDesde2.setBounds(50, 20, 80, 28);
 
         horaHasta2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1537,7 +1530,7 @@ deshabilite.setVisible(false);
             }
         });
         jPanel11.add(horaHasta2);
-        horaHasta2.setBounds(180, 20, 80, 20);
+        horaHasta2.setBounds(180, 20, 80, 28);
 
         frmLoteTarjetas.getContentPane().add(jPanel11);
         jPanel11.setBounds(290, 130, 310, 48);
@@ -1547,19 +1540,19 @@ deshabilite.setVisible(false);
 
         jLabel45.setText("Hasta: ");
         panelHoras2.add(jLabel45);
-        jLabel45.setBounds(160, 20, 40, 14);
+        jLabel45.setBounds(160, 20, 40, 17);
 
         jLabel46.setText("Desde:");
         panelHoras2.add(jLabel46);
-        jLabel46.setBounds(10, 20, 40, 14);
+        jLabel46.setBounds(10, 20, 40, 17);
 
         fechaDesde2.setDateFormatString("dd/MMM/yyyy");
         panelHoras2.add(fechaDesde2);
-        fechaDesde2.setBounds(50, 20, 95, 20);
+        fechaDesde2.setBounds(50, 20, 117, 27);
 
         fechaHasta2.setDateFormatString("dd/MMM/yyyy");
         panelHoras2.add(fechaHasta2);
-        fechaHasta2.setBounds(200, 20, 95, 20);
+        fechaHasta2.setBounds(200, 20, 117, 27);
 
         frmLoteTarjetas.getContentPane().add(panelHoras2);
         panelHoras2.setBounds(290, 80, 309, 48);
@@ -1572,7 +1565,7 @@ deshabilite.setVisible(false);
             }
         });
         frmLoteTarjetas.getContentPane().add(btnGuardarCambios1);
-        btnGuardarCambios1.setBounds(410, 340, 99, 40);
+        btnGuardarCambios1.setBounds(410, 340, 87, 40);
 
         jLabel48.setForeground(new java.awt.Color(0, 51, 255));
         jLabel48.setText("Se aplicará el horario y fechas a todos las tarjetas que estén en la lista ");
@@ -1587,7 +1580,7 @@ deshabilite.setVisible(false);
         activa2.setSelected(true);
         activa2.setText("Tarjetas Activas");
         frmLoteTarjetas.getContentPane().add(activa2);
-        activa2.setBounds(320, 60, 160, 23);
+        activa2.setBounds(320, 60, 160, 22);
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
         jButton12.setText("Salir");
@@ -1599,7 +1592,7 @@ deshabilite.setVisible(false);
         frmLoteTarjetas.getContentPane().add(jButton12);
         jButton12.setBounds(510, 340, 92, 40);
         frmLoteTarjetas.getContentPane().add(noTarjeta2);
-        noTarjeta2.setBounds(20, 90, 180, 20);
+        noTarjeta2.setBounds(20, 90, 180, 27);
 
         btnAnadirTarjeta.setText("Añadir");
         btnAnadirTarjeta.setMargin(new java.awt.Insets(1, 1, 1, 1));
@@ -1613,19 +1606,19 @@ deshabilite.setVisible(false);
 
         clienteCod.setEditable(false);
         frmLoteTarjetas.getContentPane().add(clienteCod);
-        clienteCod.setBounds(180, 30, 30, 20);
+        clienteCod.setBounds(180, 30, 30, 27);
 
         jLabel50.setText("Búsque primero el Cliente: ");
         frmLoteTarjetas.getContentPane().add(jLabel50);
-        jLabel50.setBounds(39, 10, 140, 14);
+        jLabel50.setBounds(39, 10, 140, 17);
 
         nombresCliente.setEditable(false);
         frmLoteTarjetas.getContentPane().add(nombresCliente);
-        nombresCliente.setBounds(210, 30, 300, 20);
+        nombresCliente.setBounds(210, 30, 300, 27);
 
         nocontar2.setText("No contar");
         frmLoteTarjetas.getContentPane().add(nocontar2);
-        nocontar2.setBounds(480, 60, 120, 23);
+        nocontar2.setBounds(480, 60, 120, 22);
 
         jLabel42.setText("Gracia min.");
         frmLoteTarjetas.getContentPane().add(jLabel42);
@@ -1640,7 +1633,7 @@ deshabilite.setVisible(false);
             }
         });
         frmLoteTarjetas.getContentPane().add(txtGracia2);
-        txtGracia2.setBounds(480, 180, 40, 20);
+        txtGracia2.setBounds(480, 180, 40, 27);
 
         facturar2.setText("Facturar");
         facturar2.addActionListener(new java.awt.event.ActionListener() {
@@ -1666,7 +1659,7 @@ deshabilite.setVisible(false);
 
         jLabel47.setText("No. Ingresos:");
         frmLoteTarjetas.getContentPane().add(jLabel47);
-        jLabel47.setBounds(350, 200, 70, 14);
+        jLabel47.setBounds(350, 200, 70, 17);
 
         salida2.setText("Ingresa por la Salida");
         frmLoteTarjetas.getContentPane().add(salida2);
@@ -1674,15 +1667,15 @@ deshabilite.setVisible(false);
 
         jLabel54.setText("Tarjeta Leída:");
         frmLoteTarjetas.getContentPane().add(jLabel54);
-        jLabel54.setBounds(20, 70, 80, 14);
+        jLabel54.setBounds(20, 70, 80, 17);
 
         crear.setText("Crear un Cliente por Tarjeta");
         frmLoteTarjetas.getContentPane().add(crear);
-        crear.setBounds(420, 10, 190, 23);
+        crear.setBounds(420, 10, 190, 22);
 
         jButton13.setText("jButton13");
         frmLoteTarjetas.getContentPane().add(jButton13);
-        jButton13.setBounds(90, 60, 79, 23);
+        jButton13.setBounds(90, 60, 66, 31);
 
         contenedor.add(frmLoteTarjetas);
         frmLoteTarjetas.setBounds(5, 5, 710, 460);
@@ -1700,7 +1693,7 @@ deshabilite.setVisible(false);
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("CI/RUC");
         jPanel4.add(jLabel4);
-        jLabel4.setBounds(10, 10, 60, 14);
+        jLabel4.setBounds(10, 10, 60, 17);
 
         nombres.setEditable(false);
 
@@ -1713,7 +1706,7 @@ deshabilite.setVisible(false);
             }
         });
         jPanel4.add(nombres);
-        nombres.setBounds(80, 30, 320, 20);
+        nombres.setBounds(80, 30, 320, 27);
 
         direccion.setEditable(false);
 
@@ -1726,13 +1719,13 @@ deshabilite.setVisible(false);
             }
         });
         jPanel4.add(direccion);
-        direccion.setBounds(80, 50, 310, 20);
+        direccion.setBounds(80, 50, 310, 27);
 
         jLabel12.setForeground(new java.awt.Color(0, 0, 153));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Nombres:");
         jPanel4.add(jLabel12);
-        jLabel12.setBounds(20, 30, 60, 14);
+        jLabel12.setBounds(20, 30, 60, 17);
 
         codigo.setEditable(false);
 
@@ -1753,12 +1746,12 @@ deshabilite.setVisible(false);
             }
         });
         jPanel4.add(codigo);
-        codigo.setBounds(80, 10, 160, 20);
+        codigo.setBounds(80, 10, 160, 27);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Dirección:");
         jPanel4.add(jLabel5);
-        jLabel5.setBounds(20, 50, 60, 14);
+        jLabel5.setBounds(20, 50, 60, 17);
 
         telefono.setEditable(false);
 
@@ -1771,19 +1764,19 @@ deshabilite.setVisible(false);
             }
         });
         jPanel4.add(telefono);
-        telefono.setBounds(570, 50, 90, 20);
+        telefono.setBounds(570, 50, 90, 27);
 
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Para modificar el estado de una tarjeta: De un doble click sobre ella");
         jPanel4.add(jLabel7);
-        jLabel7.setBounds(290, 120, 430, 14);
+        jLabel7.setBounds(290, 120, 430, 17);
 
         jLabel9.setForeground(new java.awt.Color(0, 51, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Tarifa: ");
         jPanel4.add(jLabel9);
-        jLabel9.setBounds(20, 80, 50, 14);
+        jLabel9.setBounds(20, 80, 50, 17);
 
         tarifas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -1811,7 +1804,7 @@ deshabilite.setVisible(false);
         jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel32.setText("Teléfono:");
         jPanel4.add(jLabel32);
-        jLabel32.setBounds(480, 50, 80, 14);
+        jLabel32.setBounds(480, 50, 80, 17);
 
         descuento.setText("0");
         descuento.setEnabled(false);
@@ -1820,12 +1813,12 @@ deshabilite.setVisible(false);
         bindingGroup.addBinding(binding);
 
         jPanel4.add(descuento);
-        descuento.setBounds(570, 70, 90, 20);
+        descuento.setBounds(570, 70, 90, 27);
 
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel34.setText("Dscto:");
         jPanel4.add(jLabel34);
-        jLabel34.setBounds(490, 70, 70, 14);
+        jLabel34.setBounds(490, 70, 70, 17);
 
         tarjetas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1891,7 +1884,7 @@ deshabilite.setVisible(false);
         jLabel55.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel55.setText("Valor Inc IVA:");
         jPanel4.add(jLabel55);
-        jLabel55.setBounds(250, 70, 70, 14);
+        jLabel55.setBounds(250, 70, 70, 17);
 
         incorrecto.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         incorrecto.setForeground(new java.awt.Color(204, 0, 0));
@@ -1911,7 +1904,7 @@ deshabilite.setVisible(false);
         bindingGroup.addBinding(binding);
 
         jPanel4.add(sellado);
-        sellado.setBounds(570, 90, 90, 20);
+        sellado.setBounds(570, 90, 90, 27);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Valor máximo de Ticket Sellado:");
@@ -2133,7 +2126,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(lunes1);
-        lunes1.setBounds(60, 20, 55, 23);
+        lunes1.setBounds(60, 20, 55, 22);
 
         martes1.setText("Martes");
         martes1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2142,7 +2135,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(martes1);
-        martes1.setBounds(120, 20, 60, 23);
+        martes1.setBounds(120, 20, 60, 22);
 
         miercoles1.setText("Miércoles");
         miercoles1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2151,7 +2144,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(miercoles1);
-        miercoles1.setBounds(180, 20, 70, 23);
+        miercoles1.setBounds(180, 20, 70, 22);
 
         jueves1.setText("Jueves");
         jueves1.addActionListener(new java.awt.event.ActionListener() {
@@ -2165,7 +2158,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(jueves1);
-        jueves1.setBounds(250, 20, 60, 23);
+        jueves1.setBounds(250, 20, 60, 22);
 
         viernes1.setText("Viernes");
         viernes1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2174,7 +2167,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(viernes1);
-        viernes1.setBounds(310, 20, 62, 23);
+        viernes1.setBounds(310, 20, 62, 22);
 
         sabado1.setText("Sábado");
         sabado1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2183,7 +2176,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(sabado1);
-        sabado1.setBounds(380, 20, 63, 23);
+        sabado1.setBounds(380, 20, 63, 22);
 
         domingo1.setText("Domingo");
         domingo1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2192,7 +2185,7 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(domingo1);
-        domingo1.setBounds(440, 20, 70, 23);
+        domingo1.setBounds(440, 20, 70, 22);
 
         todos1.setText("Todos");
         todos1.addActionListener(new java.awt.event.ActionListener() {
@@ -2206,18 +2199,18 @@ deshabilite.setVisible(false);
             }
         });
         diasHabiles1.add(todos1);
-        todos1.setBounds(10, 20, 55, 23);
+        todos1.setBounds(10, 20, 58, 22);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Horas de ingreso"));
         jPanel10.setLayout(null);
 
         jLabel27.setText("Hasta: ");
         jPanel10.add(jLabel27);
-        jLabel27.setBounds(140, 20, 40, 14);
+        jLabel27.setBounds(140, 20, 40, 17);
 
         jLabel28.setText("Desde:");
         jPanel10.add(jLabel28);
-        jLabel28.setBounds(10, 20, 50, 14);
+        jLabel28.setBounds(10, 20, 50, 17);
 
         horaDesde1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -2225,7 +2218,7 @@ deshabilite.setVisible(false);
             }
         });
         jPanel10.add(horaDesde1);
-        horaDesde1.setBounds(50, 20, 70, 20);
+        horaDesde1.setBounds(50, 20, 70, 28);
 
         horaHasta1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -2233,26 +2226,26 @@ deshabilite.setVisible(false);
             }
         });
         jPanel10.add(horaHasta1);
-        horaHasta1.setBounds(180, 20, 70, 20);
+        horaHasta1.setBounds(180, 20, 70, 28);
 
         panelHoras1.setBorder(javax.swing.BorderFactory.createTitledBorder("Fechas de Validez"));
         panelHoras1.setLayout(null);
 
         jLabel29.setText("Hasta: ");
         panelHoras1.add(jLabel29);
-        jLabel29.setBounds(130, 20, 40, 14);
+        jLabel29.setBounds(130, 20, 40, 17);
 
         jLabel30.setText("Desde:");
         panelHoras1.add(jLabel30);
-        jLabel30.setBounds(10, 20, 40, 14);
+        jLabel30.setBounds(10, 20, 40, 17);
 
         fechaDesde1.setDateFormatString("dd/MMM/yyyy");
         panelHoras1.add(fechaDesde1);
-        fechaDesde1.setBounds(50, 20, 80, 20);
+        fechaDesde1.setBounds(50, 20, 80, 27);
 
         fechaHasta1.setDateFormatString("dd/MMM/yyyy");
         panelHoras1.add(fechaHasta1);
-        fechaHasta1.setBounds(170, 20, 80, 20);
+        fechaHasta1.setBounds(170, 20, 80, 27);
 
         nombreBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -2429,7 +2422,7 @@ deshabilite.setVisible(false);
             }
         });
         frmRespaldarBase.getContentPane().add(btnRespaldoWindows);
-        btnRespaldoWindows.setBounds(50, 120, 135, 40);
+        btnRespaldoWindows.setBounds(50, 120, 126, 40);
 
         btnRespaldoLinux.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/linux.png"))); // NOI18N
         btnRespaldoLinux.setText("SI ES LINUX");
@@ -2443,11 +2436,11 @@ deshabilite.setVisible(false);
 
         ubicacionArchivo.setText("C:\\RESPALDOS\\");
             frmRespaldarBase.getContentPane().add(ubicacionArchivo);
-            ubicacionArchivo.setBounds(140, 50, 205, 20);
+            ubicacionArchivo.setBounds(140, 50, 205, 27);
 
             jLabel6.setText("Nombre del Archivo:");
             frmRespaldarBase.getContentPane().add(jLabel6);
-            jLabel6.setBounds(40, 90, 97, 14);
+            jLabel6.setBounds(40, 90, 114, 17);
 
             jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             jLabel24.setText(".sql");
@@ -2461,20 +2454,20 @@ deshabilite.setVisible(false);
                 }
             });
             frmRespaldarBase.getContentPane().add(jButton8);
-            jButton8.setBounds(350, 50, 77, 23);
+            jButton8.setBounds(350, 50, 65, 31);
 
             nombreArchivo.setText("RESPALDO"+ (new Date()).toLocaleString().replace("/","").replace(" ","").replace(":",""));
             frmRespaldarBase.getContentPane().add(nombreArchivo);
-            nombreArchivo.setBounds(140, 80, 205, 20);
+            nombreArchivo.setBounds(140, 80, 205, 27);
 
             jLabel25.setText("Ubicación:");
             frmRespaldarBase.getContentPane().add(jLabel25);
-            jLabel25.setBounds(40, 60, 103, 14);
+            jLabel25.setBounds(40, 60, 103, 17);
 
             jLabel26.setForeground(new java.awt.Color(51, 0, 204));
             jLabel26.setText("Recuerde respaldar su información periodicamente, para una mayor seguridad de su sistema");
             frmRespaldarBase.getContentPane().add(jLabel26);
-            jLabel26.setBounds(40, 10, 480, 14);
+            jLabel26.setBounds(40, 10, 480, 17);
 
             jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
             jButton6.setText("Salir");
@@ -2491,7 +2484,6 @@ deshabilite.setVisible(false);
 
             frmIngresarSistema.setTitle("Seguridad");
             frmIngresarSistema.setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/images/unlock.gif"))); // NOI18N
-            frmIngresarSistema.setOpaque(true);
             try {
                 frmIngresarSistema.setSelected(true);
             } catch (java.beans.PropertyVetoException e1) {
@@ -2596,7 +2588,7 @@ deshabilite.setVisible(false);
                 }
             });
             jPanel2.add(usuariot);
-            usuariot.setBounds(140, 20, 130, 20);
+            usuariot.setBounds(140, 20, 130, 27);
 
             time.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
             time.setForeground(new java.awt.Color(0, 102, 102));
@@ -2627,15 +2619,15 @@ deshabilite.setVisible(false);
 
             jLabel39.setText("Clave Actual:");
             panelCambiar.add(jLabel39);
-            jLabel39.setBounds(30, 10, 64, 14);
+            jLabel39.setBounds(30, 10, 72, 17);
 
             jLabel40.setText("Nueva Clave:");
             panelCambiar.add(jLabel40);
-            jLabel40.setBounds(30, 40, 65, 14);
+            jLabel40.setBounds(30, 40, 73, 17);
 
             jLabel41.setText("Repite Clave:");
             panelCambiar.add(jLabel41);
-            jLabel41.setBounds(30, 70, 65, 14);
+            jLabel41.setBounds(30, 70, 72, 17);
 
             claveActual.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2643,11 +2635,11 @@ deshabilite.setVisible(false);
                 }
             });
             panelCambiar.add(claveActual);
-            claveActual.setBounds(110, 10, 110, 20);
+            claveActual.setBounds(110, 10, 110, 27);
             panelCambiar.add(nuevaClave);
-            nuevaClave.setBounds(111, 41, 110, 20);
+            nuevaClave.setBounds(111, 41, 110, 27);
             panelCambiar.add(repiteClave);
-            repiteClave.setBounds(111, 67, 110, 20);
+            repiteClave.setBounds(111, 67, 110, 27);
 
             jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exit.gif"))); // NOI18N
             jButton7.setText("Cerrar");
@@ -2826,7 +2818,7 @@ deshabilite.setVisible(false);
                 }
             });
             panelIngreso.add(jButton11);
-            jButton11.setBounds(700, 290, 30, 23);
+            jButton11.setBounds(700, 290, 30, 31);
 
             jButton14.setText("llamarSocket");
             jButton14.addActionListener(new java.awt.event.ActionListener() {
@@ -2835,7 +2827,7 @@ deshabilite.setVisible(false);
                 }
             });
             panelIngreso.add(jButton14);
-            jButton14.setBounds(700, 310, 30, 23);
+            jButton14.setBounds(700, 310, 30, 31);
 
             habilite.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
             habilite.setForeground(new java.awt.Color(0, 153, 0));
@@ -2885,7 +2877,7 @@ deshabilite.setVisible(false);
                 }
             });
             contenedor.add(botoninst);
-            botoninst.setBounds(290, 0, 120, 23);
+            botoninst.setBounds(310, 0, 120, 31);
 
             tempjButton13.setText("Tarjeta");
             tempjButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -2894,7 +2886,7 @@ deshabilite.setVisible(false);
                 }
             });
             contenedor.add(tempjButton13);
-            tempjButton13.setBounds(410, 0, 80, 23);
+            tempjButton13.setBounds(430, 0, 80, 31);
 
             tempnotarjetaTemp.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2906,7 +2898,16 @@ deshabilite.setVisible(false);
 
             temppuertoText.setEditable(true);
             contenedor.add(temppuertoText);
-            temppuertoText.setBounds(630, 0, 50, 20);
+            temppuertoText.setBounds(630, 0, 50, 27);
+
+            jButton16.setText("Tck");
+            jButton16.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton16ActionPerformed(evt);
+                }
+            });
+            contenedor.add(jButton16);
+            jButton16.setBounds(230, 0, 80, 31);
 
             jSplitPane1.setRightComponent(contenedor);
 
@@ -3191,7 +3192,7 @@ deshabilite.setVisible(false);
                 .addGroup(jXTaskPaneContainer1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(jXTaskPaneContainer1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(contenedor2, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                        .addComponent(contenedor2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addComponent(contenedor3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(contenedor1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap())
@@ -3255,7 +3256,6 @@ deshabilite.setVisible(false);
                     };
                     cargar.start();
 
-
                 }
             }
 
@@ -3263,17 +3263,18 @@ deshabilite.setVisible(false);
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
- private static final String PORT_NAMES[] = {
-                        "/dev/ttyACM0", //for Ubuntu
-      "/dev/ttyUSB0", // Linux
-      "/dev/ttyUSB1", // Linux
-      "/dev/ttyUSB2", // Linux
-      "/dev/ttyUSB3", // Linux
-      "/dev/ttyUSB4", // Linux
-      "/dev/ttyUSB5", // Linux
-      "/dev/ttyUSB6", // Linux
-   "COM3", // Windows
- };
+    private static final String PORT_NAMES[] = {
+        "/dev/ttyACM0", //for Ubuntu
+        "/dev/ttyUSB0", // Linux
+        "/dev/ttyUSB1", // Linux
+        "/dev/ttyUSB2", // Linux
+        "/dev/ttyUSB3", // Linux
+        "/dev/ttyUSB4", // Linux
+        "/dev/ttyUSB5", // Linux
+        "/dev/ttyUSB6", // Linux
+        "COM3", // Windows
+    };
+
     void iniciarPuertos() {
         try {
 //            WorkingDirectory w = new WorkingDirectory();
@@ -3291,20 +3292,17 @@ deshabilite.setVisible(false);
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
             //esto agrego
-                Properties p = new Properties();
-               for (String portName : PORT_NAMES) {
-               //   serialPortID = "/dev/ttyACM0";
-                  
-                  p.setProperty("gnu.io.rxtx.SerialPorts", portName);
-                  
-                 //break;
-                }
-               System.setProperties(p);
-               
-            
+            Properties p = new Properties();
+            for (String portName : PORT_NAMES) {
+                //   serialPortID = "/dev/ttyACM0";
+
+                p.setProperty("gnu.io.rxtx.SerialPorts", portName);
+
+                //break;
+            }
+            System.setProperties(p);
+
             //esto agrego
-            
-            
             LeerTarjeta reader;
             String puertoYaAbiertos = "";
             puertoListo = new ArrayList();
@@ -3336,8 +3334,7 @@ deshabilite.setVisible(false);
                                 lger.logger("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(), "ERROR");
                             }
 
-                        }else
-                        //(1)    //PUERTO DE LETRERO LEDS
+                        } else //(1)    //PUERTO DE LETRERO LEDS
                         if (portId.getName().equals(empresaObj.getLed())) {
                             try {
                                 if (leds) {
@@ -3352,8 +3349,7 @@ deshabilite.setVisible(false);
                                 System.out.println("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
                                 lger.logger("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(), "ERROR");
                             }
-                        }else
-                        //(2)  //PUERTO DE CODIGO DE BARRAS
+                        } else //(2)  //PUERTO DE CODIGO DE BARRAS
                         if (portId.getName().equals(empresaObj.getBarras())) {
                             try {
                                 if (barras1) {
@@ -3368,8 +3364,7 @@ deshabilite.setVisible(false);
                                 System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
                                 lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(), "ERROR");
                             }
-                        }else
-                        //(3)  //PUERTO DE CODIGO DE BARRAS 2
+                        } else //(3)  //PUERTO DE CODIGO DE BARRAS 2
                         if (portId.getName().equals(empresaObj.getBarras2())) {
                             try {
                                 if (barras2) {
@@ -3386,90 +3381,75 @@ deshabilite.setVisible(false);
                                 lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(), "ERROR");
                             }
 
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 1: " + empresaObj.getPuerto1());
                             lger.logger("LECTORA INGRESO 1: " + empresaObj.getPuerto1(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 2: " + empresaObj.getPuerto2());
                             lger.logger("LECTORA INGRESO 2: " + empresaObj.getPuerto2(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 3: " + empresaObj.getPuerto3());
                             lger.logger("LECTORA INGRESO 3: " + empresaObj.getPuerto3(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 4: " + empresaObj.getPuerto4());
                             lger.logger("LECTORA INGRESO 4: " + empresaObj.getPuerto4(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 5: " + empresaObj.getPuerto5());
                             lger.logger("LECTORA INGRESO 5: " + empresaObj.getPuerto5(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 6: " + empresaObj.getPuerto6());
                             lger.logger("LECTORA INGRESO 6: " + empresaObj.getPuerto6(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
+                        } else if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 7: " + empresaObj.getPuerto7());
                             lger.logger("LECTORA INGRESO 7: " + empresaObj.getPuerto7(), "OK");
 //                        read.add(reader);
-                        }else
-
-                        if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 1: " + empresaObj.getSalida1());
                             temppuertoText.addItem(empresaObj.getSalida1());
                             lger.logger("LECTORA SALIDA 1: " + empresaObj.getSalida1(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 2: " + empresaObj.getSalida2());
                             temppuertoText.addItem(empresaObj.getSalida2());
                             lger.logger("LECTORA SALIDA 2: " + empresaObj.getSalida2(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 3: " + empresaObj.getSalida3());
                             temppuertoText.addItem(empresaObj.getSalida3());
                             lger.logger("LECTORA SALIDA 3: " + empresaObj.getSalida3(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 4: " + empresaObj.getSalida4());
                             lger.logger("LECTORA SALIDA 4: " + empresaObj.getSalida4(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 5: " + empresaObj.getSalida5());
                             lger.logger("LECTORA SALIDA 5: " + empresaObj.getSalida5(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 6: " + empresaObj.getSalida6());
                             lger.logger("LECTORA SALIDA 6: " + empresaObj.getSalida6(), "OK");
 //                        read.add(reader);
-                        }else
-                        if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
+                        } else if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 7: " + empresaObj.getSalida7());
                             lger.logger("LECTORA SALIDA 7: " + empresaObj.getSalida7(), "OK");
@@ -3604,11 +3584,11 @@ deshabilite.setVisible(false);
             if (dispo <= 5) {
                 habilite.setVisible(false);
                 deshabilite.setVisible(true);
-                
-            }else{
-                    habilite.setVisible(true);
+
+            } else {
+                habilite.setVisible(true);
                 deshabilite.setVisible(false);
-            
+
             }
             //ENVIO A LA PANTALLA DE LEDS LA INFORMACIÓN
             if (empresaObj.getLed() != null && !empresaObj.getLed().equals("") && !empresaObj.getLed().equals("null")) {
@@ -3642,7 +3622,6 @@ deshabilite.setVisible(false);
                                 }
 
                                 //devolverHexa();
-
                             } else {
 
                                 String uno = (dispo + "").substring(0, 1);
@@ -3652,7 +3631,6 @@ deshabilite.setVisible(false);
                                 byte[] c = {(byte) devolverHexa(new Integer(uno)), (byte) devolverHexa(new Integer(dos))};
                                 ta.outputSream.write(c);
                             }
-
 
                             //AbrirPuerta.abrir(empresaObj.getPuerto(), "1");
                             //barrera1.setEnabled(true);
@@ -3749,12 +3727,12 @@ deshabilite.setVisible(false);
         empresaObj.setSerie(emp.getSerie());
         empresaObj.setSucursal(emp.getSucursal());
         empresaObj.setPuerto(emp.getPuerto());
+        empresaObj.setTiempoSalirSinSellar(emp.getTiempoSalirSinSellar());
 
     }
 
     void iniciarCamar() {
         try {
-
 
 //            this.camaraVista.setLayout(null);
             this.camaraVista.add(ver.VerCamara(2, 2, new Double(camaraVista.getSize().getWidth()).intValue() - 4, new Double(camaraVista.getSize().getHeight()).intValue() - 4));
@@ -3842,15 +3820,11 @@ deshabilite.setVisible(false);
                         return;
                     }
 
-
                 }
             }
 
-
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(this, "ERROR EN CONFIGURACION DEL SISTEMA"+e);
-
-
 
 //            File fichero = new File(ubicacionDirectorio + "KDJFASD5F4AS5D2.xml");
 //            if (fichero.exists()) {
@@ -3859,10 +3833,6 @@ deshabilite.setVisible(false);
 //            }
 //            this.dispose();
 //            new frmConfiguracion().show();
-
-
-
-
         }
 
         if (usu != null) {
@@ -3879,7 +3849,6 @@ deshabilite.setVisible(false);
 //                if (ubicacionDirectorio.contains("build")) {
 //                    ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
 //                }
-
                 cargarEmpresaConfig();
 
                 noDisponibles();
@@ -3966,7 +3935,6 @@ deshabilite.setVisible(false);
                 System.out.println("________________________________________ 1");
                 if (cerroSesion == false) {
 
-
                     leerTcpIp c = new leerTcpIp();
                     //s = new Socket("192.168.0.7", 1024);
                     if (empresaObj.getIpBarras1() != null) {
@@ -4000,13 +3968,11 @@ deshabilite.setVisible(false);
             JOptionPane.showMessageDialog(this, "Usuario o Clave incorrecta", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
             clave.requestFocusInWindow();
 
-
         }
 //        try {
 //            iniciarServidor();
 //        } catch (Exception e) {
 //        }
-
 
     }
 
@@ -4104,7 +4070,6 @@ deshabilite.setVisible(false);
                 DateTime fechaIngreso = new DateTime(fecIn);
                 DateTime fechaSalida = new DateTime(fecIn3).plusDays(1);
 
-
                 LocalTime horaIni = new LocalTime(fechaIngreso);
                 LocalTime horaFin = new LocalTime(fechaSalida);
 
@@ -4116,8 +4081,6 @@ deshabilite.setVisible(false);
                 fechaNueva.setMinutes((new Date()).getMinutes());
                 fechaNueva.setSeconds((new Date()).getSeconds());
                 DateTime ahora2 = new DateTime(fechaNueva);
-
-
 
                 if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0)) {
                     System.out.println("EN EL RANGO DE HORA");
@@ -4144,9 +4107,6 @@ deshabilite.setVisible(false);
                         }
 
                     }
-
-
-
 
                     if (entraOsale.equals("s")) {
                         errores.setText("<html>NO puede Salir en éste horario</html>");
@@ -4326,7 +4286,6 @@ deshabilite.setVisible(false);
                         System.out.println("NO SE ABRIO PUERTA POR " + puertoViene + " ERROR: " + e);
                     }
 
-
                     if (empresaObj.getWebcam() && empresaObj.getBarreras().contains(puertaxComm(puertoViene))) {
                         if (ubicacionDirectorio.contains("build")) {
                             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
@@ -4441,7 +4400,6 @@ deshabilite.setVisible(false);
                             adm.guardar(fac);
                         }
 
-
                         if (tarje.getFacturar()) {
                             errores.setText("<html>OK...!  (NO SE REGISTRO EL INGRESO) VALOR: " + fac.getTotal() + " </html> ");
 //                            socketEnviarMensaje("OK...! (NO SE REGISTRO EL INGRESO \n VALOR: (" + fac.getTotal() + " "); 
@@ -4462,7 +4420,6 @@ deshabilite.setVisible(false);
                     }
 //                      
 
-
                 }
             }
             fac = null;
@@ -4474,8 +4431,6 @@ deshabilite.setVisible(false);
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
 
     }
 
@@ -4523,7 +4478,6 @@ deshabilite.setVisible(false);
                     } catch (Exception ex) {
                         System.out.println("" + ex);
                     }
-
 
                     if (frmLoteTarjetas.isVisible()) {
                         noTarjeta2.setText(tarjetatxt.getText());
@@ -4593,6 +4547,7 @@ deshabilite.setVisible(false);
 
     public void buscarTarjetaValidarSalida(String puertoViene, String noticket) {//VALIDO LA SALIDA CON CODIGO DE  BARRAS
 //        final frmPrincipal pra = this;
+        
         if (puertoViene.length() > 10) {
             puertoViene = puertoViene.substring(0, 10);
         }
@@ -4605,7 +4560,9 @@ deshabilite.setVisible(false);
                 errores.setText("");
                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
                 //EN CASO DE QUE TODO ESTE CORRECTO PROCEDO A GUARDAR
-                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + (noticket) + "' "
+                System.out.println("Select o from Factura as o where o.ticket = '" + (noticket).trim() + "' "
+                        + "  ");
+                List<Factura> facturas = adm.query("Select o from Factura as o where o.ticket = '" + (noticket).trim() + "' "
                         + "  ");
                 if (facturas.size() > 0) {
 
@@ -4617,10 +4574,48 @@ deshabilite.setVisible(false);
                             yasalio = false;
                         }
                         if (fechaFin == null) {
-                            errores.setText("<html>TICKET No: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
-                            socketEnviarMensaje("TICKET No: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                            //VALIDO SI ES QUE NO HA SELLADO EL TICKET VERIFIQUE QUE ESTE EN LOS 10 PRIMEROS MINUTOS DE GRACIA Y LO DEJO SALIR
+                            //CASO CONTRARIO MUESTRO EL MENSAJE
+                            if (empresaObj.getTiempoSalirSinSellar() == null) {
+                                empresaObj.setTiempoSalirSinSellar(0.0);
+                            }
+                            if (empresaObj.getTiempoSalirSinSellar() <= 0) {
+                                errores.setText("<html>TICKET: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                                socketEnviarMensaje("TICKET: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                                imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                            } else {
+                                Long minutosConsumidosHastaLaFecha = diferenciaFechas(act.getFechaini(), new Date());
+                                if (minutosConsumidosHastaLaFecha <= empresaObj.getTiempoSalirSinSellar()) {
+                                    act.setFechafin(new Date());
+                                    act.setTiempo(new Date());
+                                    act.setAnulado(false);
+                                    act.setDescuento(BigDecimal.ZERO);
+                                    act.setEsnota(false);
+                                    act.setAnuladofac(false);
+                                    act.setObservacion("");
+                                    act.setYasalio(true);
+                                    act.setClientes(new Clientes(0));
+                                    act.setSubtotal(BigDecimal.ZERO);
+                                    act.setTotal(BigDecimal.ZERO);
+                                    act.setIva(BigDecimal.ONE);
+                                    adm.actualizar(act);
+                                    noDisponibles();
+                                    facturas = null;
+                                    limpiarMemoria();
+                                    act = null;
+                                    errores.setText("<html>TICKET: " + (noticket) + " Salida Ok </html>");
+                                    socketEnviarMensaje("TICKET: " + (noticket) + " Salida Ok </html>");
+                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
+                                    
+                                } else {
 
-                            imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                                    errores.setText("<html>TICKET: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                                    socketEnviarMensaje("TICKET: " + (noticket) + " QUIERE SALIR SIN PAGAR)</html>");
+                                    imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
+                                }
+
+                            }
+
                         } else {
                             Long minutos0 = diferenciaFechas(fechaFin, new Date());
                             Integer minutos = minutos0.intValue();
@@ -4629,11 +4624,11 @@ deshabilite.setVisible(false);
                                 socketEnviarMensaje("TIEMPO DE GRACIA EXCEDIDO CON " + minutos + " min...!, ticket No. " + act.getTicket() + " ");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else if (yasalio) {
-                                errores.setText("<html>TICKET YA USADO PARA SALIR ...!</html>");
-                                socketEnviarMensaje("TICKET YA USADO PARA SALIR ...!");
+                                errores.setText("<html>Ticket: "+noticket+" ya USADO para SALIR ...!</html>");
+                                socketEnviarMensaje("Ticket ya USADO para SALIR ...!");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/alerta.png"))); // NOI18N
                             } else {
-                                errores.setText("SALIDA OK ...!");
+                                errores.setText("Ticket: "+noticket+" Salida OK ...!");
                                 imAviso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salidaok.png"))); // NOI18N
 
                                 act.setYasalio(true);
@@ -4641,15 +4636,12 @@ deshabilite.setVisible(false);
                                 abrirPuerta(puertoViene);
                             }
 
-
                         }
                     } catch (Exception e) {
                     }
 
-
                 } else {
                 }
-
 
                 noDisponibles();
 
@@ -4715,18 +4707,15 @@ deshabilite.setVisible(false);
                                 abrirPuerta(puertoViene);
                             }
 
-
                         }
                     } catch (Exception e) {
                     }
-
 
                 } else {
                 }
                 facturas = null;
                 System.gc();
                 noDisponibles();
-
 
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -4932,7 +4921,6 @@ deshabilite.setVisible(false);
         BigDecimal ivav = new BigDecimal(iva02);
         BigDecimal totalv = new BigDecimal(totalv01);
 
-
         fac.setSubtotal(subtotalv);
         fac.setIva(ivav);
         fac.setTotal(aCobrar);
@@ -5016,7 +5004,6 @@ deshabilite.setVisible(false);
         BigDecimal subtotalv = new BigDecimal(subtotalv01);
         BigDecimal ivav = new BigDecimal(iva02);
         BigDecimal totalv = new BigDecimal(totalv01);
-
 
         fac.setSubtotal(subtotalv);
         fac.setIva(ivav);
@@ -5237,7 +5224,6 @@ deshabilite.setVisible(false);
             Thread.sleep(20);
             ta.outputSream.write(lapuertaaAbrir.getBytes());
 
-
             System.out.println("ABRIR PUERTA TARJETA: " + lapuertaaAbrir);
             //TEMPORAL
 
@@ -5329,7 +5315,6 @@ deshabilite.setVisible(false);
                 return;
             }
 
-
             try {
                 Component[] componentes = contenedor.getComponents();
                 for (Component component : componentes) {
@@ -5363,7 +5348,6 @@ deshabilite.setVisible(false);
 
             usu.show();
             contenedor.requestFocus();
-
 
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
@@ -5506,7 +5490,7 @@ deshabilite.setVisible(false);
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmFactura usu = new frmFactura( true, this, adm);
+            frmFactura usu = new frmFactura(true, this, adm);
             usu.setSize(799, 556); //799, 556
             usu.chkEsNotaVenta.setSelected(empresaObj.getTrabajanotaventa());
             usu.setLocation(0, 0);
@@ -5515,8 +5499,6 @@ deshabilite.setVisible(false);
 
             usu.show();
             usu.noTicket.requestFocusInWindow();
-
-
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -5662,8 +5644,6 @@ deshabilite.setVisible(false);
         horaHasta.setEditor(de2);
         horaHasta.setModel(sm2);
 
-
-
     }
     private void btnNuevaTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaTarjetaActionPerformed
         // TODO add your handling code here:
@@ -5773,7 +5753,6 @@ deshabilite.setVisible(false);
                 btnBuscar.setEnabled(false);
                 descuento.setText("0");
                 sellado.setText("0");
-
 
             } else if (grabar == true) {
                 if (codigo.getText().isEmpty() || nombres.getText().trim().isEmpty() || txtValor.getText().isEmpty()) {
@@ -6006,7 +5985,6 @@ deshabilite.setVisible(false);
                 public void run() {
                     procesando.setVisible(true);
 
-
                     try {
                         List<Clientes> usuarios = adm.query("Select o from Clientes as o where o.nombres like '%" + codigoBuscar.getText().trim() + "%' ");
                         Object[] obj = new Object[4];
@@ -6144,7 +6122,6 @@ deshabilite.setVisible(false);
                         System.out.println("error en busquedaTabla, no tiene producto el cliente para tarjeta mensual: " + er);
                         //er.printStackTrace();
                     }
-
 
                 }
                 try {
@@ -6518,7 +6495,6 @@ deshabilite.setVisible(false);
         cargar.start();
 
 
-
     }//GEN-LAST:event_barrera1ActionPerformed
 
     private void tarjetatxtVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_tarjetatxtVetoableChange
@@ -6597,7 +6573,6 @@ deshabilite.setVisible(false);
         };
         cargar.start();
 
-
         //                Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
     }//GEN-LAST:event_btnIngresarActionPerformed
 
@@ -6625,8 +6600,6 @@ deshabilite.setVisible(false);
                 }
             };
             cargar.start();
-
-
 
         }
 }//GEN-LAST:event_claveKeyPressed
@@ -6673,7 +6646,6 @@ deshabilite.setVisible(false);
         // TODO add your handling code here:
         int teclaPresionada = evt.getKeyCode();
         tecla(teclaPresionada);
-
 
 
     }//GEN-LAST:event_contenedorKeyPressed
@@ -6778,7 +6750,6 @@ deshabilite.setVisible(false);
     }//GEN-LAST:event_sabadoKeyPressed
 
     private void domingoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_domingoKeyPressed
-
 
         tecla(evt.getKeyCode());
     }//GEN-LAST:event_domingoKeyPressed
@@ -7014,7 +6985,6 @@ deshabilite.setVisible(false);
                             obj[2] = glbusuario.getTarjeta();
                             obj[3] = glbusuario.getHabilitada();
 
-
                             dtm.addRow(obj);
                         }
                         tablaCambios.setModel(dtm);
@@ -7081,7 +7051,6 @@ deshabilite.setVisible(false);
                     tarActu.setSalida(salida1.isSelected());
                     tarActu.setGracia(Integer.parseInt(txtGracia1.getText()));
 
-
                     String valorTarjeta = "";
                     try {
                         valorTarjeta = ConvertHexaToDecimal.convertir(tarActu.getTarjeta());
@@ -7098,7 +7067,6 @@ deshabilite.setVisible(false);
                     lger.logger(frmPrincipal.class.getName(), ex + "");
 
                 }
-
 
             }
 
@@ -7146,7 +7114,6 @@ deshabilite.setVisible(false);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No coinciden las claves nueva y repeticion...!");
-
 
             }
         } else {
@@ -7433,7 +7400,6 @@ private void nombres1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 private void btnAnadirTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTarjetaActionPerformed
 // TODO add your handling code here:
 
-
     if (noTarjeta2.getText() == null || noTarjeta2.getText().isEmpty()) {
         JOptionPane.showMessageDialog(this, "Pase la tarjeta por la Lectora y vuelva a intentarlo...! ", "SISCONTROL", JOptionPane.ERROR_MESSAGE);
         return;
@@ -7595,8 +7561,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
             usu.show();
 
-
-
         } catch (Exception ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
@@ -7681,7 +7645,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         dataOutput.writeUTF("" + this.getName());
                     }
 
-
                 } catch (UnknownHostException ex) {
                     //Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
@@ -7722,7 +7685,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
                         }
 
-
                     } catch (UnknownHostException ex) {
                         Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -7732,7 +7694,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             }
         };
         cargar.start();
-
 
     }
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
@@ -7823,7 +7784,6 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 public void run() {
                     procesando.setVisible(true);
 
-
                     try {
                         List<Tarjetas> usuarios = adm.query("Select o from Tarjetas as o where o.tarjetaNo like '%" + codigoBuscar1.getText().trim() + "%' ");
                         Object[] obj = new Object[4];
@@ -7900,6 +7860,12 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         usu.show();
         contenedor.requestFocus();
     }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+        //tarjetatxt.setText(tempnotarjetaTemp.getText());
+        buscarTarjetaValidarSalida(temppuertoText.getSelectedItem().toString(), tempnotarjetaTemp.getText());
+    }//GEN-LAST:event_jButton16ActionPerformed
     public void verPanel() {
         panelIngreso.setVisible(true);
 //        Thread cargar = new Thread() {
@@ -8111,6 +8077,7 @@ private void facturarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
