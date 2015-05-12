@@ -12,8 +12,11 @@
 	<parameter name="direccion" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="telefono" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="titulo" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select ticket,fecha as ingreso, placa from factura where fecha > '2015-02-01']]>
+	</queryString>
 	<field name="ticket" class="java.lang.String"/>
-	<field name="ingreso" class="java.util.Date"/>
+	<field name="ingreso" class="java.sql.Date"/>
 	<field name="placa" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>

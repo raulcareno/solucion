@@ -3129,7 +3129,6 @@
                 <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/images/unlock.gif"/>
                 </Property>
-                <Property name="opaque" type="boolean" value="true"/>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="visible" type="boolean" value="true"/>
               </Properties>
@@ -4006,7 +4005,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="contenedor2" alignment="0" pref="180" max="32767" attributes="0"/>
+                          <Component id="contenedor2" alignment="0" pref="0" max="32767" attributes="0"/>
                           <Component id="contenedor3" alignment="0" max="32767" attributes="0"/>
                           <Component id="contenedor1" alignment="1" max="32767" attributes="0"/>
                       </Group>

@@ -5,7 +5,6 @@ import chatear.servidor.HiloDeCliente;
 import java.awt.AWTException;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -83,6 +82,7 @@ import gnu.io.CommPortIdentifier;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.UnknownHostException;
+import java.util.Properties;
 
 /**
  *
@@ -169,6 +169,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
 //        this.addKeyListener(this);
 //        this.setVisible(true);
 //        this.setVisible(true);
+//            System.setProperty("java.awt.headless", "true");
         ubicacionDirectorio = w.get() + separador;
         if (ubicacionDirectorio.contains("build")) {
             ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
@@ -3262,7 +3263,17 @@ deshabilite.setVisible(false);
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+ private static final String PORT_NAMES[] = {
+                        "/dev/ttyACM0", //for Ubuntu
+      "/dev/ttyUSB0", // Linux
+      "/dev/ttyUSB1", // Linux
+      "/dev/ttyUSB2", // Linux
+      "/dev/ttyUSB3", // Linux
+      "/dev/ttyUSB4", // Linux
+      "/dev/ttyUSB5", // Linux
+      "/dev/ttyUSB6", // Linux
+   "COM3", // Windows
+ };
     void iniciarPuertos() {
         try {
 //            WorkingDirectory w = new WorkingDirectory();
@@ -3270,13 +3281,30 @@ deshabilite.setVisible(false);
 //            if (ubicacionDirectorio.contains("build")) {
 //                ubicacionDirectorio = ubicacionDirectorio.replace(separador + "build", "");
 //            }
-//            System.loadLibrary("rxtxSerial");
+            System.loadLibrary("rxtxSerial");
 //            String temp_string = ubicacionDirectorio + "lib" + separador + "javax.comm.properties";
 //            Method loadDriver_Method = CommPortIdentifier.class.getDeclaredMethod("loadDriver", new Class[]{String.class});
 //            loadDriver_Method.setAccessible(true);
 //            loadDriver_Method.invoke("loadDriver", new Object[]{temp_string});
+//            String serialPortID = "/dev/ttyACM0";
+//            System.setProperty("gnu.io.rxtx.SerialPorts", serialPortID);
             CommPortIdentifier portId;
             Enumeration portList = CommPortIdentifier.getPortIdentifiers();
+            //esto agrego
+                Properties p = new Properties();
+               for (String portName : PORT_NAMES) {
+               //   serialPortID = "/dev/ttyACM0";
+                  
+                  p.setProperty("gnu.io.rxtx.SerialPorts", portName);
+                  
+                 //break;
+                }
+               System.setProperties(p);
+               
+            
+            //esto agrego
+            
+            
             LeerTarjeta reader;
             String puertoYaAbiertos = "";
             puertoListo = new ArrayList();
@@ -3308,7 +3336,7 @@ deshabilite.setVisible(false);
                                 lger.logger("NO SE ABRIÓ: INTERFAZ PC BARRERA0 - ABIERTO: " + empresaObj.getPuerto(), "ERROR");
                             }
 
-                        }
+                        }else
                         //(1)    //PUERTO DE LETRERO LEDS
                         if (portId.getName().equals(empresaObj.getLed())) {
                             try {
@@ -3324,7 +3352,7 @@ deshabilite.setVisible(false);
                                 System.out.println("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed());
                                 lger.logger("NO SE ABRIÓ: PUERTO LETRERO-LEDS ABIERTO: " + empresaObj.getLed(), "ERROR");
                             }
-                        }
+                        }else
                         //(2)  //PUERTO DE CODIGO DE BARRAS
                         if (portId.getName().equals(empresaObj.getBarras())) {
                             try {
@@ -3340,7 +3368,7 @@ deshabilite.setVisible(false);
                                 System.out.println("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras());
                                 lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS ABIERTO: " + empresaObj.getBarras(), "ERROR");
                             }
-                        }
+                        }else
                         //(3)  //PUERTO DE CODIGO DE BARRAS 2
                         if (portId.getName().equals(empresaObj.getBarras2())) {
                             try {
@@ -3358,49 +3386,49 @@ deshabilite.setVisible(false);
                                 lger.logger("NO SE ABRIÓ: PUERTO LECTORA COD.BARRAS 2 ABIERTO: " + empresaObj.getBarras2(), "ERROR");
                             }
 
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 1: " + empresaObj.getPuerto1());
                             lger.logger("LECTORA INGRESO 1: " + empresaObj.getPuerto1(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 2: " + empresaObj.getPuerto2());
                             lger.logger("LECTORA INGRESO 2: " + empresaObj.getPuerto2(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 3: " + empresaObj.getPuerto3());
                             lger.logger("LECTORA INGRESO 3: " + empresaObj.getPuerto3(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 4: " + empresaObj.getPuerto4());
                             lger.logger("LECTORA INGRESO 4: " + empresaObj.getPuerto4(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 5: " + empresaObj.getPuerto5());
                             lger.logger("LECTORA INGRESO 5: " + empresaObj.getPuerto5(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 6: " + empresaObj.getPuerto6());
                             lger.logger("LECTORA INGRESO 6: " + empresaObj.getPuerto6(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getPuerto7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA INGRESO 7: " + empresaObj.getPuerto7());
                             lger.logger("LECTORA INGRESO 7: " + empresaObj.getPuerto7(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
 
                         if (portId.getName().equals(empresaObj.getSalida1()) && empresaObj.getActiva1()) {
                             reader = new LeerTarjeta(portId, this);
@@ -3408,39 +3436,39 @@ deshabilite.setVisible(false);
                             temppuertoText.addItem(empresaObj.getSalida1());
                             lger.logger("LECTORA SALIDA 1: " + empresaObj.getSalida1(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getSalida2()) && empresaObj.getActiva2()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 2: " + empresaObj.getSalida2());
                             temppuertoText.addItem(empresaObj.getSalida2());
                             lger.logger("LECTORA SALIDA 2: " + empresaObj.getSalida2(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getSalida3()) && empresaObj.getActiva3()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 3: " + empresaObj.getSalida3());
                             temppuertoText.addItem(empresaObj.getSalida3());
                             lger.logger("LECTORA SALIDA 3: " + empresaObj.getSalida3(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getSalida4()) && empresaObj.getActiva4()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 4: " + empresaObj.getSalida4());
                             lger.logger("LECTORA SALIDA 4: " + empresaObj.getSalida4(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getSalida5()) && empresaObj.getActiva5()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 5: " + empresaObj.getSalida5());
                             lger.logger("LECTORA SALIDA 5: " + empresaObj.getSalida5(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getSalida6()) && empresaObj.getActiva6()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 6: " + empresaObj.getSalida6());
                             lger.logger("LECTORA SALIDA 6: " + empresaObj.getSalida6(), "OK");
 //                        read.add(reader);
-                        }
+                        }else
                         if (portId.getName().equals(empresaObj.getSalida7()) && empresaObj.getActiva7()) {
                             reader = new LeerTarjeta(portId, this);
                             System.out.println("LECTORA SALIDA 7: " + empresaObj.getSalida7());
@@ -5478,7 +5506,7 @@ deshabilite.setVisible(false);
             } catch (Exception e) {
                 System.out.println("ERROR EN COMPONENTE" + e);
             }
-            frmFactura usu = new frmFactura(this, true, this, adm);
+            frmFactura usu = new frmFactura( true, this, adm);
             usu.setSize(799, 556); //799, 556
             usu.chkEsNotaVenta.setSelected(empresaObj.getTrabajanotaventa());
             usu.setLocation(0, 0);
@@ -5491,6 +5519,7 @@ deshabilite.setVisible(false);
 
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             lger.logger(frmPrincipal.class.getName(), ex + "");
         }

@@ -106,6 +106,10 @@ public class Factura implements Serializable {
     @ManyToOne
     private Clientes clientetic;
    
+   @JoinColumn(name = "tipotarifa", referencedColumnName = "codigo")
+    @ManyToOne
+    private Tipotarifa tipotarifa;
+   
 @Column(name = "cupones")
     private Integer cupones;
 //    @OneToMany(mappedBy = "factura")
@@ -356,6 +360,14 @@ public class Factura implements Serializable {
 
     public void setFactura(String factura) {
         this.factura = factura;
+    }
+
+    public Tipotarifa getTipotarifa() {
+        return tipotarifa;
+    }
+
+    public void setTipotarifa(Tipotarifa tipotarifa) {
+        this.tipotarifa = tipotarifa;
     }
     
     

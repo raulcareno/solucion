@@ -303,9 +303,11 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         nombreTipo = new javax.swing.JFormattedTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
         horaDesde = new javax.swing.JSpinner();
         horaHasta = new javax.swing.JSpinner();
+        jLabel23 = new javax.swing.JLabel();
+        Nohoras = new javax.swing.JFormattedTextField();
+        jLabel24 = new javax.swing.JLabel();
         diasHabiles = new javax.swing.JPanel();
         lunes = new javax.swing.JCheckBox();
         martes = new javax.swing.JCheckBox();
@@ -399,11 +401,11 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel12.add(codigoBuscar);
-        codigoBuscar.setBounds(100, 10, 220, 20);
+        codigoBuscar.setBounds(100, 10, 220, 25);
 
         jLabel18.setText("Nombre Tarifa: ");
         jPanel12.add(jLabel18);
-        jLabel18.setBounds(10, 10, 90, 14);
+        jLabel18.setBounds(10, 10, 90, 15);
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel19.setText("Presione Enter");
@@ -463,12 +465,12 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         getContentPane().setLayout(null);
 
         frmTipoTarifas.setTitle("Tipos de Tarifas");
-        frmTipoTarifas.setVisible(false);
+        frmTipoTarifas.setVisible(true);
         frmTipoTarifas.getContentPane().setLayout(null);
 
         jLabel17.setText("Nombre:");
         frmTipoTarifas.getContentPane().add(jLabel17);
-        jLabel17.setBounds(10, 20, 60, 14);
+        jLabel17.setBounds(10, 20, 60, 18);
 
         btnModificar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/editar.png"))); // NOI18N
         btnModificar5.setMnemonic('M');
@@ -487,7 +489,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         frmTipoTarifas.getContentPane().add(btnModificar5);
-        btnModificar5.setBounds(190, 190, 60, 50);
+        btnModificar5.setBounds(190, 260, 60, 50);
 
         btnSalir5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/salir.png"))); // NOI18N
         btnSalir5.setMnemonic('S');
@@ -506,7 +508,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         frmTipoTarifas.getContentPane().add(btnSalir5);
-        btnSalir5.setBounds(310, 190, 60, 50);
+        btnSalir5.setBounds(310, 260, 60, 50);
 
         btnAgregar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/agregar.png"))); // NOI18N
         btnAgregar5.setMnemonic('N');
@@ -525,22 +527,18 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         frmTipoTarifas.getContentPane().add(btnAgregar5);
-        btnAgregar5.setBounds(130, 190, 60, 50);
+        btnAgregar5.setBounds(130, 260, 60, 50);
 
         nombreTipo.setEditable(false);
         frmTipoTarifas.getContentPane().add(nombreTipo);
-        nombreTipo.setBounds(70, 20, 290, 20);
+        nombreTipo.setBounds(70, 20, 290, 28);
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Horas de ingreso", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(0, 102, 204)));
         jPanel13.setLayout(null);
 
         jLabel20.setText("Hasta: ");
         jPanel13.add(jLabel20);
-        jLabel20.setBounds(190, 20, 40, 14);
-
-        jLabel21.setText("Desde:");
-        jPanel13.add(jLabel21);
-        jLabel21.setBounds(10, 20, 50, 14);
+        jLabel20.setBounds(190, 20, 40, 18);
 
         horaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -548,7 +546,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel13.add(horaDesde);
-        horaDesde.setBounds(50, 20, 80, 20);
+        horaDesde.setBounds(50, 20, 80, 28);
 
         horaHasta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -556,10 +554,24 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel13.add(horaHasta);
-        horaHasta.setBounds(230, 20, 80, 20);
+        horaHasta.setBounds(230, 20, 80, 28);
+
+        jLabel23.setText("Desde:");
+        jPanel13.add(jLabel23);
+        jLabel23.setBounds(10, 20, 50, 18);
+
+        Nohoras.setText("0");
+        Nohoras.setToolTipText("Se aplicará cuando el consumo de horas sea mayor o igual al numero ingresado");
+        jPanel13.add(Nohoras);
+        Nohoras.setBounds(310, 60, 30, 28);
+
+        jLabel24.setText("Número mínimo de Horas para aplicar tarifa: ");
+        jLabel24.setToolTipText("Se aplicará cuando el consumo de horas sea mayor o igual al numero ingresado");
+        jPanel13.add(jLabel24);
+        jLabel24.setBounds(10, 60, 300, 18);
 
         frmTipoTarifas.getContentPane().add(jPanel13);
-        jPanel13.setBounds(10, 50, 360, 50);
+        jPanel13.setBounds(10, 50, 360, 100);
 
         diasHabiles.setBorder(javax.swing.BorderFactory.createTitledBorder("Días Habiles"));
         diasHabiles.setLayout(null);
@@ -576,7 +588,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(lunes);
-        lunes.setBounds(30, 50, 80, 23);
+        lunes.setBounds(30, 50, 80, 24);
 
         martes.setText("Martes");
         martes.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -585,7 +597,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(martes);
-        martes.setBounds(120, 10, 80, 23);
+        martes.setBounds(120, 10, 80, 24);
 
         miercoles.setText("Miércoles");
         miercoles.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -594,7 +606,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(miercoles);
-        miercoles.setBounds(120, 30, 80, 23);
+        miercoles.setBounds(120, 30, 110, 24);
 
         jueves.setText("Jueves");
         jueves.addActionListener(new java.awt.event.ActionListener() {
@@ -608,7 +620,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(jueves);
-        jueves.setBounds(120, 50, 80, 23);
+        jueves.setBounds(120, 50, 80, 24);
 
         viernes.setText("Viernes");
         viernes.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -617,7 +629,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(viernes);
-        viernes.setBounds(230, 10, 80, 23);
+        viernes.setBounds(230, 10, 80, 24);
 
         sabado.setText("Sábado");
         sabado.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -626,7 +638,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(sabado);
-        sabado.setBounds(230, 30, 80, 23);
+        sabado.setBounds(230, 30, 80, 24);
 
         domingo.setText("Domingo");
         domingo.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -635,7 +647,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(domingo);
-        domingo.setBounds(230, 50, 80, 23);
+        domingo.setBounds(230, 50, 110, 24);
 
         todos.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         todos.setForeground(new java.awt.Color(204, 51, 0));
@@ -651,15 +663,15 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         diasHabiles.add(todos);
-        todos.setBounds(30, 20, 70, 23);
+        todos.setBounds(30, 20, 70, 24);
 
         txtCodigoTipo.setEditable(false);
         txtCodigoTipo.setText("0");
         diasHabiles.add(txtCodigoTipo);
-        txtCodigoTipo.setBounds(310, 20, 30, 20);
+        txtCodigoTipo.setBounds(310, 20, 30, 28);
 
         frmTipoTarifas.getContentPane().add(diasHabiles);
-        diasHabiles.setBounds(10, 100, 360, 80);
+        diasHabiles.setBounds(10, 170, 360, 80);
 
         btnEliminar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eliminar.png"))); // NOI18N
         btnEliminar5.setMnemonic('E');
@@ -678,7 +690,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         frmTipoTarifas.getContentPane().add(btnEliminar5);
-        btnEliminar5.setBounds(250, 190, 60, 50);
+        btnEliminar5.setBounds(250, 260, 60, 50);
 
         btnBuscar5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search.gif"))); // NOI18N
         btnBuscar5.setMnemonic('B');
@@ -697,10 +709,10 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         frmTipoTarifas.getContentPane().add(btnBuscar5);
-        btnBuscar5.setBounds(70, 190, 60, 50);
+        btnBuscar5.setBounds(70, 260, 60, 50);
 
         getContentPane().add(frmTipoTarifas);
-        frmTipoTarifas.setBounds(10, 125, 390, 290);
+        frmTipoTarifas.setBounds(10, 85, 390, 390);
 
         jPanel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/images_botones/fondoInicio.png")))); // NOI18N
         jPanel3.setOpaque(false);
@@ -820,11 +832,11 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(horas);
-        horas.setBounds(50, 20, 30, 20);
+        horas.setBounds(50, 20, 30, 28);
 
         jLabel1.setText("HORA EQUIVALE A ->");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(90, 20, 120, 14);
+        jLabel1.setBounds(90, 20, 120, 18);
 
         minutos.setEditable(false);
         minutos.setText("0");
@@ -834,11 +846,11 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(minutos);
-        minutos.setBounds(210, 20, 60, 20);
+        minutos.setBounds(210, 20, 60, 28);
 
         jLabel3.setText(" MINUTOS");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(270, 20, 80, 14);
+        jLabel3.setBounds(270, 20, 80, 18);
 
         jPanel5.add(jPanel2);
         jPanel2.setBounds(10, 330, 370, 50);
@@ -934,14 +946,13 @@ public class frmTarifas extends javax.swing.JInternalFrame {
         jLabel5.setBounds(230, 50, 110, 20);
 
         jButton1.setText("Crear");
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(313, 20, 50, 19);
+        jButton1.setBounds(313, 20, 50, 30);
 
         cmbTipoTarifas.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -949,7 +960,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel1.add(cmbTipoTarifas);
-        cmbTipoTarifas.setBounds(90, 20, 220, 20);
+        cmbTipoTarifas.setBounds(90, 20, 220, 28);
 
         jLabel16.setText("Tipo Tarifa: ");
         jPanel1.add(jLabel16);
@@ -1002,15 +1013,15 @@ public class frmTarifas extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Codigo:");
         jPanel6.add(jLabel4);
-        jLabel4.setBounds(30, 20, 50, 14);
+        jLabel4.setBounds(30, 20, 50, 18);
 
         jLabel6.setText("Nombre:");
         jPanel6.add(jLabel6);
-        jLabel6.setBounds(30, 40, 50, 14);
+        jLabel6.setBounds(30, 40, 50, 18);
 
         jLabel7.setText("Valor:");
         jPanel6.add(jLabel7);
-        jLabel7.setBounds(30, 60, 40, 14);
+        jLabel7.setBounds(30, 60, 40, 18);
 
         txtCodigo.setEditable(false);
         txtCodigo.addActionListener(new java.awt.event.ActionListener() {
@@ -1019,7 +1030,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(txtCodigo);
-        txtCodigo.setBounds(80, 20, 100, 20);
+        txtCodigo.setBounds(80, 20, 100, 28);
 
         txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1027,7 +1038,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(txtNombre);
-        txtNombre.setBounds(80, 40, 230, 20);
+        txtNombre.setBounds(80, 40, 230, 28);
 
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1035,7 +1046,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel6.add(txtValor);
-        txtValor.setBounds(80, 60, 60, 20);
+        txtValor.setBounds(80, 60, 60, 28);
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel7.setLayout(null);
@@ -1129,7 +1140,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(txtNombre1);
-        txtNombre1.setBounds(80, 40, 230, 20);
+        txtNombre1.setBounds(80, 40, 230, 28);
 
         txtCodigo1.setEditable(false);
         txtCodigo1.addActionListener(new java.awt.event.ActionListener() {
@@ -1138,7 +1149,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(txtCodigo1);
-        txtCodigo1.setBounds(80, 20, 100, 20);
+        txtCodigo1.setBounds(80, 20, 100, 28);
 
         txtValor1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1146,7 +1157,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(txtValor1);
-        txtValor1.setBounds(80, 60, 60, 20);
+        txtValor1.setBounds(80, 60, 60, 28);
 
         tbTarifas1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1268,19 +1279,19 @@ public class frmTarifas extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Codigo:");
         jPanel8.add(jLabel9);
-        jLabel9.setBounds(30, 20, 50, 14);
+        jLabel9.setBounds(30, 20, 50, 18);
 
         jLabel11.setText("Nombre:");
         jPanel8.add(jLabel11);
-        jLabel11.setBounds(30, 40, 50, 14);
+        jLabel11.setBounds(30, 40, 50, 18);
 
         jLabel12.setText("Horas de Validez: ");
         jPanel8.add(jLabel12);
-        jLabel12.setBounds(170, 60, 100, 14);
+        jLabel12.setBounds(170, 60, 100, 18);
 
         jLabel22.setText("Valor:");
         jPanel8.add(jLabel22);
-        jLabel22.setBounds(30, 60, 40, 14);
+        jLabel22.setBounds(30, 60, 40, 18);
 
         txtHoras.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1288,7 +1299,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel8.add(txtHoras);
-        txtHoras.setBounds(260, 60, 60, 20);
+        txtHoras.setBounds(260, 60, 60, 28);
 
         jTabbedPane1.addTab("Tarifa x Día", jPanel8);
 
@@ -1334,15 +1345,15 @@ public class frmTarifas extends javax.swing.JInternalFrame {
 
         jLabel13.setText("Codigo:");
         jPanel10.add(jLabel13);
-        jLabel13.setBounds(30, 20, 50, 14);
+        jLabel13.setBounds(30, 20, 50, 18);
 
         jLabel14.setText("Nombre:");
         jPanel10.add(jLabel14);
-        jLabel14.setBounds(30, 40, 50, 14);
+        jLabel14.setBounds(30, 40, 50, 18);
 
         jLabel15.setText("Valor:");
         jPanel10.add(jLabel15);
-        jLabel15.setBounds(30, 60, 40, 14);
+        jLabel15.setBounds(30, 60, 40, 18);
 
         txtCodigo2.setEditable(false);
         txtCodigo2.addActionListener(new java.awt.event.ActionListener() {
@@ -1351,7 +1362,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel10.add(txtCodigo2);
-        txtCodigo2.setBounds(80, 20, 100, 20);
+        txtCodigo2.setBounds(80, 20, 100, 28);
 
         txtNombre2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1359,7 +1370,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel10.add(txtNombre2);
-        txtNombre2.setBounds(80, 40, 230, 20);
+        txtNombre2.setBounds(80, 40, 230, 28);
 
         txtValor2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1367,7 +1378,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
             }
         });
         jPanel10.add(txtValor2);
-        txtValor2.setBounds(80, 60, 60, 20);
+        txtValor2.setBounds(80, 60, 60, 28);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel11.setLayout(null);
@@ -1453,7 +1464,7 @@ public class frmTarifas extends javax.swing.JInternalFrame {
 
         esPorcentaje.setText("Es porcentaje %");
         jPanel10.add(esPorcentaje);
-        esPorcentaje.setBounds(140, 60, 140, 23);
+        esPorcentaje.setBounds(140, 60, 140, 24);
 
         jTabbedPane1.addTab("Descuentos", jPanel10);
 
@@ -2286,6 +2297,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         viernes.setSelected(usuario001.getViernes());
         sabado.setSelected(usuario001.getSabado());
         domingo.setSelected(usuario001.getDomingo());
+        Nohoras.setText(usuario001.getNohoras()+"");
         SpinnerDateModel sm = new SpinnerDateModel(usuario001.getDesde(), null, null, Calendar.HOUR_OF_DAY);
         JSpinner spinner = new JSpinner(sm);
         JSpinner.DateEditor de = new JSpinner.DateEditor(spinner, "HH:mm");
@@ -2304,6 +2316,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
         txtCodigoTipo.setText("");
         nombreTipo.setText("");
+        Nohoras.setText("0");
 
         SpinnerDateModel sm = new SpinnerDateModel(new Date(), null, null, Calendar.HOUR_OF_DAY);
         JSpinner spinner = new JSpinner(sm);
@@ -2346,6 +2359,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         horaDesde.setEnabled(estado);
         horaHasta.setEnabled(estado);
         nombreTipo.setEditable(estado);
+        Nohoras.setEnabled(estado);
     }
     private void btnModificar5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar5ActionPerformed
         // TODO add your handling code here:
@@ -2462,6 +2476,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                     tipotarifaObj.setJueves(jueves.isSelected());
                     tipotarifaObj.setViernes(viernes.isSelected());
                     tipotarifaObj.setSabado(sabado.isSelected());
+                    tipotarifaObj.setNohoras(new Integer(Nohoras.getText()));
 
                     if (tipotarifaObj.getCodigo().equals(0)) {
                         tipotarifaObj.setCodigo(null);
@@ -2697,6 +2712,7 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField Nohoras;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnAgregar1;
     private javax.swing.JButton btnAgregar2;
@@ -2743,8 +2759,9 @@ private void btnSalir3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -38,7 +38,8 @@ import java.io.File;
        input.close();
      }
      catch(Exception e){
-         e.printStackTrace();
+         System.out.println("error en obtener serie de disco, SerieDisco.class");
+         //e.printStackTrace();
      }
      return result.trim();
    }

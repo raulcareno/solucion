@@ -8,6 +8,7 @@ import hibernate.cargar.GeneraXMLPersonal;
 import hibernate.cargar.SerieDisco;
 import hibernate.cargar.UsuarioActivo;
 import hibernate.cargar.WorkingDirectory;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 
 public class inicio {
@@ -64,6 +65,11 @@ public class inicio {
 //        {
 //            System.exit(0);//SALGO PORQUE YA EXISTE UAN INSTANCIA DEL PROGRAMA ABIERTA
 //        }
+//        System.setProperty("java.awt.headless", "true");
+        
+//GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
+//boolean headless_check = ge.isHeadless();
+//        System.out.println("chequeo de: .........................."+headless_check);
         if (comprobar()) {
             new frmPrincipal().show();
         } else {

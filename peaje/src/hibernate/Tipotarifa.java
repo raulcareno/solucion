@@ -69,6 +69,8 @@ public class Tipotarifa implements Serializable {
     private Boolean sabado;
     @Column(name = "domingo")
     private Boolean domingo;
+    @Column(name = "Nohoras")
+    private Integer Nohoras;
 
     public Tipotarifa() {
     }
@@ -172,6 +174,15 @@ public class Tipotarifa implements Serializable {
         return hash;
     }
 
+    public Integer getNohoras() {
+        return Nohoras;
+    }
+
+    public void setNohoras(Integer Nohoras) {
+        this.Nohoras = Nohoras;
+    }
+    
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -187,7 +198,7 @@ public class Tipotarifa implements Serializable {
 
     @Override
     public String toString() {
-        return "" + nombre + "";
+        return "" + nombre + " D:"+getDesde().toLocaleString().substring(10) + " H:"+getHasta().toLocaleString().substring(10);
     }
     
 }

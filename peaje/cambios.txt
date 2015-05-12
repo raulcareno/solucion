@@ -21,5 +21,12 @@ CREATE TABLE `tipotarifa` (
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1
 
+ ALTER TABLE `peaje`.`tipotarifa` ADD COLUMN `Nohoras` INT DEFAULT 0 NULL AFTER `domingo`; 
+
+ejecutar esto en linux para detectar y dar permiso en el puerto, 
+para ver los puertos que se han conectado lsusb
+- dmesg|grep tty
+- sudo chmod a+rw /dev/ttyUSB1
+
 
  

@@ -1,5 +1,6 @@
 package peaje.formas;
 
+import com.sun.media.ui.MessageBox;
 import hibernate.*;
 import hibernate.cargar.WorkingDirectory;
 import java.awt.Container;
@@ -82,7 +83,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
     /**
      * Creates new form frmProfesores
      */
-    public frmFactura(java.awt.Frame parent, boolean modal, Administrador adm1) {
+    public frmFactura(boolean modal, Administrador adm1) {
 //        super(parent, modal);
         llenarCombo();
         initComponents();
@@ -103,7 +104,7 @@ public class frmFactura extends javax.swing.JInternalFrame {
         cargarComboTipo();
     }
 
-    public frmFactura(java.awt.Frame parent, boolean modal, frmPrincipal lo, Administrador adm1) {
+    public frmFactura(boolean modal, frmPrincipal lo, Administrador adm1) {
 //        super(parent, modal);
         try {
             this.desktopContenedor = lo.contenedor;
@@ -171,8 +172,161 @@ cargarComboTipo();
             Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+//
+//    private Tipotarifa buscarQueTarifaAplicar(Date fechaIngresoLlega, Integer horas) {
+//        Date fechaActual = new Date();
+//        int diaActual = fechaIngresoLlega.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
+//
+//        for (Iterator iterator = tipostarifas.iterator(); iterator.hasNext();) {
+//            Tipotarifa itTt = (Tipotarifa) iterator.next();
+//            boolean continua = false;
+//            if (diaActual == 0) {
+//                if (itTt.getDomingo()) {
+//                    continua = true;
+//                }
+//            } else if (diaActual == 1) {
+//                if (itTt.getLunes()) {
+//                    continua = true;
+//                }
+//            } else if (diaActual == 2) {
+//                if (itTt.getMartes()) {
+//                    continua = true;
+//                }
+//            } else if (diaActual == 3) {
+//                if (itTt.getMiercoles()) {
+//                    continua = true;
+//                }
+//            } else if (diaActual == 4) {
+//                if (itTt.getJueves()) {
+//                    continua = true;
+//                }
+//            } else if (diaActual == 5) {
+//                if (itTt.getViernes()) {
+//                    continua = true;
+//                }
+//            } else if (diaActual == 6) {
+//                if (itTt.getSabado()) {
+//                    continua = true;
+//                }
+//            }
+//
+//            Date fecIn = itTt.getDesde();
+//            Date fecSal = itTt.getHasta();
+//
+//            fecIn.setYear(fechaIngresoLlega.getYear());
+//            fecIn.setDate(fechaIngresoLlega.getDate());
+//            fecIn.setMonth(fechaIngresoLlega.getMonth());
+//
+//            fecSal.setYear(fechaIngresoLlega.getYear());
+//            fecSal.setDate(fechaIngresoLlega.getDate());
+//            fecSal.setMonth(fechaIngresoLlega.getMonth());
+//
+//            DateTime fechaIngresoTarifa = new DateTime(fecIn);
+//            DateTime fechaSalidaTarifa = new DateTime(fecSal);
+////            //aumente para emparejar fechas
+////            fechaActual.setDate(fechaIngresoLlega.getDate());
+////            fechaActual.setMonth(fechaIngresoLlega.getMonth());
+////            fechaActual.setYear(fechaIngresoLlega.getYear()); 
+//            
+//            DateTime fechaSalidaSumadoUnDiaTarifario = new DateTime(fecSal).plusDays(1);
+//            
+//            
+//
+//            LocalTime horaIniTarifa = new LocalTime(fechaIngresoTarifa);
+//            LocalTime horaSalidaCarro = new LocalTime(fechaActual);
+//            LocalTime horaFinTarifa = new LocalTime(fechaSalidaSumadoUnDiaTarifario); //fecha del tipo de Tarifa
+//
+//            LocalTime ahoraLlegaIngresaCarro = new LocalTime(new DateTime(fechaIngresoLlega));
+//            System.out.println(" ");
+//            
+//            DateTime fechaLlegaCarro = new DateTime(fechaIngresoLlega);
+//            
+//            DateTime fechaSalidaCarro = new DateTime(fechaActual);
+//            
+//            
+//            Date fechaActual2 = new Date();
+//            fechaActual2.setDate(fechaIngresoLlega.getDate());
+//            fechaActual2.setMonth(fechaIngresoLlega.getMonth());
+//            fechaActual2.setYear(fechaIngresoLlega.getYear()); 
+//            DateTime fechaSalidaCarro2 = new DateTime(fechaActual2);
+//            
+//            //VERIFICO SI LA HORA DE INGRESO ESTÁ EN EL TIPO DE TARIFA
+//            //FALTA VERIFICAR SI EESTÁ EN EL RANGO FINAL DE LA HORA PERO LA HORA FINAL DE LLEGADA
+//
+//            if ((fechaLlegaCarro.compareTo(fechaIngresoTarifa) >= 0) 
+//                    && fechaLlegaCarro.compareTo(fechaSalidaTarifa) <= 0 
+//                    && (fechaSalidaCarro.compareTo(fechaIngresoTarifa) >= 0)
+//                    && (fechaSalidaCarro.compareTo(fechaSalidaTarifa) <= 0)
+//                    && continua && horas >= itTt.getNohoras()) {
+//                System.out.println("EN EL RANGO DE HORA de tarifario");
+//                 for (int i = 0; i <= listadoTarifas.size(); i++) {
+//                    List<Tarifas> next = listadoTarifas.get(i);
+//                    if (next.get(0).getTipotarifa().getCodigo().equals(itTt.getCodigo())) {
+//                        tarifario = next;
+//                        System.out.println(" FECHA INGRESA: " + fechaIngresoLlega.toLocaleString() + " tarifa: " + tarifario.get(0).getTipotarifa().getNombre() + " " + " Horas: " + tarifario.get(0).getTipotarifa().getDesde().toLocaleString() + " " + " Hasta: " + tarifario.get(0).getTipotarifa().getHasta().toLocaleString() + " " + " Horas: " + tarifario.get(0).getTipotarifa().getNohoras());
+//                        next = null;
+//                        break;
+//                    }
+//
+//                }
+//                return null;
+//            } else {
+////                si la hora de salida es menor a las hora de salida esto es para los antihorarios
+//                if (horaFinTarifa.compareTo(horaIniTarifa) <0) {
+////                    if ((fechaLlegaCarro.compareTo(fechaIngresoTarifa) >= 0) 
+////                            && (fechaLlegaCarro.compareTo(fechaSalidaSumadoUnDiaTarifario) <= 0)
+////                            && continua) {
+//                    if ((fechaLlegaCarro.compareTo(fechaIngresoTarifa) >= 0) 
+//                    && fechaLlegaCarro.compareTo(fechaSalidaSumadoUnDiaTarifario) <= 0 
+//                    && (fechaSalidaCarro2.compareTo(fechaIngresoTarifa) >= 0)
+//                    && (fechaSalidaCarro2.compareTo(fechaSalidaSumadoUnDiaTarifario) <= 0)
+//                    && continua && horas >= itTt.getNohoras()) {
+//                        System.out.println("EN EL RANGO DE HORA 2(fecha 1 mayor a fecha 2) de tarifario");
+//                        for (int i = 0; i <= listadoTarifas.size(); i++) {
+//                            List<Tarifas> next = listadoTarifas.get(i);
+//                            if (next.get(0).getTipotarifa().getCodigo().equals(itTt.getCodigo())) {
+//                                tarifario = next;
+//                                System.out.println(" FECHA INGRESA: " + fechaIngresoLlega.toLocaleString() + " tarifa: " + tarifario.get(0).getTipotarifa().getNombre() + " " + " Horas: " + tarifario.get(0).getTipotarifa().getDesde().toLocaleString() + " " + " Hasta: " + tarifario.get(0).getTipotarifa().getHasta().toLocaleString() + " " + " Horas: " + tarifario.get(0).getTipotarifa().getNohoras());
+//                                next = null;
+//                                break;
+//                            }
+//
+//                        }
+//                        return null;
+//                    }
+//
+//                }
+//
+//             else if (
+//                            
+//                            (fechaLlegaCarro.compareTo(fechaIngresoTarifa) >= 0)?true:true
+//                            
+//                            && fechaLlegaCarro.compareTo(fechaSalidaSumadoUnDiaTarifario) <= 0
+//                            && (fechaSalidaCarro2.compareTo(fechaIngresoTarifa) >= 0)
+//                            && (fechaSalidaCarro2.compareTo(fechaSalidaSumadoUnDiaTarifario) <= 0)
+//                            && continua && horas >= itTt.getNohoras()) {
+//                        System.out.println("EN EL RANGO DE HORA 2(fecha 1 mayor a fecha 2) de tarifario");
+//                        for (int i = 0; i <= listadoTarifas.size(); i++) {
+//                            List<Tarifas> next = listadoTarifas.get(i);
+//                            if (next.get(0).getTipotarifa().getCodigo().equals(itTt.getCodigo())) {
+//                                tarifario = next;
+//                                System.out.println("2. true true FECHA INGRESA: " + fechaIngresoLlega.toLocaleString() + " tarifa: " + tarifario.get(0).getTipotarifa().getNombre() + " " + " Horas: " + tarifario.get(0).getTipotarifa().getDesde().toLocaleString() + " " + " Hasta: " + tarifario.get(0).getTipotarifa().getHasta().toLocaleString() + " " + " Horas: " + tarifario.get(0).getTipotarifa().getNohoras());
+//                                next = null;
+//                                break;
+//                            }
+//
+//                        }
+//                        return null;
+//                    }
+//
+//                }
+//        }
+////        JOptionPane.showMessageDialog(this, "CREE ALGUNA TARIFA QUE SE ENCUENTRE EN ESTE HORARIO Y DIA");
+//        return null;
+//
+//    }
 
-    private Tipotarifa buscarQueTarifaAplicar(Date fechaIngresoLlega) {
+    private Tipotarifa buscarQueTarifaAplicar(Date fechaIngresoLlega, Date fechaSalidaTck, Integer horas) {
         Date fechaActual = new Date();
         int diaActual = fechaIngresoLlega.getDay(); //1=Domingo, 2=Lunes 3=Martes,4=Miercoles,5=Jueves,6=Viernes
 
@@ -221,20 +375,16 @@ cargarComboTipo();
             fecSal.setMonth(fechaActual.getMonth());
 
             DateTime fechaIngreso = new DateTime(fecIn);
-            DateTime fechaSalida = new DateTime(fecSal).plusDays(1);
+            DateTime fechaSalidaSumadoUnDia = new DateTime(fecSal).plusDays(1);
 
             LocalTime horaIni = new LocalTime(fechaIngreso);
-            LocalTime horaFin = new LocalTime(fechaSalida);
+            LocalTime horaFin = new LocalTime(fechaSalidaSumadoUnDia);
 
-            LocalTime ahora = new LocalTime(new DateTime(fechaIngresoLlega));
+            LocalTime ahoraLlegaIngresa = new LocalTime(new DateTime(fechaIngresoLlega));
 
-//            Date fechaNueva = fecIn;
-//                fechaNueva.setHours((new Date()).getHours());
-//                fechaNueva.setMinutes((new Date()).getMinutes());
-//                fechaNueva.setSeconds((new Date()).getSeconds());
-            DateTime ahora2 = new DateTime(fechaIngresoLlega);
+            DateTime ahoraLlega = new DateTime(fechaIngresoLlega);
 
-            if ((ahora.compareTo(horaIni) > 0 || ahora.compareTo(horaIni) == 0) && (ahora.compareTo(horaFin) < 0 || ahora.compareTo(horaFin) == 0) && continua) {
+            if ((ahoraLlegaIngresa.compareTo(horaIni) > 0 || ahoraLlegaIngresa.compareTo(horaIni) == 0) && (ahoraLlegaIngresa.compareTo(horaFin) < 0 || ahoraLlegaIngresa.compareTo(horaFin) == 0) && continua) {
                 System.out.println("EN EL RANGO DE HORA de tarifario");
                 for (int i = 0; i<=listadoTarifas.size(); i++) {
                     List<Tarifas> next = listadoTarifas.get(i);
@@ -248,7 +398,7 @@ cargarComboTipo();
                 return null;
             } else {
                 if (horaFin.compareTo(horaIni) == -1) {
-                    if ((ahora2.compareTo(fechaIngreso) > 0 || ahora2.compareTo(fechaIngreso) == 0) && (ahora2.compareTo(fechaSalida) < 0 || ahora2.compareTo(fechaSalida) == 0) && continua) {
+                    if ((ahoraLlega.compareTo(fechaIngreso) > 0 || ahoraLlega.compareTo(fechaIngreso) == 0) && (ahoraLlega.compareTo(fechaSalidaSumadoUnDia) < 0 || ahoraLlega.compareTo(fechaSalidaSumadoUnDia) == 0) && continua) {
                         System.out.println("EN EL RANGO DE HORA 2(fecha 1 mayor a fecha 2) de tarifario");
                         for (int i = 0; i<=listadoTarifas.size(); i++) {
                                 List<Tarifas> next = listadoTarifas.get(i);
@@ -384,8 +534,8 @@ cargarComboTipo();
         panelencontrados1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         encontrados1 = new javax.swing.JList();
-        ingreso = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
+        ingreso = new com.toedter.calendar.JDateChooser();
         noTicket = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
         salida = new com.toedter.calendar.JDateChooser();
@@ -468,8 +618,9 @@ cargarComboTipo();
         jLabel1 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         miBotonImagen = new javax.swing.JLabel();
-        cmbTipoTarifas = new javax.swing.JComboBox();
         jLabel57 = new javax.swing.JLabel();
+        btnCambiarAtarifaSeleccionada = new javax.swing.JButton();
+        cmbTipoTarifas = new javax.swing.JComboBox();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -564,11 +715,11 @@ cargarComboTipo();
             }
         });
         jPanel9.add(codigoBuscar);
-        codigoBuscar.setBounds(70, 10, 220, 20);
+        codigoBuscar.setBounds(70, 10, 220, 27);
 
         jLabel18.setText("NOMBRES:");
         jPanel9.add(jLabel18);
-        jLabel18.setBounds(10, 10, 70, 14);
+        jLabel18.setBounds(10, 10, 70, 17);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel4.setText("Digite y luego Enter");
@@ -661,7 +812,6 @@ cargarComboTipo();
         jPanel5.setLayout(null);
 
         frmCuponesClientes.setTitle("Al que se aplica el Cupon");
-        frmCuponesClientes.setOpaque(true);
         frmCuponesClientes.setVisible(false);
         frmCuponesClientes.getContentPane().setLayout(null);
 
@@ -683,7 +833,7 @@ cargarComboTipo();
             }
         });
         frmCuponesClientes.getContentPane().add(identificacion3);
-        identificacion3.setBounds(80, 10, 110, 20);
+        identificacion3.setBounds(80, 10, 110, 27);
 
         jLabel45.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel45.setText("CI/RUC: ");
@@ -716,7 +866,7 @@ cargarComboTipo();
             }
         });
         frmCuponesClientes.getContentPane().add(nombres3);
-        nombres3.setBounds(80, 30, 250, 20);
+        nombres3.setBounds(80, 30, 250, 27);
 
         panelencontrados4.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
         panelencontrados4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -750,12 +900,12 @@ cargarComboTipo();
         telefono3.setEditable(false);
         telefono3.setText("9999999999999");
         frmCuponesClientes.getContentPane().add(telefono3);
-        telefono3.setBounds(80, 70, 140, 20);
+        telefono3.setBounds(80, 70, 140, 27);
 
         direccion3.setEditable(false);
         direccion3.setText("S/D");
         frmCuponesClientes.getContentPane().add(direccion3);
-        direccion3.setBounds(80, 50, 190, 20);
+        direccion3.setBounds(80, 50, 190, 27);
 
         jButton6.setText("Aplicar Cupones");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -787,7 +937,7 @@ cargarComboTipo();
 
         jLabel49.setText("No. Cupones");
         frmCuponesClientes.getContentPane().add(jLabel49);
-        jLabel49.setBounds(40, 130, 80, 14);
+        jLabel49.setBounds(40, 130, 80, 17);
 
         cliente3.setEditable(false);
         cliente3.setBorder(null);
@@ -810,7 +960,7 @@ cargarComboTipo();
 
         jLabel50.setText("A descontar: ");
         frmCuponesClientes.getContentPane().add(jLabel50);
-        jLabel50.setBounds(190, 130, 70, 14);
+        jLabel50.setBounds(190, 130, 70, 17);
 
         adescontar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         adescontar.setForeground(new java.awt.Color(255, 0, 51));
@@ -824,7 +974,6 @@ cargarComboTipo();
 
         frmDescuentosClientes.setBackground(new java.awt.Color(153, 204, 255));
         frmDescuentosClientes.setTitle("DESCUENTOS");
-        frmDescuentosClientes.setOpaque(true);
         frmDescuentosClientes.setVisible(false);
         frmDescuentosClientes.getContentPane().setLayout(null);
 
@@ -846,7 +995,7 @@ cargarComboTipo();
             }
         });
         frmDescuentosClientes.getContentPane().add(identificacion4);
-        identificacion4.setBounds(80, 10, 110, 20);
+        identificacion4.setBounds(80, 10, 110, 27);
 
         jLabel51.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel51.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -864,7 +1013,7 @@ cargarComboTipo();
             }
         });
         frmDescuentosClientes.getContentPane().add(nombres4);
-        nombres4.setBounds(80, 30, 250, 20);
+        nombres4.setBounds(80, 30, 250, 27);
 
         panelencontrados5.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.light"));
         panelencontrados5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -951,7 +1100,7 @@ cargarComboTipo();
             }
         });
         frmDescuentosClientes.getContentPane().add(noFactura);
-        noFactura.setBounds(80, 70, 160, 23);
+        noFactura.setBounds(80, 70, 160, 27);
 
         jLabel53.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel53.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -1008,17 +1157,17 @@ cargarComboTipo();
         jPanel1.add(panelencontrados1);
         panelencontrados1.setBounds(70, 70, 200, 90);
 
-        ingreso.setBackground(new java.awt.Color(255, 255, 255));
-        ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
-        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jPanel1.add(ingreso);
-        ingreso.setBounds(70, 70, 210, 20);
-
         jLabel7.setForeground(new java.awt.Color(0, 0, 153));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Tarjeta: ");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(10, 30, 60, 14);
+        jLabel7.setBounds(10, 30, 60, 17);
+
+        ingreso.setBackground(new java.awt.Color(255, 255, 255));
+        ingreso.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
+        ingreso.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jPanel1.add(ingreso);
+        ingreso.setBounds(70, 70, 250, 27);
 
         noTicket.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         noTicket.addActionListener(new java.awt.event.ActionListener() {
@@ -1040,7 +1189,7 @@ cargarComboTipo();
             }
         });
         jPanel1.add(noTicket);
-        noTicket.setBounds(70, 8, 90, 21);
+        noTicket.setBounds(70, 8, 90, 25);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 0, 204));
@@ -1053,7 +1202,7 @@ cargarComboTipo();
         salida.setDateFormatString("dd-MMM-yyyy HH:mm:ss");
         salida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jPanel1.add(salida);
-        salida.setBounds(70, 90, 210, 20);
+        salida.setBounds(70, 90, 250, 20);
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(0, 102, 0));
@@ -1084,12 +1233,12 @@ cargarComboTipo();
             }
         });
         jPanel1.add(placa);
-        placa.setBounds(70, 50, 80, 20);
+        placa.setBounds(70, 50, 80, 27);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Placa: ");
         jPanel1.add(jLabel12);
-        jLabel12.setBounds(20, 50, 50, 14);
+        jLabel12.setBounds(20, 50, 50, 17);
 
         codigo.setBorder(null);
         codigo.setEditable(false);
@@ -1121,7 +1270,7 @@ cargarComboTipo();
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/enter.png"))); // NOI18N
         jLabel3.setText("Digite y luego Enter");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(160, 10, 130, 20);
+        jLabel3.setBounds(160, 10, 180, 20);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         jLabel5.setText("en caso de sobrepaso de tiempo");
@@ -1143,22 +1292,21 @@ cargarComboTipo();
             }
         });
         jPanel1.add(noTarjeta);
-        noTarjeta.setBounds(70, 29, 80, 20);
+        noTarjeta.setBounds(70, 29, 80, 24);
 
         jLabel52.setForeground(new java.awt.Color(0, 0, 153));
         jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel52.setText("TICKET No: ");
         jPanel1.add(jLabel52);
-        jLabel52.setBounds(10, 10, 60, 14);
+        jLabel52.setBounds(10, 10, 60, 17);
 
         jLabel54.setText("En caso de pérdida Ticket");
         jPanel1.add(jLabel54);
-        jLabel54.setBounds(150, 50, 140, 20);
+        jLabel54.setBounds(150, 50, 180, 20);
 
         btnGenerar.setFont(new java.awt.Font("Tahoma", 1, 9)); // NOI18N
         btnGenerar.setForeground(new java.awt.Color(0, 102, 153));
         btnGenerar.setText("Generar");
-        btnGenerar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnGenerar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerarActionPerformed(evt);
@@ -1206,7 +1354,7 @@ cargarComboTipo();
             }
         });
         jPanel2.add(numeroFactura);
-        numeroFactura.setBounds(100, 10, 180, 23);
+        numeroFactura.setBounds(100, 10, 180, 27);
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel15.setText("Dirección: ");
@@ -1250,7 +1398,7 @@ cargarComboTipo();
         telefono.setEditable(false);
         telefono.setText("9999999999999");
         jPanel2.add(telefono);
-        telefono.setBounds(90, 100, 130, 20);
+        telefono.setBounds(90, 100, 130, 27);
 
         identificacion.setEditable(false);
         identificacion.setText("9999999999999");
@@ -1273,7 +1421,7 @@ cargarComboTipo();
             }
         });
         jPanel2.add(identificacion);
-        identificacion.setBounds(90, 40, 110, 20);
+        identificacion.setBounds(90, 40, 110, 27);
 
         nombres.setEditable(false);
         nombres.setText("CONSUMIDOR FINAL");
@@ -1286,12 +1434,12 @@ cargarComboTipo();
             }
         });
         jPanel2.add(nombres);
-        nombres.setBounds(90, 60, 250, 20);
+        nombres.setBounds(90, 60, 250, 27);
 
         direccion.setEditable(false);
         direccion.setText("S/D");
         jPanel2.add(direccion);
-        direccion.setBounds(90, 80, 180, 20);
+        direccion.setBounds(90, 80, 180, 27);
 
         btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clientes.png"))); // NOI18N
         btnNuevoCliente.setText("Crear o Buscar Cliente");
@@ -1347,7 +1495,7 @@ cargarComboTipo();
             }
         });
         jPanel2.add(tipoIdentificacion);
-        tipoIdentificacion.setBounds(10, 40, 80, 20);
+        tipoIdentificacion.setBounds(10, 40, 80, 27);
 
         jLabel56.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel56.setText("Cliente: ");
@@ -1374,7 +1522,7 @@ cargarComboTipo();
             }
         });
         frmEliminar.getContentPane().add(frmGuardarAnulado);
-        frmGuardarAnulado.setBounds(50, 80, 60, 23);
+        frmGuardarAnulado.setBounds(50, 80, 60, 31);
 
         jButton2.setText("NO");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -1383,7 +1531,7 @@ cargarComboTipo();
             }
         });
         frmEliminar.getContentPane().add(jButton2);
-        jButton2.setBounds(140, 80, 60, 23);
+        jButton2.setBounds(140, 80, 60, 31);
 
         observacion.setColumns(20);
         observacion.setRows(5);
@@ -1423,22 +1571,22 @@ cargarComboTipo();
 
         jLabel42.setText("Usuario: ");
         frmAnular.getContentPane().add(jLabel42);
-        jLabel42.setBounds(10, 60, 50, 14);
+        jLabel42.setBounds(10, 60, 50, 17);
 
         jLabel43.setText("# Factura: ");
         frmAnular.getContentPane().add(jLabel43);
-        jLabel43.setBounds(10, 30, 90, 14);
+        jLabel43.setBounds(10, 30, 90, 17);
         frmAnular.getContentPane().add(numeroIngresado);
-        numeroIngresado.setBounds(70, 30, 120, 20);
+        numeroIngresado.setBounds(70, 30, 120, 27);
         frmAnular.getContentPane().add(codigoAdministrador);
-        codigoAdministrador.setBounds(60, 80, 210, 20);
+        codigoAdministrador.setBounds(60, 80, 210, 27);
 
         frmAnular.getContentPane().add(cmbUsuarios);
-        cmbUsuarios.setBounds(60, 60, 210, 20);
+        cmbUsuarios.setBounds(60, 60, 210, 27);
 
         jLabel44.setText("Clave:");
         frmAnular.getContentPane().add(jLabel44);
-        jLabel44.setBounds(10, 80, 50, 14);
+        jLabel44.setBounds(10, 80, 50, 17);
 
         jPanel4.add(frmAnular);
         frmAnular.setBounds(10, 0, 300, 180);
@@ -1457,7 +1605,7 @@ cargarComboTipo();
             }
         });
         frmTarifa0.getContentPane().add(guardarTarifa0);
-        guardarTarifa0.setBounds(50, 80, 60, 23);
+        guardarTarifa0.setBounds(50, 80, 60, 31);
 
         jButton5.setText("NO");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -1466,7 +1614,7 @@ cargarComboTipo();
             }
         });
         frmTarifa0.getContentPane().add(jButton5);
-        jButton5.setBounds(140, 80, 60, 23);
+        jButton5.setBounds(140, 80, 60, 31);
 
         observacion1.setColumns(20);
         observacion1.setRows(5);
@@ -1491,7 +1639,6 @@ cargarComboTipo();
         btnAnularFactura.setText("Anular Fac.");
         btnAnularFactura.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAnularFactura.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnAnularFactura.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnAnularFactura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAnularFacturaActionPerformed(evt);
@@ -1504,7 +1651,6 @@ cargarComboTipo();
         btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnEliminar.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        btnEliminar.setOpaque(false);
         btnEliminar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1518,8 +1664,6 @@ cargarComboTipo();
         btnMulta.setText("Multa");
         btnMulta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnMulta.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnMulta.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnMulta.setOpaque(false);
         btnMulta.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnMulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1539,8 +1683,6 @@ cargarComboTipo();
         btnAgregar2.setActionCommand("Tarifa 0.0");
         btnAgregar2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAgregar2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnAgregar2.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAgregar2.setOpaque(false);
         btnAgregar2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAgregar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1569,8 +1711,6 @@ cargarComboTipo();
         btnAgregar3.setActionCommand("Tarifa 0.0");
         btnAgregar3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnAgregar3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        btnAgregar3.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAgregar3.setOpaque(false);
         btnAgregar3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAgregar3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1600,8 +1740,6 @@ cargarComboTipo();
         btnAgregar.setMnemonic('G');
         btnAgregar.setText("Guardar");
         btnAgregar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregar.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnAgregar.setOpaque(false);
         btnAgregar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1630,8 +1768,6 @@ cargarComboTipo();
         btnSalir.setMnemonic('S');
         btnSalir.setText("Salir");
         btnSalir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSalir.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        btnSalir.setOpaque(false);
         btnSalir.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1661,11 +1797,10 @@ cargarComboTipo();
         jLabel33.setLabelFor(total);
         jLabel33.setText("A PAGAR");
         jPanel4.add(jLabel33);
-        jLabel33.setBounds(240, 90, 120, 30);
+        jLabel33.setBounds(190, 90, 170, 30);
 
         btnAplicarDscto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnAplicarDscto.setText("Aplicar Dscto.:");
-        btnAplicarDscto.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnAplicarDscto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAplicarDsctoActionPerformed(evt);
@@ -1678,7 +1813,7 @@ cargarComboTipo();
         chkEsNotaVenta.setForeground(new java.awt.Color(255, 51, 51));
         chkEsNotaVenta.setText("ES NOTA DE VENTA");
         jPanel4.add(chkEsNotaVenta);
-        chkEsNotaVenta.setBounds(10, 100, 140, 23);
+        chkEsNotaVenta.setBounds(10, 100, 170, 22);
 
         verBot.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/arriba.png"))); // NOI18N
         verBot.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/images/abajo.png"))); // NOI18N
@@ -1706,7 +1841,7 @@ cargarComboTipo();
 
         jLabel1.setText("NOTA: Para reimprimir el comprobante de pago, en caso de error en la impresora, digite nuevamente el No. de Ticket");
         jPanel5.add(jLabel1);
-        jLabel1.setBounds(20, 370, 570, 14);
+        jLabel1.setBounds(15, 365, 570, 17);
 
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         jPanel12.setLayout(new java.awt.BorderLayout());
@@ -1718,19 +1853,24 @@ cargarComboTipo();
         jPanel5.add(jPanel12);
         jPanel12.setBounds(10, 170, 350, 190);
 
-        cmbTipoTarifas.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbTipoTarifasItemStateChanged(evt);
-            }
-        });
-        jPanel5.add(cmbTipoTarifas);
-        cmbTipoTarifas.setBounds(380, 390, 330, 20);
-
         jLabel57.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel57.setForeground(new java.awt.Color(0, 51, 153));
         jLabel57.setText("Tarifa a Aplicar: ");
         jPanel5.add(jLabel57);
-        jLabel57.setBounds(260, 390, 120, 20);
+        jLabel57.setBounds(230, 380, 150, 30);
+
+        btnCambiarAtarifaSeleccionada.setText("Cambiar");
+        btnCambiarAtarifaSeleccionada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarAtarifaSeleccionadaActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btnCambiarAtarifaSeleccionada);
+        btnCambiarAtarifaSeleccionada.setBounds(650, 380, 80, 31);
+
+        cmbTipoTarifas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel5.add(cmbTipoTarifas);
+        cmbTipoTarifas.setBounds(370, 380, 280, 27);
 
         jTabbedPane1.addTab("TICKETS", jPanel5);
 
@@ -1819,7 +1959,7 @@ cargarComboTipo();
             }
         });
         jPanel7.add(identificacion1);
-        identificacion1.setBounds(70, 10, 110, 20);
+        identificacion1.setBounds(70, 10, 110, 27);
 
         nombres1.setEditable(false);
         nombres1.setText("CONSUMIDOR FINAL");
@@ -1832,7 +1972,7 @@ cargarComboTipo();
             }
         });
         jPanel7.add(nombres1);
-        nombres1.setBounds(70, 30, 190, 20);
+        nombres1.setBounds(70, 30, 190, 27);
 
         direccion1.setEditable(false);
         direccion1.setText("S/D");
@@ -1842,7 +1982,7 @@ cargarComboTipo();
             }
         });
         jPanel7.add(direccion1);
-        direccion1.setBounds(70, 50, 190, 20);
+        direccion1.setBounds(70, 50, 190, 27);
 
         cliente1.setBorder(null);
         cliente1.setEditable(false);
@@ -1892,7 +2032,7 @@ cargarComboTipo();
             }
         });
         jPanel7.add(tipoIdentificacion1);
-        tipoIdentificacion1.setBounds(10, 10, 60, 20);
+        tipoIdentificacion1.setBounds(10, 10, 60, 27);
 
         jPanel6.add(jPanel7);
         jPanel7.setBounds(20, 10, 270, 170);
@@ -1996,24 +2136,24 @@ cargarComboTipo();
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel25.setText("IVA:");
         jPanel8.add(jLabel25);
-        jLabel25.setBounds(480, 40, 90, 14);
+        jLabel25.setBounds(480, 40, 90, 17);
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel26.setText("SUBTOTAL:");
         jPanel8.add(jLabel26);
-        jLabel26.setBounds(490, 10, 80, 14);
+        jLabel26.setBounds(490, 10, 80, 17);
 
         txtSubtotal.setEditable(false);
         txtSubtotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSubtotal.setText("0.0");
         jPanel8.add(txtSubtotal);
-        txtSubtotal.setBounds(580, 10, 110, 20);
+        txtSubtotal.setBounds(580, 10, 110, 27);
 
         txtIva.setEditable(false);
         txtIva.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtIva.setText("0.0");
         jPanel8.add(txtIva);
-        txtIva.setBounds(580, 30, 110, 20);
+        txtIva.setBounds(580, 30, 110, 27);
 
         observacionF.setColumns(20);
         observacionF.setRows(5);
@@ -2025,16 +2165,16 @@ cargarComboTipo();
         hastaF.setBackground(new java.awt.Color(255, 255, 255));
         hastaF.setDate(new Date());
         jPanel8.add(hastaF);
-        hastaF.setBounds(210, 70, 120, 20);
+        hastaF.setBounds(210, 70, 120, 27);
 
         desdeF.setBackground(new java.awt.Color(255, 255, 255));
         desdeF.setDate(new Date());
         jPanel8.add(desdeF);
-        desdeF.setBounds(50, 70, 100, 20);
+        desdeF.setBounds(50, 70, 100, 27);
 
         jLabel30.setText("Hasta:");
         jPanel8.add(jLabel30);
-        jLabel30.setBounds(160, 70, 40, 14);
+        jLabel30.setBounds(160, 70, 40, 17);
 
         jLabel31.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel31.setText("Fechas de Validez de Tarjeta");
@@ -2043,7 +2183,7 @@ cargarComboTipo();
 
         jLabel32.setText("Desde: ");
         jPanel8.add(jLabel32);
-        jLabel32.setBounds(10, 70, 37, 14);
+        jLabel32.setBounds(10, 70, 42, 17);
 
         tarjetasCliente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2096,7 +2236,7 @@ cargarComboTipo();
             }
         });
         jPanel6.add(cmbProductos);
-        cmbProductos.setBounds(300, 50, 300, 20);
+        cmbProductos.setBounds(300, 50, 300, 27);
 
         btnAnadirProducto.setText("Añadir");
         btnAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -2110,7 +2250,7 @@ cargarComboTipo();
             }
         });
         jPanel6.add(btnAnadirProducto);
-        btnAnadirProducto.setBounds(670, 50, 63, 20);
+        btnAnadirProducto.setBounds(670, 50, 49, 20);
 
         txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtCantidad.setText("1");
@@ -2121,11 +2261,11 @@ cargarComboTipo();
             }
         });
         jPanel6.add(txtCantidad);
-        txtCantidad.setBounds(630, 50, 40, 20);
+        txtCantidad.setBounds(630, 50, 40, 24);
 
         jLabel23.setText("Productos disponibles");
         jPanel6.add(jLabel23);
-        jLabel23.setBounds(300, 30, 190, 14);
+        jLabel23.setBounds(300, 30, 190, 17);
 
         jLabel24.setText("Cantidad");
         jPanel6.add(jLabel24);
@@ -2135,7 +2275,7 @@ cargarComboTipo();
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel27.setText("Para QUITAR un elemento seleccione y presione SUPRIMIR");
         jPanel6.add(jLabel27);
-        jLabel27.setBounds(310, 185, 400, 14);
+        jLabel27.setBounds(310, 185, 400, 17);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/admin.gif"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -2144,7 +2284,7 @@ cargarComboTipo();
             }
         });
         jPanel6.add(jButton1);
-        jButton1.setBounds(600, 50, 30, 25);
+        jButton1.setBounds(600, 50, 30, 30);
 
         numeroFactura1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         numeroFactura1.setText("0000000");
@@ -2165,7 +2305,7 @@ cargarComboTipo();
             }
         });
         jPanel6.add(numeroFactura1);
-        numeroFactura1.setBounds(510, 10, 180, 23);
+        numeroFactura1.setBounds(510, 10, 180, 27);
 
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel20.setText("No. Factura:");
@@ -2180,7 +2320,7 @@ cargarComboTipo();
             }
         });
         jPanel6.add(btnGene1);
-        btnGene1.setBounds(690, 10, 30, 25);
+        btnGene1.setBounds(690, 10, 30, 30);
 
         jTabbedPane1.addTab("VENTA DE TARJETAS", jPanel6);
 
@@ -2241,7 +2381,7 @@ cargarComboTipo();
             }
         });
         jPanel13.add(telefono2);
-        telefono2.setBounds(70, 70, 140, 20);
+        telefono2.setBounds(70, 70, 140, 27);
 
         identificacion2.setEditable(false);
         identificacion2.setText("9999999999999");
@@ -2264,7 +2404,7 @@ cargarComboTipo();
             }
         });
         jPanel13.add(identificacion2);
-        identificacion2.setBounds(70, 10, 110, 20);
+        identificacion2.setBounds(70, 10, 110, 27);
 
         nombres2.setEditable(false);
         nombres2.setText("CONSUMIDOR FINAL");
@@ -2277,7 +2417,7 @@ cargarComboTipo();
             }
         });
         jPanel13.add(nombres2);
-        nombres2.setBounds(70, 30, 190, 20);
+        nombres2.setBounds(70, 30, 190, 27);
 
         direccion2.setEditable(false);
         direccion2.setText("S/D");
@@ -2337,7 +2477,7 @@ cargarComboTipo();
             }
         });
         jPanel13.add(tipoIdentificacion2);
-        tipoIdentificacion2.setBounds(10, 10, 60, 20);
+        tipoIdentificacion2.setBounds(10, 10, 60, 27);
 
         jPanel11.add(jPanel13);
         jPanel13.setBounds(10, 10, 280, 160);
@@ -2403,24 +2543,24 @@ cargarComboTipo();
         jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel39.setText("IVA:");
         jPanel14.add(jLabel39);
-        jLabel39.setBounds(380, 40, 90, 14);
+        jLabel39.setBounds(380, 40, 90, 17);
 
         jLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel40.setText("SUBTOTAL:");
         jPanel14.add(jLabel40);
-        jLabel40.setBounds(390, 10, 80, 14);
+        jLabel40.setBounds(390, 10, 80, 17);
 
         txtSubtotal1.setEditable(false);
         txtSubtotal1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtSubtotal1.setText("0.0");
         jPanel14.add(txtSubtotal1);
-        txtSubtotal1.setBounds(510, 10, 110, 20);
+        txtSubtotal1.setBounds(510, 10, 110, 27);
 
         txtIva1.setEditable(false);
         txtIva1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtIva1.setText("0.0");
         jPanel14.add(txtIva1);
-        txtIva1.setBounds(510, 40, 110, 20);
+        txtIva1.setBounds(510, 40, 110, 27);
 
         observacionF1.setColumns(20);
         observacionF1.setRows(5);
@@ -2472,7 +2612,7 @@ cargarComboTipo();
         jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("LISTA DE TICKETS SELLADOS");
         jPanel11.add(jLabel2);
-        jLabel2.setBounds(310, 30, 150, 14);
+        jLabel2.setBounds(310, 30, 150, 17);
 
         numeroFactura2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         numeroFactura2.setText("0000000");
@@ -2493,7 +2633,7 @@ cargarComboTipo();
             }
         });
         jPanel11.add(numeroFactura2);
-        numeroFactura2.setBounds(510, 10, 180, 23);
+        numeroFactura2.setBounds(510, 10, 180, 27);
 
         jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel35.setText("No. Factura:");
@@ -2508,7 +2648,7 @@ cargarComboTipo();
             }
         });
         jPanel11.add(btnGene2);
-        btnGene2.setBounds(690, 10, 30, 25);
+        btnGene2.setBounds(690, 10, 30, 30);
 
         jTabbedPane1.addTab("COBRAR SELLADOS", jPanel11);
 
@@ -2593,6 +2733,12 @@ cargarComboTipo();
                     facActual.setTotal(new BigDecimal(totalv));
                     facActual.setSubtotal(new BigDecimal(subtotalv));
                     facActual.setIva(new BigDecimal(ivav1));
+                    try {
+                    facActual.setTipotarifa(tarifario.get(0).getTipotarifa());    
+                    } catch (Exception e) {
+                        System.out.println("no hay cargadas las tarifas en tarifario");
+                    }
+                    
                     try {
                         if (clienteCupon != null) {
                             facActual.setClientetic(clienteCupon);
@@ -3118,11 +3264,17 @@ cargarComboTipo();
 }//GEN-LAST:event_busquedaTablaMouseClicked
 
     public void cargarComboTipo() {
-
+//
         try {
             cmbTipoTarifas.removeAllItems();
             Tipotarifa user = new Tipotarifa(-1);
             user.setNombre("[TARIFA DIFERENTE]");
+            Date fechaActual = new Date();
+            fechaActual.setHours(0);
+            fechaActual.setMinutes(0);
+            fechaActual.setSeconds(0);
+            user.setDesde(fechaActual);
+            user.setHasta(fechaActual);
             cmbTipoTarifas.addItem(user);
             List<Tipotarifa> us = adm.query("Select o from Tipotarifa as o ");
             for (Iterator<Tipotarifa> it = us.iterator(); it.hasNext();) {
@@ -3264,7 +3416,7 @@ cargarComboTipo();
 //        total.setText(aCobrar.setScale(2, RoundingMode.UP) + "");
 //        codigo.setText(fac.getCodigo() + "");
 //    }
-    void llenarFactura(Factura fac) {
+    void llenarFactura(Factura fac,Boolean buscarTarifa) {
         dias.setVisible(false);
         dias1.setVisible(false);
         dias2.setVisible(false);
@@ -3336,7 +3488,7 @@ cargarComboTipo();
                             facNueva.setFechaini(tiempoDespuesGracia.toDate());
                             facNueva.setFecha(tiempoDespuesGracia.toDate());
                         }
-                        llenarFactura(facNueva);
+                        llenarFactura(facNueva,buscarTarifa);
 
                         DateTime dt0 = new DateTime(facNueva.getFechaini());
                         DateTime tiempoDespuesGracia0 = dt0.plusMinutes(emp.getGracia());
@@ -3461,7 +3613,47 @@ cargarComboTipo();
             dias1.setVisible(true);
             dias2.setVisible(true);
         }
-        buscarQueTarifaAplicar(fac.getFechaini());
+       
+        //AQUI BUSCO LA TARIFA QUE APLICAR *******************************************************************************
+       if(buscarTarifa){
+        buscarQueTarifaAplicar(fac.getFechaini(), new Date(), horas);
+       }else{
+             for (Iterator iterator = tipostarifas.iterator(); iterator.hasNext();) {
+                Tipotarifa itTt = (Tipotarifa) iterator.next();
+                if(itTt.getCodigo().equals(((Tipotarifa)cmbTipoTarifas.getSelectedItem()).getCodigo())){
+                    
+                      for (int i = 0; i<=listadoTarifas.size(); i++) {
+                         List<Tarifas> next = listadoTarifas.get(i);
+                            if (next.get(0).getTipotarifa().getCodigo().equals(itTt.getCodigo())) {
+                                tarifario = next;
+                                next = null;
+                                break;
+                            }
+
+                        }
+                    
+                }
+             }
+        
+       }
+       
+        for (int i = 0; i < cmbTipoTarifas.getItemCount(); i++) {
+            int cod = tarifario.get(0).getTipotarifa().getCodigo();
+            int cod2 = ((Tipotarifa)cmbTipoTarifas.getItemAt(i)).getCodigo();
+            if(cod == cod2){
+                    cmbTipoTarifas.setSelectedIndex(i);
+                    break;
+            }
+            
+//                txtTarifa.setText(""+tarifario.get(0).getTipotarifa().getNombre()); 
+                
+            
+        }
+            
+                
+               
+        
+        
         aCobrar = aCobrar.add(buscar(minutos));
 
         Float min = minutos / 60f;
@@ -3586,13 +3778,8 @@ cargarComboTipo();
         }
 
     }
-
-    @SuppressWarnings("static-access")
-    private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
-        // TODO add your handling code here:
-
-        if (evt.getKeyCode() == evt.VK_ENTER) {
-            clienteDscto = new Clientes();
+void botonTicketPresionado(Boolean buscarTarifa){
+   clienteDscto = new Clientes();
             clienteCupon = new Clientes();
             numeroFactura.setText("0000000");
             try {
@@ -3612,7 +3799,7 @@ cargarComboTipo();
                     btnAplicarDscto.setEnabled(true);
                     btnAplicarCupon.setEnabled(true);
                     btnAplicarDescuento2.setEnabled(true);
-                    llenarFactura(fac);
+                    llenarFactura(fac,buscarTarifa);
                     Thread cargarFotoPlaca = new Thread(fac.getCodigo() + "") {
 
                         public void run() {
@@ -3648,6 +3835,13 @@ cargarComboTipo();
 
             }
             limpiarMemoria();
+}
+    @SuppressWarnings("static-access")
+    private void noTicketKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_noTicketKeyPressed
+        // TODO add your handling code here:
+
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            botonTicketPresionado(true);
         } else if (evt.getKeyCode() == evt.VK_ESCAPE) {
             principal.contenedor.requestFocus();
             //principal = null;
@@ -3860,7 +4054,7 @@ cargarComboTipo();
             descuento.setText("0.0");
             btnAplicarDscto.setEnabled(true);
             btnAplicarCupon.setEnabled(true);
-            llenarFactura(fac);
+            llenarFactura(fac,true);
             noTicket.setText(fac.getTicket());
         }
     }//GEN-LAST:event_encontrados1MouseClicked
@@ -3875,7 +4069,7 @@ cargarComboTipo();
             descuento.setText("0.0");
             btnAplicarDscto.setEnabled(true);
             btnAplicarCupon.setEnabled(true);
-            llenarFactura(fac);
+            llenarFactura(fac,true);
             try {
                 cargarFoto(fac.getCodigo());
             } catch (Exception e) {
@@ -6397,7 +6591,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
                 btnAplicarCupon.setEnabled(true);
                 btnAplicarDescuento2.setEnabled(true);
                 noTicket.setText(fac.getTicket());
-                llenarFactura(fac);
+                llenarFactura(fac,true);
                 try {
                     cargarFoto(fac.getCodigo());
                 } catch (Exception es) {
@@ -6723,30 +6917,10 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
         generarNumeroFactura2();
     }//GEN-LAST:event_btnGene2ActionPerformed
 
-    private void cmbTipoTarifasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTipoTarifasItemStateChanged
+    private void btnCambiarAtarifaSeleccionadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarAtarifaSeleccionadaActionPerformed
         // TODO add your handling code here:
-        try {
-//            List<Tipotarifa> abc = adm.query("Select o from Tipotarifa as o");
-//            if (abc.size() <= 0) {
-//                JOptionPane.showMessageDialog(this, "CREE PRIMERO UN TARIFARIO PARA PODER CREAR LA TARIFA");
-//                return;
-//            }
-        } catch (Exception ex) {
-            Logger.getLogger(frmTarifas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-//        if (cmbTipoTarifas.getSelectedIndex() > 0) {
-//         
-//            llenarCombo();
-//            tarifario.repaint();
-//
-//        } else {
-//            DefaultTableModel dtm = (DefaultTableModel) tarifario.getModel();
-//            dtm.getDataVector().removeAllElements();
-//            tarifario.setModel(dtm);
-//            tarifario.repaint();
-//        }
-//         
-    }//GEN-LAST:event_cmbTipoTarifasItemStateChanged
+botonTicketPresionado(false);
+    }//GEN-LAST:event_btnCambiarAtarifaSeleccionadaActionPerformed
     public void cargarPlaca(Integer codigoFactura) {
         try {
             //      try {
@@ -6844,6 +7018,7 @@ private void btnAplicarDsctoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton btnAplicarCupon;
     private javax.swing.JButton btnAplicarDescuento2;
     private javax.swing.JButton btnAplicarDscto;
+    private javax.swing.JButton btnCambiarAtarifaSeleccionada;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGene1;
     private javax.swing.JButton btnGene2;
