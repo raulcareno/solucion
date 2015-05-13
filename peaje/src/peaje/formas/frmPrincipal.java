@@ -2877,7 +2877,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             contenedor.add(botoninst);
-            botoninst.setBounds(310, 0, 120, 31);
+            botoninst.setBounds(320, 0, 120, 31);
 
             tempjButton13.setText("Tarjeta");
             tempjButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -2886,7 +2886,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             contenedor.add(tempjButton13);
-            tempjButton13.setBounds(430, 0, 80, 31);
+            tempjButton13.setBounds(440, 0, 70, 31);
 
             tempnotarjetaTemp.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2907,7 +2907,7 @@ public class frmPrincipal extends javax.swing.JFrame implements KeyListener, Win
                 }
             });
             contenedor.add(jButton16);
-            jButton16.setBounds(230, 0, 80, 31);
+            jButton16.setBounds(270, 0, 50, 31);
 
             jSplitPane1.setRightComponent(contenedor);
 
