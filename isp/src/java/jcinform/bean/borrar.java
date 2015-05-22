@@ -24,12 +24,13 @@ public class borrar {
 
     public static void main(String[] args) {
         //DEBE ESTAR MARCADA CON CERO EL DIAS GRACIA
-
-        BigDecimal resto;
-        BigDecimal numero1 = new BigDecimal(25.45);
-        BigDecimal numero2 = new BigDecimal(23.45);
-        System.out.println(""+numero1.remainder(BigDecimal.ONE));
-        System.out.println(""+numero2.remainder(BigDecimal.ONE));
+      
+   
+//        BigDecimal resto;
+//        BigDecimal numero1 = new BigDecimal(25.45);
+//        BigDecimal numero2 = new BigDecimal(23.45);
+//        System.out.println(""+numero1.remainder(BigDecimal.ONE));
+//        System.out.println(""+numero2.remainder(BigDecimal.ONE));
 //        resto = numero1.divide(numero2, 2, RoundingMode.HALF_UP);
 //
 //        if (resto.compareTo(new BigDecimal(0)) == 0) {

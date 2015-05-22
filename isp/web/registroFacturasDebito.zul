@@ -53,23 +53,52 @@ if(usuarioActual.getTipo().equals("OTRO")){
         empleadosList.add(usuarioActual);
 }
  
-    void seleccionarTodos(Checkbox estado,Integer tipo){
-                if(tipo == 0){
+ public void buscarContrato(){
+ 
+ }
+ 
+ public boolean buscar(ArrayList contratos,RecibidoBanco llegaContrato){
+                           for (int i = 0; i < contratos.size(); i++) {
+                              RecibidoBanco it = (RecibidoBanco)contratos.get(i);
+                              
+                              if( llegaContrato.getContrato().equals(it.getContrato()) 
+                                && llegaContrato.getValor().equals(it.getValor()) ){
+                                System.out.println("UNO: "+it.getContrato()+" "+it.getValor()+" DOS: "+llegaContrato.getContrato()+" "+llegaContrato.getValor());
+                                return true;
+                              }
+                           
+                           }
+                           return false;
+ }
+    void seleccionarTodos(ArrayList contratosExcel){
+             
                        List col = facturasDatosAsignados.getRows().getChildren();
                               for (int i = 0; i < col.size(); i++) {
                                      Row object = (Row) col.get(i);
                                       List labels = object.getChildren();
-                                        ((Checkbox) labels.get(8)).setChecked(estado.isChecked());
+                                      Integer contrato = new Integer(((Label) labels.get(10)).getValue());
+                                      //deposito
+                                      
+                                        //deposito.setValue(empf.getSaldo().subtract(descuento.getValue()));
+                                        RecibidoBanco contratoEnviar = new RecibidoBanco();
+                                        contratoEnviar.setContrato(contrato);
+                                        BigDecimal saldo = new BigDecimal(((Label) labels.get(3)).getValue());
+                                        contratoEnviar.setValor(new Double(saldo.doubleValue()));
+                                        
+                                      if(buscar(contratosExcel,contratoEnviar)){
+                                        ((Checkbox) labels.get(8)).setChecked(true);
+                                        
+                                        BigDecimal descuento = ((Decimalbox) labels.get(5)).getValue();
+                                       ((Decimalbox) labels.get(6)).setValue(saldo.subtract(descuento));
+                                        sumaTotal();
+                                      
+                                        
+                                        
+                                        
+                                      }
+                                      
                                }
-                 }else{
-                        List col = facturasDatosAsignados.getRows().getChildren();
-                              for (int i = 0; i < col.size(); i++) {
-                                     Row object = (Row) col.get(i);
-                                      List labels = object.getChildren();
-                                        ((Checkbox) labels.get(8)).setChecked(estado.isChecked());
-                               }
-                 
-                 }
+                  
     }
 
       
@@ -339,20 +368,25 @@ if(usuarioActual.getTipo().equals("OTRO")){
 
                                 }
                             });
+                            
+                                   
+                                  
                             if(empf.getSaldo().compareTo(empf.getDebito())==0){
                                     todo.disabled = true;
                                     todo.checked = true;
                                     
                             }
-                            if(empf.getDebito().doubleValue() > 0.0){
+                             if(empf.getDebito().doubleValue() > 0.0){
                                         todo.disabled = true;
                                     }
                             
-                            row.appendChild(todo);
+                                row.appendChild(todo);
                                 row.appendChild(new Label(" "+empf.getFactura().getContratos().getClientes().getIdentificacion()));
                            
                             if(empf.getTotal().doubleValue()>0)
                                     si++;
+                                    
+                            row.appendChild(new Label(empf.getFactura().getContratos().getContrato()+""));
                             filasFacAsignados.appendChild(row);
                 }
                 if(si>0){
@@ -363,7 +397,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                             //Messagebox.show("Seleccione primero un CLIENTE  ...! \n"+e, "Administrador Educativo", Messagebox.OK, Messagebox.ERROR);
                             System.out.println("ERROR: "+e);
                    }
-sumaTotal();
+        sumaTotal();
  }
  
   
@@ -473,6 +507,7 @@ sumaTotal();
                                             Pagado
                                         </column>
                                         <column  visible="false"  width="50px"  label="ruc"/>
+                                        <column    width="50px"  label="Contrato"/>
 
                                     </columns>
                                     <rows id="filasFacAsignados">
@@ -485,6 +520,20 @@ sumaTotal();
                                     <label id="totalLabel2" />
                                       <button id="guardar" label="Guardar" image="/images/guardar.gif" onClick="guardarFilas();facturasPendientesEmpleado();"/>
                                                 <button label="Imprimir" image="/images/imprimir.gif" onClick="imprimirTodosEmpleado()"/>
+                                      <button label="Subir Archivo"  image="/images/excel.gif"  id="ima">
+                                        <attribute name="onClick">{
+                                                try{
+                                                    ArrayList valor = reportes.subirBanco(Fileupload.get().getStreamData());
+                                                    
+                                                   // Messagebox.show("Error al cargar : "+valor, "Error", Messagebox.OK, Messagebox.INFORMATION);
+                                                    seleccionarTodos(valor);
+                                                }catch(Exception a){
+                                                a.printStackTrace();
+                                                      Messagebox.show("Error al cargar : "+a, "Error", Messagebox.OK, Messagebox.ERROR);
+                                                }
+                                            }
+                                        </attribute>
+                                    </button>
                                 </span>
                                 
                             </vbox>

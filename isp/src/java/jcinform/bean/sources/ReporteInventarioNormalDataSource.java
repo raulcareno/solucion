@@ -67,6 +67,10 @@ public class ReporteInventarioNormalDataSource implements JRDataSource {
                 valor = nodo.getProveedor();
             }else if ("compra".equals(fieldName)) {
                 valor = nodo.getCompra();
+            } else if ("valor".equals(fieldName)) {
+                valor = nodo.getValor();
+            } else if ("valorInd".equals(fieldName)) {
+                valor = nodo.getValorInd();
             } else if ("cantidadpro".equals(fieldName)) {
                 valor = nodo.getCantidadpro();
             }  else if ("fecha".equals(fieldName)) {

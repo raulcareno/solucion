@@ -24,6 +24,7 @@ public class Pendientes implements Comparable {
     String bancocheque;
     Date fechadeposito;
     String bancodeposito;
+    String codigo;
     String nodeposito;
     BigDecimal total, valorabonoefe, valorabonoche, valorabonotar, valorabonodep, valorabonodes, valorabonoban;
     BigDecimal enplanes,enequipos,eninstalaciones;
@@ -367,6 +368,14 @@ public class Pendientes implements Comparable {
 
     public void setNodeposito(String nodeposito) {
         this.nodeposito = nodeposito;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     

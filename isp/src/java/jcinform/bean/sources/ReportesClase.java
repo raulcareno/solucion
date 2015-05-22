@@ -4,18 +4,26 @@
  */
 package jcinform.bean.sources;
 
+//import java.io.IOException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import jcinform.bean.RecibidoBanco;
 import jcinform.bean.sources.clasestmp.InventarioNormal;
 import jcinform.bean.sources.clasestmp.Pendientes;
 import jcinform.conexion.Administrador;
 import jcinform.persistencia.*;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.zkoss.zhtml.Iframe;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Listitem;
 
 /**
@@ -27,7 +35,7 @@ public class ReportesClase {
     Sucursal sucursal = null;
 
     public ReportesClase() {
-        
+
         Session ses = Sessions.getCurrent();
         Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
         sucursal = sucursalEmp.getSucursal();
@@ -82,26 +90,26 @@ public class ReportesClase {
         ArrayList detalles = new ArrayList();
         String comple = "";
         String complemento2 = "";
-         String tiposString =""; 
+        String tiposString = "";
         for (Iterator it = tipo.iterator(); it.hasNext();) {
             //Object object = it.next();
             Listitem object = (Listitem) it.next();
-                //if (((Plan) object.getValue()).getCodigo().equals(-1)) {
-            if(!(object.getValue()+"").contains("TODOS")){
-                tiposString +="'"+object.getValue()+"'"+",";
+            //if (((Plan) object.getValue()).getCodigo().equals(-1)) {
+            if (!(object.getValue() + "").contains("TODOS")) {
+                tiposString += "'" + object.getValue() + "'" + ",";
             }
-           
-            
+
+
         }
-         if(tiposString.length()>0){
-             tiposString = tiposString.substring(0, tiposString.length()-1);
-             //comple = " and o.plan.tipo = '" + tipo + "' ";
-             comple = " and o.plan.tipo in ("+tiposString+") ";
-             
-         }else{
-             comple =" ";
-         }
-        
+        if (tiposString.length() > 0) {
+            tiposString = tiposString.substring(0, tiposString.length() - 1);
+            //comple = " and o.plan.tipo = '" + tipo + "' ";
+            comple = " and o.plan.tipo in (" + tiposString + ") ";
+
+        } else {
+            comple = " ";
+        }
+
 //        if (!tipo.equals("TODOS")) {
 //            comple = " and o.plan.tipo = '" + tipo + "' ";
 //        }
@@ -110,8 +118,8 @@ public class ReportesClase {
             estadoComp = "";
         }
         Boolean todoslosPlanes = false;
-       
-        
+
+
         String codigosPlanes = "";
         if (planes != null) {
             for (Iterator it = planes.iterator(); it.hasNext();) {
@@ -144,19 +152,19 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource clientesxestado(String estado, Integer formapago,Date desde, Date hasta,Boolean todasFechas) {
+    public JRDataSource clientesxestado(String estado, Integer formapago, Date desde, Date hasta, Boolean todasFechas) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
         }
-         String desdestr = convertiraString(desde) + " 00:00:00";
+        String desdestr = convertiraString(desde) + " 00:00:00";
         String hastastr = convertiraString(hasta) + " 23:59:59";
-        String complementoFechas = " and o.fechafinal between '"+desdestr+"' and '"+hastastr+"'  ";
-            if(todasFechas){
-                    complementoFechas = "";
-            }
+        String complementoFechas = " and o.fechafinal between '" + desdestr + "' and '" + hastastr + "'  ";
+        if (todasFechas) {
+            complementoFechas = "";
+        }
         String formaPago = " and o.formapago = '" + formapago + "' ";
         if (formapago.equals(0)) {
             formaPago = " and o.formapago in (0,1,2,3) ";
@@ -164,7 +172,7 @@ public class ReportesClase {
 
         List<Contratos> contra = adm.query("Select o from Contratos as o "
                 + " where o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                + estadoComp + " " + formaPago +" "+complementoFechas + " " 
+                + estadoComp + " " + formaPago + " " + complementoFechas + " "
                 + " order by o.clientes.apellidos");
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
             Contratos contratos = it.next();
@@ -199,18 +207,18 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado,Nodos nodo) {
+    public JRDataSource equiposclientesxsector(Sector ini, Sector fin, String letraini, String letrafin, String estado, Nodos nodo) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
-         String complementoNodo = " and  o.contratos.radios.nodos.codigo = '" + nodo.getCodigo() + "' ";
+        String complementoNodo = " and  o.contratos.radios.nodos.codigo = '" + nodo.getCodigo() + "' ";
         if (nodo.getCodigo().equals(new Integer(-1))) {
             complementoNodo = "";
         }
-         String complementoNodo2 = " and  o.radios.nodos.codigo = '" + nodo.getCodigo() + "' ";
+        String complementoNodo2 = " and  o.radios.nodos.codigo = '" + nodo.getCodigo() + "' ";
         if (nodo.getCodigo().equals(new Integer(-1))) {
             complementoNodo = "";
         }
-        
+
         String complemento = " and substring(o.contratos.clientes.apellidos,1,1) >= '" + letraini + "' "
                 + " and substring(o.contratos.clientes.apellidos,1,1) <= '" + letrafin + "' ";
         String complemento2 = " and substring(o.clientes.apellidos,1,1) >= '" + letraini + "' "
@@ -225,7 +233,7 @@ public class ReportesClase {
         String codigosContratos = "";
         List<Series> contra = adm.query("Select o from Series as o "
                 + "where o.contratos.sector.numero "
-                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento +" "+ complementoNodo
+                + "between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento + " " + complementoNodo
                 + "and o.estado = 'P' "
                 + "and o.contratos.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + " " + estadoString
@@ -247,7 +255,7 @@ public class ReportesClase {
                     + " and  o.sector.numero "
                     + " between  '" + ini.getNumero() + "' and   '" + fin.getNumero() + "' " + complemento2
                     + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                    + " " + estadoString2+ " "+complementoNodo2
+                    + " " + estadoString2 + " " + complementoNodo2
                     + "order by o.radios.nodos.nombre, o.radios.nombre, o.clientes.apellidos");
 
             for (Iterator<Contratos> it = contra2.iterator(); it.hasNext();) {
@@ -386,30 +394,30 @@ public class ReportesClase {
         return ds;
     }
 
-    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, String estado,List tipo) {
+    public JRDataSource facturasPendientes(Clientes cli, Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, String estado, List tipo) {
         Administrador adm = new Administrador();
         String comple = "";
-          String tiposString =""; 
+        String tiposString = "";
         for (Iterator it = tipo.iterator(); it.hasNext();) {
             //Object object = it.next();
             Listitem object = (Listitem) it.next();
-                //if (((Plan) object.getValue()).getCodigo().equals(-1)) {
-            if(!(object.getValue()+"").contains("TODOS")){
-                tiposString +="'"+object.getValue()+"'"+",";
+            //if (((Plan) object.getValue()).getCodigo().equals(-1)) {
+            if (!(object.getValue() + "").contains("TODOS")) {
+                tiposString += "'" + object.getValue() + "'" + ",";
             }
-           
-            
+
+
         }
-         if(tiposString.length()>0){
-             tiposString = tiposString.substring(0, tiposString.length()-1);
-             //comple = " and o.plan.tipo = '" + tipo + "' ";
-             comple = " and o.plan.tipo in ("+tiposString+") ";
-             
-         }else{
-             comple =" ";
-         }
-        
-        
+        if (tiposString.length() > 0) {
+            tiposString = tiposString.substring(0, tiposString.length() - 1);
+            //comple = " and o.plan.tipo = '" + tipo + "' ";
+            comple = " and o.plan.tipo in (" + tiposString + ") ";
+
+        } else {
+            comple = " ";
+        }
+
+
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
             estadoComp = "";
@@ -433,13 +441,13 @@ public class ReportesClase {
                 if (canton.getCodigo().equals(-1)) {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago + " " + estadoComp +" "+comple
+                            + " " + formaPago + " " + estadoComp + " " + comple
                             + "order by o.clientes.apellidos");
 
                 } else {
                     clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                             + "where o.sector.canton.codigo = '" + canton.getCodigo() + "' and  o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                            + " " + formaPago + " " + estadoComp +" "+comple
+                            + " " + formaPago + " " + estadoComp + " " + comple
                             + " order by o.clientes.apellidos");
 
                 }
@@ -447,7 +455,7 @@ public class ReportesClase {
 
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where  o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
-                        + " " + formaPago + " " + estadoComp +" "+comple
+                        + " " + formaPago + " " + estadoComp + " " + comple
                         + " order by o.clientes.apellidos");
 
 
@@ -455,7 +463,7 @@ public class ReportesClase {
                 clientes = adm.query("Select DISTINCT o.clientes from Contratos as o "
                         + "where o.sector.codigo = '" + sec.getCodigo() + "' "
                         + " and o.sucursal.codigo = '" + sucursal.getCodigo() + "' "
-                        + " " + formaPago + " " + estadoComp +" "+comple
+                        + " " + formaPago + " " + estadoComp + " " + comple
                         + " order by o.clientes.apellidos");
 
             }
@@ -501,27 +509,28 @@ public class ReportesClase {
                 }
 
             }
-             facEncontradas = null;
+            facEncontradas = null;
 
         }
         System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         detalles = null;
         clientes = null;
-       
-     limpiarMemoria();
-        
+
+        limpiarMemoria();
+
         return ds;
     }
 
-     public void limpiarMemoria() {
-        System.out.println("antes: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+    public void limpiarMemoria() {
+        System.out.println("antes: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
         System.gc();
         System.gc();
         System.gc();
         System.gc();
-        System.out.println("despues: "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
+        System.out.println("despues: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024 / 1024);
     }
+
     public JRDataSource facturasEmitidasSupertel(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
@@ -579,7 +588,7 @@ public class ReportesClase {
             codClientes += clientes1.getCodigo() + ",";
 
         }
-        clientes =null;
+        clientes = null;
         if (codClientes.length() > 0) {
             codClientes = codClientes.substring(0, codClientes.length() - 1);
         }
@@ -624,7 +633,8 @@ public class ReportesClase {
         limpiarMemoria();
         return ds;
     }
-        public JRDataSource facturasEmitidas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
+
+    public JRDataSource facturasEmitidas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, Integer documento) {
         Administrador adm = new Administrador();
         List<Clientes> clientes = new ArrayList<Clientes>();
         String desdestr = convertiraString(desde) + "";
@@ -799,16 +809,16 @@ public class ReportesClase {
                 }
 
             }
-              facEncontradas = null;
+            facEncontradas = null;
 
         }
         System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
-        detalles = null; 
+        detalles = null;
         clientes = null;
-      
+
         limpiarMemoria();
-         
+
         return ds;
     }
 
@@ -1025,13 +1035,13 @@ public class ReportesClase {
     public JRDataSource facturasCobradasContador2(Date desde, Date hasta) {
         Administrador adm = new Administrador();
         List detalles = new ArrayList();
-        String desdestr = convertiraString(desde)+" 00:00:00";
-        String hastastr = convertiraString(hasta)+" 23:59:59";
-            String sql = "SELECT o FROM Depositos as o "
-                    + " WHERE o.fechacxc between '" + desdestr + "' and '" + hastastr + "'  "
-                    + "ORDER BY o.fechacxc ";
-            //o.sucursal = '" + sucursal.getCodigo() + "' "                    + " AND 
-         detalles = adm.query(sql);
+        String desdestr = convertiraString(desde) + " 00:00:00";
+        String hastastr = convertiraString(hasta) + " 23:59:59";
+        String sql = "SELECT o FROM Depositos as o "
+                + " WHERE o.fechacxc between '" + desdestr + "' and '" + hastastr + "'  "
+                + "ORDER BY o.fechacxc ";
+        //o.sucursal = '" + sucursal.getCodigo() + "' "                    + " AND 
+        detalles = adm.query(sql);
         ReporteDepositosDataSource ds = new ReporteDepositosDataSource(detalles);
         return ds;
     }
@@ -1072,8 +1082,8 @@ public class ReportesClase {
                     + "AND fa.emision between '" + desdestr + "' and '" + hastastr + "' and fa.numero > 0 "
                     + "GROUP BY fa.numero    ";
             //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
-            System.out.println("facturasCobradasContador () : "+sql);
-             
+            System.out.println("facturasCobradasContador () : " + sql);
+
             List facEncontradas = adm.queryNativo(sql);
             if (facEncontradas.size() > 0) {
                 Pendientes pendi = null;
@@ -1130,7 +1140,7 @@ public class ReportesClase {
                 + "where o.fecha between '" + desdestr + " 00:00:00' and  '" + hastastr + " 23:59:59' "
                 + " and o.numero LIKE '%FAC%'";
         List<Facturaanulada> anuladas = adm.queryNativo(qq, Facturaanulada.class);
-        System.out.println(""+qq);
+        System.out.println("" + qq);
         for (Iterator<Facturaanulada> it = anuladas.iterator(); it.hasNext();) {
             Facturaanulada facturaanulada = it.next();
             Pendientes pendi = null;
@@ -1150,6 +1160,82 @@ public class ReportesClase {
             pendi.setIva(new BigDecimal(0));
             pendi.setValorabonoefe(new BigDecimal(0));
             detalles.add(pendi);
+        }
+
+//        for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
+//            Pendientes pendientes = it.next();
+//            System.out.println(""+pendientes.getFactura()+ ";"+pendientes.getCliente());
+//        }
+        Collections.sort(detalles);
+
+//        System.out.println("__________________________________________--");
+//       for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
+//            Pendientes pendientes = it.next();
+//            System.out.println(""+pendientes.getFactura()+ ";"+pendientes.getCliente());
+//        }
+        ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
+        return ds;
+    }
+
+    public JRDataSource facturasCobradasContadorAsignadas(String numero) {
+        Administrador adm = new Administrador();
+
+        List<Pendientes> detalles = new ArrayList();
+
+
+
+        String sql = "SELECT o from Facturasenviadassri as o where o.numero = '" + numero + "' ";
+        //+ "GROUP BY fa.numero  having SUM(cx.haber) >0  ";
+        System.out.println("facturasCobradasContador () : " + sql);
+
+        List facEncontradas = adm.query(sql);
+        if (facEncontradas.size() > 0) {
+            Pendientes pendi = null;
+            for (Iterator itna = facEncontradas.iterator(); itna.hasNext();) {
+                Facturasenviadassri vec = (Facturasenviadassri) itna.next();
+                int i = 1;
+                List<Detalle> detalleLocal = adm.query("Select o from Detalle as o where o.factura.codigo = '" + vec.getFactura().getCodigo() + "'");
+                int ii = 0;
+                pendi = new Pendientes();
+                pendi.setCodigo("" + vec.getFactura().getCodigo());
+                pendi.setPlan("");
+                for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
+                    Detalle detalle = it.next();
+                    String pth = " / ";
+                    if (ii == 0) {
+                        pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
+                    }
+                    if (detalle.getEquipos() != null) {
+                        pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
+                    }
+                    if (detalle.getPlan() != null) {
+                        pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
+                    }
+                    ii++;
+                }
+                detalleLocal = null;
+
+                pendi.setCliente(vec.getFactura().getClientes());
+                pendi.setFactura("" + vec.getFactura().getNumero());
+                Date d = vec.getFactura().getFecha();
+                pendi.setFecha(d);
+                pendi.setEmision(d);
+                pendi.setTotal(vec.getFactura().getTotal());
+
+                Contratos con = (Contratos) adm.buscarClave((Integer) vec.getFactura().getContratos().getCodigo(), Contratos.class);
+                pendi.setContrato(con.getContrato() + "");
+                pendi.setDireccion(con.getDireccionf());
+                pendi.setSaldo((BigDecimal.ZERO));
+                pendi.setValorabonoefe((BigDecimal.ZERO));
+
+                pendi.setSubtotal((BigDecimal) vec.getFactura().getSubtotal());
+                pendi.setIva((BigDecimal) vec.getFactura().getValoriva());
+
+                detalles.add(pendi);
+                i++;
+
+            }
+
         }
 
 //        for (Iterator<Pendientes> it = detalles.iterator(); it.hasNext();) {
@@ -1438,7 +1524,7 @@ public class ReportesClase {
         Pendientes pendi = null;
         List<Cxcobrar> abonos = adm.query("Select o from Cxcobrar as o "
                 + "where o.haber > 0 "
-              //  + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
+                //  + "and o.factura.sucursal.codigo = '" + sucursal.getCodigo() + "' "
                 + "and o.fecha between  '" + desdestr + "'  and '" + hastastr + "' order by o.factura.numero");
         int i = 1;
         for (Iterator<Cxcobrar> itAbono = abonos.iterator(); itAbono.hasNext();) {
@@ -1557,43 +1643,45 @@ public class ReportesClase {
             pendi.setNumerotransferencia(cIt.getNotransferencia());
             pendi.setFechadeposito(cIt.getFechadeposito());
             pendi.setFechacheque(cIt.getFechacheque());
-            pendi.setNodeposito(cIt.getNocuentaban()); 
+            pendi.setNodeposito(cIt.getNocuentaban());
 
-            try{
+            try {
                 pendi.setBancocheque(cIt.getBancocheque().getNombre());
-            }catch(Exception ax){}
-            try{
-             pendi.setBancodeposito(cIt.getBancodep().getNombre()); 
-             }catch(Exception ax){}
+            } catch (Exception ax) {
+            }
+            try {
+                pendi.setBancodeposito(cIt.getBancodep().getNombre());
+            } catch (Exception ax) {
+            }
 
             pendi.setValorabonoret(cIt.getRtotal() == null ? new BigDecimal(BigInteger.ZERO) : cIt.getRtotal());
             pendi.setNotarjeta(cIt.getNotarjeta());
             try {
-               List<Detalle> detalleLocal = adm.query("Select o from Detalle as o "
-                       + " where o.factura.codigo = '" + cIt.getFactura().getCodigo() + "'");
-                    int ii = 0;
-                   
+                List<Detalle> detalleLocal = adm.query("Select o from Detalle as o "
+                        + " where o.factura.codigo = '" + cIt.getFactura().getCodigo() + "'");
+                int ii = 0;
 
-                    pendi.setPlan("");
-                    for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
-                        Detalle detalle = it.next();
-                        String pth = " / ";
-                        if (ii == 0) {
-                            pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
-                        }
-                        if (detalle.getEquipos() != null) {
-                            pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
-                        }
-                        if (detalle.getPlan() != null) {
-                            pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
-                        }
-                        ii++;
+
+                pendi.setPlan("");
+                for (Iterator<Detalle> it = detalleLocal.iterator(); it.hasNext();) {
+                    Detalle detalle = it.next();
+                    String pth = " / ";
+                    if (ii == 0) {
+                        pth = "(" + mes(detalle.getFactura().getFecha().getMonth()) + ")";
                     }
-                    detalleLocal = null;
-                        
+                    if (detalle.getEquipos() != null) {
+                        pendi.setPlan(pendi.getPlan() + pth + detalle.getEquipos().getNombre());
+                    }
+                    if (detalle.getPlan() != null) {
+                        pendi.setPlan(pendi.getPlan() + pth + detalle.getPlan().getNombre());
+                    }
+                    ii++;
+                }
+                detalleLocal = null;
+
             } catch (Exception e) {
             }
-            
+
             try {
                 pendi.setEmpleado(cIt.getEmpleados().getApellidos() + " " + cIt.getEmpleados().getNombres());
             } catch (Exception e) {
@@ -1673,7 +1761,7 @@ public class ReportesClase {
                     + estadoComp
                     + "order by o.clientes.apellidos";
         }
-        System.out.println("clientesxsector(sec,estado): "+que);
+        System.out.println("clientesxsector(sec,estado): " + que);
         List<Contratos> contra = adm.query(que);;
 
         for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
@@ -1829,6 +1917,8 @@ public class ReportesClase {
                     inv.setCompra(cabeceracompra.getCodigo() + "");
                     inv.setFactura(cabeceracompra.getFactura() + "");
                     inv.setSerie(series.getSerie());
+                    inv.setValor(detallecompra.getCosto());
+                    inv.setValorInd(detallecompra.getCosto());
                     inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
                     inv.setFecha(cabeceracompra.getFecha());
                     if (series.getEstado().equals("A")) { //POR AJUSTE
@@ -1837,15 +1927,15 @@ public class ReportesClase {
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("P")) { //POR PRESTAMO TRANSITO
                         try {
-                            inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");    
+                            inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
                         } catch (Exception e) {
                             try {
-                                inv.setDocumento("N: "+series.getNodos().getNombre() + "");         
-                            System.out.println("prestado a nodo");
+                                inv.setDocumento("N: " + series.getNodos().getNombre() + "");
+                                System.out.println("prestado a nodo");
                             } catch (Exception ex) {
-                                inv.setDocumento("N:");         
+                                inv.setDocumento("N:");
                             }
-                            
+
                         }
                         inv.setTipo("PRESTAMO");
                         inv.setCantidad(1);
@@ -1876,6 +1966,8 @@ public class ReportesClase {
                     inv.setDocumento("Bodega");
                     inv.setTipo("STOCK");
                     inv.setCantidad(1);
+                    inv.setValor(detallecompra.getCosto());
+                    inv.setValorInd(detallecompra.getCosto());
                     inv.setFecha(cabeceracompra.getFecha());
                     detalles.add(inv);
                 }
@@ -1912,6 +2004,8 @@ public class ReportesClase {
                     inv.setCompra(cabeceracompra.getCodigo() + "");
                     inv.setFactura(cabeceracompra.getFactura() + "");
                     inv.setSerie(series.getSerie());
+                    inv.setValor(detallecompra.getCosto());
+                    inv.setValorInd(detallecompra.getCosto());
                     inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
                     inv.setFecha(cabeceracompra.getFecha());
                     if (series.getEstado().equals("A")) { //POR AJUSTE
@@ -1919,7 +2013,14 @@ public class ReportesClase {
                         inv.setTipo("AJUSTE");
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("P")) { //POR PRESTAMO TRANSITO
-                        inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        try {
+                            inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        } catch (Exception e) {
+                            inv.setDocumento("N: " + series.getNodos().getNombre() + "");
+
+                            //inv.setDocumento("SIN REFERENCIA");
+                        }
+
                         inv.setTipo("PRESTAMO");
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("V")) { //POR VENTA
@@ -1948,6 +2049,8 @@ public class ReportesClase {
                     inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
                     inv.setDocumento("Bodega");
                     inv.setTipo("STOCK");
+                    inv.setValor(detallecompra.getCosto());
+                    inv.setValorInd(detallecompra.getCosto());
                     inv.setCantidad(1);
                     inv.setFecha(cabeceracompra.getFecha());
                     detalles.add(inv);
@@ -1992,6 +2095,8 @@ public class ReportesClase {
                     inv.setCompra(cabeceracompra.getCodigo() + "");
                     inv.setFactura(cabeceracompra.getFactura() + "");
                     inv.setSerie(series.getSerie());
+                    inv.setValor(detallecompra.getCosto());
+                    inv.setValorInd(detallecompra.getCosto());
                     inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
                     inv.setFecha(cabeceracompra.getFecha());
                     if (series.getEstado().equals("A")) { //POR AJUSTE
@@ -2001,7 +2106,12 @@ public class ReportesClase {
                         inv.setDireccion("");
                         inv.setCantidad(1);
                     } else if (series.getEstado().equals("P")) { //POR PRESTAMO TRANSITO
-                        inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        try {
+                            inv.setDocumento(series.getDetallecompra().getContratos().getClientes() + "");
+                        } catch (Exception e) {
+                            inv.setDocumento("N: " + series.getNodos().getNombre() + "");
+                        }
+
                         inv.setTipo("PRESTAMO");
                         try {
                             inv.setContrato("" + series.getDetallecompra().getContratos().getContrato());
@@ -2043,6 +2153,8 @@ public class ReportesClase {
                     inv.setProveedor(cabeceracompra.getProveedores().getRazonsocial() + "");
                     inv.setDocumento("Bodega");
                     inv.setTipo("STOCK");
+                    inv.setValor(detallecompra.getCosto());
+                    inv.setValorInd(detallecompra.getCosto());
                     inv.setCantidad(1);
                     inv.setFecha(cabeceracompra.getFecha());
                     detalles.add(inv);
@@ -2306,7 +2418,7 @@ public class ReportesClase {
     }
 
     public JRDataSource cobranzas(Sector sec, Canton canton, Date desde, Date hasta, Boolean todasLasFechas, Integer formapago, String estado) {
-      Administrador adm = new Administrador();
+        Administrador adm = new Administrador();
 
         String estadoComp = " and o.estado = '" + estado + "' ";
         if (estado.equals("Todos")) {
@@ -2322,22 +2434,161 @@ public class ReportesClase {
         if (formapago.equals(0)) {
             formaPago = " and o.formapago in (0,1,2,3) ";
         }
- 
+
         ArrayList detalles = new ArrayList();
         String quer = "";
-            quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
-                    + "FROM cxcobrar cx, factura  fa "
-                    + " WHERE fa.clientes  =    "
-                    + "  AND cx.factura = fa.codigo"
-                    + compleme
-                    + " GROUP BY fa.codigo  "
-                    + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
+        quer = "SELECT fa.codigo, fa.fecha, fa.total,  (SUM(cx.debe) - SUM(cx.haber)) saldo, fa.contratos "
+                + "FROM cxcobrar cx, factura  fa "
+                + " WHERE fa.clientes  =    "
+                + "  AND cx.factura = fa.codigo"
+                + compleme
+                + " GROUP BY fa.codigo  "
+                + " HAVING  (SUM(cx.debe) - SUM(cx.haber)) > 0 order by fa.contratos, fa.fecha ";
 
-            List facEncontradas = adm.queryNativo(quer);
- 
- 
+        List facEncontradas = adm.queryNativo(quer);
+
+
         System.out.println("" + quer);
         ReportePendientesDataSource ds = new ReportePendientesDataSource(detalles);
         return ds;
+    }
+    //subir archivo
+    int contador = 0;
+
+    public ArrayList subirBanco(InputStream file) {
+
+        ArrayList actualizadas = new ArrayList();
+        contador = 0;
+
+        HSSFWorkbook workbook = null;
+        try {
+            //            file = event.getFile().getInputstream();
+            workbook = new HSSFWorkbook(file);
+        } catch (IOException e) {
+//             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error reading file" + e, null));
+        }
+
+
+
+        HSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        //        Calendar calendar = new GregorianCalendar();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            if (row.getRowNum() > 4) {
+
+                String estado = "";
+                try {
+                    estado =(row.getCell(10).getStringCellValue() + "");
+                } catch (Exception e) {
+                    break;
+                }
+                if(estado.contains("PROCESO OK")){
+                RecibidoBanco general = new RecibidoBanco();
+                    
+                     if (row.getCell(5).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                         Double valorContrato = row.getCell(5).getNumericCellValue();
+                         general.setContrato(valorContrato.intValue()); 
+                         try {
+                         general.setValor(row.getCell(7).getNumericCellValue());    
+                         } catch (Exception e) {
+                             general.setValor(new Double(row.getCell(7).getStringCellValue()));
+                         }
+                         
+                         actualizadas.add(general);
+                         contador++;
+                    } else if (row.getCell(5).getCellType() == Cell.CELL_TYPE_STRING) {
+                        System.out.println("entron astring ");
+                        Double valorContrato = row.getCell(5).getNumericCellValue();
+                         general.setContrato(valorContrato.intValue()); 
+                         general.setValor(new Double(row.getCell(7).getStringCellValue()));
+                         actualizadas.add(general);
+                         contador++;
+                    }
+                      
+                } 
+              
+                          
+                
+
+            }
+
+        }
+
+        System.out.println("subidos: " + contador);
+        return actualizadas;
+    }
+    
+    
+    public ArrayList subir(InputStream file) {
+
+        Administrador adm = new Administrador();
+        ArrayList actualizadas = new ArrayList();
+        //        FacesContext context = FacesContext.getCurrentInstance();
+        contador = 0;
+        //        if (event.getFile().equals(null)) {
+        //            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File is null", null));
+        //        }
+        //        InputStream file;
+        HSSFWorkbook workbook = null;
+        try {
+            //            file = event.getFile().getInputstream();
+            workbook = new HSSFWorkbook(file);
+        } catch (IOException e) {
+//             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error reading file" + e, null));
+        }
+
+
+
+        HSSFSheet sheet = workbook.getSheetAt(0);
+
+        Iterator<Row> rowIterator = sheet.rowIterator();
+        //        Calendar calendar = new GregorianCalendar();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            if (row.getRowNum() > 1) {
+
+                Integer codigo = 0;
+                try {
+                    codigo = new Integer(row.getCell(1).getStringCellValue() + "");
+                } catch (Exception e) {
+                    break;
+                }
+                
+                
+                Factura p = (Factura) adm.buscarClave(codigo, Factura.class);
+                if (p.getNumero() == null || p.getNumero().trim().isEmpty()) {
+                    if (row.getCell(2).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                        p.setNumero(row.getCell(2).getNumericCellValue() + "");
+                    } else if (row.getCell(2).getCellType() == Cell.CELL_TYPE_STRING) {
+                        p.setNumero(row.getCell(2).getStringCellValue());
+                    }
+                    if (row.getCell(3).getCellType() == Cell.CELL_TYPE_NUMERIC) {
+                        p.setAutorizacion(row.getCell(3).getNumericCellValue() + "");
+                    } else if (row.getCell(3).getCellType() == Cell.CELL_TYPE_STRING) {
+                        p.setAutorizacion(row.getCell(3).getStringCellValue());
+                    }
+
+                    try {
+                        if (p.getNumero() != null) {
+                            contador++;
+                            adm.actualizar(p);
+                            actualizadas.add(contador + "; " + codigo + "; " + p.getNumero() + "; PROCESADA");
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                            actualizadas.add(contador + "; " + codigo + "; " + p.getNumero() + "; NO PROCESADA");
+                }
+
+            }
+
+        }
+
+        System.out.println("subidos: " + contador);
+        return actualizadas;
     }
 }

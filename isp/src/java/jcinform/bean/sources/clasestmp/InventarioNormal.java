@@ -4,6 +4,7 @@
  */
 package jcinform.bean.sources.clasestmp;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -23,6 +24,8 @@ public class InventarioNormal {
     String contrato;
     String direccion;
     String empleado;
+    Double valor;
+    Double valorInd;
 
     public Integer getEntrada() {
         return entrada;
@@ -167,6 +170,24 @@ public class InventarioNormal {
     public void setEmpleado(String empleado) {
         this.empleado = empleado;
     }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public Double getValorInd() {
+        return valorInd;
+    }
+
+    public void setValorInd(Double valorInd) {
+        this.valorInd = valorInd;
+    }
+
+     
     
     
             
