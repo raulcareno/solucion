@@ -689,9 +689,6 @@ public class Empresa implements Serializable {
     }
     
     @Transient
-    public Double tiempoSalirSinSellar;
-    
-    @Transient
     public Boolean imprime2facturas = false;
     
        @Transient
@@ -734,6 +731,9 @@ public class Empresa implements Serializable {
     
     @Transient
     public Double valorMaximo = 0.0;
+    @Transient
+    public Double TiempoSalirSinSellar = 0.0;
+    
     @Transient
     public Boolean ipcam = false;
 
@@ -947,6 +947,14 @@ public class Empresa implements Serializable {
     public void setRetardoSalida(String retardoSalida) {
         this.retardoSalida = retardoSalida;
     }
+
+    public Double getTiempoSalirSinSellar() {
+        return TiempoSalirSinSellar;
+    }
+
+    public void setTiempoSalirSinSellar(Double TiempoSalirSinSellar) {
+        this.TiempoSalirSinSellar = TiempoSalirSinSellar;
+    }
     
     
 
@@ -1069,14 +1077,6 @@ public class Empresa implements Serializable {
 
     public void setSucursal(String sucursal) {
         this.sucursal = sucursal;
-    }
-
-    public Double getTiempoSalirSinSellar() {
-        return tiempoSalirSinSellar;
-    }
-
-    public void setTiempoSalirSinSellar(Double tiempoSalirSinSellar) {
-        this.tiempoSalirSinSellar = tiempoSalirSinSellar;
     }
     
     
