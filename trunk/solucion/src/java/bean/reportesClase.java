@@ -13055,7 +13055,7 @@ public class reportesClase {
         cellInst.setCellStyle(stiloTitulo);
 
         HSSFCell cellCuadroCal = row.createCell((short) 18);
-        cellCuadroCal.setCellValue("CUADRO FINAL DE CALIFICACIONES");
+        cellCuadroCal.setCellValue("CUADRO FINAL DE CALIFICACIONES "+(tipo.equals("SUP")?"SUPLETORIO":tipo.equals("REM")?"REMEDIAL":tipo.equals("REM")?"GRACIA":""));
         cellCuadroCal.setCellStyle(stiloTitulo);
 
 
@@ -13259,7 +13259,9 @@ AND o.materia IN (145,74,86,103,201,79,237,194)
                             + " AND o.materia in (" + codigoMapProfesor + ")  "
                             + " AND m.curso = '" + curso.getCodigocur() + "'  "
                             + "   AND m.estado IN ('Matriculado','Retirado')"
-                            + "   AND m.codigomat = o.matricula GROUP BY o.matricula  HAVING COUNT(o.matricula) < 2 ";
+                            + "   AND m.codigomat = o.matricula GROUP BY o.matricula "
+                          //+ " HAVING COUNT(o.matricula) < 2 "
+                          + "";
             List matriculasList = adm.queryNativo(qRm);
             System.out.println("" + qRm);
 
@@ -13271,7 +13273,14 @@ AND o.materia IN (145,74,86,103,201,79,237,194)
             if (matriculasSupletoriadas.length() > 0) {
                 matriculasSupletoriadas = matriculasSupletoriadas.substring(0, matriculasSupletoriadas.length() - 1);
             }
-
+if(matriculasList.size()<=0){
+                try {
+                    Messagebox.show("No existen estudiantes a examen de gracia...!", "Administrador Educativo", Messagebox.CANCEL, Messagebox.EXCLAMATION);
+               return;
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(reportesClase.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
 
         }
 
