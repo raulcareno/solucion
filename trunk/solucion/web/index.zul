@@ -28,10 +28,13 @@
     </style>
     <div height="100%" class="estilo2" >
         <zscript>
+            
+              <![CDATA[
             import jcinform.persistencia.*;
             import jcinform.procesos.Administrador;
             import bean.Permisos;
             import chat.Contactos;
+            import chat.ContactosChat;
             
             //Clients.confirmClose("Desdea liberar todo ?");
             Administrador adm = new Administrador();
@@ -62,7 +65,8 @@
             }
             void ingresar(Menuitem item ){
             try{
-
+            mensajes.visible = false;
+            personas.visible = false;
             if(buscar("c" + (String)item.getId())){
             Tab newtb= new Tab(""+item.label);
             newtb.setSelected(true);
@@ -186,27 +190,102 @@
             usuario.focus();
             }
             //chat.CometServerPush.start(mensajes,pendientes,emp,este,mensajesSin);
-            chat.VerificarMensajesSinLeer.start(mensajes,pendientes,emp,este);
+            //chat.VerificarMensajesSinLeer.start(mensajes,pendientes,emp,este,mensajesSin);
 
             }
             cargando(){
-            Session a = Sessions.getCurrent();
-            Periodo peri =  (Periodo) a.getAttribute("periodo");
-            byte[] imageData =    peri.getInstitucion().getEscudo();
+                Session a = Sessions.getCurrent();
+                Periodo peri =  (Periodo) a.getAttribute("periodo");
+                byte[] imageData =    peri.getInstitucion().getEscudo();
 
-            foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+                foto0.setContent(new org.zkoss.image.AImage("fotito", imageData));
+            }
+      static ContactosChat contactos;          
+            void iniciar(){
+               int a = 0;
+        Contactos nuevo = new Contactos(emp.getCodigoemp() + "", emp.getApellidos() + " " + emp.getNombres(), true);
+                        for (Iterator it = personasList.getItems().iterator(); it.hasNext();) {
+                            personasList.getItems().remove(a);
+                        }
+                        int cuantos = 0;
+                       
+                         final Desktop desktop = Executions.getCurrent().getDesktop();
+                          desktop.enableServerPush(false);
+                          contactos = (ContactosChat) desktop.getWebApp().getAttribute("contactoschat");
+                          
+                        if (contactos == null) {
+                            contactos = new ContactosChat();
+                            desktop.getWebApp().setAttribute("contactoschat", contactos);
+                             //if (existe == false) {
+                               
+                            //}
+                        }
+                        if (desktop.isServerPushEnabled()) {
+                            Messagebox.show("Already started..-");
+                           
+                        } else {
+                            adm = new Administrador();
+                            desktop.enableServerPush(true);
+
+                        }
+                        ((ContactosChat) desktop.getWebApp().getAttribute("contactoschat")).subscribe(nuevo);
+                        if(desktop.getWebApp().getAttribute("contactoschat") != null){
+                  
+                                for (Iterator it = ((ContactosChat) desktop.getWebApp().getAttribute("contactoschat")).getChatters().iterator(); it.hasNext();) {
+                                    Contactos object = (Contactos) it.next();   
+                                  
+                                    Listitem li = new Listitem();
+                                    li.setValue(object);
+                                    li.appendChild(new Listcell(object.getId() + ""));
+                                    li.appendChild(new Listcell(object.getNombre() + ""));
+                                    if(!(emp.getCodigoemp()+"").equals(object.getId()))
+                                    personasList.appendChild(li);
+                                }
+                        }
+            }
+            //VER MENSAJES PENDIENTES
+             void iniciar2(){
+               int a = 0;
+
+                        for (Iterator it = mensajesList.getItems().iterator(); it.hasNext();) {
+                            mensajesList.getItems().remove(a);
+                        }
+                        int cuantos = 0;
+                        Desktop _desktop = mensajes.getDesktop();
+                       
+                    
+                      List c = adm.query("Select o  from Chat as o where o.usuarior = '" + emp.getCodigoemp() + "' "
+                                + " and o.visto = 0  ");
+
+                        if (c.size() > 0) {
+                        
+                            for (int j =0; j< c.size(); j++) {
+                                    Chat object = (Chat) c.get(j);
+                                    Listitem li = new Listitem();
+                                    Empleados empleadoEnvia = adm.buscarClave(object.getUsuarioe(),Empleados.class);
+                                    Contactos c = new Contactos(empleadoEnvia.getCodigoemp()+"",empleadoEnvia.getApellidos()+" "+empleadoEnvia.getNombres(),true);
+                                    li.setValue(c);
+                                    li.appendChild(new Listcell(empleadoEnvia.getNombres()+ " "+empleadoEnvia.getApellidos() + ""));
+                                    li.appendChild(new Listcell(object.getMensaje() + ""));
+                                    mensajesList.appendChild(li);
+                                }
+                        
+                        }else{
+                       // alert("NO TIENE MENSAJES");
+                        }
+                    
+                       
             }
 
-
+  ]]>
 
         </zscript>
-
 
         <borderlayout  onCreate="verificar();cargando();cargando2();"  width="100%"  
                        style="padding-right:60px;border:2px" height="100%">
             <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="70px" >
                 <div>     
-
+                    
                     <panel  border="0" collapsible="true">
                         <panelchildren  style="background-color:transparent;border:0px;position:absolute; left:90%">
                             <vbox>
@@ -256,7 +335,7 @@
 
                                 <separator orient="vertical" /> |
                                 <separator orient="vertical" /-->
-
+                  
 
                                 </hbox>
 
@@ -268,13 +347,13 @@
                     <div>
                         <panel border="normal"  collapsible="true" >
                             <panelchildren style="margin-top:5px;" >
-                                <menubar autodrop="true" id="menubar" >
+                                <menubar autodrop="true"   id="menubar" >
    <!--tab label="Matriculación" />
                                 <tab label="Notas" />
                                 <tab label="Administración" />
                                 <tab label="Grados" />
                                 <tablabel="Varios" /-->
-                                    <menu image="/images/herramientas.png"  label="Administración" ><!--ADMINISTRACION-->
+                                    <menu image="/images/herramientas.png"   label="Administración" ><!--ADMINISTRACION-->
                                         <menupopup   >
                                                  
                                             <menuitem onClick="ingresar(self)" id="Accesos" image="/images/key.png" label="Accesos" value="/accesos.zul"/>
@@ -393,7 +472,6 @@
                                                     <menuitem onClick="ingresar(self)" id="Estudiantes_dobe"  image="/images/circulo.png"   label="Estudiantes" value="/dobe/estudiante.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Tipos_dobe"  image="/images/circulo.png"   label="Tipos" value="/dobe/tipos.zul"    />
                                                     <menuitem onClick="ingresar(self)" id="Tipos_detalle"  image="/images/circulo.png"   label="Tipos Detalle" value="/dobe/tiposDetalle.zul"    />
-                                                    
                                                 </menupopup>
                                             </menu>
                                         </menupopup>
@@ -401,7 +479,9 @@
                                     </menu>
                                     <menu   image="/images/exit.gif" label="Cerrar Sesión" onClick="salir()"/>
                                     <menu image="/images/candado.gif"  label="Cambiar Clave" onClick='cambioC("/cambioClaveProfesor.zul")'/>
-                                    <menu image="/images/chat.png" visible="false" id="mensajesSin"  label="Conversación"/>
+                                    <!--menu image="/images/chat.png" visible="false" id="mensajesSin"  label="Conversación"/-->
+                                    <menu image="/images/mensaje1.gif" onClick="mensajes.visible = !mensajes.visible; personas.visible = false;" visible="true" id="mensajesSin"  label=".   ."/>
+                                    <menu image="/images/persona.png" onClick="personas.visible = !personas.visible; mensajes.visible = false;" visible="true" id="personasSin"  label=".   ."/>
                                     
                                     <!--menu  image="/images/chat.png" label="chat">
                                         <attribute name="onClick">{
@@ -413,21 +493,25 @@
                                             }                            
                                         </attribute>
                                     </menu-->
+                                     
                         
                                 </menubar>
+
                             </panelchildren>
+                            
 
                         </panel>
-                
+                 
                     </div>
 
                 </div>
+                
             </north>
             <center  flex="true" >
                 <div>
                     <tabbox context="derecho" id="mytab"  width="100%" height="100%">
                         <tabs id="tbs">
-                            <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="true" />
+                            <tab label="Inicio" image="/images/inicio.png"  id="blanco" Closable="false" />
                         </tabs>
                         <tabpanels id="tps" >
                             <tabpanel>
@@ -440,47 +524,109 @@
             <east size="0%" visible="false"  title="CONTACTOS"  flex="true" maxsize="450" splittable="true" 
                   collapsible="true" id="este"  >
                 <div  style="background:#B8D335" >
-                    <panel id="mensajes"   border="normal" width="430px" height="100%" >
-                        <panelchildren >
                        
-                            <listbox id="pendientes" width="93%"  onSelect="soporteSeleccionado(self.selectedItem.value);">
-                                    
-                                <listhead>
-                                    <listheader label="." visible="false"/>
-                                    <listheader label="-"/>
-                                </listhead>
-                                <listitem value="21" label="__" />
-                            </listbox>
-        
-                        </panelchildren>
-
-                        <zscript>
-                            void soporte2(String id, String nombre){
-                                    System.out.println("......");
-                                    Contactos sop = new Contactos(id,nombre);
-                                    soporteSeleccionado(sop);
-                            }
-                            
-                            void soporteSeleccionado(Contactos sop){
-                                try{
-                                        final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
-                                        win.setClosable(true);
-                                        win.setAttribute("contacto",sop);
-                                        win.setTitle("Conversación Local");
-                                        win.setPosition("bottom,right");
-                                        win.doOverlapped();
-                                        
-                                }catch(Exception e) {
-                                        System.out.println("YA SE HA CREADO UNA SESION");
-                                }   
-                    
-                            }
-                        </zscript>
-                    </panel>      
                 </div>
             </east>
         </borderlayout>
- 
+        
+        <panel id="mensajes" visible="false"   style="position:absolute; top:62px; left:780px; z-index: 200;"  border="normal" width="430px" height="400px" >
+            <panelchildren >
+                       
+                <listbox id="mensajesList" width="100%"  onSelect="empleadoChatSeleccionado(self.selectedItem.value); ">
+                                    
+                    <listhead>
+                        <listheader label="." visible="true"/>
+                        <listheader label="-"/>
+                    </listhead>
+                    <listitem value="21" label="__" />
+                </listbox>
+        
+            </panelchildren>
+
+            <zscript>
+                  <![CDATA[ 
+                void soporteMe(String id, String nombre){
+                    System.out.println("......");
+                    Contactos sop = new Contactos(id,nombre);
+                    empleadoChatSeleccionadoMe(sop);
+                }
+                            
+                void empleadoChatSeleccionadoMe(Contactos sop){
+                 mensajes.visible = false;
+                 try{
+                        final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                        win.setClosable(true);
+                        win.setAttribute("contacto",sop);
+                        win.setTitle("Conversación Local");
+                        win.setPosition("bottom,right");
+                        win.doOverlapped();
+
+                        }catch(Exception e) {
+                        System.out.println("YA SE HA CREADO UNA SESION");
+                        }   
+                    
+                }
+                ]]>
+            </zscript>
+        </panel> 
+        <panel id="personas"   visible="false"  style="position:absolute; top:62px; left:830px; z-index: 200;"  border="normal" width="430px" height="400px" >
+            <panelchildren >
+                       
+                <listbox id="personasList" width="100%"  onSelect="empleadoChatSeleccionado(self.selectedItem.value); self.clearSelection(); personas.visible = false;">
+                                    
+                    <listhead>
+                        <listheader label="." visible="true"/>
+                        <listheader label="-"/>
+                    </listhead>
+                    <listitem value="21" label="__" />
+                </listbox>
+        
+            </panelchildren>
+
+            <zscript>
+                <![CDATA[
+                void soporte2(String id, String nombre){
+                    System.out.println("......");
+                    Contactos sop = new Contactos(id,nombre);
+                    empleadoChatSeleccionado(sop);
+                }
+                            
+                void empleadoChatSeleccionado(Contactos sop){
+                    mensajes.visible = false;
+                    Integer valor = new Integer(sop.getId());
+                            Integer valor2 = emp.getCodigoemp();
+                            int codigo = (valor * valor2);
+
+                    try{
+                    
+   
+                            
+                            final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                            win.setClosable(true);
+                            win.setAttribute("contacto",sop);
+                            win.setTitle("Conversación Local");
+                            win.setPosition("bottom,right");
+                            win.doOverlapped();
+
+                    }catch(Exception e) {
+                            System.out.println("YA SE HA CREADO UN CHAT CON EL ID"+ codigo);
+                            try{
+                                final Window cont = (Window) desktop.getWebApp().getAttribute("win"+codigo);
+                                alert(cont+"");
+                                 //cont = Path.getComponent("//controlequipospage/controlventana/facturas");
+                                 
+                                //cont.doOverlapped();          
+                            }catch(Exception ab){
+                            ab.printStackTrace();
+                            }
+                    
+                    }   
+                    
+                }]]>
+            </zscript>
+        </panel>  
+   
+      
         <menupopup id="derecho">
             <menuitem label="Cerrar Todas" onClick="borrarTodas()" />
             <menuseparator />
@@ -505,7 +651,7 @@
             mytab.setHeight("100%");
             Tab newtb= new Tab("Inicio");
             newtb.setSelected(true);
-            newtb.setClosable(true);
+            newtb.setClosable(false);
             newtb.setImage("/images/inicio.png");
             newtb.setId("blanco");
             newtb.setParent(tbs);
@@ -524,7 +670,8 @@
 
             Permisos per = new Permisos();
             void cargando2(){
-          
+            iniciar();
+            iniciar2();
  
             Cursos.visible = per.verificarPermisoReporte("Cursos","Cursos", "Ingresar",true,"MATRICULAS");
             Matricular.visible = per.verificarPermisoReporte("Matricular","Matricular", "Ingresar",true,"MATRICULAS");
