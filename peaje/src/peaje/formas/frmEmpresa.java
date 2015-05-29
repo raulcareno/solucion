@@ -185,7 +185,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             //String nombre = services[i].getName().toUpperCase();
         }
        // System.setProperty("java.library.path", "/usr/share/java/");
-        CommPortIdentifier portId;
+        try {
+            CommPortIdentifier portId;
         Enumeration portList = CommPortIdentifier.getPortIdentifiers();
                 cmbEntrada1.removeAllItems();
                 cmbEntrada2.removeAllItems();
@@ -214,7 +215,8 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
             }
 
         }
-                String blanco = "";
+        
+                 String blanco = "";
                 cmbPuertoPrincipal.addItem(blanco);
                 cmbPuertoLed.addItem(blanco);
                 cmbPortBarras.addItem(blanco);
@@ -252,6 +254,12 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
 //                cmbSalida3.addItem(object);
 
         }
+        } catch (Exception e) {
+            System.out.println("rxt identicando puertos nuevamente");
+            e.printStackTrace();
+        }
+        
+        
            try {
 
 
@@ -267,6 +275,7 @@ public class frmEmpresa  extends javax.swing.JInternalFrame  {
                 
 
             } catch (Exception ex) {
+                ex.printStackTrace();
                 Logger.getLogger(frmEmpresa.class.getName()).log(Level.SEVERE, null, ex);
             }
 

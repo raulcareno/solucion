@@ -198,7 +198,14 @@ public class Tipotarifa implements Serializable {
 
     @Override
     public String toString() {
-        return "" + nombre + " D:"+getDesde().toLocaleString().substring(10) + " H:"+getHasta().toLocaleString().substring(10);
+        String regresa = "" ;
+        try {
+            regresa = "" + nombre + " D:"+getDesde().toLocaleString().substring(10) + " H:"+getHasta().toLocaleString().substring(10);
+        } catch (Exception e) {
+            regresa = "" + nombre + " ";
+        }
+         
+        return regresa;
     }
     
 }
