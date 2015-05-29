@@ -1,6 +1,0 @@
-copiar
-C:\Program Files\Java\jdk1.7.0_71\jre\bin  	/en tiempo de desarrollo funcionó
-C:\Program Files\Java\jre7\bin			/en tiempo de ejecución
-
-    copy rxtxSerial.dll to [JDK-directory]\jre\bin\rxtxSerial.dll     este es el que me sirvió en compilación
-    copy RXTXcomm.jar to [JDK-directory]\jre\lib\ext\RXTXcomm.jar
