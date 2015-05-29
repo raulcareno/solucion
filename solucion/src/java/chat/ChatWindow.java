@@ -6,7 +6,6 @@ import java.util.Date;
 import jcinform.persistencia.Chat;
 import jcinform.persistencia.Empleados;
 import jcinform.procesos.Administrador;
-import org.zkoss.zhtml.Html;
 import org.zkoss.zk.ui.Desktop;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Session;
@@ -14,6 +13,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
 public class ChatWindow extends Window {
@@ -73,6 +73,8 @@ public class ChatWindow extends Window {
         getFellow("login").setVisible(false);
         getFellow("dv").setVisible(true);
         getFellow("input").setVisible(true);
+//        cargarMensajesAnteriores();
+        //((Vbox)getFellow("msgBoard")).appendChild(new Label("mensaje"));
     }
 
     /**

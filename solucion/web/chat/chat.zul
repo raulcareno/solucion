@@ -1,4 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
+<?page id="chatpage"?>
+ 
 <zk>
     
    
@@ -20,7 +22,6 @@
             <vbox id="msgBoard"/>
         </div>
         <vbox id="input" visible="false">
-	 
             <hbox>
                 <textbox id="msg" style="width:240px"/>
                 <button visible="true" id="exit" label="Salir" forward="onExit"/>
@@ -41,16 +42,20 @@
         <zscript>
         <![CDATA[ 
             cargar(){
-                Empleados user =  (Empleados)ses.getAttribute("user");
-                nickname.value = ""+user;
-                Contactos contacto = win.getAttribute("contacto");
-                Integer valor = new Integer(contacto.id);
-                Integer valor2 = user.getCodigoemp();
-                codigo.value = (valor * valor2)+"";
-                nombre.value = contacto.nombre;
-                win.setTitle(""+nombre.value);
-                win.setId("win"+codigo.value);
-                //   onLogin();    
+                try{
+                        Empleados user =  (Empleados)ses.getAttribute("user");
+                        nickname.value = ""+user;
+                        Contactos contacto = win.getAttribute("contacto");
+                        Integer valor = new Integer(contacto.id);
+                        Integer valor2 = user.getCodigoemp();
+                        codigo.value = (valor * valor2)+"";
+                        nombre.value = contacto.nombre;
+                        win.setTitle(""+nombre.value);
+                        win.setId("win"+codigo.value);
+                        //   onLogin();    
+                }catch(Exception ab){
+                     ab.printStackTrace();
+                }
             }
 
 
