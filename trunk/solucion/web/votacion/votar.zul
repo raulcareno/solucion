@@ -478,7 +478,7 @@ public void validarEstudiante(){
                         <label style="font-size:10px" value ="Todos los derechos reservados a JCINFORM, derecho de copia @2009-2012"/>
                 
                         <html>
-                     &lt;a href=&quot;http://www.jcinform.com&quot; target=&quot;_blank&quot;&gt;http://www.jcinform.com&lt;/a&gt;
+                     &lt;a href=&quot;http://www.siscontrol.com.ec&quot; target=&quot;_blank&quot;&gt;http://www.siscontrol.com.ec&lt;/a&gt;
 
                         </html>
                         <label style="font-size:10px;color:blue" value ="ver.1.1 act.03/05/2010"/>

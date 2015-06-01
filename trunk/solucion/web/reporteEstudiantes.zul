@@ -970,8 +970,9 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
 						}                        
        }    
         //Preparing parameters
-             ver.visible = false;
-            reportese.visible = true;
+
+            
+            
              //LCAS,LCA,LASI.LGEN,LGENT,LFEC,LMIN
             //conanioscumplidos
 
@@ -1010,12 +1011,24 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                         parametros.put("tutor", ""+(curs.getSelectedItem().getValue()).getTutor());
                     }catch(Exception exs){}
             }else if(tipo.equals("CD")){
+            if(sistemasCombo.getSelectedItem() ==null){
+                    alert("SELECCIONE PRIMERO EL APORTE");
+                    return;
+            }
                     datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoconducta.jasper");
             }else if(tipo.equals("CA")){
+            if(sistemasCombo.getSelectedItem() ==null){
+                    alert("SELECCIONE PRIMERO EL APORTE");
+                    return;
+            }
                     datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoaprovechamiento.jasper");
             }else if(tipo.equals("CAD")){
+            if(sistemasCombo.getSelectedItem() ==null){
+                    alert("SELECCIONE PRIMERO EL APORTE");
+                    return;
+            }
                     datasource = noti.certificadodisciplina(curs.getSelectedItem().getValue(),listadoEstudiantes,sistemasCombo.getSelectedItem().getValue());
                     report.setSrc(directorioReportes+"certificadoaprovydisc.jasper");
             }else if(tipo.equals("CM2")){
@@ -1287,6 +1300,8 @@ public JRDataSource internos(ArrayList listadodeCursos,String tipo){
                     report.setType((String) format.getSelectedItem().getValue());
                 }
               }
+                           ver.visible = false;
+            reportese.visible = true;
               datasource = null;
                 parametros = null;
  }
@@ -1337,14 +1352,14 @@ void campos(String valor){
       if(valor.equals("LREL2") ||valor.equals("INS") || valor.equals("MAT") || valor.equals("RET") || valor.equals("LMAT2") ){
             curs.disabled = true;
             estudiantesCombo.disabled = true;
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
          // filacurso.visible = false;
         }
           if(valor.equals("LMATF") ){
             curs.disabled = true;
             filaestudiantes.visible = false;
             estudiantesCombo.disabled = true;
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
           filafechas.visible = true;
           desde.value = new Date();
           hasta.value = new Date();
@@ -1353,7 +1368,7 @@ void campos(String valor){
             curs.disabled = true;
               filaestudiantes.visible = false;
             estudiantesCombo.disabled = true;
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
           filafechas.visible = true;
           desde.value = new Date();
           hasta.value = new Date();
@@ -1389,38 +1404,38 @@ void campos(String valor){
        if(valor.equals("CEREP"))
             titulo.value = "Lista de Representantes";
          if(valor.equals("LCAS"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
        if(valor.equals("LCA"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
        if(valor.equals("LASI"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
             if(valor.equals("LASI2"))
             titulo.value = "Registro del Profesor";
        if(valor.equals("LGEN"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
        if(valor.equals("LFEC"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
        if(valor.equals("LMIN"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
        if(valor.equals("LREP2"))
             titulo.value = "Libro de Matriculas";
             if(valor.equals("LREP7"))
             titulo.value = "Libro de Matriculas";
        if(valor.equals("LCED"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
             if(valor.equals("LDAT"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
 
        if(valor.equals("LPAS")){
             titulo.value = "NOMINA DE ESTUDIANTES CON PASES DE OTROS COLEGIOS";
             filaestudiantes.visible = false;
        }
       if(valor.equals("LINT"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
       if(valor.equals("LINT2"))
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
       if(valor.equals("LMIG") || valor.equals("LMIS")  )
-            titulo.value = "Listado de Estudiantes";
+            titulo.value = "Nómina de Estudiantes";
 
         if(valor.equals("LMAT3")){
            titulo.value = "CUADRO DE ESTUDIANTES MATRICULADOS";
@@ -1578,8 +1593,8 @@ void campos(String valor){
                                 </vbox>
                             </hbox>
                         </row>
-                        <row   id="filaaportes" visible="false"   style="background:transparent;border:0px" >
-                            <span style="float:right"> Aporte: </span>
+                        <row   id="filaaportes" visible="false"   style="background:#FFFF99;border:0px" >
+                            <span style="float:right;color:blue;font-weigth:bold"> SELECCIONE EL APORTE PARA CERTIFICADO: </span>
 
                             <listbox id="sistemasCombo" width="450px"  mold="select" >
                                 <listitem  forEach="${sistemas}" value="${each}">

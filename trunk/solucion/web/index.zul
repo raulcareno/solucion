@@ -748,6 +748,10 @@
             Tipos_dobe.visible = per.verificarPermisoReporte("Tipos_dobe","Tipos_dobe", "Ingresar",true,"VARIOS");
             Reportes_Globales.visible = per.verificarPermisoReporte("Reportes_Globales","Reportes_Globales", "Ingresar",true,"ADMINISTRACION");
             Ejecutar_sql.visible = per.verificarPermisoReporte("Ejecutar_sql","Ejecutar_sql", "Ingresar",true,"ADMINISTRACION");
+            Eliminar_de_Evaluaciones = per.verificarPermisoReporte("Eliminar_de_Evaluaciones","Eliminar_de_Evaluaciones", "Ingresar",true,"MATRICULAS");
+            Eliminar_de_Notas = per.verificarPermisoReporte("Eliminar_de_Notas","Eliminar_de_Notas", "Ingresar",true,"MATRICULAS");
+            
+            
             
             }
         </zscript>

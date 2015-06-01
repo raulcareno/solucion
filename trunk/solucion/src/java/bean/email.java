@@ -99,7 +99,7 @@ public class email {
                     + "<p>"
                     + "<p>."
                     + "<hr>."
-                    + "Desarrollado por <a href='www.jcinform.com'>JCINFORM</a> fono: 080162 211 "
+                    + "Desarrollado por <a href='www.siscontrol.com.ec'>SISCONTROL</a> fono: (02)510 38 43  "
                     + "<p>"
                     + "<hr>"
                     + "</html> ";
