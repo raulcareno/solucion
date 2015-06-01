@@ -128,7 +128,7 @@ nso1.calcularDisciplina(((Cursos)curs.selectedItem.value),"N1");
 
 }
  Boolean verificar(String accion){
-        return permiso.verificarPermiso("Registro de Evaluaciones",accion);
+        return permiso.verificarPermiso("Eliminar_de_Evaluaciones",accion);
 
     }
     notasEvaluacion nso = new notasEvaluacion();
