@@ -52,6 +52,54 @@
                         nombre.value = contacto.nombre;
                         win.setTitle(""+nombre.value);
                         win.setId("win"+codigo.value);
+                        try{
+                           String sti = "border: 1px solid #999999; background-color:#B0ECEC; width:200px; "
+                                    + "-moz-border-radius: 15px 15px 15px 15px; "
+                                    + "/*para Safari y Chrome*/ "
+                                    + "-webkit-border-radius: 5px 5px 5px 5px; "
+                                    + "/* para Opera */ "
+                                    + " border-radius: 5px 5px 5px 5px;  padding: 7px;  width:200px; ";
+                            String stiYo = "border: 1px solid #999999;  "
+                                        + "-moz-border-radius: 15px 15px 15px 15px; float:right"
+                                        + "/*para Safari y Chrome*/ "
+                                        + "-webkit-border-radius: 5px 5px 5px 5px; "
+                                        + "/* para Opera */ "
+                                        + " border-radius: 5px 5px 5px 5px; text-align:right;  float:right; padding: 7px; width:200px  "
+                                        + " ";
+                         
+                                String stiloFecha = "color:gray; font-size:8px;";
+                                
+                            //_msgBoard.appendChild(fecha);
+                            //_msgBoard.appendChild(abc);
+                        
+                         List c = adm.queryNativo("Select o.* from Chat as o " 
+                                + " where o.codigo = '"+(valor * valor2)+"' " 
+                                + " and o.visto = 0 order by o.fecha asc   ", Chat.class);
+                                
+                                for(int i =0; i<c.size(); i++){
+                                    Chat ch = c.get(i);
+                                       Div abc = new Div();
+                                      Label message = new Label(ch.getMensaje());
+                                      Label fecha = new Label(((ch.getFecha()).toLocaleString()));
+                                      fecha.setStyle(stiloFecha);
+                                      if(ch.getUsuarior().intValue() == user.getCodigoemp().intValue()){
+                                            abc.setStyle(sti);
+                                      }else{
+                                            abc.setStyle(stiYo);
+                                      }
+                                      
+                                      ch.setVisto(true);
+                                      adm.actualizar(ch);
+                                      abc.appendChild(message);
+                                      msgBoard.appendChild(fecha);
+                                      msgBoard.appendChild(abc);
+                                      
+                                }
+                                      
+                            System.out.println("___chat____"+ new Date());     
+                        }catch(Exception ad){
+                                ad.printSrackTrace();
+                        }
                         //   onLogin();    
                 }catch(Exception ab){
                      ab.printStackTrace();
