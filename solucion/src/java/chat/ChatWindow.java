@@ -57,6 +57,8 @@ public class ChatWindow extends Window {
      */
     public void onLogin() {
         // enable server push for this desktop
+        //if(!desktop.isAlive())
+        if (!desktop.isServerPushEnabled()) 
         desktop.enableServerPush(true);
 
         sender = ((Textbox) getFellow("nickname")).getValue();
@@ -86,7 +88,7 @@ public class ChatWindow extends Window {
         chatter.setDone();
 
         //disable server push
-        desktop.enableServerPush(false);
+//        desktop.enableServerPush(false);
         Session ses = Sessions.getCurrent();
         Empleados user =  (Empleados)ses.getAttribute("user");
         try {
@@ -115,7 +117,7 @@ public class ChatWindow extends Window {
         Label fecha = new Label();
         Div abc = new Div();
          
-        abc.setStyle("border: 1px solid #999999; background-color:#F2F2F2; height:100%; "
+        abc.setStyle("border: 1px solid #999999;  height:100%; "
                 + "-moz-border-radius: 15px 15px 15px 15px; "
                 + "/*para Safari y Chrome*/ "
                 + "-webkit-border-radius: 5px 5px 5px 5px; "
@@ -142,9 +144,12 @@ public class ChatWindow extends Window {
             c.setVisto(false); 
             c.setUsuarior(codigo/user.getCodigoemp());
             adm.guardar(c); 
+            
+            adm.ejecutaSqlNativo("Update Chat set visto = true where codigo = '"+codigo+"' and usuarior = '"+user.getCodigoemp()+"' ");
             c = null;
             user = null;
         } catch (Exception e) {
+            System.out.println("chatWindow.. "+e);
         }
 
         getFellow("msgBoard").appendChild(fecha);
