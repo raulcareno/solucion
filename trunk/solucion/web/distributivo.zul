@@ -876,6 +876,9 @@ llenarGrid2(Integer n){
                                      Intbox tx2 = new Intbox(0);
                                         row.appendChild(tx2);
                                         
+                                     Intbox tx3 = new Intbox(0);
+                                        row.appendChild(tx3);
+                                        
                                      Textbox formu = new Textbox("");
                                         row.appendChild(formu);
 
@@ -883,6 +886,7 @@ llenarGrid2(Integer n){
                                          row.appendChild(aButton);
                                         row.appendChild(llenarComboEquivalencias("AP")); 
                                         row.appendChild(llenarComboCantidad("0")); 
+                                        
                                     filas.appendChild(row);
                        }
 
@@ -912,9 +916,13 @@ void guardarp(){
                                   mateProfe.setSeimprime(((Checkbox)labels.get(6)).isChecked());
                                   mateProfe.setIngcualitativo(((Checkbox)labels.get(7)).isChecked());
                                   mateProfe.setOrden((((Intbox)labels.get(8)).value));
+                                   
                                   mateProfe.setHoras((((Intbox)labels.get(9)).value));
+                                   
                                   mateProfe.setFormula((((Textbox)labels.get(10)).value));
+                                   
                                   mateProfe.setEscala((((Listbox)labels.get(12)).selectedItem.value));
+                                   
                                   mateProfe.setCantidad(new Integer(((Listbox)labels.get(13)).selectedItem.value));
                                   if((!mateProfe.getCodigomap().equals(0)) ){
                                         if(!matSelec.getCodigo().equals(-1) && !curSelec.getCodigocur().equals(-1))
@@ -1689,7 +1697,7 @@ void guardarcP(){
                         </row>
                         <row spans="2" style="background:#CCFF66">
                             <span>
-                                No. de Materias a Agregar
+                                No. de Filas a Agregar
                                 <spinner value="3" constraint="no negative,no zero" id="nofilas" />
                                 <button label="Agregar más Filas" onClick="llenarGrid2(nofilas.value)"/>
                             </span>
