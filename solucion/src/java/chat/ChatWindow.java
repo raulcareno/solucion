@@ -59,7 +59,7 @@ public class ChatWindow extends Window {
         // enable server push for this desktop
         //if(!desktop.isAlive())
         if (!desktop.isServerPushEnabled()) 
-        desktop.enableServerPush(true);
+            desktop.enableServerPush(true);
 
         sender = ((Textbox) getFellow("nickname")).getValue();
 

@@ -21,6 +21,46 @@
     Permisos permiso = new Permisos();
    List periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
    
+   llenarPeriodos(){
+       periodosListadod = adm.query("Select o from Periodo as o order by o.descripcion");
+       periodosListado = new Listbox();
+       periodosListado2 = new Listbox();
+        
+        int a=0;
+            for (Iterator it = periodosListado.getItems().iterator(); it.hasNext();) {
+                    periodosListado.getItems().remove(a);
+                }
+                
+             for (Iterator it = periodosListado2.getItems().iterator(); it.hasNext();) {
+                    periodosListado2.getItems().remove(a);
+                }
+
+Listitem sel1 = new Listitem();
+sel1.setValue(-1);
+sel1.setLabel("[SELECCIONE]");
+                      periodosListado.appendChild(sel1);
+               for (Iterator it = periodosListadod.iterator(); it.hasNext();) {
+                      Periodo acceIt = (Periodo) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getInstitucion()+" "+(acceIt.getInstitucion().getTipo())+" ["+acceIt.getSeccion().getDescripcion()+"] "+acceIt.getRegimen()));
+                      periodosListado.appendChild(li);
+             }
+             
+             Listitem sel2 = new Listitem();
+sel2.setValue(-1);
+sel2.setLabel("[SELECCIONE]");
+             periodosListado2.appendChild(sel2);
+             for (Iterator it = periodosListadod.iterator(); it.hasNext();) {
+                      Periodo acceIt = (Periodo) it.next();
+                      Listitem li = new Listitem();
+                      li.setValue(acceIt);
+                      li.appendChild(new Listcell(acceIt.getDescripcion()+" "+acceIt.getInstitucion()+" "+(acceIt.getInstitucion().getTipo())+" ["+acceIt.getSeccion().getDescripcion()+"] "+acceIt.getRegimen()));
+                       
+                      periodosListado2.appendChild(li);
+             }
+   }
+   
 ]]>
     </zscript>
     <tabbox width="100%">
@@ -254,7 +294,7 @@ void estado(Boolean estado,Boolean modificar){
                     estado(true,false);
                     binder.bindBean("inobjeto",(new Periodo(0)));
                     binder.loadAll();
-          
+          llenarPeriodos();
 
     }
 

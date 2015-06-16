@@ -11,11 +11,12 @@
     </style>
     <borderlayout  onCreate="verificar();cargando();cargando2();"   height="100%">
         <zscript>
-
+    <![CDATA[
             import jcinform.persistencia.*;
             import jcinform.procesos.Administrador;
             import bean.Permisos;
-
+            import chat.Contactos;
+            import chat.ContactosChat;
 
             Administrador adm = new Administrador();
             Session a = Sessions.getCurrent();
@@ -170,7 +171,120 @@
             }
 
             }
+   static ContactosChat contactos;          
+            
+int numeroMensajes =0;            
 
+void iniciar(){
+               int a = 0;
+        Contactos nuevo = new Contactos(emp.getCodigoemp() + "", emp.getApellidos() + " " + emp.getNombres(), true);
+                        for (Iterator it = personasList.getItems().iterator(); it.hasNext();) {
+                            personasList.getItems().remove(a);
+                        }
+                        int cuantos = 0;
+                       
+                         final Desktop desktop = Executions.getCurrent().getDesktop();
+                          desktop.enableServerPush(false);
+                          contactos = (ContactosChat) desktop.getWebApp().getAttribute("contactoschat");
+                          
+                        if (contactos == null) {
+                            contactos = new ContactosChat();
+                            desktop.getWebApp().setAttribute("contactoschat", contactos);
+                             //if (existe == false) {
+                               
+                            //}
+                        }
+                        if (desktop.isServerPushEnabled()) {
+                            Messagebox.show("Already started..-");
+                           
+                        } else {
+                            adm = new Administrador();
+                            desktop.enableServerPush(true);
+
+                        }
+                        boolean yaexiste = false;
+                         if(desktop.getWebApp().getAttribute("contactoschat") != null){
+                                for (Iterator it = ((ContactosChat) desktop.getWebApp().getAttribute("contactoschat")).getChatters().iterator(); it.hasNext();) {
+                                    Contactos object = (Contactos) it.next();   
+                                    if((emp.getCodigoemp()+"").equals(object.getId())){
+                                    yaexiste = true;
+                                        break;
+                                    }
+                                }
+                               if(yaexiste==false)
+                                ((ContactosChat) desktop.getWebApp().getAttribute("contactoschat")).subscribe(nuevo);
+                               
+                        }
+                       
+                        
+                        if(desktop.getWebApp().getAttribute("contactoschat") != null){
+                                for (Iterator it = ((ContactosChat) desktop.getWebApp().getAttribute("contactoschat")).getChatters().iterator(); it.hasNext();) {
+                                    Contactos object = (Contactos) it.next();   
+                                  
+                                    Listitem li = new Listitem();
+                                    li.setValue(object);
+                                    Listcell codi =new Listcell(object.getId() + ""); 
+                                    codi.setVisible(false); 
+                                    li.appendChild(codi);
+                                     
+                                    Listcell cel = new Listcell("");
+                                    cel.appendChild(new Image("/images/chatPersona.gif"));
+                                    li.appendChild(cel);
+                                    li.appendChild(new Listcell(object.getNombre() + ""));
+                                    if(!(emp.getCodigoemp()+"").equals(object.getId()))
+                                        personasList.appendChild(li);
+                                }
+                        }
+            }
+            //VER MENSAJES PENDIENTES
+             void iniciar2(){
+                        int a = 0;
+                        for (Iterator it = mensajesList.getItems().iterator(); it.hasNext();) {
+                            mensajesList.getItems().remove(a);
+                        }
+                        int cuantos = 0;
+                        Desktop _desktop = mensajes.getDesktop();
+                       
+                    
+                      List c = adm.queryNativo("Select o.*  from Chat as o where o.usuarior = '" + emp.getCodigoemp() + "' "
+                                + " and o.visto = 0 group by o.usuarioe  order by o.usuarioe, o.fecha ",Chat.class);
+
+                        if (c.size() > 0) {
+                        
+                            for (int j =0; j< c.size(); j++) {
+                                    Chat object = (Chat) c.get(j);
+                                    Listitem li = new Listitem();
+                                    Empleados empleadoEnvia = adm.buscarClave(object.getUsuarioe(),Empleados.class);
+                                    Contactos c = new Contactos(empleadoEnvia.getCodigoemp()+"",empleadoEnvia.getApellidos()+" "+empleadoEnvia.getNombres(),true);
+                                    li.setValue(c);
+                                    
+                                    Listcell cel = new Listcell("");
+                                    cel.appendChild(new Image("/images/message.png"));
+                                    li.appendChild(cel);
+                                    
+                                    li.appendChild(new Listcell(empleadoEnvia.getNombres()+ " "+empleadoEnvia.getApellidos() + ""));
+                                    li.appendChild(new Listcell(object.getMensaje() + ""));
+                                    mensajesList.appendChild(li);
+                                }
+                                mensajesSin.label = ".  "+c.size();
+                                mensajesSin.image="/images/mensaje2.gif";
+                                if(numeroMensajes == 0 ){
+                                    //s1.play();
+                                }
+                                numeroMensajes = c.size();
+                        
+                        }else{
+                        // alert("NO TIENE MENSAJES");
+                            mensajesSin.label = "   ";
+                            mensajesSin.image="/images/mensaje1.gif";
+                            numeroMensajes = 0;
+                        }
+                    
+                       
+            }
+            
+            
+  ]]>
 
         </zscript>
         <north  border="0" style="background-image: url(./images/cabefondo.png)"   size="54px" >
@@ -227,8 +341,10 @@
 
                                     <separator orient="vertical" /> |
                                     <separator orient="vertical" />
+                                    <toolbarbutton image="/images/mensaje1.gif" onClick="mensajes.visible = !mensajes.visible; personas.visible = false;" visible="true" id="mensajesSin" style="font-weight:bold"  label=".   ."/>
+                                    <toolbarbutton image="/images/persona.png" onClick="personas.visible = !personas.visible; mensajes.visible = false;" visible="true" id="personasSin"  label=".   ."/>
 
-
+                                    
                                 </hbox>
 
                             </vbox>
@@ -291,6 +407,114 @@
 
 
     </borderlayout>
+    
+     <panel id="mensajes" visible="false"   style="position:absolute; top:62px; left:780px; z-index: 200;"  border="normal" width="430px" height="400px" >
+            <panelchildren >
+                       
+                <listbox id="mensajesList" width="100%"  onSelect="empleadoChatSeleccionado(self.selectedItem.value); ">
+                                    
+                   
+                    <listitem value="21" label="__" />
+                </listbox>
+        
+            </panelchildren>
+
+            <zscript>
+                  <![CDATA[ 
+                void soporteMe(String id, String nombre){
+                    System.out.println("......");
+                    Contactos sop = new Contactos(id,nombre);
+                    empleadoChatSeleccionadoMe(sop);
+                }
+                            
+                void empleadoChatSeleccionadoMe(Contactos sop){
+                 mensajes.visible = false;
+                 try{
+                        final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                        win.setClosable(true);
+                        win.setAttribute("contacto",sop);
+                        win.setTitle("Conversación Local");
+                        win.setPosition("bottom,right");
+                        win.doOverlapped();
+
+                        }catch(Exception e) {
+                        System.out.println("YA SE HA CREADO UNA SESION");
+                        }   
+                    
+                }
+                ]]>
+            </zscript>
+        </panel> 
+        
+        
+          <label id="count" sclass="count" />
+        <timer id="timer" delay="10000" repeats="true">
+        <attribute name="onTimer">
+             
+          
+               //  iniciar();
+                // iniciar2();
+                  
+                   
+           
+             
+        </attribute>
+        </timer>
+        <!--audio id="s1" src="/images/chat.mp3" height="0px" width="0px" visible="true" /-->	
+
+        <panel id="personas"   visible="false"  style="position:absolute; top:62px; left:830px; z-index: 200;"  border="normal" width="300px" height="300px" >
+            <panelchildren >
+                       
+                <listbox id="personasList" width="300px" height="300px"  onSelect="empleadoChatSeleccionado(self.selectedItem.value); self.clearSelection(); personas.visible = false;">
+                                    
+                    <listitem value="21" label="__" />
+                </listbox>
+        
+            </panelchildren>
+
+            <zscript>
+                <![CDATA[
+                void soporte2(String id, String nombre){
+                    System.out.println("......");
+                    Contactos sop = new Contactos(id,nombre);
+                    empleadoChatSeleccionado(sop);
+                }
+                            
+                void empleadoChatSeleccionado(Contactos sop){
+                    mensajes.visible = false;
+                    Integer valor = new Integer(sop.getId());
+                            Integer valor2 = emp.getCodigoemp();
+                            int codigo = (valor * valor2);
+
+                    try{
+                    
+   
+                            
+                            final Window win = (Window) Executions.createComponents("/chat/chat.zul", null, null);
+                            win.setClosable(true);
+                            win.setAttribute("contacto",sop);
+                            win.setTitle("Conversación Local");
+                            win.setPosition("bottom,right");
+                            win.doOverlapped();
+
+                    }catch(Exception e) {
+                            System.out.println("YA SE HA CREADO UN CHAT CON EL ID"+ codigo);
+                            try{
+                                final Window cont = (Window) desktop.getWebApp().getAttribute("win"+codigo);
+                                alert(cont+"");
+                                 //cont = Path.getComponent("//controlequipospage/controlventana/facturas");
+                                 
+                                //cont.doOverlapped();          
+                            }catch(Exception ab){
+                            ab.printStackTrace();
+                            }
+                    
+                    }   
+                    
+                }]]>
+            </zscript>
+        </panel>  
+   
     <menupopup id="derecho">
         <menuitem label="Cerrar Todas" onClick="borrarTodas()" />
         <menuseparator />
