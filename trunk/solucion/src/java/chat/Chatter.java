@@ -78,7 +78,7 @@ public class Chatter extends Thread {
 						try {
 							process();
 						} finally {
-							Executions.deactivate(_desktop);
+//							Executions.deactivate(_desktop);
 						}
 					}
 				} catch (DesktopUnavailableException ex) {

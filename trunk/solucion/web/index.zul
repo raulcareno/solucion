@@ -6,19 +6,18 @@
 
     <style>
         .estil{
-        height:100%;
-        width: 90%;
-        background-image: url(./images/cabefondo.png)   ;
-        background-color:#004669;
-
+                height:100%;
+                width: 90%;
+                background-image: url(./images/cabefondo.png)   ;
+                background-color:#004669;
         }
         .estilo2{
-        height:100%;
-        //width: 80%;
-        left: 15px;
-        background-color:#E0E0E0;
-        padding-left:60px;
-        padding-right:120px;
+            height:100%;
+            //width: 80%;
+            left: 15px;
+            background-color:#E0E0E0;
+            padding-left:60px;
+            padding-right:120px;
         }
     </style>
     <style>
@@ -213,7 +212,7 @@ void iniciar(){
                         int cuantos = 0;
                        
                          final Desktop desktop = Executions.getCurrent().getDesktop();
-                          desktop.enableServerPush(false);
+                          //desktop.enableServerPush(false);
                           contactos = (ContactosChat) desktop.getWebApp().getAttribute("contactoschat");
                           
                         if (contactos == null) {
@@ -224,7 +223,7 @@ void iniciar(){
                             //}
                         }
                         if (desktop.isServerPushEnabled()) {
-                            Messagebox.show("Already started..-");
+                            //Messagebox.show("Already started..-");
                            
                         } else {
                             adm = new Administrador();
@@ -606,8 +605,8 @@ void iniciar(){
         <attribute name="onTimer">
              
           
-                 iniciar();
-                 iniciar2();
+                 // iniciar();
+                //  iniciar2();
                   
                    
            
@@ -717,8 +716,8 @@ void iniciar(){
 
             Permisos per = new Permisos();
             void cargando2(){
-            iniciar();
-            iniciar2();
+            //iniciar();
+            //iniciar2();
  
             Cursos.visible = per.verificarPermisoReporte("Cursos","Cursos", "Ingresar",true,"MATRICULAS");
             Matricular.visible = per.verificarPermisoReporte("Matricular","Matricular", "Ingresar",true,"MATRICULAS");
