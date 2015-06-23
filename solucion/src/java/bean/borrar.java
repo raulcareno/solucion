@@ -11,6 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import jcinform.persistencia.Estudiantes;
 import jcinform.procesos.Administrador;
+import org.zkoss.zul.Menu;
+import org.zkoss.zul.Menubar;
+import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Menupopup;
 
 //import org.zkoss.util.media.Media;
 //import org.zkoss.zul.Fileupload;
@@ -27,6 +31,37 @@ public class borrar {
 //Progressmeter p;
 //p.set
     public static void main(String[] args) {
+        Menubar mb = new Menubar();
+         Menu m = new Menu();
+        Menupopup p = new Menupopup();
+        
+        for (int i = 0; i < 10; i++) {
+            Menuitem mi = new Menuitem("abc"+i);    
+            p.appendChild(mi);
+        }
+
+        m.appendChild(p);
+        for (Iterator itmba = mb.getChildren().iterator(); itmba.hasNext();) {
+            Menu  meb = (Menu) itmba.next();
+             
+            for(Iterator it = meb.getChildren().iterator(); it.hasNext();) {
+              Menupopup mp1 =  (Menupopup) it.next();
+              
+              for(Iterator itmp = mp1.getChildren().iterator(); itmp.hasNext();) {
+                    Object ob = itmp.next();
+                    if(ob instanceof Menuitem){
+                        Menuitem object =  (Menuitem) itmp.next();    
+                        System.out.println(""+object.getLabel());
+                    
+                    }
+   
+              }
+              
+          }
+        }
+          
+        
+        
         HashSet a = new HashSet();
         System.gc();
 //        generalMatriculaMateria ab = new generalMatriculaMateria(1,1);
