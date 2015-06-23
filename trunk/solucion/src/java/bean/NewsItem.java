@@ -5,7 +5,11 @@
 
 package bean;
 
+import java.util.Iterator;
 import org.zkoss.calendar.impl.SimpleCalendarEvent;
+import org.zkoss.zul.Menu;
+import org.zkoss.zul.Menuitem;
+import org.zkoss.zul.Menupopup;
 
 /**
  *
@@ -17,6 +21,8 @@ public class NewsItem extends SimpleCalendarEvent {
 	private int news_item;
 
 	public int getNews_item() {
+       
+        
 		return news_item;
 	}
 

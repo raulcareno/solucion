@@ -1,5 +1,6 @@
+
 <window    title="Control de Accesos"  border="normal" >
-<zscript>
+    <zscript>
      <![CDATA[
   import jcinform.persistencia.Global;
   import bean.EventDAO;
@@ -61,20 +62,21 @@ int w = 0;
     }
 
 ]]>
-</zscript>
+    </zscript>
       
-<groupbox mold="3d" >
-       <caption label="Agregar" />
-<vbox>
+    <groupbox mold="3d" >
+        <caption label="Agregar" />
+        <vbox>
 
-  <hbox>  Perfiles: <label style="color:blue" id="per" value="" />
+            <hbox>  Perfiles: 
+                <label style="color:blue" id="per" value="" />
  
-		<listbox width="250px" id="perfilesCombo"  mold="select" >
+                <listbox width="250px" id="perfilesCombo"  mold="select" >
 
-			<listitem forEach="${perfiles}" value="${each}"  label="${each.descripcion}" >
-            </listitem>
-		</listbox>
-        Grupos:
+                    <listitem forEach="${perfiles}" value="${each}"  label="${each.descripcion}" >
+                    </listitem>
+                </listbox>
+                Grupos:
 
                 <listbox width="250px" id="grupo"  onSelect="busqueda(perfilesCombo.selectedItem.value,grupo.selectedItem.value);"  mold="select">
                     <listitem selected="true" label="TODOS" value="TODOS"/>
@@ -88,25 +90,25 @@ int w = 0;
 
                 <button image="/images/auditoria.gif" label="Buscar"  onClick="busqueda(perfilesCombo.selectedItem.value,grupo.selectedItem.value);"/>
 
-        <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
-</hbox>
-    </vbox>
+                <button image="/images/guardar.gif" id="guardar" label="Guardar" onClick="guardar();" />
+            </hbox>
+        </vbox>
     </groupbox>
 
 
-<vbox>
+    <vbox>
 
-	<hbox>
+        <hbox>
 
 
-	</hbox>
-	</vbox>
+        </hbox>
+    </vbox>
 
-        <grid  id="datos" >
-                    <columns>
-                       <column  label="Cod"/>
-                        <column  label="Módulo"/>
-                           <column width="105px"   >
+    <grid  id="datos" >
+        <columns>
+            <column  label="Cod"/>
+            <column  label="Módulo"/>
+            <column width="105px"   >
                 <checkbox label="Ingresar" onCheck='seleccionar("ingresar",self.isChecked())' />
             </column>
             <column width="105px"   >
@@ -118,9 +120,9 @@ int w = 0;
             <column width="105px"   >
                 <checkbox label="Eliminar" onCheck='seleccionar("eliminar",self.isChecked())' />
             </column>
-                        <column  width="55px" label="Módulo"/>
-                    </columns>
-                    <rows id="filas" use="bean.accesos">
-                    </rows>
-                </grid>
+            <column  width="55px" label="Módulo"/>
+        </columns>
+        <rows id="filas" use="bean.accesos">
+        </rows>
+    </grid>
 </window>

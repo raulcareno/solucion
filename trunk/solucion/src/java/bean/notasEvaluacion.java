@@ -747,7 +747,12 @@ public class notasEvaluacion extends Rows {
                                 if ((req) >= materia.getCantidad()) {
                                     inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");
                                 } else {
-                                    inter.eval("nota.set" + (uno + toda) + "(0);");
+                                      if(req==1){
+                                            inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");      
+                                      }else{
+                                            inter.eval("nota.set" + (uno + toda) + "(0);");  
+                                      }
+                                    
                                 }
                             } else {
                                 inter.eval("nota.set" + (uno + toda) + "(" + formula + ");");

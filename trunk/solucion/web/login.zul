@@ -292,7 +292,7 @@ void verificarSistema(){
                             <html>
                                 &lt;a href=&quot;http://www.siscontrol.com.ec&quot; target=&quot;_blank&quot;&gt;http://www.siscontrol.com.ec&lt;/a&gt;
                             </html>
-                            <label style="font-size:10px;color:blue" value ="ver.1.5.3 act.26/03/2015"/>
+                            <label style="font-size:10px;color:blue" value ="ver.1.5.5 act.16/06/2015"/>
                              
                         </span>
                     </row>
