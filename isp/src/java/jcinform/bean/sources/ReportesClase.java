@@ -1740,6 +1740,43 @@ public class ReportesClase {
 
     }
 
+    public JRDataSource clientesxsectorFechaInstalacion(Sector sec, String estado,Date desde, Date hasta) {
+        Administrador adm = new Administrador();
+        ArrayList detalles = new ArrayList();
+        
+        String fechaI = convertiraString(desde);
+        String fechaF = convertiraString(hasta);
+        
+        
+        String estadoComp = " and o.estado = '" + estado + "' ";
+        if (estado.equals("Todos")) {
+            estadoComp = "";
+        }
+        String que = "";
+
+        if (sec.getCodigo().equals(-1)) {
+            que = "Select o from Contratos as o "
+                    + "where o.fechainstalacion between '"+fechaI+"' and '"+fechaF+"' and   o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + estadoComp
+                    + "order by o.clientes.apellidos";
+        } else {
+            que = "Select o from Contratos as o "
+                    + "where o.fechainstalacion between '"+fechaI+"' and '"+fechaF+"' and  o.sector.codigo =  '" + sec.getCodigo() + "'"
+                    + "  and o.sucursal.codigo = '" + sucursal.getCodigo() + "'  "
+                    + estadoComp
+                    + "order by o.clientes.apellidos";
+        }
+        System.out.println("clientesxsectorfechainstalacion(sec,estado): " + que);
+        List<Contratos> contra = adm.query(que);;
+
+        for (Iterator<Contratos> it = contra.iterator(); it.hasNext();) {
+            Contratos contratos = it.next();
+            detalles.add(contratos);
+        }
+        ReporteContratoDataSource ds = new ReporteContratoDataSource(detalles);
+        return ds;
+    }
+
     public JRDataSource clientesxsector(Sector sec, String estado) {
         Administrador adm = new Administrador();
         ArrayList detalles = new ArrayList();
@@ -2536,6 +2573,7 @@ public class ReportesClase {
             //            file = event.getFile().getInputstream();
             workbook = new HSSFWorkbook(file);
         } catch (IOException e) {
+            e.printStackTrace();
 //             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error reading file" + e, null));
         }
 

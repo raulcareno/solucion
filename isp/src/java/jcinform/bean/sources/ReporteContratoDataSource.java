@@ -55,6 +55,8 @@ public class ReporteContratoDataSource implements JRDataSource {
                 valor = nodo.getClientes().getTipoidentificacion();
             } else if ("tipoenlace".equals(fieldName)) {
                 valor = nodo.getTipoplan();
+            }else if ("email".equals(fieldName)) {
+                valor = nodo.getClientes().getEmail();
             } else if ("tipoplan".equals(fieldName)) {
                 valor = nodo.getPlan().getTipo();
             } else if ("upload".equals(fieldName)) {

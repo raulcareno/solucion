@@ -866,7 +866,8 @@ public class generarFacturas {
                 + "  AND cx.factura = fa.codigo  "
                 + "AND cli.codigo = fa.clientes and fa.sucursal = '" + suc.getCodigo() + "'  "
                 + " AND cx.fecha between '" + desdestr + "' and '" + desdestr + "' AND cx.haber > 0 "
-                + " AND cx.codigo not in (Select cxcobrar from Depositos) GROUP BY cx.codigo "
+                + " AND cx.codigo not in (Select cxcobrar from Depositos) "
+                + "  GROUP BY cx.codigo "
                 + "   "
                 + " order by substring(fa.numero,9),  fa.contratos, fa.fecha ";
         System.out.println("" + quer);

@@ -72,6 +72,8 @@ public class ReporteDepositosDataSource implements JRDataSource {
                 valor = nodo.getMonto();
             }else if ("nodeposito".equals(fieldName)) {
                 valor = nodo.getNodeposito();
+            }else if ("notransferencia".equals(fieldName)) {
+                valor = nodo.getTipotransaccion();
             }else if ("nopago".equals(fieldName)) {
                 valor = nodo.getNopago();
             }else if ("pago".equals(fieldName)) {

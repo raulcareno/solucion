@@ -38,10 +38,10 @@ Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
 //            complemento2 = " and o.grupo = '"+tipo+"'";
 //        }
         Administrador adm = new Administrador();
-        String query = "SELECT * FROM accesos WHERE perfil =  '" + p.getCodigo() + "' and sucursal = '"+sucursalEmp.getSucursal().getCodigo()+"' "+ complemento +"  "
+        String query = "SELECT * FROM accesos WHERE perfil =  '" + p.getCodigo() + "'   "+ complemento +"  "
                 + " UNION SELECT * FROM accesos WHERE (perfil IS NULL  OR perfil = 0) "+ complemento +"  "
                 + "AND modulo NOT IN "
-                + " (SELECT modulo FROM accesos WHERE perfil =  '" + p.getCodigo() + "' and sucursal = '"+sucursalEmp.getSucursal().getCodigo()+"'  )";
+                + " (SELECT modulo FROM accesos WHERE perfil =  '" + p.getCodigo() + "'    )";
         System.out.println(""+query);
         List accesosList = adm.queryNativo(query, Accesos.class);
         for (Iterator it = accesosList.iterator(); it.hasNext();) {
@@ -93,9 +93,10 @@ Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
             label.setChecked(vec.getEliminar());
             label.setParent(row);
 
-            label3 = new Label();
+                   
+             label3 = new Label();
             //label3.setValue("" + vec.getGrupo());
-            label3.setValue("");
+            label3.setValue(""+vec.getGrupo());
             label3.setStyle("width:10px");
             label3.setParent(row);
 
@@ -147,9 +148,9 @@ Empleadossucursal sucursalEmp = (Empleadossucursal) ses.getAttribute("sector");
                 nota.setGuardar(((Checkbox) labels.get(3)).isChecked());
                 nota.setActualizar(((Checkbox) labels.get(4)).isChecked());
                 nota.setEliminar(((Checkbox) labels.get(5)).isChecked());
+                nota.setGrupo(((Label) labels.get(6)).getValue());
                 nota.setSucursal(sucursalEmp.getSucursal());
 //                nota.setGrupo(((Label) labels.get(6)).getValue());
-                nota.setGrupo("");
 //                System.out.println(nota.getModulo()+"---"+nota.getCodigoacc());
                 if (nota.getCodigoacc() != null ) {
                     nota.setPerfil(g);

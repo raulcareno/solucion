@@ -204,15 +204,20 @@ List nodos = adm.query("Select o from Nodos as o " +
                                 datasource = reportes.facturasPendientes(sectorList.selectedItem.value);
                    report.setSrc(directorioReportes+"cxcclientesxzona.jasper");
                    
-            }else if(tipo.equals("PORSECTORCLI") || tipo.equals("PORSECTORCLI2") || tipo.equals("PORESTADOCONTADOR")){
+            }else if(tipo.equals("PORSECTORCLI") || tipo.equals("PORSECTORCLI2")){
                   datasource = reportes.clientesxsector(sectorList.selectedItem.value,estadoContrato.selectedItem.value);
                    if(tipo.equals("PORSECTORCLI")){
                         report.setSrc(directorioReportes+"listacontratos.jasper");
-                   }else if(tipo.equals("PORESTADOCONTADOR")){
-                        report.setSrc(directorioReportes+"listacontratoscontador.jasper");
-                   }else{
+                   } else{
                         report.setSrc(directorioReportes+"listacontratos2.jasper");
                    }
+                   
+                   
+            }else if(tipo.equals("PORESTADOCONTADOR")){
+                  datasource = reportes.clientesxsectorFechaInstalacion(sectorList.selectedItem.value,estadoContrato.selectedItem.value,desde.value,hasta.value);
+                  
+                        report.setSrc(directorioReportes+"listacontratoscontador.jasper");
+                 
                    
                    
             }else if(tipo.equals("PORNODOSCLI")){
@@ -578,11 +583,17 @@ void campos(String valor){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
-        }else if(valor.equals("PORSECTORCLI") || valor.equals("PORSECTORCLI2") || valor.equals("PORESTADOCONTADOR")){
+        }else if(valor.equals("PORSECTORCLI") || valor.equals("PORSECTORCLI2")){
             titulo.value= "X Cobrar";
             filacanton.visible=true;
             filasector.visible=true;
             filaestado.visible = true;
+        } else if(valor.equals("PORESTADOCONTADOR")){
+            titulo.value= "X Cobrar";
+            filacanton.visible=true;
+            filasector.visible=true;
+            filaestado.visible = true;
+            filafechas.visible = true;
         } else if(valor.equals("PORNODOSCLI")){
             titulo.value= "X Nodos";
             eterminado.visible = false;

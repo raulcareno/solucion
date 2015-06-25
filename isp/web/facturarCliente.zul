@@ -200,6 +200,7 @@ String llenarCeros(String numero){
                                 dep.setRuc(factu.getContratos().getClientes().getIdentificacion()+"");//char
                                 dep.setMonto(factu.getTotal());//date 
                                 dep.setEmpleados(usuarioActual); //int
+                                dep.setTipotransaccion("DEP");
                                 Integer facturaCodigo = factu.getCodigo();
 
                                 List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
@@ -245,6 +246,7 @@ String llenarCeros(String numero){
                                 dep.setRuc(factu.getContratos().getClientes().getIdentificacion()+"");//char
                                 dep.setMonto(factu.getTotal());//date 
                                 dep.setEmpleados(usuarioActual); //int
+                                dep.setTipotransaccion("TRA");
                                 Integer facturaCodigo = factu.getCodigo();
 
                                 List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 
@@ -290,6 +292,7 @@ String llenarCeros(String numero){
                                 dep.setRuc(factu.getContratos().getClientes().getIdentificacion()+"");//char
                                 dep.setMonto(factu.getTotal());//date 
                                 dep.setEmpleados(usuarioActual); //int
+                                dep.setTipotransaccion("DEB");
                                 Integer facturaCodigo = factu.getCodigo();
 
                                 List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 

@@ -62,6 +62,10 @@ public class Depositos implements Serializable {
     private Date vence;
     @Column(name = "comentario")
     private String comentario;
+        @Column(name = "tipotransaccion")
+    private String tipotransaccion;
+           @Column(name = "banco")
+    private Integer banco;
         @JoinColumn(name = "empleados", referencedColumnName = "codigo")
     @ManyToOne
     private Empleados empleados;
@@ -223,6 +227,22 @@ public class Depositos implements Serializable {
 
     public void setRuc(String ruc) {
         this.ruc = ruc;
+    }
+
+    public String getTipotransaccion() {
+        return tipotransaccion;
+    }
+
+    public void setTipotransaccion(String tipotransaccion) {
+        this.tipotransaccion = tipotransaccion;
+    }
+
+    public Integer getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Integer banco) {
+        this.banco = banco;
     }
     
     

@@ -358,6 +358,7 @@ List bancos = adm.query("Select o from Bancos as o  order by o.nombre ");
                                                   dep.setMonto(new BigDecimal(labels.get(5).getValue()));//date 
                                                     
                                                   dep.setEmpleados(usuarioActual); //int
+                                                  dep.setTipotransaccion("DEP");
                                                   Integer facturaCodigo = ((Vector)object.getValue()).get(0);
                                                    
                                                    List pagosHechos = adm.queryNativo("Select count(*) from Cxcobrar " + 

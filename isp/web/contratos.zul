@@ -51,7 +51,9 @@ String estadoAnterior = "";
                     si.selected = true;
             }
     
-    
+permiso.verificarPermisoReporte("AplicarDescuentosEnContratos","AplicarDescuentosEnContratos", "Ingresar",true,"COBROS");
+permiso.verificarPermisoReporte("RealizarCobrosEnContratos","RealizarCobrosEnContratos", "Ingresar",true, "COBROS");
+permiso.verificarPermisoReporte("CobrarEnContratos","CobrarEnContratos", "Ingresar",true,"COBROS");
     
       List planes = adm.query("Select o from Plan as o ");
       //where o.sucursal.codigo = '"+sucursalEmp.getSucursal().getCodigo()+"' ");
@@ -993,14 +995,19 @@ vermapa(){
             win.doModal();
 }
 
+
+
  Boolean verificar(String accion){
         return permiso.verificarPermiso("Contratos",accion);
  }
  Boolean verificar2(String accion){
-        return permiso.verificarPermiso("Descuentos",accion);
+        return permiso.verificarPermiso("AplicarDescuentosEnContratos",accion);
  }
  Boolean verificar3(String accion){
-        return permiso.verificarPermiso("RealizarCobros",accion);
+        return permiso.verificarPermiso("EliminarCobroEnContratos",accion);
+ }
+ Boolean verificar5(String accion){
+        return permiso.verificarPermiso("CobrarEnContratos",accion);
  }
  
   Boolean verificar4(String accion){
@@ -1531,7 +1538,7 @@ void verificarCedula(String valor){
                             
                             aButton.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
-                               if(verificar3("Ingresar")){
+                               if(verificar5("Ingresar")){
                                         registro.setSelected(true);
                                         final Window win = (Window) Executions.createComponents("facturarCliente.zul", null, null);
                                         win.setMaximizable(true);
@@ -1608,7 +1615,7 @@ void verificarCedula(String valor){
                             aButtonEli.setTooltip(elm);
                             aButtonEli.addEventListener("onClick", new EventListener() {
                              public void onEvent(Event event) throws Exception {
-                                 if(verificar2("Eliminar")){
+                                 if(verificar3("Ingresar")){
                                  registro.setSelected(true);
                                  int valor0 = Messagebox.show("Seguro que desea Eliminar este elemento, Desea Continuar?", "JCINFORM-Seguridad", Messagebox.YES | Messagebox.NO, Messagebox.QUESTION);
                                   seriespanel.visible = false;

@@ -190,6 +190,7 @@ if(usuarioActual.getTipo().equals("OTRO")){
                                                                         dep.setCliente(labels.get(2).getValue().substring(4)+"");//char
                                                                         dep.setRuc(labels.get(9).getValue()+"");//char
                                                                         dep.setMonto(empf.getFactura().getTotal());//date 
+                                                                        dep.setTipotransaccion("DEB");
 
                                                                         dep.setEmpleados(usuarioActual); //int
                                                                         Integer facturaCodigo = empf.getFactura().getCodigo();
