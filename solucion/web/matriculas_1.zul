@@ -900,7 +900,13 @@ boolean validarRepresentante(){
 
                                 <row>
 
-
+                                       <checkbox id="matriculado"/>
+                                        BLOQUEADO
+                                        <checkbox id="pendientes"/>
+                                        <checkbox id="bloquear"/>
+                                        <checkbox visible = "true"  id="aplico"/>
+                                        <checkbox visible = "true"  id="perdio"/>
+                                        <checkbox visible = "true"  id="suspenso"/>
 
 
                                 </row>
