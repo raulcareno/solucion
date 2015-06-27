@@ -181,6 +181,14 @@ void llenar(Estudiantes estudent){
     nobus.value = estudent.getNobus();
     lugarnacimiento.value = estudent.getLugarnacimiento();
     nacionalidad.value = estudent.getNacionalidad();
+    
+     aseguradora.value = estudent.getAseguradora();
+    recorrido.value = estudent.getRecorrido();
+    sector.value = estudent.getSector();
+            provincia.value = estudent.getProvincia();
+            canton.value = estudent.getCanton();
+             
+            
     if(estudent.getDiscapacidad() != null){
         discapacidad.checked = estudent.getDiscapacidad();
     }
@@ -196,7 +204,7 @@ void llenar(Estudiantes estudent){
     ingpadre.value = estudent.getIngpadre().intValue();
     ingmadre.value = estudent.getIngmadre().intValue();
     ingotros.value = estudent.getIngotros().intValue();
-    
+    observacion.value = estudent.getObservacion();
     lugar.value = estudent.getLugar();
           if(estudent.getEstado()!=null){
                 estadoe.checked= estudent.getEstado();
@@ -210,6 +218,49 @@ void llenar(Estudiantes estudent){
             }
             if(estudent.getAplico()!=null){
                 aplico.checked = estudent.getAplico();
+            }
+            
+            
+               if(estudent.getTransporte()!=null){
+                transporte.checked = estudent.getTransporte();
+            }
+            if(estudent.getTarjeta()!=null){
+                tarjeta.checked = estudent.getTarjeta();
+            }
+            if(estudent.getIda()!=null){
+                ida.checked = estudent.getIda();
+            }
+            if(estudent.getVuelta()!=null){
+                vuelta.checked = estudent.getVuelta();
+            }
+            if(estudent.getAlimentacion()!=null){
+                alimentacion.checked = estudent.getAlimentacion();
+            }
+            if(estudent.getLunes()!=null){
+                lunes.checked = estudent.getLunes();
+            }
+            if(estudent.getMartes()!=null){
+                martes.checked = estudent.getMartes();
+            }
+            if(estudent.getMiercoles()!=null){
+                miercoles.checked = estudent.getMiercoles();
+            }
+            if(estudent.getJueves()!=null){
+                jueves.checked = estudent.getJueves();
+            }
+            if(estudent.getViernes()!=null){
+                viernes.checked = estudent.getViernes();
+            }
+             
+            
+            if(estudent.getAsegurado()!=null){
+                asegurado.checked = estudent.getAsegurado();
+            }
+              if(estudent.getPendientes()!=null){
+                pendientes.checked = estudent.getPendientes();
+            } 
+            if(estudent.getBloquear()!=null){
+                bloquear.checked = estudent.getBloquear();
             }
 
 
@@ -472,9 +523,38 @@ void estado(Boolean estado,Boolean modificar){
         estudent.setFechanacimiento(nacido.value);
         estudent.setEstado(true);
         estudent.setAdventista(false);
-        estudent.setTransporte(transporte.checked);
-        estudent.setAplico(aplico.checked);
+        
+         estudent.setTransporte(transporte.checked);
+        estudent.setTarjeta(tarjeta.checked);
+        estudent.setAlimentacion(alimentacion.checked);
+        if(alimentacion.checked){
+            estudent.setLunes(lunes.checked);
+            estudent.setMartes(martes.checked);
+            estudent.setMiercoles(miercoles.checked);
+            estudent.setJueves(jueves.checked);
+            estudent.setViernes(viernes.checked);
+        
+        }else{
+            estudent.setLunes(false);lunes.checked=false;
+            estudent.setMartes(false);martes.checked=false;
+            estudent.setMiercoles(false); miercoles.checked=false;
+            estudent.setJueves(false); jueves.checked = false;
+            estudent.setViernes(false); viernes.checked = false;
+        }
+        estudent.setRecorrido(recorrido.value);
+        estudent.setSector(sector.value);
+        
+        
+        estudent.setIda(ida.checked);
+        estudent.setVuelta(vuelta.checked);
         estudent.setNobus(nobus.value);
+        estudent.setAseguradora(aseguradora.value);
+        estudent.setAsegurado(asegurado.checked);
+         
+         
+         
+        estudent.setAplico(aplico.checked);
+         
         estudent.setUsuario(usuario.value);
         estudent.setClave(permiso.encriptar(clave.value));
         estudent.setGenero((masculino.selected == true?"Masculino":"Femenino"));
@@ -830,6 +910,7 @@ void validarNumerodeCedula(String strCedula){
                                         <label  style="font-size:11px" value="¿Posee Discapacidad?" id="t16"/>
                                     </span>
                                     <span>
+                                    <checkbox id="aplico"  visible="false"/>
                                     <checkbox id="cambioe"  visible="false"/>
                                     <checkbox id="estadoe"  visible="false"/>
                                     <checkbox id="cambior"  visible="false"/>
@@ -876,6 +957,17 @@ void validarNumerodeCedula(String strCedula){
                                     
                                     </span>
                                 </row>
+                                <row>
+                                        <checkbox visible = "false" id="matriculado"/>
+                                        <checkbox visible = "false" id="pendientes"/>
+                                        <checkbox visible = "false" id="bloquear"/>
+                                        <checkbox visible = "false"  id="perdio"/>
+                                        <checkbox visible = "false"  id="suspenso"/>
+                                </row>
+                               <row>
+                                   <textbox id="observacion" visible="false"/>
+                               </row>
+                               
                                 <row spans="2">
                                     <span style="color:blue"> * Guarde el USUARIO y CONSTRASEÑA en un lugar seguro, recuerde que esto le servirá para ingresar a consultar sus notas desde internet y otros servicios *</span>
                                 </row>
@@ -900,25 +992,52 @@ void validarNumerodeCedula(String strCedula){
    
                     <grid width="100%" height="220">
                         <rows>
-                            
-        
+                       
                             <row>
-                                <span style="float:right"> Instituto Ant.:</span>
-                                <span>
+                                    <span style="float:right">Toma Transporte:</span>
 
-                                    <textbox id="institucion"   maxlength="30" cols="20"/>
-                                </span>
-                            </row>
-                         
-                            <row>
-                                <span style="float:right"> Toma Transporte:</span>
-                                <span>
-                                    <checkbox id="transporte" />
-                                    <checkbox id="aplico" visible="false" />
-                                    <textbox id="nobus" maxlength="100" cols="40"   />
-                                    <textbox id="observacion" visible ="false" maxlength="100" cols="40"   />
-                                </span>
-                            </row>
+                                    <span>
+                                        <checkbox id="transporte" onCheck="vuelta.disabled = (self.checked? false: true);  ida.disabled = (self.checked? false: true) " disabled="false"/>
+                                        Sector.:
+                                        <textbox id="sector" maxlength="100" cols="7" readonly="false"  />
+                                        No.Recorr.:
+                                        <textbox id="recorrido" maxlength="100" cols="7" readonly="false"  />
+                                          Entregada Tarj: 
+                                        <checkbox id="tarjeta" disabled="true"/>   
+                                                
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right">Transporte:</span>
+                                    <span>
+                                        Ida:
+                                        <checkbox id="ida" disabled="false"/>
+                                        Vuelta:
+                                        <checkbox id="vuelta" disabled="false"/>
+                                        Obs:
+                                        <textbox id="nobus" maxlength="100" cols="15" readonly="false"  />
+                                                
+                                    </span>
+                                </row>
+                                <row>
+                                    <span style="float:right">Toma Alimentación:</span>
+
+                                    <span>
+                                        <checkbox id="alimentacion" onCheck=" lunes.disabled = (self.checked? false: true);  martes.disabled = (self.checked? false: true); miercoles.disabled = (self.checked? false: true); jueves.disabled = (self.checked? false: true); viernes.disabled = (self.checked? false: true); " disabled="false"/>
+                                        Días   
+                                        Lun: 
+                                        <checkbox id="lunes" disabled="false"/>
+                                        Mar: 
+                                        <checkbox id="martes" disabled="false"/>
+                                        Mie: 
+                                        <checkbox id="miercoles" disabled="false"/>
+                                        Jue: 
+                                        <checkbox id="jueves" disabled="false"/>
+                                        Vie: 
+                                        <checkbox id="viernes" disabled="false"/>
+
+                                    </span>
+                                </row>
                             <row>
                                      
                                 <span style="float:right"> Nuevo Est.</span>
@@ -931,6 +1050,15 @@ void validarNumerodeCedula(String strCedula){
                                     <checkbox id="repite" />
                                 </span>
                             </row>
+                             <row>
+                                    <span style="float:right"> ¿Asegurado?:</span>
+                                    <span>
+                                        <checkbox id="asegurado"  disabled="false"/>
+
+                                        Nombre Aseguradora:
+                                        <textbox id="aseguradora"  maxlength="50" cols="20" readonly="false"  /> 
+                                    </span>
+                                </row>
 
                             <row>
 
@@ -938,7 +1066,7 @@ void validarNumerodeCedula(String strCedula){
                                     <span style="color:blue"> (*)</span>:
                                 </span>
                                 <span>
-                                    <spinner value="1" cols="2" id="lugar"  constraint="no negative,no zero,min 0 max 20" />
+                                    <spinner value="1" cols="2" id="lugar"  constraint="no negative,min 0 max 20" />
                                Con quién vive
                                     <span style="color:blue"> (*)</span>:
                                     <textbox id="vivecon"  />
@@ -1004,7 +1132,7 @@ void validarNumerodeCedula(String strCedula){
 
                             <row>
                                 <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="10" cols="13"   id="cedulapa"  />
+                                <textbox maxlength="15" cols="13"   id="cedulapa"  />
                             </row>
                             <row>
                                 <span style="float:right"> Nombres:</span>
@@ -1028,7 +1156,7 @@ void validarNumerodeCedula(String strCedula){
                             <row>
                                 <span style="float:right"> Dirección:</span>
                                 <span>
-                                    <textbox id="direccionpa" maxlength="100" cols="40"      />
+                                    <textbox id="direccionpa" maxlength="100" rows="3" cols="40"      />
                                     <button  image="/images/anadir2.png"  label="Traer de Estudiante" onClick="direccionpa.value = direccion.value" />
                                 </span>
                             </row>
@@ -1065,7 +1193,7 @@ void validarNumerodeCedula(String strCedula){
                             <row>
 
                                 <span style="float:right"> Identificación:</span>
-                                <textbox maxlength="10" cols="13"   id="cedulama"  />
+                                <textbox maxlength="15" cols="13"   id="cedulama"  />
                             </row>
 
                             <row>
@@ -1102,7 +1230,7 @@ void validarNumerodeCedula(String strCedula){
 
                                 <span style="float:right"> Dirección:</span>
                                 <span>
-                                    <textbox id="direccionma" maxlength="100" cols="40"      />
+                                    <textbox id="direccionma" maxlength="100" rows="3"  cols="40"      />
                                     <button image="/images/anadir2.png"   label="Traer de Estudiante" onClick="direccionma.value = direccion.value" />
                                 </span>
                             </row>
